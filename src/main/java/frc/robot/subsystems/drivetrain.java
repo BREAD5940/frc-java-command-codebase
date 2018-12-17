@@ -1,18 +1,19 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 // import frc.robot.Robot;
 import frc.robot.robotconfig;
-import frc.robot.commands.*;
-
+import frc.robot.commands.drivetrain_shift_high;
+import frc.robot.commands.drivetrain_shift_low;
 
 /**
- * Drivetrain subsystem. Initilizes the 4 drivetrain talons based on robotmap settings
+ * Drivetrain subsystem. Initilizes the 4 drivetrain talons based on robotmap
+ * settings
  */
 public class drivetrain extends Subsystem {
   // Put methods for controlling this subsystem
@@ -26,10 +27,14 @@ public class drivetrain extends Subsystem {
     
 
     public void init() {
-      s_left_talon.set(ControlMode.Follower, m_left_talon.getDeviceID());
-      s_right_talon.set(ControlMode.Follower, m_right_talon.getDeviceID());
       m_left_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,10); // TODO put encoder stats on smartdashboard
       m_right_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,10); // TODO put encoder stats on smartdashboard
+      s_left_talon.set(ControlMode.Follower, m_left_talon.getDeviceID());
+      s_right_talon.set(ControlMode.Follower, m_right_talon.getDeviceID());
+      m_left_talon.setSelectedSensorPosition(0, 1, 10);
+      m_right_talon.setSelectedSensorPosition(0, 1, 10);
+
+
       if ( robotconfig.drivetrain_starting_gear == "low" ) {
         new drivetrain_shift_low();
       }
@@ -38,7 +43,8 @@ public class drivetrain extends Subsystem {
       }
 
 
-      // TODO do the encoders need to be reversed?
+      // TODO do the encoders need to be reversed? 
+      // Seems to be no
 
     }
 

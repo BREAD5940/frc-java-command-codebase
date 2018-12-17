@@ -1,7 +1,5 @@
 package frc.robot;
 public class robotconfig {
-
-
   // Joystick configuration
   public static final int primary_joystick_port = 0;
   public static final int forward_axis = xboxmap.Axis.LEFT_JOYSTICK_Y;
@@ -25,9 +23,12 @@ public class robotconfig {
   public static final String drivetrain_starting_gear = "low";
 
   // Encoder stuff, dunno where else to put this
-	public static final double VELOCITY_PULSES_PER_ROTATION = 409.6f;
-	public static final double POSITION_PULSES_PER_ROTATION = 4096f;
-  
+	// public static final double VELOCITY_PULSES_PER_ROTATION = 409.6f;
+  public static final double POSITION_PULSES_PER_ROTATION = 4096f;
+  public static final double elevator_effective_radius = 1; // TODO fix this!!!! (units must be inches)
+  public static final int elevator_minimum_height = 0;
+  public static final int elevator_maximum_height = 70; // TODO fix this!!!!
+
   // Left talon setup
   public static final int m_left_talon_port = 1;
   public static final int s_left_talon_port = 2;
