@@ -17,9 +17,10 @@ public class robotconfig {
   public static final float max_forward_speed = 5; // Feet per second forward velocity
   public static final float max_turn_speed = 5; // Max turn speed in degrees per second
 
-  // TalonSRX configuration
-  public static final int drivetrain_solenoid_low_gear_channel = 1;
-  public static final int drivetrain_solenoid_high_gear_channel = 2;
+  // pheumatic configuration
+  public static final int pcm_module_number = 9;
+  public static final int drivetrain_solenoid_low_gear_channel = 7;
+  public static final int drivetrain_solenoid_high_gear_channel = 3;
   public static final String drivetrain_starting_gear = "low";
 
   // Encoder stuff, dunno where else to put this
@@ -35,34 +36,34 @@ public class robotconfig {
   public static final boolean m_left_inverted = false;
 
   // sets kp, ki, kd and kf terms for master left in velocity mode 
-  public static final double m_left_velocity_kp_low = 0;
+  public static final double m_left_velocity_kp_low = 0.1;
   public static final double m_left_velocity_ki_low = 0;
-  public static final double m_left_velocity_kd_low = 0;
-  public static final double m_left_velocity_kf_low = 1;
-  public static final int m_left_velocity_izone_low = 10000;
-  public static final double m_left_velocity_max_integral_low = 500000;
+  public static final double m_left_velocity_kd_low = 20;
+  public static final double m_left_velocity_kf_low =  0.15;
+  public static final int m_left_velocity_izone_low = 300;
+  // public static final double m_left_velocity_max_integral_low = 500000;
 
-  public static final double m_left_position_kp_low = 1;
-  public static final double m_left_position_ki_low = 1;
-  public static final double m_left_position_kd_low = 1;
-  public static final double m_left_position_kf_low = 1;
-  // public static final int m_left_position_izone_low = 5;
-  public static final double m_left_position_max_integral_low = 1;
+  public static final double m_left_position_kp_low = 0.1;
+  public static final double m_left_position_ki_low = 0;
+  public static final double m_left_position_kd_low = 20;
+  public static final double m_left_position_kf_low = 0.15;
+  public static final int m_left_position_izone_low = 300;
+  // public static final double m_left_position_max_integral_low = 1;
 
-  public static final double m_left_velocity_kp_high = 1;
+  public static final double m_left_velocity_kp_high = 0.1;
   public static final double m_left_velocity_ki_high = 0;
-  public static final double m_left_velocity_kd_high = 0;
-  public static final double m_left_velocity_kf_high = 0;
-  public static final int m_left_velocity_izone_high = 5;
-  public static final double m_left_velocity_max_integral_high = 5;
+  public static final double m_left_velocity_kd_high = 20;
+  public static final double m_left_velocity_kf_high = 0.15;
+  public static final int m_left_velocity_izone_high = 300;
+  // public static final double m_left_velocity_max_integral_high = 300;
 
 
-  public static final double m_left_position_kp_high = 1;
-  public static final double m_left_position_ki_high = 1;
-  public static final double m_left_position_kd_high = 1;
-  public static final double m_left_position_kf_high = 1;
-  // public static final int m_left_position_izone_high = 5;
-  public static final double m_left_position_max_integral_high = 5;
+  public static final double m_left_position_kp_high = 0.1;
+  public static final double m_left_position_ki_high = 0;
+  public static final double m_left_position_kd_high = 20;
+  public static final double m_left_position_kf_high = 0.15;
+  public static final int m_left_position_izone_high = 300;
+  // public static final double m_left_position_max_integral_high = 5;
 
 
 

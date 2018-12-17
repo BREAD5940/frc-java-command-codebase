@@ -1,7 +1,9 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -23,7 +25,7 @@ public class drivetrain extends Subsystem {
     public TalonSRX s_left_talon = new TalonSRX(robotconfig.s_left_talon_port);
     public TalonSRX m_right_talon = new TalonSRX(robotconfig.m_right_talon_port);
     public TalonSRX s_right_talon = new TalonSRX(robotconfig.s_right_talon_port);
-    public DoubleSolenoid shifter_solenoid = new DoubleSolenoid(robotconfig.drivetrain_solenoid_low_gear_channel, robotconfig.drivetrain_solenoid_high_gear_channel);
+    // public DoubleSolenoid shifter_solenoid = new DoubleSolenoid(9, 7, 3);
     
 
     public void init() {
@@ -31,12 +33,29 @@ public class drivetrain extends Subsystem {
       m_left_talon.set(ControlMode.PercentOutput, 0);
       s_left_talon.set(ControlMode.Follower, m_left_talon.getDeviceID());
 
-      m_left_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,10); // TODO put encoder stats on smartdashboard
-      m_right_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,10); // TODO put encoder stats on smartdashboard
+      m_left_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,30); // TODO put encoder stats on smartdashboard
+      m_right_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,30); // TODO put encoder stats on smartdashboard
       s_left_talon.set(ControlMode.Follower, m_left_talon.getDeviceID());
       s_right_talon.set(ControlMode.Follower, m_right_talon.getDeviceID());
-      m_left_talon.setSelectedSensorPosition(0, 1, 10);
-      m_right_talon.setSelectedSensorPosition(0, 1, 10);
+      m_right_talon.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30); // Quadrature Encoder of current Talon
+      m_left_talon.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30); // Quadrature Encoder of current Talon
+
+      m_left_talon.configPeakOutputForward(+1.0, 30);
+      m_left_talon.configPeakOutputReverse(-1.0, 30);
+      m_right_talon.configPeakOutputForward(+1.0, 30);
+      m_right_talon.configPeakOutputReverse(-1.0, 30);
+
+
+    	/* 1ms per loop.  PID loop can be slowed down if need be.
+      * For example,
+      * - if sensor updates are too slow
+      * - sensor deltas are very small per update, so derivative error never gets large enough to be useful.
+      * - sensor movement is very slow causing the derivative error to be near zero.
+      */
+      int closedLoopTimeMs = 1;
+      m_right_talon.configSetParameter(ParamEnum.eSampleVelocityPeriod, closedLoopTimeMs, 0x00, 0,30);
+      m_right_talon.configSetParameter(ParamEnum.eSampleVelocityPeriod, closedLoopTimeMs, 0x00, 1, 30);
+      
 
       setHighGear();
 
@@ -47,58 +66,59 @@ public class drivetrain extends Subsystem {
       //   new drivetrain_shift_high();
       // }
 
-
-      // TODO do the encoders need to be reversed? 
-      // Seems to be no
-
     }
 
     public void setHighGear() {
-      this.m_left_talon.config_kP(0, robotconfig.m_left_velocity_kp_high, 0);
-      this.m_left_talon.config_kI(0, robotconfig.m_left_velocity_ki_high, 0);
-      this.m_left_talon.config_kD(0, robotconfig.m_left_velocity_kd_high, 0);
-      this.m_left_talon.config_kF(0, robotconfig.m_left_velocity_kf_high, 0);
-      // this.m_left_talon.config_IntegralZone(0, robotconfig.m_left_velocity_izone_high, 0);
+      this.m_left_talon.config_kP(0, robotconfig.m_left_velocity_kp_high, 30);
+      this.m_left_talon.config_kI(0, robotconfig.m_left_velocity_ki_high, 30);
+      this.m_left_talon.config_kD(0, robotconfig.m_left_velocity_kd_high, 30);
+      this.m_left_talon.config_kF(0, robotconfig.m_left_velocity_kf_high, 30);
+      this.m_left_talon.config_IntegralZone(0, robotconfig.m_left_velocity_izone_high, 30);
       // this.m_left_talon.configMaxIntegralAccumulator(0, robotconfig.m_left_velocity_max_integral_high, 0);
   
-      this.m_right_talon.config_kP(0, robotconfig.m_right_velocity_kp_high, 0);
-      this.m_right_talon.config_kI(0, robotconfig.m_right_velocity_ki_high, 0);
-      this.m_right_talon.config_kD(0, robotconfig.m_right_velocity_kd_high, 0);
-      this.m_right_talon.config_kF(0, robotconfig.m_right_velocity_kf_high, 0);
-      // this.m_right_talon.config_IntegralZone(0, robotconfig.m_right_velocity_izone_high, 0);
+      this.m_right_talon.config_kP(0, robotconfig.m_right_velocity_kp_high, 30);
+      this.m_right_talon.config_kI(0, robotconfig.m_right_velocity_ki_high, 30);
+      this.m_right_talon.config_kD(0, robotconfig.m_right_velocity_kd_high, 30);
+      this.m_right_talon.config_kF(0, robotconfig.m_right_velocity_kf_high, 30);
+      this.m_right_talon.config_IntegralZone(0, robotconfig.m_right_velocity_izone_high, 30);
       // this.m_right_talon.configMaxIntegralAccumulator(0, robotconfig.m_right_velocity_max_integral_high, 0);
       
-      // this.shifter_solenoid.set(DoubleSolenoid.Value.kReverse);
+      m_left_talon.setSelectedSensorPosition(0, 0, 10);
+      m_right_talon.setSelectedSensorPosition(0, 0, 10);
+      m_left_talon.setInverted(true);
+      s_left_talon.setInverted(true);
+
+      // shifter_solenoid.set(DoubleSolenoid.Value.kReverse);
       // TODO verify that kForward is high gear
     }
 
     public void setLowGear() {
-      // this.m_left_talon.config_kP(0, robotconfig.m_left_velocity_kp_low, 0);
-      // this.m_left_talon.config_kI(0, robotconfig.m_left_velocity_ki_low, 0);
-      // this.m_left_talon.config_kD(0, robotconfig.m_left_velocity_kd_low, 0);
-      // this.m_left_talon.config_kF(0, robotconfig.m_left_velocity_kf_low, 0);
-      // this.m_left_talon.config_IntegralZone(0, robotconfig.m_left_velocity_izone_low, 0);
+      this.m_left_talon.config_kP(0, robotconfig.m_left_velocity_kp_low, 0);
+      this.m_left_talon.config_kI(0, robotconfig.m_left_velocity_ki_low, 0);
+      this.m_left_talon.config_kD(0, robotconfig.m_left_velocity_kd_low, 0);
+      this.m_left_talon.config_kF(0, robotconfig.m_left_velocity_kf_low, 0);
+      this.m_left_talon.config_IntegralZone(0, robotconfig.m_left_velocity_izone_low, 0);
       // this.m_left_talon.configMaxIntegralAccumulator(0, robotconfig.m_left_velocity_max_integral_low, 0);
       
-      // this.m_right_talon.config_kP(0, robotconfig.m_right_velocity_kp_low, 0);
-      // this.m_right_talon.config_kI(0, robotconfig.m_right_velocity_ki_low, 0);
-      // this.m_right_talon.config_kD(0, robotconfig.m_right_velocity_kd_low, 0);
-      // this.m_right_talon.config_kF(0, robotconfig.m_right_velocity_kf_low, 0);
-      // this.m_right_talon.config_IntegralZone(0, robotconfig.m_right_velocity_izone_low, 0);
+      this.m_right_talon.config_kP(0, robotconfig.m_right_velocity_kp_low, 0);
+      this.m_right_talon.config_kI(0, robotconfig.m_right_velocity_ki_low, 0);
+      this.m_right_talon.config_kD(0, robotconfig.m_right_velocity_kd_low, 0);
+      this.m_right_talon.config_kF(0, robotconfig.m_right_velocity_kf_low, 0);
+      this.m_right_talon.config_IntegralZone(0, robotconfig.m_right_velocity_izone_low, 0);
       // this.m_right_talon.configMaxIntegralAccumulator(0, robotconfig.m_right_velocity_max_integral_low, 0);
   
-      this.shifter_solenoid.set(DoubleSolenoid.Value.kForward);
+      // shifter_solenoid.set(DoubleSolenoid.Value.kForward);
       // TODO verify that kForward is low gear
     }
 
     public void arcade(double forwardspeed, double turnspeed) {
       // TODO the xbox controller outputs a number from negative one to one. How do we convert that to velocity, and how are native units involved?
 
-      double leftspeed = forwardspeed  - turnspeed;
+      double leftspeed = -forwardspeed + turnspeed;
       double rightspeed = -forwardspeed - turnspeed;
 
-      m_left_talon.set(ControlMode.Velocity, leftspeed*4000);
-      m_right_talon.set(ControlMode.Velocity, rightspeed*4000);
+      m_left_talon.set(ControlMode.PercentOutput, leftspeed);
+      m_right_talon.set(ControlMode.PercentOutput, rightspeed);
       
     }
 

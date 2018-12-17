@@ -10,10 +10,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.close_clamp;
+// import frc.robot.commands.close_clamp;
 // import edu.wpi.first.wpilibj.command.Command;
 // import frc.robot.subsystems.intake;
-import frc.robot.commands.open_clamp;
+import frc.robot.commands.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -35,8 +35,8 @@ public class OI {
   Button close_clamp_button = new JoystickButton(secondaryJoystick, robotconfig.intakeClose);
 
   public OI(){
-    // shift_up_button.whenPressed(new drivetrain_shift_high());
-    // shift_down_button.whenPressed(new drivetrain_shift_low());
+    shift_up_button.whenPressed(new drivetrain_shift_high());
+    shift_down_button.whenPressed(new drivetrain_shift_low());
     // open_clamp_button.whenPressed(new open_clamp());
     // close_clamp_button.whenPressed(new close_clamp());
   }

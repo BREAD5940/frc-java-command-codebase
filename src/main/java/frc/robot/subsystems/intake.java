@@ -19,7 +19,7 @@ public class intake extends Subsystem {
   public TalonSRX talon_left = new TalonSRX(robotconfig.left_intake_talon_port);
   public TalonSRX talon_right = new TalonSRX(robotconfig.right_intake_talon_port);
 
-  // public DoubleSolenoid solenoid = new DoubleSolenoid(robotconfig.intake_solenoid_clamp_channel, robotconfig.intake_solenoid_open_channel);
+  // public DoubleSolenoid intake_solenoid = new DoubleSolenoid(robotconfig.intake_solenoid_clamp_channel, robotconfig.intake_solenoid_open_channel);
   float position_setpoint;
 
 /**
