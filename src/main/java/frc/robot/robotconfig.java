@@ -30,17 +30,17 @@ public class robotconfig {
   public static final int elevator_maximum_height = 70; // TODO fix this!!!!
 
   // Left talon setup
-  public static final int m_left_talon_port = 1;
-  public static final int s_left_talon_port = 2;
+  public static final int m_left_talon_port = 2;
+  public static final int s_left_talon_port = 1;
   public static final boolean m_left_inverted = false;
 
   // sets kp, ki, kd and kf terms for master left in velocity mode 
-  public static final double m_left_velocity_kp_low = 1;
+  public static final double m_left_velocity_kp_low = 0;
   public static final double m_left_velocity_ki_low = 0;
   public static final double m_left_velocity_kd_low = 0;
-  public static final double m_left_velocity_kf_low = 0;
-  public static final int m_left_velocity_izone_low = 5;
-  public static final double m_left_velocity_max_integral_low = 5;
+  public static final double m_left_velocity_kf_low = 1;
+  public static final int m_left_velocity_izone_low = 10000;
+  public static final double m_left_velocity_max_integral_low = 500000;
 
   public static final double m_left_position_kp_low = 1;
   public static final double m_left_position_ki_low = 1;
@@ -66,8 +66,8 @@ public class robotconfig {
 
 
 
-  public static final int m_right_talon_port = 3;
-  public static final int s_right_talon_port = 4;
+  public static final int m_right_talon_port = 4;
+  public static final int s_right_talon_port = 3;
   public static final boolean m_right_inverted = false;
 
   public static final double m_right_velocity_kp_low = m_left_velocity_kp_low;
@@ -100,10 +100,11 @@ public class robotconfig {
   public static final double m_right_position_max_integral_high = 5;
 
 
-  public static final int elevator_talon_port = 3;
-  public static final int intake_talon_port = 4;
-  public static final int elevator_solenoid_clamp_channel = 1;
-  public static final int elevator_solenoid_open_channel = 2;
+  public static final int elevator_talon_port = 5;
+  public static final int left_intake_talon_port = 6;
+  public static final int right_intake_talon_port = 7;
+  public static final int intake_solenoid_clamp_channel = 0;
+  public static final int intake_solenoid_open_channel = 6;
 
 
   public static final double elevator_velocity_kp = 1;

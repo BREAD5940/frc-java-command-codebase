@@ -11,8 +11,25 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.Joystick;
+import com.ctre.phoenix.ParamEnum;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
+import com.ctre.phoenix.motorcontrol.SensorTerm;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
+// import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+// import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.robot.subsystems.*;
+
+import edu.wpi.first.wpilibj.TimedRobot;;
+// import edu.wpi.first.wpilibj.Joystick;
+
+
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,11 +40,14 @@ import frc.robot.subsystems.*;
  */
 public class Robot extends TimedRobot {
   public static final drivetrain drivetrain  = new drivetrain();
-  public static final elevator elevator = new elevator();
+  // public static final elevator elevator = new elevator();
   public static final intake intake = new intake();
 
-  Joystick primaryJoystick = new Joystick(robotconfig.primary_joystick_port);
-  Joystick secondaryJoystick = new Joystick(robotconfig.secondary_joystick_port);
+  public final Joystick primaryJoystick = new Joystick(robotconfig.primary_joystick_port);
+  // public TalonSRX m_left_talon = new TalonSRX(2);
+  // public TalonSRX s_left_talon = new TalonSRX(robotconfig.s_left_talon_port);
+
+  // private final Joystick secondaryJoystick = new Joystick(robotconfig.secondary_joystick_port);
 
   public static OI m_oi;
 
@@ -41,9 +61,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    elevator.init();
-
-
+    // elevator.init();
 
 
     
@@ -117,7 +135,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    drivetrain.init();
+    // drivetrain.init();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -125,6 +143,13 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+
+    drivetrain.init();
+
+    // drivetrain.setLowGear();
+    // m_left_talon.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 0);
+
+
   }
 
   /**
@@ -139,10 +164,14 @@ public class Robot extends TimedRobot {
      * Update the arcade drivetrain method
      */
     drivetrain.arcade(primaryJoystick.getRawAxis(robotconfig.forward_axis), primaryJoystick.getRawAxis(robotconfig.turn_axis));
+    
+    // drivetrain.m_left_talon.set(ControlMode.PercentOutput, 0.25);
+    // drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.25);
+
     /**
      * Update the intake speed via joysticks in the setSpeed method
      */
-    intake.setSpeed(secondaryJoystick.getRawAxis(robotconfig.intakeAxis) - secondaryJoystick.getRawAxis(robotconfig.outtakeAxis));
+    intake.setSpeed(primaryJoystick.getRawAxis(robotconfig.intakeAxis) - primaryJoystick.getRawAxis(robotconfig.outtakeAxis));
     /**
      * Update the elevator PID method
      */

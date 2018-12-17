@@ -10,7 +10,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.*;
+import frc.robot.commands.close_clamp;
+// import edu.wpi.first.wpilibj.command.Command;
+// import frc.robot.subsystems.intake;
+import frc.robot.commands.open_clamp;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -23,8 +26,8 @@ public class OI {
   // You create one by telling it which joystick it's on and which button
   // number it is.
   
-  Joystick primaryJoystick = new Joystick(robotconfig.primary_joystick_port);
-  Joystick secondaryJoystick = new Joystick(robotconfig.secondary_joystick_port);
+  private Joystick primaryJoystick = new Joystick(robotconfig.primary_joystick_port);
+  private Joystick secondaryJoystick = new Joystick(robotconfig.secondary_joystick_port);
 
   Button shift_up_button = new JoystickButton(primaryJoystick, robotconfig.shift_up_button);
   Button shift_down_button = new JoystickButton(primaryJoystick, robotconfig.shift_down_button);
@@ -32,10 +35,10 @@ public class OI {
   Button close_clamp_button = new JoystickButton(secondaryJoystick, robotconfig.intakeClose);
 
   public OI(){
-    shift_up_button.whenPressed(new drivetrain_shift_high());
-    shift_down_button.whenPressed(new drivetrain_shift_low());
-    open_clamp_button.whenPressed(new open_clamp());
-    close_clamp_button.whenPressed(new close_clamp());
+    // shift_up_button.whenPressed(new drivetrain_shift_high());
+    // shift_down_button.whenPressed(new drivetrain_shift_low());
+    // open_clamp_button.whenPressed(new open_clamp());
+    // close_clamp_button.whenPressed(new close_clamp());
   }
 
   // Button button = new JoystickButton(stick, buttonNumber);
