@@ -47,7 +47,7 @@ public class Robot extends TimedRobot {
   // public static final elevator elevator = new elevator();
   public static final intake intake = new intake();
   // public DoubleSolenoid shifter_solenoid = new DoubleSolenoid(9, 7, 3);
-  public final Joystick primaryJoystick = new Joystick(robotconfig.primary_joystick_port);
+  private Joystick primaryJoystick = new Joystick(robotconfig.primary_joystick_port);
 
   // private final Joystick secondaryJoystick = new Joystick(robotconfig.secondary_joystick_port);
 

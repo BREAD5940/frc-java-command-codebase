@@ -29,8 +29,10 @@ public class drivetrain extends Subsystem {
     public TalonSRX s_left_talon = new TalonSRX(robotconfig.s_left_talon_port);
     public TalonSRX m_right_talon = new TalonSRX(robotconfig.m_right_talon_port);
     public TalonSRX s_right_talon = new TalonSRX(robotconfig.s_right_talon_port);
+    // DoubleSolenoid shifter = new DoubleSolenoid(6, 0, 1);
 
-    Robot robot = new Robot(); 
+
+    // Robot robot = new Robot(); 
     
 
     public void init() {
@@ -73,7 +75,7 @@ public class drivetrain extends Subsystem {
       // }
 
     }
-
+    
     public void setHighGear() {
       this.m_left_talon.config_kP(0, robotconfig.m_left_velocity_kp_high, 30);
       this.m_left_talon.config_kI(0, robotconfig.m_left_velocity_ki_high, 30);
@@ -120,7 +122,7 @@ public class drivetrain extends Subsystem {
     public void arcade(double forwardspeed, double turnspeed, Boolean isSquared) {
       // TODO the xbox controller outputs a number from negative one to one. How do we convert that to velocity, and how are native units involved?
       double foreMultiplier = 6000;
-      double turnMultiplier = 6000;
+      double turnMultiplier = 5000;
 
       if ((forwardspeed < 0.02) && (forwardspeed > -0.02)) { forwardspeed = 0; }
       if ((turnspeed < 0.01) && (turnspeed > -0.01)) { turnspeed = 0; }
