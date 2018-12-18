@@ -44,10 +44,10 @@ public class robotconfig {
   public static final double POSITION_PULSES_PER_ROTATION = 4096f;
   
 
-  public static final double elevator_effective_radius = 1; // TODO fix this!!!! (units must be inches)
+  public static final double elevator_effective_diameter = 1; // TODO fix this!!!! (units must be inches)
   public static final int elevator_minimum_height = 0;
-  public static final int elevator_maximum_height = 42000; // TODO fix this!!!!
-
+  // public static final int elevator_maximum_height = 42000; // TODO fix this!!!!
+  public static final int elevator_maximum_height = 70; // changed to inches
 
   /**
    * Left side of drivetrain PID constants and setup
