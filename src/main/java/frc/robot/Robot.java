@@ -46,11 +46,17 @@ public class Robot extends TimedRobot {
   // public static final elevator elevator = new elevator();
   public static final intake intake = new intake();
 
-  public final Joystick primaryJoystick = new Joystick(robotconfig.primary_joystick_port);
+  public static final elevator elevator = new elevator();
+  
+  // public DoubleSolenoid shifter_solenoid = new DoubleSolenoid(9, 7, 3);
+  private Joystick primaryJoystick = new Joystick(robotconfig.primary_joystick_port);
+  private Joystick throttle = new Joystick(robotconfig.secondary_joystick_port);
   // public TalonSRX m_left_talon = new TalonSRX(2);
   // public TalonSRX s_left_talon = new TalonSRX(robotconfig.s_left_talon_port);
 
   // private final Joystick secondaryJoystick = new Joystick(robotconfig.secondary_joystick_port);
+
+  public static double elevator_setpoint = 0;
 
   public static OI m_oi;
 
@@ -77,6 +83,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Setpoint for turn Speed", primaryJoystick.getRawAxis(robotconfig.turn_axis));
     SmartDashboard.putNumber("Left talon speed", drivetrain.m_left_talon.getSelectedSensorVelocity(0));
     SmartDashboard.putNumber("Left talon speed", drivetrain.m_right_talon.getSelectedSensorVelocity(0));
+    SmartDashboard.putNumber("Elevator talon pos", elevator.elevator_talon.getSelectedSensorPosition(0)); 
+    SmartDashboard.putNumber("Throttle output", throttle.getRawAxis(1));
+    
+    elevator.init();
 
 
 
@@ -97,7 +107,10 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Setpoint for turn Speed", primaryJoystick.getRawAxis(robotconfig.turn_axis));
     SmartDashboard.putNumber("Left talon speed", drivetrain.m_left_talon.getSelectedSensorVelocity(0));
     SmartDashboard.putNumber("Left talon speed", drivetrain.m_right_talon.getSelectedSensorVelocity(0));
+    SmartDashboard.putNumber("Elevator talon pos", elevator.elevator_talon.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Throttle output", throttle.getRawAxis(1));
 
+    SmartDashboard.putNumber("Elevator setpoint", elevator_setpoint);
 
   }
 
@@ -166,7 +179,9 @@ public class Robot extends TimedRobot {
 
     // drivetrain.setLowGear();
     // m_left_talon.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 0);
+    elevator.init();
 
+  
 
   }
 
@@ -194,7 +209,8 @@ public class Robot extends TimedRobot {
     /**
      * Update the elevator PID method
      */
-
+    elevator_setpoint = elevator_setpoint+throttle.getRawAxis(1)*700;
+    elevator.setHeight(elevator_setpoint);
 
   }
 

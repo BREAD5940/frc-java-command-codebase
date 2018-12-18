@@ -11,6 +11,8 @@ public class robotconfig {
   public static final int intakeOpen = xboxmap.Buttons.LB_BUTTON;
   public static final int intakeClose = xboxmap.Buttons.RB_BUTTON;
   public static final int secondary_joystick_port = 1;
+  public static final int throttle_axis = 2;
+
 
   // Robot configuration
   // TODO make this count towards drivetrain PID (as a cap on velocity?)
@@ -28,7 +30,7 @@ public class robotconfig {
   public static final double POSITION_PULSES_PER_ROTATION = 4096f;
   public static final double elevator_effective_radius = 1; // TODO fix this!!!! (units must be inches)
   public static final int elevator_minimum_height = 0;
-  public static final int elevator_maximum_height = 70; // TODO fix this!!!!
+  public static final int elevator_maximum_height = 42000; // TODO fix this!!!!
 
   // Left talon setup
   public static final int m_left_talon_port = 2;
@@ -115,7 +117,7 @@ public class robotconfig {
   public static final int elevator_velocity_izone = 2;
   public static final double elevator_max_velocity_integral = 0.5;
 
-  public static final double elevator_position_kp = 1;
+  public static final double elevator_position_kp = 1.7;
   public static final double elevator_position_ki = 0;
   public static final double elevator_position_kd = 0;
   public static final double elevator_position_kf = 0;
