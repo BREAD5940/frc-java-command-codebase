@@ -39,6 +39,15 @@ public class auto_action_DRIVE extends Command {
 
   // Called just before this Command runs the first time
   @Override
+  protected void initialize() {
+    double targetSpeedRaw = encoderlib.distanceToRaw(targetSpeed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.elevator_effective_diameter) ;
+    double startingDistanceLeft = drivetrain.getLeftDistance();
+    double startingDistanceRight = drivetrain.getRightDistance();
+    setTimeout(timeout); // set the timeout
+
+    if (gear == "low") { drivetrain.setLowGear(); }
+    else if (gear == "high") { drivetrain.setHighGear(); }
+    else { throw new IllegalArgumentException("Cannot set gear to " + this.gear + " !" ); }
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -52,6 +61,13 @@ public class auto_action_DRIVE extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    if ( ((Math.abs(drivetrain.getRightDistance() - this.targetDistance) < robotconfig.drive_auto_position_tolerence) 
+        && (Math.abs(drivetrain.getLeftDistance() - this.targetDistance) < robotconfig.drive_auto_position_tolerence) 
+        && (Math.abs(drivetrain.getLeftVelocity()) < robotconfig.drive_auto_velocity_tolerence) 
+        && (Math.abs(drivetrain.getRightVelocity()) < robotconfig.drive_auto_position_tolerence))
+        || (isTimedOut()) ){
+      return true;}
+    else { return false; }
   }
 
   // Called once after isFinished returns true
