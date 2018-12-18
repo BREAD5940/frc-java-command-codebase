@@ -46,10 +46,8 @@ public class Robot extends TimedRobot {
   public static final drivetrain drivetrain  = new drivetrain();
   // public static final elevator elevator = new elevator();
   public static final intake intake = new intake();
-  public DoubleSolenoid shifter_solenoid = new DoubleSolenoid(9, 7, 3);
+  // public DoubleSolenoid shifter_solenoid = new DoubleSolenoid(9, 7, 3);
   public final Joystick primaryJoystick = new Joystick(robotconfig.primary_joystick_port);
-  // public TalonSRX m_left_talon = new TalonSRX(2);
-  // public TalonSRX s_left_talon = new TalonSRX(robotconfig.s_left_talon_port);
 
   // private final Joystick secondaryJoystick = new Joystick(robotconfig.secondary_joystick_port);
 
@@ -79,7 +77,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Left talon speed", drivetrain.m_left_talon.getSelectedSensorVelocity(0));
     SmartDashboard.putNumber("Left talon speed", drivetrain.m_right_talon.getSelectedSensorVelocity(0));
 
-
+    // shifter_solenoid.set(DoubleSolenoid.Value.kReverse);
 
   }
 

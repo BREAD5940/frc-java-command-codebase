@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 // import frc.robot.Robot;
 import frc.robot.robotconfig;
 // import frc.robot.commands.drivetrain_shift_high;
@@ -28,7 +29,8 @@ public class drivetrain extends Subsystem {
     public TalonSRX s_left_talon = new TalonSRX(robotconfig.s_left_talon_port);
     public TalonSRX m_right_talon = new TalonSRX(robotconfig.m_right_talon_port);
     public TalonSRX s_right_talon = new TalonSRX(robotconfig.s_right_talon_port);
-    // 
+
+    Robot robot = new Robot(); 
     
 
     public void init() {
@@ -92,7 +94,7 @@ public class drivetrain extends Subsystem {
       m_left_talon.setInverted(true);
       s_left_talon.setInverted(true);
 
-      // shifter_solenoid.set(DoubleSolenoid.Value.kReverse);
+      // robot.shifter_solenoid.set(DoubleSolenoid.Value.kReverse);
       // TODO verify that kForward is high gear
     }
 
@@ -111,14 +113,14 @@ public class drivetrain extends Subsystem {
       this.m_right_talon.config_IntegralZone(0, robotconfig.m_right_velocity_izone_low, 0);
       // this.m_right_talon.configMaxIntegralAccumulator(0, robotconfig.m_right_velocity_max_integral_low, 0);
   
-      // shifter_solenoid.set(DoubleSolenoid.Value.kForward);
+      // robot.shifter_solenoid.set(DoubleSolenoid.Value.kForward);
       // TODO verify that kForward is low gear
     }
 
     public void arcade(double forwardspeed, double turnspeed, Boolean isSquared) {
       // TODO the xbox controller outputs a number from negative one to one. How do we convert that to velocity, and how are native units involved?
-      double foreMultiplier = 10000;
-      double turnMultiplier = 5000;
+      double foreMultiplier = 6000;
+      double turnMultiplier = 6000;
 
       if ((forwardspeed < 0.02) && (forwardspeed > -0.02)) { forwardspeed = 0; }
       if ((turnspeed < 0.01) && (turnspeed > -0.01)) { turnspeed = 0; }
