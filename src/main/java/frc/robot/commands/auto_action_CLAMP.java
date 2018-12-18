@@ -9,26 +9,27 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.drivetrain;
-import frc.robot.robotconfig;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-
+import frc.robot.subsystems.intake;
 
 
 /**
  * Shifter command to shift to high gear
  */
-public class turn_auto_action extends Command {
-  public turn_auto_action() {
+public class auto_action_CLAMP extends Command {
+  public auto_action_CLAMP() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.drivetrain);
+    requires( Robot.intake );
+
   }
 
-  public static final drivetrain drivetrain  = new drivetrain();
+  
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    intake intake = new intake();
+    intake.openClamp();
+
   }
 
   // Called repeatedly when this Command is scheduled to run

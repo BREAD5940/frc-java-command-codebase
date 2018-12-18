@@ -18,10 +18,11 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 /**
  * Shifter command to shift to high gear
  */
-public class drive_auto_action extends Command {
-  public drive_auto_action() {
+public class auto_action_INTAKE extends Command {
+  public auto_action_INTAKE() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.drivetrain);
+    requires(Robot.intake);
+
   }
 
   public static final drivetrain drivetrain  = new drivetrain();
