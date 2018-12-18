@@ -47,6 +47,7 @@ public class Robot extends TimedRobot {
   // private final Joystick secondaryJoystick = new Joystick(robotconfig.secondary_joystick_port);
 
   public static double elevator_setpoint = 0;
+  public static double wrist_setpoint = 0;
 
   public static OI m_oi;
 
@@ -95,16 +96,14 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Throttle output", throttle.getRawAxis(1));
     SmartDashboard.putNumber("Elevator setpoint", elevator_setpoint);
-    SmartDashboard.putNumber("Elevator talon pos", elevator.elevator_talon.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Elevator height", elevator.getHeight());
     SmartDashboard.putNumber("Elevator error", elevator.elevator_talon.getClosedLoopError(0));
 
-    SmartDashboard.putNumber("Wrist angle setpoint", elevator_setpoint);
+    SmartDashboard.putNumber("Wrist angle setpoint", wrist_setpoint); // TODO better implamentation of this
     SmartDashboard.putNumber("Wrist talon pos", elevator.elevator_talon.getSelectedSensorPosition(0));
     SmartDashboard.putNumber("Wrist error", elevator.elevator_talon.getClosedLoopError(0));
     SmartDashboard.putNumber("Wrist angle (deg)", wrist.getAngle());
     SmartDashboard.putNumber("Wrist angular velocity (deg/s)", wrist.getAngularVelocity());
-
-    getAngle
     
   }
 
@@ -199,7 +198,7 @@ public class Robot extends TimedRobot {
     /**
      * Update the elevator PID method
      */
-    elevator_setpoint = elevator_setpoint+throttle.getRawAxis(1)*700;
+    elevator_setpoint = elevator_setpoint+throttle.getRawAxis(1)*10;
     elevator.setHeight(elevator_setpoint);
 
   }
