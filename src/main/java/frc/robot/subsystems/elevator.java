@@ -19,6 +19,8 @@ public class elevator extends Subsystem {
 
   public TalonSRX elevator_talon = new TalonSRX(robotconfig.elevator_talon_port);
 
+  double raw_max_height = encoderlib.distanceToRaw(robotconfig.elevator_maximum_height, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.elevator_effective_diameter);
+
   // public DoubleSolenoid intake_solenoid = new DoubleSolenoid(robotconfig.intake_solenoid_clamp_channel, robotconfig.intake_solenoid_open_channel);
   float position_setpoint;
 
@@ -36,13 +38,35 @@ public class elevator extends Subsystem {
     this.elevator_talon.config_kI(0, robotconfig.elevator_position_ki, 30);
     this.elevator_talon.config_kD(0, robotconfig.elevator_position_kd, 30);
     this.elevator_talon.config_kF(0, robotconfig.elevator_position_kf, 30);
+    this.elevator_talon.set(ControlMode.Position, 0);
   }
+  /**
+   * Set the elevator height, in inches
+   * @param height in inches
+   */
   public void setHeight(double height) {
     //talon_elevator.set(ControlMode.PercentOutput, speed);
-    if (!(height>robotconfig.elevator_maximum_height || height<0)){ //TODO may not be correct
-      elevator_talon.set(ControlMode.Position, height);
+    if (!(height>raw_max_height || height<0)){ //Seems to work to me, the min/max values seem to work fine
+      //  however you may want to consider catching errors like elevator below minimum height, or elevator above maximum height, and allowing the elevator to move
+      // TODO so i caught the error I mensioned by setting the setpoint to 0 in the init(), but that doesn't help when the elevator is too high up and ends up above the max height
+      elevator_talon.set(
+        ControlMode.Position, encoderlib.distanceToRaw(
+          height, 
+          robotconfig.POSITION_PULSES_PER_ROTATION, 
+          robotconfig.elevator_effective_diameter));
     }
- 
+  }
+
+  /**
+   * Return the height of the elevator from zero, in inches
+   * @return height in inches
+   */
+  public double getHeight() {
+    double inches = encoderlib.rawToDistance(
+      elevator_talon.getSelectedSensorPosition(0), 
+      robotconfig.POSITION_PULSES_PER_ROTATION, 
+      robotconfig.elevator_effective_diameter);
+    return inches;
   }
 
 
