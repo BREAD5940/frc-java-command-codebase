@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import javax.swing.Spring;
+
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -26,7 +28,7 @@ public class drivetrain extends Subsystem {
     public TalonSRX s_left_talon = new TalonSRX(robotconfig.s_left_talon_port);
     public TalonSRX m_right_talon = new TalonSRX(robotconfig.m_right_talon_port);
     public TalonSRX s_right_talon = new TalonSRX(robotconfig.s_right_talon_port);
-    // public DoubleSolenoid shifter_solenoid = new DoubleSolenoid(9, 7, 3);
+    // 
     
 
     public void init() {
@@ -57,6 +59,7 @@ public class drivetrain extends Subsystem {
       m_right_talon.configSetParameter(ParamEnum.eSampleVelocityPeriod, closedLoopTimeMs, 0x00, 0,30);
       m_right_talon.configSetParameter(ParamEnum.eSampleVelocityPeriod, closedLoopTimeMs, 0x00, 1, 30);
       
+      // public String gear_state;
 
       setHighGear();
 

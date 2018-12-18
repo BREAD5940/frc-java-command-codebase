@@ -17,6 +17,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -45,7 +46,7 @@ public class Robot extends TimedRobot {
   public static final drivetrain drivetrain  = new drivetrain();
   // public static final elevator elevator = new elevator();
   public static final intake intake = new intake();
-
+  public DoubleSolenoid shifter_solenoid = new DoubleSolenoid(9, 7, 3);
   public final Joystick primaryJoystick = new Joystick(robotconfig.primary_joystick_port);
   // public TalonSRX m_left_talon = new TalonSRX(2);
   // public TalonSRX s_left_talon = new TalonSRX(robotconfig.s_left_talon_port);

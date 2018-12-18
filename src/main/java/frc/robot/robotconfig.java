@@ -36,10 +36,10 @@ public class robotconfig {
   public static final boolean m_left_inverted = false;
 
   // sets kp, ki, kd and kf terms for master left in velocity mode 
-  public static final double m_left_velocity_kp_low = 0.1;
-  public static final double m_left_velocity_ki_low = 0;
-  public static final double m_left_velocity_kd_low = 20;
-  public static final double m_left_velocity_kf_low =  0.15;
+  public static final double m_left_velocity_kp_low = 0.05;
+  public static final double m_left_velocity_ki_low = 0.03;
+  public static final double m_left_velocity_kd_low = 0;
+  public static final double m_left_velocity_kf_low =  0;
   public static final int m_left_velocity_izone_low = 300;
   // public static final double m_left_velocity_max_integral_low = 500000;
 
