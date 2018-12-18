@@ -50,18 +50,18 @@ public class robotconfig {
   public static final int m_left_position_izone_low = 300;
   // public static final double m_left_position_max_integral_low = 1;
 
-  public static final double m_left_velocity_kp_high = 0.1;
-  public static final double m_left_velocity_ki_high = 0;
+  public static final double m_left_velocity_kp_high = 0.05;
+  public static final double m_left_velocity_ki_high = 0.03;
   public static final double m_left_velocity_kd_high = 0;
-  public static final double m_left_velocity_kf_high = 0.1;
+  public static final double m_left_velocity_kf_high = 0;
   public static final int m_left_velocity_izone_high = 300;
   // public static final double m_left_velocity_max_integral_high = 300;
 
 
-  public static final double m_left_position_kp_high = 0.1;
+  public static final double m_left_position_kp_high = 0.15;
   public static final double m_left_position_ki_high = 0;
   public static final double m_left_position_kd_high = 20;
-  public static final double m_left_position_kf_high = 0.15;
+  public static final double m_left_position_kf_high = 0.1;
   public static final int m_left_position_izone_high = 300;
   // public static final double m_left_position_max_integral_high = 5;
 

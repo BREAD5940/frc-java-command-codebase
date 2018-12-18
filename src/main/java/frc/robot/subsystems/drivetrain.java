@@ -112,17 +112,31 @@ public class drivetrain extends Subsystem {
       // TODO verify that kForward is low gear
     }
 
-    public void arcade(double forwardspeed, double turnspeed) {
+    public void arcade(double forwardspeed, double turnspeed, Boolean isSquared) {
       // TODO the xbox controller outputs a number from negative one to one. How do we convert that to velocity, and how are native units involved?
+      double foreMultiplier = 10000;
+      double turnMultiplier = 5000;
 
-      if ((forwardspeed < 0.05) && (forwardspeed > -0.05)) { forwardspeed = 0; }
-      if ((turnspeed < 0.05) && (turnspeed > -0.05)) { turnspeed = 0; }
+      if ((forwardspeed < 0.02) && (forwardspeed > -0.02)) { forwardspeed = 0; }
+      if ((turnspeed < 0.01) && (turnspeed > -0.01)) { turnspeed = 0; }
+
+      if (isSquared) {
+        if (forwardspeed < 0) { forwardspeed = forwardspeed * forwardspeed * -1;}
+        else {forwardspeed = forwardspeed * forwardspeed;}
+        if (turnspeed < 0) { turnspeed = turnspeed * turnspeed * -1;}
+        else {turnspeed = turnspeed * turnspeed;}
+      }
+
+
+      forwardspeed = forwardspeed * foreMultiplier;
+      turnspeed = turnspeed * turnMultiplier;
+
       double leftspeed = -forwardspeed + turnspeed;
       double rightspeed = -forwardspeed - turnspeed;
-      double foreMultiplier = 10000;
-      double turnMultiplier = 1000;
-      m_left_talon.set(ControlMode.Velocity, leftspeed * foreMultiplier);
-      m_right_talon.set(ControlMode.Velocity, rightspeed * turnMultiplier);
+
+
+      m_left_talon.set(ControlMode.Velocity, leftspeed );
+      m_right_talon.set(ControlMode.Velocity, rightspeed );
       
 
 
