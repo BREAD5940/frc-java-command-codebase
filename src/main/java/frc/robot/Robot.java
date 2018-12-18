@@ -13,24 +13,14 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+
 import edu.wpi.first.wpilibj.Joystick;
-import com.ctre.phoenix.ParamEnum;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
-import com.ctre.phoenix.motorcontrol.SensorTerm;
-import com.ctre.phoenix.motorcontrol.StatusFrame;
-// import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-// import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import frc.robot.subsystems.*;
 
-import edu.wpi.first.wpilibj.TimedRobot;;
-// import edu.wpi.first.wpilibj.Joystick;
+
 
 
 
@@ -44,10 +34,9 @@ import edu.wpi.first.wpilibj.TimedRobot;;
  */
 public class Robot extends TimedRobot {
   public static final drivetrain drivetrain  = new drivetrain();
-  // public static final elevator elevator = new elevator();
   public static final intake intake = new intake();
-
   public static final elevator elevator = new elevator();
+  public static final wrist wrist = new wrist();
   
   // public DoubleSolenoid shifter_solenoid = new DoubleSolenoid(9, 7, 3);
   private Joystick primaryJoystick = new Joystick(robotconfig.primary_joystick_port);
@@ -71,25 +60,18 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    // elevator.init();
     Compressor compressor = new Compressor(9);
-
     compressor.setClosedLoopControl(true);
     
+    drivetrain.init();
+    elevator.init();
+    wrist.init();
+
     // m_chooser.addDefault("Default Auto", new ExampleCommand());
     // chooser.addObject("My Auto", new MyAutoCommand());
     // SmartDashboard.putString("test", "Hellothere!!! intake clamp: ");
 
-    SmartDashboard.putNumber("Setpoint for forward Speed", primaryJoystick.getRawAxis(robotconfig.forward_axis));
-    SmartDashboard.putNumber("Setpoint for turn Speed", primaryJoystick.getRawAxis(robotconfig.turn_axis));
-    SmartDashboard.putNumber("Left talon speed", drivetrain.m_left_talon.getSelectedSensorVelocity(0));
-    SmartDashboard.putNumber("Left talon speed", drivetrain.m_right_talon.getSelectedSensorVelocity(0));
-    SmartDashboard.putNumber("Elevator talon pos", elevator.elevator_talon.getSelectedSensorPosition(0)); 
-    SmartDashboard.putNumber("Throttle output", throttle.getRawAxis(1));
-    
-    elevator.init();
 
-    // shifter_solenoid.set(DoubleSolenoid.Value.kReverse);
 
   }
 
@@ -103,16 +85,27 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    
     SmartDashboard.putNumber("Setpoint for forward Speed", primaryJoystick.getRawAxis(robotconfig.forward_axis));
     SmartDashboard.putNumber("Setpoint for turn Speed", primaryJoystick.getRawAxis(robotconfig.turn_axis));
+
     SmartDashboard.putNumber("Left talon speed", drivetrain.m_left_talon.getSelectedSensorVelocity(0));
-    SmartDashboard.putNumber("Left talon speed", drivetrain.m_right_talon.getSelectedSensorVelocity(0));
-    SmartDashboard.putNumber("Elevator talon pos", elevator.elevator_talon.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Left talon setpoint", drivetrain.m_left_talon.getClosedLoopError(0));
+    SmartDashboard.putNumber("Right talon speed", drivetrain.m_right_talon.getSelectedSensorVelocity(0));
+    SmartDashboard.putNumber("Right talon setpoint", drivetrain.m_right_talon.getClosedLoopError(0));
+
     SmartDashboard.putNumber("Throttle output", throttle.getRawAxis(1));
-
     SmartDashboard.putNumber("Elevator setpoint", elevator_setpoint);
+    SmartDashboard.putNumber("Elevator talon pos", elevator.elevator_talon.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Elevator error", elevator.elevator_talon.getClosedLoopError(0));
 
+    SmartDashboard.putNumber("Wrist angle setpoint", elevator_setpoint);
+    SmartDashboard.putNumber("Wrist talon pos", elevator.elevator_talon.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Wrist error", elevator.elevator_talon.getClosedLoopError(0));
+    SmartDashboard.putNumber("Wrist angle (deg)", wrist.getAngle());
+    SmartDashboard.putNumber("Wrist angular velocity (deg/s)", wrist.getAngularVelocity());
+
+    getAngle
+    
   }
 
   /**
@@ -176,11 +169,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    drivetrain.init();
 
-    // drivetrain.setLowGear();
-    // m_left_talon.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 1, 0);
-    elevator.init();
 
   
 
