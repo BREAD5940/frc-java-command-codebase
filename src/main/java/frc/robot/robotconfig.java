@@ -37,10 +37,10 @@ public class robotconfig {
    * Robot configuration
    */
   // TODO make this count towards drivetrain PID (as a cap on velocity?)
-  public static final double max_forward_speed_high = 5; // Feet per second forward velocity
-  public static final double max_turn_speed_high = 5; // Max turn speed in degrees per second
-  public static final double max_forward_speed_low = 5; // Feet per second forward velocity
-  public static final double max_turn_speed_low = 5; // Max turn speed in degrees per second
+  public static final double max_forward_speed_high = 1; // Feet per second forward velocity
+  public static final double max_turn_speed_high = 1; // Max turn speed in degrees per second
+  public static final double max_forward_speed_low = 1; // Feet per second forward velocity
+  public static final double max_turn_speed_low = 1; // Max turn speed in degrees per second
   public static final double drive_auto_position_tolerence = 1; // units are in incehs
   public static final double drive_auto_angle_tolerence = 1; // units are in degrees
   public static final double drive_auto_velocity_tolerence = 0.5; // units are in inches per second
@@ -74,13 +74,13 @@ public class robotconfig {
   public static final double m_left_velocity_kf_low =  0;
   public static final int m_left_velocity_izone_low = 300;
   // public static final double m_left_velocity_max_integral_low = 500000;
-  public static final double m_left_position_kp_low = 0.1;
+  public static final double m_left_position_kp_low = 0.15;
   public static final double m_left_position_ki_low = 0;
   public static final double m_left_position_kd_low = 20;
   public static final double m_left_position_kf_low = 0.15;
   public static final int m_left_position_izone_low = 300;
   // public static final double m_left_position_max_integral_low = 1;
-  public static final double m_left_velocity_kp_high = 0.1;
+  public static final double m_left_velocity_kp_high = 0.15;
   public static final double m_left_velocity_ki_high = 0.02;
   public static final double m_left_velocity_kd_high = 0;
   public static final double m_left_velocity_kf_high = 0.05;

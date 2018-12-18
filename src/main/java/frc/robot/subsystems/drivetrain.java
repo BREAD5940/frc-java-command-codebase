@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import frc.robot.Robot;
 import frc.robot.robotconfig;
 // import frc.robot.commands.drivetrain_shift_high;
@@ -130,6 +131,28 @@ public class drivetrain extends Subsystem {
     public double getRightVelocity() {return encoderlib.rawToDistance(this.m_right_talon.getSelectedSensorVelocity(0) * 10, 
       robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter);}
 
+    /**
+     * Set a velocity setpoint for the left drivetrain talons
+     * @param speed in inches per second
+     * @return doesn't return anything, but sets the left talon speed to the raw conversion of speed.
+     */
+    public void setVelocityLeft(double speed) {
+      SmartDashboard.putNumber("left speed setpoint in in per sec", speed);
+      double rawSpeedLeft = encoderlib.distanceToRaw(speed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter) / 10; 
+      SmartDashboard.putNumber(" Target encoder ticks per 100ms for left: ", rawSpeedLeft);
+      m_left_talon.set(ControlMode.Velocity, rawSpeedLeft);// Divide by 10, because the Talon expects native units per 100ms, not native units per second
+    }
+
+    /**
+     * Set a velocity setpoint for the right drivetrain talons
+     * @param speed in inches per second
+     * @return doesn't return anything, but sets the right talon speed to the raw conversion of speed.
+     */
+    public void setVelocityRight(double speed) {
+      double rawSpeedRight = encoderlib.distanceToRaw(speed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter) / 10; // Divide by 10, because the Talon expects native units per 100ms, not native units per second
+      m_right_talon.set(ControlMode.Velocity, rawSpeedRight);
+    }
+
 
     public void arcade(double forwardspeed, double turnspeed, Boolean isSquared) {
       // TODO the xbox controller outputs a number from negative one to one. How do we convert that to velocity, and how are native units involved?
@@ -139,11 +162,12 @@ public class drivetrain extends Subsystem {
       if ((forwardspeed < 0.02) && (forwardspeed > -0.02)) { forwardspeed = 0; }
       if ((turnspeed < 0.01) && (turnspeed > -0.01)) { turnspeed = 0; }
 
+    // m_left_talon.set(ControlMode.PercentOutput, 0.25);
+    // m_right_talon.set(ControlMode.PercentOutput, 0.25);
+      
       if (isSquared) {
-        if (forwardspeed < 0) { forwardspeed = forwardspeed * forwardspeed * -1;}
-        else {forwardspeed = forwardspeed * forwardspeed;}
-        if (turnspeed < 0) { turnspeed = turnspeed * turnspeed * -1;}
-        else {turnspeed = turnspeed * turnspeed;}
+        forwardspeed = forwardspeed * Math.abs(forwardspeed);
+        turnspeed = turnspeed * Math.abs(turnspeed);
       }
       if (this.current_gear == "high"){forwardspeed = forwardspeed * robotconfig.max_forward_speed_high;}
       if (this.current_gear == "low"){forwardspeed = forwardspeed * robotconfig.max_forward_speed_low;}
@@ -153,28 +177,11 @@ public class drivetrain extends Subsystem {
       double leftspeed = -forwardspeed + turnspeed;
       double rightspeed = -forwardspeed - turnspeed;
 
-      this.setVelocityLeft(leftspeed);
-      this.setVelocityRight(rightspeed);   
-    }
+      // SmartDashboard.putNumber("inches/sec speed setpoint: ", leftspeed);
+      // SmartDashboard.putNumber("inches/sec right speed setpoint: ", rightspeed);
 
-    /**
-     * Set a velocity setpoint for the left drivetrain talons
-     * @param speed in inches per second
-     * @return doesn't return anything, but sets the left talon speed to the raw conversion of speed.
-     */
-    public void setVelocityLeft(double speed) {
-      double rawSpeedLeft = encoderlib.distanceToRaw(speed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter); 
-      m_left_talon.set(ControlMode.Velocity, rawSpeedLeft / 10);// Divide by 10, because the Talon expects native units per 100ms, not native units per second
-    }
-
-    /**
-     * Set a velocity setpoint for the right drivetrain talons
-     * @param speed in inches per second
-     * @return doesn't return anything, but sets the right talon speed to the raw conversion of speed.
-     */
-    public void setVelocityRight(double speed) {
-      double rawSpeedRight = encoderlib.distanceToRaw(speed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter); 
-      m_right_talon.set(ControlMode.Velocity, rawSpeedRight / 10);// Divide by 10, because the Talon expects native units per 100ms, not native units per second
+      setVelocityLeft(leftspeed*19);
+      setVelocityRight(rightspeed*19);   
     }
 
   @Override
