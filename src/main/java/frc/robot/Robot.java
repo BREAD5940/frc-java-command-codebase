@@ -17,6 +17,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -88,7 +89,7 @@ public class Robot extends TimedRobot {
     
     elevator.init();
 
-
+    // shifter_solenoid.set(DoubleSolenoid.Value.kReverse);
 
   }
 
@@ -196,7 +197,7 @@ public class Robot extends TimedRobot {
     /**
      * Update the arcade drivetrain method
      */
-    drivetrain.arcade(primaryJoystick.getRawAxis(robotconfig.forward_axis), primaryJoystick.getRawAxis(robotconfig.turn_axis));
+    drivetrain.arcade(primaryJoystick.getRawAxis(robotconfig.forward_axis), primaryJoystick.getRawAxis(robotconfig.turn_axis), true);
     
     // drivetrain.m_left_talon.set(ControlMode.PercentOutput, 0.25);
     // drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.25);

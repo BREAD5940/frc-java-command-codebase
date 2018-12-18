@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import javax.swing.Spring;
+
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -9,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 // import frc.robot.Robot;
 import frc.robot.robotconfig;
 // import frc.robot.commands.drivetrain_shift_high;
@@ -26,7 +29,10 @@ public class drivetrain extends Subsystem {
     public TalonSRX s_left_talon = new TalonSRX(robotconfig.s_left_talon_port);
     public TalonSRX m_right_talon = new TalonSRX(robotconfig.m_right_talon_port);
     public TalonSRX s_right_talon = new TalonSRX(robotconfig.s_right_talon_port);
-    // public DoubleSolenoid shifter_solenoid = new DoubleSolenoid(9, 7, 3);
+    // DoubleSolenoid shifter = new DoubleSolenoid(6, 0, 1);
+
+
+    // Robot robot = new Robot(); 
     
 
     public void init() {
@@ -57,6 +63,7 @@ public class drivetrain extends Subsystem {
       m_right_talon.configSetParameter(ParamEnum.eSampleVelocityPeriod, closedLoopTimeMs, 0x00, 0,30);
       m_right_talon.configSetParameter(ParamEnum.eSampleVelocityPeriod, closedLoopTimeMs, 0x00, 1, 30);
       
+      // public String gear_state;
 
       setHighGear();
 
@@ -68,7 +75,7 @@ public class drivetrain extends Subsystem {
       // }
 
     }
-
+    
     public void setHighGear() {
       this.m_left_talon.config_kP(0, robotconfig.m_left_velocity_kp_high, 30);
       this.m_left_talon.config_kI(0, robotconfig.m_left_velocity_ki_high, 30);
@@ -89,7 +96,7 @@ public class drivetrain extends Subsystem {
       m_left_talon.setInverted(true);
       s_left_talon.setInverted(true);
 
-      // shifter_solenoid.set(DoubleSolenoid.Value.kReverse);
+      // robot.shifter_solenoid.set(DoubleSolenoid.Value.kReverse);
       // TODO verify that kForward is high gear
     }
 
@@ -108,21 +115,35 @@ public class drivetrain extends Subsystem {
       this.m_right_talon.config_IntegralZone(0, robotconfig.m_right_velocity_izone_low, 0);
       // this.m_right_talon.configMaxIntegralAccumulator(0, robotconfig.m_right_velocity_max_integral_low, 0);
   
-      // shifter_solenoid.set(DoubleSolenoid.Value.kForward);
+      // robot.shifter_solenoid.set(DoubleSolenoid.Value.kForward);
       // TODO verify that kForward is low gear
     }
 
-    public void arcade(double forwardspeed, double turnspeed) {
+    public void arcade(double forwardspeed, double turnspeed, Boolean isSquared) {
       // TODO the xbox controller outputs a number from negative one to one. How do we convert that to velocity, and how are native units involved?
+      double foreMultiplier = 6000;
+      double turnMultiplier = 5000;
 
-      if ((forwardspeed < 0.05) && (forwardspeed > -0.05)) { forwardspeed = 0; }
-      if ((turnspeed < 0.05) && (turnspeed > -0.05)) { turnspeed = 0; }
+      if ((forwardspeed < 0.02) && (forwardspeed > -0.02)) { forwardspeed = 0; }
+      if ((turnspeed < 0.01) && (turnspeed > -0.01)) { turnspeed = 0; }
+
+      if (isSquared) {
+        if (forwardspeed < 0) { forwardspeed = forwardspeed * forwardspeed * -1;}
+        else {forwardspeed = forwardspeed * forwardspeed;}
+        if (turnspeed < 0) { turnspeed = turnspeed * turnspeed * -1;}
+        else {turnspeed = turnspeed * turnspeed;}
+      }
+
+
+      forwardspeed = forwardspeed * foreMultiplier;
+      turnspeed = turnspeed * turnMultiplier;
+
       double leftspeed = -forwardspeed + turnspeed;
       double rightspeed = -forwardspeed - turnspeed;
-      double foreMultiplier = 10000;
-      double turnMultiplier = 1000;
-      m_left_talon.set(ControlMode.Velocity, leftspeed * foreMultiplier);
-      m_right_talon.set(ControlMode.Velocity, rightspeed * turnMultiplier);
+
+
+      m_left_talon.set(ControlMode.Velocity, leftspeed );
+      m_right_talon.set(ControlMode.Velocity, rightspeed );
       
 
 
