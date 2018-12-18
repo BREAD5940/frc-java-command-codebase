@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -69,7 +71,14 @@ public class Robot extends TimedRobot {
     
     // m_chooser.addDefault("Default Auto", new ExampleCommand());
     // chooser.addObject("My Auto", new MyAutoCommand());
-    // SmartDashboard.putData("Auto mode", m_chooser);
+    // SmartDashboard.putString("test", "Hellothere!!! intake clamp: ");
+
+    SmartDashboard.putNumber("Setpoint for forward Speed", primaryJoystick.getRawAxis(robotconfig.forward_axis));
+    SmartDashboard.putNumber("Setpoint for turn Speed", primaryJoystick.getRawAxis(robotconfig.turn_axis));
+    SmartDashboard.putNumber("Left talon speed", drivetrain.m_left_talon.getSelectedSensorVelocity(0));
+    SmartDashboard.putNumber("Left talon speed", drivetrain.m_right_talon.getSelectedSensorVelocity(0));
+
+
 
   }
 
@@ -83,6 +92,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    
+    SmartDashboard.putNumber("Setpoint for forward Speed", primaryJoystick.getRawAxis(robotconfig.forward_axis));
+    SmartDashboard.putNumber("Setpoint for turn Speed", primaryJoystick.getRawAxis(robotconfig.turn_axis));
+    SmartDashboard.putNumber("Left talon speed", drivetrain.m_left_talon.getSelectedSensorVelocity(0));
+    SmartDashboard.putNumber("Left talon speed", drivetrain.m_right_talon.getSelectedSensorVelocity(0));
+
+
   }
 
   /**
@@ -169,6 +185,7 @@ public class Robot extends TimedRobot {
     
     // drivetrain.m_left_talon.set(ControlMode.PercentOutput, 0.25);
     // drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.25);
+
 
     /**
      * Update the intake speed via joysticks in the setSpeed method

@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import frc.robot.Robot;
 import frc.robot.robotconfig;
 // import frc.robot.commands.drivetrain_shift_high;
@@ -114,12 +115,19 @@ public class drivetrain extends Subsystem {
     public void arcade(double forwardspeed, double turnspeed) {
       // TODO the xbox controller outputs a number from negative one to one. How do we convert that to velocity, and how are native units involved?
 
+      if ((forwardspeed < 0.05) && (forwardspeed > -0.05)) { forwardspeed = 0; }
+      if ((turnspeed < 0.05) && (turnspeed > -0.05)) { turnspeed = 0; }
       double leftspeed = -forwardspeed + turnspeed;
       double rightspeed = -forwardspeed - turnspeed;
-
-      m_left_talon.set(ControlMode.PercentOutput, leftspeed);
-      m_right_talon.set(ControlMode.PercentOutput, rightspeed);
+      double foreMultiplier = 10000;
+      double turnMultiplier = 1000;
+      m_left_talon.set(ControlMode.Velocity, leftspeed * foreMultiplier);
+      m_right_talon.set(ControlMode.Velocity, rightspeed * turnMultiplier);
       
+
+
+
+
     }
 
 
