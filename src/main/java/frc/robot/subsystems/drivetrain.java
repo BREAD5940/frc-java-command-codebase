@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import javax.swing.Spring;
 
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -8,10 +7,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 // import frc.robot.Robot;
 import frc.robot.robotconfig;
 // import frc.robot.commands.drivetrain_shift_high;
@@ -60,6 +56,7 @@ public class drivetrain extends Subsystem {
       * - sensor movement is very slow causing the derivative error to be near zero.
       */
       int closedLoopTimeMs = 1;
+      // TODO can I get rid of this code, or is it disabling something important?
       m_right_talon.configSetParameter(ParamEnum.eSampleVelocityPeriod, closedLoopTimeMs, 0x00, 0,30);
       m_right_talon.configSetParameter(ParamEnum.eSampleVelocityPeriod, closedLoopTimeMs, 0x00, 1, 30);
       
