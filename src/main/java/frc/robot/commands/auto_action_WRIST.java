@@ -8,7 +8,6 @@ import frc.robot.subsystems.encoderlib;
 
 public class auto_action_WRIST extends Command {
     wrist wrist = new wrist();
-    encoderlib encoderlib = new encoderlib();
     boolean wait_for_wrist;
     double target_angle;
     boolean am_i_done = false;
@@ -26,12 +25,14 @@ public class auto_action_WRIST extends Command {
 
     // Called just before this Command runs the first time
     @Override
-    protected void initialize() {
+    protected void initialize() { // TODO verify that I can just set the setpoint and walk away
+        wrist.setAngle(target_angle);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
-    protected void execute() { // TODO this loop needs to be run basically forever, right? Or can we set the talon, wait for it to get there, and forget about it?
+    protected void execute() { 
+        // Check exit condition of being within target angle and velocity
         if (( Math.abs(wrist.getAngle() - target_angle ) < position_tolerence ) 
             && (Math.abs(wrist.getAngularVelocity()) < velocity_tolerence)) {
                 am_i_done = true;

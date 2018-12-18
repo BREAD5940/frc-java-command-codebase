@@ -14,7 +14,7 @@ public class encoderlib extends Subsystem {
      * @param unitsPerRotation
      * @return rotations
      */
-    public double rawToRotation(int rawPosition, double unitsPerRotation) {
+    public static double rawToRotation(int rawPosition, double unitsPerRotation) {
         double rotations = (rawPosition / unitsPerRotation);
         return rotations;
     }
@@ -26,7 +26,7 @@ public class encoderlib extends Subsystem {
      * @param unitsPerRotation
      * @return rawPosition
      */
-    public double rotationsToRaw(double rotations, double unitsPerRotation) {
+    public static double rotationsToRaw(double rotations, double unitsPerRotation) {
         return rotations * unitsPerRotation;
     }
 
@@ -36,7 +36,7 @@ public class encoderlib extends Subsystem {
      * @param effectiveDiam
      * @return distance
      */
-    public double rotationsToDistance(double rotations, double effectiveDiam){
+    public static double rotationsToDistance(double rotations, double effectiveDiam){
         double circumference = Math.PI * effectiveDiam;
         double distance = circumference * rotations;
         return distance;
@@ -48,7 +48,7 @@ public class encoderlib extends Subsystem {
      * @param effectiveDiam
      * @return rotations
      */
-    public double distanceToRotations(double distance, double effectiveDiam){
+    public static double distanceToRotations(double distance, double effectiveDiam){
         double circumference = Math.PI * effectiveDiam;
         double rotations = distance / circumference;
         return rotations;
@@ -61,8 +61,8 @@ public class encoderlib extends Subsystem {
      * @return distance
      * 
      */
-    public double rawToDistance(int rawPosition, double unitsPerRotation, double effectiveDiam) {
-        return this.rotationsToDistance((this.rawToRotation(rawPosition, unitsPerRotation)), effectiveDiam);
+    public static double rawToDistance(int rawPosition, double unitsPerRotation, double effectiveDiam) {
+        return rotationsToDistance((rawToRotation(rawPosition, unitsPerRotation)), effectiveDiam);
     }
 
     /** Converts a distance to raw position (delta or absolute)
@@ -72,7 +72,7 @@ public class encoderlib extends Subsystem {
      * @return rawPosition
      * 
      */
-    public double distanceToRaw(double distance, double unitsPerRotation, double effectiveDiam) {
+    public static double distanceToRaw(double distance, double unitsPerRotation, double effectiveDiam) {
         return rotationsToRaw(distanceToRotations(distance, effectiveDiam), unitsPerRotation);
     }
 
@@ -82,7 +82,7 @@ public class encoderlib extends Subsystem {
      * @param unitsPerRotation
      * @return degrees
      */
-    public double rawToDegrees(int rawPosition, double unitsPerRotation) {
+    public static double rawToDegrees(int rawPosition, double unitsPerRotation) {
         return rawToRotation(rawPosition, unitsPerRotation) * 360;
     }
 
@@ -92,7 +92,7 @@ public class encoderlib extends Subsystem {
      * @param unitsPerRotation
      * @return rawPosition
      */
-    public double degreesToRaw(double degrees, double unitsPerRotation) {
+    public static double degreesToRaw(double degrees, double unitsPerRotation) {
         return rotationsToRaw(degrees / 360, unitsPerRotation);
     }
 
