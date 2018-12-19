@@ -76,6 +76,8 @@ public class drivetrain extends Subsystem {
       // Robot.shifter.set(DoubleSolenoid.Value.kForward);
       // Robot.shifter.set(DoubleSolenoid.Value.kReverse);
 
+      setHighGear();
+
       // if ( robotconfig.drivetrain_starting_gear == "low" ) {
       //   new drivetrain_shift_low();
       // }
@@ -85,14 +87,7 @@ public class drivetrain extends Subsystem {
 
     }
     
-    public double getLeftDistance() {return encoderlib.rawToDistance(this.m_left_talon.getSelectedSensorPosition(0), 
-      robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter); }
-    public double getRightDistance() {return encoderlib.rawToDistance(this.m_right_talon.getSelectedSensorPosition(0), 
-      robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter);}
-    public double getLeftVelocity() {return encoderlib.rawToDistance(this.m_left_talon.getSelectedSensorVelocity(0) * 10, //Mulitply by 10 because units are per 100ms 
-      robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter);}
-    public double getRightVelocity() {return encoderlib.rawToDistance(this.m_right_talon.getSelectedSensorVelocity(0) * 10, 
-      robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter);}
+
 
     public void setHighGear() {
       this.m_left_talon.config_kP(0, robotconfig.m_left_velocity_kp_high, 30);
@@ -114,8 +109,7 @@ public class drivetrain extends Subsystem {
       m_left_talon.setInverted(true);
       s_left_talon.setInverted(true);
 
-      // Robot.drivetrain_shift_high();
-      
+      Robot.drivetrain_shift_high();
       current_gear = "high";
     }
 
@@ -134,12 +128,19 @@ public class drivetrain extends Subsystem {
       this.m_right_talon.config_IntegralZone(0, robotconfig.m_right_velocity_izone_low, 0);
       // this.m_right_talon.configMaxIntegralAccumulator(0, robotconfig.m_right_velocity_max_integral_low, 0);
   
-      // Robot.drivetrain_shift_low();
+      Robot.drivetrain_shift_low();
 
       current_gear = "low";
     }
 
-
+    public double getLeftDistance() {return encoderlib.rawToDistance(this.m_left_talon.getSelectedSensorPosition(0), 
+      robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter); }
+    public double getRightDistance() {return encoderlib.rawToDistance(this.m_right_talon.getSelectedSensorPosition(0), 
+      robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter);}
+    public double getLeftVelocity() {return encoderlib.rawToDistance(this.m_left_talon.getSelectedSensorVelocity(0) * 10, //Mulitply by 10 because units are per 100ms 
+      robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter);}
+    public double getRightVelocity() {return encoderlib.rawToDistance(this.m_right_talon.getSelectedSensorVelocity(0) * 10, 
+      robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter);}
 
     /**
      * Set a velocity setpoint for the left drivetrain talons

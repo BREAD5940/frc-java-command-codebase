@@ -28,7 +28,7 @@ public class drivetrain_shift_high extends Command {
   @Override
   protected void initialize() {
     // Robot.drivetrain.setHighGear();
-    Robot.drivetrain_solenoid_shift_high();
+    Robot.drivetrain_shift_high();
 
   }
 

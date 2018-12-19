@@ -28,7 +28,7 @@ public class drivetrain_shift_low extends Command {
   @Override
   protected void initialize() {
     // Robot.drivetrain.setLowGear();
-    Robot.drivetrain_solenoid_shift_low();
+    Robot.drivetrain_shift_low();
   }
 
   // Called repeatedly when this Command is scheduled to run
