@@ -27,7 +27,8 @@ public class drivetrain_shift_high extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.drivetrain.setHighGear();
+    // Robot.drivetrain.setHighGear();
+    Robot.drivetrain_shift_high();
 
   }
 

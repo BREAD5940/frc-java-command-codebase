@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.arcade_drive;
+// import frc.robot.commands.drivetrain_shift_high;
+// import frc.robot.commands.drivetrain_shift_low;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -40,12 +42,17 @@ public class Robot extends TimedRobot {
 
   public static double elevator_setpoint = 0;
   public static double wrist_setpoint = 0;
-  public static DoubleSolenoid shifter = new DoubleSolenoid(9, 0, 3);
-
-
+  private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 7, 3);
+  private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 0, 6);
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
+
+  public static void drivetrain_shift_high(){ shifterDoubleSolenoid.set(DoubleSolenoid.Value.kForward); }
+  public static void drivetrain_shift_low(){ shifterDoubleSolenoid.set(DoubleSolenoid.Value.kReverse); }
+  public static void intake_close(){ intakeDoubleSolenoid.set(DoubleSolenoid.Value.kForward); }
+  public static void intake_open(){ intakeDoubleSolenoid.set(DoubleSolenoid.Value.kReverse); }
+
 
   /**
    * This function is run when the robot is first started up and should be
@@ -71,8 +78,8 @@ public class Robot extends TimedRobot {
 
   /**
    * This function is called every robot packet, no matter the mode. Use
-   * this for items like diagnostics that you want ran during disabled,
-   * autonomous, teleoperated and test.
+  //  * this for items like diagnostics that you want ran during disabled,
+  //  * autonomous, teleoperated and test.
    *
    * <p>This runs after the mode specific periodic functions, but before
    * LiveWindow and SmartDashboard integrated updating.
@@ -150,7 +157,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-    drivetrain.setHighGear();
   }
 
   @Override
@@ -164,7 +170,11 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    
+    // new drivetrain_shift_high();
+    // new drivetrain_shift_low();
+    // shifter.set(DoubleSolenoid.Value.kReverse);
+
+
     // final arcade_drive arcade = new arcade_drive();
 
   
@@ -184,13 +194,11 @@ public class Robot extends TimedRobot {
      */
 
     // new arcade_drive(m_oi.getForwardAxis(), m_oi.getTurnAxis());
-    drivetrain.m_left_talon.set(ControlMode.PercentOutput, 0.25);
-    drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.25);
+    // drivetrain.m_left_talon.set(ControlMode.PercentOutput, 0.25);
+    // drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.25);
 
-
-
-    drivetrain.setLowGear();
-
+    // drivetrain_shift_low();
+    drivetrain_shift_high();
     
     /**
      * Update the elevator PID method

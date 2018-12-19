@@ -6,10 +6,11 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
+
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import frc.robot.Robot;
 import frc.robot.lib.encoderlib;
@@ -29,6 +30,8 @@ public class drivetrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
+    // Robot Robot = new Robot();
+
     public TalonSRX m_left_talon = new TalonSRX(robotconfig.m_left_talon_port);
     public TalonSRX s_left_talon = new TalonSRX(robotconfig.s_left_talon_port);
     public TalonSRX m_right_talon = new TalonSRX(robotconfig.m_right_talon_port);
@@ -38,8 +41,6 @@ public class drivetrain extends Subsystem {
 
     // PIDController left_position_pid_controller_HIGH_GEAR = new PIDController(robotconfig.m_left_position_kp_high, robotconfig.m_left_position_ki_high, robotconfig.m_left_position_kd_high, robotconfig.m_left_position_kf_high, source, output) // TODO Implament position PID controllers for left and right drivetrain sides
 
-
-    // DoubleSolenoid shifter = new DoubleSolenoid(6, 0, 1);
 
 
     // Robot robot = new Robot(); 
@@ -71,6 +72,9 @@ public class drivetrain extends Subsystem {
       m_right_talon.configSetParameter(ParamEnum.eSampleVelocityPeriod, closedLoopTimeMs, 0x00, 1, 30);
       
       // public String gear_state;
+
+      // Robot.shifter.set(DoubleSolenoid.Value.kForward);
+      // Robot.shifter.set(DoubleSolenoid.Value.kReverse);
 
       setHighGear();
 
@@ -105,9 +109,7 @@ public class drivetrain extends Subsystem {
       m_left_talon.setInverted(true);
       s_left_talon.setInverted(true);
 
-      Robot.shifter.set(DoubleSolenoid.Value.kReverse);
-      // TODO verify that kForward is high gear
-
+      Robot.drivetrain_shift_high();
       current_gear = "high";
     }
 
@@ -126,8 +128,7 @@ public class drivetrain extends Subsystem {
       this.m_right_talon.config_IntegralZone(0, robotconfig.m_right_velocity_izone_low, 0);
       // this.m_right_talon.configMaxIntegralAccumulator(0, robotconfig.m_right_velocity_max_integral_low, 0);
   
-      Robot.shifter.set(DoubleSolenoid.Value.kReverse);
-      // TODO verify that kForward is low gear
+      Robot.drivetrain_shift_low();
 
       current_gear = "low";
     }
