@@ -35,14 +35,8 @@ public class Robot extends TimedRobot {
   public static final intake intake = new intake();
   public static final elevator elevator = new elevator();
   public static final wrist wrist = new wrist();
-  
-  // public DoubleSolenoid shifter_solenoid = new DoubleSolenoid(9, 7, 3);
-  private Joystick primaryJoystick = new Joystick(robotconfig.primary_joystick_port);
-  private Joystick throttle = new Joystick(robotconfig.secondary_joystick_port);
-  // public TalonSRX m_left_talon = new TalonSRX(2);
-  // public TalonSRX s_left_talon = new TalonSRX(robotconfig.s_left_talon_port);
-
-  // private final Joystick secondaryJoystick = new Joystick(robotconfig.secondary_joystick_port);
+  public static final robotconfig robotconfig = new robotconfig();
+  public static OI m_oi;
 
   public static double elevator_setpoint = 0;
   public static double wrist_setpoint = 0;
@@ -59,8 +53,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    // Compressor compressor = new Compressor(9);
-    // compressor.setClosedLoopControl(true);
+    Compressor compressor = new Compressor(9);
+    compressor.setClosedLoopControl(true);
     
     drivetrain.init();
     elevator.init();
@@ -194,7 +188,6 @@ public class Robot extends TimedRobot {
     /**
      * Update the intake speed via joysticks in the setSpeed method
      */
-    intake.setSpeed(primaryJoystick.getRawAxis(robotconfig.intakeAxis) - primaryJoystick.getRawAxis(robotconfig.outtakeAxis));
     /**
      * Update the elevator PID method
      */
