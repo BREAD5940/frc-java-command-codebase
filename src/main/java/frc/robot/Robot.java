@@ -170,11 +170,6 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-    // new drivetrain_shift_high();
-    // new drivetrain_shift_low();
-    // shifter.set(DoubleSolenoid.Value.kReverse);
-
-
     // final arcade_drive arcade = new arcade_drive();
 
   
