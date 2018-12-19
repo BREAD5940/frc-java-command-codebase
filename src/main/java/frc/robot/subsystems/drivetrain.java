@@ -34,10 +34,6 @@ public class drivetrain extends Subsystem {
     
 
     public void init() {
-      // m_left_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-      m_left_talon.set(ControlMode.PercentOutput, 0);
-      s_left_talon.set(ControlMode.Follower, m_left_talon.getDeviceID());
-
       m_left_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,30); // TODO put encoder stats on smartdashboard
       m_right_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,30); // TODO put encoder stats on smartdashboard
       s_left_talon.set(ControlMode.Follower, m_left_talon.getDeviceID());
@@ -138,7 +134,7 @@ public class drivetrain extends Subsystem {
      */
     public void setVelocityLeft(double speed) {
       SmartDashboard.putNumber("left speed setpoint in in per sec", speed);
-      double rawSpeedLeft = encoderlib.distanceToRaw(speed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter) / 10; 
+      double rawSpeedLeft = encoderlib.distanceToRaw(18.8, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter) / 10; 
       SmartDashboard.putNumber(" Target encoder ticks per 100ms for left: ", rawSpeedLeft);
       m_left_talon.set(ControlMode.Velocity, rawSpeedLeft);// Divide by 10, because the Talon expects native units per 100ms, not native units per second
     }
@@ -149,7 +145,7 @@ public class drivetrain extends Subsystem {
      * @return doesn't return anything, but sets the right talon speed to the raw conversion of speed.
      */
     public void setVelocityRight(double speed) {
-      double rawSpeedRight = encoderlib.distanceToRaw(speed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter) / 10; // Divide by 10, because the Talon expects native units per 100ms, not native units per second
+      double rawSpeedRight = encoderlib.distanceToRaw(18.8, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter) / 10; // Divide by 10, because the Talon expects native units per 100ms, not native units per second
       m_right_talon.set(ControlMode.Velocity, rawSpeedRight);
     }
 
@@ -180,8 +176,8 @@ public class drivetrain extends Subsystem {
       // SmartDashboard.putNumber("inches/sec speed setpoint: ", leftspeed);
       // SmartDashboard.putNumber("inches/sec right speed setpoint: ", rightspeed);
 
-      setVelocityLeft(leftspeed*19);
-      setVelocityRight(rightspeed*19);   
+      setVelocityLeft(leftspeed * 100);
+      setVelocityRight(rightspeed * 100);   
     }
 
   @Override

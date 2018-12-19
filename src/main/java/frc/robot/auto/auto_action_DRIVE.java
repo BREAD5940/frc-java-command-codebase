@@ -27,9 +27,10 @@ public class auto_action_DRIVE extends Command {
   double timeout;
 
 
-  public auto_action_DRIVE(double distance, String gear, double timeout) {
+  public auto_action_DRIVE(double distance, String gear, double targetSpeed, double timeout) {
     this.targetDistance = distance;
     this.gear = gear;
+    this.targetSpeed = targetSpeed;
     this.timeout = timeout;
     // Use requires() here to declare subsystem dependencies
     requires(Robot.drivetrain);
@@ -40,9 +41,11 @@ public class auto_action_DRIVE extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    double targetSpeedRaw = encoderlib.distanceToRaw(targetSpeed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.elevator_effective_diameter) ;
+    double targetSpeedRaw = encoderlib.distanceToRaw(targetSpeed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter) ;
     double startingDistanceLeft = drivetrain.getLeftDistance();
     double startingDistanceRight = drivetrain.getRightDistance();
+    double endDistanceLeft = encoderlib.distanceToRaw(targetDistance, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter)
+
     setTimeout(timeout); // set the timeout
 
     if (gear == "low") { drivetrain.setLowGear(); }
@@ -53,7 +56,7 @@ public class auto_action_DRIVE extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-
+    
 
     
   }

@@ -68,11 +68,11 @@ public class robotconfig {
   public static final int s_left_talon_port = 1;
   public static final boolean m_left_inverted = false;
   // sets kp, ki, kd and kf terms for master left in velocity mode 
-  public static final double m_left_velocity_kp_low = 0.08;
-  public static final double m_left_velocity_ki_low = 0.03;
+  public static final double m_left_velocity_kp_low = 0.2;
+  public static final double m_left_velocity_ki_low = 0.3;
   public static final double m_left_velocity_kd_low = 0;
   public static final double m_left_velocity_kf_low =  0;
-  public static final int m_left_velocity_izone_low = 300;
+  public static final int m_left_velocity_izone_low = 800;
   // public static final double m_left_velocity_max_integral_low = 500000;
   public static final double m_left_position_kp_low = 0.15;
   public static final double m_left_position_ki_low = 0;
@@ -80,11 +80,11 @@ public class robotconfig {
   public static final double m_left_position_kf_low = 0.15;
   public static final int m_left_position_izone_low = 300;
   // public static final double m_left_position_max_integral_low = 1;
-  public static final double m_left_velocity_kp_high = 0.15;
-  public static final double m_left_velocity_ki_high = 0.02;
+  public static final double m_left_velocity_kp_high = 0.2;
+  public static final double m_left_velocity_ki_high = 0.3;
   public static final double m_left_velocity_kd_high = 0;
-  public static final double m_left_velocity_kf_high = 0.05;
-  public static final int m_left_velocity_izone_high = 300;
+  public static final double m_left_velocity_kf_high = 0;
+  public static final int m_left_velocity_izone_high = 800;
   // public static final double m_left_velocity_max_integral_high = 300;
   public static final double m_left_position_kp_high = 0.15;
   public static final double m_left_position_ki_high = 0;
