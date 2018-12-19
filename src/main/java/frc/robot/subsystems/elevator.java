@@ -6,7 +6,6 @@ import frc.robot.Robot;
 import frc.robot.robotconfig;
 import frc.robot.lib.encoderlib;
 
-// import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -24,7 +23,6 @@ public class elevator extends Subsystem {
 
   double raw_max_height = encoderlib.distanceToRaw(robotconfig.elevator_maximum_height, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.elevator_effective_diameter);
 
-  // public DoubleSolenoid intake_solenoid = new DoubleSolenoid(robotconfig.intake_solenoid_clamp_channel, robotconfig.intake_solenoid_open_channel);
   float position_setpoint;
 
 /**

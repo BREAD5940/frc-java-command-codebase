@@ -19,7 +19,7 @@ import frc.robot.subsystems.intake;
 public class close_clamp extends Command {
   public close_clamp() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.intake);
+    // requires(Robot.intake);
   }
 
   private static final intake intake  = new intake();
