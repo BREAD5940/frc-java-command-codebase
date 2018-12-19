@@ -179,10 +179,9 @@ public class Robot extends TimedRobot {
      * Update the arcade drivetrain method
      */
 
-    drivetrain.m_left_talon.set(ControlMode.PercentOutput, 1);
 
-    // drivetrain.m_left_talon.set(ControlMode.PercentOutput, 0.25);
-    // drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.25);
+    drivetrain.m_left_talon.set(ControlMode.PercentOutput, 0.25);
+    drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.25);
 
 
     /**

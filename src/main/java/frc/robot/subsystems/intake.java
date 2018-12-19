@@ -45,6 +45,6 @@ public class intake extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new run_intake());
+    // setDefaultCommand(new run_intake());
   }
 }

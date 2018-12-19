@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.robotconfig;
 
@@ -22,8 +21,6 @@ public class arcade_drive extends Command {
   protected void execute() {
     double forwardspeed = Robot.m_oi.getForwardAxis() * -1;
     double turnspeed = Robot.m_oi.getTurnAxis();
-
-    SmartDashboard.putNumber("Forward speed raw input setpoint", forwardspeed);
 
     if ((forwardspeed < 0.02) && (forwardspeed > -0.02)) { forwardspeed = 0; }
     if ((turnspeed < 0.01) && (turnspeed > -0.01)) { turnspeed = 0; }

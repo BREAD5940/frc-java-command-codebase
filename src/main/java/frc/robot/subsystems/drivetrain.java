@@ -9,7 +9,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Robot;
 import frc.robot.lib.encoderlib;
@@ -146,10 +145,8 @@ public class drivetrain extends Subsystem {
      * @return doesn't return anything, but sets the left talon speed to the raw conversion of speed.
      */
     public void setVelocityLeft(double speed) {
-      SmartDashboard.putNumber("left speed setpoint in feet per sec", speed);
-      double rawSpeedLeft = encoderlib.distanceToRaw(18.8/12, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter) / 10; 
-      SmartDashboard.putNumber(" Target raw speed in ticks per 100ms for left: ", rawSpeedLeft);
-      // m_left_talon.set(ControlMode.Velocity, rawSpeedLeft);// Divide by 10, because the Talon expects native units per 100ms, not native units per second
+      double rawSpeedLeft = 400;//encoderlib.distanceToRaw(18.8/12, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter) / 10; 
+      m_left_talon.set(ControlMode.Velocity, rawSpeedLeft);// Divide by 10, because the Talon expects native units per 100ms, not native units per second
     }
 
     /**
@@ -158,10 +155,8 @@ public class drivetrain extends Subsystem {
      * @return doesn't return anything, but sets the right talon speed to the raw conversion of speed.
      */
     public void setVelocityRight(double speed) {
-      SmartDashboard.putNumber("right speed setpoint in feet per sec", speed);
-      double rawSpeedRight = encoderlib.distanceToRaw(18.8/12, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter) / 10; 
-      SmartDashboard.putNumber(" Target raw speed in ticks per 100ms for right: ", rawSpeedRight);
-      // m_right_talon.set(ControlMode.Velocity, rawSpeedRight);// Divide by 10, because the Talon expects native units per 100ms, not native units per second
+      double rawSpeedRight = 400;//encoderlib.distanceToRaw(18.8/12, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter) / 10; 
+      m_right_talon.set(ControlMode.Velocity, rawSpeedRight);// Divide by 10, because the Talon expects native units per 100ms, not native units per second
     }
 
 
@@ -169,6 +164,6 @@ public class drivetrain extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new arcade_drive());
+    // setDefaultCommand(new arcade_drive());
   }
 }
