@@ -110,6 +110,7 @@ public class drivetrain extends Subsystem {
       s_left_talon.setInverted(true);
 
       Robot.drivetrain_shift_high();
+      
       current_gear = "high";
     }
 
