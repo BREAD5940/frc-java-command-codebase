@@ -12,15 +12,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.Compressor;
 
-import edu.wpi.first.wpilibj.Joystick;
-
 import frc.robot.subsystems.*;
+// import frc.robot.commands.*;
 
 
 /**
@@ -41,7 +37,7 @@ public class Robot extends TimedRobot {
   public static double elevator_setpoint = 0;
   public static double wrist_setpoint = 0;
 
-  public static OI m_oi;
+
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -78,8 +74,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Fore speed axis value", primaryJoystick.getRawAxis(robotconfig.forward_axis));
-    SmartDashboard.putNumber("Turn speed axis value", primaryJoystick.getRawAxis(robotconfig.turn_axis));
+    SmartDashboard.putNumber("Fore speed axis value", m_oi.getForwardAxis());
+    SmartDashboard.putNumber("Turn speed axis value", m_oi.getTurnAxis());
     SmartDashboard.putString("Drivetrain gear", drivetrain.current_gear);
     // SmartDashboard.putNumber("5 feet per second is this many raw: ", encoderlib.distanceToRaw(5, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter));
 
@@ -93,7 +89,7 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Elevator height", elevator.getHeight());
     // SmartDashboard.putNumber("Elevator error", elevator.elevator_talon.getClosedLoopError(0));
 
-    // SmartDashboard.putNumber("Wrist angle setpoint", wrist_setpoint); // TODO better implamentation of this
+    // SmartDashboard.putNumber("Wrist angle setpoint", wrist_setpoint); 
     // SmartDashboard.putNumber("Wrist talon pos", elevator.elevator_talon.getSelectedSensorPosition(0));
     // SmartDashboard.putNumber("Wrist error", elevator.elevator_talon.getClosedLoopError(0));
     // SmartDashboard.putNumber("Wrist angle (deg)", wrist.getAngle());
@@ -188,6 +184,9 @@ public class Robot extends TimedRobot {
     /**
      * Update the intake speed via joysticks in the setSpeed method
      */
+    
+
+    
     /**
      * Update the elevator PID method
      */
