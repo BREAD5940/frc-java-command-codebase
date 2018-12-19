@@ -17,6 +17,7 @@ import frc.robot.commands.arcade_drive;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 // import frc.robot.commands.arcade_drive;
 import frc.robot.subsystems.*;
 // import frc.robot.commands.*;
@@ -39,6 +40,7 @@ public class Robot extends TimedRobot {
 
   public static double elevator_setpoint = 0;
   public static double wrist_setpoint = 0;
+  public static DoubleSolenoid shifter = new DoubleSolenoid(9, 0, 3);
 
 
 
@@ -52,8 +54,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    // Compressor compressor = new Compressor(9);
-    // compressor.setClosedLoopControl(true);
+    Compressor compressor = new Compressor(9);
+    compressor.setClosedLoopControl(true);
     
     drivetrain.init();
     elevator.init();
@@ -148,6 +150,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    drivetrain.setHighGear();
   }
 
   @Override
@@ -161,6 +164,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
+    
     // final arcade_drive arcade = new arcade_drive();
 
   
@@ -179,15 +183,13 @@ public class Robot extends TimedRobot {
      * Update the arcade drivetrain method
      */
 
-
+    // new arcade_drive(m_oi.getForwardAxis(), m_oi.getTurnAxis());
     drivetrain.m_left_talon.set(ControlMode.PercentOutput, 0.25);
     drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.25);
 
 
-    /**
-     * Update the intake speed via joysticks in the setSpeed method
-     */
-    
+
+    drivetrain.setLowGear();
 
     
     /**

@@ -3,13 +3,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.robotconfig;
+import frc.robot.subsystems.drivetrain;
 
 public class arcade_drive extends Command {
     double forwardspeed;
     double turnspeed;
-    public arcade_drive(){
-        // requires(Robot.drivetrain);
+    public arcade_drive(double forwardspeed, double turnspeed){
+        requires(Robot.drivetrain);
+        this.forwardspeed = forwardspeed;
+        this.turnspeed = turnspeed;
     }
+    drivetrain drive = new drivetrain();
 
   // Called just before this Command runs the first time
   @Override
@@ -42,14 +46,14 @@ public class arcade_drive extends Command {
     double leftspeed = -forwardspeed + turnspeed;
     double rightspeed = -forwardspeed - turnspeed;
 
-    // Robot.drivetrain.setVelocityLeft(leftspeed * 100);
-    // Robot.drivetrain.setVelocityRight(rightspeed * 100);
+    drive.setVelocityLeft(1 * 100);
+    drive.setVelocityRight(1 * 100);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true
