@@ -44,7 +44,7 @@ public class auto_action_DRIVE extends Command {
     double targetSpeedRaw = encoderlib.distanceToRaw(targetSpeed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter) ;
     double startingDistanceLeft = drivetrain.getLeftDistance();
     double startingDistanceRight = drivetrain.getRightDistance();
-    double endDistanceLeft = encoderlib.distanceToRaw(targetDistance, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter)
+    double endDistanceLeft = encoderlib.distanceToRaw(targetDistance, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter);
 
     setTimeout(timeout); // set the timeout
 
