@@ -185,7 +185,7 @@ public class Robot extends TimedRobot {
     /**
      * Update the arcade drivetrain method
      */
-    drivetrain.arcade(primaryJoystick.getRawAxis(robotconfig.forward_axis), primaryJoystick.getRawAxis(robotconfig.turn_axis), false);
+    // drivetrain.arcade(primaryJoystick.getRawAxis(robotconfig.forward_axis), primaryJoystick.getRawAxis(robotconfig.turn_axis), false);
     
     // drivetrain.m_left_talon.set(ControlMode.PercentOutput, 0.25);
     // drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.25);

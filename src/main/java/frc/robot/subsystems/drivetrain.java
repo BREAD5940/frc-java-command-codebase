@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-
 import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -9,8 +8,12 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-// import frc.robot.Robot;
-import frc.robot.robotconfig;
+
+import frc.robot.Robot;
+
+import frc.robot.commands.arcade_drive;
+
+// import frc.robot.robotconfig;
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
 
@@ -71,6 +74,8 @@ public class drivetrain extends Subsystem {
 
     }
     
+
+
     public void setHighGear() {
       this.m_left_talon.config_kP(0, Robot.robotconfig.m_left_velocity_kp_high, 30);
       this.m_left_talon.config_kI(0, Robot.robotconfig.m_left_velocity_ki_high, 30);
@@ -152,36 +157,7 @@ public class drivetrain extends Subsystem {
     }
 
 
-    public void arcade(double forwardspeed, double turnspeed, Boolean isSquared) {
-      // TODO the xbox controller outputs a number from negative one to one. How do we convert that to velocity, and how are native units involved?
-      // double foreMultiplier = 6000;
-      // double turnMultiplier = 5000;
-
-      if ((forwardspeed < 0.02) && (forwardspeed > -0.02)) { forwardspeed = 0; }
-      if ((turnspeed < 0.01) && (turnspeed > -0.01)) { turnspeed = 0; }
-
-    // m_left_talon.set(ControlMode.PercentOutput, 0.25);
-    // m_right_talon.set(ControlMode.PercentOutput, 0.25);
-      
-      if (isSquared) {
-        forwardspeed = forwardspeed * Math.abs(forwardspeed);
-        turnspeed = turnspeed * Math.abs(turnspeed);
-      }
-      if (this.current_gear == "high"){forwardspeed = forwardspeed * robotconfig.max_forward_speed_high;}
-      if (this.current_gear == "low"){forwardspeed = forwardspeed * robotconfig.max_forward_speed_low;}
-      if (this.current_gear == "high"){turnspeed = turnspeed * robotconfig.max_turn_speed_high;}
-      if (this.current_gear == "low"){turnspeed = turnspeed * robotconfig.max_turn_speed_low;}
-
-      double leftspeed = -forwardspeed + turnspeed;
-      double rightspeed = -forwardspeed - turnspeed;
-
-      // SmartDashboard.putNumber("inches/sec speed setpoint: ", leftspeed);
-      // SmartDashboard.putNumber("inches/sec right speed setpoint: ", rightspeed);
-
-      setVelocityLeft(leftspeed * 100);
-      setVelocityRight(rightspeed * 100);   
-    }
-
+    
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
