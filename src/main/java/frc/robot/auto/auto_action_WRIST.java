@@ -1,10 +1,10 @@
-package frc.robot.commands;
+package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.robotconfig;
 import frc.robot.subsystems.wrist;
-import frc.robot.subsystems.encoderlib;
+import frc.robot.lib.encoderlib;
 
 public class auto_action_WRIST extends Command {
     wrist wrist = new wrist();

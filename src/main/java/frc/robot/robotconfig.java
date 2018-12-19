@@ -1,4 +1,5 @@
 package frc.robot;
+
 public class robotconfig {
 
   /**
@@ -36,14 +37,25 @@ public class robotconfig {
    * Robot configuration
    */
   // TODO make this count towards drivetrain PID (as a cap on velocity?)
-  public static final float max_forward_speed = 5; // Feet per second forward velocity
-  public static final float max_turn_speed = 5; // Max turn speed in degrees per second
+  public static final double max_forward_speed_high = 1; // Feet per second forward velocity
+  public static final double max_turn_speed_high = 1; // Max turn speed in degrees per second
+  public static final double max_forward_speed_low = 1; // Feet per second forward velocity
+  public static final double max_turn_speed_low = 1; // Max turn speed in degrees per second
+  public static final double drive_auto_position_tolerence = 1; // units are in incehs
+  public static final double drive_auto_angle_tolerence = 1; // units are in degrees
+  public static final double drive_auto_velocity_tolerence = 0.5; // units are in inches per second
+  public static final double drive_auto_low_gear_speed = 2; // units are feet per second
+  public static final double drive_auto_high_speed = 2; // units are feet per second
+  public static final double left_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
+  public static final double right_wheel_effective_diameter = 6;
 
   // Encoder stuff, dunno where else to put this
 	// public static final double VELOCITY_PULSES_PER_ROTATION = 409.6f;
   public static final double POSITION_PULSES_PER_ROTATION = 4096f;
   
-
+  /**
+   * Elevator configuration
+   */
   public static final double elevator_effective_diameter = 1; // TODO fix this!!!! (units must be inches)
   public static final int elevator_minimum_height = 0;
   // public static final int elevator_maximum_height = 42000; // TODO fix this!!!!
@@ -56,23 +68,23 @@ public class robotconfig {
   public static final int s_left_talon_port = 1;
   public static final boolean m_left_inverted = false;
   // sets kp, ki, kd and kf terms for master left in velocity mode 
-  public static final double m_left_velocity_kp_low = 0.08;
-  public static final double m_left_velocity_ki_low = 0.03;
+  public static final double m_left_velocity_kp_low = 0.2;
+  public static final double m_left_velocity_ki_low = 0.3;
   public static final double m_left_velocity_kd_low = 0;
   public static final double m_left_velocity_kf_low =  0;
-  public static final int m_left_velocity_izone_low = 300;
+  public static final int m_left_velocity_izone_low = 800;
   // public static final double m_left_velocity_max_integral_low = 500000;
-  public static final double m_left_position_kp_low = 0.1;
+  public static final double m_left_position_kp_low = 0.15;
   public static final double m_left_position_ki_low = 0;
   public static final double m_left_position_kd_low = 20;
   public static final double m_left_position_kf_low = 0.15;
   public static final int m_left_position_izone_low = 300;
   // public static final double m_left_position_max_integral_low = 1;
-  public static final double m_left_velocity_kp_high = 0.1;
-  public static final double m_left_velocity_ki_high = 0.02;
+  public static final double m_left_velocity_kp_high = 0.2;
+  public static final double m_left_velocity_ki_high = 0.3;
   public static final double m_left_velocity_kd_high = 0;
-  public static final double m_left_velocity_kf_high = 0.05;
-  public static final int m_left_velocity_izone_high = 300;
+  public static final double m_left_velocity_kf_high = 0;
+  public static final int m_left_velocity_izone_high = 800;
   // public static final double m_left_velocity_max_integral_high = 300;
   public static final double m_left_position_kp_high = 0.15;
   public static final double m_left_position_ki_high = 0;
@@ -117,8 +129,6 @@ public class robotconfig {
   public static final int elevator_talon_port = 5;
   public static final int left_intake_talon_port = 6;
   public static final int right_intake_talon_port = 7;
-  public static final int intake_solenoid_clamp_channel = 0;
-  public static final int intake_solenoid_open_channel = 6;
 
   public static final double elevator_velocity_kp = 1;
   public static final double elevator_velocity_ki = 0;
@@ -139,6 +149,8 @@ public class robotconfig {
   public static final int pcm_module_number = 9;
   public static final int drivetrain_solenoid_low_gear_channel = 7;
   public static final int drivetrain_solenoid_high_gear_channel = 3;
+  public static final int intake_solenoid_clamp_channel = 0;
+  public static final int intake_solenoid_open_channel = 6;
   public static final String drivetrain_starting_gear = "low";
 
 }

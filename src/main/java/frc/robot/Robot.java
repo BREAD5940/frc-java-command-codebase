@@ -12,17 +12,15 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.Compressor;
 
 import edu.wpi.first.wpilibj.Joystick;
 
 import frc.robot.subsystems.*;
-
-
-
-
 
 
 /**
@@ -61,8 +59,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    Compressor compressor = new Compressor(9);
-    compressor.setClosedLoopControl(true);
+    // Compressor compressor = new Compressor(9);
+    // compressor.setClosedLoopControl(true);
     
     drivetrain.init();
     elevator.init();
@@ -86,24 +84,26 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Setpoint for forward Speed", primaryJoystick.getRawAxis(robotconfig.forward_axis));
-    SmartDashboard.putNumber("Setpoint for turn Speed", primaryJoystick.getRawAxis(robotconfig.turn_axis));
+    SmartDashboard.putNumber("Fore speed axis value", primaryJoystick.getRawAxis(robotconfig.forward_axis));
+    SmartDashboard.putNumber("Turn speed axis value", primaryJoystick.getRawAxis(robotconfig.turn_axis));
+    SmartDashboard.putString("Drivetrain gear", drivetrain.current_gear);
+    // SmartDashboard.putNumber("5 feet per second is this many raw: ", encoderlib.distanceToRaw(5, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter));
 
     SmartDashboard.putNumber("Left talon speed", drivetrain.m_left_talon.getSelectedSensorVelocity(0));
-    SmartDashboard.putNumber("Left talon setpoint", drivetrain.m_left_talon.getClosedLoopError(0));
+    SmartDashboard.putNumber("Left talon error", drivetrain.m_left_talon.getClosedLoopError(0));
     SmartDashboard.putNumber("Right talon speed", drivetrain.m_right_talon.getSelectedSensorVelocity(0));
-    SmartDashboard.putNumber("Right talon setpoint", drivetrain.m_right_talon.getClosedLoopError(0));
+    SmartDashboard.putNumber("Right talon error", drivetrain.m_right_talon.getClosedLoopError(0));
 
-    SmartDashboard.putNumber("Throttle output", throttle.getRawAxis(1));
-    SmartDashboard.putNumber("Elevator setpoint", elevator_setpoint);
-    SmartDashboard.putNumber("Elevator height", elevator.getHeight());
-    SmartDashboard.putNumber("Elevator error", elevator.elevator_talon.getClosedLoopError(0));
+    // SmartDashboard.putNumber("Throttle output", throttle.getRawAxis(1));
+    // SmartDashboard.putNumber("Elevator setpoint", elevator_setpoint);
+    // SmartDashboard.putNumber("Elevator height", elevator.getHeight());
+    // SmartDashboard.putNumber("Elevator error", elevator.elevator_talon.getClosedLoopError(0));
 
-    SmartDashboard.putNumber("Wrist angle setpoint", wrist_setpoint); // TODO better implamentation of this
-    SmartDashboard.putNumber("Wrist talon pos", elevator.elevator_talon.getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Wrist error", elevator.elevator_talon.getClosedLoopError(0));
-    SmartDashboard.putNumber("Wrist angle (deg)", wrist.getAngle());
-    SmartDashboard.putNumber("Wrist angular velocity (deg/s)", wrist.getAngularVelocity());
+    // SmartDashboard.putNumber("Wrist angle setpoint", wrist_setpoint); // TODO better implamentation of this
+    // SmartDashboard.putNumber("Wrist talon pos", elevator.elevator_talon.getSelectedSensorPosition(0));
+    // SmartDashboard.putNumber("Wrist error", elevator.elevator_talon.getClosedLoopError(0));
+    // SmartDashboard.putNumber("Wrist angle (deg)", wrist.getAngle());
+    // SmartDashboard.putNumber("Wrist angular velocity (deg/s)", wrist.getAngularVelocity());
     
   }
 
@@ -185,7 +185,7 @@ public class Robot extends TimedRobot {
     /**
      * Update the arcade drivetrain method
      */
-    drivetrain.arcade(primaryJoystick.getRawAxis(robotconfig.forward_axis), primaryJoystick.getRawAxis(robotconfig.turn_axis), true);
+    drivetrain.arcade(primaryJoystick.getRawAxis(robotconfig.forward_axis), primaryJoystick.getRawAxis(robotconfig.turn_axis), false);
     
     // drivetrain.m_left_talon.set(ControlMode.PercentOutput, 0.25);
     // drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.25);
@@ -198,8 +198,8 @@ public class Robot extends TimedRobot {
     /**
      * Update the elevator PID method
      */
-    elevator_setpoint = elevator_setpoint+throttle.getRawAxis(1)*10;
-    elevator.setHeight(elevator_setpoint);
+    // elevator_setpoint = elevator_setpoint+throttle.getRawAxis(1)*10;
+    // elevator.setHeight(elevator_setpoint);
 
   }
 
