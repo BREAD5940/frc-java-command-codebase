@@ -26,13 +26,13 @@ public class OI {
   // You create one by telling it which joystick it's on and which button
   // number it is.
   
-  private Joystick primaryJoystick = new Joystick(robotconfig.primary_joystick_port);
-  private Joystick secondaryJoystick = new Joystick(robotconfig.secondary_joystick_port);
+  private static Joystick primaryJoystick = new Joystick(Robot.robotconfig.primary_joystick_port);
+  private static Joystick secondaryJoystick = new Joystick(Robot.robotconfig.secondary_joystick_port);
 
-  Button shift_up_button = new JoystickButton(primaryJoystick, robotconfig.shift_up_button);
-  Button shift_down_button = new JoystickButton(primaryJoystick, robotconfig.shift_down_button);
-  Button open_clamp_button = new JoystickButton(secondaryJoystick, robotconfig.intakeOpen);
-  Button close_clamp_button = new JoystickButton(secondaryJoystick, robotconfig.intakeClose);
+  Button shift_up_button = new JoystickButton(primaryJoystick, Robot.robotconfig.shift_up_button);
+  Button shift_down_button = new JoystickButton(primaryJoystick, Robot.robotconfig.shift_down_button);
+  Button open_clamp_button = new JoystickButton(secondaryJoystick, Robot.robotconfig.intakeOpen);
+  Button close_clamp_button = new JoystickButton(secondaryJoystick, Robot.robotconfig.intakeClose);
 
   public OI(){
     shift_up_button.whenPressed(new drivetrain_shift_high());
@@ -40,6 +40,12 @@ public class OI {
     // open_clamp_button.whenPressed(new open_clamp());
     // close_clamp_button.whenPressed(new close_clamp());
   }
+
+  public double getForwardAxis(){ return primaryJoystick.getRawAxis(Robot.robotconfig.forward_axis); }
+  public double getTurnAxis(){ return primaryJoystick.getRawAxis(Robot.robotconfig.turn_axis); }
+  public double getIntakeAxis(){ return primaryJoystick.getRawAxis(Robot.robotconfig.intakeAxis); }
+  public double getOuttakeAxis(){ return primaryJoystick.getRawAxis(Robot.robotconfig.outtakeAxis); }
+  public double getElevatorAxis(){ return secondaryJoystick.getRawAxis(Robot.robotconfig.throttle_axis); }
 
   // Button button = new JoystickButton(stick, buttonNumber);
 
