@@ -2,17 +2,14 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.robotconfig;
-import frc.robot.subsystems.wrist;
 import frc.robot.lib.encoderlib;
 
 public class auto_action_WRIST extends Command {
-    wrist wrist = new wrist();
     boolean wait_for_wrist;
     double target_angle;
     boolean am_i_done = false;
-    double position_tolerence = encoderlib.degreesToRaw(robotconfig.wrist_position_tolerence,robotconfig.POSITION_PULSES_PER_ROTATION);
-    double velocity_tolerence = encoderlib.degreesToRaw(robotconfig.wrist_velocity_tolerence, robotconfig.POSITION_PULSES_PER_ROTATION);   // TODO verify this behavior, maybe omit for now?
+    double position_tolerence = encoderlib.degreesToRaw(Robot.robotconfig.wrist_position_tolerence,Robot.robotconfig.POSITION_PULSES_PER_ROTATION);
+    double velocity_tolerence = encoderlib.degreesToRaw(Robot.robotconfig.wrist_velocity_tolerence, Robot.robotconfig.POSITION_PULSES_PER_ROTATION);   // TODO verify this behavior, maybe omit for now?
 
     public auto_action_WRIST(double target_angle, boolean wait_for_wrist) {
     this.wait_for_wrist = wait_for_wrist;
@@ -26,15 +23,15 @@ public class auto_action_WRIST extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() { // TODO verify that I can just set the setpoint and walk away
-        wrist.setAngle(target_angle);
+        Robot.wrist.setAngle(target_angle);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() { 
         // Check exit condition of being within target angle and velocity
-        if (( Math.abs(wrist.getAngle() - target_angle ) < position_tolerence ) 
-            && (Math.abs(wrist.getAngularVelocity()) < velocity_tolerence)) {
+        if (( Math.abs(Robot.wrist.getAngle() - target_angle ) < position_tolerence ) 
+            && (Math.abs(Robot.wrist.getAngularVelocity()) < velocity_tolerence)) {
                 am_i_done = true;
             }
     }

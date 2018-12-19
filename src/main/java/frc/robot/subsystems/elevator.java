@@ -18,11 +18,11 @@ public class elevator extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  public TalonSRX elevator_talon = new TalonSRX(robotconfig.elevator_talon_port);
+  public TalonSRX elevator_talon = new TalonSRX(Robot.robotconfig.elevator_talon_port);
 
-  double raw_max_height = encoderlib.distanceToRaw(robotconfig.elevator_maximum_height, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.elevator_effective_diameter);
+  double raw_max_height = encoderlib.distanceToRaw(Robot.robotconfig.elevator_maximum_height, Robot.robotconfig.POSITION_PULSES_PER_ROTATION, Robot.robotconfig.elevator_effective_diameter);
 
-  // public DoubleSolenoid intake_solenoid = new DoubleSolenoid(robotconfig.intake_solenoid_clamp_channel, robotconfig.intake_solenoid_open_channel);
+  // public DoubleSolenoid intake_solenoid = new DoubleSolenoid(Robot.robotconfig.intake_solenoid_clamp_channel, robotconfig.intake_solenoid_open_channel);
   float position_setpoint;
 
 /**
@@ -35,10 +35,10 @@ public class elevator extends Subsystem {
     elevator_talon.setSelectedSensorPosition(0, 0, 10);
     elevator_talon.setInverted(false);
     elevator_talon.setSensorPhase(true);
-    this.elevator_talon.config_kP(0, robotconfig.elevator_position_kp, 30);
-    this.elevator_talon.config_kI(0, robotconfig.elevator_position_ki, 30);
-    this.elevator_talon.config_kD(0, robotconfig.elevator_position_kd, 30);
-    this.elevator_talon.config_kF(0, robotconfig.elevator_position_kf, 30);
+    this.elevator_talon.config_kP(0, Robot.robotconfig.elevator_position_kp, 30);
+    this.elevator_talon.config_kI(0, Robot.robotconfig.elevator_position_ki, 30);
+    this.elevator_talon.config_kD(0, Robot.robotconfig.elevator_position_kd, 30);
+    this.elevator_talon.config_kF(0, Robot.robotconfig.elevator_position_kf, 30);
     this.elevator_talon.set(ControlMode.Position, 0);
   }
   /**
@@ -53,8 +53,8 @@ public class elevator extends Subsystem {
       elevator_talon.set(
         ControlMode.Position, encoderlib.distanceToRaw(
           height, 
-          robotconfig.POSITION_PULSES_PER_ROTATION, 
-          robotconfig.elevator_effective_diameter));
+          Robot.robotconfig.POSITION_PULSES_PER_ROTATION, 
+          Robot.robotconfig.elevator_effective_diameter));
     }
   }
 
@@ -65,8 +65,8 @@ public class elevator extends Subsystem {
   public double getHeight() {
     double inches = encoderlib.rawToDistance(
       elevator_talon.getSelectedSensorPosition(0), 
-      robotconfig.POSITION_PULSES_PER_ROTATION, 
-      robotconfig.elevator_effective_diameter);
+      Robot.robotconfig.POSITION_PULSES_PER_ROTATION, 
+      Robot.robotconfig.elevator_effective_diameter);
     return inches;
   }
 

@@ -8,7 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
+
 import frc.robot.subsystems.drivetrain;
 
 
@@ -19,7 +19,7 @@ import frc.robot.subsystems.drivetrain;
 public class drivetrain_shift_high extends Command {
   public drivetrain_shift_high() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.drivetrain);
+    // requires(Robot.drivetrain); // I don't think it's strictly necessary to require the drivetrain for an instant action
   }
 
   public static final drivetrain drivetrain  = new drivetrain();
