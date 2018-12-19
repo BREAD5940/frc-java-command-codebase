@@ -47,16 +47,17 @@ public class elevator extends Subsystem {
    * @param height in inches
    */
   public void setHeight(double height) {
-    //talon_elevator.set(ControlMode.PercentOutput, speed);
-    if (!(height>raw_max_height || height<0)){ //Seems to work to me, the min/max values seem to work fine
-      //  however you may want to consider catching errors like elevator below minimum height, or elevator above maximum height, and allowing the elevator to move
-      // TODO so i caught the error I mensioned by setting the setpoint to 0 in the init(), but that doesn't help when the elevator is too high up and ends up above the max height
-      elevator_talon.set(
-        ControlMode.Position, encoderlib.distanceToRaw(
-          height, 
-          Robot.robotconfig.POSITION_PULSES_PER_ROTATION, 
-          Robot.robotconfig.elevator_effective_diameter));
+    if(height>raw_max_height){
+      height = raw_max_height;//reset to maximum if too high
+    }else if (height<0){
+      height = 0;
     }
+      //  however you may want to consider catching errors like elevator below minimum height, or elevator above maximum height, and allowing the elevator to move
+    elevator_talon.set(
+      ControlMode.Position, encoderlib.distanceToRaw(
+        height, 
+        Robot.robotconfig.POSITION_PULSES_PER_ROTATION, 
+        Robot.robotconfig.elevator_effective_diameter));
   }
 
   /**
