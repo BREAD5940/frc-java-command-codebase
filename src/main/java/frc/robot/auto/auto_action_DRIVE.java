@@ -9,6 +9,7 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.robotconfig;
 import frc.robot.lib.encoderlib;
 
 
@@ -36,10 +37,10 @@ public class auto_action_DRIVE extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    double targetSpeedRaw = encoderlib.distanceToRaw(targetSpeed, Robot.robotconfig.POSITION_PULSES_PER_ROTATION, Robot.robotconfig.left_wheel_effective_diameter) ;
+    double targetSpeedRaw = encoderlib.distanceToRaw(targetSpeed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter) ;
     double startingDistanceLeft = Robot.drivetrain.getLeftDistance();
     double startingDistanceRight = Robot.drivetrain.getRightDistance();
-    double endDistanceLeft = encoderlib.distanceToRaw(targetDistance, Robot.robotconfig.POSITION_PULSES_PER_ROTATION, Robot.robotconfig.left_wheel_effective_diameter);
+    double endDistanceLeft = encoderlib.distanceToRaw(targetDistance, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter);
 
     setTimeout(timeout); // set the timeout
 
@@ -59,10 +60,10 @@ public class auto_action_DRIVE extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.targetDistance) < Robot.robotconfig.drive_auto_position_tolerence) 
-        && (Math.abs(Robot.drivetrain.getLeftDistance() - this.targetDistance) < Robot.robotconfig.drive_auto_position_tolerence) 
-        && (Math.abs(Robot.drivetrain.getLeftVelocity()) < Robot.robotconfig.drive_auto_velocity_tolerence) 
-        && (Math.abs(Robot.drivetrain.getRightVelocity()) < Robot.robotconfig.drive_auto_position_tolerence))
+    if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.targetDistance) < robotconfig.drive_auto_position_tolerence) 
+        && (Math.abs(Robot.drivetrain.getLeftDistance() - this.targetDistance) < robotconfig.drive_auto_position_tolerence) 
+        && (Math.abs(Robot.drivetrain.getLeftVelocity()) < robotconfig.drive_auto_velocity_tolerence) 
+        && (Math.abs(Robot.drivetrain.getRightVelocity()) < robotconfig.drive_auto_position_tolerence))
         || (isTimedOut()) ){
       return true;}
     else { return false; }

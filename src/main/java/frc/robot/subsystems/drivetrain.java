@@ -12,10 +12,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.Robot;
+import frc.robot.lib.encoderlib;
+import frc.robot.robotconfig;
 
 import frc.robot.commands.arcade_drive;
 
-// import frc.robot.robotconfig;
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
 
@@ -28,13 +29,13 @@ public class drivetrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-    public TalonSRX m_left_talon = new TalonSRX(Robot.robotconfig.m_left_talon_port);
-    public TalonSRX s_left_talon = new TalonSRX(Robot.robotconfig.s_left_talon_port);
-    public TalonSRX m_right_talon = new TalonSRX(Robot.robotconfig.m_right_talon_port);
-    public TalonSRX s_right_talon = new TalonSRX(Robot.robotconfig.s_right_talon_port);
+    public TalonSRX m_left_talon = new TalonSRX(robotconfig.m_left_talon_port);
+    public TalonSRX s_left_talon = new TalonSRX(robotconfig.s_left_talon_port);
+    public TalonSRX m_right_talon = new TalonSRX(robotconfig.m_right_talon_port);
+    public TalonSRX s_right_talon = new TalonSRX(robotconfig.s_right_talon_port);
     public String current_gear;
 
-    // PIDController left_position_pid_controller_HIGH_GEAR = new PIDController(Robot.robotconfig.m_left_position_kp_high, Robot.robotconfig.m_left_position_ki_high, Robot.robotconfig.m_left_position_kd_high, Robot.robotconfig.m_left_position_kf_high, source, output) // TODO Implament position PID controllers for left and right drivetrain sides
+    // PIDController left_position_pid_controller_HIGH_GEAR = new PIDController(robotconfig.m_left_position_kp_high, robotconfig.m_left_position_ki_high, robotconfig.m_left_position_kd_high, robotconfig.m_left_position_kf_high, source, output) // TODO Implament position PID controllers for left and right drivetrain sides
 
 
     // DoubleSolenoid shifter = new DoubleSolenoid(6, 0, 1);
@@ -84,18 +85,18 @@ public class drivetrain extends Subsystem {
 
 
     public void setHighGear() {
-      this.m_left_talon.config_kP(0, Robot.robotconfig.m_left_velocity_kp_high, 30);
-      this.m_left_talon.config_kI(0, Robot.robotconfig.m_left_velocity_ki_high, 30);
-      this.m_left_talon.config_kD(0, Robot.robotconfig.m_left_velocity_kd_high, 30);
-      this.m_left_talon.config_kF(0, Robot.robotconfig.m_left_velocity_kf_high, 30);
-      this.m_left_talon.config_IntegralZone(0, Robot.robotconfig.m_left_velocity_izone_high, 30);
+      this.m_left_talon.config_kP(0, robotconfig.m_left_velocity_kp_high, 30);
+      this.m_left_talon.config_kI(0, robotconfig.m_left_velocity_ki_high, 30);
+      this.m_left_talon.config_kD(0, robotconfig.m_left_velocity_kd_high, 30);
+      this.m_left_talon.config_kF(0, robotconfig.m_left_velocity_kf_high, 30);
+      this.m_left_talon.config_IntegralZone(0, robotconfig.m_left_velocity_izone_high, 30);
       // this.m_left_talon.configMaxIntegralAccumulator(0, robotconfig.m_left_velocity_max_integral_high, 0);
   
-      this.m_right_talon.config_kP(0, Robot.robotconfig.m_right_velocity_kp_high, 30);
-      this.m_right_talon.config_kI(0, Robot.robotconfig.m_right_velocity_ki_high, 30);
-      this.m_right_talon.config_kD(0, Robot.robotconfig.m_right_velocity_kd_high, 30);
-      this.m_right_talon.config_kF(0, Robot.robotconfig.m_right_velocity_kf_high, 30);
-      this.m_right_talon.config_IntegralZone(0, Robot.robotconfig.m_right_velocity_izone_high, 30);
+      this.m_right_talon.config_kP(0, robotconfig.m_right_velocity_kp_high, 30);
+      this.m_right_talon.config_kI(0, robotconfig.m_right_velocity_ki_high, 30);
+      this.m_right_talon.config_kD(0, robotconfig.m_right_velocity_kd_high, 30);
+      this.m_right_talon.config_kF(0, robotconfig.m_right_velocity_kf_high, 30);
+      this.m_right_talon.config_IntegralZone(0, robotconfig.m_right_velocity_izone_high, 30);
       // this.m_right_talon.configMaxIntegralAccumulator(0, robotconfig.m_right_velocity_max_integral_high, 0);
       
       m_left_talon.setSelectedSensorPosition(0, 0, 10);
@@ -110,18 +111,18 @@ public class drivetrain extends Subsystem {
     }
 
     public void setLowGear() {
-      this.m_left_talon.config_kP(0, Robot.robotconfig.m_left_velocity_kp_low, 0);
-      this.m_left_talon.config_kI(0, Robot.robotconfig.m_left_velocity_ki_low, 0);
-      this.m_left_talon.config_kD(0, Robot.robotconfig.m_left_velocity_kd_low, 0);
-      this.m_left_talon.config_kF(0, Robot.robotconfig.m_left_velocity_kf_low, 0);
-      this.m_left_talon.config_IntegralZone(0, Robot.robotconfig.m_left_velocity_izone_low, 0);
+      this.m_left_talon.config_kP(0, robotconfig.m_left_velocity_kp_low, 0);
+      this.m_left_talon.config_kI(0, robotconfig.m_left_velocity_ki_low, 0);
+      this.m_left_talon.config_kD(0, robotconfig.m_left_velocity_kd_low, 0);
+      this.m_left_talon.config_kF(0, robotconfig.m_left_velocity_kf_low, 0);
+      this.m_left_talon.config_IntegralZone(0, robotconfig.m_left_velocity_izone_low, 0);
       // this.m_left_talon.configMaxIntegralAccumulator(0, robotconfig.m_left_velocity_max_integral_low, 0);
       
-      this.m_right_talon.config_kP(0, Robot.robotconfig.m_right_velocity_kp_low, 0);
-      this.m_right_talon.config_kI(0, Robot.robotconfig.m_right_velocity_ki_low, 0);
-      this.m_right_talon.config_kD(0, Robot.robotconfig.m_right_velocity_kd_low, 0);
-      this.m_right_talon.config_kF(0, Robot.robotconfig.m_right_velocity_kf_low, 0);
-      this.m_right_talon.config_IntegralZone(0, Robot.robotconfig.m_right_velocity_izone_low, 0);
+      this.m_right_talon.config_kP(0, robotconfig.m_right_velocity_kp_low, 0);
+      this.m_right_talon.config_kI(0, robotconfig.m_right_velocity_ki_low, 0);
+      this.m_right_talon.config_kD(0, robotconfig.m_right_velocity_kd_low, 0);
+      this.m_right_talon.config_kF(0, robotconfig.m_right_velocity_kf_low, 0);
+      this.m_right_talon.config_IntegralZone(0, robotconfig.m_right_velocity_izone_low, 0);
       // this.m_right_talon.configMaxIntegralAccumulator(0, robotconfig.m_right_velocity_max_integral_low, 0);
   
       // robot.shifter_solenoid.set(DoubleSolenoid.Value.kForward);
@@ -131,13 +132,13 @@ public class drivetrain extends Subsystem {
     }
 
     public double getLeftDistance() {return encoderlib.rawToDistance(this.m_left_talon.getSelectedSensorPosition(0), 
-      Robot.robotconfig.POSITION_PULSES_PER_ROTATION, Robot.robotconfig.left_wheel_effective_diameter); }
+      robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter); }
     public double getRightDistance() {return encoderlib.rawToDistance(this.m_right_talon.getSelectedSensorPosition(0), 
-      Robot.robotconfig.POSITION_PULSES_PER_ROTATION, Robot.robotconfig.right_wheel_effective_diameter);}
+      robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter);}
     public double getLeftVelocity() {return encoderlib.rawToDistance(this.m_left_talon.getSelectedSensorVelocity(0) * 10, //Mulitply by 10 because units are per 100ms 
-      Robot.robotconfig.POSITION_PULSES_PER_ROTATION, Robot.robotconfig.left_wheel_effective_diameter);}
+      robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter);}
     public double getRightVelocity() {return encoderlib.rawToDistance(this.m_right_talon.getSelectedSensorVelocity(0) * 10, 
-      Robot.robotconfig.POSITION_PULSES_PER_ROTATION, Robot.robotconfig.right_wheel_effective_diameter);}
+      robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter);}
 
     /**
      * Set a velocity setpoint for the left drivetrain talons
@@ -146,9 +147,9 @@ public class drivetrain extends Subsystem {
      */
     public void setVelocityLeft(double speed) {
       SmartDashboard.putNumber("left speed setpoint in feet per sec", speed);
-      double rawSpeedLeft = encoderlib.distanceToRaw(18.8/12, Robot.robotconfig.POSITION_PULSES_PER_ROTATION, Robot.robotconfig.left_wheel_effective_diameter) / 10; 
+      double rawSpeedLeft = encoderlib.distanceToRaw(18.8/12, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter) / 10; 
       SmartDashboard.putNumber(" Target raw speed in ticks per 100ms for left: ", rawSpeedLeft);
-      m_left_talon.set(ControlMode.Velocity, rawSpeedLeft);// Divide by 10, because the Talon expects native units per 100ms, not native units per second
+      // m_left_talon.set(ControlMode.Velocity, rawSpeedLeft);// Divide by 10, because the Talon expects native units per 100ms, not native units per second
     }
 
     /**
@@ -158,9 +159,9 @@ public class drivetrain extends Subsystem {
      */
     public void setVelocityRight(double speed) {
       SmartDashboard.putNumber("right speed setpoint in feet per sec", speed);
-      double rawSpeedRight = encoderlib.distanceToRaw(18.8/12, Robot.robotconfig.POSITION_PULSES_PER_ROTATION, Robot.robotconfig.right_wheel_effective_diameter) / 10; 
+      double rawSpeedRight = encoderlib.distanceToRaw(18.8/12, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter) / 10; 
       SmartDashboard.putNumber(" Target raw speed in ticks per 100ms for right: ", rawSpeedRight);
-      m_right_talon.set(ControlMode.Velocity, rawSpeedRight);// Divide by 10, because the Talon expects native units per 100ms, not native units per second
+      // m_right_talon.set(ControlMode.Velocity, rawSpeedRight);// Divide by 10, because the Talon expects native units per 100ms, not native units per second
     }
 
 

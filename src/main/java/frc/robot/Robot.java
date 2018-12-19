@@ -12,9 +12,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.arcade_drive;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.Compressor;
-
+// import frc.robot.commands.arcade_drive;
 import frc.robot.subsystems.*;
 // import frc.robot.commands.*;
 
@@ -49,8 +52,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    Compressor compressor = new Compressor(9);
-    compressor.setClosedLoopControl(true);
+    // Compressor compressor = new Compressor(9);
+    // compressor.setClosedLoopControl(true);
     
     drivetrain.init();
     elevator.init();
@@ -158,7 +161,7 @@ public class Robot extends TimedRobot {
       m_autonomousCommand.cancel();
     }
 
-
+    // final arcade_drive arcade = new arcade_drive();
 
   
 
@@ -175,8 +178,9 @@ public class Robot extends TimedRobot {
     /**
      * Update the arcade drivetrain method
      */
-    // drivetrain.arcade(primaryJoystick.getRawAxis(robotconfig.forward_axis), primaryJoystick.getRawAxis(robotconfig.turn_axis), false);
-    
+
+    drivetrain.m_left_talon.set(ControlMode.PercentOutput, 1);
+
     // drivetrain.m_left_talon.set(ControlMode.PercentOutput, 0.25);
     // drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.25);
 

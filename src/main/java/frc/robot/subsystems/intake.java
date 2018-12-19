@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
+import frc.robot.robotconfig;
 import frc.robot.commands.run_intake;
 
 // import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -17,8 +18,8 @@ public class intake extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  public TalonSRX talon_left = new TalonSRX(Robot.robotconfig.left_intake_talon_port);
-  public TalonSRX talon_right = new TalonSRX(Robot.robotconfig.right_intake_talon_port);
+  public TalonSRX talon_left = new TalonSRX(robotconfig.left_intake_talon_port);
+  public TalonSRX talon_right = new TalonSRX(robotconfig.right_intake_talon_port);
 
   // public DoubleSolenoid intake_solenoid = new DoubleSolenoid(robotconfig.intake_solenoid_clamp_channel, robotconfig.intake_solenoid_open_channel);
   float position_setpoint;
