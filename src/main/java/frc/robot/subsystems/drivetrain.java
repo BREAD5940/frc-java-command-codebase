@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -16,6 +18,7 @@ import frc.robot.commands.arcade_drive;
 // import frc.robot.robotconfig;
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
+
 
 /**
  * Drivetrain subsystem. Initilizes the 4 drivetrain talons based on robotmap
@@ -30,6 +33,10 @@ public class drivetrain extends Subsystem {
     public TalonSRX m_right_talon = new TalonSRX(Robot.robotconfig.m_right_talon_port);
     public TalonSRX s_right_talon = new TalonSRX(Robot.robotconfig.s_right_talon_port);
     public String current_gear;
+
+    // PIDController left_position_pid_controller_HIGH_GEAR = new PIDController(Robot.robotconfig.m_left_position_kp_high, Robot.robotconfig.m_left_position_ki_high, Robot.robotconfig.m_left_position_kd_high, Robot.robotconfig.m_left_position_kf_high, source, output) // TODO Implament position PID controllers for left and right drivetrain sides
+
+
     // DoubleSolenoid shifter = new DoubleSolenoid(6, 0, 1);
 
 

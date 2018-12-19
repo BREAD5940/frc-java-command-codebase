@@ -21,8 +21,8 @@ public class robotconfig {
   /**
    * Wrist configuration
    */
-  public final int m_wrist_talon_port = 5; // TODO fix this
-  public final int s_wrist_talon_port = 4; // TODO fix this
+  public final int m_wrist_talon_port = 5; // TODO fix wrist talon port!!
+  public final int s_wrist_talon_port = 4; // TODO fix wrist talon port!!
   public final float minimum_wrist_angle = 0;
   public final float maximum_wrist_angle = 90;
   public final double wrist_position_tolerence = 5; // 5 degree tolerence, be sure to convert to raw!
@@ -57,10 +57,9 @@ public class robotconfig {
   /**
    * Elevator configuration
    */
-  public final double elevator_effective_diameter = 1; // TODO fix this!!!! (units must be inches)
+  public final double elevator_effective_diameter = 1; // TODO fix elevator_effective_diameter!!!! (units must be inches)
   public final int elevator_minimum_height = 0;
-  // public final int elevator_maximum_height = 42000; // TODO fix this!!!!
-  public final int elevator_maximum_height = 70; // changed to inches
+  public final int elevator_maximum_height = 70; // changed to inches, TODO verify maximum height
 
   /**
    * Left side of drivetrain PID constants and setup
