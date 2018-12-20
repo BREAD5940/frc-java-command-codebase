@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 import frc.robot.Robot;
 import frc.robot.robotconfig;
+import frc.robot.commands.elevator_teleop;
 import frc.robot.lib.encoderlib;
 
 
@@ -39,8 +40,19 @@ public class elevator extends Subsystem {
     this.elevator_talon.config_kI(0, robotconfig.elevator_position_ki, 30);
     this.elevator_talon.config_kD(0, robotconfig.elevator_position_kd, 30);
     this.elevator_talon.config_kF(0, robotconfig.elevator_position_kf, 30);
-    this.elevator_talon.set(ControlMode.Position, 10);
+    setHeight(Robot.elevator.getElevatorAxisInches());
   }
+
+  /**
+   * Get the current elevator height from the throttle in inches. For passing into setHeight
+   * @return height in inches
+   */
+  public double getElevatorAxisInches(){
+    return (Robot.m_oi.getThrottleAxis() / (robotconfig.throttle_maximum_value - robotconfig.throttle_minimum_value)) 
+      * robotconfig.elevator_maximum_height;
+  }
+
+
   /**
    * Set the elevator height, in inches
    * @param height in inches
@@ -80,6 +92,6 @@ public class elevator extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new elevator_teleop());
   }
 }
