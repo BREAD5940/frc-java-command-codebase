@@ -1,17 +1,16 @@
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.robotconfig;
 import frc.robot.subsystems.drivetrain;
 
 public class arcade_drive extends Command {
-    double forwardspeed;
-    double turnspeed;
-    public arcade_drive(double forwardspeed, double turnspeed){
+
+    public arcade_drive(){
         requires(Robot.drivetrain);
-        this.forwardspeed = forwardspeed;
-        this.turnspeed = turnspeed;
     }
     drivetrain drive = new drivetrain();
 
@@ -28,9 +27,6 @@ public class arcade_drive extends Command {
 
     if ((forwardspeed < 0.02) && (forwardspeed > -0.02)) { forwardspeed = 0; }
     if ((turnspeed < 0.01) && (turnspeed > -0.01)) { turnspeed = 0; }
-
-    // m_left_talon.set(ControlMode.PercentOutput, 0.25);
-    // m_right_talon.set(ControlMode.PercentOutput, 0.25);
     
     if (robotconfig.driving_squared) {
     forwardspeed = forwardspeed * Math.abs(forwardspeed);
@@ -46,14 +42,20 @@ public class arcade_drive extends Command {
     double leftspeed = -forwardspeed + turnspeed;
     double rightspeed = -forwardspeed - turnspeed;
 
-    drive.setVelocityLeft(1 * 100);
-    drive.setVelocityRight(1 * 100);
+    // drive.setVelocityLeft(1 * 100);
+    // drive.setVelocityRight(1 * 100);
+
+    // Robot.drivetrain.m_left_talon.set(ControlMode.Velocity, 1024);
+    // Robot.drivetrain.m_right_talon.set(ControlMode.Velocity, 1024);
+
+    Robot.drivetrain.m_left_talon.set(ControlMode.PercentOutput, 0.3);
+    Robot.drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.3);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true
