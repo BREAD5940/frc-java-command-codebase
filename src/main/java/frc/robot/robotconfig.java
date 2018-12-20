@@ -21,8 +21,8 @@ public class robotconfig {
   /**
    * Wrist configuration
    */
-  public static final int m_wrist_talon_port = 5; // TODO fix wrist talon port!!
-  public static final int s_wrist_talon_port = 4; // TODO fix wrist talon port!!
+  public static final int m_wrist_talon_port = 40; // TODO fix wrist talon port!!
+  public static final int s_wrist_talon_port = 41; // TODO fix wrist talon port!!
   public static final float minimum_wrist_angle = 0;
   public static final float maximum_wrist_angle = 90;
   public static final double wrist_position_tolerence = 5; // 5 degree tolerence, be sure to convert to raw!
@@ -69,7 +69,7 @@ public class robotconfig {
   public static final boolean m_left_inverted = false;
   // sets kp, ki, kd and kf terms for master left in velocity mode 
   public static final double m_left_velocity_kp_low = 0.2;
-  public static final double m_left_velocity_ki_low = 0.3;
+  public static final double m_left_velocity_ki_low = 0.35;
   public static final double m_left_velocity_kd_low = 0;
   public static final double m_left_velocity_kf_low =  0;
   public static final int m_left_velocity_izone_low = 800;
@@ -84,7 +84,7 @@ public class robotconfig {
   public static final double m_left_velocity_ki_high = 0.3;
   public static final double m_left_velocity_kd_high = 0;
   public static final double m_left_velocity_kf_high = 0;
-  public static final int m_left_velocity_izone_high = 800;
+  public static final int m_left_velocity_izone_high = 810;
   // public static final double m_left_velocity_max_integral_high = 300;
   public static final double m_left_position_kp_high = 0.15;
   public static final double m_left_position_ki_high = 0;
@@ -137,12 +137,12 @@ public class robotconfig {
   public static final int elevator_velocity_izone = 2;
   public static final double elevator_max_velocity_integral = 0.5;
 
-  public static final double elevator_position_kp = 1.7;
+  public static final double elevator_position_kp = 1;
   public static final double elevator_position_ki = 0;
   public static final double elevator_position_kd = 0;
   public static final double elevator_position_kf = 0;
-  public static final int elevator_position_izone = 2;
-  public static final double elevator_max_position_integral = 0.5;
+  public static final int elevator_position_izone = 5000;
+  public static final double elevator_max_position_integral = 5000;
 
 
   // pheumatic configuration
