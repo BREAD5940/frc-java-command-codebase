@@ -9,10 +9,11 @@ import frc.robot.subsystems.drivetrain;
 
 public class arcade_drive extends Command {
 
-    public arcade_drive(){
-        requires(Robot.drivetrain);
-    }
-    drivetrain drive = new drivetrain();
+  public arcade_drive(){
+    requires(Robot.drivetrain);
+  }
+
+  drivetrain drivetrain = new drivetrain();
 
   // Called just before this Command runs the first time
   @Override
@@ -48,8 +49,8 @@ public class arcade_drive extends Command {
     // Robot.drivetrain.m_left_talon.set(ControlMode.Velocity, 1024);
     // Robot.drivetrain.m_right_talon.set(ControlMode.Velocity, 1024);
 
-    Robot.drivetrain.m_left_talon.set(ControlMode.PercentOutput, 0.3);
-    Robot.drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.3);
+    drivetrain.m_left_talon.set(ControlMode.PercentOutput, 0.3);
+    drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.3);
   }
 
   // Make this return true when this Command no longer needs to run execute()
