@@ -3,6 +3,7 @@ package frc.robot.commands;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.robotconfig;
 import frc.robot.subsystems.drivetrain;
@@ -51,6 +52,7 @@ public class arcade_drive extends Command {
 
     drivetrain.m_left_talon.set(ControlMode.PercentOutput, 0.3);
     drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.3);
+    Robot.arcade_running = true;
   }
 
   // Make this return true when this Command no longer needs to run execute()
