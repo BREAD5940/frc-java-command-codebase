@@ -46,9 +46,8 @@ public class OI {
   public double getIntakeAxis(){ return primaryJoystick.getRawAxis(robotconfig.intakeAxis); }
   public double getOuttakeAxis(){ return primaryJoystick.getRawAxis(robotconfig.outtakeAxis); }
   public double getIntakeSpeed(){ return getIntakeAxis() - getOuttakeAxis(); }
-  public double getElevatorAxis(){ return secondaryJoystick.getRawAxis(robotconfig.throttle_axis); }
-
-  // Button button = new JoystickButton(stick, buttonNumber);
+  public double getElevatorAxis(){ return secondaryJoystick.getRawAxis(robotconfig.xbox_elevator_axis); }
+  public double getThrottleAxis() { return secondaryJoystick.getRawAxis(robotconfig.throttle_elevator_axis); }
 
   // There are a few additional built in buttons you can use. Additionally,
   // by subclassing Button you can create custom triggers and bind those to
