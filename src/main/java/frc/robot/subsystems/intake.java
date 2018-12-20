@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.robotconfig;
 import frc.robot.commands.run_intake;
@@ -21,6 +22,7 @@ public class intake extends Subsystem {
   public TalonSRX talon_left = new TalonSRX(robotconfig.left_intake_talon_port);
   public TalonSRX talon_right = new TalonSRX(robotconfig.right_intake_talon_port);
 
+
   float position_setpoint;
 
 /**
@@ -28,8 +30,9 @@ public class intake extends Subsystem {
  * @param double speed
  */
   public void setSpeed(double speed) {
-    talon_left.set(ControlMode.PercentOutput, speed);
-    talon_right.set(ControlMode.PercentOutput, speed);
+    // talon_left.set(ControlMode.PercentOutput, speed);
+    // talon_right.set(ControlMode.PercentOutput, speed);
+    SmartDashboard.putNumber("Intake speed setpoint", speed);
   }
 
   public void openClamp() {
@@ -44,6 +47,5 @@ public class intake extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new run_intake());
   }
 }

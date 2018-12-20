@@ -41,10 +41,11 @@ public class OI {
     // close_clamp_button.whenPressed(new close_clamp());
   }
 
-  public double getForwardAxis(){ return primaryJoystick.getRawAxis(robotconfig.forward_axis); }
+  public double getForwardAxis(){ return -1 * primaryJoystick.getRawAxis(robotconfig.forward_axis); }
   public double getTurnAxis(){ return primaryJoystick.getRawAxis(robotconfig.turn_axis); }
   public double getIntakeAxis(){ return primaryJoystick.getRawAxis(robotconfig.intakeAxis); }
   public double getOuttakeAxis(){ return primaryJoystick.getRawAxis(robotconfig.outtakeAxis); }
+  public double getIntakeSpeed(){ return getIntakeAxis() - getOuttakeAxis(); }
   public double getElevatorAxis(){ return secondaryJoystick.getRawAxis(robotconfig.throttle_axis); }
 
   // Button button = new JoystickButton(stick, buttonNumber);

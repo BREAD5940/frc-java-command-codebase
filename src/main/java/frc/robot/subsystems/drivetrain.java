@@ -9,7 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import frc.robot.Robot;
@@ -148,20 +148,61 @@ public class drivetrain extends Subsystem {
      * @return doesn't return anything, but sets the left talon speed to the raw conversion of speed.
      */
     public void setVelocityLeft(double speed) {
-      double rawSpeedLeft = 400;//encoderlib.distanceToRaw(18.8/12, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter) / 10; 
+      double rawSpeedLeft = encoderlib.distanceToRaw(speed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter) / 10; 
       m_left_talon.set(ControlMode.Velocity, rawSpeedLeft);// Divide by 10, because the Talon expects native units per 100ms, not native units per second
     }
 
     /**
      * Set a velocity setpoint for the right drivetrain talons
-     * @param speed in inches per second
+     * @param speed in feet per second
      * @return doesn't return anything, but sets the right talon speed to the raw conversion of speed.
      */
     public void setVelocityRight(double speed) {
-      double rawSpeedRight = 400;//encoderlib.distanceToRaw(18.8/12, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter) / 10; 
+      double rawSpeedRight = encoderlib.distanceToRaw(speed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter) / 10; 
       m_right_talon.set(ControlMode.Velocity, rawSpeedRight);// Divide by 10, because the Talon expects native units per 100ms, not native units per second
     }
 
+
+  public void arcadeDriveMethod(){
+    double forwardspeed = Robot.m_oi.getForwardAxis() * -1;
+    double turnspeed = Robot.m_oi.getTurnAxis();
+
+    if ((forwardspeed < 0.02) && (forwardspeed > -0.02)) { forwardspeed = 0; }
+    if ((turnspeed < 0.01) && (turnspeed > -0.01)) { turnspeed = 0; }
+    
+    if (robotconfig.driving_squared) {
+    forwardspeed = forwardspeed * Math.abs(forwardspeed);
+    turnspeed = turnspeed * Math.abs(turnspeed);
+    }
+    if (Robot.drivetrain.current_gear == "high"){
+        forwardspeed = forwardspeed * robotconfig.max_forward_speed_high;
+        turnspeed = turnspeed * robotconfig.max_turn_speed_high;}
+    if (Robot.drivetrain.current_gear == "low"){
+        forwardspeed = forwardspeed * robotconfig.max_forward_speed_low;
+        turnspeed = turnspeed * robotconfig.max_turn_speed_low;}
+
+    double leftspeed = -forwardspeed + turnspeed;
+    double rightspeed = -forwardspeed - turnspeed;
+
+    SmartDashboard.putNumber("Left wheels feet/sec setpoint: ", leftspeed);
+    SmartDashboard.putNumber("Right wheels feet/sec setpoint: ", rightspeed);
+
+    double leftspeedraw = encoderlib.distanceToRaw(leftspeed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter);
+    double rightspeedraw = encoderlib.distanceToRaw(rightspeed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter);
+
+    SmartDashboard.putNumber("Left wheels raw setpoint: ", leftspeedraw);
+    SmartDashboard.putNumber("Right wheels raw setpoint: ", rightspeedraw);
+
+    // setVelocityLeft(leftspeed*100);
+    // setVelocityRight(rightspeed*100);
+
+    m_left_talon.set(ControlMode.Velocity, leftspeedraw);
+    m_right_talon.set(ControlMode.Velocity, rightspeedraw);
+
+    // m_left_talon.set(ControlMode.PercentOutput, 0.3);
+    // m_right_talon.set(ControlMode.PercentOutput, 0.3);
+    // Robot.arcade_running = false;
+  }
 
     
   @Override

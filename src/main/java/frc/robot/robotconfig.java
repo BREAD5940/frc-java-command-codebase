@@ -47,8 +47,8 @@ public class robotconfig {
   public static final double drive_auto_velocity_tolerence = 0.5; // units are in inches per second
   public static final double drive_auto_low_gear_speed = 2; // units are feet per second
   public static final double drive_auto_high_speed = 2; // units are feet per second
-  public static final double left_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
-  public static final double right_wheel_effective_diameter = 6;
+  public static final double left_wheel_effective_diameter = 6 / 12; // units are in feet, TODO tune this!
+  public static final double right_wheel_effective_diameter = 6 / 12; // units are in feet, TODO tune this!
 
   // Encoder stuff, dunno where else to put this
 	// public static final double VELOCITY_PULSES_PER_ROTATION = 409.6f;
@@ -140,7 +140,7 @@ public class robotconfig {
   public static final double elevator_position_kp = 1;
   public static final double elevator_position_ki = 0;
   public static final double elevator_position_kd = 0;
-  public static final double elevator_position_kf = 0;
+  public static final double elevator_position_kf = 0.15;
   public static final int elevator_position_izone = 5000;
   public static final double elevator_max_position_integral = 5000;
 

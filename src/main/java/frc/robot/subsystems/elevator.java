@@ -32,14 +32,14 @@ public class elevator extends Subsystem {
 
   public void init(){
     elevator_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,30);
-    elevator_talon.setSelectedSensorPosition(0, 0, 10);
+    elevator_talon.setSelectedSensorPosition(0, 0, 10); // zero the encoder
     elevator_talon.setInverted(false);
     elevator_talon.setSensorPhase(true);
     this.elevator_talon.config_kP(0, robotconfig.elevator_position_kp, 30);
     this.elevator_talon.config_kI(0, robotconfig.elevator_position_ki, 30);
     this.elevator_talon.config_kD(0, robotconfig.elevator_position_kd, 30);
     this.elevator_talon.config_kF(0, robotconfig.elevator_position_kf, 30);
-    this.elevator_talon.set(ControlMode.Position, 0);
+    this.elevator_talon.set(ControlMode.Position, 10);
   }
   /**
    * Set the elevator height, in inches
@@ -59,6 +59,10 @@ public class elevator extends Subsystem {
         robotconfig.elevator_effective_diameter));
   }
 
+  public void setPercent(double percent){
+    elevator_talon.set(ControlMode.PercentOutput,percent);
+  }
+
   /**
    * Return the height of the elevator from zero, in inches
    * @return height in inches
@@ -68,7 +72,8 @@ public class elevator extends Subsystem {
       elevator_talon.getSelectedSensorPosition(0), 
       robotconfig.POSITION_PULSES_PER_ROTATION, 
       robotconfig.elevator_effective_diameter);
-    return inches;
+    // return inches;
+    return elevator_talon.getSelectedSensorPosition(0);
   }
 
 

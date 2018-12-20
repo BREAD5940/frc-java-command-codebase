@@ -33,6 +33,7 @@ import frc.robot.subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
+  public static boolean arcade_running = false;
   public static final drivetrain drivetrain  = new drivetrain();
   public static final intake intake = new intake();
   public static final elevator elevator = new elevator();
@@ -96,10 +97,14 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Right talon speed", drivetrain.m_right_talon.getSelectedSensorVelocity(0));
     SmartDashboard.putNumber("Right talon error", drivetrain.m_right_talon.getClosedLoopError(0));
 
+    SmartDashboard.putNumber("Intake target speed per OI:", m_oi.getIntakeSpeed());
+
     // SmartDashboard.putNumber("Throttle output", throttle.getRawAxis(1));
-    // SmartDashboard.putNumber("Elevator setpoint", elevator_setpoint);
-    // SmartDashboard.putNumber("Elevator height", elevator.getHeight());
-    // SmartDashboard.putNumber("Elevator error", elevator.elevator_talon.getClosedLoopError(0));
+    SmartDashboard.putNumber("Elevator setpoint", 20000);
+    SmartDashboard.putNumber("Elevator height", elevator.getHeight());
+    SmartDashboard.putNumber("Elevator error", 4096-elevator.getHeight());
+
+    SmartDashboard.putBoolean("Arcade command running", arcade_running);
 
     // SmartDashboard.putNumber("Wrist angle setpoint", wrist_setpoint); 
     // SmartDashboard.putNumber("Wrist talon pos", elevator.elevator_talon.getSelectedSensorPosition(0));
@@ -177,7 +182,8 @@ public class Robot extends TimedRobot {
 
     // final arcade_drive arcade = new arcade_drive();
 
-  
+    // new arcade_drive();
+
 
   }
 
@@ -198,13 +204,23 @@ public class Robot extends TimedRobot {
     // drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.25);
 
     // drivetrain_shift_low();
-    drivetrain_shift_high();
+    // drivetrain_shift_high();
     
+
+    double target_intake_speed = m_oi.getIntakeSpeed() / 1;
+    // intake.setSpeed(target_intake_speed);
+    intake.talon_left.set(ControlMode.PercentOutput, target_intake_speed);
+    intake.talon_right.set(ControlMode.PercentOutput, target_intake_speed);
+
+    // elevator.setPercent(target_intake_speed);
+
     /**
      * Update the elevator PID method
      */
     // elevator_setpoint = elevator_setpoint+throttle.getRawAxis(1)*10;
     // elevator.setHeight(elevator_setpoint);
+
+    drivetrain.arcadeDriveMethod();
 
   }
 
