@@ -8,8 +8,17 @@ import frc.robot.Robot;
 import frc.robot.robotconfig;
 import frc.robot.subsystems.drivetrain;
 
+/**
+ * Default drivetrain command. This *should* be called as the default drivetrain command and be overridden in autononmous (provided auto requires drivetrain???)
+ * This command uses the Robot.m_oi to set the speed based on xbox controller inputs, arcade style
+ * @author Matthew Morley
+ */
 public class arcade_drive extends Command {
 
+  /** 
+   * This command runs arcade drive as the default command for the drivetrain.
+   * This command will reserve the drivetrain.
+   */
   public arcade_drive(){
     requires(Robot.drivetrain);
   }

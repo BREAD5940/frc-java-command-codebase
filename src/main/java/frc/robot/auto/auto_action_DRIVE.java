@@ -24,7 +24,14 @@ public class auto_action_DRIVE extends Command {
   boolean isDone = false;
   double timeout;
 
-
+  /**
+   * auto_action_DRIVE is a basic auto action. It should drive in a straight-ish line, as it uses 
+   * nested PID loops to correct for errors caused by differing coefficients of friction. 
+   * @param distance
+   * @param gear
+   * @param targetSpeed
+   * @param timeout
+   */
   public auto_action_DRIVE(double distance, String gear, double targetSpeed, double timeout) {
     this.targetDistance = distance;
     this.gear = gear;
