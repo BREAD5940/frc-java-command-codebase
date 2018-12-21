@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.auto.auto_action_DRIVE;
 import frc.robot.commands.arcade_drive;
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
@@ -77,9 +78,8 @@ public class Robot extends TimedRobot {
     wrist.init();
     gyro.reset();
 
-    // m_chooser.addDefault("Default Auto", new ExampleCommand());
+    m_chooser.addDefault("Default Auto", new auto_action_DRIVE(3, "high", 5, 30));
     // chooser.addObject("My Auto", new MyAutoCommand());
-    // SmartDashboard.putString("test", "Hellothere!!! intake clamp: ");
 
 
 
@@ -164,9 +164,11 @@ public class Robot extends TimedRobot {
      */
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
+    // if (m_autonomousCommand != null) {
+    //   m_autonomousCommand.start();
+    // }
+    new auto_action_DRIVE(3, "high", 5, 30);
+
   }
 
   /**
