@@ -134,9 +134,9 @@ public class drivetrain extends Subsystem {
     }
 
   public double getLeftDistance() {return encoderlib.rawToDistance(this.m_left_talon.getSelectedSensorPosition(0), 
-    robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter); }
+    robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter / 12); }
   public double getRightDistance() {return encoderlib.rawToDistance(this.m_right_talon.getSelectedSensorPosition(0), 
-    robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter);}
+    robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter) / 12;}
   public double getLeftVelocity() {return encoderlib.rawToDistance(this.m_left_talon.getSelectedSensorVelocity(0) * 10, //Mulitply by 10 because units are per 100ms 
     robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter);}
   public double getRightVelocity() {return encoderlib.rawToDistance(this.m_right_talon.getSelectedSensorVelocity(0) * 10, 
