@@ -98,7 +98,7 @@ public class robotconfig {
   public static final double m_left_velocity_kf_high = 0.4;
   public static final int m_left_velocity_izone_high = 800;
   // public static final double m_left_velocity_max_integral_high = 300;
-  public static final double m_left_position_kp_high = 0.15;
+  public static final double m_left_position_kp_high = 2;
   public static final double m_left_position_ki_high = 0;
   public static final double m_left_position_kd_high = 20;
   public static final double m_left_position_kf_high = 0.1;

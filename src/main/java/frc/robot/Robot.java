@@ -52,6 +52,8 @@ public class Robot extends TimedRobot {
 
   public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
   
+  double startingDistance;
+
 
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -77,6 +79,10 @@ public class Robot extends TimedRobot {
     elevator.init();
     wrist.init();
     gyro.reset();
+
+    System.out.println("Hi!");
+
+    startingDistance = drivetrain.getLeftDistance();
 
     m_chooser.addDefault("Default Auto", new auto_action_DRIVE(3, "high", 5, 30));
     // chooser.addObject("My Auto", new MyAutoCommand());
@@ -167,7 +173,8 @@ public class Robot extends TimedRobot {
     // if (m_autonomousCommand != null) {
     //   m_autonomousCommand.start();
     // }
-    new auto_action_DRIVE(3, "high", 5, 30);
+    // new auto_action_DRIVE(3, "high", 5, 30);
+
 
   }
 
@@ -177,6 +184,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
+    
+    drivetrain.test_auto_action_drive(15, startingDistance);
   }
 
   @Override
@@ -225,7 +234,7 @@ public class Robot extends TimedRobot {
     double target_intake_speed = m_oi.getIntakeSpeed() / 1;
     // intake.setSpeed(target_intake_speed);
     intake.talon_left.set(ControlMode.PercentOutput, target_intake_speed);
-    intake.talon_right.set(ControlMode.PercentOutput, target_intake_speed);
+    intake.talon_right.set(ControlMode.PercentOutput, -target_intake_speed);
 
     // elevator.setPercent(target_intake_speed);
 

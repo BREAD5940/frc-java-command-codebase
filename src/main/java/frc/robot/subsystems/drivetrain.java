@@ -17,6 +17,7 @@ import frc.robot.lib.encoderlib;
 import frc.robot.robotconfig;
 
 import frc.robot.commands.arcade_drive;
+import frc.robot.commands.stick_drive;
 
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
@@ -73,6 +74,9 @@ public class drivetrain extends Subsystem {
       
       m_left_talon.setInverted(true);
       s_left_talon.setInverted(true);
+
+      m_left_talon.setSelectedSensorPosition(0, 0, 30);
+      m_right_talon.setSelectedSensorPosition(0, 0, 30);
 
       // public String gear_state;
 
@@ -142,21 +146,20 @@ public class drivetrain extends Subsystem {
   public double getRightVelocity() {return encoderlib.rawToDistance(this.m_right_talon.getSelectedSensorVelocity(0) * 10, 
     robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter);}
 
-    /**
-     * Set the target left speed. Units are in raw units.
-     * @param speed in raw units per 100ms
-     */
+  /**
+   * Set the target left speed. Units are in raw units.
+   * @param speed in raw units per 100ms
+   */
   public void setLeftSpeedRaw(double speed){
     m_left_talon.set(ControlMode.Velocity, speed);
   }
-    /**
-     * Set the target right speed. Units are in raw units.
-     * @param speed in raw units per 100ms
-     */
-    public void setRightSpeedRaw(double speed){
-      m_right_talon.set(ControlMode.Velocity, speed);
-    }
-  
+  /**
+   * Set the target right speed. Units are in raw units.
+   * @param speed in raw units per 100ms
+   */
+  public void setRightSpeedRaw(double speed){
+    m_right_talon.set(ControlMode.Velocity, speed);
+  }
 
   public void arcadeDriveMethod(double forwardspeed, double turnspeed){
     // double forwardspeed = Robot.m_oi.getForwardAxis() * -1;
@@ -201,7 +204,7 @@ public class drivetrain extends Subsystem {
    * @param maximum_output of the controller
    */
   public double shitty_P_loop(double kp, double setpoint, double measured, double minimim_output, double maximum_output) {
-    double error = measured - setpoint;
+    double error = -measured + setpoint;
     double output = error * kp;
     if ( output > maximum_output ) { output = maximum_output; }
     if ( output < minimim_output ) { output = minimim_output; }
@@ -209,9 +212,31 @@ public class drivetrain extends Subsystem {
   }
 
     
+  public void test_auto_action_drive(double targetDistance, double startDistance) {
+    // double new_target_pos = currentDistance + targetDistance;
+    double forward_speed = Robot.drivetrain.shitty_P_loop(robotconfig.m_left_position_kp_high, 
+      startDistance + targetDistance, // target distance in feet 
+      getLeftDistance(), 
+      robotconfig.drive_auto_forward_velocity_min, 
+      robotconfig.drive_auto_forward_velocity_max);
+    double left_speed_raw = encoderlib.distanceToRaw(forward_speed, robotconfig.left_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
+    double right_speed_raw = encoderlib.distanceToRaw(forward_speed, robotconfig.right_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
+
+    SmartDashboard.putNumber("Forward speed pid output", forward_speed);
+    SmartDashboard.putNumber("Raw left speed auto meme", left_speed_raw);
+    SmartDashboard.putNumber("distance setpoint is currently set to",  startDistance + targetDistance);
+    SmartDashboard.putNumber("Current distance setpoint for auto is: ", getLeftDistance());
+
+
+    setLeftSpeedRaw(left_speed_raw);
+    setRightSpeedRaw(right_speed_raw);
+  }
+
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new arcade_drive());
+    setDefaultCommand(new arcade_drive());
+    // setDefaultCommand(new stick_drive());
   }
 }

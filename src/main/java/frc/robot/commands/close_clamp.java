@@ -27,7 +27,7 @@ public class close_clamp extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    intake.closeClamp();
+    Robot.intake_close();
 
   }
 
