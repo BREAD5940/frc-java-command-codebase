@@ -9,26 +9,26 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.drivetrain;
+import frc.robot.subsystems.Intake;
 
 
 
 /**
- * Shifter command to shift to low gear
+ * Shifter command to shift to high gear
  */
-public class drivetrain_shift_low extends Command {
-  public drivetrain_shift_low() {
+public class CloseClamp extends Command {
+  public CloseClamp() {
     // Use requires() here to declare subsystem dependencies
-    // requires(Robot.drivetrain); // Not really necessary.... commented out
+    // requires(Robot.intake);
   }
 
-  public static final drivetrain drivetrain  = new drivetrain();
+  // private static final intake intake  = new intake();
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // Robot.drivetrain.setLowGear();
-    Robot.drivetrain_shift_low();
+    Robot.intake_close();
+
   }
 
   // Called repeatedly when this Command is scheduled to run

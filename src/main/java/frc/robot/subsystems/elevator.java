@@ -4,8 +4,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 import frc.robot.Robot;
 import frc.robot.robotconfig;
-import frc.robot.commands.elevator_teleop;
-import frc.robot.lib.encoderlib;
+import frc.robot.commands.ElevatorTelop;
+import frc.robot.lib.EncoderLib;
 
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -16,13 +16,13 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 /**
  * The intake subsystem. Contains method setSpeed, openClamp and closeClamp
  */
-public class elevator extends Subsystem {
+public class Elevator extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
   public TalonSRX elevator_talon = new TalonSRX(robotconfig.elevator_talon_port);
 
-  double raw_max_height = encoderlib.distanceToRaw(robotconfig.elevator_maximum_height, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.elevator_effective_diameter);
+  double raw_max_height = EncoderLib.distanceToRaw(robotconfig.elevator_maximum_height, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.elevator_effective_diameter);
 
   float position_setpoint;
 
@@ -65,7 +65,7 @@ public class elevator extends Subsystem {
     }
       //  however you may want to consider catching errors like elevator below minimum height, or elevator above maximum height, and allowing the elevator to move
     elevator_talon.set(
-      ControlMode.Position, encoderlib.distanceToRaw(
+      ControlMode.Position, EncoderLib.distanceToRaw(
         height, 
         robotconfig.POSITION_PULSES_PER_ROTATION, 
         robotconfig.elevator_effective_diameter));
@@ -80,7 +80,7 @@ public class elevator extends Subsystem {
    * @return height in inches
    */
   public double getHeight() {
-    double inches = encoderlib.rawToDistance(
+    double inches = EncoderLib.rawToDistance(
       elevator_talon.getSelectedSensorPosition(0), 
       robotconfig.POSITION_PULSES_PER_ROTATION, 
       robotconfig.elevator_effective_diameter);
@@ -92,6 +92,6 @@ public class elevator extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new elevator_teleop());
+    // setDefaultCommand(new ElevatorTelop());
   }
 }

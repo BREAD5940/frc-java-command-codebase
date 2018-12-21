@@ -8,13 +8,13 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import frc.robot.lib.encoderlib;
+import frc.robot.lib.EncoderLib;;
 
 
 /**
  * The intake subsystem. Contains method setSpeed, openClamp and closeClamp
  */
-public class wrist extends Subsystem {
+public class Wrist extends Subsystem {
 
   public TalonSRX m_wrist_talon = new TalonSRX(robotconfig.m_wrist_talon_port);
   private TalonSRX s_wrist_talon = new TalonSRX(robotconfig.s_wrist_talon_port);
@@ -39,18 +39,18 @@ public class wrist extends Subsystem {
   }
   
   public double getAngle(){
-    return encoderlib.rawToDegrees(
+    return EncoderLib.rawToDegrees(
       this.m_wrist_talon.getSelectedSensorPosition(0), 
       robotconfig.POSITION_PULSES_PER_ROTATION);
   }
   public double getAngularVelocity(){
-    return encoderlib.rawToDegrees(
+    return EncoderLib.rawToDegrees(
       this.m_wrist_talon.getSelectedSensorVelocity(0), 
       robotconfig.POSITION_PULSES_PER_ROTATION) * 10; // Angular velocity. Natively is raw per 100ms, so times by 10 to get degrees per second
   }
 
   public void setAngle(double target_angle){ // TODO verify math
-    double targetRaw = encoderlib.degreesToRaw(
+    double targetRaw = EncoderLib.degreesToRaw(
       target_angle,
       robotconfig.POSITION_PULSES_PER_ROTATION);
     m_wrist_talon.set(ControlMode.Position, targetRaw);

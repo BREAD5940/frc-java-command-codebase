@@ -35,10 +35,10 @@ public class OI {
   Button close_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
 
   public OI(){
-    shift_up_button.whenPressed(new drivetrain_shift_high());
-    shift_down_button.whenPressed(new drivetrain_shift_low());
-    open_clamp_button.whenPressed(new open_clamp());
-    close_clamp_button.whenPressed(new close_clamp());
+    shift_up_button.whenPressed(new DriveShiftHigh());
+    shift_down_button.whenPressed(new DriveShiftLow());
+    open_clamp_button.whenPressed(new OpenClamp());
+    close_clamp_button.whenPressed(new CloseClamp());
   }
 
   public double getForwardAxis(){ return -1 * primaryJoystick.getRawAxis(robotconfig.forward_axis); }

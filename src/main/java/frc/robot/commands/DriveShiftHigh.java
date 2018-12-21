@@ -7,27 +7,29 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.intake;
+
+import edu.wpi.first.wpilibj.command.Command;
+
+import frc.robot.subsystems.DriveTrain;;
 
 
 
 /**
  * Shifter command to shift to high gear
  */
-public class open_clamp extends Command {
-  public open_clamp() {
+public class DriveShiftHigh extends Command {
+  public DriveShiftHigh() {
     // Use requires() here to declare subsystem dependencies
-    // requires(Robot.intake);
+    // requires(Robot.drivetrain); // I don't think it's strictly necessary to require the drivetrain for an instant action
   }
-
-  private static final intake intake  = new intake();
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.intake_open();
+    // Robot.drivetrain.setHighGear();
+    // Robot.drivetrain_shift_high();
+    Robot.drivetrain.setHighGear();
 
   }
 

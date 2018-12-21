@@ -10,13 +10,14 @@ import frc.robot.Robot;
  * This command uses the Robot.m_oi to set the speed based on xbox controller inputs, arcade style
  * @author Matthew Morley
  */
-public class arcade_drive extends Command {
+public class ArcadeDrive extends Command {
+  
   // System.out.println("im an arcade drive command!");
   /** 
    * This command runs arcade drive as the default command for the drivetrain.
    * This command will reserve the drivetrain.
    */
-  public arcade_drive(){
+  public ArcadeDrive(){
     requires(Robot.drivetrain);
   }
 
@@ -41,8 +42,9 @@ public class arcade_drive extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    System.out.println("we aint done chief");
     return false;
-    // System.out.println("we aint done chief");
+
   }
 
   // Called once after isFinished returns true

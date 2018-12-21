@@ -7,30 +7,28 @@
 
 package frc.robot.commands;
 
-import frc.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
-
-import frc.robot.subsystems.drivetrain;
+import frc.robot.Robot;
+import frc.robot.subsystems.DriveTrain;;
 
 
 
 /**
- * Shifter command to shift to high gear
+ * Shifter command to shift to low gear
  */
-public class drivetrain_shift_high extends Command {
-  public drivetrain_shift_high() {
+public class DriveShiftLow extends Command {
+  public DriveShiftLow() {
     // Use requires() here to declare subsystem dependencies
-    // requires(Robot.drivetrain); // I don't think it's strictly necessary to require the drivetrain for an instant action
+    // requires(Robot.drivetrain); // Not really necessary.... commented out
   }
+
+  // public static final drivetrain drivetrain  = new drivetrain();
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // Robot.drivetrain.setHighGear();
-    // Robot.drivetrain_shift_high();
-    Robot.drivetrain.setHighGear();
-
+    // Robot.drivetrain.setLowGear();
+    Robot.drivetrain_shift_low();
   }
 
   // Called repeatedly when this Command is scheduled to run

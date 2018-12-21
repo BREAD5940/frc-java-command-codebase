@@ -15,8 +15,8 @@ import frc.robot.Robot;
 /**
  * Shifter command to shift to high gear
  */
-public class run_intake extends Command {
-  public run_intake() {
+public class RunIntake extends Command {
+  public RunIntake() {
     // Use requires() here to declare subsystem dependencies
     // requires(Robot.intake); // TODO do I need to reserve the inktake? No, I don't think so. Reserve it instead for the intake auto action
   }

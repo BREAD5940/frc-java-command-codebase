@@ -9,7 +9,7 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.drivetrain;
+// import frc.robot.subsystems.DriveTrain;
 
 
 
@@ -26,7 +26,7 @@ public class auto_action_INTAKE extends Command {
     this.runtime = runtime;
   }
 
-  public static final drivetrain drivetrain  = new drivetrain();
+  // public static final drivetrain drivetrain  = new drivetrain();
 
   // Called just before this Command runs the first time
   @Override

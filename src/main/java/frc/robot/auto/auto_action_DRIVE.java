@@ -10,7 +10,7 @@ package frc.robot.auto;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.robotconfig;
-import frc.robot.lib.encoderlib;
+import frc.robot.lib.EncoderLib;
 
 
 
@@ -50,10 +50,10 @@ public class auto_action_DRIVE extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    double targetSpeedRaw = encoderlib.distanceToRaw(targetSpeed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter) ;
+    double targetSpeedRaw = EncoderLib.distanceToRaw(targetSpeed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter) ;
     double startingDistanceLeft = Robot.drivetrain.getLeftDistance();
     double startingDistanceRight = Robot.drivetrain.getRightDistance();
-    double endDistanceLeft = encoderlib.distanceToRaw(targetDistance, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter);
+    double endDistanceLeft = EncoderLib.distanceToRaw(targetDistance, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter);
 
     setTimeout(timeout); // set the timeout
 
@@ -71,8 +71,8 @@ public class auto_action_DRIVE extends Command {
       Robot.drivetrain.getLeftDistance(), 
       robotconfig.drive_auto_forward_velocity_min, 
       robotconfig.drive_auto_forward_velocity_max);
-    double left_speed_raw = encoderlib.distanceToRaw(forward_speed, robotconfig.left_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
-    double right_speed_raw = encoderlib.distanceToRaw(forward_speed, robotconfig.right_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
+    double left_speed_raw = EncoderLib.distanceToRaw(forward_speed, robotconfig.left_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
+    double right_speed_raw = EncoderLib.distanceToRaw(forward_speed, robotconfig.right_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
 
     Robot.drivetrain.setLeftSpeedRaw(600);//left_speed_raw);
     Robot.drivetrain.setRightSpeedRaw(600);//right_speed_raw);

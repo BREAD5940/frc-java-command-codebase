@@ -13,7 +13,12 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.auto_action_DRIVE;
-import frc.robot.commands.arcade_drive;
+import frc.robot.commands.ArcadeDrive;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Intake;
+// import frc.robot.subsystems.intake;
+import frc.robot.subsystems.Wrist;
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
 
@@ -25,7 +30,7 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 // import frc.robot.commands.arcade_drive;
-import frc.robot.subsystems.*;
+// import frc.robot.subsystems.*;
 // import frc.robot.commands.*;
 
 
@@ -46,11 +51,11 @@ public class Robot extends TimedRobot {
   // TODO does this have anything to do with the weird command errors? Or what about making it final?
 
   public static boolean arcade_running = false;
-  public static drivetrain drivetrain;// = new drivetrain();
-  public static intake intake;// = new intake();
-  public static elevator elevator;// = new elevator();
-  public static wrist wrist;// = new wrist();
-  public static robotconfig robotconfig;// = new robotconfig();
+  public static DriveTrain drivetrain; //= new drivetrain();
+  public static Intake intake;// = new intake();
+  public static Elevator elevator;// = new elevator();
+  public static Wrist wrist;// = new wrist();
+  public static robotconfig robotconfig = new robotconfig();
   public static OI m_oi;
 
   public static double elevator_setpoint = 0;
@@ -252,7 +257,8 @@ public class Robot extends TimedRobot {
     // elevator_setpoint = elevator_setpoint+throttle.getRawAxis(1)*10;
     // elevator.setHeight(elevator_setpoint);
 
-    drivetrain.arcadeDriveMethod(m_oi.getForwardAxis(),m_oi.getTurnAxis());
+    // drivetrain.arcadeDriveMethod(m_oi.getForwardAxis(),m_oi.getTurnAxis());
+
     // drivetrain.m_left_talon.set(ControlMode.PercentOutput, 1);
 
   }

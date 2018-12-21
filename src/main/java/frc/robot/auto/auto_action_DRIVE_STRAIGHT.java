@@ -10,7 +10,7 @@ package frc.robot.auto;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.robotconfig;
-import frc.robot.lib.encoderlib;
+import frc.robot.lib.EncoderLib;
 
 
 

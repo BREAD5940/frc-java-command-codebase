@@ -2,9 +2,9 @@
 package frc.robot.lib;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-public class encoderlib extends Subsystem {
-    public encoderlib() {
-        super("encoderlib");
+public class EncoderLib extends Subsystem {
+    public EncoderLib() {
+        super("EncoderLib");
     }
 
     /**

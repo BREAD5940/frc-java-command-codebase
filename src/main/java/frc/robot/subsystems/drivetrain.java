@@ -13,11 +13,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import frc.robot.Robot;
-import frc.robot.lib.encoderlib;
+import frc.robot.lib.EncoderLib;
 import frc.robot.robotconfig;
 
-import frc.robot.commands.arcade_drive;
-import frc.robot.commands.stick_drive;
+import frc.robot.commands.ArcadeDrive;
+// import frc.robot.commands.stick_drive;
 
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
@@ -27,7 +27,7 @@ import frc.robot.commands.stick_drive;
  * Drivetrain subsystem. Initilizes the 4 drivetrain talons based on robotmap
  * settings
  */
-public class drivetrain extends Subsystem {
+public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
@@ -137,13 +137,13 @@ public class drivetrain extends Subsystem {
       current_gear = "low";
     }
 
-  public double getLeftDistance() {return encoderlib.rawToDistance(this.m_left_talon.getSelectedSensorPosition(0), 
+  public double getLeftDistance() {return EncoderLib.rawToDistance(this.m_left_talon.getSelectedSensorPosition(0), 
     robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter / 12); }
-  public double getRightDistance() {return encoderlib.rawToDistance(this.m_right_talon.getSelectedSensorPosition(0), 
+  public double getRightDistance() {return EncoderLib.rawToDistance(this.m_right_talon.getSelectedSensorPosition(0), 
     robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter) / 12;}
-  public double getLeftVelocity() {return encoderlib.rawToDistance(this.m_left_talon.getSelectedSensorVelocity(0) * 10, //Mulitply by 10 because units are per 100ms 
+  public double getLeftVelocity() {return EncoderLib.rawToDistance(this.m_left_talon.getSelectedSensorVelocity(0) * 10, //Mulitply by 10 because units are per 100ms 
     robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter);}
-  public double getRightVelocity() {return encoderlib.rawToDistance(this.m_right_talon.getSelectedSensorVelocity(0) * 10, 
+  public double getRightVelocity() {return EncoderLib.rawToDistance(this.m_right_talon.getSelectedSensorVelocity(0) * 10, 
     robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter);}
 
   /**
@@ -186,9 +186,9 @@ public class drivetrain extends Subsystem {
     /**
      * Set left speed raw in feet per 100ms
      */
-    double leftspeedraw = encoderlib.distanceToRaw(leftspeed, robotconfig.left_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;//  ((leftspeed) / (Math.PI * robotconfig.left_wheel_effective_diameter / 12)) * robotconfig.POSITION_PULSES_PER_ROTATION / 10;
+    double leftspeedraw = EncoderLib.distanceToRaw(leftspeed, robotconfig.left_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;//  ((leftspeed) / (Math.PI * robotconfig.left_wheel_effective_diameter / 12)) * robotconfig.POSITION_PULSES_PER_ROTATION / 10;
     // divide by 10 becuase the talons want units per 100ms
-    double rightspeedraw = encoderlib.distanceToRaw(rightspeed, robotconfig.right_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
+    double rightspeedraw = EncoderLib.distanceToRaw(rightspeed, robotconfig.right_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
 
     setLeftSpeedRaw(leftspeedraw);
     setRightSpeedRaw(rightspeedraw);
@@ -219,8 +219,8 @@ public class drivetrain extends Subsystem {
       getLeftDistance(), 
       robotconfig.drive_auto_forward_velocity_min, 
       robotconfig.drive_auto_forward_velocity_max);
-    double left_speed_raw = encoderlib.distanceToRaw(forward_speed, robotconfig.left_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
-    double right_speed_raw = encoderlib.distanceToRaw(forward_speed, robotconfig.right_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
+    double left_speed_raw = EncoderLib.distanceToRaw(forward_speed, robotconfig.left_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
+    double right_speed_raw = EncoderLib.distanceToRaw(forward_speed, robotconfig.right_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
 
     SmartDashboard.putNumber("Forward speed pid output", forward_speed);
     SmartDashboard.putNumber("Raw left speed auto meme", left_speed_raw);
@@ -236,7 +236,7 @@ public class drivetrain extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new arcade_drive());
+    setDefaultCommand(new ArcadeDrive());
     // setDefaultCommand(new stick_drive());
   }
 }

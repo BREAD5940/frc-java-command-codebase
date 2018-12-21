@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.robotconfig;
-import frc.robot.commands.run_intake;
+import frc.robot.commands.RunIntake;
 
 // import edu.wpi.first.wpilibj.DoubleSolenoid;
 
@@ -15,7 +15,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 /**
  * The intake subsystem. Contains method setSpeed, openClamp and closeClamp
  */
-public class intake extends Subsystem {
+public class Intake extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 

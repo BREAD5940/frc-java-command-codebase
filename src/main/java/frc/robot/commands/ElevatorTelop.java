@@ -9,12 +9,12 @@ import frc.robot.Robot;
  * 
  * @author Matthew Morley
  */
-public class elevator_teleop extends Command {
+public class ElevatorTelop extends Command {
 
   /** 
    * Requires elevator subsystem
    */
-  public elevator_teleop(){
+  public ElevatorTelop(){
     requires(Robot.elevator);
   }
 
