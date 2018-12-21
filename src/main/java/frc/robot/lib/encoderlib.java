@@ -62,7 +62,10 @@ public class EncoderLib extends Subsystem {
      * 
      */
     public static double rawToDistance(int rawPosition, double unitsPerRotation, double effectiveDiam) {
-        return rotationsToDistance((rawToRotation(rawPosition, unitsPerRotation)), effectiveDiam);
+        double rotations = rawPosition / unitsPerRotation;
+        double circumference = Math.PI * effectiveDiam;
+        double distance = rotations * circumference;
+        return distance;
     }
 
     /** Converts a distance to raw position (delta or absolute)
