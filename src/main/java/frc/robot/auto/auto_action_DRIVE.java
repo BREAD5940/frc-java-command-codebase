@@ -74,21 +74,22 @@ public class auto_action_DRIVE extends Command {
     double left_speed_raw = encoderlib.distanceToRaw(forward_speed, robotconfig.left_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
     double right_speed_raw = encoderlib.distanceToRaw(forward_speed, robotconfig.right_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
 
-    Robot.drivetrain.setLeftSpeedRaw(left_speed_raw);
-    Robot.drivetrain.setRightSpeedRaw(right_speed_raw);
+    Robot.drivetrain.setLeftSpeedRaw(600);//left_speed_raw);
+    Robot.drivetrain.setRightSpeedRaw(600);//right_speed_raw);
 
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.targetDistance) < robotconfig.drive_auto_position_tolerence) 
-        && (Math.abs(Robot.drivetrain.getLeftDistance() - this.targetDistance) < robotconfig.drive_auto_position_tolerence) 
-        && (Math.abs(Robot.drivetrain.getLeftVelocity()) < robotconfig.drive_auto_velocity_tolerence) 
-        && (Math.abs(Robot.drivetrain.getRightVelocity()) < robotconfig.drive_auto_position_tolerence))
-        || (isTimedOut()) ){
-      return true;}
-    else { return false; }
+    // if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.targetDistance) < robotconfig.drive_auto_position_tolerence) 
+    //     && (Math.abs(Robot.drivetrain.getLeftDistance() - this.targetDistance) < robotconfig.drive_auto_position_tolerence) 
+    //     && (Math.abs(Robot.drivetrain.getLeftVelocity()) < robotconfig.drive_auto_velocity_tolerence) 
+    //     && (Math.abs(Robot.drivetrain.getRightVelocity()) < robotconfig.drive_auto_position_tolerence))
+    //     || (isTimedOut()) ){
+    //   return true;}
+    // else { return false; }
+    return false;
   }
 
   // Called once after isFinished returns true
