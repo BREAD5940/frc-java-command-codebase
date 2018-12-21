@@ -69,7 +69,7 @@ public class RobotConfig {
   /**
    * Elevator configuration
    */
-  public static final double elevator_effective_diameter = 1; // TODO fix elevator_effective_diameter!!!! (units must be inches)
+  public static final double elevator_effective_diameter = 1.273; // TODO fix elevator_effective_diameter!!!! (units must be inches)
   public static final int elevator_minimum_height = 0;
   public static final int elevator_maximum_height = 70; // changed to inches, TODO verify maximum height
 
