@@ -24,6 +24,8 @@ import frc.robot.subsystems.Wrist;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import frc.robot.auto.auto_action_DRIVE;
+
 import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -188,6 +190,7 @@ public class Robot extends TimedRobot {
     // }
     // new auto_action_DRIVE(3, "high", 5, 30);
 
+    new auto_action_DRIVE(15, "high", 5, 30);
 
   }
 
@@ -198,7 +201,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
     
-    drivetrain.test_auto_action_drive(15, startingDistance);
+    
   }
 
   @Override

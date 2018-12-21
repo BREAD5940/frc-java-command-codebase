@@ -8,15 +8,21 @@
 package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 
 
 
-/**
- * Auto action to drive a set distance.
- */
+  /**
+   * auto_action_DRIVE is a basic auto action. It should drive in a straight-ish line, as it uses 
+   * nested PID loops to correct for errors caused by differing coefficients of friction. 
+   * @param distance
+   * @param gear
+   * @param targetSpeed
+   * @param timeout
+   */
 public class auto_action_DRIVE extends Command {
   double targetDistance;
   String gear;
@@ -74,7 +80,7 @@ public class auto_action_DRIVE extends Command {
     // double new_target_pos = currentDistance + targetDistance;
     double forward_speed = Robot.drivetrain.shitty_P_loop(RobotConfig.m_left_position_kp_high, 
       endDistanceLeft, // target distance in feet 
-      getLeftDistance(), 
+      Robot.drivetrain.getLeftDistance(), 
       RobotConfig.drive_auto_forward_velocity_min, 
       RobotConfig.drive_auto_forward_velocity_max);
     double left_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.left_wheel_effective_diameter / 12, RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
@@ -82,12 +88,12 @@ public class auto_action_DRIVE extends Command {
 
     SmartDashboard.putNumber("Forward speed pid output", forward_speed);
     SmartDashboard.putNumber("Raw left speed auto meme", left_speed_raw);
-    SmartDashboard.putNumber("distance setpoint is currently set to",  startDistance + targetDistance);
-    SmartDashboard.putNumber("Current distance setpoint for auto is: ", getLeftDistance());
+    SmartDashboard.putNumber("distance setpoint is currently set to",  startingDistanceLeft + targetDistance);
+    SmartDashboard.putNumber("Current distance setpoint for auto is: ", Robot.drivetrain.getLeftDistance());
 
 
-    setLeftSpeedRaw(left_speed_raw);
-    setRightSpeedRaw(right_speed_raw);
+    Robot.drivetrain.setLeftSpeedRaw(left_speed_raw);
+    Robot.drivetrain.setRightSpeedRaw(right_speed_raw);
   }
 
 
