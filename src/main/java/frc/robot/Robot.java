@@ -43,14 +43,14 @@ public class Robot extends TimedRobot {
   // In the init, they have this instead:
   // 	public static DriveTrain drivetrain;
   // Rather than making a new drivetrain();
-  // TODO does this have anything to do with the weird command errors?
+  // TODO does this have anything to do with the weird command errors? Or what about making it final?
 
   public static boolean arcade_running = false;
-  public static final drivetrain drivetrain = new drivetrain();
-  public static final intake intake = new intake();
-  public static final elevator elevator = new elevator();
-  public static final wrist wrist = new wrist();
-  public static final robotconfig robotconfig = new robotconfig();
+  public static drivetrain drivetrain;// = new drivetrain();
+  public static intake intake;// = new intake();
+  public static elevator elevator;// = new elevator();
+  public static wrist wrist;// = new wrist();
+  public static robotconfig robotconfig;// = new robotconfig();
   public static OI m_oi;
 
   public static double elevator_setpoint = 0;
