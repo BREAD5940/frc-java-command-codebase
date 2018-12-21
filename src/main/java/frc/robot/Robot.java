@@ -37,8 +37,16 @@ import frc.robot.subsystems.*;
  * project.
  */
 public class Robot extends TimedRobot {
+
+  // WARNING see this link:
+  // https://github.com/mr-glt/FRC-2017-Command/blob/master/src/main/java/org/usfirst/frc/team6027/robot/subsystems/DriveTrain.java
+  // In the init, they have this instead:
+  // 	public static DriveTrain drivetrain;
+  // Rather than making a new drivetrain();
+  // TODO does this have anything to do with the weird command errors?
+
   public static boolean arcade_running = false;
-  public static final drivetrain drivetrain  = new drivetrain();
+  public static final drivetrain drivetrain = new drivetrain();
   public static final intake intake = new intake();
   public static final elevator elevator = new elevator();
   public static final wrist wrist = new wrist();
