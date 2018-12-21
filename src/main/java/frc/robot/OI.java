@@ -45,8 +45,11 @@ public class OI {
   public double getTurnAxis(){ return primaryJoystick.getRawAxis(RobotConfig.turn_axis); }
   public double getIntakeAxis(){ return primaryJoystick.getRawAxis(RobotConfig.intakeAxis); }
   public double getOuttakeAxis(){ return primaryJoystick.getRawAxis(RobotConfig.outtakeAxis); }
+  /**
+   * Get intake speed is the difference between intake and outtake axis speeds
+   */
   public double getIntakeSpeed(){ return getIntakeAxis() - getOuttakeAxis(); }
-  public double getElevatorAxis(){ return secondaryJoystick.getRawAxis(RobotConfig.xbox_elevator_axis); }
+  public double getElevatorAxis(){ return secondaryJoystick.getRawAxis(RobotConfig.xbox_elevator_axis) * -1; }
   public double getThrottleAxis() { return secondaryJoystick.getRawAxis(RobotConfig.throttle_elevator_axis); }
 
   // There are a few additional built in buttons you can use. Additionally,

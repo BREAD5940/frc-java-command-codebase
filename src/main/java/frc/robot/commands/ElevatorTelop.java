@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
@@ -11,6 +13,8 @@ import frc.robot.Robot;
  */
 public class ElevatorTelop extends Command {
 
+  double targetHeight;
+
   /** 
    * Requires elevator subsystem
    */
@@ -21,6 +25,7 @@ public class ElevatorTelop extends Command {
   @Override
   protected void initialize() {
     // TODO add logging
+    System.out.println("Elevator telop init!"); 
   }
 
   /**
@@ -28,7 +33,10 @@ public class ElevatorTelop extends Command {
    */
   @Override
   protected void execute() {
-    Robot.elevator.setHeight(Robot.elevator.getElevatorAxisInches());
+    targetHeight = (Robot.elevator.iterativeSetHeight(Robot.m_oi.getElevatorAxis() * 1 ));
+    Robot.elevator.setHeight(targetHeight);//targetHeight);
+    System.out.println("targetHeight: " + targetHeight + " Elevator axis: " 
+      + Robot.m_oi.getElevatorAxis() * 1 + " Get elevator height inches: " + Robot.elevator.getHeight() );
   }
 
   @Override

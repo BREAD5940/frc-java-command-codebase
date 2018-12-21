@@ -114,8 +114,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Fore speed axis value", m_oi.getForwardAxis());
-    SmartDashboard.putNumber("Turn speed axis value", m_oi.getTurnAxis());
+    SmartDashboard.putNumber("get forward axis", m_oi.getForwardAxis());
+    SmartDashboard.putNumber("get turn axis", m_oi.getTurnAxis());
     SmartDashboard.putString("Drivetrain gear", drivetrain.current_gear); 
     // SmartDashboard.putNumber("setVelocityRight output: ", encoderlib.distanceToRaw(12/12, 4096, 6/12) / 10 ); // This *should* return 1 ft/sec to raw/0.1 sec
     SmartDashboard.putNumber("target left speed raw",  
@@ -232,10 +232,10 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
     
-    double target_intake_speed = m_oi.getIntakeSpeed() / 1;
-    // intake.setSpeed(target_intake_speed);
-    intake.talon_left.set(ControlMode.PercentOutput, target_intake_speed);
-    intake.talon_right.set(ControlMode.PercentOutput, -target_intake_speed);
+    // double target_intake_speed = m_oi.getIntakeSpeed() / 1;
+    // // intake.setSpeed(target_intake_speed);
+    // intake.talon_left.set(ControlMode.PercentOutput, target_intake_speed);
+    // intake.talon_right.set(ControlMode.PercentOutput, -target_intake_speed);
 
 
   }

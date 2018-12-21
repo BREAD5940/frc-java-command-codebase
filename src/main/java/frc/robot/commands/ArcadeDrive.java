@@ -34,13 +34,15 @@ public class ArcadeDrive extends Command {
   @Override
   protected void execute() {
     Robot.drivetrain.arcadeDriveMethod(Robot.m_oi.getForwardAxis(), Robot.m_oi.getTurnAxis());
-    System.out.println("arcade drive command execute");
+    // Robot.drivetrain.arcadeDriveMethod(0,0.1);
+
+    // System.out.println("arcade drive command execute");
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    System.out.println("we aint done chief");
+    // System.out.println("we aint done chief");
     return false;
 
   }
