@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import frc.robot.Robot;
 import frc.robot.lib.EncoderLib;
 import frc.robot.RobotConfig;
-
+import frc.robot.auto.auto_action_DRIVE;
 import frc.robot.commands.ArcadeDrive;
 // import frc.robot.commands.stick_drive;
 
@@ -217,6 +217,6 @@ public class DriveTrain extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     setDefaultCommand(new ArcadeDrive());
-    // setDefaultCommand(new stick_drive());
+    // setDefaultCommand(new auto_action_DRIVE(5, "high", 5, 30));
   }
 }

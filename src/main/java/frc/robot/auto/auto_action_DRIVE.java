@@ -72,6 +72,8 @@ public class auto_action_DRIVE extends Command {
     if (gear == "low") { Robot.drivetrain.setLowGear(); forward_kp = RobotConfig.m_left_position_kp_low; }
     else if (gear == "high") { Robot.drivetrain.setHighGear(); forward_kp = RobotConfig.m_left_position_kp_high; }
     else { throw new IllegalArgumentException("Cannot set gear to " + this.gear + "!" ); }
+
+    System.out.println("Auto action drive init!");
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -94,12 +96,17 @@ public class auto_action_DRIVE extends Command {
 
     Robot.drivetrain.setLeftSpeedRaw(left_speed_raw);
     Robot.drivetrain.setRightSpeedRaw(right_speed_raw);
+
+    
+    System.out.println("target forward speed: " + forward_speed);
+    System.out.println("Left speed raw/right speed raw: " + left_speed_raw + "/" + right_speed_raw);
   }
 
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    System.out.println("We aint done kiddo");
     // if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.targetDistance) < RobotConfig.drive_auto_position_tolerence) 
     //     && (Math.abs(Robot.drivetrain.getLeftDistance() - this.targetDistance) < RobotConfig.drive_auto_position_tolerence) 
     //     && (Math.abs(Robot.drivetrain.getLeftVelocity()) < RobotConfig.drive_auto_velocity_tolerence) 
