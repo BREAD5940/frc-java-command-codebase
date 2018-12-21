@@ -66,14 +66,16 @@ public class encoderlib extends Subsystem {
     }
 
     /** Converts a distance to raw position (delta or absolute)
-     * @param distance
-     * @param unitsPerRotation
-     * @param effectiveDiam
-     * @return rawPosition
-     * 
+     * @param distance in feet
+     * @param effectiveDiam in feet
+     * @param unitsPerRotation in raw encoder units
+     * @return rawPosition in feet
      */
-    public static double distanceToRaw(double distance, double unitsPerRotation, double effectiveDiam) {
-        return rotationsToRaw(distanceToRotations(distance, effectiveDiam), unitsPerRotation);
+    public static double distanceToRaw(double distance, double effectiveDiam, double unitsPerRotation) {
+        
+        double rawDistance = ((distance) / (Math.PI * effectiveDiam)) * unitsPerRotation;
+        
+        return rawDistance;
     }
 
     /**

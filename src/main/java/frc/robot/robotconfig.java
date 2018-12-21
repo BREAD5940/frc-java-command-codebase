@@ -41,21 +41,30 @@ public class robotconfig {
    * Robot configuration
    */
   // TODO make this count towards drivetrain PID (as a cap on velocity?)
-  public static final double max_forward_speed_high = 1; // Feet per second forward velocity
-  public static final double max_turn_speed_high = 1; // Max turn speed in degrees per second
-  public static final double max_forward_speed_low = 1; // Feet per second forward velocity
-  public static final double max_turn_speed_low = 1; // Max turn speed in degrees per second
+  public static final double left_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
+  public static final double right_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
+  // Set speeds
+  public static final double max_forward_speed_high = 4; // Feet per second forward velocity
+  public static final double max_turn_speed_high = 4; // Max turn speed in degrees per second
+  public static final double max_forward_speed_low = 4; // Feet per second forward velocity
+  public static final double max_turn_speed_low = 4; // Max turn speed in degrees per second
+  // Auto stuff
   public static final double drive_auto_position_tolerence = 1; // units are in incehs
   public static final double drive_auto_angle_tolerence = 1; // units are in degrees
   public static final double drive_auto_velocity_tolerence = 0.5; // units are in inches per second
+  public static final double drive_auto_straight_angle_tolerence = 2; // units are in degrees
+  public static final double drive_auto_forward_velocity_max = 4; // feet per second target for driving auto
+  public static final double drive_auto_forward_velocity_min = -2; // minimum speed for auto drive in ft per sec
+  public static final double drive_auto_turn_minimum_weight = -0.1;
+  public static final double drive_auto_turn_maximum_weight = 0.1;
   public static final double drive_auto_low_gear_speed = 2; // units are feet per second
   public static final double drive_auto_high_speed = 2; // units are feet per second
-  public static final double left_wheel_effective_diameter = 6 / 12; // units are in feet, TODO tune this!
-  public static final double right_wheel_effective_diameter = 6 / 12; // units are in feet, TODO tune this!
+  // Auto PID
+  public static final double drive_auto_turn_kp = 1; //TODO make this a measured value!
 
   // Encoder stuff, dunno where else to put this
 	// public static final double VELOCITY_PULSES_PER_ROTATION = 409.6f;
-  public static final double POSITION_PULSES_PER_ROTATION = 4096f;
+  public static final double POSITION_PULSES_PER_ROTATION = 4096;
   
   /**
    * Elevator configuration
@@ -77,17 +86,17 @@ public class robotconfig {
   public static final double m_left_velocity_kf_low =  0;
   public static final int m_left_velocity_izone_low = 800;
   // public static final double m_left_velocity_max_integral_low = 500000;
-  public static final double m_left_position_kp_low = 0.15;
+  public static final double m_left_position_kp_low = 0.4;
   public static final double m_left_position_ki_low = 0;
-  public static final double m_left_position_kd_low = 20;
-  public static final double m_left_position_kf_low = 0.15;
-  public static final int m_left_position_izone_low = 300;
+  public static final double m_left_position_kd_low = 0;
+  public static final double m_left_position_kf_low = 0.4;
+  public static final int m_left_position_izone_low = 800;
   // public static final double m_left_position_max_integral_low = 1;
-  public static final double m_left_velocity_kp_high = 0.2;
-  public static final double m_left_velocity_ki_high = 0.3;
+  public static final double m_left_velocity_kp_high = 0.4;
+  public static final double m_left_velocity_ki_high = 0;
   public static final double m_left_velocity_kd_high = 0;
-  public static final double m_left_velocity_kf_high = 0;
-  public static final int m_left_velocity_izone_high = 810;
+  public static final double m_left_velocity_kf_high = 0.4;
+  public static final int m_left_velocity_izone_high = 800;
   // public static final double m_left_velocity_max_integral_high = 300;
   public static final double m_left_position_kp_high = 0.15;
   public static final double m_left_position_ki_high = 0;

@@ -23,6 +23,12 @@ public class auto_action_DRIVE extends Command {
   double targetSpeed;
   boolean isDone = false;
   double timeout;
+  double forward_kp;
+
+  // things that change
+  double forward_speed;
+  double left_speed_raw;
+  double right_speed_raw;
 
   /**
    * auto_action_DRIVE is a basic auto action. It should drive in a straight-ish line, as it uses 
@@ -51,17 +57,26 @@ public class auto_action_DRIVE extends Command {
 
     setTimeout(timeout); // set the timeout
 
-    if (gear == "low") { Robot.drivetrain.setLowGear(); }
-    else if (gear == "high") { Robot.drivetrain.setHighGear(); }
+    // TODO set this kp based on each motor, or standardize it in robotconfig for both
+    if (gear == "low") { Robot.drivetrain.setLowGear(); forward_kp = robotconfig.m_left_position_kp_low; }
+    else if (gear == "high") { Robot.drivetrain.setHighGear(); forward_kp = robotconfig.m_left_position_kp_high; }
     else { throw new IllegalArgumentException("Cannot set gear to " + this.gear + " !" ); }
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    
+    forward_speed = Robot.drivetrain.shitty_P_loop(forward_kp, 
+      targetDistance, 
+      Robot.drivetrain.getLeftDistance(), 
+      robotconfig.drive_auto_forward_velocity_min, 
+      robotconfig.drive_auto_forward_velocity_max);
+    double left_speed_raw = encoderlib.distanceToRaw(forward_speed, robotconfig.left_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
+    double right_speed_raw = encoderlib.distanceToRaw(forward_speed, robotconfig.right_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
 
-    
+    Robot.drivetrain.setLeftSpeedRaw(left_speed_raw);
+    Robot.drivetrain.setRightSpeedRaw(right_speed_raw);
+
   }
 
   // Make this return true when this Command no longer needs to run execute()

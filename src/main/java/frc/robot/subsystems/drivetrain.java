@@ -71,6 +71,9 @@ public class drivetrain extends Subsystem {
       m_right_talon.configSetParameter(ParamEnum.eSampleVelocityPeriod, closedLoopTimeMs, 0x00, 0,30);
       m_right_talon.configSetParameter(ParamEnum.eSampleVelocityPeriod, closedLoopTimeMs, 0x00, 1, 30);
       
+      m_left_talon.setInverted(true);
+      s_left_talon.setInverted(true);
+
       // public String gear_state;
 
       // Robot.shifter.set(DoubleSolenoid.Value.kForward);
@@ -104,11 +107,7 @@ public class drivetrain extends Subsystem {
       this.m_right_talon.config_IntegralZone(0, robotconfig.m_right_velocity_izone_high, 30);
       // this.m_right_talon.configMaxIntegralAccumulator(0, robotconfig.m_right_velocity_max_integral_high, 0);
       
-      m_left_talon.setSelectedSensorPosition(0, 0, 10);
-      m_right_talon.setSelectedSensorPosition(0, 0, 10);
-      m_left_talon.setInverted(true);
-      s_left_talon.setInverted(true);
-
+      // Trigger solenoids
       Robot.drivetrain_shift_high();
       current_gear = "high";
     }
@@ -128,51 +127,48 @@ public class drivetrain extends Subsystem {
       this.m_right_talon.config_IntegralZone(0, robotconfig.m_right_velocity_izone_low, 0);
       // this.m_right_talon.configMaxIntegralAccumulator(0, robotconfig.m_right_velocity_max_integral_low, 0);
   
+      // Trigger solenoids
       Robot.drivetrain_shift_low();
 
       current_gear = "low";
     }
 
-    public double getLeftDistance() {return encoderlib.rawToDistance(this.m_left_talon.getSelectedSensorPosition(0), 
-      robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter); }
-    public double getRightDistance() {return encoderlib.rawToDistance(this.m_right_talon.getSelectedSensorPosition(0), 
-      robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter);}
-    public double getLeftVelocity() {return encoderlib.rawToDistance(this.m_left_talon.getSelectedSensorVelocity(0) * 10, //Mulitply by 10 because units are per 100ms 
-      robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter);}
-    public double getRightVelocity() {return encoderlib.rawToDistance(this.m_right_talon.getSelectedSensorVelocity(0) * 10, 
-      robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter);}
+  public double getLeftDistance() {return encoderlib.rawToDistance(this.m_left_talon.getSelectedSensorPosition(0), 
+    robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter); }
+  public double getRightDistance() {return encoderlib.rawToDistance(this.m_right_talon.getSelectedSensorPosition(0), 
+    robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter);}
+  public double getLeftVelocity() {return encoderlib.rawToDistance(this.m_left_talon.getSelectedSensorVelocity(0) * 10, //Mulitply by 10 because units are per 100ms 
+    robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter);}
+  public double getRightVelocity() {return encoderlib.rawToDistance(this.m_right_talon.getSelectedSensorVelocity(0) * 10, 
+    robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter);}
 
     /**
-     * Set a velocity setpoint for the left drivetrain talons
-     * @param speed in feet per second
-     * @return doesn't return anything, but sets the left talon speed to the raw conversion of speed.
+     * Set the target left speed. Units are in raw units.
+     * @param speed in raw units per 100ms
      */
-    public void setVelocityLeft(double speed) {
-      double rawSpeedLeft = encoderlib.distanceToRaw(speed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter) / 10; 
-      m_left_talon.set(ControlMode.Velocity, rawSpeedLeft);// Divide by 10, because the Talon expects native units per 100ms, not native units per second
-    }
-
+  public void setLeftSpeedRaw(double speed){
+    m_left_talon.set(ControlMode.Velocity, speed);
+  }
     /**
-     * Set a velocity setpoint for the right drivetrain talons
-     * @param speed in feet per second
-     * @return doesn't return anything, but sets the right talon speed to the raw conversion of speed.
+     * Set the target right speed. Units are in raw units.
+     * @param speed in raw units per 100ms
      */
-    public void setVelocityRight(double speed) {
-      double rawSpeedRight = encoderlib.distanceToRaw(speed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter) / 10; 
-      m_right_talon.set(ControlMode.Velocity, rawSpeedRight);// Divide by 10, because the Talon expects native units per 100ms, not native units per second
+    public void setRightSpeedRaw(double speed){
+      m_right_talon.set(ControlMode.Velocity, speed);
     }
+  
 
+  public void arcadeDriveMethod(double forwardspeed, double turnspeed){
+    // double forwardspeed = Robot.m_oi.getForwardAxis() * -1;
+    // double turnspeed = Robot.m_oi.getTurnAxis();
 
-  public void arcadeDriveMethod(){
-    double forwardspeed = Robot.m_oi.getForwardAxis() * -1;
-    double turnspeed = Robot.m_oi.getTurnAxis();
 
     if ((forwardspeed < 0.02) && (forwardspeed > -0.02)) { forwardspeed = 0; }
     if ((turnspeed < 0.01) && (turnspeed > -0.01)) { turnspeed = 0; }
     
     if (robotconfig.driving_squared) {
-    forwardspeed = forwardspeed * Math.abs(forwardspeed);
-    turnspeed = turnspeed * Math.abs(turnspeed);
+      forwardspeed = forwardspeed * Math.abs(forwardspeed);
+      turnspeed = turnspeed * Math.abs(turnspeed);
     }
     if (Robot.drivetrain.current_gear == "high"){
         forwardspeed = forwardspeed * robotconfig.max_forward_speed_high;
@@ -181,27 +177,35 @@ public class drivetrain extends Subsystem {
         forwardspeed = forwardspeed * robotconfig.max_forward_speed_low;
         turnspeed = turnspeed * robotconfig.max_turn_speed_low;}
 
-    double leftspeed = -forwardspeed + turnspeed;
-    double rightspeed = -forwardspeed - turnspeed;
+    double leftspeed = forwardspeed + turnspeed; // units are in feet
+    double rightspeed = forwardspeed - turnspeed;
 
-    SmartDashboard.putNumber("Left wheels feet/sec setpoint: ", leftspeed);
-    SmartDashboard.putNumber("Right wheels feet/sec setpoint: ", rightspeed);
+    /**
+     * Set left speed raw in feet per 100ms
+     */
+    double leftspeedraw = encoderlib.distanceToRaw(leftspeed, robotconfig.left_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;//  ((leftspeed) / (Math.PI * robotconfig.left_wheel_effective_diameter / 12)) * robotconfig.POSITION_PULSES_PER_ROTATION / 10;
+    // divide by 10 becuase the talons want units per 100ms
+    double rightspeedraw = encoderlib.distanceToRaw(rightspeed, robotconfig.right_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
 
-    double leftspeedraw = encoderlib.distanceToRaw(leftspeed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter);
-    double rightspeedraw = encoderlib.distanceToRaw(rightspeed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.right_wheel_effective_diameter);
+    setLeftSpeedRaw(leftspeedraw);
+    setRightSpeedRaw(rightspeedraw);
 
-    SmartDashboard.putNumber("Left wheels raw setpoint: ", leftspeedraw);
-    SmartDashboard.putNumber("Right wheels raw setpoint: ", rightspeedraw);
+  }
 
-    // setVelocityLeft(leftspeed*100);
-    // setVelocityRight(rightspeed*100);
-
-    m_left_talon.set(ControlMode.Velocity, leftspeedraw);
-    m_right_talon.set(ControlMode.Velocity, rightspeedraw);
-
-    // m_left_talon.set(ControlMode.PercentOutput, 0.3);
-    // m_right_talon.set(ControlMode.PercentOutput, 0.3);
-    // Robot.arcade_running = false;
+  /**
+   * Shitty P loop. Literally a P loop. Super boring.
+   * @param kp gain
+   * @param setpoint
+   * @param measured sensor measurement
+   * @param minimum_output of the controller
+   * @param maximum_output of the controller
+   */
+  public double shitty_P_loop(double kp, double setpoint, double measured, double minimim_output, double maximum_output) {
+    double error = measured - setpoint;
+    double output = error * kp;
+    if ( output > maximum_output ) { output = maximum_output; }
+    if ( output < minimim_output ) { output = minimim_output; }
+    return output;
   }
 
     

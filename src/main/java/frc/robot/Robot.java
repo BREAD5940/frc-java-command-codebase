@@ -18,6 +18,9 @@ import frc.robot.commands.arcade_drive;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import edu.wpi.first.wpilibj.SPI;
+
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 // import frc.robot.commands.arcade_drive;
@@ -46,6 +49,9 @@ public class Robot extends TimedRobot {
   private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 7, 3);
   private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 0, 6);
 
+  public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+  
+
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
@@ -54,6 +60,7 @@ public class Robot extends TimedRobot {
   public static void intake_close(){ intakeDoubleSolenoid.set(DoubleSolenoid.Value.kForward); }
   public static void intake_open(){ intakeDoubleSolenoid.set(DoubleSolenoid.Value.kReverse); }
 
+  public static double rawSpeedRight;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -68,6 +75,7 @@ public class Robot extends TimedRobot {
     drivetrain.init();
     elevator.init();
     wrist.init();
+    gyro.reset();
 
     // m_chooser.addDefault("Default Auto", new ExampleCommand());
     // chooser.addObject("My Auto", new MyAutoCommand());
@@ -89,8 +97,11 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putNumber("Fore speed axis value", m_oi.getForwardAxis());
     SmartDashboard.putNumber("Turn speed axis value", m_oi.getTurnAxis());
-    SmartDashboard.putString("Drivetrain gear", drivetrain.current_gear);
-    // SmartDashboard.putNumber("5 feet per second is this many raw: ", encoderlib.distanceToRaw(5, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter));
+    SmartDashboard.putString("Drivetrain gear", drivetrain.current_gear); 
+    // SmartDashboard.putNumber("setVelocityRight output: ", encoderlib.distanceToRaw(12/12, 4096, 6/12) / 10 ); // This *should* return 1 ft/sec to raw/0.1 sec
+    SmartDashboard.putNumber("target left speed raw",  
+      ((m_oi.getForwardAxis() * 4) / (Math.PI * 6 / 12)) * 4096 / 10
+    );
 
     SmartDashboard.putNumber("Left talon speed", drivetrain.m_left_talon.getSelectedSensorVelocity(0));
     SmartDashboard.putNumber("Left talon error", drivetrain.m_left_talon.getClosedLoopError(0));
@@ -111,6 +122,8 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Wrist error", elevator.elevator_talon.getClosedLoopError(0));
     // SmartDashboard.putNumber("Wrist angle (deg)", wrist.getAngle());
     // SmartDashboard.putNumber("Wrist angular velocity (deg/s)", wrist.getAngularVelocity());
+
+    SmartDashboard.putNumber("Current Gyro angle", gyro.getAngle());
     
   }
 
@@ -220,7 +233,8 @@ public class Robot extends TimedRobot {
     // elevator_setpoint = elevator_setpoint+throttle.getRawAxis(1)*10;
     // elevator.setHeight(elevator_setpoint);
 
-    drivetrain.arcadeDriveMethod();
+    drivetrain.arcadeDriveMethod(m_oi.getForwardAxis(),m_oi.getTurnAxis());
+    // drivetrain.m_left_talon.set(ControlMode.PercentOutput, 1);
 
   }
 
