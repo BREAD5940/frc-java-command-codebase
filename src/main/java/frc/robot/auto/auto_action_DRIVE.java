@@ -9,7 +9,7 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.robotconfig;
+import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 
 
@@ -50,16 +50,16 @@ public class auto_action_DRIVE extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    double targetSpeedRaw = EncoderLib.distanceToRaw(targetSpeed, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter) ;
+    double targetSpeedRaw = EncoderLib.distanceToRaw(targetSpeed, RobotConfig.POSITION_PULSES_PER_ROTATION, RobotConfig.left_wheel_effective_diameter) ;
     double startingDistanceLeft = Robot.drivetrain.getLeftDistance();
     double startingDistanceRight = Robot.drivetrain.getRightDistance();
-    double endDistanceLeft = EncoderLib.distanceToRaw(targetDistance, robotconfig.POSITION_PULSES_PER_ROTATION, robotconfig.left_wheel_effective_diameter);
+    double endDistanceLeft = EncoderLib.distanceToRaw(targetDistance, RobotConfig.POSITION_PULSES_PER_ROTATION, RobotConfig.left_wheel_effective_diameter);
 
     setTimeout(timeout); // set the timeout
 
     // TODO set this kp based on each motor, or standardize it in robotconfig for both
-    if (gear == "low") { Robot.drivetrain.setLowGear(); forward_kp = robotconfig.m_left_position_kp_low; }
-    else if (gear == "high") { Robot.drivetrain.setHighGear(); forward_kp = robotconfig.m_left_position_kp_high; }
+    if (gear == "low") { Robot.drivetrain.setLowGear(); forward_kp = RobotConfig.m_left_position_kp_low; }
+    else if (gear == "high") { Robot.drivetrain.setHighGear(); forward_kp = RobotConfig.m_left_position_kp_high; }
     else { throw new IllegalArgumentException("Cannot set gear to " + this.gear + " !" ); }
   }
 
@@ -69,10 +69,10 @@ public class auto_action_DRIVE extends Command {
     forward_speed = Robot.drivetrain.shitty_P_loop(forward_kp, 
       targetDistance, 
       Robot.drivetrain.getLeftDistance(), 
-      robotconfig.drive_auto_forward_velocity_min, 
-      robotconfig.drive_auto_forward_velocity_max);
-    double left_speed_raw = EncoderLib.distanceToRaw(forward_speed, robotconfig.left_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
-    double right_speed_raw = EncoderLib.distanceToRaw(forward_speed, robotconfig.right_wheel_effective_diameter / 12, robotconfig.POSITION_PULSES_PER_ROTATION) / 10;
+      RobotConfig.drive_auto_forward_velocity_min, 
+      RobotConfig.drive_auto_forward_velocity_max);
+    double left_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.left_wheel_effective_diameter / 12, RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
+    double right_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.right_wheel_effective_diameter / 12, RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
 
     Robot.drivetrain.setLeftSpeedRaw(600);//left_speed_raw);
     Robot.drivetrain.setRightSpeedRaw(600);//right_speed_raw);
@@ -83,10 +83,10 @@ public class auto_action_DRIVE extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    // if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.targetDistance) < robotconfig.drive_auto_position_tolerence) 
-    //     && (Math.abs(Robot.drivetrain.getLeftDistance() - this.targetDistance) < robotconfig.drive_auto_position_tolerence) 
-    //     && (Math.abs(Robot.drivetrain.getLeftVelocity()) < robotconfig.drive_auto_velocity_tolerence) 
-    //     && (Math.abs(Robot.drivetrain.getRightVelocity()) < robotconfig.drive_auto_position_tolerence))
+    // if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.targetDistance) < RobotConfig.drive_auto_position_tolerence) 
+    //     && (Math.abs(Robot.drivetrain.getLeftDistance() - this.targetDistance) < RobotConfig.drive_auto_position_tolerence) 
+    //     && (Math.abs(Robot.drivetrain.getLeftVelocity()) < RobotConfig.drive_auto_velocity_tolerence) 
+    //     && (Math.abs(Robot.drivetrain.getRightVelocity()) < RobotConfig.drive_auto_position_tolerence))
     //     || (isTimedOut()) ){
     //   return true;}
     // else { return false; }

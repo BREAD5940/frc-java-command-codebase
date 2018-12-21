@@ -9,7 +9,7 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.robotconfig;
+import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 
 
@@ -81,11 +81,11 @@ public class auto_action_DRIVE_STRAIGHT extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.distance) < robotconfig.drive_auto_position_tolerence) 
-      // && (Math.abs(Robot.drivetrain.getLeftDistance() - this.distance) < robotconfig.drive_auto_position_tolerence) 
-      && (Math.abs(Robot.drivetrain.getLeftVelocity()) < robotconfig.drive_auto_velocity_tolerence) 
-      && (Math.abs(Robot.drivetrain.getRightVelocity()) < robotconfig.drive_auto_position_tolerence)
-      && (Math.abs(target_gyro_angle - current_angle) < robotconfig.drive_auto_straight_angle_tolerence ))
+    if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.distance) < RobotConfig.drive_auto_position_tolerence) 
+      // && (Math.abs(Robot.drivetrain.getLeftDistance() - this.distance) < RobotConfig.drive_auto_position_tolerence) 
+      && (Math.abs(Robot.drivetrain.getLeftVelocity()) < RobotConfig.drive_auto_velocity_tolerence) 
+      && (Math.abs(Robot.drivetrain.getRightVelocity()) < RobotConfig.drive_auto_position_tolerence)
+      && (Math.abs(target_gyro_angle - current_angle) < RobotConfig.drive_auto_straight_angle_tolerence ))
       || (isTimedOut()) 
     ){ return true; }
     else { return false; }

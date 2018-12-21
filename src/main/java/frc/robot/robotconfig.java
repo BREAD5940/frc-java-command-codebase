@@ -1,6 +1,6 @@
 package frc.robot;
 
-public class robotconfig {
+public class RobotConfig {
 
   /**
    * Joystick configuration

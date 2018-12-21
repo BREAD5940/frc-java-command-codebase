@@ -51,11 +51,11 @@ public class Robot extends TimedRobot {
   // TODO does this have anything to do with the weird command errors? Or what about making it final?
 
   public static boolean arcade_running = false;
-  public static DriveTrain drivetrain; //= new drivetrain();
-  public static Intake intake;// = new intake();
-  public static Elevator elevator;// = new elevator();
-  public static Wrist wrist;// = new wrist();
-  public static robotconfig robotconfig = new robotconfig();
+  public static DriveTrain drivetrain = new DriveTrain();
+  public static Intake intake = new Intake();
+  public static Elevator elevator = new Elevator();
+  public static Wrist wrist = new Wrist();
+  public static RobotConfig robotconfig = new RobotConfig();
   public static OI m_oi;
 
   public static double elevator_setpoint = 0;
@@ -232,34 +232,11 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
     
-    /**
-     * Update the arcade drivetrain method
-     */
-
-    // new arcade_drive(m_oi.getForwardAxis(), m_oi.getTurnAxis());
-    // drivetrain.m_left_talon.set(ControlMode.PercentOutput, 0.25);
-    // drivetrain.m_right_talon.set(ControlMode.PercentOutput, 0.25);
-
-    // drivetrain_shift_low();
-    // drivetrain_shift_high();
-    
-
     double target_intake_speed = m_oi.getIntakeSpeed() / 1;
     // intake.setSpeed(target_intake_speed);
     intake.talon_left.set(ControlMode.PercentOutput, target_intake_speed);
     intake.talon_right.set(ControlMode.PercentOutput, -target_intake_speed);
 
-    // elevator.setPercent(target_intake_speed);
-
-    /**
-     * Update the elevator PID method
-     */
-    // elevator_setpoint = elevator_setpoint+throttle.getRawAxis(1)*10;
-    // elevator.setHeight(elevator_setpoint);
-
-    // drivetrain.arcadeDriveMethod(m_oi.getForwardAxis(),m_oi.getTurnAxis());
-
-    // drivetrain.m_left_talon.set(ControlMode.PercentOutput, 1);
 
   }
 

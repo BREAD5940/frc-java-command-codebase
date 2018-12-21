@@ -2,15 +2,15 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.robotconfig;
+import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 
 public class auto_action_WRIST extends Command {
     boolean wait_for_wrist;
     double target_angle;
     boolean am_i_done = false;
-    double position_tolerence = EncoderLib.degreesToRaw(robotconfig.wrist_position_tolerence,robotconfig.POSITION_PULSES_PER_ROTATION);
-    double velocity_tolerence = EncoderLib.degreesToRaw(robotconfig.wrist_velocity_tolerence, robotconfig.POSITION_PULSES_PER_ROTATION);   // TODO verify this behavior, maybe omit for now?
+    double position_tolerence = EncoderLib.degreesToRaw(RobotConfig.wrist_position_tolerence,RobotConfig.POSITION_PULSES_PER_ROTATION);
+    double velocity_tolerence = EncoderLib.degreesToRaw(RobotConfig.wrist_velocity_tolerence, RobotConfig.POSITION_PULSES_PER_ROTATION);   // TODO verify this behavior, maybe omit for now?
 
     public auto_action_WRIST(double target_angle, boolean wait_for_wrist) {
     this.wait_for_wrist = wait_for_wrist;
