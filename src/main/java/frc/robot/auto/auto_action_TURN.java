@@ -5,6 +5,8 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+// TODO make this actually work
+
 package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.Command;

@@ -30,8 +30,8 @@ public class Intake extends Subsystem {
  * @param double speed
  */
   public void setSpeed(double speed) {
-    // talon_left.set(ControlMode.PercentOutput, speed);
-    // talon_right.set(ControlMode.PercentOutput, speed);
+    talon_left.set(ControlMode.PercentOutput, speed);
+    talon_right.set(ControlMode.PercentOutput, speed);
     SmartDashboard.putNumber("Intake speed setpoint", speed);
   }
 
@@ -47,5 +47,6 @@ public class Intake extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
+    setDefaultCommand(new RunIntake());
   }
 }

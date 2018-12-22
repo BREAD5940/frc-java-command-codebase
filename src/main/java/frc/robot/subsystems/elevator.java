@@ -53,22 +53,23 @@ public class Elevator extends Subsystem {
   }
 
 
+
   /**
    * Set the elevator height, in inches
    * @param height in inches
    */
   public void setHeight(double height) {
-    if(height>raw_max_height){
-      height = raw_max_height;//reset to maximum if too high
-    }else if (height<0){
-      height = 0;
+    if(height>RobotConfig.elevator_maximum_height){
+      height = RobotConfig.elevator_maximum_height;//reset to maximum if too high
+    }else if (height<RobotConfig.elevator_minimum_height){
+      height = RobotConfig.elevator_minimum_height;
     }
       //  however you may want to consider catching errors like elevator below minimum height, or elevator above maximum height, and allowing the elevator to move
     elevator_talon.set(
       ControlMode.Position, EncoderLib.distanceToRaw(
         height, 
-        RobotConfig.POSITION_PULSES_PER_ROTATION, 
-        RobotConfig.elevator_effective_diameter));
+        RobotConfig.elevator_effective_diameter, 
+        RobotConfig.POSITION_PULSES_PER_ROTATION));
   }
 
   public void setPercent(double percent){
@@ -84,14 +85,22 @@ public class Elevator extends Subsystem {
       elevator_talon.getSelectedSensorPosition(0), 
       RobotConfig.POSITION_PULSES_PER_ROTATION, 
       RobotConfig.elevator_effective_diameter);
-    // return inches;
-    return elevator_talon.getSelectedSensorPosition(0);
+    return inches;
+    // return elevator_talon.getSelectedSensorPosition(0);
   }
 
+  /**
+   * Iteratively control the height of the elevator
+   * a la an Xbox controller axis. Sets the height to current height
+   * plus a delta.
+   */
+  public double iterativeSetHeight(double delta) {
+    return delta + getHeight();
+  }
 
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new ElevatorTelop());
+    setDefaultCommand(new ElevatorTelop());
   }
 }

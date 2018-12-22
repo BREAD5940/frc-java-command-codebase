@@ -16,7 +16,7 @@ public class RobotConfig {
   public static final int intakeOpen = xboxmap.Buttons.LB_BUTTON;
   public static final int intakeClose = xboxmap.Buttons.RB_BUTTON;
   public static final int secondary_joystick_port = 1;
-  public static final int xbox_elevator_axis = 2; // TODO fix elevator axis for xbox
+  public static final int xbox_elevator_axis = 1; // TODO fix elevator axis for xbox
   public static final int throttle_elevator_axis = 2; // TODO set this axis correctly!
   public static final double throttle_minimum_value = 0; // TODO fix elevator minimum height!
   public static final double throttle_maximum_value = 1; // TODO fix elevator maximum height
@@ -69,7 +69,7 @@ public class RobotConfig {
   /**
    * Elevator configuration
    */
-  public static final double elevator_effective_diameter = 1; // TODO fix elevator_effective_diameter!!!! (units must be inches)
+  public static final double elevator_effective_diameter = 1.27 * 1.6; // TODO fix elevator_effective_diameter!!!! (units must be inches)
   public static final int elevator_minimum_height = 0;
   public static final int elevator_maximum_height = 70; // changed to inches, TODO verify maximum height
 

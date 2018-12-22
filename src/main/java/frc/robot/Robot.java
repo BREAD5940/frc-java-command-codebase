@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,12 +18,15 @@ import frc.robot.commands.ArcadeDrive;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
+import frc.robot.auto.auto_action_SQUARE;
 // import frc.robot.subsystems.intake;
 import frc.robot.subsystems.Wrist;
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+
+import frc.robot.auto.auto_action_DRIVE;
 
 import edu.wpi.first.wpilibj.SPI;
 
@@ -98,6 +102,7 @@ public class Robot extends TimedRobot {
     startingDistance = drivetrain.getLeftDistance();
 
     m_chooser.addDefault("Default Auto", new auto_action_DRIVE(3, "high", 5, 30));
+    m_chooser.addObject("Square Auto", new auto_action_SQUARE(2));
     // chooser.addObject("My Auto", new MyAutoCommand());
 
 
@@ -114,8 +119,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    SmartDashboard.putNumber("Fore speed axis value", m_oi.getForwardAxis());
-    SmartDashboard.putNumber("Turn speed axis value", m_oi.getTurnAxis());
+    SmartDashboard.putNumber("get forward axis", m_oi.getForwardAxis());
+    SmartDashboard.putNumber("get turn axis", m_oi.getTurnAxis());
     SmartDashboard.putString("Drivetrain gear", drivetrain.current_gear); 
     // SmartDashboard.putNumber("setVelocityRight output: ", encoderlib.distanceToRaw(12/12, 4096, 6/12) / 10 ); // This *should* return 1 ft/sec to raw/0.1 sec
     SmartDashboard.putNumber("target left speed raw",  
@@ -188,6 +193,7 @@ public class Robot extends TimedRobot {
     // }
     // new auto_action_DRIVE(3, "high", 5, 30);
 
+    new auto_action_DRIVE(15, "high", 5, 30);
 
   }
 
@@ -198,7 +204,7 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
     
-    drivetrain.test_auto_action_drive(15, startingDistance);
+    
   }
 
   @Override
@@ -232,10 +238,10 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
     
-    double target_intake_speed = m_oi.getIntakeSpeed() / 1;
-    // intake.setSpeed(target_intake_speed);
-    intake.talon_left.set(ControlMode.PercentOutput, target_intake_speed);
-    intake.talon_right.set(ControlMode.PercentOutput, -target_intake_speed);
+    // double target_intake_speed = m_oi.getIntakeSpeed() / 1;
+    // // intake.setSpeed(target_intake_speed);
+    // intake.talon_left.set(ControlMode.PercentOutput, target_intake_speed);
+    // intake.talon_right.set(ControlMode.PercentOutput, -target_intake_speed);
 
 
   }

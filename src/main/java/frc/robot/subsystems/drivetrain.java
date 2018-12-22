@@ -211,26 +211,6 @@ public class DriveTrain extends Subsystem {
     return output;
   }
 
-    
-  public void test_auto_action_drive(double targetDistance, double startDistance) {
-    // double new_target_pos = currentDistance + targetDistance;
-    double forward_speed = Robot.drivetrain.shitty_P_loop(RobotConfig.m_left_position_kp_high, 
-      startDistance + targetDistance, // target distance in feet 
-      getLeftDistance(), 
-      RobotConfig.drive_auto_forward_velocity_min, 
-      RobotConfig.drive_auto_forward_velocity_max);
-    double left_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.left_wheel_effective_diameter / 12, RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
-    double right_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.right_wheel_effective_diameter / 12, RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
-
-    SmartDashboard.putNumber("Forward speed pid output", forward_speed);
-    SmartDashboard.putNumber("Raw left speed auto meme", left_speed_raw);
-    SmartDashboard.putNumber("distance setpoint is currently set to",  startDistance + targetDistance);
-    SmartDashboard.putNumber("Current distance setpoint for auto is: ", getLeftDistance());
-
-
-    setLeftSpeedRaw(left_speed_raw);
-    setRightSpeedRaw(right_speed_raw);
-  }
 
 
   @Override
