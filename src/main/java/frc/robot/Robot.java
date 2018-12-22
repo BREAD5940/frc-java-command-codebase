@@ -66,6 +66,8 @@ public class Robot extends TimedRobot {
   private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 0, 6);
 
   public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+
+  Compressor compressor = new Compressor(9);
   
   double startingDistance;
 
@@ -87,7 +89,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    Compressor compressor = new Compressor(9);
+
     compressor.setClosedLoopControl(true);
     
     drivetrain.init();
@@ -95,57 +97,15 @@ public class Robot extends TimedRobot {
     wrist.init();
     gyro.reset();
 
-    System.out.println("Hi!");
-
     startingDistance = drivetrain.getLeftDistance();
 
-    m_chooser.addDefault("Default Auto", new auto_action_DRIVE(3, "high", 5, 30));
+    m_chooser.addDefault("Drive Auto", new auto_action_DRIVE(3, "high", 5, 30));
+    m_chooser.addObject("This is a test", new auto_action_DRIVE(2, "high", 3, 30));
+    // m_chooser.addObject("test mlem", m_chooser);
     // chooser.addObject("My Auto", new MyAutoCommand());
 
+    System.out.println("Robot has been initilized!");
 
-
-  }
-
-  /**
-   * This function is called every robot packet, no matter the mode. Use
-  //  * this for items like diagnostics that you want ran during disabled,
-  //  * autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before
-   * LiveWindow and SmartDashboard integrated updating.
-   */
-  @Override
-  public void robotPeriodic() {
-    SmartDashboard.putNumber("get forward axis", m_oi.getForwardAxis());
-    SmartDashboard.putNumber("get turn axis", m_oi.getTurnAxis());
-    SmartDashboard.putString("Drivetrain gear", drivetrain.current_gear); 
-    // SmartDashboard.putNumber("setVelocityRight output: ", encoderlib.distanceToRaw(12/12, 4096, 6/12) / 10 ); // This *should* return 1 ft/sec to raw/0.1 sec
-    SmartDashboard.putNumber("target left speed raw",  
-      ((m_oi.getForwardAxis() * 4) / (Math.PI * 6 / 12)) * 4096 / 10
-    );
-
-    SmartDashboard.putNumber("Left talon speed", drivetrain.m_left_talon.getSelectedSensorVelocity(0));
-    SmartDashboard.putNumber("Left talon error", drivetrain.m_left_talon.getClosedLoopError(0));
-    SmartDashboard.putNumber("Right talon speed", drivetrain.m_right_talon.getSelectedSensorVelocity(0));
-    SmartDashboard.putNumber("Right talon error", drivetrain.m_right_talon.getClosedLoopError(0));
-
-    SmartDashboard.putNumber("Intake target speed per OI:", m_oi.getIntakeSpeed());
-
-    // SmartDashboard.putNumber("Throttle output", throttle.getRawAxis(1));
-    SmartDashboard.putNumber("Elevator setpoint", 20000);
-    SmartDashboard.putNumber("Elevator height", elevator.getHeight());
-    SmartDashboard.putNumber("Elevator error", 4096-elevator.getHeight());
-
-    SmartDashboard.putBoolean("Arcade command running", arcade_running);
-
-    // SmartDashboard.putNumber("Wrist angle setpoint", wrist_setpoint); 
-    // SmartDashboard.putNumber("Wrist talon pos", elevator.elevator_talon.getSelectedSensorPosition(0));
-    // SmartDashboard.putNumber("Wrist error", elevator.elevator_talon.getClosedLoopError(0));
-    // SmartDashboard.putNumber("Wrist angle (deg)", wrist.getAngle());
-    // SmartDashboard.putNumber("Wrist angular velocity (deg/s)", wrist.getAngularVelocity());
-
-    SmartDashboard.putNumber("Current Gyro angle", gyro.getAngle());
-    
   }
 
   /**
@@ -175,7 +135,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
+    m_autonomousCommand = m_chooser.getSelected(); // set the command to what the sendable chooser gets
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -185,9 +145,9 @@ public class Robot extends TimedRobot {
      */
 
     // schedule the autonomous command (example)
-    // if (m_autonomousCommand != null) {
-    //   m_autonomousCommand.start();
-    // }
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.start();
+    }
     // new auto_action_DRIVE(3, "high", 5, 30);
 
     // TODO so this doesnt work  for some reason, TODO figure this out
@@ -251,4 +211,48 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
+
+  /**
+   * This function is called every robot packet, no matter the mode. Use
+  //  * this for items like diagnostics that you want ran during disabled,
+  //  * autonomous, teleoperated and test.
+   *
+   * <p>This runs after the mode specific periodic functions, but before
+   * LiveWindow and SmartDashboard integrated updating.
+   */
+  @Override
+  public void robotPeriodic() {
+    SmartDashboard.putNumber("get forward axis", m_oi.getForwardAxis());
+    SmartDashboard.putNumber("get turn axis", m_oi.getTurnAxis());
+    SmartDashboard.putString("Drivetrain gear", drivetrain.current_gear); 
+    // SmartDashboard.putNumber("setVelocityRight output: ", encoderlib.distanceToRaw(12/12, 4096, 6/12) / 10 ); // This *should* return 1 ft/sec to raw/0.1 sec
+    SmartDashboard.putNumber("target left speed raw",  
+      ((m_oi.getForwardAxis() * 4) / (Math.PI * 6 / 12)) * 4096 / 10
+    );
+
+    SmartDashboard.putNumber("Left talon speed", drivetrain.m_left_talon.getSelectedSensorVelocity(0));
+    SmartDashboard.putNumber("Left talon error", drivetrain.m_left_talon.getClosedLoopError(0));
+    SmartDashboard.putNumber("Right talon speed", drivetrain.m_right_talon.getSelectedSensorVelocity(0));
+    SmartDashboard.putNumber("Right talon error", drivetrain.m_right_talon.getClosedLoopError(0));
+
+    SmartDashboard.putNumber("Intake target speed per OI:", m_oi.getIntakeSpeed());
+
+    // SmartDashboard.putNumber("Throttle output", throttle.getRawAxis(1));
+    SmartDashboard.putNumber("Elevator setpoint", 20000);
+    SmartDashboard.putNumber("Elevator height", elevator.getHeight());
+    SmartDashboard.putNumber("Elevator error", 4096-elevator.getHeight());
+
+    SmartDashboard.putBoolean("Arcade command running", arcade_running);
+
+    // SmartDashboard.putNumber("Wrist angle setpoint", wrist_setpoint); 
+    // SmartDashboard.putNumber("Wrist talon pos", elevator.elevator_talon.getSelectedSensorPosition(0));
+    // SmartDashboard.putNumber("Wrist error", elevator.elevator_talon.getClosedLoopError(0));
+    // SmartDashboard.putNumber("Wrist angle (deg)", wrist.getAngle());
+    // SmartDashboard.putNumber("Wrist angular velocity (deg/s)", wrist.getAngularVelocity());
+
+    SmartDashboard.putNumber("Current Gyro angle", gyro.getAngle());
+    
+  }
+
 }
+
