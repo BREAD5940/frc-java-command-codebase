@@ -33,13 +33,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
  */
 public class Robot extends TimedRobot {
 
-  // WARNING see this link:
-  // https://github.com/mr-glt/FRC-2017-Command/blob/master/src/main/java/org/usfirst/frc/team6027/robot/subsystems/DriveTrain.java
-  // In the init, they have this instead:
-  // 	public static DriveTrain drivetrain;
-  // Rather than making a new drivetrain();
-  // TODO does this have anything to do with the weird command errors? Or what about making it final?
-
   public static boolean arcade_running = false;
   public static DriveTrain drivetrain = new DriveTrain();
   public static Intake intake = new Intake();
