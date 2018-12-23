@@ -13,28 +13,16 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.auto_action_DRIVE;
-import frc.robot.commands.ArcadeDrive;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
-// import frc.robot.subsystems.intake;
 import frc.robot.subsystems.Wrist;
-// import frc.robot.commands.drivetrain_shift_high;
-// import frc.robot.commands.drivetrain_shift_low;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
-import frc.robot.auto.auto_action_DRIVE;
 
 import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-// import frc.robot.commands.arcade_drive;
-// import frc.robot.subsystems.*;
-// import frc.robot.commands.*;
-
 
 /**
  * The VM is configured to automatically run this class, and to call the

@@ -9,8 +9,6 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.Intake;
-
 
 /**
  * Shifter command to shift to high gear
@@ -21,8 +19,6 @@ public class auto_action_CLAMP extends Command {
     requires( Robot.intake );
 
   }
-
-  
 
   // Called just before this Command runs the first time
   @Override
