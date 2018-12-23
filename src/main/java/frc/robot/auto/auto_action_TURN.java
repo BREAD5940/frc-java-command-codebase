@@ -53,7 +53,7 @@ public class auto_action_TURN extends Command {
     // TODO better PID implamentation, for now sutck with P
     output = Robot.drivetrain.shitty_P_loop(turn_kp, target_angle, Robot.gyro.getAngle(), RobotConfig.max_turn_speed_high, 1); // Get a shitty P loop output
     raw_left = EncoderLib.distanceToRaw(output, RobotConfig.left_wheel_effective_diameter, RobotConfig.POSITION_PULSES_PER_ROTATION);
-    raw_right = EncoderLib.distanceToRaw(output, RobotConfig.right_wheel_effective_diameter, RobotConfig.POSITION_PULSES_PER_ROTATION);
+    raw_right = (-1) * EncoderLib.distanceToRaw(output, RobotConfig.right_wheel_effective_diameter, RobotConfig.POSITION_PULSES_PER_ROTATION);
     Robot.drivetrain.setLeftSpeedRaw(raw_left);
     Robot.drivetrain.setRightSpeedRaw(raw_right);
   }

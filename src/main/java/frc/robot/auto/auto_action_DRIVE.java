@@ -60,13 +60,12 @@ public class auto_action_DRIVE extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    double targetSpeedRaw = EncoderLib.distanceToRaw(targetSpeed, RobotConfig.POSITION_PULSES_PER_ROTATION, RobotConfig.left_wheel_effective_diameter) ;
-    double startingDistanceLeft = Robot.drivetrain.getLeftDistance();
-    double startingDistanceRight = Robot.drivetrain.getRightDistance();
-    double endDistanceLeft = EncoderLib.distanceToRaw(targetDistance, RobotConfig.POSITION_PULSES_PER_ROTATION, RobotConfig.left_wheel_effective_diameter);
+    // double targetSpeedRaw = EncoderLib.distanceToRaw(targetSpeed, RobotConfig.POSITION_PULSES_PER_ROTATION, RobotConfig.left_wheel_effective_diameter) ;
+    // double startingDistanceLeft = Robot.drivetrain.getLeftDistance();
+    // double startingDistanceRight = Robot.drivetrain.getRightDistance();
+    // double endDistanceLeft = EncoderLib.distanceToRaw(targetDistance, RobotConfig.POSITION_PULSES_PER_ROTATION, RobotConfig.left_wheel_effective_diameter);
 
     setTimeout(timeout); // set the timeout
-
 
     // TODO set this kp based on each motor, or standardize it in robotconfig for both
     if (gear == "low") { Robot.drivetrain.setLowGear(); forward_kp = RobotConfig.m_left_position_kp_low; }
@@ -101,7 +100,6 @@ public class auto_action_DRIVE extends Command {
     System.out.println("target forward speed: " + forward_speed);
     System.out.println("Left speed raw/right speed raw: " + left_speed_raw + "/" + right_speed_raw);
   }
-
 
   // Make this return true when this Command no longer needs to run execute()
   @Override

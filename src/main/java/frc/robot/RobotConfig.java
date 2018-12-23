@@ -61,6 +61,10 @@ public class RobotConfig {
   public static final double drive_auto_high_speed = 2; // units are feet per second
   // Auto PID
   public static final double drive_auto_turn_kp = 1; //TODO make this a measured value!
+  public static final double turn_auto_kp_low = 0.1; // TODO tune auto turn kp gain in low
+  public static final double turn_auto_kp_high = 0.1; // TODO tun auto kp gain in high
+  public static final double turn_auto_angle_tolerence = 2; // Units are in degrees, can be +- this many
+  public static final double turn_auto_angular_velocity_tolerence = 0.1; // units are in degrees per second
 
   // Encoder stuff, dunno where else to put this
 	// public static final double VELOCITY_PULSES_PER_ROTATION = 409.6f;
