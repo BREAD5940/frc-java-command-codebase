@@ -6,18 +6,12 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-
 import frc.robot.Robot;
-import frc.robot.lib.EncoderLib;
 import frc.robot.RobotConfig;
-import frc.robot.auto.auto_action_DRIVE;
 import frc.robot.commands.ArcadeDrive;
 // import frc.robot.commands.stick_drive;
+import frc.robot.lib.EncoderLib;
 
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
@@ -48,8 +42,8 @@ public class DriveTrain extends Subsystem {
     
 
     public void init() {
-      m_left_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,30); // TODO put encoder stats on smartdashboard
-      m_right_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,30); // TODO put encoder stats on smartdashboard
+      m_left_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,30);
+      m_right_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,30);
       s_left_talon.set(ControlMode.Follower, m_left_talon.getDeviceID());
       s_right_talon.set(ControlMode.Follower, m_right_talon.getDeviceID());
       m_right_talon.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30); // Quadrature Encoder of current Talon

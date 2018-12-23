@@ -24,7 +24,6 @@ public class ElevatorTelop extends Command {
 
   @Override
   protected void initialize() {
-    // TODO add logging
     System.out.println("Elevator telop init!"); 
   }
 
@@ -50,7 +49,7 @@ public class ElevatorTelop extends Command {
     Robot.elevator.setHeight(Robot.elevator.getElevatorAxisInches());
   }
 
-  // TODO decide if the elevator should set itself to 0 on command end
+  // TODO decide if the elevator should set itself to 0 on command end. Because the command should never end right?
   @Override
   protected void interrupted() {
     Robot.elevator.setHeight(Robot.elevator.getElevatorAxisInches());

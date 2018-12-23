@@ -15,14 +15,14 @@ import frc.robot.Robot;
 
 
 /**
- * Shifter command to shift to high gear
+ * Future pathfinder auto comand. Not functional right now.
  */
 public class auto_action_PATHFINDER extends Command {
   
   
 
   public auto_action_PATHFINDER() {
-    requires(Robot.drivetrain); // reserve the intake subsystem, TODO make sure this doesnt break anything
+    requires(Robot.drivetrain); // reserve the drivetrain subsystem
   }
 
   // public static final drivetrain drivetrain  = new drivetrain();

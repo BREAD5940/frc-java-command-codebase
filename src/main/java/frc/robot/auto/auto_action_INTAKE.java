@@ -22,7 +22,7 @@ public class auto_action_INTAKE extends Command {
   double runtime;
 
   public auto_action_INTAKE(double runtime) {
-    requires(Robot.intake); // reserve the intake subsystem, TODO make sure this doesnt break anything
+    requires(Robot.intake); // reserve the intake subsystem, 
     this.runtime = runtime;
   }
 

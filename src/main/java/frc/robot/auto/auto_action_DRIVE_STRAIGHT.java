@@ -58,9 +58,9 @@ public class auto_action_DRIVE_STRAIGHT extends Command {
   @Override
   protected void initialize() {
     // Reset the gyro angles to the current angle. 
-    // TODO do we want to do this, or allow setting an absolute angle?
+    // TODO do we want to do this, or allow setting an absolute angle, such that between auto actions the robot can correct for being knocked into?
     // (Currently, I'm thinking that it should be no...)
-    start_gyro_angle = target_gyro_angle = Robot.gyro.getAngle();
+    start_gyro_angle = Robot.gyro.getAngle();
 
     setTimeout(timeout); // set the timeout
 
