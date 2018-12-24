@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
 import frc.robot.auto.auto_action_DRIVE;
 
-public class auto_action_SQUARE extends CommandGroup{
+CommandGroup auto_action_SQUARE{
 
-    public  auto_action_SQUARE(double sideLength) {
-        addSequential(new auto_action_DRIVE(sideLength,"high",5,30));
+    public auto_action_SQUARE() {
+        addSequential(new auto_action_DRIVE(12,"high",5,30));
         addSequential(new auto_action_TURN()); 
     }
 }
