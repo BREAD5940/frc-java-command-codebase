@@ -11,12 +11,23 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /**
- * Shifter command to shift to high gear
+ * Run the elevator to a set height during autonomous
+ * @param demand in inches
  */
-public class auto_action_ELEVATOR extends Command {
-  public auto_action_ELEVATOR() {
+public class audo_Elevator extends Command {
+
+  double demand;
+  boolean isInstant;
+
+  /**
+   * Run the elevator to a set height during autonomous
+   * @param demand in inches
+   */
+  public audo_Elevator(double demand, boolean instant) {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.elevator);
+    this.demand = demand;
+    this.isInstant = instant;
   }
 
   // public static final drivetrain drivetrain  = new drivetrain();
@@ -24,6 +35,7 @@ public class auto_action_ELEVATOR extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.elevator.setHeight(demand);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -31,10 +43,17 @@ public class auto_action_ELEVATOR extends Command {
   protected void execute() {
   }
 
-  // Make this return true when this Command no longer needs to run execute()
+  /**
+   * Return boolean of if the elevator is within 0.5 inches of the set height OR the command is supposed to run instantly. 
+   */
   @Override
   protected boolean isFinished() {
-    return true;
+    if ((isInstant) || (Math.abs(Robot.elevator.getHeight() - demand) < 0.5)) { 
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 
   // Called once after isFinished returns true
