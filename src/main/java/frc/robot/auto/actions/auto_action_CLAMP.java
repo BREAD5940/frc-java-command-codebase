@@ -5,32 +5,27 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.auto;
+package frc.robot.auto.actions;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-// import frc.robot.subsystems.DriveTrain;
-
-
-
 
 /**
  * Shifter command to shift to high gear
  */
-public class auto_action_INTAKE extends Command {
-  
-  double runtime;
+public class auto_action_CLAMP extends Command {
+  public auto_action_CLAMP() {
+    // Use requires() here to declare subsystem dependencies
+    requires( Robot.intake );
 
-  public auto_action_INTAKE(double runtime) {
-    requires(Robot.intake); // reserve the intake subsystem, 
-    this.runtime = runtime;
   }
-
-  // public static final drivetrain drivetrain  = new drivetrain();
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    // intake intake = new intake();
+    Robot.intake_close();
+
   }
 
   // Called repeatedly when this Command is scheduled to run

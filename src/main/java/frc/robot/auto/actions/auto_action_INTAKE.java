@@ -5,18 +5,25 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.auto;
+package frc.robot.auto.actions;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+// import frc.robot.subsystems.DriveTrain;
+
+
+
 
 /**
  * Shifter command to shift to high gear
  */
-public class auto_action_ELEVATOR extends Command {
-  public auto_action_ELEVATOR() {
-    // Use requires() here to declare subsystem dependencies
-    requires(Robot.elevator);
+public class auto_action_INTAKE extends Command {
+  
+  double runtime;
+
+  public auto_action_INTAKE(double runtime) {
+    requires(Robot.intake); // reserve the intake subsystem, 
+    this.runtime = runtime;
   }
 
   // public static final drivetrain drivetrain  = new drivetrain();
