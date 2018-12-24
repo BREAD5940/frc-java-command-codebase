@@ -76,6 +76,12 @@ public class RobotConfig {
   public static final double elevator_effective_diameter = 1.27 * 1.6; // TODO fix elevator_effective_diameter!!!! (units must be inches)
   public static final int elevator_minimum_height = 0;
   public static final int elevator_maximum_height = 70; // changed to inches, TODO verify maximum height
+  class elevator_presets { // various preset elevator max heights
+    public static final double floor = 0;
+    public static final double place_switch = 30;
+    public static final double place_scale_low = 60;
+    public static final double place_max = elevator_maximum_height;
+  }
 
   /**
    * Left side of drivetrain PID constants and setup

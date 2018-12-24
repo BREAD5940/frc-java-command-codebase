@@ -13,7 +13,6 @@ import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 
 
-
   /**
    * Drive straight ahead. The target angle is set based on the current robot angle.
    * This uses a position PID loop to set drivetrain speeds. The left and right speeds
@@ -21,7 +20,7 @@ import frc.robot.lib.EncoderLib;
    * // TODO determine how the difference in encoder positions if the angle is changed will affect pid
    * @param distance in feet
    */
-public class auto_action_DRIVE_STRAIGHT extends Command {
+public class auto_DriveStraight extends Command {
   double distance;
   String gear;
   double actionMaxSpeed;
@@ -38,14 +37,14 @@ public class auto_action_DRIVE_STRAIGHT extends Command {
   double getAngleError() { return (target_gyro_angle - Robot.gyro.getAngle()); }
 
   /**
-   * auto_action_DRIVE_STRAIGHT drives in a straight line. The target angle is the same angle as the gyro
+   * auto_DriveStraight drives in a straight line. The target angle is the same angle as the gyro
    * is initilized with.
    * @param distance in feet
    * @param speed maximum speed in feet per second
    * @param gear for the action
    * @param timeout after which the command will cleanly exit
    */
-  public auto_action_DRIVE_STRAIGHT(double distance, double speed, String gear, double timeout) {
+  public auto_DriveStraight(double distance, double speed, String gear, double timeout) {
     this.distance = distance;
     this.gear = gear;
     this.actionMaxSpeed = speed;

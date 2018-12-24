@@ -16,14 +16,14 @@ import frc.robot.lib.EncoderLib;
 
 
   /**
-   * auto_action_DRIVE is a basic auto action. It should drive in a straight-ish line, as it uses 
+   * auto_DriveDistance is a basic auto action. It should drive in a straight-ish line, as it uses 
    * nested PID loops to correct for errors caused by differing coefficients of friction. 
    * @param distance
    * @param gear
    * @param targetSpeed
    * @param timeout
    */
-public class auto_action_DRIVE extends Command {
+public class auto_DriveDistance extends Command {
   double targetDistance;
   String gear;
   double targetSpeed;
@@ -48,7 +48,7 @@ public class auto_action_DRIVE extends Command {
    * @param targetSpeed
    * @param timeout
    */
-  public auto_action_DRIVE(double distance, String gear, double targetSpeed, double timeout) {
+  public auto_DriveDistance(double distance, String gear, double targetSpeed, double timeout) {
     this.targetDistance = distance;
     this.gear = gear;
     this.targetSpeed = targetSpeed;

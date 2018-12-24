@@ -15,15 +15,14 @@ import frc.robot.Robot;
 
 
 /**
- * Shifter command to shift to high gear
+ * Future pathfinder auto comand. Not functional right now.
  */
-public class auto_action_INTAKE extends Command {
+public class auto_Spline extends Command {
   
-  double runtime;
+  
 
-  public auto_action_INTAKE(double runtime) {
-    requires(Robot.intake); // reserve the intake subsystem, 
-    this.runtime = runtime;
+  public auto_Spline() {
+    requires(Robot.drivetrain); // reserve the drivetrain subsystem
   }
 
   // public static final drivetrain drivetrain  = new drivetrain();
@@ -41,7 +40,7 @@ public class auto_action_INTAKE extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true

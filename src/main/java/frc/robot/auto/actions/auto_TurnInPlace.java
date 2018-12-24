@@ -14,7 +14,7 @@ import frc.robot.lib.EncoderLib;
 /**
  * Shifter command to shift to high gear
  */
-public class auto_action_TURN extends Command {
+public class auto_TurnInPlace extends Command {
 
   double starting_angle;
   double target_angle;
@@ -30,7 +30,7 @@ public class auto_action_TURN extends Command {
    * @param target_angle
    * @param gear "low" or "high"
    */
-  public auto_action_TURN(double target_angle, String gear) {
+  public auto_TurnInPlace(double target_angle, String gear) {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.drivetrain);
     this.target_angle = target_angle;

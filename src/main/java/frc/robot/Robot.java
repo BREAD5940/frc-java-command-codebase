@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.auto.actions.auto_action_DRIVE;
+import frc.robot.auto.actions.auto_DriveDistance;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
@@ -80,8 +80,8 @@ public class Robot extends TimedRobot {
 
     startingDistance = drivetrain.getLeftDistance();
 
-    m_chooser.addDefault("Drive Auto", new auto_action_DRIVE(3, "high", 5, 30));
-    m_chooser.addObject("This is a test", new auto_action_DRIVE(2, "high", 3, 30));
+    m_chooser.addDefault("Drive Auto", new auto_DriveDistance(3, "high", 5, 30));
+    m_chooser.addObject("This is a test", new auto_DriveDistance(2, "high", 3, 30));
     // m_chooser.addObject("test mlem", m_chooser);
     // chooser.addObject("My Auto", new MyAutoCommand());
 
