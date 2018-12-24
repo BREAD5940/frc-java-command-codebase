@@ -1,12 +1,12 @@
 
-package frc.robot;
+package frc.robot.auto;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
-import frc.robot.auto.auto_action_DRIVE;
+import frc.robot.auto.actions.auto_action_DRIVE;
 
 public class AutoSelector{
 
@@ -26,7 +26,7 @@ public class AutoSelector{
      *      the switch and scale assignments of the field (LLL, LLR, LRL, LRR, RRR, RLR, RLL, RRL)
      */
     public CommandGroup AutoSelector(robotLoc location, ssLoc fieldSetup) {
-        CommandGroup idealPath = new auto_action_SQUARE(); // oof this dont work y am i a failure
+        Object idealPath = new auto_action_SQUARE(); // oof this dont work y am i a failure
 
         return idealPath;
     }

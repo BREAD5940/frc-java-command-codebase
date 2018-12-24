@@ -13,12 +13,12 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.auto.auto_action_DRIVE;
+import frc.robot.auto.actions.auto_action_DRIVE;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
-import frc.robot.auto.auto_action_SQUARE;
+import frc.robot.auto.actions.auto_action_SQUARE;
 // import frc.robot.subsystems.intake;
 import frc.robot.subsystems.Wrist;
 // import frc.robot.commands.drivetrain_shift_high;
@@ -26,7 +26,7 @@ import frc.robot.subsystems.Wrist;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
-import frc.robot.auto.auto_action_DRIVE;
+import frc.robot.auto.actions.auto_action_DRIVE;
 
 import edu.wpi.first.wpilibj.SPI;
 

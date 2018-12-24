@@ -7,7 +7,7 @@
 
 // TODO make this actually work
 
-package frc.robot.auto;
+package frc.robot.auto.actions;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
