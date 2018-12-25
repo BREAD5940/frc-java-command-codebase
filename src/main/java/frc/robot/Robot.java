@@ -38,7 +38,6 @@ public class Robot extends TimedRobot {
   public static Intake intake = new Intake();
   public static Elevator elevator = new Elevator();
   public static Wrist wrist = new Wrist();
-  public static RobotConfig robotconfig = new RobotConfig();
   public static OI m_oi;
 
   public static double elevator_setpoint = 0;
@@ -50,18 +49,17 @@ public class Robot extends TimedRobot {
 
   Compressor compressor = new Compressor(9);
   
-  double startingDistance;
-
-
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+  public static double startingDistance;
+  public static double defaultAutoSpeed = RobotConfig.drive_auto_forward_velocity_max;
+
+  // Various pneumatic shifting methods
   public static void drivetrain_shift_high(){ shifterDoubleSolenoid.set(DoubleSolenoid.Value.kForward); }
   public static void drivetrain_shift_low(){ shifterDoubleSolenoid.set(DoubleSolenoid.Value.kReverse); }
   public static void intake_close(){ intakeDoubleSolenoid.set(DoubleSolenoid.Value.kForward); }
   public static void intake_open(){ intakeDoubleSolenoid.set(DoubleSolenoid.Value.kReverse); }
-
-  public static double rawSpeedRight;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -80,10 +78,12 @@ public class Robot extends TimedRobot {
 
     startingDistance = drivetrain.getLeftDistance();
 
-    m_chooser.addDefault("Drive Auto", new auto_DriveDistance(3, "high", 5, 30));
-    m_chooser.addObject("This is a test", new auto_DriveDistance(2, "high", 3, 30));
-    // m_chooser.addObject("test mlem", m_chooser);
-    // chooser.addObject("My Auto", new MyAutoCommand());
+    m_chooser.addDefault("Drive Auto", new auto_DriveDistance(10));
+    m_chooser.addObject("This is a test", new auto_DriveDistance(2));
+
+    if ( RobotConfig.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
+    else if ( RobotConfig.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
+    else { System.out.println("default auto gear " + RobotConfig.default_auto_gear + " is not a valid choice!"); }
 
     System.out.println("Robot has been initilized!");
 
@@ -96,6 +96,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+    if ( RobotConfig.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
+    else if ( RobotConfig.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
+    else { System.out.println("default auto gear " + RobotConfig.default_auto_gear + " is not a valid choice!"); }
   }
 
   @Override
@@ -117,6 +120,12 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_chooser.getSelected(); // set the command to what the sendable chooser gets
+
+    gyro.reset(); // Reset the current gyro heading to zero
+    
+    if ( RobotConfig.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
+    else if ( RobotConfig.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
+    else { System.out.println("default auto gear " + RobotConfig.default_auto_gear + " is not a valid choice!"); }
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -143,13 +152,10 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-    
-    
   }
 
   @Override
   public void teleopInit() {
-    // drivetrain.init();
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
@@ -157,17 +163,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
-    // new drivetrain_shift_high();
-    // new drivetrain_shift_low();
-    // shifter.set(DoubleSolenoid.Value.kReverse);
-
-
-    // final arcade_drive arcade = new arcade_drive();
-
-    // new arcade_drive();
-
-
+  // TODO reset subsystems on teleop init?
   }
 
   /**
@@ -177,13 +173,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    
-    // double target_intake_speed = m_oi.getIntakeSpeed() / 1;
-    // // intake.setSpeed(target_intake_speed);
-    // intake.talon_left.set(ControlMode.PercentOutput, target_intake_speed);
-    // intake.talon_right.set(ControlMode.PercentOutput, -target_intake_speed);
-
-
   }
 
   /**
