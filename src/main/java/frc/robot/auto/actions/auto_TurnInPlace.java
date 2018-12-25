@@ -11,14 +11,18 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
+
 /**
- * Shifter command to shift to high gear
+ * Literally just pivot in place by a desired amount
  */
 public class auto_TurnInPlace extends Command {
 
   double starting_angle;
+  double target_angle_relative;
   double target_angle;
-  String gear;
+  double target_angle_absolute;
+  boolean isAbsolute = true;
+  String gear = RobotConfig.default_auto_gear;
   double turn_kp;
   double output;
   double max_turn_speed;
@@ -26,45 +30,65 @@ public class auto_TurnInPlace extends Command {
   double raw_right;
   
   /**
-   * Turn a specified number of degrees in a specified gear
+   * Turn a specified number of degrees in the default auto gear.
+   * This constructor will default to taking the absolute angle
+   * to turn to, rather than a relative angle. If you want to 
+   * specify, use a bool as the second argument to specify if the
+   * angle should be interpreted as absolute or not.
    * @param target_angle
-   * @param gear "low" or "high"
    */
-  public auto_TurnInPlace(double target_angle, String gear) {
+  public auto_TurnInPlace(double target_angle) {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.drivetrain);
     this.target_angle = target_angle;
   }
 
-  // public static final drivetrain drivetrain  = new drivetrain();
+  /**
+   * Turn a specified number of degrees in the default auto gear. 
+   * The angle passed is an absolute angle relative to the 
+   * angle upon autonomous init.
+   * @param target_angle
+   */
+  public auto_TurnInPlace(double target_angle, boolean isAbsolute) {
+    this.isAbsolute = isAbsolute;
+    // Use requires() here to declare subsystem dependencies
+    requires(Robot.drivetrain);
+  }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     starting_angle = Robot.gyro.getAngle();
-    if (gear == "low") { Robot.drivetrain.setLowGear(); turn_kp = RobotConfig.turn_auto_kp_low; max_turn_speed = RobotConfig.max_turn_speed_low; }
-    else if (gear == "high") { Robot.drivetrain.setHighGear(); turn_kp = RobotConfig.turn_auto_kp_high; max_turn_speed = RobotConfig.max_turn_speed_high; }
-    else { throw new IllegalArgumentException("Cannot set gear to " + this.gear + "!" ); }
+
+    // If the angle is relative (which it should not be), setup target angle.
+    // Otherwise the angle is absolute (relative to auto init) so we don't care.
+    if (!(isAbsolute)){ // if isAbsolute is false, and we want a relative angle
+      target_angle = target_angle + starting_angle;
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // TODO better PID implamentation, for now sutck with P
+    // TODO better PID implamentation, for now stuck with P
     output = Robot.drivetrain.shitty_P_loop(turn_kp, target_angle, Robot.gyro.getAngle(), RobotConfig.max_turn_speed_high, 1); // Get a shitty P loop output
     raw_left = EncoderLib.distanceToRaw(output, RobotConfig.left_wheel_effective_diameter, RobotConfig.POSITION_PULSES_PER_ROTATION);
     raw_right = (-1) * EncoderLib.distanceToRaw(output, RobotConfig.right_wheel_effective_diameter, RobotConfig.POSITION_PULSES_PER_ROTATION);
-    Robot.drivetrain.setLeftSpeedRaw(raw_left);
-    Robot.drivetrain.setRightSpeedRaw(raw_right);
+    Robot.drivetrain.setSpeeds(raw_left, raw_right);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if ( (Math.abs(Robot.gyro.getRate() ) < RobotConfig.turn_auto_angular_velocity_tolerence)
-      && (Math.abs(Robot.gyro.getAngle()) < RobotConfig.turn_auto_angle_tolerence)) {
-        return true;
-      } else { return false; }
+    // if ( (Math.abs(Robot.gyro.getRate() ) < RobotConfig.turn_auto_angular_velocity_tolerence)
+    //   && (Math.abs(Robot.gyro.getAngle()) < RobotConfig.turn_auto_angle_tolerence)) {
+    //     return true;
+    //   } else { return false; }
+
+    // TODO so this is how a return works
+    return ( (Math.abs(Robot.gyro.getRate() ) < RobotConfig.turn_auto_angular_velocity_tolerence)
+      && (Math.abs(Robot.gyro.getAngle()) < RobotConfig.turn_auto_angle_tolerence));
+
   }
 
   // Called once after isFinished returns true
