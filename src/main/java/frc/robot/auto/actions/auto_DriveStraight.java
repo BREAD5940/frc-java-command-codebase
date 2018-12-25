@@ -22,7 +22,6 @@ import frc.robot.lib.EncoderLib;
    */
 public class auto_DriveStraight extends Command {
   double distance;
-  String gear;
   double actionMaxSpeed;
   double timeout;
   double start_left_distance = Robot.drivetrain.m_left_talon.getSelectedSensorPosition(0);
@@ -41,12 +40,10 @@ public class auto_DriveStraight extends Command {
    * is initilized with.
    * @param distance in feet
    * @param speed maximum speed in feet per second
-   * @param gear for the action
    * @param timeout after which the command will cleanly exit
    */
-  public auto_DriveStraight(double distance, double speed, String gear, double timeout) {
+  public auto_DriveStraight(double distance, double speed, double timeout) {
     this.distance = distance;
-    this.gear = gear;
     this.actionMaxSpeed = speed;
     this.timeout = timeout;
     // Use requires() here to declare subsystem dependencies
@@ -62,11 +59,6 @@ public class auto_DriveStraight extends Command {
     start_gyro_angle = Robot.gyro.getAngle();
 
     setTimeout(timeout); // set the timeout
-
-    // shift in case this has not been done yet
-    if (gear == "low") { Robot.drivetrain.setLowGear(); }
-    else if (gear == "high") { Robot.drivetrain.setHighGear(); }
-    else { throw new IllegalArgumentException("Cannot set gear to " + this.gear + " !" ); }
   }
 
   // Called repeatedly when this Command is scheduled to run
