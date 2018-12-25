@@ -23,12 +23,12 @@ import frc.robot.lib.EncoderLib;
 public class auto_DriveStraight extends Command {
   double distance;
   double actionMaxSpeed;
-  double timeout;
+  double timeout = 15;
   double start_left_distance = Robot.drivetrain.m_left_talon.getSelectedSensorPosition(0);
   double start_right_distance = Robot.drivetrain.m_right_talon.getSelectedSensorPosition(0);
-  double start_gyro_angle = Robot.gyro.getAngle();
-  double target_gyro_angle = start_gyro_angle;
-  double current_angle = Robot.gyro.getAngle();
+  double start_gyro_angle;
+  double target_gyro_angle;
+  double current_angle;
   
   /**
    * Get the current angle error of the gyro
@@ -37,16 +37,41 @@ public class auto_DriveStraight extends Command {
 
   /**
    * auto_DriveStraight drives in a straight line. The target angle is the same angle as the gyro
-   * is initilized with.
+   * is initilized with. Timeout is 15 seconds.
    * @param distance in feet
    * @param speed maximum speed in feet per second
-   * @param timeout after which the command will cleanly exit
    */
   public auto_DriveStraight(double distance, double speed, double timeout) {
     this.distance = distance;
     this.actionMaxSpeed = speed;
-    this.timeout = timeout;
-    // Use requires() here to declare subsystem dependencies
+    this.target_gyro_angle = Robot.gyro.getAngle(); // TODO make sure that the angle is set correctly.
+    requires(Robot.drivetrain);
+  }
+
+  /**
+   * Auto_DriveStraight drives in a straight line. Target angle is the angle at which the action
+   * is init'ed at. Speed is default auto speed, and timeout is 15 seconds.
+   * @param distance in feet
+   */
+  public auto_DriveStraight(double distance) {
+    this.distance = distance;
+    this.actionMaxSpeed = RobotConfig.drive_auto_forward_velocity_max;
+    this.target_gyro_angle = Robot.gyro.getAngle(); // TODO make sure that the angle is set correctly.
+    requires(Robot.drivetrain);
+  }
+
+    /**
+   * Auto_DriveStraight drives in a straight line. Target angle is the angle at which the action
+   * is init'ed at. Speed is default auto speed, and timeout is 15 seconds.
+   * @param distance in feet
+   * @param angle absolute angle in degrees from auto init
+   * 
+   * <p> MAKE SURE THAT YOU USE AN ABSOLUTE ANGLE WITH THIS CONSTRUCTOR!
+   */
+  public auto_DriveStraight(double distance, double angle) {
+    this.distance = distance;
+    this.actionMaxSpeed = RobotConfig.drive_auto_forward_velocity_max;
+    this.target_gyro_angle = angle; // TODO make sure that the angle is set correctly.
     requires(Robot.drivetrain);
   }
 
@@ -56,7 +81,7 @@ public class auto_DriveStraight extends Command {
     // Reset the gyro angles to the current angle. 
     // TODO do we want to do this, or allow setting an absolute angle, such that between auto actions the robot can correct for being knocked into?
     // (Currently, I'm thinking that it should be no...)
-    start_gyro_angle = Robot.gyro.getAngle();
+
 
     setTimeout(timeout); // set the timeout
   }

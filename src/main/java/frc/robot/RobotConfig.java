@@ -59,8 +59,6 @@ public class RobotConfig {
   public static final String default_auto_gear = "low"; // Set the default gear for auto. If not otherwise specified, this will be used
   public static final double drive_auto_turn_minimum_weight = -0.1;
   public static final double drive_auto_turn_maximum_weight = 0.1;
-  public static final double drive_auto_low_gear_speed = 2; // units are feet per second
-  public static final double drive_auto_high_speed = 2; // units are feet per second
   // Auto PID
   public static final double drive_auto_turn_kp = 1; //TODO make this a measured value!
   public static final double turn_auto_kp_low = 0.1; // TODO tune auto turn kp gain in low
