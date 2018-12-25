@@ -19,13 +19,11 @@ import frc.robot.lib.EncoderLib;
    * auto_DriveDistance is a basic auto action. It should drive in a straight-ish line, as it uses 
    * nested PID loops to correct for errors caused by differing coefficients of friction. 
    * @param distance
-   * @param gear
    * @param targetSpeed
    * @param timeout
    */
 public class auto_DriveDistance extends Command {
   double targetDistance;
-  String gear;
   double targetSpeed;
   boolean isDone = false;
   double timeout;
@@ -44,13 +42,11 @@ public class auto_DriveDistance extends Command {
    * auto_action_DRIVE is a basic auto action. It should drive in a straight-ish line, as it uses 
    * nested PID loops to correct for errors caused by differing coefficients of friction. 
    * @param distance
-   * @param gear
    * @param targetSpeed
    * @param timeout
    */
-  public auto_DriveDistance(double distance, String gear, double targetSpeed, double timeout) {
+  public auto_DriveDistance(double distance, double targetSpeed, double timeout) {
     this.targetDistance = distance;
-    this.gear = gear;
     this.targetSpeed = targetSpeed;
     this.timeout = timeout;
     // Use requires() here to declare subsystem dependencies
@@ -60,18 +56,7 @@ public class auto_DriveDistance extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // double targetSpeedRaw = EncoderLib.distanceToRaw(targetSpeed, RobotConfig.POSITION_PULSES_PER_ROTATION, RobotConfig.left_wheel_effective_diameter) ;
-    // double startingDistanceLeft = Robot.drivetrain.getLeftDistance();
-    // double startingDistanceRight = Robot.drivetrain.getRightDistance();
-    // double endDistanceLeft = EncoderLib.distanceToRaw(targetDistance, RobotConfig.POSITION_PULSES_PER_ROTATION, RobotConfig.left_wheel_effective_diameter);
-
     setTimeout(timeout); // set the timeout
-
-    // TODO set this kp based on each motor, or standardize it in robotconfig for both
-    if (gear == "low") { Robot.drivetrain.setLowGear(); forward_kp = RobotConfig.m_left_position_kp_low; }
-    else if (gear == "high") { Robot.drivetrain.setHighGear(); forward_kp = RobotConfig.m_left_position_kp_high; }
-    else { throw new IllegalArgumentException("Cannot set gear to " + this.gear + "!" ); }
-
     System.out.println("Auto action drive init!");
   }
 
@@ -96,7 +81,6 @@ public class auto_DriveDistance extends Command {
     Robot.drivetrain.setLeftSpeedRaw(left_speed_raw);
     Robot.drivetrain.setRightSpeedRaw(right_speed_raw);
 
-    
     System.out.println("target forward speed: " + forward_speed);
     System.out.println("Left speed raw/right speed raw: " + left_speed_raw + "/" + right_speed_raw);
   }
@@ -104,25 +88,27 @@ public class auto_DriveDistance extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    System.out.println("We aint done kiddo");
-    // if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.targetDistance) < RobotConfig.drive_auto_position_tolerence) 
-    //     && (Math.abs(Robot.drivetrain.getLeftDistance() - this.targetDistance) < RobotConfig.drive_auto_position_tolerence) 
-    //     && (Math.abs(Robot.drivetrain.getLeftVelocity()) < RobotConfig.drive_auto_velocity_tolerence) 
-    //     && (Math.abs(Robot.drivetrain.getRightVelocity()) < RobotConfig.drive_auto_position_tolerence))
-    //     || (isTimedOut()) ){
-    //   return true;}
-    // else { return false; }
-    return false;
+    if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.targetDistance) < RobotConfig.drive_auto_position_tolerence) 
+        && (Math.abs(Robot.drivetrain.getLeftDistance() - this.targetDistance) < RobotConfig.drive_auto_position_tolerence) 
+        && (Math.abs(Robot.drivetrain.getLeftVelocity()) < RobotConfig.drive_auto_velocity_tolerence) 
+        && (Math.abs(Robot.drivetrain.getRightVelocity()) < RobotConfig.drive_auto_position_tolerence))
+        || (isTimedOut()) ){
+      return true;}
+    else { return false; }
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.drivetrain.setLeftSpeedRaw(0);
+    Robot.drivetrain.setRightSpeedRaw(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.drivetrain.setLeftSpeedRaw(0);
+    Robot.drivetrain.setRightSpeedRaw(0);
   }
 }
