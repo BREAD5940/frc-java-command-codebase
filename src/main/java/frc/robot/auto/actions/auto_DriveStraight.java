@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
+import frc.robot.lib.ShittyPID;
 
 
   /**
@@ -24,16 +25,32 @@ public class auto_DriveStraight extends Command {
   double distance;
   double actionMaxSpeed;
   double timeout = 15;
-  double start_left_distance = Robot.drivetrain.m_left_talon.getSelectedSensorPosition(0);
-  double start_right_distance = Robot.drivetrain.m_right_talon.getSelectedSensorPosition(0);
+  double start_left_distance = Robot.drivetrain.getLeftDistance();
+  double start_right_distance = Robot.drivetrain.getRightDistance();
+  double end_distance_left;
   double start_gyro_angle;
   double target_gyro_angle;
   double current_angle;
+  double forward_speed;
+  double turn_weight;
+  double angle_error;
+  double left_speed_raw, right_speed_raw;
+
+  private ShittyPID forwardPID = new ShittyPID(
+    RobotConfig.drive_straight.turn_kp, 
+    RobotConfig.drive_auto_forward_velocity_min,
+    RobotConfig.drive_auto_forward_velocity_max 
+  );
+
+  private ShittyPID turnPID = new ShittyPID(
+    RobotConfig.drive_straight.turn_kp, 
+    RobotConfig.drive_straight.turn_ki, 
+    RobotConfig.drive_straight.minimum_turn_weight, 
+    RobotConfig.drive_straight.maximum_turn_weight, 
+    RobotConfig.drive_straight.turn_izone, 
+    RobotConfig.drive_straight.turn_integral_max
+  );
   
-  /**
-   * Get the current angle error of the gyro
-   */
-  double getAngleError() { return (target_gyro_angle - Robot.gyro.getAngle()); }
 
   /**
    * auto_DriveStraight drives in a straight line. The target angle is the same angle as the gyro
@@ -56,11 +73,11 @@ public class auto_DriveStraight extends Command {
   public auto_DriveStraight(double distance) {
     this.distance = distance;
     this.actionMaxSpeed = RobotConfig.drive_auto_forward_velocity_max;
-    this.target_gyro_angle = Robot.gyro.getAngle(); // TODO make sure that the angle is set correctly.
+    this.target_gyro_angle = Robot.gyro.getAngle(); // TODO make sure that the angle is set correctly on constructor call.
     requires(Robot.drivetrain);
   }
 
-    /**
+  /**
    * Auto_DriveStraight drives in a straight line. Target angle is the angle at which the action
    * is init'ed at. Speed is default auto speed, and timeout is 15 seconds.
    * @param distance in feet
@@ -78,20 +95,29 @@ public class auto_DriveStraight extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // Reset the gyro angles to the current angle. 
-    // TODO do we want to do this, or allow setting an absolute angle, such that between auto actions the robot can correct for being knocked into?
-    // (Currently, I'm thinking that it should be no...)
-
-
+    current_angle = Robot.gyro.getAngle();
+    end_distance_left = start_left_distance + distance;
     setTimeout(timeout); // set the timeout
+    forwardPID.setSetpoint(end_distance_left);
+    turnPID.setSetpoint(target_gyro_angle);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    current_angle = Robot.gyro.getAngle();
-    
-    
+    forward_speed = forwardPID.update(Robot.drivetrain.getLeftDistance());
+    turn_weight = turnPID.update(Robot.gyro.getAngle());
+
+    left_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.left_wheel_effective_diameter / 12, 
+      RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
+    right_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.right_wheel_effective_diameter / 12, 
+      RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
+
+    System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeftDistance() + 
+      " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());
+    System.out.println("TURN PID: Setpoint: " + turnPID.getSetpoint() + " Measured: " + Robot.gyro.getAngle() + 
+      " Error: " + turnPID.getError() + " OUTPUT VELOCITY (ft/s): " + turnPID.getOutput());
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
