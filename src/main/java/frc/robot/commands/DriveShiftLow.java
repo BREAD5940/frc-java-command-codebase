@@ -24,8 +24,7 @@ public class DriveShiftLow extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // Robot.drivetrain.setLowGear();
-    Robot.drivetrain_shift_low();
+    Robot.drivetrain.setLowGear();
   }
 
   // Called repeatedly when this Command is scheduled to run
