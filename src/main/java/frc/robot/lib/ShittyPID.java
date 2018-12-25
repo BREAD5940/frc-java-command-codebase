@@ -1,0 +1,100 @@
+package frc.robot.lib;
+
+public class ShittyPID {
+
+    double kp, ki, kd, pOutput, iOutput, iAccum, dOutput, integralZone, maxIntegralAccum, minOutput, maxOutput, setpoint, input, error, output;
+    double dt = 1 / 50; // Set delta time to 50 hz, this is likely good enough
+
+    /**
+     * Create a basic PI controller, sans the derivative term. When |error| < integralZone, 
+     * the Integral term will be active. If this is no longer true, the interal accum will
+     * be flushed and the controller will effectively be a P controller. Slightly less
+     * shitty version of drivetrain.shitty_p_loop :P 
+     * @param kp gain
+     * @param ki gain
+     * @param integralZone about which integral will be active
+     * @param maxIntegralAccum same as minimum accum, i term will top/bottom out here
+     */
+    public ShittyPID(double kp, double ki, double minOutput, double maxOutput, double integralZone, double maxIntegralAccum) {
+        this.kp = kp;
+        this.ki = ki;
+        this.minOutput = minOutput;
+        this.maxOutput = maxOutput;
+        this.integralZone = integralZone;
+        this.maxIntegralAccum = maxIntegralAccum;
+    }
+
+    public void setSetpoint(double setpoint) {
+        this.setpoint = setpoint;
+    }
+
+    public double getSetpoint() {
+        return this.setpoint;
+    }
+
+    public double getError() {
+        return this.error;
+    }
+
+    /**
+     * Clamps the integral accumulator to the max output/min accum as set up on class construction
+     * @param iAccum
+     * @return iAccum but clamped
+     */
+    private double clampIntegral(double i) {
+        if ( i > maxIntegralAccum ) {
+            i = maxIntegralAccum;
+        }
+        else if ( i < (-1 * maxIntegralAccum)) {
+            i = -1 * maxIntegralAccum;
+        }
+       return i;
+    }
+
+    /**
+     * Clamps the output to the max output/min output set up on class construction
+     * @param output
+     * @return output but clamped
+     */
+    private double clampOutput(double output) {
+        if ( output > maxOutput ) {
+            return maxOutput;
+        }
+        else if ( output < minOutput) {
+            return minOutput;
+        }
+        else {
+            return output;
+        }
+    }
+
+    /**
+     * Updates the PI(sans D) loop taking only the measured param. It will
+     * calculated the p term, incrament the i accum, and clamp it, and return
+     * the clamped output
+     * @param measured
+     * @return output
+     */
+    public double updatePIDloop(double measured) {
+        this.error = this.setpoint - measured;
+
+        /**
+         * P output is just the error times porportional gain
+         */
+        this.pOutput = this.kp * this.error;
+
+        /**
+         * The iAccum should start at 0, but is incramented by error times dt. This is then clamped
+         * to the minimum/maximum of the i term.
+         */
+        this.iAccum += this.error * this.ki * this.dt; // incrament the I term by error times integral gain times delta time (numerical integration yeet)
+        this.iAccum = clampIntegral(this.iAccum + this.iOutput); // clamp the term to the min/max   
+
+        /**
+         * This will make sure the output of the loop does not exceed the specified min/max.
+         */
+        this.output = clampOutput(this.pOutput + this.iAccum); 
+
+        return this.output;
+    }
+}
