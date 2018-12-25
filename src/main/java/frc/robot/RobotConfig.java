@@ -57,12 +57,19 @@ public class RobotConfig {
   public static final double drive_auto_forward_velocity_max = 4; // feet per second target for driving auto
   public static final double drive_auto_forward_velocity_min = -2; // minimum speed for auto drive in ft per sec
   public static final String default_auto_gear = "low"; // Set the default gear for auto. If not otherwise specified, this will be used
-  public static final double drive_auto_turn_minimum_weight = -0.1;
-  public static final double drive_auto_turn_maximum_weight = 0.1;
+
+  public class drive_straight {
+    public static final double forward_kp = 2;
+    public static final double turn_kp = 0.05;
+    public static final double turn_ki = 0.01;
+    public static final double turn_izone = 4; // +- 4 degrees of setpoint for izone
+    public static final double turn_integral_max = 0.3; // Maximum integral weight for turning
+    public static final double maximum_turn_weight = 0.3;
+    public static final double minimum_turn_weight = maximum_turn_weight;
+  }
+
   // Auto PID
-  public static final double drive_auto_turn_kp = 1; //TODO make this a measured value!
-  public static final double turn_auto_kp_low = 0.1; // TODO tune auto turn kp gain in low
-  public static final double turn_auto_kp_high = 0.1; // TODO tun auto kp gain in high
+  public static final double drive_auto_turn_kp = 0.1; //TODO make this a measured value!
   public static final double turn_auto_angle_tolerence = 2; // Units are in degrees, can be +- this many
   public static final double turn_auto_angular_velocity_tolerence = 0.1; // units are in degrees per second
 
