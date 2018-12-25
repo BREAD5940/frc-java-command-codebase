@@ -6,17 +6,16 @@ import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 
 public class SetWrist extends Command {
-    boolean wait_for_wrist;
+    boolean isInstant;
     double target_angle;
     boolean am_i_done = false;
     double position_tolerence = EncoderLib.degreesToRaw(RobotConfig.wrist_position_tolerence,RobotConfig.POSITION_PULSES_PER_ROTATION);
     double velocity_tolerence = EncoderLib.degreesToRaw(RobotConfig.wrist_velocity_tolerence, RobotConfig.POSITION_PULSES_PER_ROTATION);   // TODO verify this behavior, maybe omit for now?
 
-    public SetWrist(double target_angle, boolean wait_for_wrist) {
-    this.wait_for_wrist = wait_for_wrist;
-    this.target_angle = target_angle;
-    requires(Robot.wrist); // reserve the intake subsystem, TODO make sure this doesnt break anything
-    // this.runtime = runtime;
+    public SetWrist(double target_angle, boolean isInstant) {
+        this.isInstant = isInstant;
+        this.target_angle = target_angle;
+        requires(Robot.wrist); // reserve the wrist subsystem
     }
 
     // public static final drivetrain drivetrain  = new drivetrain();
@@ -30,18 +29,20 @@ public class SetWrist extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() { 
-        // Check exit condition of being within target angle and velocity
-        if (( Math.abs(Robot.wrist.getAngle() - target_angle ) < position_tolerence ) 
-            && (Math.abs(Robot.wrist.getAngularVelocity()) < velocity_tolerence)) {
-                am_i_done = true;
-            }
+        System.out.println("Current wrist angle: " + Robot.wrist.getAngle() + " Target wrist angle: " + target_angle);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        if (wait_for_wrist != true) { return true; }
-        else { return am_i_done; }
+        if (isInstant || //if command has to run instantly, return true - otherwise check all the conditions
+            (( Math.abs(Robot.wrist.getAngle() - target_angle ) < position_tolerence ) 
+            && (Math.abs(Robot.wrist.getAngularVelocity()) < velocity_tolerence))) {
+                return true;
+            }
+        else { 
+            return false;
+        }
     }
 
     // Called once after isFinished returns true
