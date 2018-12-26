@@ -12,10 +12,10 @@ set DIRNAME=%~dp0
 if "%DIRNAME%" == "" set DIRNAME=.
 set APP_BASE_NAME=%~n0
 set APP_HOME=%DIRNAME%
-set JAVA_HOME=C:\Program Files\Java\jdk1.8.0_191
+set JAVA_HOME=C:\Program Files\Java\jdk-11.0.1
 
 @rem Add default JVM options here. You can also use JAVA_OPTS and GRADLE_OPTS to pass JVM options to this script.
-set DEFAULT_JVM_OPTS=
+set DEFAULT_JVM_OPTS="-Xmx64m"
 
 @rem Find java.exe
 if defined JAVA_HOME goto findJavaFromJavaHome
