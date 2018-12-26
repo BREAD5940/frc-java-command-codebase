@@ -46,7 +46,7 @@ public class AutoSelector{
         
 
 
-        this.emptyAction = new AutoPath("Do Nothing", "XXX", RobotLocation.FAR_LEFT);
+        // this.emptyAction = new AutoPath("Do Nothing", "XXX", RobotLocation.FAR_LEFT);
 
         // return idealPath;
     }

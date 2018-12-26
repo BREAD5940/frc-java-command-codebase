@@ -17,11 +17,11 @@ import frc.robot.Robot;
 /**
  * Future pathfinder auto comand. Not functional right now.
  */
-public class auto_Spline extends Command {
+public class auto_FollowMotionProfile extends Command {
   
   
 
-  public auto_Spline() {
+  public auto_FollowMotionProfile() {
     requires(Robot.drivetrain); // reserve the drivetrain subsystem
   }
 
