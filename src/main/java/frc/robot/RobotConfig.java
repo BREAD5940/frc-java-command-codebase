@@ -68,6 +68,15 @@ public class RobotConfig {
     public static final double minimum_turn_weight = maximum_turn_weight;
   }
 
+  public class auto_turnInPlace {
+    public static final double kp = 0.2;
+    public static final double ki = 0.05;
+    public static final double max_integral = 0.5;
+    public static final double integral_zone = 10; // 10 degrees izone
+    public static final double min_turn_speed = -1; // in ft/sec
+    public static final double max_turn_speed = 1; // in ft/sec
+  }
+
   // Auto PID
   public static final double drive_auto_turn_kp = 0.1; //TODO make this a measured value!
   public static final double turn_auto_angle_tolerence = 2; // Units are in degrees, can be +- this many

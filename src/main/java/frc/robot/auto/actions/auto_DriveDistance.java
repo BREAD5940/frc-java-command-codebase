@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
+import frc.robot.lib.ShittyPID;
 
 
 
@@ -34,6 +35,10 @@ public class auto_DriveDistance extends Command {
   double forward_speed;
   double left_speed_raw;
   double right_speed_raw;
+
+  // Make a pid class instance
+  ShittyPID forwardPID = new ShittyPID(RobotConfig.drive_straight.forward_kp, 
+    RobotConfig.drive_auto_forward_velocity_min, RobotConfig.drive_auto_forward_velocity_max);
 
   /**
    * auto_action_DRIVE is a basic auto action. It should drive in a straight-ish line, as it uses 
@@ -76,6 +81,7 @@ public class auto_DriveDistance extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    forwardPID.setSetpoint(targetDistance); // Set PID setpoint
     setTimeout(timeout); // set the timeout
     System.out.println("Auto action drive init!");
   }
@@ -83,12 +89,8 @@ public class auto_DriveDistance extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    // double new_target_pos = currentDistance + targetDistance;
-    double forward_speed = Robot.drivetrain.shitty_P_loop(RobotConfig.m_left_position_kp_high, 
-      endDistanceLeft, // target distance in feet 
-      Robot.drivetrain.getLeftDistance(), 
-      RobotConfig.drive_auto_forward_velocity_min, 
-      RobotConfig.drive_auto_forward_velocity_max);
+    double forward_speed = forwardPID.update(Robot.drivetrain.getLeftDistance());
+
     double left_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.left_wheel_effective_diameter / 12, RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
     double right_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.right_wheel_effective_diameter / 12, RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
     Robot.drivetrain.setSpeeds(left_speed_raw, right_speed_raw);
