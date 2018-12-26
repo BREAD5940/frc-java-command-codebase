@@ -63,16 +63,18 @@ public class MotionProfileLib {
       TrajectoryPoint point = new TrajectoryPoint();
 
       for (int i = 0; i < profile.size(); i++) {
-          point.position = EncoderLib.distanceToRaw(profile.get(i)[0], effective_diameter, RobotConfig.POSITION_PULSES_PER_ROTATION);     // meters -> rotations -> ticks
-          point.velocity = EncoderLib.distanceToRaw(((profile.get(i)[1]) / 10.0), effective_diameter, RobotConfig.POSITION_PULSES_PER_ROTATION);     // meters/second -> ticks/sec -> ticks/100ms
+        point.position = EncoderLib.distanceToRaw(profile.get(i)[4], effective_diameter, RobotConfig.POSITION_PULSES_PER_ROTATION);     // meters -> rotations -> ticks
+        point.velocity = EncoderLib.distanceToRaw(((profile.get(i)[5]) / 10.0), effective_diameter, RobotConfig.POSITION_PULSES_PER_ROTATION);     // meters/second -> ticks/sec -> ticks/100ms
+        point.headingDeg = profile.get(i)[7];
+        
         //   point.timeDur = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_50ms;
-        //   point.profileSlotSelect0 = 0;
+        point.profileSlotSelect = 0;
 
-          point.zeroPos = i == 0;
-          point.isLastPoint = (i + 1) == profile.size();
+        point.zeroPos = i == 0; // This is true if i is zero??
+        point.isLastPoint = (i + 1) == profile.size(); // This is true if i+1 is the size?
 
-          talonSRX.pushMotionProfileTrajectory(point);
 
+        talonSRX.pushMotionProfileTrajectory(point);
       }
 
       System.out.println("Loaded Trajectory");

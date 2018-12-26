@@ -122,6 +122,7 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_chooser.getSelected(); // set the command to what the sendable chooser gets
 
     gyro.reset(); // Reset the current gyro heading to zero
+    drivetrain.zeroEncoders();
     
     if ( RobotConfig.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
     else if ( RobotConfig.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
