@@ -15,15 +15,15 @@ import frc.robot.auto.AutoPath;
 
 public class AutoSelector{
 
-    SendableChooser<AutoPath.robotLoc> robotLoc;
+    // SendableChooser<AutoPath.robotLoc> robotLoc;
 	// AutoPath.robotLoc prevRobotLoc = null;
-	ArrayList<AutoPath> autoPaths = new ArrayList<>();
+	// ArrayList<AutoPath> autoPaths = new ArrayList<>();
 
-	final ArrayList<AutoPath> totalPossiblePaths = new ArrayList<>();
+	// final ArrayList<AutoPath> totalPossiblePaths = new ArrayList<>();
 
 	// final AutoPath emptyAction;
 
-    RobotLocation = AutoPath.robotLoc;
+    // RobotLocation = AutoPath.robotLoc;
 
 	// public static final boolean ROBOT_AUTONOMOUS_WORKS = false;
 
@@ -40,14 +40,14 @@ public class AutoSelector{
      * @param cubes
      *      the operator-selected number of cubes to place (1, 2, 3, etc.)
      */
-    public AutoSelector(AutoPath.robotLoc location, AutoPath.ssLoc fieldSetup, String goal, int cubes) {
-        AutoPath idealPath = new AutoPath("Default", location, fieldSetup);
+    // public AutoSelector(AutoPath.robotLoc location, AutoPath.ssLoc fieldSetup, String goal, int cubes) {
+    //     AutoPath idealPath = new AutoPath("Default", location, fieldSetup);
 
         
 
 
-        // this.emptyAction = new AutoPath("Do Nothing", "XXX", RobotLocation.FAR_LEFT);
+    //     // this.emptyAction = new AutoPath("Do Nothing", "XXX", RobotLocation.FAR_LEFT);
 
-        // return idealPath;
-    }
+    //     // return idealPath;
+    // }
 }

@@ -219,41 +219,6 @@ public class DriveTrain extends Subsystem {
     return output;
   }
 
-  /**
-   * Reads and processes individual data points from a CSV file.
-   *
-   * @param path the path of the file with the data points
-   * @return an ArrayList of double[] with each data point
-   */
-  private static ArrayList<double[]> readCSVMotionProfileFile(String path) {
-
-    ArrayList<double[]> pathSegments = new ArrayList<>();
-
-    try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-
-        String line;
-        String csvDelimiter = ",";
-
-        while ((line = br.readLine()) != null) {
-            String[] segment = line.split(csvDelimiter);
-
-            double[] convertedSegment = Arrays.stream(segment)
-                    .mapToDouble(Double::parseDouble)
-                    .toArray();
-
-            pathSegments.add(convertedSegment);
-        }
-
-    } catch (IOException ex) {
-        DriverStation.reportError("Unable to read motion profile file!", true);
-    }
-
-    return pathSegments;
-
-}
-
-
-
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
