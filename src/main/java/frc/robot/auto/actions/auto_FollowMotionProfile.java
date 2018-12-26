@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.auto;
+package frc.robot.auto.actions;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
@@ -15,15 +15,14 @@ import frc.robot.Robot;
 
 
 /**
- * Shifter command to shift to high gear
+ * Future pathfinder auto comand. Not functional right now.
  */
-public class auto_action_INTAKE extends Command {
+public class auto_FollowMotionProfile extends Command {
   
-  double runtime;
+  
 
-  public auto_action_INTAKE(double runtime) {
-    requires(Robot.intake); // reserve the intake subsystem, TODO make sure this doesnt break anything
-    this.runtime = runtime;
+  public auto_FollowMotionProfile() {
+    requires(Robot.drivetrain); // reserve the drivetrain subsystem
   }
 
   // public static final drivetrain drivetrain  = new drivetrain();
@@ -41,7 +40,7 @@ public class auto_action_INTAKE extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true

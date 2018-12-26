@@ -2,11 +2,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.RunIntake;
-
-// import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -22,7 +19,6 @@ public class Intake extends Subsystem {
   public TalonSRX talon_left = new TalonSRX(RobotConfig.left_intake_talon_port);
   public TalonSRX talon_right = new TalonSRX(RobotConfig.right_intake_talon_port);
 
-
   float position_setpoint;
 
 /**
@@ -34,15 +30,6 @@ public class Intake extends Subsystem {
     talon_right.set(ControlMode.PercentOutput, speed);
     SmartDashboard.putNumber("Intake speed setpoint", speed);
   }
-
-  public void openClamp() {
-    // solenoid.set(DoubleSolenoid.Value.kReverse);
-  }
-
-  public void closeClamp() {
-    // solenoid.set(DoubleSolenoid.Value.kForward);
-  }
-
 
   @Override
   public void initDefaultCommand() {

@@ -53,14 +53,25 @@ public class RobotConfig {
   public static final double drive_auto_angle_tolerence = 1; // units are in degrees
   public static final double drive_auto_velocity_tolerence = 0.5; // units are in inches per second
   public static final double drive_auto_straight_angle_tolerence = 2; // units are in degrees
+  // CHANGE ME TO CHANGE HOW FAST AUTO GOES!!!
   public static final double drive_auto_forward_velocity_max = 4; // feet per second target for driving auto
   public static final double drive_auto_forward_velocity_min = -2; // minimum speed for auto drive in ft per sec
-  public static final double drive_auto_turn_minimum_weight = -0.1;
-  public static final double drive_auto_turn_maximum_weight = 0.1;
-  public static final double drive_auto_low_gear_speed = 2; // units are feet per second
-  public static final double drive_auto_high_speed = 2; // units are feet per second
+  public static final String default_auto_gear = "low"; // Set the default gear for auto. If not otherwise specified, this will be used
+
+  public class drive_straight {
+    public static final double forward_kp = 2;
+    public static final double turn_kp = 0.05;
+    public static final double turn_ki = 0.01;
+    public static final double turn_izone = 4; // +- 4 degrees of setpoint for izone
+    public static final double turn_integral_max = 0.3; // Maximum integral weight for turning
+    public static final double maximum_turn_weight = 0.3;
+    public static final double minimum_turn_weight = maximum_turn_weight;
+  }
+
   // Auto PID
-  public static final double drive_auto_turn_kp = 1; //TODO make this a measured value!
+  public static final double drive_auto_turn_kp = 0.1; //TODO make this a measured value!
+  public static final double turn_auto_angle_tolerence = 2; // Units are in degrees, can be +- this many
+  public static final double turn_auto_angular_velocity_tolerence = 0.1; // units are in degrees per second
 
   // Encoder stuff, dunno where else to put this
 	// public static final double VELOCITY_PULSES_PER_ROTATION = 409.6f;
@@ -72,6 +83,12 @@ public class RobotConfig {
   public static final double elevator_effective_diameter = 1.27 * 1.6; // TODO fix elevator_effective_diameter!!!! (units must be inches)
   public static final int elevator_minimum_height = 0;
   public static final int elevator_maximum_height = 70; // changed to inches, TODO verify maximum height
+  class elevator_presets { // various preset elevator max heights
+    public static final double floor = 0;
+    public static final double place_switch = 30;
+    public static final double place_scale_low = 60;
+    public static final double place_max = elevator_maximum_height;
+  }
 
   /**
    * Left side of drivetrain PID constants and setup

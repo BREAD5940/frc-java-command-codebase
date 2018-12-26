@@ -98,7 +98,9 @@ public class EncoderLib extends Subsystem {
      * @return rawPosition
      */
     public static double degreesToRaw(double degrees, double unitsPerRotation) {
-        return rotationsToRaw(degrees / 360, unitsPerRotation);
+        double rotations = degrees / 360;
+        double raw = rotations * unitsPerRotation;
+        return raw;
     }
 
 
