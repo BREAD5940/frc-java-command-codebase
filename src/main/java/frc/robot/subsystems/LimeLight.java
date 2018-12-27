@@ -25,8 +25,6 @@ public class LimeLight {
   double y_resolution = 240;
   double x_fov = 54;
   double y_fov = 41;
-  double Vpw = 2.0 * Math.tan(x_fov/2);    
-  double Vph = 2.0 * Math.tan(y_fov/2);
 
   double distance, relativeAngle;
 
@@ -46,18 +44,80 @@ public class LimeLight {
     return data;
   }
 
-  public double[] pixelsToAngle(double dx, double dy) {
-    double x = Vpw/2*dx;
-    double y = Vph/2*dy;
-
-    return angles;
+  /**
+   * Get the area of the tracked target as a percentage from 0% to 100%
+   * @return area as percentage of total area 
+   */
+  public double getTargetArea() {
+    return (table.getEntry("ta")).getDouble(0);
   }
 
-  public double getDistanceToFixedPoint(double targetElevation){
-    
+  /**
+   * Get the dx from crosshair to tracked target
+   * @return skew from -90 to 0 degrees
+   */
+  public double getTargetSkew() {
+    return (table.getEntry("ts")).getDouble(0);
+  }
+  
+  /**
+   * Get the latency from photon -> NT entry
+   * @return pipeline latency contribution
+   */
+  public double getPipelineLatency() {
+    return (table.getEntry("tl")).getDouble(0);
+  }
 
-    
-    return 0;
+  /**
+   * Get the dx from crosshair to tracked target
+   * @return dx
+   */
+  public double getDx() {
+    return (table.getEntry("tx")).getDouble(0);
+  }
+
+  /**
+   * Get the dy from crosshair to tracked target
+   */
+  public double getDy() {
+    return (table.getEntry("ty")).getDouble(0);
+  }
+
+  /**
+   * Return the number of targets currently being tracked
+   * @return currently tracked targets
+   */
+  public double getTrackedTargets() {
+    return (table.getEntry("tv")).getDouble(0);
+  }
+  
+  /**
+   * Get the current delta x (left/right) angle from crosshair to vision target
+   * @return delta x in degrees to target
+   */
+  public double getDxAngle() {
+    return Math.atan(
+      getDx() / (x_resolution / 2) / (Math.tan(x_fov / 2))
+    );
+  }
+
+  /**
+   * Get the current elevation (delta y) angle from crosshair to vision target
+   * @return degrees of elevation from crosshair to target 
+   */
+  public double getDyAngle() {
+    return Math.atan(
+      getDy() / (y_resolution / 2) / (Math.tan(y_fov / 2))
+    );
+  }
+
+  /**
+   * Get the distance (in the same units as elevation) from a tracked vision target
+   * @param targetElevation
+   * @return distance to target
+   */
+  public double getDistanceToFixedPoint(double targetElevation){
+    return (targetElevation - cameraHeight) / Math.tan(cameraAngle + (table.getEntry("ty").getDouble(0)));
   }
 
 }
