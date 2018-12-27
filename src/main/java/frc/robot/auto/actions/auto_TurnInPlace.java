@@ -23,18 +23,16 @@ public class auto_TurnInPlace extends Command {
   double target_angle;
   double target_angle_absolute;
   boolean isAbsolute = true;
-  String gear = RobotConfig.default_auto_gear;
-  // double turn_kp;
   double output;
   double max_turn_speed;
   double raw_left;
   double raw_right;
 
-  ShittyPID turnPID = new ShittyPID(RobotConfig.turn_in_place.kp, RobotConfig.turn_in_place.ki, 
-    RobotConfig.turn_in_place.minimum_turn_weight, 
-    RobotConfig.turn_in_place.maximum_turn_weight, 
-    RobotConfig.turn_in_place.turn_izone, 
-    RobotConfig.turn_in_place.turn_integral_max);
+  ShittyPID turnPID = new ShittyPID(RobotConfig.auto_turnInPlace.kp, RobotConfig.auto_turnInPlace.ki, 
+    RobotConfig.auto_turnInPlace.min_turn_speed, 
+    RobotConfig.auto_turnInPlace.max_turn_speed, 
+    RobotConfig.auto_turnInPlace.integral_zone, 
+    RobotConfig.auto_turnInPlace.max_integral);
   
   /**
    * Turn a specified number of degrees in the default auto gear.
@@ -67,6 +65,7 @@ public class auto_TurnInPlace extends Command {
   @Override
   protected void initialize() {
     starting_angle = Robot.gyro.getAngle();
+    turnPID.setSetpoint(target_angle);
 
 
     // If the angle is relative (which it should not be), setup target angle.
@@ -82,8 +81,6 @@ public class auto_TurnInPlace extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // TODO better PID implamentation, for now stuck with P
-    // output = Robot.drivetrain.shitty_P_loop(turn_kp, target_angle, Robot.gyro.getAngle(), RobotConfig.max_turn_speed_high, 1); // Get a shitty P loop output
     output = turnPID.update(Robot.gyro.getAngle());
     raw_left = EncoderLib.distanceToRaw(output, RobotConfig.left_wheel_effective_diameter, RobotConfig.POSITION_PULSES_PER_ROTATION);
     raw_right = (-1) * EncoderLib.distanceToRaw(output, RobotConfig.right_wheel_effective_diameter, RobotConfig.POSITION_PULSES_PER_ROTATION);

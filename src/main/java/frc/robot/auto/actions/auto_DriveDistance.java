@@ -36,6 +36,7 @@ public class auto_DriveDistance extends Command {
   double left_speed_raw;
   double right_speed_raw;
 
+  // Make a pid class instance
   ShittyPID forwardPID = new ShittyPID(RobotConfig.drive_straight.forward_kp, 
     RobotConfig.drive_auto_forward_velocity_min, RobotConfig.drive_auto_forward_velocity_max);
 
@@ -89,15 +90,7 @@ public class auto_DriveDistance extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    // double new_target_pos = currentDistance + targetDistance;
-    // double forward_speed = Robot.drivetrain.shitty_P_loop(RobotConfig.m_left_position_kp_high, 
-    //   endDistanceLeft, // target distance in feet 
-    //   Robot.drivetrain.getLeftDistance(), 
-    //   RobotConfig.drive_auto_forward_velocity_min, 
-    //   RobotConfig.drive_auto_forward_velocity_max);
-
     forward_speed = forwardPID.update(Robot.drivetrain.getLeftDistance());
-
 
     double left_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.left_wheel_effective_diameter / 12, RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
     double right_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.right_wheel_effective_diameter / 12, RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
