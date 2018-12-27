@@ -77,6 +77,11 @@ public class RobotConfig {
     public static final double max_turn_speed = 1; // in ft/sec
   }
 
+  public class limeLight {
+    public static final double camera_height = 1; // units are in feet
+    public static final double camera_angle = 0; // degrees from horizon - positive is up, negative is down
+  }
+
   // Auto PID
   public static final double drive_auto_turn_kp = 0.1; //TODO make this a measured value!
   public static final double turn_auto_angle_tolerence = 2; // Units are in degrees, can be +- this many

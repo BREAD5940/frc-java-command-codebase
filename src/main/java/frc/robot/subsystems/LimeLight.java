@@ -5,6 +5,8 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.NetworkTable;
 
+import frc.robot.RobotConfig;
+
 
 /**
  * tv	Whether the limelight has any valid targets (0 or 1)
@@ -16,7 +18,17 @@ import edu.wpi.first.networktables.NetworkTable;
  */
 public class LimeLight {
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-  double[] data;
+  double[] data, angles;
+  double cameraHeight = RobotConfig.limeLight.camera_height;
+  double cameraAngle = RobotConfig.limeLight.camera_angle;
+  double x_resolution = 320;
+  double y_resolution = 240;
+  double x_fov = 54;
+  double y_fov = 41;
+  double Vpw = 2.0 * Math.tan(x_fov/2);    
+  double Vph = 2.0 * Math.tan(y_fov/2);
+
+  double distance, relativeAngle;
 
   public double[] getData() {
     NetworkTableEntry tv = table.getEntry("tv");
@@ -33,4 +45,19 @@ public class LimeLight {
     data[5] = tl.getDouble(0);
     return data;
   }
+
+  public double[] pixelsToAngle(double dx, double dy) {
+    double x = Vpw/2*dx;
+    double y = Vph/2*dy;
+
+    return angles;
+  }
+
+  public double getDistanceToFixedPoint(double targetElevation){
+    
+
+    
+    return 0;
+  }
+
 }
