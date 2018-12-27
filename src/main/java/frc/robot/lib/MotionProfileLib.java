@@ -50,7 +50,6 @@ public class MotionProfileLib {
     loadTrajectoryToTalon(talon, profile, effective_diameter);
 
     System.out.println("--- Trajectory loaded to talon! ---");
-
   }
 
 
