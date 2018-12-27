@@ -39,8 +39,8 @@ public class DriveTrain extends Subsystem {
   public TalonSRX s_right_talon = new TalonSRX(RobotConfig.s_right_talon_port);
   public String current_gear;
 
-  private static MotionProfileStatus m_left_MP_Status = new MotionProfileStatus();
-  private static MotionProfileStatus m_right_MP_Status = new MotionProfileStatus();
+  public MotionProfileStatus m_left_MP_Status = new MotionProfileStatus();
+  public MotionProfileStatus m_right_MP_Status = new MotionProfileStatus();
 
   public void init() {
     m_left_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,30);
@@ -187,22 +187,6 @@ public class DriveTrain extends Subsystem {
     setLeftSpeedRaw(leftspeedraw);
     setRightSpeedRaw(rightspeedraw);
 
-  }
-
-  public void motionProfileInit(TalonSRX leftTalon, TalonSRX rightTalon, 
-      ArrayList<double[]> leftProfile, ArrayList<double[]> rightProfile) {
-    if (m_left_MP_Status.hasUnderrun) {
-      leftTalon.clearMotionProfileHasUnderrun(0);
-    }
-
-    if (m_right_MP_Status.hasUnderrun) {
-      rightTalon.clearMotionProfileHasUnderrun(0);
-    }
-
-    leftTalon.clearMotionProfileTrajectories();
-    leftTalon.changeMotionControlFramePeriod(0);
-    rightTalon.clearMotionProfileTrajectories();
-    rightTalon.changeMotionControlFramePeriod(0);
   }
 
   @Override
