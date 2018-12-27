@@ -65,7 +65,16 @@ public class RobotConfig {
     public static final double turn_izone = 4; // +- 4 degrees of setpoint for izone
     public static final double turn_integral_max = 0.3; // Maximum integral weight for turning
     public static final double maximum_turn_weight = 0.3;
-    public static final double minimum_turn_weight = maximum_turn_weight;
+    public static final double minimum_turn_weight = -maximum_turn_weight;
+  }
+
+  public class turn_in_place {
+    public static final double kp = 0.05;
+    public static final double ki = 0.02;
+    public static final double turn_izone = 10; // +- 4 degrees of setpoint for izone
+    public static final double turn_integral_max = 0.5; // Maximum integral weight for turning
+    public static final double maximum_turn_weight = 1;
+    public static final double minimum_turn_weight = -maximum_turn_weight;
   }
 
   // Auto PID

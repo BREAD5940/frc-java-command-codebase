@@ -54,6 +54,14 @@ public class ShittyPID {
   }
 
   /**
+   * Set the maximum output of the controller
+   * @param maxOutput
+   */
+  public void setMaxOutput(double max) {
+    this.maxOutput = max;
+  }
+
+  /**
    * Returns the current setpoint of the PID loop
    * @return setpoint
    */
