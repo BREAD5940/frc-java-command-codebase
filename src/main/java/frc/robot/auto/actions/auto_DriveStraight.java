@@ -106,12 +106,14 @@ public class auto_DriveStraight extends Command {
   @Override
   protected void execute() {
     forward_speed = forwardPID.update(Robot.drivetrain.getLeftDistance());
-    turn_weight = turnPID.update(Robot.gyro.getAngle());
+    turn_weight = 1 + turnPID.update(Robot.gyro.getAngle());
 
-    left_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.left_wheel_effective_diameter / 12, 
+    left_speed_raw = EncoderLib.distanceToRaw(forward_speed * turn_weight, RobotConfig.left_wheel_effective_diameter / 12, 
       RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
-    right_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.right_wheel_effective_diameter / 12, 
+    right_speed_raw = EncoderLib.distanceToRaw(forward_speed * turn_weight, RobotConfig.right_wheel_effective_diameter / 12, 
       RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
+
+    Robot.drivetrain.setSpeeds(left_speed_raw, right_speed_raw);
 
     System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeftDistance() + 
       " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());
