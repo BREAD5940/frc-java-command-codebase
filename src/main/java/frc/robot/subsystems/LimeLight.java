@@ -44,6 +44,16 @@ public class LimeLight {
     return data;
   }
 
+  /** Turn on the Limelight LED */
+  public void turnOnLED() {
+    table.getEntry("ledMode").setNumber(0); 
+  }
+
+  /** Turn off the Limelight LED */
+  public void turnOffLED() {
+    table.getEntry("ledMode").setNumber(1); 
+  }
+
   /**
    * Get the area of the tracked target as a percentage from 0% to 100%
    * @return area as percentage of total area 
