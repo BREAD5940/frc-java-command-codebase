@@ -1,6 +1,4 @@
-// all of this is Wrong and False plz ignore
-
-package frc.robot.auto.actions;
+package frc.robot.auto;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -9,9 +7,13 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
 import frc.robot.auto.actions.auto_action_DRIVE;
 
-public class auto_command_group extends CommandGroup{
+public class AutoCommandGroup extends CommandGroup{
 
-    public auto_command_group(Command... commands) {
+    /**
+     * literally just makes a proper sequential command group out of the inputted commands
+     * @param commands
+     */
+    public AutoCommandGroup(Command... commands) {
         for (Command command : commands){
             addSequential(command);
         }

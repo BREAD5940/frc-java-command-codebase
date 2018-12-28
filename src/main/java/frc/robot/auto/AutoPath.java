@@ -19,7 +19,7 @@ public class AutoPath {
     robotLoc location;
     ssLoc setup;
     String name;
-    Command[] commands;
+    AutoCommandGroup commandGroup;
 
     /**
      * creates a new AutoPath for the current match
@@ -37,7 +37,7 @@ public class AutoPath {
         this.location  = currentLocation;
         this.setup = setup;
         this.name = name;
-        this.commands = commands;
+        this.commandGroup = new AutoCommandGroup(commands);
     }
 
     

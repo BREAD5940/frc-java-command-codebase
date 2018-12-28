@@ -12,7 +12,7 @@ import frc.robot.auto.actions.auto_action_DRIVE;
 public class auto_action_SQUARE extends CommandGroup{
 
     public auto_action_SQUARE(double sideLength) {
-        addSequential(new auto_action_DRIVE(sideLength,"high",5,30));
+        // addSequential(new auto_action_DRIVE(sideLength,"high",5,30));
         addSequential(new auto_action_TURN()); 
     }
 }

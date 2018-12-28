@@ -9,7 +9,9 @@ import frc.robot.Robot;
 import frc.robot.auto.actions.auto_action_DRIVE;
 
 public class AutoSelector{
-
+    public AutoSelector(){
+        
+    }
     
 
     /**
@@ -23,7 +25,7 @@ public class AutoSelector{
      * @param cubes
      *      the operator-selected number of cubes to place (1, 2, 3, etc.)
      */
-    public AutoPath AutoSelector(AutoPath.robotLoc location, AutoPath.ssLoc fieldSetup, String goal, int cubes) {
+    public AutoPath choosePath(AutoPath.robotLoc location, AutoPath.ssLoc fieldSetup, String goal, int cubes) {
         AutoPath idealPath = new AutoPath("Default", location, fieldSetup);
 
         

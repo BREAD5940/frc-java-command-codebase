@@ -75,6 +75,8 @@ public class Robot extends TimedRobot {
   Command m_autonomousCommand;
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
+  public static double defaultAutoSpeed = RobotConfig.drive_auto_forward_velocity_max;
+
   public static void drivetrain_shift_high(){ shifterDoubleSolenoid.set(DoubleSolenoid.Value.kForward); }
   public static void drivetrain_shift_low(){ shifterDoubleSolenoid.set(DoubleSolenoid.Value.kReverse); }
   public static void intake_close(){ intakeDoubleSolenoid.set(DoubleSolenoid.Value.kForward); }
@@ -101,8 +103,8 @@ public class Robot extends TimedRobot {
 
     startingDistance = drivetrain.getLeftDistance();
 
-    m_chooser.addDefault("Default Auto", new auto_action_DRIVE(3, "high", 5, 30));
-    m_chooser.addObject("Square Auto", new auto_action_SQUARE(2));
+    // m_chooser.addDefault("Default Auto", new auto_action_DRIVE(3, "high", 5, 30));
+    // m_chooser.addObject("Square Auto", new auto_action_SQUARE(2));
     // chooser.addObject("My Auto", new MyAutoCommand());
 
 
@@ -193,7 +195,7 @@ public class Robot extends TimedRobot {
     // }
     // new auto_action_DRIVE(3, "high", 5, 30);
 
-    new auto_action_DRIVE(15, "high", 5, 30);
+    // new auto_action_DRIVE(15, "high", 5, 30);
 
   }
 

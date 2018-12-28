@@ -211,6 +211,17 @@ public class DriveTrain extends Subsystem {
     return output;
   }
 
+  /**
+   * Set the drivetrain target speed as two doubles. For
+   * all ye lazy programmers
+   * @param speed_left_raw raw left speed
+   * @param speed_right_raw raw right speed
+   */
+  public void setSpeeds(double speed_left_raw, double speed_right_raw) {
+    setLeftSpeedRaw(speed_left_raw);
+    setRightSpeedRaw(speed_right_raw);
+  }
+
 
 
   @Override
