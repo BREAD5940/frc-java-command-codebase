@@ -11,6 +11,7 @@ import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -56,16 +57,8 @@ public class DriveTrain extends Subsystem {
     m_right_talon.configPeakOutputReverse(-1.0, 30);
 
 
-    /* 1ms per loop.  PID loop can be slowed down if need be.
-    * For example,
-    * - if sensor updates are too slow
-    * - sensor deltas are very small per update, so derivative error never gets large enough to be useful.
-    * - sensor movement is very slow causing the derivative error to be near zero.
-    */
-    int closedLoopTimeMs = 1;
-    // TODO can I get rid of this code, or is it disabling something important?
-    m_right_talon.configSetParameter(ParamEnum.eSampleVelocityPeriod, closedLoopTimeMs, 0x00, 0,30);
-    m_right_talon.configSetParameter(ParamEnum.eSampleVelocityPeriod, closedLoopTimeMs, 0x00, 1, 30);
+    m_left_talon.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 0);
+    m_right_talon.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 0);
     
     m_left_talon.setInverted(true);
     s_left_talon.setInverted(true);
