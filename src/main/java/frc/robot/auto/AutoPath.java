@@ -9,11 +9,11 @@ import frc.robot.Robot;
 public class AutoPath {
 
     public enum robotLoc{
-        CENTER, LEFT, RIGHT, FARL, FARR
+        CENTER, LEFT, RIGHT, FAR_LEFT, FAR_RIGHT
     }
 
     public enum ssLoc{
-        LLL, LLR, LRL, LRR, RRR, RLR, RLL, RRL
+        LLL, LLR, LRL, LRR, RRR, RLR, RLL, RRL, 
     }
 
     robotLoc location;
@@ -26,7 +26,7 @@ public class AutoPath {
      * @param name
      *      name of the path
      * @param currentLocation
-     *      current location of the robot (CENTER, LEFT, RIGHT, FARL, FARR)
+     *      current location of the robot (CENTER, LEFT, RIGHT, FAR_LEFT, FAR_RIGHT)
      * @param setup
      *      required field setup of scales and switches (LLL, LLR, LRL, LRR, RRR, RLR, RLL, RRL)
      * @param  commands
