@@ -82,6 +82,21 @@ public class RobotConfig {
     public static final double camera_angle = 0; // degrees from horizon - positive is up, negative is down
   }
 
+  public class followVisionTarget {
+    public class forward {
+      public static final double kp = 0.1;
+      public static final double kp_rangeMode = 0.1;
+    }
+    public class turn {
+      public static final double kp = 0.05;
+      public static final double ki = 0.05;
+      public static final double integral_zone = 10; // 10 degrees izone
+      public static final double max_integral = 0.3;
+      public static final double min_turn_speed = -1; // in ft/sec
+      public static final double max_turn_speed = 1; // in ft/sec
+    }
+  }
+
   // Auto PID
   public static final double drive_auto_turn_kp = 0.1; //TODO make this a measured value!
   public static final double turn_auto_angle_tolerence = 2; // Units are in degrees, can be +- this many
