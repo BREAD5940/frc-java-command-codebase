@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
+import frc.robot.RobotConfig.driveTrain;
 import frc.robot.commands.ArcadeDrive;
 // import frc.robot.commands.stick_drive;
 import frc.robot.lib.EncoderLib;
@@ -34,10 +35,10 @@ public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  public TalonSRX m_left_talon = new TalonSRX(RobotConfig.m_left_talon_port);
-  public TalonSRX s_left_talon = new TalonSRX(RobotConfig.s_left_talon_port);
-  public TalonSRX m_right_talon = new TalonSRX(RobotConfig.m_right_talon_port);
-  public TalonSRX s_right_talon = new TalonSRX(RobotConfig.s_right_talon_port);
+  public TalonSRX m_left_talon = new TalonSRX(RobotConfig.driveTrain.left_talons.m_left_talon_port);
+  public TalonSRX s_left_talon = new TalonSRX(RobotConfig.driveTrain.left_talons.s_left_talon_port);
+  public TalonSRX m_right_talon = new TalonSRX(RobotConfig.driveTrain.right_talons.m_right_talon_port);
+  public TalonSRX s_right_talon = new TalonSRX(RobotConfig.driveTrain.right_talons.s_right_talon_port);
   public String current_gear;
 
   public MotionProfileStatus m_left_MP_Status = new MotionProfileStatus();
@@ -68,18 +69,18 @@ public class DriveTrain extends Subsystem {
   }
   
   public void setHighGear() {
-    this.m_left_talon.config_kP(0, RobotConfig.m_left_velocity_kp_high, 30);
-    this.m_left_talon.config_kI(0, RobotConfig.m_left_velocity_ki_high, 30);
-    this.m_left_talon.config_kD(0, RobotConfig.m_left_velocity_kd_high, 30);
-    this.m_left_talon.config_kF(0, RobotConfig.m_left_velocity_kf_high, 30);
-    this.m_left_talon.config_IntegralZone(0, RobotConfig.m_left_velocity_izone_high, 30);
-    // this.m_left_talon.configMaxIntegralAccumulator(0, RobotConfig.m_left_velocity_max_integral_high, 0);
+    this.m_left_talon.config_kP(0, RobotConfig.driveTrain.left_talons.velocity_kp_high, 30);
+    this.m_left_talon.config_kI(0, RobotConfig.driveTrain.left_talons.velocity_ki_high, 30);
+    this.m_left_talon.config_kD(0, RobotConfig.driveTrain.left_talons.velocity_kd_high, 30);
+    this.m_left_talon.config_kF(0, RobotConfig.driveTrain.left_talons.velocity_kf_high, 30);
+    this.m_left_talon.config_IntegralZone(0, RobotConfig.driveTrain.left_talons.velocity_izone_high, 30);
+    // this.m_left_talon.configMaxIntegralAccumulator(0, RobotConfig.driveTrain.left_talons.velocity_max_integral_high, 0);
 
-    this.m_right_talon.config_kP(0, RobotConfig.m_right_velocity_kp_high, 30);
-    this.m_right_talon.config_kI(0, RobotConfig.m_right_velocity_ki_high, 30);
-    this.m_right_talon.config_kD(0, RobotConfig.m_right_velocity_kd_high, 30);
-    this.m_right_talon.config_kF(0, RobotConfig.m_right_velocity_kf_high, 30);
-    this.m_right_talon.config_IntegralZone(0, RobotConfig.m_right_velocity_izone_high, 30);
+    this.m_right_talon.config_kP(0, RobotConfig.driveTrain.right_talons.velocity_kp_high, 30);
+    this.m_right_talon.config_kI(0, RobotConfig.driveTrain.left_talons.velocity_ki_high, 30);
+    this.m_right_talon.config_kD(0, RobotConfig.driveTrain.left_talons.velocity_kd_high, 30);
+    this.m_right_talon.config_kF(0, RobotConfig.driveTrain.left_talons.velocity_kf_high, 30);
+    this.m_right_talon.config_IntegralZone(0, RobotConfig.driveTrain.left_talons.velocity_izone_high, 30);
     // this.m_right_talon.configMaxIntegralAccumulator(0, RobotConfig.m_right_velocity_max_integral_high, 0);
     
     // Trigger solenoids
@@ -88,18 +89,18 @@ public class DriveTrain extends Subsystem {
   }
 
   public void setLowGear() {
-    this.m_left_talon.config_kP(0, RobotConfig.m_left_velocity_kp_low, 0);
-    this.m_left_talon.config_kI(0, RobotConfig.m_left_velocity_ki_low, 0);
-    this.m_left_talon.config_kD(0, RobotConfig.m_left_velocity_kd_low, 0);
-    this.m_left_talon.config_kF(0, RobotConfig.m_left_velocity_kf_low, 0);
-    this.m_left_talon.config_IntegralZone(0, RobotConfig.m_left_velocity_izone_low, 0);
-    // this.m_left_talon.configMaxIntegralAccumulator(0, RobotConfig.m_left_velocity_max_integral_low, 0);
+    this.m_left_talon.config_kP(0, RobotConfig.driveTrain.left_talons.velocity_kp_low, 0);
+    this.m_left_talon.config_kI(0, RobotConfig.driveTrain.left_talons.velocity_ki_low, 0);
+    this.m_left_talon.config_kD(0, RobotConfig.driveTrain.left_talons.velocity_kd_low, 0);
+    this.m_left_talon.config_kF(0, RobotConfig.driveTrain.left_talons.velocity_kf_low, 0);
+    this.m_left_talon.config_IntegralZone(0, RobotConfig.driveTrain.left_talons.velocity_izone_low, 0);
+    // this.m_left_talon.configMaxIntegralAccumulator(0, RobotConfig.driveTrain.left_talons.velocity_max_integral_low, 0);
     
-    this.m_right_talon.config_kP(0, RobotConfig.m_right_velocity_kp_low, 0);
-    this.m_right_talon.config_kI(0, RobotConfig.m_right_velocity_ki_low, 0);
-    this.m_right_talon.config_kD(0, RobotConfig.m_right_velocity_kd_low, 0);
-    this.m_right_talon.config_kF(0, RobotConfig.m_right_velocity_kf_low, 0);
-    this.m_right_talon.config_IntegralZone(0, RobotConfig.m_right_velocity_izone_low, 0);
+    this.m_right_talon.config_kP(0, RobotConfig.driveTrain.right_talons.velocity_kp_low, 0);
+    this.m_right_talon.config_kI(0, RobotConfig.driveTrain.right_talons.velocity_ki_low, 0);
+    this.m_right_talon.config_kD(0, RobotConfig.driveTrain.right_talons.velocity_kd_low, 0);
+    this.m_right_talon.config_kF(0, RobotConfig.driveTrain.right_talons.velocity_kf_low, 0);
+    this.m_right_talon.config_IntegralZone(0, RobotConfig.driveTrain.right_talons.velocity_izone_low, 0);
     // this.m_right_talon.configMaxIntegralAccumulator(0, RobotConfig.m_right_velocity_max_integral_low, 0);
 
     // Trigger solenoids
@@ -108,14 +109,15 @@ public class DriveTrain extends Subsystem {
     current_gear = "low";
   }
 
+  /** Return the current distance in feet of the left wheels */
   public double getLeftDistance() {return EncoderLib.rawToDistance(this.m_left_talon.getSelectedSensorPosition(0), 
-    RobotConfig.POSITION_PULSES_PER_ROTATION, RobotConfig.left_wheel_effective_diameter / 12); }
+    RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION, RobotConfig.driveTrain.left_wheel_effective_diameter / 12); }
   public double getRightDistance() {return EncoderLib.rawToDistance(this.m_right_talon.getSelectedSensorPosition(0), 
-    RobotConfig.POSITION_PULSES_PER_ROTATION, RobotConfig.right_wheel_effective_diameter) / 12;}
+    RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION, RobotConfig.driveTrain.right_wheel_effective_diameter) / 12;}
   public double getLeftVelocity() {return EncoderLib.rawToDistance(this.m_left_talon.getSelectedSensorVelocity(0) * 10, //Mulitply by 10 because units are per 100ms 
-    RobotConfig.POSITION_PULSES_PER_ROTATION, RobotConfig.left_wheel_effective_diameter);}
+    RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION, RobotConfig.driveTrain.left_wheel_effective_diameter);}
   public double getRightVelocity() {return EncoderLib.rawToDistance(this.m_right_talon.getSelectedSensorVelocity(0) * 10, 
-    RobotConfig.POSITION_PULSES_PER_ROTATION, RobotConfig.right_wheel_effective_diameter);}
+    RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION, RobotConfig.driveTrain.right_wheel_effective_diameter);}
   public void zeroEncoders() { 
     m_left_talon.setSelectedSensorPosition(0, 0, 30); 
     m_right_talon.setSelectedSensorPosition(0, 0, 30);
@@ -131,6 +133,18 @@ public class DriveTrain extends Subsystem {
   public void setSpeeds(double speed_left_raw, double speed_right_raw) {
     setLeftSpeedRaw(speed_left_raw);
     setRightSpeedRaw(speed_right_raw);
+  }
+
+  /**
+   * An even more lazy version of @link setSpeeds
+   * This will literally set the throttle of the left and right talons
+   * (from -1 to 1 ofc, like normal)
+   * @param leftspeed
+   * @param rightspeed
+   */
+  public void setPowers(double left_power, double right_power) {
+    m_left_talon.set(ControlMode.PercentOutput, left_power);
+    m_right_talon.set(ControlMode.PercentOutput, right_power);
   }
 
   /**
@@ -156,16 +170,16 @@ public class DriveTrain extends Subsystem {
     if ((forwardspeed < 0.02) && (forwardspeed > -0.02)) { forwardspeed = 0; }
     if ((turnspeed < 0.01) && (turnspeed > -0.01)) { turnspeed = 0; }
     
-    if (RobotConfig.driving_squared) {
+    if (RobotConfig.controls.driving_squared) {
       forwardspeed = forwardspeed * Math.abs(forwardspeed);
       turnspeed = turnspeed * Math.abs(turnspeed);
     }
     if (Robot.drivetrain.current_gear == "high"){
-        forwardspeed = forwardspeed * RobotConfig.max_forward_speed_high;
-        turnspeed = turnspeed * RobotConfig.max_turn_speed_high;}
+        forwardspeed = forwardspeed * RobotConfig.driveTrain.max_forward_speed_high;
+        turnspeed = turnspeed * RobotConfig.driveTrain.max_turn_speed_high;}
     if (Robot.drivetrain.current_gear == "low"){
-        forwardspeed = forwardspeed * RobotConfig.max_forward_speed_low;
-        turnspeed = turnspeed * RobotConfig.max_turn_speed_low;}
+        forwardspeed = forwardspeed * RobotConfig.driveTrain.max_forward_speed_low;
+        turnspeed = turnspeed * RobotConfig.driveTrain.max_turn_speed_low;}
 
     double leftspeed = forwardspeed + turnspeed; // units are in feet
     double rightspeed = forwardspeed - turnspeed;
@@ -173,9 +187,9 @@ public class DriveTrain extends Subsystem {
     /**
      * Set left speed raw in feet per 100ms
      */
-    double leftspeedraw = EncoderLib.distanceToRaw(leftspeed, RobotConfig.left_wheel_effective_diameter / 12, RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;//  ((leftspeed) / (Math.PI * RobotConfig.left_wheel_effective_diameter / 12)) * RobotConfig.POSITION_PULSES_PER_ROTATION / 10;
+    double leftspeedraw = EncoderLib.distanceToRaw(leftspeed, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;//  ((leftspeed) / (Math.PI * RobotConfig.driveTrain.left_wheel_effective_diameter / 12)) * RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION / 10;
     // divide by 10 becuase the talons want units per 100ms
-    double rightspeedraw = EncoderLib.distanceToRaw(rightspeed, RobotConfig.right_wheel_effective_diameter / 12, RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
+    double rightspeedraw = EncoderLib.distanceToRaw(rightspeed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
 
     setLeftSpeedRaw(leftspeedraw);
     setRightSpeedRaw(rightspeedraw);

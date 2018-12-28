@@ -8,8 +8,8 @@ import frc.robot.lib.EncoderLib;
 public class SetWrist extends Command {
     boolean isInstant;
     double target_angle;
-    double position_tolerence = EncoderLib.degreesToRaw(RobotConfig.wrist_position_tolerence,RobotConfig.POSITION_PULSES_PER_ROTATION);
-    double velocity_tolerence = EncoderLib.degreesToRaw(RobotConfig.wrist_velocity_tolerence, RobotConfig.POSITION_PULSES_PER_ROTATION);   // TODO verify this behavior, maybe omit for now?
+    double position_tolerence = EncoderLib.degreesToRaw(RobotConfig.wrist.wrist_position_tolerence,RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
+    double velocity_tolerence = EncoderLib.degreesToRaw(RobotConfig.wrist.wrist_velocity_tolerence, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);   // TODO verify this behavior, maybe omit for now?
 
     /**
      * This constructor takes a target angle in degrees and the boolean isInstant.

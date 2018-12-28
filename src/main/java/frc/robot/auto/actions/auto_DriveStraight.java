@@ -37,18 +37,18 @@ public class auto_DriveStraight extends Command {
   double left_speed_raw, right_speed_raw;
 
   private ShittyPID forwardPID = new ShittyPID(
-    RobotConfig.drive_straight.turn_kp, 
-    RobotConfig.drive_auto_forward_velocity_min,
-    RobotConfig.drive_auto_forward_velocity_max 
+    RobotConfig.auto.drive_straight.turn_kp, 
+    RobotConfig.auto.drive_auto_forward_velocity_min,
+    RobotConfig.auto.drive_auto_forward_velocity_max 
   );
 
   private ShittyPID turnPID = new ShittyPID(
-    RobotConfig.drive_straight.turn_kp, 
-    RobotConfig.drive_straight.turn_ki, 
-    RobotConfig.drive_straight.minimum_turn_speed, 
-    RobotConfig.drive_straight.maximum_turn_speed, 
-    RobotConfig.drive_straight.turn_izone, 
-    RobotConfig.drive_straight.turn_integral_max
+    RobotConfig.auto.drive_straight.turn_kp, 
+    RobotConfig.auto.drive_straight.turn_ki, 
+    RobotConfig.auto.drive_straight.minimum_turn_speed, 
+    RobotConfig.auto.drive_straight.maximum_turn_speed, 
+    RobotConfig.auto.drive_straight.turn_izone, 
+    RobotConfig.auto.drive_straight.turn_integral_max
   );
   
 
@@ -72,7 +72,7 @@ public class auto_DriveStraight extends Command {
    */
   public auto_DriveStraight(double distance) {
     this.distance = distance;
-    this.actionMaxSpeed = RobotConfig.drive_auto_forward_velocity_max;
+    this.actionMaxSpeed = RobotConfig.auto.drive_auto_forward_velocity_max;
     this.target_gyro_angle = Robot.gyro.getAngle(); // TODO make sure that the angle is set correctly on constructor call.
     requires(Robot.drivetrain);
   }
@@ -87,7 +87,7 @@ public class auto_DriveStraight extends Command {
    */
   public auto_DriveStraight(double distance, double angle) {
     this.distance = distance;
-    this.actionMaxSpeed = RobotConfig.drive_auto_forward_velocity_max;
+    this.actionMaxSpeed = RobotConfig.auto.drive_auto_forward_velocity_max;
     this.target_gyro_angle = angle; // TODO make sure that the angle is set correctly.
     requires(Robot.drivetrain);
   }
@@ -100,6 +100,7 @@ public class auto_DriveStraight extends Command {
     setTimeout(timeout); // set the timeout
     forwardPID.setSetpoint(end_distance_left);
     turnPID.setSetpoint(target_gyro_angle);
+    forwardPID.setMaxOutput(actionMaxSpeed);
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -108,10 +109,10 @@ public class auto_DriveStraight extends Command {
     forward_speed = forwardPID.update(Robot.drivetrain.getLeftDistance());
     turn_speed = 1 + turnPID.update(Robot.gyro.getAngle());
 
-    left_speed_raw = EncoderLib.distanceToRaw(forward_speed + turn_speed, RobotConfig.left_wheel_effective_diameter / 12, 
-      RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
-    right_speed_raw = EncoderLib.distanceToRaw(forward_speed - turn_speed, RobotConfig.right_wheel_effective_diameter / 12, 
-      RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
+    left_speed_raw = EncoderLib.distanceToRaw(forward_speed + turn_speed, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, 
+      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
+    right_speed_raw = EncoderLib.distanceToRaw(forward_speed - turn_speed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, 
+      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
 
     Robot.drivetrain.setSpeeds(left_speed_raw, right_speed_raw);
 
@@ -125,11 +126,11 @@ public class auto_DriveStraight extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.distance) < RobotConfig.drive_auto_position_tolerence) 
+    if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.distance) < RobotConfig.auto.tolerences.position_tolerence) 
       // && (Math.abs(Robot.drivetrain.getLeftDistance() - this.distance) < RobotConfig.drive_auto_position_tolerence) 
-      && (Math.abs(Robot.drivetrain.getLeftVelocity()) < RobotConfig.drive_auto_velocity_tolerence) 
-      && (Math.abs(Robot.drivetrain.getRightVelocity()) < RobotConfig.drive_auto_position_tolerence)
-      && (Math.abs(target_gyro_angle - current_angle) < RobotConfig.drive_auto_straight_angle_tolerence ))
+      && (Math.abs(Robot.drivetrain.getLeftVelocity()) < RobotConfig.auto.tolerences.velocity_tolerence) 
+      && (Math.abs(Robot.drivetrain.getRightVelocity()) < RobotConfig.auto.tolerences.position_tolerence)
+      && (Math.abs(target_gyro_angle - current_angle) < RobotConfig.auto.tolerences.angle_tolerence ))
       || (isTimedOut()) 
     ){ return true; }
     else { return false; }

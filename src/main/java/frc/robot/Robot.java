@@ -55,7 +55,6 @@ public class Robot extends TimedRobot {
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   public static double startingDistance;
-  public static double defaultAutoSpeed = RobotConfig.drive_auto_forward_velocity_max;
 
   // Various pneumatic shifting methods
   public static void drivetrain_shift_high(){ shifterDoubleSolenoid.set(DoubleSolenoid.Value.kForward); }
@@ -83,9 +82,9 @@ public class Robot extends TimedRobot {
     m_chooser.addDefault("Drive Auto", new auto_DriveDistance(10));
     m_chooser.addObject("This is a test", new auto_DriveDistance(2));
 
-    if ( RobotConfig.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
-    else if ( RobotConfig.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
-    else { System.out.println("default auto gear " + RobotConfig.default_auto_gear + " is not a valid choice!"); }
+    if ( RobotConfig.auto.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
+    else if ( RobotConfig.auto.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
+    else { System.out.println("default auto gear " + RobotConfig.auto.default_auto_gear + " is not a valid choice!"); }
 
     System.out.println("Robot has been initilized!");
 
@@ -98,9 +97,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    if ( RobotConfig.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
-    else if ( RobotConfig.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
-    else { System.out.println("default auto gear " + RobotConfig.default_auto_gear + " is not a valid choice!"); }
+    if ( RobotConfig.auto.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
+    else if ( RobotConfig.auto.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
+    else { System.out.println("default auto gear " + RobotConfig.auto.default_auto_gear + " is not a valid choice!"); }
   }
 
   @Override
@@ -126,9 +125,9 @@ public class Robot extends TimedRobot {
     gyro.reset(); // Reset the current gyro heading to zero
     drivetrain.zeroEncoders();
     
-    if ( RobotConfig.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
-    else if ( RobotConfig.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
-    else { System.out.println("default auto gear " + RobotConfig.default_auto_gear + " is not a valid choice!"); }
+    if ( RobotConfig.auto.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
+    else if ( RobotConfig.auto.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
+    else { System.out.println("default auto gear " + RobotConfig.auto.default_auto_gear + " is not a valid choice!"); }
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",

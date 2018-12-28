@@ -11,7 +11,6 @@ import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 import frc.robot.lib.ShittyPID;
-import frc.robot.subsystems.LimeLight;
 import edu.wpi.first.wpilibj.command.Command;
 
 
@@ -23,17 +22,17 @@ public class FollowVisionTarget extends Command {
   boolean followRange = false;
 
   private ShittyPID forwardPID = new ShittyPID(
-    RobotConfig.followVisionTarget.forward.kp,
-    RobotConfig.drive_auto_forward_velocity_min,
-    RobotConfig.drive_auto_forward_velocity_max 
+    RobotConfig.auto.followVisionTarget.forward.kp,
+    RobotConfig.auto.drive_auto_forward_velocity_min,
+    RobotConfig.auto.drive_auto_forward_velocity_max 
   );
   private ShittyPID turnPID = new ShittyPID(
-    RobotConfig.followVisionTarget.turn.kp,
-    RobotConfig.followVisionTarget.turn.ki,
-    RobotConfig.followVisionTarget.turn.min_turn_speed,
-    RobotConfig.followVisionTarget.turn.max_turn_speed, 
-    RobotConfig.followVisionTarget.turn.integral_zone, 
-    RobotConfig.followVisionTarget.turn.max_integral
+    RobotConfig.auto.followVisionTarget.turn.kp,
+    RobotConfig.auto.followVisionTarget.turn.ki,
+    RobotConfig.auto.followVisionTarget.turn.min_turn_speed,
+    RobotConfig.auto.followVisionTarget.turn.max_turn_speed, 
+    RobotConfig.auto.followVisionTarget.turn.integral_zone, 
+    RobotConfig.auto.followVisionTarget.turn.max_integral
   );
   
   /**
@@ -67,13 +66,15 @@ public class FollowVisionTarget extends Command {
   @Override
   protected void initialize() {
     setTimeout(timeout);
+    turnPID.setSetpoint(0);
     forwardPID.setMaxOutput(targetSpeed);
+
     if (followRange){ 
       forwardPID.setSetpoint(targetPercentOfFrame);
-      forwardPID.setKpGain(RobotConfig.followVisionTarget.forward.kp_rangeMode);
+      forwardPID.setKpGain(RobotConfig.auto.followVisionTarget.forward.kp_rangeMode);
     } 
-    else { forwardPID.setSetpoint(targetSpeed); }
-    turnPID.setSetpoint(0);
+    else { forwardPID.setSetpoint(targetSpeed);  }
+
     angleDeltaX = Robot.limelight.getDx();
     targetPercentOfFrame = Robot.limelight.getTargetArea();
   }
@@ -89,10 +90,10 @@ public class FollowVisionTarget extends Command {
       }
       turnSpeed = turnPID.update(Robot.limelight.getDxAngle());
       
-      leftSpeedRaw = EncoderLib.distanceToRaw(forwardSpeed + turnSpeed, RobotConfig.left_wheel_effective_diameter / 12, 
-      RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
-      rightSpeedRaw = EncoderLib.distanceToRaw(forwardSpeed - turnSpeed, RobotConfig.right_wheel_effective_diameter / 12, 
-      RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
+      leftSpeedRaw = EncoderLib.distanceToRaw(forwardSpeed + turnSpeed, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, 
+      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
+      rightSpeedRaw = EncoderLib.distanceToRaw(forwardSpeed - turnSpeed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, 
+      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
 
       System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeftDistance() + 
         " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());

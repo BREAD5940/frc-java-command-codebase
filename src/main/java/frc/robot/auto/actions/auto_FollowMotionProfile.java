@@ -48,9 +48,9 @@ public class auto_FollowMotionProfile extends Command {
 
     // Process the CSVs and stream to the talons
     MotionProfileLib.motionProfileInit(Robot.drivetrain.m_left_talon, 
-      leftProfilePath, RobotConfig.left_wheel_effective_diameter, leftMPStatus);
+      leftProfilePath, RobotConfig.driveTrain.left_wheel_effective_diameter, leftMPStatus);
     MotionProfileLib.motionProfileInit(Robot.drivetrain.m_right_talon, 
-      rightProfilePath, RobotConfig.left_wheel_effective_diameter, rightMPStatus);
+      rightProfilePath, RobotConfig.driveTrain.left_wheel_effective_diameter, rightMPStatus);
 
   }
 

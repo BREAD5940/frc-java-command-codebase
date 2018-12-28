@@ -26,11 +26,11 @@ public class OI {
   // You create one by telling it which joystick it's on and which button
   // number it is.
   
-  private Joystick primaryJoystick = new Joystick(RobotConfig.primary_joystick_port);
-  private Joystick secondaryJoystick = new Joystick(RobotConfig.secondary_joystick_port);
+  private Joystick primaryJoystick = new Joystick(RobotConfig.controls.primary_joystick_port);
+  private Joystick secondaryJoystick = new Joystick(RobotConfig.controls.secondary_joystick_port);
 
-  Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.shift_up_button);
-  Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.shift_down_button);
+  Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
+  Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
   Button open_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
   Button close_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
 
@@ -41,16 +41,16 @@ public class OI {
     close_clamp_button.whenPressed(new CloseClamp());
   }
 
-  public double getForwardAxis(){ return -1 * primaryJoystick.getRawAxis(RobotConfig.forward_axis); }
-  public double getTurnAxis(){ return primaryJoystick.getRawAxis(RobotConfig.turn_axis); }
-  public double getIntakeAxis(){ return primaryJoystick.getRawAxis(RobotConfig.intakeAxis); }
-  public double getOuttakeAxis(){ return primaryJoystick.getRawAxis(RobotConfig.outtakeAxis); }
+  public double getForwardAxis(){ return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis); }
+  public double getTurnAxis(){ return primaryJoystick.getRawAxis(RobotConfig.controls.turn_axis); }
+  public double getIntakeAxis(){ return primaryJoystick.getRawAxis(RobotConfig.controls.intakeAxis); }
+  public double getOuttakeAxis(){ return primaryJoystick.getRawAxis(RobotConfig.controls.outtakeAxis); }
   /**
    * Get intake speed is the difference between intake and outtake axis speeds
    */
   public double getIntakeSpeed(){ return getIntakeAxis() - getOuttakeAxis(); }
-  public double getElevatorAxis(){ return secondaryJoystick.getRawAxis(RobotConfig.xbox_elevator_axis) * -1; }
-  public double getThrottleAxis() { return secondaryJoystick.getRawAxis(RobotConfig.throttle_elevator_axis); }
+  public double getElevatorAxis(){ return secondaryJoystick.getRawAxis(RobotConfig.controls.xbox_elevator_axis) * -1; }
+  public double getThrottleAxis() { return secondaryJoystick.getRawAxis(RobotConfig.controls.throttle_elevator_axis); }
 
   // There are a few additional built in buttons you can use. Additionally,
   // by subclassing Button you can create custom triggers and bind those to

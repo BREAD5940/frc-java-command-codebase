@@ -16,8 +16,8 @@ public class Intake extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  public TalonSRX talon_left = new TalonSRX(RobotConfig.left_intake_talon_port);
-  public TalonSRX talon_right = new TalonSRX(RobotConfig.right_intake_talon_port);
+  public TalonSRX talon_left = new TalonSRX(RobotConfig.intake.left_intake_talon_port);
+  public TalonSRX talon_right = new TalonSRX(RobotConfig.intake.right_intake_talon_port);
 
   float position_setpoint;
 
