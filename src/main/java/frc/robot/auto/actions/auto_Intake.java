@@ -8,12 +8,7 @@
 package frc.robot.auto.actions;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.RobotConfig;
-import frc.robot.lib.EncoderLib;
-
-
 
   /**
    * auto_DriveDistance is a basic auto action. It should drive in a straight-ish line, as it uses 

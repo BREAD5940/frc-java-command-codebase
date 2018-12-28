@@ -32,7 +32,7 @@ public class auto_DriveStraight extends Command {
   double target_gyro_angle;
   double current_angle;
   double forward_speed;
-  double turn_weight;
+  double turn_speed;
   double angle_error;
   double left_speed_raw, right_speed_raw;
 
@@ -45,8 +45,8 @@ public class auto_DriveStraight extends Command {
   private ShittyPID turnPID = new ShittyPID(
     RobotConfig.drive_straight.turn_kp, 
     RobotConfig.drive_straight.turn_ki, 
-    RobotConfig.drive_straight.minimum_turn_weight, 
-    RobotConfig.drive_straight.maximum_turn_weight, 
+    RobotConfig.drive_straight.minimum_turn_speed, 
+    RobotConfig.drive_straight.maximum_turn_speed, 
     RobotConfig.drive_straight.turn_izone, 
     RobotConfig.drive_straight.turn_integral_max
   );
@@ -106,12 +106,14 @@ public class auto_DriveStraight extends Command {
   @Override
   protected void execute() {
     forward_speed = forwardPID.update(Robot.drivetrain.getLeftDistance());
-    turn_weight = turnPID.update(Robot.gyro.getAngle());
+    turn_speed = 1 + turnPID.update(Robot.gyro.getAngle());
 
-    left_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.left_wheel_effective_diameter / 12, 
+    left_speed_raw = EncoderLib.distanceToRaw(forward_speed + turn_speed, RobotConfig.left_wheel_effective_diameter / 12, 
       RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
-    right_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.right_wheel_effective_diameter / 12, 
+    right_speed_raw = EncoderLib.distanceToRaw(forward_speed - turn_speed, RobotConfig.right_wheel_effective_diameter / 12, 
       RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
+
+    Robot.drivetrain.setSpeeds(left_speed_raw, right_speed_raw);
 
     System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeftDistance() + 
       " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());

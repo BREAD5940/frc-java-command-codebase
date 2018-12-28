@@ -64,8 +64,37 @@ public class RobotConfig {
     public static final double turn_ki = 0.01;
     public static final double turn_izone = 4; // +- 4 degrees of setpoint for izone
     public static final double turn_integral_max = 0.3; // Maximum integral weight for turning
-    public static final double maximum_turn_weight = 0.3;
-    public static final double minimum_turn_weight = maximum_turn_weight;
+    public static final double maximum_turn_speed = 0.3;
+    public static final double minimum_turn_speed = -maximum_turn_speed;
+  }
+
+  public class auto_turnInPlace {
+    public static final double kp = 0.2;
+    public static final double ki = 0.05;
+    public static final double max_integral = 0.5;
+    public static final double integral_zone = 10; // 10 degrees izone
+    public static final double min_turn_speed = -1; // in ft/sec
+    public static final double max_turn_speed = 1; // in ft/sec
+  }
+
+  public class limeLight {
+    public static final double camera_height = 1; // units are in feet
+    public static final double camera_angle = 0; // degrees from horizon - positive is up, negative is down
+  }
+
+  public class followVisionTarget {
+    public class forward {
+      public static final double kp = 0.1;
+      public static final double kp_rangeMode = 0.1;
+    }
+    public class turn {
+      public static final double kp = 0.05;
+      public static final double ki = 0.05;
+      public static final double integral_zone = 10; // 10 degrees izone
+      public static final double max_integral = 0.3;
+      public static final double min_turn_speed = -1; // in ft/sec
+      public static final double max_turn_speed = 1; // in ft/sec
+    }
   }
 
   // Auto PID
