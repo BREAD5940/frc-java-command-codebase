@@ -16,6 +16,7 @@ import frc.robot.auto.actions.auto_DriveDistance;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Wrist;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -38,6 +39,7 @@ public class Robot extends TimedRobot {
   public static Intake intake = new Intake();
   public static Elevator elevator = new Elevator();
   public static Wrist wrist = new Wrist();
+  public static LimeLight limelight = new LimeLight();
   public static OI m_oi;
 
   public static double elevator_setpoint = 0;
@@ -122,6 +124,7 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_chooser.getSelected(); // set the command to what the sendable chooser gets
 
     gyro.reset(); // Reset the current gyro heading to zero
+    drivetrain.zeroEncoders();
     
     if ( RobotConfig.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
     else if ( RobotConfig.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
@@ -221,6 +224,17 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Wrist angular velocity (deg/s)", wrist.getAngularVelocity());
 
     SmartDashboard.putNumber("Current Gyro angle", gyro.getAngle());
+
+    // Limelight stuff
+    double[] limelightdata = limelight.getData();
+
+    SmartDashboard.putNumber("Vision targets?", limelightdata[0]);
+    SmartDashboard.putNumber("Horizontal offset", limelightdata[1]);
+    SmartDashboard.putNumber("Vertical offset", limelightdata[2]);
+    SmartDashboard.putNumber("Target area", limelightdata[3]);
+    SmartDashboard.putNumber("Target skew", limelightdata[4]);
+    SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
+
     
   }
 
