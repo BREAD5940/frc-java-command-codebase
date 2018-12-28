@@ -53,6 +53,11 @@ public class ShittyPID {
     this.setpoint = setpoint;
   }
 
+  /** Set the kp gain of the controller */
+  public void setKpGain(double kp) {
+    this.kp = kp;
+  }
+
   /**
    * Set the maximum output of the controller
    * @param maxOutput
