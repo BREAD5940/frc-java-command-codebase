@@ -224,6 +224,17 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Wrist angular velocity (deg/s)", wrist.getAngularVelocity());
 
     SmartDashboard.putNumber("Current Gyro angle", gyro.getAngle());
+
+    // Limelight stuff
+    double[] limelightdata = limelight.getData();
+
+    SmartDashboard.putNumber("Vision targets?", limelightdata[0]);
+    SmartDashboard.putNumber("Horizontal offset", limelightdata[1]);
+    SmartDashboard.putNumber("Vertical offset", limelightdata[2]);
+    SmartDashboard.putNumber("Target area", limelightdata[3]);
+    SmartDashboard.putNumber("Target skew", limelightdata[4]);
+    SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
+
     
   }
 
