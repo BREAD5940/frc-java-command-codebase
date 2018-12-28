@@ -12,33 +12,60 @@ public class AutoPath {
         CENTER, LEFT, RIGHT, FAR_LEFT, FAR_RIGHT
     }
 
-    public enum ssLoc{
-        LLL, LLR, LRL, LRR, RRR, RLR, RLL, RRL, 
+    public enum goals{
+        FAR_SWITCH, NEAR_SWITCH, SCALE, TEST
     }
 
+
     robotLoc location;
-    ssLoc setup;
+    String setup;
     String name;
+    goals goal;
     AutoCommandGroup commandGroup;
 
     /**
      * creates a new AutoPath for the current match
      * @param name
      *      name of the path
-     * @param currentLocation
-     *      current location of the robot (CENTER, LEFT, RIGHT, FAR_LEFT, FAR_RIGHT)
+     * @param goal
+     *      goal of the autopath (FAR_SWITCH, NEAR_SWITCH, SCALE, TEST)
+     * @param reqLocation
+     *      required location of the robot (CENTER, LEFT, RIGHT, FAR_LEFT, FAR_RIGHT)
      * @param setup
-     *      required field setup of scales and switches (LLL, LLR, LRL, LRR, RRR, RLR, RLL, RRL)
+     *      required field setup of scales and switches 
      * @param  commands
      *      list of sequential commands for this path, to be inputted into an auto_command_group
      */
 
-    public AutoPath (String name, robotLoc currentLocation, ssLoc setup, Command... commands){
-        this.location  = currentLocation;
+    public AutoPath (String name, goals goal, robotLoc reqLocation, String setup, Command... commands){
+        this.location  = reqLocation;
         this.setup = setup;
         this.name = name;
+        this.goal = goal;
         this.commandGroup = new AutoCommandGroup(commands);
     }
 
+    // id functions
+
+    
+    public String getName(){
+        return this.name;
+    }
+
+    public goals getGoal(){
+        return this.goal;
+    }
+
+    public robotLoc getReqLoc(){
+        return this.location;
+    }
+
+    public String getReqSetup(){
+        return this.setup;
+    }
+
+    public AutoCommandGroup getCommandGroup(){
+        return this.commandGroup;
+    }
     
 }
