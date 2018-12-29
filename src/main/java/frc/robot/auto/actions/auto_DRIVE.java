@@ -19,7 +19,7 @@ import frc.robot.lib.EncoderLib;
    * auto_DriveDistance is a basic auto action. It should drive in a straight-ish line, as it uses 
    * nested PID loops to correct for errors caused by differing coefficients of friction. 
    */
-public class auto_action_DRIVE extends Command {
+public class auto_DRIVE extends Command {
   double targetDistance;
   double targetSpeed = Robot.defaultAutoSpeed;
   boolean isDone = false;
@@ -42,7 +42,7 @@ public class auto_action_DRIVE extends Command {
    * @param targetSpeed
    * @param timeout
    */
-  public auto_action_DRIVE(double distance, double targetSpeed, double timeout) {
+  public auto_DRIVE(double distance, double targetSpeed, double timeout) {
     this.targetDistance = distance;
     this.targetSpeed = targetSpeed;
     this.timeout = timeout;
@@ -56,7 +56,7 @@ public class auto_action_DRIVE extends Command {
    * @param distance
    * @param timeout
    */
-  public auto_action_DRIVE(double distance, double timeout) {
+  public auto_DRIVE(double distance, double timeout) {
     this.targetDistance = distance;
     this.timeout = timeout;
     requires(Robot.drivetrain);
@@ -68,7 +68,7 @@ public class auto_action_DRIVE extends Command {
    * targetSpeed is set by the defaultAutoSpeed in Robot.java, and the timeout defaults to 15 seconds.
    * @param distance
    */
-  public auto_action_DRIVE(double distance) {
+  public auto_DRIVE(double distance) {
     this.targetDistance = distance;
     requires(Robot.drivetrain);
   }

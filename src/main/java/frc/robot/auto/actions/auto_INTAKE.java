@@ -17,11 +17,11 @@ import frc.robot.Robot;
 /**
  * Shifter command to shift to high gear
  */
-public class auto_action_INTAKE extends Command {
+public class auto_INTAKE extends Command {
   
   double runtime;
 
-  public auto_action_INTAKE(double runtime) {
+  public auto_INTAKE(double runtime) {
     requires(Robot.intake); // reserve the intake subsystem, TODO make sure this doesnt break anything
     this.runtime = runtime;
   }

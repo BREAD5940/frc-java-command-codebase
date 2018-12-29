@@ -5,6 +5,8 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+// TODO make this actually work
+
 package frc.robot.auto.actions;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -17,10 +19,10 @@ import frc.robot.subsystems.DriveTrain;
 /**
  * Shifter command to shift to high gear
  */
-public class auto_action_ELEVATOR extends Command {
-  public auto_action_ELEVATOR() {
+public class auto_TURN extends Command {
+  public auto_TURN() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.elevator);
+    requires(Robot.drivetrain);
   }
 
   // public static final drivetrain drivetrain  = new drivetrain();

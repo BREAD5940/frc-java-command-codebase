@@ -5,7 +5,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
-import frc.robot.auto.actions.auto_action_DRIVE;
+import frc.robot.auto.actions.auto_DRIVE;
 
 public class AutoCommandGroup extends CommandGroup{
 
