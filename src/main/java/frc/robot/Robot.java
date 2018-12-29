@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.actions.auto_DriveDistance;
-import frc.robot.lib.ShittyLogger;
+import frc.robot.lib.TerribleLogger;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
   public static Wrist wrist = new Wrist();
   public static LimeLight limelight = new LimeLight();
   public static OI m_oi;
-  public static ShittyLogger logger = new ShittyLogger();
+  public static TerribleLogger logger = new TerribleLogger();
 
   public static double elevator_setpoint = 0;
   public static double wrist_setpoint = 0;

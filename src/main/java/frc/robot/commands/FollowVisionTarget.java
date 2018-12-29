@@ -10,7 +10,7 @@ package frc.robot.commands;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
-import frc.robot.lib.ShittyPID;
+import frc.robot.lib.TerriblePID;
 import edu.wpi.first.wpilibj.command.Command;
 
 
@@ -21,12 +21,12 @@ public class FollowVisionTarget extends Command {
   double timeout, targetSpeed, targetPercentOfFrame, angleDeltaX, angleDeltaY, forwardSpeed, turnSpeed, leftSpeedRaw, rightSpeedRaw;
   boolean followRange = false;
 
-  private ShittyPID forwardPID = new ShittyPID(
+  private TerriblePID forwardPID = new TerriblePID(
     RobotConfig.auto.followVisionTarget.forward.kp,
     RobotConfig.auto.drive_auto_forward_velocity_min,
     RobotConfig.auto.drive_auto_forward_velocity_max 
   );
-  private ShittyPID turnPID = new ShittyPID(
+  private TerriblePID turnPID = new TerriblePID(
     RobotConfig.auto.followVisionTarget.turn.kp,
     RobotConfig.auto.followVisionTarget.turn.ki,
     RobotConfig.auto.followVisionTarget.turn.min_turn_speed,

@@ -1,6 +1,6 @@
 package frc.robot.lib;
 
-public class ShittyPID {
+public class TerriblePID {
 
   double kp, ki, kd, pOutput, iOutput, iAccum, dOutput, integralZone, 
     maxIntegralAccum, minOutput, maxOutput, setpoint, input, error, output;
@@ -16,7 +16,7 @@ public class ShittyPID {
    * @param integralZone about which integral will be active
    * @param maxIntegralAccum same as minimum accum, i term will top/bottom out here
    */
-  public ShittyPID(double kp, double ki, double minOutput, double maxOutput, 
+  public TerriblePID(double kp, double ki, double minOutput, double maxOutput, 
     double integralZone, double maxIntegralAccum) {
       this.kp = kp;
       this.ki = ki;
@@ -36,7 +36,7 @@ public class ShittyPID {
    * @param integralZone about which integral will be active
    * @param maxIntegralAccum same as minimum accum, i term will top/bottom out here
    */
-  public ShittyPID(double kp, double minOutput, double maxOutput) {
+  public TerriblePID(double kp, double minOutput, double maxOutput) {
       this.kp = kp;
       this.ki = 0;
       this.minOutput = minOutput;

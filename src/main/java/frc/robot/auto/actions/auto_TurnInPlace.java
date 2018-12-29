@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
-import frc.robot.lib.ShittyPID;
+import frc.robot.lib.TerriblePID;
 
 /**
  * Literally just pivot in place by a desired amount
@@ -28,7 +28,7 @@ public class auto_TurnInPlace extends Command {
   double raw_left;
   double raw_right;
 
-  ShittyPID turnPID = new ShittyPID(RobotConfig.auto.auto_turnInPlace.kp, RobotConfig.auto.auto_turnInPlace.ki, 
+  TerriblePID turnPID = new TerriblePID(RobotConfig.auto.auto_turnInPlace.kp, RobotConfig.auto.auto_turnInPlace.ki, 
     RobotConfig.auto.auto_turnInPlace.min_turn_speed, 
     RobotConfig.auto.auto_turnInPlace.max_turn_speed, 
     RobotConfig.auto.auto_turnInPlace.integral_zone, 

@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
-import frc.robot.lib.ShittyPID;
+import frc.robot.lib.TerriblePID;
 
 
 
@@ -37,7 +37,7 @@ public class auto_DriveDistance extends Command {
   double right_speed_raw;
 
   // Make a pid class instance
-  ShittyPID forwardPID = new ShittyPID(RobotConfig.auto.drive_straight.forward_kp, 
+  TerriblePID forwardPID = new TerriblePID(RobotConfig.auto.drive_straight.forward_kp, 
     RobotConfig.auto.drive_auto_forward_velocity_min, RobotConfig.auto.drive_auto_forward_velocity_max);
 
   /**

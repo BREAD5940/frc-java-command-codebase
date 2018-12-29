@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
-import frc.robot.lib.ShittyPID;
+import frc.robot.lib.TerriblePID;
 
 
   /**
@@ -36,13 +36,13 @@ public class auto_DriveStraight extends Command {
   double angle_error;
   double left_speed_raw, right_speed_raw;
 
-  private ShittyPID forwardPID = new ShittyPID(
+  private TerriblePID forwardPID = new TerriblePID(
     RobotConfig.auto.drive_straight.turn_kp, 
     RobotConfig.auto.drive_auto_forward_velocity_min,
     RobotConfig.auto.drive_auto_forward_velocity_max 
   );
 
-  private ShittyPID turnPID = new ShittyPID(
+  private TerriblePID turnPID = new TerriblePID(
     RobotConfig.auto.drive_straight.turn_kp, 
     RobotConfig.auto.drive_straight.turn_ki, 
     RobotConfig.auto.drive_straight.minimum_turn_speed, 

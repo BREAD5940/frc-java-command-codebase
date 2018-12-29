@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 
-public class ShittyLogger {
+public class TerribleLogger {
 	/**
 	 * The System.nanoTime of the start of the robot.
 	 */
@@ -35,7 +35,7 @@ public class ShittyLogger {
     /**
      * Create an instance of the logger. Make sure that the filepath ends with a / lol
      */
-    public ShittyLogger(){
+    public TerribleLogger(){
         try {
             String date = getDate().toString();
             String filepath = RobotConfig.logging.default_filepath + date + ".csv";
