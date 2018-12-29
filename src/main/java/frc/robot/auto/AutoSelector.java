@@ -17,12 +17,14 @@ public class AutoSelector{
     SendableChooser<AutoPath.robotLoc> rbLoc;
     SendableChooser<AutoPath.goals> usrGoal;
     SendableChooser<Integer> usrCubes;
+    SendableChooser<AutoPath> backupAutoSelect = new SendableChooser<AutoPath>();
 
     ArrayList<AutoPath> centerPaths;
     ArrayList<AutoPath> rightPaths;
     ArrayList<AutoPath> farRightPaths;
     ArrayList<AutoPath> leftPaths;
     ArrayList<AutoPath> farLeftPaths;
+    ArrayList<AutoPath> usablePaths;
 
     AutoPath.robotLoc location;
     AutoPath.goals goal;
@@ -30,7 +32,7 @@ public class AutoSelector{
     DriverStation ds;
     String fieldSetup;
     public AutoSelector(){
-        //TODO this appears on smartdashboard without me having to do anything, right?
+        //TODO add a Thing that puts this on smartdashboard to Robot.java
         rbLoc = new SendableChooser<AutoPath.robotLoc>();
         rbLoc.addDefault("Center", AutoPath.robotLoc.CENTER);
         rbLoc.addObject("Left", AutoPath.robotLoc.LEFT);
@@ -107,33 +109,50 @@ public class AutoSelector{
 
         switch (this.location){
             case CENTER:
-                checkSetup(centerPaths);
+                usablePaths = checkCompat(checkSetup(centerPaths));
             case LEFT:
-
+                usablePaths = checkCompat(checkSetup(leftPaths));
             case RIGHT:
-
+                usablePaths = checkCompat(checkSetup(rightPaths));
             case FAR_LEFT:
-
+                usablePaths = checkCompat(checkSetup(farLeftPaths));
             case FAR_RIGHT:
-
+                usablePaths = checkCompat(checkSetup(farRightPaths));
             default:
-                break;
+                usablePaths.add(defaultPath);
+        }
+        if(usablePaths.size()!=1){
+            return usablePaths.get(0);
+        }else{
+            backupAutoSelect.addDefault(defaultPath.getName(), defaultPath);
+            for (AutoPath path : usablePaths){
+                backupAutoSelect.addObject(path.getName(), path);
+            }
+            // TODO find out if this just makes it select the default
+            return backupAutoSelect.getSelected();
         }
         
-
-        return defaultPath;
     }
 
-    // TODO finish
+    private ArrayList<AutoPath> checkCompat(ArrayList<AutoPath> paths){
+        ArrayList<AutoPath> toReturn = new ArrayList<AutoPath>();
+        for(AutoPath path : paths){
+            if (path.getGoal() == this.goal){
+                toReturn.add(path);
+            }
+        }
+        return toReturn;
+    }
+
+
     private ArrayList<AutoPath> checkSetup(ArrayList<AutoPath> possiblePaths){
         ArrayList<AutoPath> goodPaths = new ArrayList<AutoPath>();
         for (AutoPath path : possiblePaths){
-            if (path.getReqSetup().charAt(0) == this.fieldSetup.charAt(0)
-                    &&path.getReqSetup().charAt(1)=='X'
-                    &&path.getReqSetup().charAt(2)=='X'){
+            if ((path.getReqSetup().charAt(0) == this.fieldSetup.charAt(0) || path.getReqSetup().charAt(0)=='X')
+                    &&(path.getReqSetup().charAt(1)==this.fieldSetup.charAt(1) || path.getReqSetup().charAt(1)=='X')
+                    &&(path.getReqSetup().charAt(2)==this.fieldSetup.charAt(2) || path.getReqSetup().charAt(2)=='X')){
                 goodPaths.add(path);
-            }else if (path.getReqSetup().charAt(0)=='X'
-                        &&path.getReqSetup)
+            }
 
         }
         return goodPaths;
