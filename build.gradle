@@ -46,15 +46,15 @@ repositories {
 // Also defines JUnit 4.
 dependencies {
     compile wpi.deps.wpilib()
-    compile wpi.deps.vendor.java()
+    // compile wpi.deps.vendor.java()
+    compile pathfinder()
+    // // compile wpilib()
+    // compile ctre()
+    // compile navx()
 
-    // compile wpilib()
-    compile ctre()
-    compile navx()
-
-    nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
-    nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
-    testCompile 'junit:junit:4.12'
+    // nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
+    // nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
+    // testCompile 'junit:junit:4.12'
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
