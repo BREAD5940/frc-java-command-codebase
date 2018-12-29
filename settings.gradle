@@ -4,3 +4,4 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+includeBuild '../Pantry-Logging/'
