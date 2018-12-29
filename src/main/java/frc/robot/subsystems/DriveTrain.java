@@ -1,12 +1,5 @@
 package frc.robot.subsystems;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -133,6 +126,18 @@ public class DriveTrain extends Subsystem {
   public void setSpeeds(double speed_left_raw, double speed_right_raw) {
     setLeftSpeedRaw(speed_left_raw);
     setRightSpeedRaw(speed_right_raw);
+  }
+
+  /**
+   * An even more lazy version of @link setSpeeds
+   * This will literally set the voltage of the left and right talons
+   * (from -1 to 1 ofc, like normal)
+   * @param left_voltage
+   * @param right_voltage
+   */
+  public void setVoltages(double left_voltage, double right_voltage) {
+    m_left_talon.set(ControlMode.PercentOutput, left_voltage / 12);
+    m_right_talon.set(ControlMode.PercentOutput, right_voltage / 12);
   }
 
   /**
