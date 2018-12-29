@@ -14,10 +14,10 @@ import frc.robot.auto.AutoPath.goals;
 import frc.robot.auto.actions.auto_action_DRIVE;
 
 public class AutoSelector{
-    SendableChooser<AutoPath.robotLoc> rbLoc;
-    SendableChooser<AutoPath.goals> usrGoal;
-    SendableChooser<Integer> usrCubes;
-    SendableChooser<AutoPath> backupAutoSelect = new SendableChooser<AutoPath>();
+    public SendableChooser<AutoPath.robotLoc> rbLoc;
+    public SendableChooser<AutoPath.goals> usrGoal;
+    public SendableChooser<Integer> usrCubes;
+    public SendableChooser<AutoPath> backupAutoSelect = new SendableChooser<AutoPath>();
 
     ArrayList<AutoPath> centerPaths;
     ArrayList<AutoPath> rightPaths;
@@ -31,8 +31,12 @@ public class AutoSelector{
     Integer cubes;
     DriverStation ds;
     String fieldSetup;
+    AutoPath defaultPath = new AutoPath("Default", AutoPath.goals.TEST, this.location, fieldSetup);
     public AutoSelector(){
         //TODO add a Thing that puts this on smartdashboard to Robot.java
+
+        backupAutoSelect.addDefault("Default Path", defaultPath);
+
         rbLoc = new SendableChooser<AutoPath.robotLoc>();
         rbLoc.addDefault("Center", AutoPath.robotLoc.CENTER);
         rbLoc.addObject("Left", AutoPath.robotLoc.LEFT);
@@ -105,7 +109,7 @@ public class AutoSelector{
         this.location = rbLoc.getSelected();
         this.goal = usrGoal.getSelected();
         this.cubes = usrCubes.getSelected();
-        AutoPath defaultPath = new AutoPath("Default", AutoPath.goals.TEST, this.location, fieldSetup);
+        
 
         switch (this.location){
             case CENTER:
@@ -119,12 +123,11 @@ public class AutoSelector{
             case FAR_RIGHT:
                 usablePaths = checkCompat(checkSetup(farRightPaths));
             default:
-                usablePaths.add(defaultPath);
+                usablePaths.add(this.defaultPath);
         }
         if(usablePaths.size()!=1){
             return usablePaths.get(0);
         }else{
-            backupAutoSelect.addDefault(defaultPath.getName(), defaultPath);
             for (AutoPath path : usablePaths){
                 backupAutoSelect.addObject(path.getName(), path);
             }

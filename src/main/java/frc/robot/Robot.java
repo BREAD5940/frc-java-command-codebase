@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.auto.AutoSelector;
 import frc.robot.auto.actions.auto_action_DRIVE;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.subsystems.DriveTrain;
@@ -23,6 +24,7 @@ import frc.robot.auto.actions.auto_action_SQUARE;
 import frc.robot.subsystems.Wrist;
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
+import frc.robot.auto.AutoPath;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
@@ -71,11 +73,10 @@ public class Robot extends TimedRobot {
   
   double startingDistance;
 
-
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  AutoSelector autoSelect;
 
   public static double defaultAutoSpeed = RobotConfig.drive_auto_forward_velocity_max;
+  public static AutoPath m_auto;
 
   public static void drivetrain_shift_high(){ shifterDoubleSolenoid.set(DoubleSolenoid.Value.kForward); }
   public static void drivetrain_shift_low(){ shifterDoubleSolenoid.set(DoubleSolenoid.Value.kReverse); }
@@ -180,23 +181,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
+    autoSelect = new AutoSelector();
+    SmartDashboard.putData("Robot Location Chooser", autoSelect.rbLoc);
+    SmartDashboard.putData("Goal Chooser", autoSelect.usrGoal);
+    SmartDashboard.putData("Number of Cubes", autoSelect.usrCubes);
+    SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
+    m_auto = autoSelect.choosePath();
 
-    /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector",
-     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-     * = new MyAutoCommand(); break; case "Default Auto": default:
-     * autonomousCommand = new ExampleCommand(); break; }
-     */
-
-    // schedule the autonomous command (example)
-    // if (m_autonomousCommand != null) {
-    //   m_autonomousCommand.start();
-    // }
-    // new auto_action_DRIVE(3, "high", 5, 30);
-
-    // new auto_action_DRIVE(15, "high", 5, 30);
-
+    m_auto.getCommandGroup().start();
   }
 
   /**
@@ -216,8 +208,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (m_auto != null) {
+        m_auto.getCommandGroup().cancel();
     }
 
     // new drivetrain_shift_high();
