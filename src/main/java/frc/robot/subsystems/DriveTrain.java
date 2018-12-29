@@ -33,6 +33,7 @@ public class DriveTrain extends Subsystem {
   public TalonSRX m_right_talon = new TalonSRX(RobotConfig.driveTrain.right_talons.m_right_talon_port);
   public TalonSRX s_right_talon = new TalonSRX(RobotConfig.driveTrain.right_talons.s_right_talon_port);
   public String current_gear;
+  public double tVoltage_l, tVoltage_r, tRaw_l, tRaw_r;
 
   public MotionProfileStatus m_left_MP_Status = new MotionProfileStatus();
   public MotionProfileStatus m_right_MP_Status = new MotionProfileStatus();
@@ -126,6 +127,11 @@ public class DriveTrain extends Subsystem {
   public void setSpeeds(double speed_left_raw, double speed_right_raw) {
     setLeftSpeedRaw(speed_left_raw);
     setRightSpeedRaw(speed_right_raw);
+    
+    // Record the data for the logger to grab
+    tRaw_l = speed_left_raw;
+    tRaw_r = speed_right_raw;
+    tVoltage_l = tVoltage_r = 0;
   }
 
   /**
@@ -138,6 +144,11 @@ public class DriveTrain extends Subsystem {
   public void setVoltages(double left_voltage, double right_voltage) {
     m_left_talon.set(ControlMode.PercentOutput, left_voltage / 12);
     m_right_talon.set(ControlMode.PercentOutput, right_voltage / 12);
+    
+    // Record the data for the logger to grab
+    tVoltage_l = left_voltage;
+    tVoltage_r = right_voltage;
+    tRaw_l = tRaw_r = 0;
   }
 
   /**

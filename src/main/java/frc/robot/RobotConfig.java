@@ -241,12 +241,12 @@ public class RobotConfig {
     }
   }
 
-  public class intake {
+  public static class intake {
     public static final int left_intake_talon_port = 6;
     public static final int right_intake_talon_port = 7;
   }
 
-  public class pneumatics {
+  public static class pneumatics {
     // pheumatic configuration
     public static final int pcm_module_number = 9;
     public static final int drivetrain_solenoid_low_gear_channel = 7;
@@ -254,6 +254,16 @@ public class RobotConfig {
     public static final int intake_solenoid_clamp_channel = 0;
     public static final int intake_solenoid_open_channel = 6;
     public static final String drivetrain_starting_gear = "low";
+  }
+
+  public static class logging {
+    public static final String default_filepath = "/home/lvuser/";
+    public static final String[] data_headers = {"time", "left position", "left velocity", 
+      "target left velocity", "target left voltage", 
+      "right position", "right velocity", "target right velocity", "target right voltage",
+      "gyro heading", "gyro rate of change", "robot voltage", "xbox forward axis", "xbox turn axis", "intake speed"
+    
+    };
   }
 
 }
