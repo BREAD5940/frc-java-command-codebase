@@ -19,72 +19,78 @@ public class ShittyLogger {
 	/**
 	 * The System.nanoTime of the start of the robot.
 	 */
-    static long startTime = System.nanoTime();
-    	
+    double startTime = getFPGAtime();
+
+    boolean writeException = true;   
+    public FileWriter writer;
+    
 	/**
 	 * The running time of the robot in milliseconds starting from zero.
 	 * @return The runtime.
 	 */
-	public static long getRuntime() {
-		
-		return (System.nanoTime() - startTime)/1000;
-		
+	public double getRuntime() {
+		return getFPGAtime() - startTime;
 	}
 
     /**
      * Create an instance of the logger. Make sure that the filepath ends with a / lol
-     * @param filepath
-     */
-    public ShittyLogger(String filepath){
-        init(filepath);
-    }
-    /**
-     * Create an instance of the logger. Make sure that the filepath ends with a / lol
      */
     public ShittyLogger(){
-        init(RobotConfig.logging.default_filepath);
-    }
-
-    public void init(String filepath){
         try {
             String date = getDate().toString();
-            filepath = filepath + date + ".csv";
+            String filepath = RobotConfig.logging.default_filepath + date + ".csv";
             FileWriter writer = new FileWriter(filepath);
             String[] initialData = RobotConfig.logging.data_headers;
             CSVUtils.writeLine(writer, Arrays.asList(initialData));
+            writeException = false;
         }
         catch (IOException ioe)
         {
-            System.out.println("Cannot open log file - maybe a log already exists?");        
+            System.out.println("IOException when initilizing the log! See stacktrace");
+            ioe.printStackTrace();
+            writeException = true;
         }
+        
     }
 
     public void update() {
-        String[] data = {
-            String.valueOf(getFPGAtime()), 
+        if(!writeException){
+            try {
+            String[] data = {
+                String.valueOf(getFPGAtime()), 
 
-            String.valueOf(Robot.drivetrain.getLeftDistance()), 
-            String.valueOf(Robot.drivetrain.getLeftVelocity()), 
-            String.valueOf(EncoderLib.rawToDistance(Robot.drivetrain.tRaw_l, 
-                RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
-                RobotConfig.driveTrain.left_wheel_effective_diameter)),
-            String.valueOf(Robot.drivetrain.tVoltage_l),
+                String.valueOf(Robot.drivetrain.getLeftDistance()), 
+                String.valueOf(Robot.drivetrain.getLeftVelocity()), 
+                String.valueOf(EncoderLib.rawToDistance(Robot.drivetrain.tRaw_l, 
+                    RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
+                    RobotConfig.driveTrain.left_wheel_effective_diameter)),
+                String.valueOf(Robot.drivetrain.tVoltage_l),
 
-            String.valueOf(Robot.drivetrain.getRightDistance()), 
-            String.valueOf(Robot.drivetrain.getRightVelocity()), 
-            String.valueOf(EncoderLib.rawToDistance(Robot.drivetrain.tRaw_r, 
-                RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
-                RobotConfig.driveTrain.right_wheel_effective_diameter)),
-            String.valueOf(Robot.drivetrain.tVoltage_r),
+                String.valueOf(Robot.drivetrain.getRightDistance()), 
+                String.valueOf(Robot.drivetrain.getRightVelocity()), 
+                String.valueOf(EncoderLib.rawToDistance(Robot.drivetrain.tRaw_r, 
+                    RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
+                    RobotConfig.driveTrain.right_wheel_effective_diameter)),
+                String.valueOf(Robot.drivetrain.tVoltage_r),
 
-            String.valueOf(Robot.gyro.getAngle()), 
-            String.valueOf(Robot.gyro.getRate()),
-            String.valueOf(RobotController.getBatteryVoltage()),
-            String.valueOf(Robot.m_oi.getForwardAxis()),
-            String.valueOf(Robot.m_oi.getTurnAxis()),
-            String.valueOf(Robot.m_oi.getIntakeSpeed())
-        };
-        CSVUtils.writeLine(writer, Arrays.asList(data));
+                String.valueOf(Robot.gyro.getAngle()), 
+                String.valueOf(Robot.gyro.getRate()),
+                String.valueOf(RobotController.getBatteryVoltage()),
+                String.valueOf(Robot.m_oi.getForwardAxis()),
+                String.valueOf(Robot.m_oi.getTurnAxis()),
+                String.valueOf(Robot.m_oi.getIntakeSpeed())
+            };
+            CSVUtils.writeLine(writer, Arrays.asList(data));
+            writer.flush();
+            } catch (IOException e) {
+                System.out.println("IOException when updating the log! See stacktrace");
+                e.printStackTrace();
+                writeException = true;
+            }
+        } else {
+            System.out.println("Cannot update log, write exception occured! Gunna just catch this error... :D");
+        }
+        
     }
 
 
@@ -94,7 +100,10 @@ public class ShittyLogger {
         System.out.println(dateFormat.format(date)); //2016/11/16 12:08:43
         return date;
     }
-    
+    /**
+     * Return the current time in seconds per the FPGA
+     * @return run time in seconds
+     */
     private double getFPGAtime() {
         return Timer.getFPGATimestamp();
     }
