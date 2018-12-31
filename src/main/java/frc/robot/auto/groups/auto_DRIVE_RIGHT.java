@@ -1,4 +1,5 @@
-package frc.robot.auto.actions;
+//wow this is Big Stupid
+package frc.robot.auto.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -9,7 +10,7 @@ public class auto_DRIVE_RIGHT extends CommandGroup{
      * @param turns
      * @param stretches
      */
-    public auto_DRIVE_RIGHT(String turns, Integer... stretches){
+    public auto_DRIVE_RIGHT(){
 
     }
 }
