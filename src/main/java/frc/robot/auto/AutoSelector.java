@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import java.util.ArrayList;
 import frc.robot.Robot;
 import frc.robot.auto.AutoPath.goals;
-import frc.robot.auto.actions.auto_DRIVE;
+import frc.robot.auto.groups.auto_LINE;
 
 public class AutoSelector{
     public SendableChooser<AutoPath.robotLoc> rbLoc;
@@ -31,7 +31,7 @@ public class AutoSelector{
     Integer cubes;
     DriverStation ds;
     String fieldSetup;
-    AutoPath defaultPath = new AutoPath("Default", AutoPath.goals.TEST, this.location, fieldSetup, new auto_DRIVE(5));
+    AutoPath defaultPath = new AutoPath("Default", AutoPath.goals.TEST, this.location, fieldSetup, new auto_LINE(location));
     public AutoSelector(){
         //TODO add a Thing that puts this on smartdashboard to Robot.java
 

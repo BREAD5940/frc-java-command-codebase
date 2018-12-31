@@ -1,6 +1,5 @@
 package frc.robot.auto;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -8,6 +7,15 @@ import frc.robot.Robot;
 
 public class AutoPath {
 
+
+    /**
+     * the five different robot starting locations
+     * 
+     * CENTER: directly to the right of the exchange zone
+     * LEFT: directly to the left of the exchange zone
+     * RIGHT:
+     * FAR_LEFT: 
+     */
     public enum robotLoc{
         CENTER, LEFT, RIGHT, FAR_LEFT, FAR_RIGHT
     }
@@ -21,7 +29,7 @@ public class AutoPath {
     String setup;
     String name;
     goals goal;
-    AutoCommandGroup commandGroup;
+    AutoCommandGroup bigCommandGroup;
 
     /**
      * creates a new AutoPath for the current match
@@ -34,20 +42,20 @@ public class AutoPath {
      * @param setup
      *      required field setup of scales and switches 
      * @param  commands
-     *      list of sequential commands for this path, to be inputted into an auto_command_group
+     *      list of sequential commandgroups for this path that are turned into one giant AutoCommandGroup
      */
 
-    public AutoPath (String name, goals goal, robotLoc reqLocation, String setup, Command... commands){
+    public AutoPath (String name, goals goal, robotLoc reqLocation, String setup, CommandGroup... commands){
         this.location  = reqLocation;
         this.setup = setup;
         this.name = name;
         this.goal = goal;
-        this.commandGroup = new AutoCommandGroup(commands);
+        this.bigCommandGroup = new AutoCommandGroup(commands);
     }
 
     // id functions
 
-    
+
     public String getName(){
         return this.name;
     }
@@ -65,7 +73,7 @@ public class AutoPath {
     }
 
     public AutoCommandGroup getCommandGroup(){
-        return this.commandGroup;
+        return this.bigCommandGroup;
     }
     
 }

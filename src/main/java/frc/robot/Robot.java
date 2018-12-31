@@ -19,7 +19,7 @@ import frc.robot.commands.ArcadeDrive;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
-import frc.robot.auto.actions.auto_SQUARE;
+import frc.robot.auto.groups.auto_SQUARE;
 // import frc.robot.subsystems.intake;
 import frc.robot.subsystems.Wrist;
 // import frc.robot.commands.drivetrain_shift_high;
