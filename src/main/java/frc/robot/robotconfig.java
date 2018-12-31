@@ -49,8 +49,9 @@ public class RobotConfig {
   public static final double max_forward_speed_low = 4; // Feet per second forward velocity
   public static final double max_turn_speed_low = 4; // Max turn speed in degrees per second
   // Auto stuff
-  public static final double drive_auto_position_tolerence = 1; // units are in incehs
-  public static final double drive_auto_angle_tolerence = 1; // units are in degrees
+  public static final double drive_auto_position_tolerence = 1; // units are in inches
+  public static final double auto_angle_tolerence = 1; // units are in degrees
+  public static final double angular_velocity_tolerence = 0.5; // units are in degrees per second
   public static final double drive_auto_velocity_tolerence = 0.5; // units are in inches per second
   public static final double drive_auto_straight_angle_tolerence = 2; // units are in degrees
   public static final double drive_auto_forward_velocity_max = 4; // feet per second target for driving auto
@@ -59,8 +60,13 @@ public class RobotConfig {
   public static final double drive_auto_turn_maximum_weight = 0.1;
   public static final double drive_auto_low_gear_speed = 2; // units are feet per second
   public static final double drive_auto_high_speed = 2; // units are feet per second
+  public static final double auto_max_integral = 0.5;
+  public static final double auto_integral_zone = 10; // 10 degrees izone
+  public static final double auto_min_turn_speed = -1; // in ft/sec
+  public static final double auto_max_turn_speed = 1; // in ft/sec
   // Auto PID
-  public static final double drive_auto_turn_kp = 1; //TODO make this a measured value!
+  public static final double auto_turn_kp = 0.2;
+  public static final double auto_turn_ki = 0.05;
 
   // Encoder stuff, dunno where else to put this
 	// public static final double VELOCITY_PULSES_PER_ROTATION = 409.6f;

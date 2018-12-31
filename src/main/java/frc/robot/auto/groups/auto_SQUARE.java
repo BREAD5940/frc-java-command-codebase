@@ -10,6 +10,6 @@ public class auto_SQUARE extends CommandGroup{
 
     public auto_SQUARE(double sideLength) {
         addSequential(new auto_DRIVE(sideLength));
-        addSequential(new auto_TURN()); 
+        addSequential(new auto_TURN(3)); 
     }
 }
