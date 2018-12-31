@@ -1,15 +1,9 @@
 
 package frc.robot.auto;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation;
 import java.util.ArrayList;
-import frc.robot.Robot;
 import frc.robot.auto.AutoPath.goals;
 import frc.robot.auto.groups.auto_LINE;
 

@@ -2,11 +2,7 @@
 
 package frc.robot.auto.groups;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.Robot;
 import frc.robot.auto.actions.auto_DRIVE;
 import frc.robot.auto.actions.auto_TURN;
 
