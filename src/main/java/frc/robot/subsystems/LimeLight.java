@@ -25,6 +25,9 @@ public class LimeLight {
   double y_resolution = 240;
   double x_fov = 54;
   double y_fov = 41;
+  double x_focal_length = x_resolution / (2*Math.tan(x_fov/2));
+  double y_focal_length = y_resolution / (2*Math.tan(y_fov/2));
+  double average_focal_length = (x_focal_length + y_focal_length) / 2;
 
   double distance, relativeAngle;
 
@@ -100,21 +103,16 @@ public class LimeLight {
   public double getTrackedTargets() {
     return (table.getEntry("tv")).getDouble(0);
   }
-  
-  public double getFocalLength(){
-    return x_resolution / (2*Math.tan(x_fov/2));
-  }
-
-
 
   /**
    * Get the current delta x (left/right) angle from crosshair to vision target
    * @return delta x in degrees to target
    */
   public double getDxAngle() {
-    return Math.atan(
-      getDx() / getFocalLength()
-    );
+    return Math.toDegrees(
+      Math.atan(
+        getDx() / average_focal_length
+    ));
   }
 
   /**
@@ -122,9 +120,10 @@ public class LimeLight {
    * @return degrees of elevation from crosshair to target 
    */
   public double getDyAngle() {
-    return Math.atan(
-      getDy() / getFocalLength()
-    );
+    return Math.toDegrees(
+      Math.atan(
+        getDy() / average_focal_length
+    ));
   }
 
   /**
