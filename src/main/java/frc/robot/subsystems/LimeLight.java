@@ -101,13 +101,19 @@ public class LimeLight {
     return (table.getEntry("tv")).getDouble(0);
   }
   
+  public double getFocalLength(){
+    return x_resolution / (2*Math.tan(x_fov/2));
+  }
+
+
+
   /**
    * Get the current delta x (left/right) angle from crosshair to vision target
    * @return delta x in degrees to target
    */
   public double getDxAngle() {
     return Math.atan(
-      getDx() / (x_resolution / 2) / (Math.tan(x_fov / 2))
+      getDx() / getFocalLength()
     );
   }
 
@@ -117,7 +123,7 @@ public class LimeLight {
    */
   public double getDyAngle() {
     return Math.atan(
-      getDy() / (y_resolution / 2) / (Math.tan(y_fov / 2))
+      getDy() / getFocalLength()
     );
   }
 
