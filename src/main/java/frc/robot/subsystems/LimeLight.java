@@ -15,6 +15,9 @@ import frc.robot.RobotConfig;
  * ta	Target Area (0% of image to 100% of image)
  * ts	Skew or rotation (-90 degrees to 0 degrees)
  * tl	The pipeline’s latency contribution (ms) Add at least 11ms for image capture latency.
+ * TODO Move this to Pantry Vision
+ * 
+ * @author Matthew Morley
  */
 public class LimeLight {
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");

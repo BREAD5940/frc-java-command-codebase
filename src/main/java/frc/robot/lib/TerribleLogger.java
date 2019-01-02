@@ -15,6 +15,12 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 
+/**
+ * Logs stuff to a CSV file on the RoboRIO. Hopefully won't crash the code if the file can't
+ * be written to. Depends on CSVUtils.java
+ * 
+ * @author Matthew Morley
+ */
 public class TerribleLogger {
 	/**
 	 * The System.nanoTime of the start of the robot.

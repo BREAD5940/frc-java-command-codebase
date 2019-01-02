@@ -21,8 +21,12 @@ import frc.robot.lib.EncoderLib;
 
 
 /**
- * Drivetrain subsystem. Initilizes the 4 drivetrain talons based on robotmap
- * settings
+ * Drivetrain subsystem. Initilizes the 4 drivetrain talons based on robotconfig
+ * settings. Also, some motion profile stuff (which is hopefully depricated).
+ * Contains methods for setting PID values, shifting, getting drivetrain encoder
+ * status, setting speeds and voltages, and the arcade drive method.
+ * 
+ * @author Matthew Morley
  */
 public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem

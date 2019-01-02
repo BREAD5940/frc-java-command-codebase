@@ -1,5 +1,12 @@
 package frc.robot.lib;
 
+/**
+ * Pretty terrible PID controller, tbh. Runs at 50 hz and currently has kp and ki
+ * support. TODO is arbitrary feedforward for things like wrists and derivative
+ * gains. Used in nested velocity/position PID on the drivetrian.
+ * 
+ * @author Matthew Morley
+ */
 public class TerriblePID {
 
   double kp, ki, kd, pOutput, iOutput, iAccum, dOutput, integralZone, 

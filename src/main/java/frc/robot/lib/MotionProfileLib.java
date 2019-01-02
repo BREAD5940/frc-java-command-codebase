@@ -19,6 +19,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 
+/**
+ * This is some basic functions for motion profiling. Similar to pathfinder, but also
+ * not nearly as good^tm. Contains methods for reading, preparing and sending motion
+ * profiles to a Talon.
+ * 
+ * @author Matthew Morley
+ */
 public class MotionProfileLib {
   // Misc methods for basic motion profiling
   // Credit to RobotThatFollows from team 1757

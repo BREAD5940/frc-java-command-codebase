@@ -11,7 +11,10 @@ import frc.robot.lib.EncoderLib;;
 
 
 /**
- * The intake subsystem. Contains method setSpeed, openClamp and closeClamp
+ * A wrist subsystem with Talon hardware PID
+ * Was never tested, the 775s burned out
+ * 
+ * @author Matthew Morley
  */
 public class Wrist extends Subsystem {
 
