@@ -7,11 +7,11 @@ import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.DriverStation;
+// import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
-import frc.robot.RobotConfig.driveTrain;
+// import frc.robot.RobotConfig.driveTrain;
 import frc.robot.commands.ArcadeDrive;
 // import frc.robot.commands.stick_drive;
 import frc.robot.lib.EncoderLib;
@@ -41,6 +41,12 @@ public class DriveTrain extends Subsystem {
 
   public MotionProfileStatus m_left_MP_Status = new MotionProfileStatus();
   public MotionProfileStatus m_right_MP_Status = new MotionProfileStatus();
+
+  public enum Gear {
+    LOW, HIGH;
+  }
+  
+  Gear gear;
 
   public void init() {
     m_left_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,30);
@@ -83,7 +89,7 @@ public class DriveTrain extends Subsystem {
     
     // Trigger solenoids
     Robot.drivetrain_shift_high();
-    current_gear = "high";
+    gear = Gear.HIGH;
   }
 
   public void setLowGear() {
@@ -104,7 +110,7 @@ public class DriveTrain extends Subsystem {
     // Trigger solenoids
     Robot.drivetrain_shift_low();
 
-    current_gear = "low";
+    gear = Gear.LOW;
   }
 
   /** Return the current distance in feet of the left wheels */
