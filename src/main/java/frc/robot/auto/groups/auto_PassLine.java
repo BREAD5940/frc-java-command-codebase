@@ -21,7 +21,8 @@ public class auto_PassLine extends CommandGroup{
         }else if (location == AutoPath.robotLoc.LEFT){
 
         }else{
-
+            // TODO find out if I'm actually doing this right
+            addSequential(new auto_FollowMotionProfile("\\src\\main\\deploy\\paths\\CenterAcrossLine.left.pf1.csv", "\\src\\main\\deploy\\paths\\CenterAcrossLine.right.pf1.csv"));
         }
     }
 }
