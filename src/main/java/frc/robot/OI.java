@@ -1,30 +1,18 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-// import frc.robot.commands.close_clamp;
-// import edu.wpi.first.wpilibj.command.Command;
-// import frc.robot.subsystems.intake;
 import frc.robot.commands.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
+ * For use with commands and stuff. 
+ * 
+ * @author Matthew Morley
  */
 public class OI {
-  //// CREATING BUTTONS
-  // One type of button is a joystick button which is any button on a
-  //// joystick.
-  // You create one by telling it which joystick it's on and which button
-  // number it is.
   
   private Joystick primaryJoystick = new Joystick(RobotConfig.controls.primary_joystick_port);
   private Joystick secondaryJoystick = new Joystick(RobotConfig.controls.secondary_joystick_port);

@@ -5,6 +5,9 @@ import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 
+/**
+ * 
+ */
 public class SetWrist extends Command {
     boolean isInstant;
     double target_angle;

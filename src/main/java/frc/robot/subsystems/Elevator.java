@@ -14,7 +14,11 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 
 /**
- * The intake subsystem. Contains method setSpeed, openClamp and closeClamp
+ * The elevator subsystem controls the elevator height
+ * with talon hardware PID. Contains methods for converting
+ * from encoder units to height, and vice versa too!
+ * 
+ * @author Matthew Morley
  */
 public class Elevator extends Subsystem {
   // Put methods for controlling this subsystem

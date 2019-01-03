@@ -2,6 +2,12 @@
 package frc.robot.lib;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+/**
+ * Basic library to convert a bunch of different units around encoder
+ * raw units. This involves things like revolutions and distance.
+ * 
+ * @author Matthew Morley
+ */
 public class EncoderLib extends Subsystem {
     public EncoderLib() {
         super("EncoderLib");

@@ -4,6 +4,12 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
+/**
+ * Library literally full of CSV stuff. For use with TerribleLogger to log stuff to
+ * CSV files on the RoboRIO.
+ * 
+ * @author Matthew Morley
+ */
 public class CSVUtils {
 
     private static final char DEFAULT_SEPARATOR = ',';

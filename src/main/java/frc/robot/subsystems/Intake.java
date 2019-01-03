@@ -10,7 +10,10 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 
 /**
- * The intake subsystem. Contains method setSpeed, openClamp and closeClamp
+ * The intake subsystem. Contains method setSpeed, openClamp and closeClamp.
+ * Pretty barebones.
+ * 
+ * @author Matthew Morley
  */
 public class Intake extends Subsystem {
   // Put methods for controlling this subsystem
