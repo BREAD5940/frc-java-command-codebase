@@ -11,10 +11,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.AutoSelector;
+import frc.robot.auto.actions.auto_DriveDistance;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
-// import frc.robot.subsystems.intake;
+import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Wrist;
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
@@ -25,10 +26,6 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-// import frc.robot.commands.arcade_drive;
-// import frc.robot.subsystems.*;
-// import frc.robot.commands.*;
-
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -39,19 +36,12 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
  */
 public class Robot extends TimedRobot {
 
-  // WARNING see this link:
-  // https://github.com/mr-glt/FRC-2017-Command/blob/master/src/main/java/org/usfirst/frc/team6027/robot/subsystems/DriveTrain.java
-  // In the init, they have this instead:
-  // 	public static DriveTrain drivetrain;
-  // Rather than making a new drivetrain();
-  // TODO does this have anything to do with the weird command errors? Or what about making it final?
-
   public static boolean arcade_running = false;
   public static DriveTrain drivetrain = new DriveTrain();
   public static Intake intake = new Intake();
   public static Elevator elevator = new Elevator();
   public static Wrist wrist = new Wrist();
-  public static RobotConfig robotconfig = new RobotConfig();
+  public static LimeLight limelight = new LimeLight();
   public static OI m_oi;
 
   public static double elevator_setpoint = 0;
@@ -60,20 +50,20 @@ public class Robot extends TimedRobot {
   private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 0, 6);
 
   public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-  
-  double startingDistance;
 
   AutoSelector autoSelect;
-
-  public static double defaultAutoSpeed = RobotConfig.drive_auto_forward_velocity_max;
   public static AutoPath m_auto;
 
+  Compressor compressor = new Compressor(9);
+
+  public static double startingDistance;
+  public static double defaultAutoSpeed = RobotConfig.drive_auto_forward_velocity_max;
+
+  // Various pneumatic shifting methods
   public static void drivetrain_shift_high(){ shifterDoubleSolenoid.set(DoubleSolenoid.Value.kForward); }
   public static void drivetrain_shift_low(){ shifterDoubleSolenoid.set(DoubleSolenoid.Value.kReverse); }
   public static void intake_close(){ intakeDoubleSolenoid.set(DoubleSolenoid.Value.kForward); }
   public static void intake_open(){ intakeDoubleSolenoid.set(DoubleSolenoid.Value.kReverse); }
-
-  public static double rawSpeedRight;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -82,15 +72,13 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    Compressor compressor = new Compressor(9);
+
     compressor.setClosedLoopControl(true);
     
     drivetrain.init();
     elevator.init();
     wrist.init();
     gyro.reset();
-
-    System.out.println("Hi!");
 
     startingDistance = drivetrain.getLeftDistance();
 
@@ -100,6 +88,107 @@ public class Robot extends TimedRobot {
 
 
 
+  }
+
+  
+
+  /**
+   * This function is called once each time the robot enters Disabled mode.
+   * You can use it to reset any subsystem information you want to clear when
+   * the robot is disabled.
+   */
+  @Override
+  public void disabledInit() {
+    if ( RobotConfig.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
+    else if ( RobotConfig.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
+    else { System.out.println("default auto gear " + RobotConfig.default_auto_gear + " is not a valid choice!"); }
+  }
+
+  @Override
+  public void disabledPeriodic() {
+    Scheduler.getInstance().run();
+  }
+
+  /**
+   * This autonomous (along with the chooser code above) shows how to select
+   * between different autonomous modes using the dashboard. The sendable
+   * chooser code works with the Java SmartDashboard. If you prefer the
+   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
+   * getString code to get the auto name from the text box below the Gyro
+   *
+   * <p>You can add additional auto modes by adding additional commands to the
+   * chooser code above (like the commented example) or additional comparisons
+   * to the switch structure below with additional strings & commands.
+   */
+  @Override
+  public void autonomousInit() {
+    autoSelect = new AutoSelector();
+    SmartDashboard.putData("Robot Location Chooser", autoSelect.rbLoc);
+    SmartDashboard.putData("Goal Chooser", autoSelect.usrGoal);
+    SmartDashboard.putData("Number of Cubes", autoSelect.usrCubes);
+    SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
+    m_auto = autoSelect.choosePath();
+
+    m_auto.getCommandGroup().start();
+    
+
+    gyro.reset(); // Reset the current gyro heading to zero
+    drivetrain.zeroEncoders();
+    
+    if ( RobotConfig.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
+    else if ( RobotConfig.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
+    else { System.out.println("default auto gear " + RobotConfig.default_auto_gear + " is not a valid choice!"); }
+
+    /*
+     * String autoSelected = SmartDashboard.getString("Auto Selector",
+     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
+     * = new MyAutoCommand(); break; case "Default Auto": default:
+     * autonomousCommand = new ExampleCommand(); break; }
+     */
+
+    // schedule the autonomous command (example)
+    // new auto_action_DRIVE(3, "high", 5, 30);
+
+    // TODO so this doesnt work  for some reason, TODO figure this out
+    // System.out.println("Trying to call the auto action drive...");
+    // new auto_action_DRIVE(5, "high", 5, 30);
+
+  }
+
+  /**
+   * This function is called periodically during autonomous.
+   */
+  @Override
+  public void autonomousPeriodic() {
+    Scheduler.getInstance().run();
+  }
+
+  @Override
+  public void teleopInit() {
+    // This makes sure that the autonomous stops running when
+    // teleop starts running. If you want the autonomous to
+    // continue until interrupted by another command, remove
+    // this line or comment it out.
+    if (m_auto != null) {
+        m_auto.getCommandGroup().cancel();
+    }
+  // TODO reset subsystems on teleop init?
+  }
+
+  /**
+   * This function is called periodically during operator control.
+   * 
+   */
+  @Override
+  public void teleopPeriodic() {
+    Scheduler.getInstance().run();
+  }
+
+  /**
+   * This function is called periodically during test mode.
+   */
+  @Override
+  public void testPeriodic() {
   }
 
   /**
@@ -141,99 +230,19 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Wrist angular velocity (deg/s)", wrist.getAngularVelocity());
 
     SmartDashboard.putNumber("Current Gyro angle", gyro.getAngle());
+
+    // Limelight stuff
+    double[] limelightdata = limelight.getData();
+
+    SmartDashboard.putNumber("Vision targets?", limelightdata[0]);
+    SmartDashboard.putNumber("Horizontal offset", limelightdata[1]);
+    SmartDashboard.putNumber("Vertical offset", limelightdata[2]);
+    SmartDashboard.putNumber("Target area", limelightdata[3]);
+    SmartDashboard.putNumber("Target skew", limelightdata[4]);
+    SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
+
     
   }
 
-  /**
-   * This function is called once each time the robot enters Disabled mode.
-   * You can use it to reset any subsystem information you want to clear when
-   * the robot is disabled.
-   */
-  @Override
-  public void disabledInit() {
-  }
-
-  @Override
-  public void disabledPeriodic() {
-    Scheduler.getInstance().run();
-  }
-
-  /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable
-   * chooser code works with the Java SmartDashboard. If you prefer the
-   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-   * getString code to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional commands to the
-   * chooser code above (like the commented example) or additional comparisons
-   * to the switch structure below with additional strings & commands.
-   */
-  @Override
-  public void autonomousInit() {
-    autoSelect = new AutoSelector();
-    SmartDashboard.putData("Robot Location Chooser", autoSelect.rbLoc);
-    SmartDashboard.putData("Goal Chooser", autoSelect.usrGoal);
-    SmartDashboard.putData("Number of Cubes", autoSelect.usrCubes);
-    SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
-    m_auto = autoSelect.choosePath();
-
-    m_auto.getCommandGroup().start();
-  }
-
-  /**
-   * This function is called periodically during autonomous.
-   */
-  @Override
-  public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
-    
-    
-  }
-
-  @Override
-  public void teleopInit() {
-    // drivetrain.init();
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (m_auto != null) {
-        m_auto.getCommandGroup().cancel();
-    }
-
-    // new drivetrain_shift_high();
-    // new drivetrain_shift_low();
-    // shifter.set(DoubleSolenoid.Value.kReverse);
-
-
-    // final arcade_drive arcade = new arcade_drive();
-
-    // new arcade_drive();
-
-
-  }
-
-  /**
-   * This function is called periodically during operator control.
-   * 
-   */
-  @Override
-  public void teleopPeriodic() {
-    Scheduler.getInstance().run();
-    
-    // double target_intake_speed = m_oi.getIntakeSpeed() / 1;
-    // // intake.setSpeed(target_intake_speed);
-    // intake.talon_left.set(ControlMode.PercentOutput, target_intake_speed);
-    // intake.talon_right.set(ControlMode.PercentOutput, -target_intake_speed);
-
-
-  }
-
-  /**
-   * This function is called periodically during test mode.
-   */
-  @Override
-  public void testPeriodic() {
-  }
 }
+

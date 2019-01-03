@@ -1,7 +1,5 @@
 package frc.robot.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
@@ -16,7 +14,9 @@ public class ElevatorTelop extends Command {
   double targetHeight;
 
   /** 
-   * Requires elevator subsystem
+   * This command takes no arguments, runs forever, and pulls target height 
+   * from OI's getElevatorAxis method. If this command is interupted or canceled,
+   * the height will be set to the current target Just In Case^tm. 
    */
   public ElevatorTelop(){
     requires(Robot.elevator);
@@ -24,7 +24,6 @@ public class ElevatorTelop extends Command {
 
   @Override
   protected void initialize() {
-    // TODO add logging
     System.out.println("Elevator telop init!"); 
   }
 
@@ -35,8 +34,8 @@ public class ElevatorTelop extends Command {
   protected void execute() {
     targetHeight += Robot.m_oi.getElevatorAxis() ;
     Robot.elevator.setHeight(targetHeight);//targetHeight);
-    System.out.println("targetHeight: " + targetHeight + " Elevator axis: " 
-      + Robot.m_oi.getElevatorAxis() * 1 + " Get elevator height inches: " + Robot.elevator.getHeight() );
+    // System.out.println("targetHeight: " + targetHeight + " Elevator axis: " 
+    //   + Robot.m_oi.getElevatorAxis() * 1 + " Get elevator height inches: " + Robot.elevator.getHeight() );
   }
 
   @Override
@@ -47,12 +46,12 @@ public class ElevatorTelop extends Command {
   // TODO decide if the elevator should set itself to 0 on command end
   @Override
   protected void end() {
-    Robot.elevator.setHeight(Robot.elevator.getElevatorAxisInches());
+    Robot.elevator.setHeight(Robot.elevator.getHeight());
   }
 
-  // TODO decide if the elevator should set itself to 0 on command end
+  // TODO decide if the elevator should set itself to 0 on command end. Because the command should never end right?
   @Override
   protected void interrupted() {
-    Robot.elevator.setHeight(Robot.elevator.getElevatorAxisInches());
+    Robot.elevator.setHeight(Robot.elevator.getHeight());
   }
 }

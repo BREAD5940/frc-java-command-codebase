@@ -9,8 +9,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.Intake;
-
 
 
 /**
@@ -22,13 +20,10 @@ public class OpenClamp extends Command {
     // requires(Robot.intake);
   }
 
-  // private static final intake intake  = new intake();
-
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     Robot.intake_open();
-
   }
 
   // Called repeatedly when this Command is scheduled to run
