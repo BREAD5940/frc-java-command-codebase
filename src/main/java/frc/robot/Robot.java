@@ -139,19 +139,6 @@ public class Robot extends TimedRobot {
     else if ( RobotConfig.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
     else { System.out.println("default auto gear " + RobotConfig.default_auto_gear + " is not a valid choice!"); }
 
-    /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector",
-     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-     * = new MyAutoCommand(); break; case "Default Auto": default:
-     * autonomousCommand = new ExampleCommand(); break; }
-     */
-
-    // schedule the autonomous command (example)
-    // new auto_action_DRIVE(3, "high", 5, 30);
-
-    // TODO so this doesnt work  for some reason, TODO figure this out
-    // System.out.println("Trying to call the auto action drive...");
-    // new auto_action_DRIVE(5, "high", 5, 30);
 
   }
 
