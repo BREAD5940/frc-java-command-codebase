@@ -43,11 +43,14 @@ public class coordinateSystems {
      * @return a double[] in format (x,y) that represents delta in said axis
      */
     public static double[] calculaeDisplacement(double deltaLeft, double deltaRight, double oldAngle, double currentAngle) {
-        double deltaTheta = currentAngle - oldAngle + 90; // add 90 so that the result is in the Y axis of the polar plane
+        double deltaTheta = currentAngle - oldAngle;//+ 90; 
         double chordLen;
-        if(deltaLeft != deltaRight) {
-            double Rl = (180 * deltaLeft)/(pi * deltaTheta);
-            double Rr = (180 * deltaRight)/(pi * deltaTheta);
+        if (deltaLeft == deltaRight) {
+            System.out.println("Left and right distances are the same, assuming a straight line movement");
+            chordLen = deltaLeft;
+        } else {
+            double Rl = deltaLeft/ (pi * (deltaTheta/360) * 2);
+            double Rr = deltaRight / (pi * (deltaTheta/360) * 2);
             double Rc = (Rl + Rr) / 2;
             chordLen = coordinateSystems.calculateChordLen(Rc, deltaTheta);
 
@@ -55,12 +58,8 @@ public class coordinateSystems {
 
 
         }
-        else {
-            System.out.println("Left and right distances are the same, assuming a straight line movement");
-            chordLen = deltaLeft;
-        }
 
-        double[] polarCoordinates = {deltaTheta, chordLen};
+        double[] polarCoordinates = {deltaTheta + 90, chordLen}; // add 90 so that the result is in the Y axis of the polar plane - Tried adding this on line 46 but that messes with chord stuff
         // polarCoordinates[0] = deltaTheta;
         // polarCoordinates[1] = chordLen;
 
