@@ -10,15 +10,16 @@ public class AutoPath {
      * 
      * CENTER: directly to the right of the exchange zone
      * LEFT: directly to the left of the exchange zone
-     * RIGHT:
-     * FAR_LEFT: 
+     * RIGHT: the leftmost side of the right driver station
+     * FAR_LEFT: the far left of the field
+     * FAR_RIGHT: the far right of the field
      */
     public enum robotLoc{
         CENTER, LEFT, RIGHT, FAR_LEFT, FAR_RIGHT
     }
 
     public enum goals{
-        FAR_SWITCH, NEAR_SWITCH, SCALE, TEST
+        FAR_SWITCH, NEAR_SWITCH, SCALE, TEST, LINE
     }
 
 
