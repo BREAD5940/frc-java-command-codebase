@@ -95,26 +95,16 @@ public class MathTests {
         double[][] inputs = new double[tests][3];
         double[][] expecteds = new double[tests][3];
         double[][] calculateds = new double[tests][3];
-
-        double[] input1 = {1, 1, 0, 0};
-        double[] input2 = {1, 2, 0, -28};
-        double[] input3 = {1.5, 2.5, 5, 28};
-        double[] input4 = {2.5, 1.5, 5, 28};
-
-        double[] expected1 =  {0, 1};
-        double[] expected2 =  {-0.357, 1.441};
-        double[] expected3 =  {0.56, 1.905};
-        double[] expected4 =  {0.56, 1.905};
         
-        inputs[0] = input1;
-        inputs[1] = input2;
-        inputs[2] = input3;
-        inputs[3] = input4;
+        inputs[0] = new double[]{1, 1, 0, 0};
+        inputs[1] = new double[]{1, 2, 0, -28};
+        inputs[2] = new double[]{1.5, 2.5, 5, 28};
+        inputs[3] = new double[]{2.5, 1.5, 5, 28};
 
-        expecteds[0] = expected1;
-        expecteds[1] = expected2;
-        expecteds[2] = expected3;
-        expecteds[3] = expected4;
+        expecteds[0] = new double[]{1, 1, 0, 0};
+        expecteds[1] = new double[]{1, 2, 0, -28};
+        expecteds[2] = new double[]{1.5, 2.5, 5, 28};
+        expecteds[3] = new double[]{2.5, 1.5, 5, 28};
 
         for ( int i=0; i < tests; i++) {
             calculateds[i] = coordinateSystems.calculaeDisplacement(inputs[i][0], inputs[i][1], inputs[i][2], inputs[i][3]);
