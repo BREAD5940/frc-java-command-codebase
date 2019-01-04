@@ -2,6 +2,8 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
+import frc.robot.auto.groups.*;
+
 public class AutoPath {
 
 
@@ -34,7 +36,7 @@ public class AutoPath {
      * @param name
      *      name of the path
      * @param goal
-     *      goal of the autopath (FAR_SWITCH, NEAR_SWITCH, SCALE, TEST)
+     *      goal of the autopath (FAR_SWITCH, NEAR_SWITCH, SCALE, TEST, LINE)
      * @param reqLocation
      *      required location of the robot (CENTER, LEFT, RIGHT, FAR_LEFT, FAR_RIGHT)
      * @param setup
@@ -48,11 +50,27 @@ public class AutoPath {
         this.setup = setup;
         this.name = name;
         this.goal = goal;
-        this.bigCommandGroup = new AutoCommandGroup(commands);
+        this.bigCommandGroup = new AutoCommandGroup(genCommands());
+    }
+
+    public CommandGroup genCommands(){
+        // TODO don't forget abt multi-cube plz
+        switch (this.goal){
+            case LINE:
+                return new auto_PassLine(this.location);
+            case SCALE:
+                return new auto_Scale(this.location);
+            case NEAR_SWITCH:
+                return new auto_NearSwitch(this.location, getIndivSetup(goals.NEAR_SWITCH));
+            case FAR_SWITCH:
+                return new auto_FarSwitch(this.location);
+            default:
+                return new auto_TestDrive();
+        }
+
     }
 
     // id functions
-
 
     public String getName(){
         return this.name;
@@ -68,6 +86,19 @@ public class AutoPath {
 
     public String getReqSetup(){
         return this.setup;
+    }
+
+    public char getIndivSetup(goals feature){
+        switch(feature){
+            case SCALE:
+                return this.setup.charAt(1);
+            case NEAR_SWITCH:
+                return this.setup.charAt(0);
+            case FAR_SWITCH:
+                return this.setup.charAt(2);
+            default:
+                return 'x';
+        }
     }
 
     public AutoCommandGroup getCommandGroup(){

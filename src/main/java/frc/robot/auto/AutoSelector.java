@@ -53,8 +53,7 @@ public class AutoSelector{
         //TODO add actual command groups
         // TODO add multi-cube autos
         // Center paths
-            centerPaths.add(new AutoPath("Auto line from center", AutoPath.goals.LINE, AutoPath.robotLoc.CENTER, "XXX",
-                                new auto_PassLine(robotLoc.CENTER)));
+            centerPaths.add(new AutoPath("Auto line from center", AutoPath.goals.LINE, AutoPath.robotLoc.CENTER, "XXX"));
             centerPaths.add(new AutoPath("Right switch from center", AutoPath.goals.NEAR_SWITCH, AutoPath.robotLoc.CENTER, "RXX"));
             centerPaths.add(new AutoPath("Left switch from center", AutoPath.goals.NEAR_SWITCH, AutoPath.robotLoc.CENTER, "LXX"));
             centerPaths.add(new AutoPath("Right scale from center", AutoPath.goals.SCALE, AutoPath.robotLoc.CENTER, "XRX"));
@@ -63,8 +62,7 @@ public class AutoSelector{
             centerPaths.add(new AutoPath("Left far switch from center", AutoPath.goals.FAR_SWITCH, AutoPath.robotLoc.CENTER, "XXL"));
 
         // Left paths
-            leftPaths.add(new AutoPath("Auto line from left", AutoPath.goals.LINE, AutoPath.robotLoc.LEFT, "XXX",
-                              new auto_PassLine(robotLoc.LEFT)));
+            leftPaths.add(new AutoPath("Auto line from left", AutoPath.goals.LINE, AutoPath.robotLoc.LEFT, "XXX"));
             leftPaths.add(new AutoPath("Right switch from left", AutoPath.goals.NEAR_SWITCH, AutoPath.robotLoc.LEFT, "RXX"));
             leftPaths.add(new AutoPath("Left switch from left", AutoPath.goals.NEAR_SWITCH, AutoPath.robotLoc.LEFT, "LXX"));
             leftPaths.add(new AutoPath("Right scale from left", AutoPath.goals.SCALE, AutoPath.robotLoc.LEFT, "XRX"));
@@ -73,8 +71,7 @@ public class AutoSelector{
             leftPaths.add(new AutoPath("Left far switch from left", AutoPath.goals.FAR_SWITCH, AutoPath.robotLoc.LEFT, "XXL"));
 
         // Right paths
-            rightPaths.add(new AutoPath("Auto line from right", AutoPath.goals.LINE, AutoPath.robotLoc.RIGHT, "XXX", 
-                                new auto_PassLine(robotLoc.RIGHT)));
+            rightPaths.add(new AutoPath("Auto line from right", AutoPath.goals.LINE, AutoPath.robotLoc.RIGHT, "XXX"));
             rightPaths.add(new AutoPath("Right switch from right", AutoPath.goals.NEAR_SWITCH, AutoPath.robotLoc.RIGHT, "RXX"));
             rightPaths.add(new AutoPath("Left switch from right", AutoPath.goals.NEAR_SWITCH, AutoPath.robotLoc.RIGHT, "LXX"));
             rightPaths.add(new AutoPath("Right scale from right", AutoPath.goals.SCALE, AutoPath.robotLoc.RIGHT, "XRX"));
@@ -83,8 +80,7 @@ public class AutoSelector{
             rightPaths.add(new AutoPath("Left far switch from right", AutoPath.goals.FAR_SWITCH, AutoPath.robotLoc.RIGHT, "XXL"));
 
         // Far left paths
-            farLeftPaths.add(new AutoPath("Auto line from far left", AutoPath.goals.LINE, robotLoc.FAR_LEFT, "XXX", 
-                                 new auto_PassLine(robotLoc.FAR_LEFT)));
+            farLeftPaths.add(new AutoPath("Auto line from far left", AutoPath.goals.LINE, robotLoc.FAR_LEFT, "XXX"));
             farLeftPaths.add(new AutoPath("Right switch from far left", AutoPath.goals.NEAR_SWITCH, AutoPath.robotLoc.FAR_LEFT, "RXX"));
             farLeftPaths.add(new AutoPath("Left switch from far left", AutoPath.goals.NEAR_SWITCH, AutoPath.robotLoc.FAR_LEFT, "LXX"));
             farLeftPaths.add(new AutoPath("Right scale from far left", AutoPath.goals.SCALE, AutoPath.robotLoc.FAR_LEFT, "XRX"));
@@ -93,8 +89,7 @@ public class AutoSelector{
             farLeftPaths.add(new AutoPath("Left far switch from far left", AutoPath.goals.FAR_SWITCH, AutoPath.robotLoc.FAR_LEFT, "XXL"));
 
         // Far right paths
-            farRightPaths.add(new AutoPath("Auto line from far right", AutoPath.goals.LINE, robotLoc.FAR_RIGHT, "XXX", 
-                                new auto_PassLine(robotLoc.FAR_RIGHT)));
+            farRightPaths.add(new AutoPath("Auto line from far right", AutoPath.goals.LINE, robotLoc.FAR_RIGHT, "XXX"));
             farRightPaths.add(new AutoPath("Right switch from far right", AutoPath.goals.NEAR_SWITCH, AutoPath.robotLoc.FAR_RIGHT, "RXX"));
             farRightPaths.add(new AutoPath("Left switch from far right", AutoPath.goals.NEAR_SWITCH, AutoPath.robotLoc.FAR_RIGHT, "LXX"));
             farRightPaths.add(new AutoPath("Right scale from far right", AutoPath.goals.SCALE, AutoPath.robotLoc.FAR_RIGHT, "XRX"));
