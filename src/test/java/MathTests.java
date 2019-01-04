@@ -101,14 +101,16 @@ public class MathTests {
         inputs[2] = new double[]{1.5, 2.5, 5, 28};
         inputs[3] = new double[]{2.5, 1.5, 5, 28};
 
-        expecteds[0] = new double[]{1, 1, 0, 0};
-        expecteds[1] = new double[]{1, 2, 0, -28};
-        expecteds[2] = new double[]{1.5, 2.5, 5, 28};
-        expecteds[3] = new double[]{2.5, 1.5, 5, 28};
+        expecteds[0] = new double[]{0, 1};
+        expecteds[1] = new double[]{-0.357, 1.441};
+        expecteds[2] = new double[]{0.56, 1.905};
+        expecteds[3] = new double[]{0.56, 1.905};
 
         for ( int i=0; i < tests; i++) {
             calculateds[i] = coordinateSystems.calculaeDisplacement(inputs[i][0], inputs[i][1], inputs[i][2], inputs[i][3]);
             System.out.println("Calcualteds: " + calculateds[i][0] + ", " + calculateds[i][1]);
+            System.out.println("Expecteds: " + expecteds[i][0] + ", " + expecteds[i][1]);
+
             assertArrayEquals(expecteds[i], calculateds[i], 0.02);
         }
 
