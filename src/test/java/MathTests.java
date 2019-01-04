@@ -75,14 +75,28 @@ public class MathTests {
         double expected2 = 9.877;
         double expected3 = 4.854;
 
-        double actual1 = coordinateSystems.chordLen(input1[0], input1[1]);
-        double actual2 = coordinateSystems.chordLen(input2[0], input2[1]);
-        double actual3 = coordinateSystems.chordLen(input3[0], input3[1]);
+        double actual1 = coordinateSystems.calculateChordLen(input1[0], input1[1]);
+        double actual2 = coordinateSystems.calculateChordLen(input2[0], input2[1]);
+        double actual3 = coordinateSystems.calculateChordLen(input3[0], input3[1]);
 
         assertEquals(expected1, actual1, 0.01);
         assertEquals(expected2, actual2, 0.01);
         assertEquals(expected3, actual3, 0.01);
 
+    }
+
+    @Test
+    public void testDisplacement() {
+        // calculaeDisplacement(double deltaLeft, double deltaRight, double oldAngle, double currentAngle) 
+
+        // This test case will check what happens if the radii are infinity
+        double[] input1 = {1, 1, 0, 0};
+
+        double[] expected1 =  {0, 1};
+
+        double[] actual1 = coordinateSystems.calculaeDisplacement(input1[0], input1[1], input1[2], input1[3]);
+
+        assertArrayEquals(expected1, actual1, 0.01);
     }
 
 

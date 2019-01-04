@@ -2,7 +2,8 @@ package frc.math;
 
 public class coordinateSystems {
     // double[] xyArray = new double[2];
-    
+    public static double pi = Math.PI;
+
     /** 
      * Convert from polar to cartesian
      * @param double[] in the form theta, magnitude
@@ -25,9 +26,50 @@ public class coordinateSystems {
      * @param angle
      * @return chord length
      */
-    public static double chordLen(double radius, double angle) {
+    public static double calculateChordLen(double radius, double angle) {
         // angle = angle % 180;
         double chordLen = Math.sin(Math.toRadians(angle / 2)) * radius * 2;
         return Math.abs(chordLen);
+    }
+
+    /**
+     * Return delta in gobal (x,y) and global theta given
+     * old global theta, current global theta, and movement by 
+     * the left and right drivetrain.
+     * @param deltaLeft
+     * @param deltaRight
+     * @param oldAngle
+     * @param currentAngle
+     * @return a double[] in format (x,y) that represents delta in said axis
+     */
+    public static double[] calculaeDisplacement(double deltaLeft, double deltaRight, double oldAngle, double currentAngle) {
+        double deltaTheta = currentAngle - oldAngle + 90; // add 90 so that the result is in the Y axis of the polar plane
+        double chordLen;
+        if(deltaLeft != deltaRight) {
+            double Rl = (180 * deltaLeft)/(pi * deltaTheta);
+            double Rr = (180 * deltaRight)/(pi * deltaTheta);
+            double Rc = (Rl + Rr) / 2;
+            chordLen = coordinateSystems.calculateChordLen(Rc, deltaTheta);
+
+            System.out.println(String.format("Rl (Rr) Rc (Chordlen): %s (%s) %s (%s)", Rl, Rr, Rc, chordLen));
+
+
+        }
+        else {
+            System.out.println("Left and right distances are the same, assuming a straight line movement");
+            chordLen = deltaLeft;
+        }
+
+        double[] polarCoordinates = {deltaTheta, chordLen};
+        // polarCoordinates[0] = deltaTheta;
+        // polarCoordinates[1] = chordLen;
+
+        // rotate the pose, because right now we are just using delta theta, 
+        // not the global reference frame theta
+        polarCoordinates[1] += oldAngle;
+
+        double[] cartesianCoordinates = coordinateSystems.polarToCartesian(polarCoordinates);
+        
+        return cartesianCoordinates;
     }
 }

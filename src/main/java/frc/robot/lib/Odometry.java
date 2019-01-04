@@ -85,21 +85,8 @@ public class Odometry {
         // then transform it to match the global frame (still in polar), then
         // incrament/decrement the global pos by that much
         // TODO tests for negtive movement
-        deltaTheta = currentAngle - oldAngle;
-        Rl = (180 * deltaLeft)/(pi * deltaTheta);
-        Rr = (180 * deltaLeft)/(pi * deltaTheta);
-        Rc = (Rl + Rr) / 2;
 
-        chordLen = coordinateSystems.chordLen(Rc, deltaTheta);
-
-        polarCoordinates[0] = deltaTheta;
-        polarCoordinates[1] = chordLen;
-
-        // rotate the pose, because right now we are just using delta theta, 
-        // not the global reference frame theta
-        polarCoordinates[1] += oldAngle;
-
-        cartesianCoordinates = coordinateSystems.polarToCartesian(polarCoordinates);
+        cartesianCoordinates = coordinateSystems.calculaeDisplacement(deltaLeft, deltaRight, oldAngle, currentAngle);
 
         // Update the "global" x, y, theta values and log them to the array
         globalX += cartesianCoordinates[0];
