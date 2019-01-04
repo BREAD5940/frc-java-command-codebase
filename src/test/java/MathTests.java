@@ -88,16 +88,22 @@ public class MathTests {
 
         // This test case will check what happens if the radii are infinity
         double[] input1 = {1, 1, 0, 0};
-        double[] input2 = {1, 2, 0, 28};
+        double[] input2 = {1, 2, 0, -28};
+        double[] input3 = {1.5, 2.5, 5, 28};
 
         double[] expected1 =  {0, 1};
-        double[] expected2 =  {0.357, 1.43};
+        double[] expected2 =  {-0.357, 1.441};
+        double[] expected3 =  {0.56, 1.905};
+
 
         double[] actual1 = coordinateSystems.calculaeDisplacement(input1[0], input1[1], input1[2], input1[3]);
         double[] actual2 = coordinateSystems.calculaeDisplacement(input2[0], input2[1], input2[2], input2[3]);
+        double[] actual3 = coordinateSystems.calculaeDisplacement(input3[0], input3[1], input3[2], input3[3]);
 
-        assertArrayEquals(expected1, actual1, 0.01);
-        assertArrayEquals(expected2, actual2, 0.01);
+        assertArrayEquals(expected1, actual1, 0.02);
+        assertArrayEquals(expected2, actual2, 0.02);
+        assertArrayEquals(expected3, actual3, 0.02);
+
 
     }
 
