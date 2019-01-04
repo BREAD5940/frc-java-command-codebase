@@ -2,6 +2,12 @@
 package frc.robot.lib;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+/**
+ * Basic library to convert a bunch of different units around encoder
+ * raw units. This involves things like revolutions and distance.
+ * 
+ * @author Matthew Morley
+ */
 public class EncoderLib extends Subsystem {
     public EncoderLib() {
         super("EncoderLib");
@@ -61,7 +67,7 @@ public class EncoderLib extends Subsystem {
      * @return distance
      * 
      */
-    public static double rawToDistance(int rawPosition, double unitsPerRotation, double effectiveDiam) {
+    public static double rawToDistance(double rawPosition, double unitsPerRotation, double effectiveDiam) {
         double rotations = rawPosition / unitsPerRotation;
         double circumference = Math.PI * effectiveDiam;
         double distance = rotations * circumference;

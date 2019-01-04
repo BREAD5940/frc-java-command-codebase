@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
-import frc.robot.lib.ShittyPID;
+import frc.robot.lib.TerriblePID;
 
 
 
@@ -22,7 +22,7 @@ import frc.robot.lib.ShittyPID;
    */
 public class auto_DriveDistance extends Command {
   double targetDistance;
-  double targetSpeed = Robot.defaultAutoSpeed;
+  double targetSpeed = RobotConfig.auto.default_speed;
   boolean isDone = false;
   double timeout = 15;
   // double forward_kp;
@@ -37,8 +37,8 @@ public class auto_DriveDistance extends Command {
   double right_speed_raw;
 
   // Make a pid class instance
-  ShittyPID forwardPID = new ShittyPID(RobotConfig.drive_straight.forward_kp, 
-    RobotConfig.drive_auto_forward_velocity_min, RobotConfig.drive_auto_forward_velocity_max);
+  TerriblePID forwardPID = new TerriblePID(RobotConfig.auto.drive_straight.forward_kp, 
+    RobotConfig.auto.drive_auto_forward_velocity_min, RobotConfig.auto.drive_auto_forward_velocity_max);
 
   /**
    * auto_action_DRIVE is a basic auto action. It should drive in a straight-ish line, as it uses 
@@ -92,8 +92,12 @@ public class auto_DriveDistance extends Command {
   public void execute() {
     forward_speed = forwardPID.update(Robot.drivetrain.getLeftDistance());
 
-    double left_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.left_wheel_effective_diameter / 12, RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
-    double right_speed_raw = EncoderLib.distanceToRaw(forward_speed, RobotConfig.right_wheel_effective_diameter / 12, RobotConfig.POSITION_PULSES_PER_ROTATION) / 10;
+    double left_speed_raw = EncoderLib.distanceToRaw(forward_speed, 
+      RobotConfig.driveTrain.left_wheel_effective_diameter / 12, 
+      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
+    double right_speed_raw = EncoderLib.distanceToRaw(forward_speed, 
+      RobotConfig.driveTrain.right_wheel_effective_diameter / 12, 
+      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
     Robot.drivetrain.setSpeeds(left_speed_raw, right_speed_raw);
 
     SmartDashboard.putNumber("Forward speed pid output", forward_speed);
@@ -108,10 +112,10 @@ public class auto_DriveDistance extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.targetDistance) < RobotConfig.drive_auto_position_tolerence) 
-        && (Math.abs(Robot.drivetrain.getLeftDistance() - this.targetDistance) < RobotConfig.drive_auto_position_tolerence) 
-        && (Math.abs(Robot.drivetrain.getLeftVelocity()) < RobotConfig.drive_auto_velocity_tolerence) 
-        && (Math.abs(Robot.drivetrain.getRightVelocity()) < RobotConfig.drive_auto_position_tolerence))
+    if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence) 
+        && (Math.abs(Robot.drivetrain.getLeftDistance() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence) 
+        && (Math.abs(Robot.drivetrain.getLeftVelocity()) < RobotConfig.auto.tolerences.velocity_tolerence) 
+        && (Math.abs(Robot.drivetrain.getRightVelocity()) < RobotConfig.auto.tolerences.velocity_tolerence))
         || (isTimedOut()) ){
       return true;}
     else { return false; }

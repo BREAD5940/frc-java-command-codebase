@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
-import frc.robot.lib.ShittyPID;
+import frc.robot.lib.TerriblePID;
 
 /**
  * Literally just pivot in place by a desired amount
@@ -28,11 +28,11 @@ public class auto_TurnInPlace extends Command {
   double raw_left;
   double raw_right;
 
-  ShittyPID turnPID = new ShittyPID(RobotConfig.auto_turnInPlace.kp, RobotConfig.auto_turnInPlace.ki, 
-    RobotConfig.auto_turnInPlace.min_turn_speed, 
-    RobotConfig.auto_turnInPlace.max_turn_speed, 
-    RobotConfig.auto_turnInPlace.integral_zone, 
-    RobotConfig.auto_turnInPlace.max_integral);
+  TerriblePID turnPID = new TerriblePID(RobotConfig.auto.auto_turnInPlace.kp, RobotConfig.auto.auto_turnInPlace.ki, 
+    RobotConfig.auto.auto_turnInPlace.min_turn_speed, 
+    RobotConfig.auto.auto_turnInPlace.max_turn_speed, 
+    RobotConfig.auto.auto_turnInPlace.integral_zone, 
+    RobotConfig.auto.auto_turnInPlace.max_integral);
   
   /**
    * Turn a specified number of degrees in the default auto gear.
@@ -82,8 +82,8 @@ public class auto_TurnInPlace extends Command {
   @Override
   protected void execute() {
     output = turnPID.update(Robot.gyro.getAngle());
-    raw_left = EncoderLib.distanceToRaw(output, RobotConfig.left_wheel_effective_diameter, RobotConfig.POSITION_PULSES_PER_ROTATION);
-    raw_right = (-1) * EncoderLib.distanceToRaw(output, RobotConfig.right_wheel_effective_diameter, RobotConfig.POSITION_PULSES_PER_ROTATION);
+    raw_left = EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.left_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
+    raw_right = (-1) * EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.right_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
     Robot.drivetrain.setSpeeds(raw_left, raw_right);
   }
 
@@ -96,8 +96,8 @@ public class auto_TurnInPlace extends Command {
     //   } else { return false; }
 
     // TODO so this is how a return works
-    return ( (Math.abs(Robot.gyro.getRate() ) < RobotConfig.turn_auto_angular_velocity_tolerence)
-      && (Math.abs(Robot.gyro.getAngle()) < RobotConfig.turn_auto_angle_tolerence));
+    return ( (Math.abs(Robot.gyro.getRate() ) < RobotConfig.auto.tolerences.angular_velocity_tolerence)
+      && (Math.abs(Robot.gyro.getAngle()) < RobotConfig.auto.tolerences.angle_tolerence));
 
   }
 

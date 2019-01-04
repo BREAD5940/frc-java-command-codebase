@@ -19,6 +19,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 
+/**
+ * This is some basic functions for motion profiling. Similar to pathfinder, but also
+ * not nearly as good^tm. Contains methods for reading, preparing and sending motion
+ * profiles to a Talon.
+ * 
+ * @author Matthew Morley
+ */
 public class MotionProfileLib {
   // Misc methods for basic motion profiling
   // Credit to RobotThatFollows from team 1757
@@ -107,12 +114,13 @@ public class MotionProfileLib {
       TrajectoryPoint point = new TrajectoryPoint();
 
       for (int i = 0; i < profile.size(); i++) {
-        point.position = EncoderLib.distanceToRaw(profile.get(i)[4], effective_diameter, RobotConfig.POSITION_PULSES_PER_ROTATION);     // meters -> rotations -> ticks
-        point.velocity = EncoderLib.distanceToRaw(((profile.get(i)[5]) / 10.0), effective_diameter, RobotConfig.POSITION_PULSES_PER_ROTATION);     // meters/second -> ticks/sec -> ticks/100ms
+        point.position = EncoderLib.distanceToRaw(profile.get(i)[4], effective_diameter, 
+          RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);     // meters -> rotations -> ticks
+        point.velocity = EncoderLib.distanceToRaw(((profile.get(i)[5]) / 10.0), effective_diameter, 
+          RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);     // meters/second -> ticks/sec -> ticks/100ms
         point.headingDeg = profile.get(i)[7];
-        
-        //   point.timeDur = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_50ms;
-        point.profileSlotSelect = 0;
+        point.timeDur = 50;
+        point.profileSlotSelect0 = 0;
 
         point.zeroPos = i == 0; // This is true if i is zero??
         point.isLastPoint = (i + 1) == profile.size(); // This is true if i+1 is the size?

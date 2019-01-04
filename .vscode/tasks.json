@@ -4,32 +4,14 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build and deploy",
+            "label": "run unit tests",
             "type": "shell",
-            "command": "./build_deploy.bat",
+            "command": "./gradlew test",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
             "problemMatcher": []
-        },
-        {
-            "label": "Build gradle project",
-            "type": "shell",
-            "command": "./gradlew build",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        },
-        {
-            "label": "Deploy gradle project",
-            "type": "shell",
-            "command": "./gradlew deploy",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
         }
     ]
 }

@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "C:\\Users\\matth\\Documents\\GitHub\\FRCcode\\pantry-vision"
+		},
+		{
+			"path": "C:\\Users\\bruce\\Documents\\Github\\pantry-vision"
+		},
+		{
+			"path": "C:\\Users\\matth\\Documents\\GitHub\\pantry-vision"
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "automatic"
+	}
+}

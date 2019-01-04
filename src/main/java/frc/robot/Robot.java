@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -13,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.actions.auto_DriveDistance;
+import frc.robot.lib.TerribleLogger;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
@@ -26,11 +20,10 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the
- * project.
+ * Main robot class. There shouldn't be a *ton* of stuff here, mostly
+ * init functions and smartdashboard stuff. 
+ * 
+ * @author Matthew Morley
  */
 public class Robot extends TimedRobot {
 
@@ -41,6 +34,7 @@ public class Robot extends TimedRobot {
   public static Wrist wrist = new Wrist();
   public static LimeLight limelight = new LimeLight();
   public static OI m_oi;
+  public static TerribleLogger logger = new TerribleLogger();
 
   public static double elevator_setpoint = 0;
   public static double wrist_setpoint = 0;
@@ -55,7 +49,6 @@ public class Robot extends TimedRobot {
   SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   public static double startingDistance;
-  public static double defaultAutoSpeed = RobotConfig.drive_auto_forward_velocity_max;
 
   // Various pneumatic shifting methods
   public static void drivetrain_shift_high(){ shifterDoubleSolenoid.set(DoubleSolenoid.Value.kForward); }
@@ -83,9 +76,9 @@ public class Robot extends TimedRobot {
     m_chooser.addDefault("Drive Auto", new auto_DriveDistance(10));
     m_chooser.addObject("This is a test", new auto_DriveDistance(2));
 
-    if ( RobotConfig.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
-    else if ( RobotConfig.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
-    else { System.out.println("default auto gear " + RobotConfig.default_auto_gear + " is not a valid choice!"); }
+    if ( RobotConfig.auto.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
+    else if ( RobotConfig.auto.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
+    else { System.out.println("default auto gear " + RobotConfig.auto.default_auto_gear + " is not a valid choice!"); }
 
     System.out.println("Robot has been initilized!");
 
@@ -98,9 +91,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    if ( RobotConfig.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
-    else if ( RobotConfig.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
-    else { System.out.println("default auto gear " + RobotConfig.default_auto_gear + " is not a valid choice!"); }
+    if ( RobotConfig.auto.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
+    else if ( RobotConfig.auto.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
+    else { System.out.println("default auto gear " + RobotConfig.auto.default_auto_gear + " is not a valid choice!"); }
   }
 
   @Override
@@ -126,9 +119,9 @@ public class Robot extends TimedRobot {
     gyro.reset(); // Reset the current gyro heading to zero
     drivetrain.zeroEncoders();
     
-    if ( RobotConfig.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
-    else if ( RobotConfig.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
-    else { System.out.println("default auto gear " + RobotConfig.default_auto_gear + " is not a valid choice!"); }
+    if ( RobotConfig.auto.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
+    else if ( RobotConfig.auto.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
+    else { System.out.println("default auto gear " + RobotConfig.auto.default_auto_gear + " is not a valid choice!"); }
 
     /*
      * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -235,7 +228,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Target skew", limelightdata[4]);
     SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
 
-    
+    logger.update();
   }
 
 }
