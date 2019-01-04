@@ -119,7 +119,7 @@ public class MotionProfileLib {
         point.velocity = EncoderLib.distanceToRaw(((profile.get(i)[5]) / 10.0), effective_diameter, 
           RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);     // meters/second -> ticks/sec -> ticks/100ms
         point.headingDeg = profile.get(i)[7];
-        point.timeDur = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_50ms;
+        point.timeDur = 50;
         point.profileSlotSelect0 = 0;
 
         point.zeroPos = i == 0; // This is true if i is zero??
