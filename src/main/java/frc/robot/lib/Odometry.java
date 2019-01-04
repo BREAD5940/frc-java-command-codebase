@@ -12,6 +12,7 @@ public class Odometry {
     double oldAngle, oldLeft, oldRight;
     double deltaX, deltaY, globalX, globalY, globalTheta;
     double[] polarCoordinates = new double[2];
+    double[] cartesianCoordinates = new double[2];
     double Rc, Rl, Rr; // left right and center radii variables
     double pi = Math.PI;
     double[] xyArray = new double[2];
@@ -49,10 +50,11 @@ public class Odometry {
     /**
      * Call me when the match starts to set stuff up. MAKE SURE THAT THE DRIVETRAIN IS ZEROED!!
      * If not, this will ZERO THE DRIVETRAIN
-     * again, this WILL MESS WITH ENCODERS by ZEROING THEM if they aren't
+     * again, this WILL MESS WITH ENCODERS by ZEROING THEM if they aren't already zeroed!
      */
     public void init() {
         this.locationLog[2][0] = Robot.gyro.getAngle();
+        Robot.drivetrain.zeroEncoders();
         i++; // incrament i by 1
     }
 
@@ -88,7 +90,8 @@ public class Odometry {
         Rr = (180 * deltaLeft)/(pi * deltaTheta);
         Rc = (Rl + Rr) / 2;
 
-        chordLen = Math.toDegrees(Math.sin(deltaTheta)) * Rc * 2;
+        chordLen = coordinateSystems.chordLen(Rc, deltaTheta);
+
         polarCoordinates[0] = deltaTheta;
         polarCoordinates[1] = chordLen;
 
@@ -96,7 +99,12 @@ public class Odometry {
         // not the global reference frame theta
         polarCoordinates[1] += oldAngle;
 
+        cartesianCoordinates = coordinateSystems.polarToCartesian(polarCoordinates);
 
+        // Update the "global" x, y, theta values and log them to the array
+        globalX += cartesianCoordinates[0];
+        globalY += cartesianCoordinates[1];
+        globalTheta = currentAngle;
 
         oldAngle = currentAngle;
         updateLocLog(globalX, globalY, currentAngle); // call to update the log and also increase i by 1

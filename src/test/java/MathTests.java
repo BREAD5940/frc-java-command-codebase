@@ -11,7 +11,7 @@ import frc.math.coordinateSystems;
 import org.junit.jupiter.api.Test;
 
 
-public class OdometryTest {
+public class MathTests {
 
     @Test
     /** Is this overkill? I think not */
@@ -64,4 +64,26 @@ public class OdometryTest {
         assertEquals( expectedQ4n[1], calcQ4n[1], 0.01 );
         
     }
+
+    @Test
+    public void testChordLength() {
+        double[] input1 = {2, 30};
+        double[] input2 = {5, 162};
+        double[] input3 = {3, 612};
+
+        double expected1 =  1.035;
+        double expected2 = 9.877;
+        double expected3 = 4.854;
+
+        double actual1 = coordinateSystems.chordLen(input1[0], input1[1]);
+        double actual2 = coordinateSystems.chordLen(input2[0], input2[1]);
+        double actual3 = coordinateSystems.chordLen(input3[0], input3[1]);
+
+        assertEquals(expected1, actual1, 0.01);
+        assertEquals(expected2, actual2, 0.01);
+        assertEquals(expected3, actual3, 0.01);
+
+    }
+
+
 }
