@@ -1,7 +1,12 @@
 import frc.robot.lib.Odometry;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import frc.robot.lib.Odometry;
+
+import frc.math.coordinateSystems;
 
 import org.junit.jupiter.api.Test;
 
@@ -9,9 +14,54 @@ import org.junit.jupiter.api.Test;
 public class OdometryTest {
 
     @Test
-    public void StraightMoveForwardTest() {
-        boolean x = false;
-        boolean y = true;
-        assertTrue(x, "your test failed ur badg");
+    /** Is this overkill? I think not */
+    public void testPolarToCartesian() {
+        // Odometry coordinateSystems = new Odometry();
+        double[] polarQuadrent1positiveMagnitude = {45, 2};
+        double[] polarQuadrent1negativeMagnitude = {45, -2};
+        double[] polarQuadrent2positiveMagnitude = {135, 2};
+        double[] polarQuadrent2negativeMagnitude = {135, -2};
+        double[] polarQuadrent3positiveMagnitude = {200, 2};
+        double[] polarQuadrent3negativeMagnitude = {200, -2};
+        double[] polarQuadrent4positiveMagnitude = {320, 2};
+        double[] polarQuadrent4negativeMagnitude = {320, -3};
+        double[] expectedQ1p = {1.414, 1.414};
+        double[] expectedQ1n = {-1.414, -1.414}; 
+        double[] expectedQ2p = {-1.414,1.414};
+        double[] expectedQ2n = {1.414, -1.414};
+        double[] expectedQ3p = {-1.879, -0.684};
+        double[] expectedQ3n = {1.879, 0.684};
+        double[] expectedQ4p = {1.532, -1.286};
+        double[] expectedQ4n = {-2.298, 1.928};
+        double[] calcQ1p = coordinateSystems.polarToCartesian(polarQuadrent1positiveMagnitude);
+        double[] calcQ1n = coordinateSystems.polarToCartesian(polarQuadrent1negativeMagnitude);
+        double[] calcQ2p = coordinateSystems.polarToCartesian(polarQuadrent2positiveMagnitude);
+        double[] calcQ2n = coordinateSystems.polarToCartesian(polarQuadrent2negativeMagnitude);
+        double[] calcQ3p = coordinateSystems.polarToCartesian(polarQuadrent3positiveMagnitude);
+        double[] calcQ3n = coordinateSystems.polarToCartesian(polarQuadrent3negativeMagnitude);
+        double[] calcQ4p = coordinateSystems.polarToCartesian(polarQuadrent4positiveMagnitude);
+        double[] calcQ4n = coordinateSystems.polarToCartesian(polarQuadrent4negativeMagnitude);
+
+        // Check all 16 indexes of the expected vs actual cartesial coordinates
+        assertEquals( expectedQ1p[0], calcQ1p[0], 0.01 );
+        assertEquals( expectedQ1p[1], calcQ1p[1], 0.01 );
+        assertEquals( expectedQ1n[0], calcQ1n[0], 0.01 );
+        assertEquals( expectedQ1n[1], calcQ1n[1], 0.01 );
+
+        assertEquals( expectedQ2p[0], calcQ2p[0], 0.01 );
+        assertEquals( expectedQ2p[1], calcQ2p[1], 0.01 );
+        assertEquals( expectedQ2n[0], calcQ2n[0], 0.01 );
+        assertEquals( expectedQ2n[1], calcQ2n[1], 0.01 );
+        
+        assertEquals( expectedQ3p[0], calcQ3p[0], 0.01 );
+        assertEquals( expectedQ3p[1], calcQ3p[1], 0.01 );
+        assertEquals( expectedQ3n[0], calcQ3n[0], 0.01 );
+        assertEquals( expectedQ3n[1], calcQ3n[1], 0.01 );
+
+        assertEquals( expectedQ4p[0], calcQ4p[0], 0.01 );
+        assertEquals( expectedQ4p[1], calcQ4p[1], 0.01 );
+        assertEquals( expectedQ4n[0], calcQ4n[0], 0.01 );
+        assertEquals( expectedQ4n[1], calcQ4n[1], 0.01 );
+        
     }
 }
