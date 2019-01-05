@@ -12,6 +12,8 @@ import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.followers.DistanceFollower;
 import jaci.pathfinder.modifiers.TankModifier;
 
+import frc.robot.subsystems.DriveTrain.Gear;
+
 public class auto_DriveTrajectoryPathfinder extends Command {
   private Trajectory m_leftTrajectory, m_rightTrajectory, m_sourceTrajectory;
   private DistanceFollower m_leftFollower, m_rightFollower;
@@ -59,7 +61,7 @@ public class auto_DriveTrajectoryPathfinder extends Command {
     // }
 
     // Modify the variables if the gear is high, yes this is a bit of a hack but 
-    if ( RobotConfig.auto.default_auto_gear == "high" ){
+    if ( RobotConfig.auto.auto_gear == Gear.HIGH ){
       left_kp = RobotConfig.driveTrain.left_talons.velocity_kp_high;
       left_ki = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_high;
       left_kd = RobotConfig.driveTrain.left_talons.velocity_kd_high;

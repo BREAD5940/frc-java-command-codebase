@@ -4,7 +4,7 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 // import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.Robot;
+// import frc.robot.Robot;
 
 public class AutoPath {
 

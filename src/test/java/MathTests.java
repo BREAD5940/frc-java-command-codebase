@@ -11,6 +11,7 @@ import frc.math.coordinateSystems;
 
 import org.junit.jupiter.api.Test;
 
+import frc.robot.subsystems.DriveTrain;
 
 public class MathTests {
 
@@ -90,7 +91,7 @@ public class MathTests {
     public void testDisplacement() {
         // calculaeDisplacement(double deltaLeft, double deltaRight, double oldAngle, double currentAngle) 
 
-        int tests = 4;
+        int tests = 6;
 
         double[][] inputs = new double[tests][3];
         double[][] expecteds = new double[tests][3];
@@ -100,11 +101,15 @@ public class MathTests {
         inputs[1] = new double[]{1, 2, 0, -28};
         inputs[2] = new double[]{1.5, 2.5, 5, 28};
         inputs[3] = new double[]{2.5, 1.5, 5, 28};
+        inputs[4] = new double[]{3, 4, 37, 10};
+        inputs[5] = new double[]{3, 5, 34, -15};
 
         expecteds[0] = new double[]{0, 1};
         expecteds[1] = new double[]{-0.357, 1.441};
         expecteds[2] = new double[]{0.56, 1.905};
         expecteds[3] = new double[]{0.56, 1.905};
+        expecteds[4] = new double[]{1.383, 3.18};
+        expecteds[5] = new double[]{0.64, 3.828};
 
         for ( int i=0; i < tests; i++) {
             calculateds[i] = coordinateSystems.calculaeDisplacement(inputs[i][0], inputs[i][1], inputs[i][2], inputs[i][3]);
@@ -113,6 +118,8 @@ public class MathTests {
 
             assertArrayEquals(expecteds[i], calculateds[i], 0.02);
         }
+
+        // DriveTrain drivetrain = new DriveTrain();
 
     }
 

@@ -1,5 +1,7 @@
 package frc.robot;
 
+import frc.robot.subsystems.DriveTrain.Gear;
+
 public class RobotConfig {
 
   /**
@@ -145,13 +147,16 @@ public class RobotConfig {
     }
   }
 
-  public class auto {
+  public static class auto {
   
     // CHANGE ME TO CHANGE HOW FAST AUTO GOES!!!
     public static final double default_speed = 4;
     public static final double drive_auto_forward_velocity_max = 4; // feet per second target for driving auto
     public static final double drive_auto_forward_velocity_min = -2; // minimum speed for auto drive in ft per sec
-    public static final String default_auto_gear = "low"; // Set the default gear for auto. If not otherwise specified, this will be used
+    public static Gear auto_gear = Gear.HIGH;
+
+
+    // String default_auto_gear = "low"; // Set the default gear for auto. If not otherwise specified, this will be used
     
     public class pathfinder {
       public static final double gyro_correct_kp = 0.02;
