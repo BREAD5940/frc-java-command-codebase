@@ -15,18 +15,20 @@ public class auto_PassLine extends CommandGroup{
      *      the location of the robot
      */
     public auto_PassLine(AutoPath.robotLoc location){
-        
+
         if (location == AutoPath.robotLoc.FAR_LEFT || location == AutoPath.robotLoc.FAR_RIGHT){
             addSequential(new auto_DriveDistance(11));
         }else if (location == AutoPath.robotLoc.RIGHT){
-            addSequential(new auto_TurnInPlace(Robot.gyro.getAngle()-15)); // TODO test this value
+            addSequential(new auto_TurnInPlace(-15)); // TODO test this value
             addSequential(new auto_DriveDistance(11));
         }else if (location == AutoPath.robotLoc.LEFT){
-            addSequential(new auto_TurnInPlace(Robot.gyro.getAngle()+15)); // TODO test this value
+            addSequential(new auto_TurnInPlace(15)); // TODO test this value
             addSequential(new auto_DriveDistance(11));
         }else{
             // TODO find out if I'm actually doing this right (seems unlikely but you never know)
             addSequential(new auto_FollowMotionProfile("\\src\\main\\deploy\\paths\\CenterAcrossLine.left.pf1.csv", "\\src\\main\\deploy\\paths\\CenterAcrossLine.right.pf1.csv"));
         }
+
+        addSequential(new auto_Elevator(15));
     }
 }
