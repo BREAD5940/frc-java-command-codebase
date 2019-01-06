@@ -30,7 +30,7 @@ public class Intake extends Subsystem {
  */
   public void setSpeed(double speed) {
     talon_left.set(ControlMode.PercentOutput, speed);
-    talon_right.set(ControlMode.PercentOutput, speed);
+    talon_right.set(ControlMode.PercentOutput, -speed);
     SmartDashboard.putNumber("Intake speed setpoint", speed);
   }
 

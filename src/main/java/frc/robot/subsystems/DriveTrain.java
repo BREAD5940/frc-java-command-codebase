@@ -3,12 +3,14 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 // import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 // import frc.robot.RobotConfig.driveTrain;
@@ -67,6 +69,12 @@ public class DriveTrain extends Subsystem {
     
     m_left_talon.setInverted(true);
     s_left_talon.setInverted(true);
+
+    m_left_talon.setNeutralMode(NeutralMode.Brake);
+    s_left_talon.setNeutralMode(NeutralMode.Brake);
+    m_right_talon.setNeutralMode(NeutralMode.Brake);
+    s_right_talon.setNeutralMode(NeutralMode.Brake);
+
 
     zeroEncoders();
     setHighGear();
@@ -200,10 +208,10 @@ public class DriveTrain extends Subsystem {
       forwardspeed = forwardspeed * Math.abs(forwardspeed);
       turnspeed = turnspeed * Math.abs(turnspeed);
     }
-    if (Robot.drivetrain.current_gear == "high"){
+    if (Robot.drivetrain.gear == Gear.HIGH){
         forwardspeed = forwardspeed * RobotConfig.driveTrain.max_forward_speed_high;
         turnspeed = turnspeed * RobotConfig.driveTrain.max_turn_speed_high;}
-    if (Robot.drivetrain.current_gear == "low"){
+    if (Robot.drivetrain.gear == Gear.LOW){
         forwardspeed = forwardspeed * RobotConfig.driveTrain.max_forward_speed_low;
         turnspeed = turnspeed * RobotConfig.driveTrain.max_turn_speed_low;}
 
@@ -216,6 +224,9 @@ public class DriveTrain extends Subsystem {
     double leftspeedraw = EncoderLib.distanceToRaw(leftspeed, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;//  ((leftspeed) / (Math.PI * RobotConfig.driveTrain.left_wheel_effective_diameter / 12)) * RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION / 10;
     // divide by 10 becuase the talons want units per 100ms
     double rightspeedraw = EncoderLib.distanceToRaw(rightspeed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
+
+    SmartDashboard.putNumber("left speed target", leftspeedraw);
+    SmartDashboard.putNumber("right speed target", rightspeedraw);
 
     setLeftSpeedRaw(leftspeedraw);
     setRightSpeedRaw(rightspeedraw);

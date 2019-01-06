@@ -12,6 +12,16 @@
                 "isDefault": true
             },
             "problemMatcher": []
+        },
+        {
+            "label": "Build and deploy",
+            "type": "shell",
+            "command": "./build_deploy.bat",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
         }
     ]
 }

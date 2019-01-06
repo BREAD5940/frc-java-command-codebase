@@ -119,8 +119,6 @@ public class MathTests {
             assertArrayEquals(expecteds[i], calculateds[i], 0.02);
         }
 
-        // DriveTrain drivetrain = new DriveTrain();
-
     }
 
 

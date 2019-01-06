@@ -6,12 +6,12 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.actions.auto_DriveDistance;
-import frc.robot.lib.TerribleLogger;
+// import frc.robot.lib.TerribleLogger;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimeLight;
-import frc.robot.subsystems.Wrist;
+// import frc.robot.subsystems.Wrist;
 
 import frc.robot.subsystems.DriveTrain.Gear;
 
@@ -35,10 +35,10 @@ public class Robot extends TimedRobot {
   public static DriveTrain drivetrain = new DriveTrain();
   public static Intake intake = new Intake();
   public static Elevator elevator = new Elevator();
-  public static Wrist wrist = new Wrist();
+  // public static Wrist wrist = new Wrist();
   public static LimeLight limelight = new LimeLight();
   public static OI m_oi;
-  public static TerribleLogger logger = new TerribleLogger();
+  // public static TerribleLogger logger = new TerribleLogger();
 
   public static double elevator_setpoint = 0;
   public static double wrist_setpoint = 0;
@@ -72,7 +72,7 @@ public class Robot extends TimedRobot {
     
     drivetrain.init();
     elevator.init();
-    wrist.init();
+    // wrist.init();
     gyro.reset();
 
     startingDistance = drivetrain.getLeftDistance();
@@ -198,7 +198,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putNumber("get forward axis", m_oi.getForwardAxis());
     SmartDashboard.putNumber("get turn axis", m_oi.getTurnAxis());
-    SmartDashboard.putString("Drivetrain gear", drivetrain.current_gear); 
+    // SmartDashboard.putenum("Drivetrain gear", drivetrain.current_gear); 
     // SmartDashboard.putNumber("setVelocityRight output: ", encoderlib.distanceToRaw(12/12, 4096, 6/12) / 10 ); // This *should* return 1 ft/sec to raw/0.1 sec
     SmartDashboard.putNumber("target left speed raw",  
       ((m_oi.getForwardAxis() * 4) / (Math.PI * 6 / 12)) * 4096 / 10
@@ -227,16 +227,16 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Current Gyro angle", gyro.getAngle());
 
     // Limelight stuff
-    double[] limelightdata = limelight.getData();
+    // double[] limelightdata = limelight.getData();
 
-    SmartDashboard.putNumber("Vision targets?", limelightdata[0]);
-    SmartDashboard.putNumber("Horizontal offset", limelightdata[1]);
-    SmartDashboard.putNumber("Vertical offset", limelightdata[2]);
-    SmartDashboard.putNumber("Target area", limelightdata[3]);
-    SmartDashboard.putNumber("Target skew", limelightdata[4]);
-    SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
+    // SmartDashboard.putNumber("Vision targets?", limelightdata[0]);
+    // SmartDashboard.putNumber("Horizontal offset", limelightdata[1]);
+    // SmartDashboard.putNumber("Vertical offset", limelightdata[2]);
+    // SmartDashboard.putNumber("Target area", limelightdata[3]);
+    // SmartDashboard.putNumber("Target skew", limelightdata[4]);
+    // SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
 
-    logger.update();
+    // logger.update();
   }
 
 }
