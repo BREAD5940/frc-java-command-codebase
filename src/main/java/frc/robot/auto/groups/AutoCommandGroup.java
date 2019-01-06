@@ -3,6 +3,8 @@ package frc.robot.auto.groups;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Command;
 
+import java.util.ArrayList;
+
 public class AutoCommandGroup extends CommandGroup{
 
     // TODO change this to parallel?
@@ -20,7 +22,7 @@ public class AutoCommandGroup extends CommandGroup{
      * just makes a proper command group out of the inputted command groups
      * @param commands
      */
-    public AutoCommandGroup(Command... commands) {
+    public AutoCommandGroup(ArrayList<Command> commands) {
         for (Command command : commands){
             addSequential(command);
         }

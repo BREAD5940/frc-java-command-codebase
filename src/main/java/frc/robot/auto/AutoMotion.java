@@ -1,8 +1,15 @@
 package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.Command;
+
 import frc.robot.auto.actions.auto_DriveStraight;
+import frc.robot.auto.actions.auto_Elevator;
 import frc.robot.auto.groups.*;
+import frc.robot.commands.FollowVisionTarget;
+import frc.robot.RobotConfig;
+
+import java.util.ArrayList;
 
 public class AutoMotion {
 
@@ -50,21 +57,55 @@ public class AutoMotion {
         this.gHeight = gHeight;
         this.gType = gType;
         this.sPiece = sPiece;
-        this.bigCommandGroup = new AutoCommandGroup(genCommands());
+        if (sPiece!=startingPiece.NONE){
+            this.bigCommandGroup = new AutoCommandGroup(genCommands());
+        }else{
+            System.out.println("No starting piece. Aborting auto section");
+        }
     }
 
-    public CommandGroup genCommands(){
-        // TODO align with auto tape/line; select up/amount up; check type of game piece; place piece
-
+    private ArrayList<Command> genCommands(){
+        // TODO Things this should do: align with auto tape/line; raise 'elevator'; place piece
+        ArrayList<Command> toReturn = new ArrayList<Command>();
         if (gHeight == goalHeight.LOW){
             //Align with tape OR line
-
+            // TODO find out the actual units for the speed
+            toReturn.add(new FollowVisionTarget(1, 20));
         }else{
-            //Align with line
+            //TODO Align with line
+            //Raise elevator
+            //there's got to be a less-bad way to do this
+            double elevatorHeight = 0;
+            switch (gHeight){
+                case MIDDLE:
+                    switch (sPiece){
+                        case CARGO:
+                            elevatorHeight = RobotConfig.auto.fieldPositions.middle_rocket_port;
+                        case HATCH:
+                            elevatorHeight = RobotConfig.auto.fieldPositions.middle_rocket_hatch;
+                    }
+                case HIGH:
+                    switch (sPiece){
+                        case CARGO:
+                            elevatorHeight = RobotConfig.auto.fieldPositions.high_rocket_port;
+                        case HATCH:
+                            elevatorHeight = RobotConfig.auto.fieldPositions.high_rocket_hatch;
+                    }
+            }
 
+            toReturn.add(new auto_Elevator(elevatorHeight));
         }
 
-        return new AutoCommandGroup(new auto_DriveStraight(2));
+        switch (sPiece){
+            case HATCH:
+                //TODO Place hatch pannel
+            case CARGO:
+                //TODO Place cargo
+            default:
+                break;
+        }
+
+        return toReturn;
 
     }
 

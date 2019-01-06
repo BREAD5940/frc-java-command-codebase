@@ -155,6 +155,18 @@ public class RobotConfig {
     public static final double drive_auto_forward_velocity_min = -2; // minimum speed for auto drive in ft per sec
     public static Gear auto_gear = Gear.HIGH;
 
+    public class fieldPositions {
+      // Positions of objects on the field (ports, etc.) in inches
+      // TODO check that these values are accurate (currently taken from the game manual)
+      public static final double low_rocket_port = 27.5;
+      public static final double middle_rocket_port = 55.5;
+      public static final double high_rocket_port = 83.5;
+
+      public static final double low_rocket_hatch = 19;
+      public static final double middle_rocket_hatch = 47;
+      public static final double high_rocket_hatch = 75;
+    }
+
 
     // String default_auto_gear = "low"; // Set the default gear for auto. If not otherwise specified, this will be used
     
