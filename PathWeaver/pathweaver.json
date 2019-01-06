@@ -1,9 +1,9 @@
 {
   "lengthUnit": "Foot",
   "timeStep": 0.02,
-  "maxVelocity": 4.0,
-  "maxAcceleration": 5.0,
+  "maxVelocity": 6.0,
+  "maxAcceleration": 4.0,
   "maxJerk": 10.0,
-  "wheelBase": 2.5,
-  "gameName": "FIRST Power Up"
+  "wheelBase": 2.0,
+  "gameName": "Destination: Deep Space"
 }
