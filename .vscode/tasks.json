@@ -16,7 +16,7 @@
         {
             "label": "Build and deploy",
             "type": "shell",
-            "command": "./build_deploy.bat",
+            "command": "./build_deploy.ps1",
             "group": {
                 "kind": "build",
                 "isDefault": true
