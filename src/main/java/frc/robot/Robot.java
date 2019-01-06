@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.actions.auto_DriveDistance;
+import frc.robot.auto.actions.auto_DriveTrajectoryPathfinder;
 // import frc.robot.lib.TerribleLogger;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
@@ -77,8 +78,9 @@ public class Robot extends TimedRobot {
 
     startingDistance = drivetrain.getLeftDistance();
 
-    m_chooser.addDefault("Drive Auto", new auto_DriveDistance(10));
-    m_chooser.addObject("This is a test", new auto_DriveDistance(2));
+    m_chooser.setDefaultOption("Default Auto", new auto_DriveDistance(5));
+    m_chooser.addOption("Pathfinder auto", new auto_DriveTrajectoryPathfinder("test"));
+    m_chooser.addOption("This is a test that drives 5 ft forward", new auto_DriveDistance(5));
 
     if ( RobotConfig.auto.auto_gear == Gear.HIGH ) { drivetrain.setHighGear(); }
     else { drivetrain.setLowGear(); }

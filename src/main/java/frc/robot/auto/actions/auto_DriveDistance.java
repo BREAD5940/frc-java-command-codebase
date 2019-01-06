@@ -72,7 +72,7 @@ public class auto_DriveDistance extends Command {
    * auto_action_DRIVE is a basic auto action. It should drive in a straight-ish line, as it uses 
    * nested PID loops to correct for errors caused by differing coefficients of friction. The
    * targetSpeed is set by the defaultAutoSpeed in Robot.java, and the timeout defaults to 15 seconds.
-   * @param distance
+   * @param distance in feet
    */
   public auto_DriveDistance(double distance) {
     this.targetDistance = distance;

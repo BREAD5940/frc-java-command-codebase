@@ -30,13 +30,13 @@ public class auto_DriveTrajectoryPathfinder extends Command {
   }
 
   public auto_DriveTrajectoryPathfinder(String file) {
-    File traj = new File("/home/lvuser/paths/" + file + "_source.traj");
+    File traj = new File("/home/lvuser/deploy/paths/" + file + ".pf1.traj");
     SmartDashboard.putBoolean("Source exists", true);
     m_sourceTrajectory = Pathfinder.readFromFile(traj);
-    File leftTraj = new File("/home/lvuser/paths/" + file + "_left.traj");
+    File leftTraj = new File("/home/deploy/lvuser/paths/" + file + ".left.pf1.traj");
     SmartDashboard.putBoolean("Left exists", true);
     m_leftTrajectory = Pathfinder.readFromFile(leftTraj);
-    File rightTraj = new File("/home/lvuser/paths/" + file + "_right.traj");
+    File rightTraj = new File("/home/deploy/lvuser/paths/" + file + ".right.pf1.traj");
     SmartDashboard.putBoolean("Right exists", true);
     m_rightTrajectory = Pathfinder.readFromFile(rightTraj);
     requires(Robot.drivetrain);
