@@ -13,7 +13,7 @@ import frc.robot.auto.groups.*;
 import frc.robot.Robot;
 
 public class AutoSelector{
-    // public SendableChooser<AutoMotion.heldPiece> hp;
+    public SendableChooser<AutoMotion.heldPiece> hp;
     public SendableChooser<AutoMotion.goalHeight> gh;
     public SendableChooser<AutoMotion.goalType> gt;
     public SendableChooser<AutoMotion> backupAutoSelect = new SendableChooser<AutoMotion>();
@@ -38,10 +38,10 @@ public class AutoSelector{
 
         /* TODO so this should really all be done with buttons for speed, but we don't have enough atm, so I'm putting it in sendable chooser for now*/
 
-        // hp = new SendableChooser<AutoMotion.heldPiece>();
-        // hp.setDefaultOption("None", heldPiece.NONE);
-        // hp.addOption("Hatch", heldPiece.HATCH);
-        // hp.addOption("Cargo", heldPiece.CARGO);
+        hp = new SendableChooser<AutoMotion.heldPiece>();
+        hp.setDefaultOption("None", heldPiece.NONE);
+        hp.addOption("Hatch", heldPiece.HATCH);
+        hp.addOption("Cargo", heldPiece.CARGO);
 
         gh = new SendableChooser<AutoMotion.goalHeight>();
         gh.setDefaultOption("Low", goalHeight.LOW);
@@ -77,7 +77,7 @@ public class AutoSelector{
     public AutoMotion chooseMotion() {
         this.goalH = gh.getSelected();
         this.goalT = gt.getSelected();
-        this.piece = Robot.hp.getSelected();
+        this.piece = hp.getSelected();
 
         switch (this.goalT){
             case ROCKET:
