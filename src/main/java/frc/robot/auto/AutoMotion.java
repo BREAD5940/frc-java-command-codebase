@@ -1,7 +1,7 @@
 package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-
+import frc.robot.auto.actions.auto_DriveStraight;
 import frc.robot.auto.groups.*;
 
 public class AutoMotion {
@@ -10,37 +10,59 @@ public class AutoMotion {
         HATCH, CARGO, NONE
     }
 
-    public enum goals{
+    public enum goalHeight{
         LOW, MIDDLE, HIGH
+    }
+
+    // TODO remember there's actually a difference for cargo, but not for hatches
+    /**
+     * different types of goals on the field
+     * CARGO: the cargo ship
+     * ROCKET: the rocket
+     */
+    public enum goalType{
+        CARGO, ROCKET
     }
 
     String setup;
     String name;
-    goals goal;
+    goalHeight gHeight;
+    goalType gType;
     AutoCommandGroup bigCommandGroup;
 
     /**
      * creates a new AutoPath for the current match
      * @param name
      *      name of the path
-     * @param goal
-     *      goal of the autopath (FAR_SWITCH, NEAR_SWITCH, SCALE, TEST, LINE)
-     * @param reqLocation
-     *      required location of the robot (CENTER, LEFT, RIGHT, FAR_LEFT, FAR_RIGHT)
-     * @param setup
-     *      required field setup of scales and switches 
+     * @param startingPiece
+     *      the type of game piece the robot is currently holding (HATCH, CARGO, NONE)
+     * @param gHeight
+     *      the height of the goal the robot should aim for (LOW, MIDDLE, HIGH)
+     * @param gType
+     *      the type of goal (ROCKET, CARGO)
      * @param  commands
      *      list of sequential commandgroups for this path that are turned into one giant AutoCommandGroup
      */
 
-    public AutoMotion (String name, startingPiece sPiece, goals goal, CommandGroup... commands){
+    public AutoMotion (String name, startingPiece sPiece, goalHeight gHeight, goalType gType){
         this.name = name;
-        this.goal = goal;
+        this.gHeight = gHeight;
+        this.gType = gType;
         this.bigCommandGroup = new AutoCommandGroup(genCommands());
     }
 
     public CommandGroup genCommands(){
         // TODO align with auto tape/line; select up/amount up; check type of game piece; place piece
+
+        if (gHeight == goalHeight.LOW){
+            //Align with tape OR line
+
+        }else{
+            //Align with line
+
+        }
+
+        return new AutoCommandGroup(new auto_DriveStraight(2));
 
     }
 
@@ -50,12 +72,8 @@ public class AutoMotion {
         return this.name;
     }
 
-    public goals getGoal(){
-        return this.goal;
-    }
-
-    public robotLoc getReqLoc(){
-        return this.location;
+    public goalHeight getGoalHeight(){
+        return this.gHeight;
     }
 
 

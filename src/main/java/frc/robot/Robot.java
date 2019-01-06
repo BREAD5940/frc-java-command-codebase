@@ -110,22 +110,16 @@ public class Robot extends TimedRobot {
   }
 
   /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable
-   * chooser code works with the Java SmartDashboard. If you prefer the
-   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-   * getString code to get the auto name from the text box below the Gyro
-   *
-   * <p>You can add additional auto modes by adding additional commands to the
-   * chooser code above (like the commented example) or additional comparisons
-   * to the switch structure below with additional strings & commands.
+   * 
    */
   @Override
   public void autonomousInit() {
     autoSelect = new AutoSelector();
-    SmartDashboard.putData("Number of Cubes", autoSelect.usrCubes);
+    SmartDashboard.putData("Starting Piece", autoSelect.sp);
+    SmartDashboard.putData("Goal Height", autoSelect.gh);
+    SmartDashboard.putData("Goal Type", autoSelect.gt);
     SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
-    m_auto = autoSelect.choosePath();
+    m_auto = autoSelect.chooseMotion();
 
     m_auto.getCommandGroup().start();
     
