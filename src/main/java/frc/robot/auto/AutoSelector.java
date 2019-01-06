@@ -16,6 +16,7 @@ public class AutoSelector{
 
 
     ArrayList<AutoMotion> usableMotions;
+    ArrayList<AutoMotion> possibleMotions;
 
     AutoMotion defaultMotion = new AutoMotion("Default motion", startingPiece.NONE, goalHeight.LOW, goalType.CARGO);
     goalHeight goalH;
@@ -41,6 +42,8 @@ public class AutoSelector{
         gt.setDefaultOption("Rocket", goalType.ROCKET);
         gt.addOption("Cargo Ship", goalType.CARGO);
 
+        //TODO add posible motions
+
     }
     
 
@@ -53,13 +56,13 @@ public class AutoSelector{
         this.goalT = gt.getSelected();
         this.sPiece = sp.getSelected();
 
-        // TODO actually add something to choose the path
+        usableMotions = checkCompat(possibleMotions);
         
         if(usableMotions.size()<=1){
             return usableMotions.get(0);
         }else{
-            for (AutoMotion path : usableMotions){
-                backupAutoSelect.addOption(path.getName(), path);
+            for (AutoMotion motion : usableMotions){
+                backupAutoSelect.addOption(motion.getName(), motion);
             }
             // TODO find out if this just makes it select the default
             return backupAutoSelect.getSelected();
@@ -67,11 +70,13 @@ public class AutoSelector{
         
     }
 
-    private ArrayList<AutoMotion> checkCompat(ArrayList<AutoMotion> paths){
+    private ArrayList<AutoMotion> checkCompat(ArrayList<AutoMotion> motions){
         ArrayList<AutoMotion> toReturn = new ArrayList<AutoMotion>();
-        for(AutoMotion path : paths){
-            if (path.getGoalHeight() == this.goalH){
-                toReturn.add(path);
+        for(AutoMotion motion : motions){
+            if (motion.getGoalHeight() == this.goalH
+                    && motion.getGoalType() == this.goalT
+                    && motion.getStartingPiece() == this.sPiece){
+                toReturn.add(motion);
             }
         }
         return toReturn;

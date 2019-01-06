@@ -28,6 +28,7 @@ public class AutoMotion {
     String name;
     goalHeight gHeight;
     goalType gType;
+    startingPiece sPiece;
     AutoCommandGroup bigCommandGroup;
 
     /**
@@ -48,6 +49,7 @@ public class AutoMotion {
         this.name = name;
         this.gHeight = gHeight;
         this.gType = gType;
+        this.sPiece = sPiece;
         this.bigCommandGroup = new AutoCommandGroup(genCommands());
     }
 
@@ -76,6 +78,13 @@ public class AutoMotion {
         return this.gHeight;
     }
 
+    public goalType getGoalType(){
+        return this.gType;
+    }
+
+    public startingPiece getStartingPiece(){
+        return this.sPiece;
+    }
 
     public AutoCommandGroup getCommandGroup(){
         return this.bigCommandGroup;
