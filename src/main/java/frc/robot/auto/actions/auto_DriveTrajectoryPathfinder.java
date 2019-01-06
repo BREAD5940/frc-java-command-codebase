@@ -20,6 +20,9 @@ public class auto_DriveTrajectoryPathfinder extends Command {
   private double m_leftOutput, m_rightOutput, m_turn, m_angularError;
   private TankModifier m_modifier;
 
+  double left_kp, left_ki, left_kd, left_kv, left_ka, right_kp, right_ki, right_kd, right_kv, right_ka;
+
+
   public auto_DriveTrajectoryPathfinder(Trajectory traj) {
     m_sourceTrajectory = traj;
     m_modifier = new TankModifier(m_sourceTrajectory);
@@ -30,13 +33,13 @@ public class auto_DriveTrajectoryPathfinder extends Command {
   }
 
   public auto_DriveTrajectoryPathfinder(String file) {
-    File traj = new File("/home/lvuser/deploy/paths/" + file + ".pf1.traj");
+    File traj = new File("/home/lvuser/deploy/paths/test.pf1.traj");
     SmartDashboard.putBoolean("Source exists", true);
     m_sourceTrajectory = Pathfinder.readFromFile(traj);
-    File leftTraj = new File("/home/deploy/lvuser/paths/" + file + ".left.pf1.traj");
+    File leftTraj = new File("/home/deploy/lvuser/paths/test.left.pf1.traj");
     SmartDashboard.putBoolean("Left exists", true);
     m_leftTrajectory = Pathfinder.readFromFile(leftTraj);
-    File rightTraj = new File("/home/deploy/lvuser/paths/" + file + ".right.pf1.traj");
+    File rightTraj = new File("/home/deploy/lvuser/paths/test.right.pf1.traj");
     SmartDashboard.putBoolean("Right exists", true);
     m_rightTrajectory = Pathfinder.readFromFile(rightTraj);
     requires(Robot.drivetrain);
@@ -46,22 +49,22 @@ public class auto_DriveTrajectoryPathfinder extends Command {
   @Override
   protected void initialize() {
 
-    // if(RobotConfig.auto.default_auto_gear == "low"){
-      double left_kp = RobotConfig.driveTrain.left_talons.velocity_kp_low;
-      double left_ki = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_low;
-      double left_kd = RobotConfig.driveTrain.left_talons.velocity_kd_low;
-      double left_kv = RobotConfig.driveTrain.left_talons.velocity_kv_low;
-      double left_ka = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_low;
+    if(RobotConfig.auto.auto_gear == Gear.LOW){
+      left_kp = RobotConfig.driveTrain.left_talons.velocity_kp_low;
+      left_ki = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_low;
+      left_kd = RobotConfig.driveTrain.left_talons.velocity_kd_low;
+      left_kv = RobotConfig.driveTrain.left_talons.velocity_kv_low;
+      left_ka = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_low;
 
-      double right_kp = RobotConfig.driveTrain.left_talons.velocity_kp_low;
-      double right_ki = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_low;
-      double right_kd = RobotConfig.driveTrain.left_talons.velocity_kd_low;
-      double right_kv = RobotConfig.driveTrain.left_talons.velocity_kv_low;
-      double right_ka = 0;//RobotConfig.driveTrain.left_talons.velocity_ka_low;
-    // }
+      right_kp = RobotConfig.driveTrain.left_talons.velocity_kp_low;
+      right_ki = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_low;
+      right_kd = RobotConfig.driveTrain.left_talons.velocity_kd_low;
+      right_kv = RobotConfig.driveTrain.left_talons.velocity_kv_low;
+      right_ka = 0;//RobotConfig.driveTrain.left_talons.velocity_ka_low;
+    }
 
     // Modify the variables if the gear is high, yes this is a bit of a hack but 
-    if ( RobotConfig.auto.auto_gear == Gear.HIGH ){
+    else {
       left_kp = RobotConfig.driveTrain.left_talons.velocity_kp_high;
       left_ki = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_high;
       left_kd = RobotConfig.driveTrain.left_talons.velocity_kd_high;
@@ -75,10 +78,12 @@ public class auto_DriveTrajectoryPathfinder extends Command {
       right_ka = 0;//RobotConfig.driveTrain.left_talons.velocity_ka_high;
     }
 
-    m_leftFollower = new DistanceFollower(m_leftTrajectory);
-    m_rightFollower = new DistanceFollower(m_rightTrajectory);
+    DistanceFollower m_leftFollower = new DistanceFollower(m_leftTrajectory);
+    DistanceFollower m_rightFollower = new DistanceFollower(m_rightTrajectory);
     m_leftFollower.configurePIDVA(left_kp, left_ki, left_kd, left_kv, left_ka);
     m_rightFollower.configurePIDVA(right_kp, right_ki, right_kd, right_kv, right_ka);
+
+    System.out.println("Pathfinder auto init-ed!");
   }
 
   // Called repeatedly when this Command is scheduled to run

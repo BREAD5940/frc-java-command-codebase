@@ -32,7 +32,7 @@ public class ArcadeDrive extends Command {
   @Override
   protected void execute() {
     Robot.drivetrain.arcadeDriveMethod(Robot.m_oi.getForwardAxis(), Robot.m_oi.getTurnAxis());
-    Robot.drivetrain.arcadeDriveMethod(0,0.1);
+    // Robot.drivetrain.arcadeDriveMethod(0,0.1);
     // System.out.println("arcade drive command execute");
   }
 
