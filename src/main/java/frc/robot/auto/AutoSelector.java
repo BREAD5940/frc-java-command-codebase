@@ -5,7 +5,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.DriverStation;
 import java.util.ArrayList;
 
-import frc.robot.auto.AutoMotion.*;
+import frc.robot.auto.AutoMotion;
+import frc.robot.auto.AutoMotion.goalType;
+import frc.robot.auto.AutoMotion.goalHeight;
+import frc.robot.auto.AutoMotion.startingPiece;
 import frc.robot.auto.groups.*;
 
 public class AutoSelector{
@@ -16,7 +19,8 @@ public class AutoSelector{
 
 
     ArrayList<AutoMotion> usableMotions;
-    ArrayList<AutoMotion> possibleMotions;
+    ArrayList<AutoMotion> rocketMotions;
+    ArrayList<AutoMotion> cargoMotions;
 
     AutoMotion defaultMotion = new AutoMotion("Default motion", startingPiece.NONE, goalHeight.LOW, goalType.CARGO);
     goalHeight goalH;
@@ -49,6 +53,8 @@ public class AutoSelector{
 
         //TODO add posible motions
 
+        rocketMotions.add(new AutoMotion("Bottom level rocket cargo", startingPiece.CARGO, goalHeight.LOW, goalType.ROCKET));
+
     }
     
 
@@ -61,7 +67,12 @@ public class AutoSelector{
         this.goalT = gt.getSelected();
         this.sPiece = sp.getSelected();
 
-        usableMotions = checkCompat(possibleMotions);
+        switch (this.goalT){
+            case ROCKET:
+                usableMotions = checkCompat(rocketMotions);
+            case CARGO:
+                usableMotions = checkCompat(cargoMotions);
+        }
         
         if(usableMotions.size()<=1){
             return usableMotions.get(0);
@@ -81,9 +92,7 @@ public class AutoSelector{
     private ArrayList<AutoMotion> checkCompat(ArrayList<AutoMotion> motions){
         ArrayList<AutoMotion> toReturn = new ArrayList<AutoMotion>();
         for(AutoMotion motion : motions){
-            if (motion.getGoalHeight() == this.goalH
-                    && motion.getGoalType() == this.goalT
-                    && motion.getStartingPiece() == this.sPiece){
+            if (motion.getGoalHeight() == this.goalH && motion.getStartingPiece() == this.sPiece){
                 toReturn.add(motion);
             }
         }
