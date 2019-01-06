@@ -51,9 +51,20 @@ public class AutoSelector{
         gt.setDefaultOption("Rocket", goalType.ROCKET);
         gt.addOption("Cargo Ship", goalType.CARGO);
 
-        //TODO add posible motions
 
         rocketMotions.add(new AutoMotion("Bottom level rocket cargo", startingPiece.CARGO, goalHeight.LOW, goalType.ROCKET));
+        rocketMotions.add(new AutoMotion("Middle level rocket cargo", startingPiece.CARGO, goalHeight.MIDDLE, goalType.ROCKET));
+        rocketMotions.add(new AutoMotion("Top level rocket cargo", startingPiece.CARGO, goalHeight.HIGH, goalType.ROCKET));
+
+        rocketMotions.add(new AutoMotion("Bottom level rocket hatch", startingPiece.HATCH, goalHeight.LOW, goalType.ROCKET));
+        rocketMotions.add(new AutoMotion("Middle level rocket hatch", startingPiece.HATCH, goalHeight.MIDDLE, goalType.ROCKET));
+        rocketMotions.add(new AutoMotion("Top level rocket hatch", startingPiece.HATCH, goalHeight.HIGH, goalType.ROCKET));
+
+
+        cargoMotions.add(new AutoMotion("Cargo ship direct cargo", startingPiece.CARGO, goalHeight.LOW, goalType.CARGO));
+        cargoMotions.add(new AutoMotion("Cargo ship drop cargo", startingPiece.CARGO, goalHeight.OVER, goalType.CARGO));
+
+        cargoMotions.add(new AutoMotion("Cargo ship hatch", startingPiece.HATCH, goalHeight.LOW, goalType.CARGO));
 
     }
     
