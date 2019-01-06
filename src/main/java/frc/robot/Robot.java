@@ -1,10 +1,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.auto.AutoSelector;
 import frc.robot.auto.actions.auto_DriveDistance;
 import frc.robot.auto.actions.auto_DriveTrajectoryPathfinder;
 import frc.robot.lib.EncoderLib;
@@ -13,6 +12,10 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.Wrist;
+// import frc.robot.commands.drivetrain_shift_high;
+// import frc.robot.commands.drivetrain_shift_low;
+import frc.robot.auto.AutoMotion;
 // import frc.robot.subsystems.Wrist;
 
 import frc.robot.subsystems.DriveTrain.Gear;
@@ -30,8 +33,8 @@ import frc.robot.subsystems.DriveTrain.Gear;
 
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly
- * init functions and smartdashboard stuff. 
- * 
+ * init functions and smartdashboard stuff.
+ *
  * @author Matthew Morley
  */
 public class Robot extends TimedRobot {
@@ -52,10 +55,10 @@ public class Robot extends TimedRobot {
 
   public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
 
+  AutoSelector autoSelect;
+  public static AutoMotion m_auto;
+
   Compressor compressor = new Compressor(9);
-  
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
 
   public static double startingDistance;
 
@@ -74,7 +77,7 @@ public class Robot extends TimedRobot {
     m_oi = new OI();
 
     compressor.setClosedLoopControl(true);
-    
+
     drivetrain.init();
     elevator.init();
     // wrist.init();
@@ -88,7 +91,7 @@ public class Robot extends TimedRobot {
       new Waypoint(10, 10, Pathfinder.d2r(0))                        // Waypoint @ x=-2, y=-2, exit angle=45 degrees
       // new Waypoint(0, 0, 0)                           // Waypoint @ x=0, y=0,   exit angle=0 radians
     };
-    
+
     Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.02, 1.7, 2.0, 60.0);
     Trajectory trajectory = Pathfinder.generate(points, config);
 
@@ -98,14 +101,15 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("This is a test", new auto_DriveDistance(2));
     m_chooser.addOption("Pathfinder test", new auto_DriveTrajectoryPathfinder("trajectory"));
     SmartDashboard.putData("auto mode", m_chooser);
-    
+
     if ( RobotConfig.auto.auto_gear == Gear.HIGH ) { drivetrain.setHighGear(); }
     else { drivetrain.setLowGear(); }
     // else { System.out.println("default auto gear " + RobotConfig.auto.auto_gear + " is not a valid choice!"); }
 
-    System.out.println("Robot has been initilized!");
 
   }
+
+
 
   /**
    * This function is called once each time the robot enters Disabled mode.
@@ -125,47 +129,31 @@ public class Robot extends TimedRobot {
   }
 
   /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable
-   * chooser code works with the Java SmartDashboard. If you prefer the
-   * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-   * getString code to get the auto name from the text box below the Gyro
    *
-   * <p>You can add additional auto modes by adding additional commands to the
-   * chooser code above (like the commented example) or additional comparisons
-   * to the switch structure below with additional strings & commands.
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected(); // set the command to what the sendable chooser gets
+    autoSelect = new AutoSelector();
+    SmartDashboard.putData("Starting Piece", autoSelect.sp);
+    SmartDashboard.putData("Goal Height", autoSelect.gh);
+    SmartDashboard.putData("Goal Type", autoSelect.gt);
+    SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
+    m_auto = autoSelect.chooseMotion();
+
+    m_auto.getCommandGroup().start();
+
 
     gyro.reset(); // Reset the current gyro heading to zero
     drivetrain.zeroEncoders();
-    
+
     if ( RobotConfig.auto.auto_gear == Gear.LOW) {
       drivetrain.setLowGear();
     }
-    else if ( RobotConfig.auto.auto_gear == Gear.HIGH ) { 
-      drivetrain.setHighGear(); 
+    else if ( RobotConfig.auto.auto_gear == Gear.HIGH ) {
+      drivetrain.setHighGear();
     }
     else { System.out.println("default auto gear " + RobotConfig.auto.auto_gear + " is not a valid choice!"); }
 
-    /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector",
-     * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
-     * = new MyAutoCommand(); break; case "Default Auto": default:
-     * autonomousCommand = new ExampleCommand(); break; }
-     */
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
-    }
-    // new auto_action_DRIVE(3, "high", 5, 30);
-
-    // TODO so this doesnt work  for some reason, TODO figure this out
-    // System.out.println("Trying to call the auto action drive...");
-    // new auto_action_DRIVE(5, "high", 5, 30);
 
   }
 
@@ -183,15 +171,15 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (m_auto != null) {
+        m_auto.getCommandGroup().cancel();
     }
   // TODO reset subsystems on teleop init?
   }
 
   /**
    * This function is called periodically during operator control.
-   * 
+   *
    */
   @Override
   public void teleopPeriodic() {
@@ -215,13 +203,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    
+
 
     SmartDashboard.putNumber("get forward axis", m_oi.getForwardAxis());
     SmartDashboard.putNumber("get turn axis", m_oi.getTurnAxis());
-    // SmartDashboard.putenum("Drivetrain gear", drivetrain.current_gear); 
+    // SmartDashboard.putenum("Drivetrain gear", drivetrain.current_gear);
     // SmartDashboard.putNumber("setVelocityRight output: ", encoderlib.distanceToRaw(12/12, 4096, 6/12) / 10 ); // This *should* return 1 ft/sec to raw/0.1 sec
-    SmartDashboard.putNumber("target left speed raw",  
+    SmartDashboard.putNumber("target left speed raw",
       ((m_oi.getForwardAxis() * 4) / (Math.PI * 6 / 12)) * 4096 / 10
     );
 
@@ -239,7 +227,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putBoolean("Arcade command running", arcade_running);
 
-    // SmartDashboard.putNumber("Wrist angle setpoint", wrist_setpoint); 
+    // SmartDashboard.putNumber("Wrist angle setpoint", wrist_setpoint);
     // SmartDashboard.putNumber("Wrist talon pos", elevator.elevator_talon.getSelectedSensorPosition(0));
     // SmartDashboard.putNumber("Wrist error", elevator.elevator_talon.getClosedLoopError(0));
     // SmartDashboard.putNumber("Wrist angle (deg)", wrist.getAngle());
@@ -261,4 +249,3 @@ public class Robot extends TimedRobot {
   }
 
 }
-
