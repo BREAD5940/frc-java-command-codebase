@@ -22,6 +22,11 @@ public class AutoSelector{
     goalHeight goalH;
     startingPiece sPiece;
     goalType goalT;
+
+    /**
+     * sets up required SendableChoosers
+     * generates list of possible AutoMotions
+     */
     public AutoSelector(){
 
         backupAutoSelect.setDefaultOption("Default Path", defaultMotion);
@@ -70,6 +75,9 @@ public class AutoSelector{
         
     }
 
+    /**
+     * generates an ArrayList of AutoMotions that work with the current user inputs
+     */
     private ArrayList<AutoMotion> checkCompat(ArrayList<AutoMotion> motions){
         ArrayList<AutoMotion> toReturn = new ArrayList<AutoMotion>();
         for(AutoMotion motion : motions){

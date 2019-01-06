@@ -13,6 +13,9 @@ import java.util.ArrayList;
 
 public class AutoMotion {
 
+    /**
+     * pieces the robot can be holding (the piece to be scored)
+     */
     public enum startingPiece{
         HATCH, CARGO, NONE
     }
@@ -71,6 +74,12 @@ public class AutoMotion {
         }
     }
 
+
+    /**
+     * based on the parameters of the current AutoMotion
+     * @return
+     *    returns an ArrayList of commands
+     */
     private ArrayList<Command> genCommands(){
         ArrayList<Command> toReturn = new ArrayList<Command>();
         if (gHeight == goalHeight.LOW){
@@ -96,6 +105,9 @@ public class AutoMotion {
 
     }
 
+    /**
+     * selects the correct elevator height from RobotConfig based on the goalHeight, the goalType, and the startingPiece
+     */
     private double getElevatorHeight(){
         switch (this.gHeight){
             case LOW:
@@ -133,22 +145,46 @@ public class AutoMotion {
 
     // id functions
 
+    /**
+     * @return
+     *  the name of the AutoMotion
+     */
     public String getName(){
         return this.name;
     }
 
+    /**
+     * 
+     * @return
+     *  the required goalHeight of the AutoMotion
+     */
     public goalHeight getGoalHeight(){
         return this.gHeight;
     }
 
+    /**
+     * 
+     * @return
+     *  the required goalType of the AutoMotion
+     */
     public goalType getGoalType(){
         return this.gType;
     }
 
+    /**
+     * 
+     * @return
+     *  the required startingPiece of the AutoMotion
+     */
     public startingPiece getStartingPiece(){
         return this.sPiece;
     }
 
+    /**
+     * 
+     * @return
+     *  the full AutoCommandGroup of the AutoMotion
+     */
     public AutoCommandGroup getCommandGroup(){
         return this.bigCommandGroup;
     }
