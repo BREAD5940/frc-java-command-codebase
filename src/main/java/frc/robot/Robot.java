@@ -112,11 +112,6 @@ public class Robot extends TimedRobot {
 
     TankModifier modifier = new TankModifier(trajectory).modify(2);
 
-    m_chooser.setDefaultOption("Drive Auto", new auto_DriveDistance(10));
-    m_chooser.addOption("This is a test", new auto_DriveDistance(2));
-    m_chooser.addOption("Pathfinder test", new auto_DriveTrajectoryPathfinder("trajectory"));
-    SmartDashboard.putData("auto mode", m_chooser);
-
     if ( RobotConfig.auto.auto_gear == Gear.HIGH ) { drivetrain.setHighGear(); }
     else { drivetrain.setLowGear(); }
     // else { System.out.println("default auto gear " + RobotConfig.auto.auto_gear + " is not a valid choice!"); }
