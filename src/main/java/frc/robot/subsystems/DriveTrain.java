@@ -70,12 +70,6 @@ public class DriveTrain extends Subsystem {
     m_left_talon.setInverted(true);
     s_left_talon.setInverted(true);
 
-    m_left_talon.setNeutralMode(NeutralMode.Brake);
-    s_left_talon.setNeutralMode(NeutralMode.Brake);
-    m_right_talon.setNeutralMode(NeutralMode.Brake);
-    s_right_talon.setNeutralMode(NeutralMode.Brake);
-
-
     zeroEncoders();
     setHighGear();
   }

@@ -51,8 +51,8 @@ public class RobotConfig {
      * Robot configuration
      */
 
-     /** Drivetrain width in meters */
-    public static final double drivetrain_width = (36) * 25.4/1000;
+     /** Drivetrain width in feet */
+    public static final double drivetrain_width = 2;
     public static final double left_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
     public static final double right_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
     // Set speeds for teleop
@@ -103,9 +103,9 @@ public class RobotConfig {
       // public static final double position_max_integral_high = 5;
       
       // kv/ka settings for pathfinder
-      public static final double velocity_kv_high = 0;
+      public static final double velocity_kv_high = 0.63768115942028985507246376811594;
       public static final double velocity_ka_high = 0;
-      public static final double velocity_kv_low = 0;
+      public static final double velocity_kv_low = 0.63768115942028985507246376811594;
       public static final double velocity_ka_low = 0;
     }
     public class right_talons {

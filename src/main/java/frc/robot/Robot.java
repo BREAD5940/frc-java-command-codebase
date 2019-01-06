@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.actions.auto_DriveDistance;
 import frc.robot.auto.actions.auto_DriveTrajectoryPathfinder;
+import frc.robot.lib.EncoderLib;
 // import frc.robot.lib.TerribleLogger;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
@@ -15,7 +16,10 @@ import frc.robot.subsystems.LimeLight;
 // import frc.robot.subsystems.Wrist;
 
 import frc.robot.subsystems.DriveTrain.Gear;
-
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.Waypoint;
+import jaci.pathfinder.modifiers.TankModifier;
 import edu.wpi.first.wpilibj.SPI;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -78,10 +82,23 @@ public class Robot extends TimedRobot {
 
     startingDistance = drivetrain.getLeftDistance();
 
-    m_chooser.setDefaultOption("Default Auto", new auto_DriveDistance(5));
-    m_chooser.addOption("Pathfinder auto", new auto_DriveTrajectoryPathfinder("test"));
-    m_chooser.addOption("This is a test that drives 5 ft forward", new auto_DriveDistance(5));
 
+    Waypoint[] points = new Waypoint[] {
+      new Waypoint(0, 0, Pathfinder.d2r(0)),      // Waypoint @ x=-4, y=-1, exit angle=-45 degrees
+      new Waypoint(2, 2, Pathfinder.d2r(90))                        // Waypoint @ x=-2, y=-2, exit angle=45 degrees
+      // new Waypoint(0, 0, 0)                           // Waypoint @ x=0, y=0,   exit angle=0 radians
+    };
+    
+    Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, 1.7, 2.0, 60.0);
+    Trajectory trajectory = Pathfinder.generate(points, config);
+
+    TankModifier modifier = new TankModifier(trajectory).modify(2);
+
+    m_chooser.setDefaultOption("Drive Auto", new auto_DriveDistance(10));
+    m_chooser.addOption("This is a test", new auto_DriveDistance(2));
+    m_chooser.addOption("Pathfinder test", new auto_DriveTrajectoryPathfinder(trajectory));
+    SmartDashboard.putData("auto mode", m_chooser);
+    
     if ( RobotConfig.auto.auto_gear == Gear.HIGH ) { drivetrain.setHighGear(); }
     else { drivetrain.setLowGear(); }
     // else { System.out.println("default auto gear " + RobotConfig.auto.auto_gear + " is not a valid choice!"); }
@@ -198,6 +215,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    
+
     SmartDashboard.putNumber("get forward axis", m_oi.getForwardAxis());
     SmartDashboard.putNumber("get turn axis", m_oi.getTurnAxis());
     // SmartDashboard.putenum("Drivetrain gear", drivetrain.current_gear); 
