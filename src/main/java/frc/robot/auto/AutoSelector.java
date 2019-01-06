@@ -1,53 +1,113 @@
 
 package frc.robot.auto;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.DriverStation;
 import java.util.ArrayList;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
-// import edu.wpi.first.wpilibj.command.Command;
-// import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.Robot;
-// import frc.robot.auto.actions.auto_DriveDistance;
-
-import frc.robot.auto.AutoPath;
+import frc.robot.auto.AutoMotion;
+import frc.robot.auto.AutoMotion.goalType;
+import frc.robot.auto.AutoMotion.goalHeight;
+import frc.robot.auto.AutoMotion.startingPiece;
+import frc.robot.auto.groups.*;
 
 public class AutoSelector{
+    public SendableChooser<AutoMotion.startingPiece> sp;
+    public SendableChooser<AutoMotion.goalHeight> gh;
+    public SendableChooser<AutoMotion.goalType> gt;
+    public SendableChooser<AutoMotion> backupAutoSelect = new SendableChooser<AutoMotion>();
 
-    // SendableChooser<AutoPath.robotLoc> robotLoc;
-	// AutoPath.robotLoc prevRobotLoc = null;
-	// ArrayList<AutoPath> autoPaths = new ArrayList<>();
 
-	// final ArrayList<AutoPath> totalPossiblePaths = new ArrayList<>();
+    ArrayList<AutoMotion> usableMotions;
+    ArrayList<AutoMotion> rocketMotions;
+    ArrayList<AutoMotion> cargoMotions;
 
-	// final AutoPath emptyAction;
+    AutoMotion defaultMotion = new AutoMotion("Default motion", startingPiece.NONE, goalHeight.LOW, goalType.CARGO);
+    goalHeight goalH;
+    startingPiece sPiece;
+    goalType goalT;
 
-    // RobotLocation = AutoPath.robotLoc;
-
-	// public static final boolean ROBOT_AUTONOMOUS_WORKS = false;
-
-    // TODO get fms game stuff
-    
     /**
-     * selects the best autopath for the game
-     * @param location
-     *      the current location of the robot (CENTER, LEFT, RIGHT, FARL, OR FARR)
-     * @param fieldSetup
-     *      the switch and scale assignments of the field (LLL, LLR, LRL, LRR, RRR, RLR, RLL, RRL)
-     * @param goal
-     *      the operator-selected goal from sendable chooser (nearSwitch, farSwitch, scale)
-     * @param cubes
-     *      the operator-selected number of cubes to place (1, 2, 3, etc.)
+     * sets up required SendableChoosers
+     * generates list of possible AutoMotions
      */
-    // public AutoSelector(AutoPath.robotLoc location, AutoPath.ssLoc fieldSetup, String goal, int cubes) {
-    //     AutoPath idealPath = new AutoPath("Default", location, fieldSetup);
+    public AutoSelector(){
 
+        backupAutoSelect.setDefaultOption("Default Path", defaultMotion);
+
+        /* TODO so this should really all be done with buttons for speed, but we don't have enough atm, so I'm putting it in sendable chooser for now*/
+
+        sp = new SendableChooser<AutoMotion.startingPiece>();
+        sp.setDefaultOption("None", startingPiece.NONE);
+        sp.addOption("Hatch", startingPiece.HATCH);
+        sp.addOption("Cargo", startingPiece.CARGO);
+
+        gh = new SendableChooser<AutoMotion.goalHeight>();
+        gh.setDefaultOption("Low", goalHeight.LOW);
+        gh.addOption("Middle", goalHeight.MIDDLE);
+        gh.addOption("High", goalHeight.HIGH);
+
+        gt = new SendableChooser<AutoMotion.goalType>();
+        gt.setDefaultOption("Rocket", goalType.ROCKET);
+        gt.addOption("Cargo Ship", goalType.CARGO);
+
+
+        rocketMotions.add(new AutoMotion("Bottom level rocket cargo", startingPiece.CARGO, goalHeight.LOW, goalType.ROCKET));
+        rocketMotions.add(new AutoMotion("Middle level rocket cargo", startingPiece.CARGO, goalHeight.MIDDLE, goalType.ROCKET));
+        rocketMotions.add(new AutoMotion("Top level rocket cargo", startingPiece.CARGO, goalHeight.HIGH, goalType.ROCKET));
+
+        rocketMotions.add(new AutoMotion("Bottom level rocket hatch", startingPiece.HATCH, goalHeight.LOW, goalType.ROCKET));
+        rocketMotions.add(new AutoMotion("Middle level rocket hatch", startingPiece.HATCH, goalHeight.MIDDLE, goalType.ROCKET));
+        rocketMotions.add(new AutoMotion("Top level rocket hatch", startingPiece.HATCH, goalHeight.HIGH, goalType.ROCKET));
+
+
+        cargoMotions.add(new AutoMotion("Cargo ship direct cargo", startingPiece.CARGO, goalHeight.LOW, goalType.CARGO));
+        cargoMotions.add(new AutoMotion("Cargo ship drop cargo", startingPiece.CARGO, goalHeight.OVER, goalType.CARGO));
+
+        cargoMotions.add(new AutoMotion("Cargo ship hatch", startingPiece.HATCH, goalHeight.LOW, goalType.CARGO));
+
+    }
+    
+
+    /**
+     * selects the best AutoMotion for the game
+     * all inputs from sendable chooser
+     */
+    public AutoMotion chooseMotion() {
+        this.goalH = gh.getSelected();
+        this.goalT = gt.getSelected();
+        this.sPiece = sp.getSelected();
+
+        switch (this.goalT){
+            case ROCKET:
+                usableMotions = checkCompat(rocketMotions);
+            case CARGO:
+                usableMotions = checkCompat(cargoMotions);
+        }
         
+        if(usableMotions.size()<=1){
+            return usableMotions.get(0);
+        }else{
+            for (AutoMotion motion : usableMotions){
+                backupAutoSelect.addOption(motion.getName(), motion);
+            }
+            // TODO find out if this just makes it select the default
+            return backupAutoSelect.getSelected();
+        }
+        
+    }
 
+    /**
+     * generates an ArrayList of AutoMotions that work with the current user inputs
+     */
+    private ArrayList<AutoMotion> checkCompat(ArrayList<AutoMotion> motions){
+        ArrayList<AutoMotion> toReturn = new ArrayList<AutoMotion>();
+        for(AutoMotion motion : motions){
+            if (motion.getGoalHeight() == this.goalH && motion.getStartingPiece() == this.sPiece){
+                toReturn.add(motion);
+            }
+        }
+        return toReturn;
+    }
 
-    //     // this.emptyAction = new AutoPath("Do Nothing", "XXX", RobotLocation.FAR_LEFT);
-
-    //     // return idealPath;
-    // }
 }

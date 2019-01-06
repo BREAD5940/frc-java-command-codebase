@@ -22,7 +22,7 @@ public class auto_TurnInPlace extends Command {
   double target_angle_relative;
   double target_angle;
   double target_angle_absolute;
-  boolean isAbsolute = true;
+  boolean isAbsolute = false;
   double output;
   double max_turn_speed;
   double raw_left;
@@ -36,10 +36,11 @@ public class auto_TurnInPlace extends Command {
   
   /**
    * Turn a specified number of degrees in the default auto gear.
-   * This constructor will default to taking the absolute angle
-   * to turn to, rather than a relative angle. If you want to 
-   * specify, use a bool as the second argument to specify if the
-   * angle should be interpreted as absolute or not.
+   * This constructor will default to taking the angle relative to
+   * the robot's angle when the command is initialized, not the 
+   * absolute angle. If you want to specify, use a bool as the second
+   * argument to specify if the angle should be interpreted as absolute 
+   * or not.
    * @param target_angle
    */
   public auto_TurnInPlace(double target_angle) {
