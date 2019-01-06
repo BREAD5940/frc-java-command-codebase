@@ -9,7 +9,7 @@ package frc.robot.auto.actions;
 
 import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+// import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
@@ -48,9 +48,9 @@ public class auto_FollowMotionProfile extends Command {
 
     // Process the CSVs and stream to the talons
     MotionProfileLib.motionProfileInit(Robot.drivetrain.m_left_talon, 
-      leftProfilePath, RobotConfig.left_wheel_effective_diameter, leftMPStatus);
+      leftProfilePath, RobotConfig.driveTrain.left_wheel_effective_diameter, leftMPStatus);
     MotionProfileLib.motionProfileInit(Robot.drivetrain.m_right_talon, 
-      rightProfilePath, RobotConfig.left_wheel_effective_diameter, rightMPStatus);
+      rightProfilePath, RobotConfig.driveTrain.left_wheel_effective_diameter, rightMPStatus);
 
   }
 

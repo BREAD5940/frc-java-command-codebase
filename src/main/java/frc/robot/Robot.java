@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -12,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.AutoSelector;
 import frc.robot.auto.actions.auto_DriveDistance;
+// import frc.robot.lib.TerribleLogger;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
@@ -20,6 +14,9 @@ import frc.robot.subsystems.Wrist;
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
 import frc.robot.auto.AutoMotion;
+// import frc.robot.subsystems.Wrist;
+
+import frc.robot.subsystems.DriveTrain.Gear;
 
 import edu.wpi.first.wpilibj.SPI;
 
@@ -27,12 +24,13 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 
+import frc.robot.subsystems.DriveTrain.Gear;
+
 /**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the
- * project.
+ * Main robot class. There shouldn't be a *ton* of stuff here, mostly
+ * init functions and smartdashboard stuff. 
+ * 
+ * @author Matthew Morley
  */
 public class Robot extends TimedRobot {
 
@@ -40,9 +38,10 @@ public class Robot extends TimedRobot {
   public static DriveTrain drivetrain = new DriveTrain();
   public static Intake intake = new Intake();
   public static Elevator elevator = new Elevator();
-  public static Wrist wrist = new Wrist();
+  // public static Wrist wrist = new Wrist();
   public static LimeLight limelight = new LimeLight();
   public static OI m_oi;
+  // public static TerribleLogger logger = new TerribleLogger();
 
   public static double elevator_setpoint = 0;
   public static double wrist_setpoint = 0;
@@ -57,7 +56,6 @@ public class Robot extends TimedRobot {
   Compressor compressor = new Compressor(9);
 
   public static double startingDistance;
-  public static double defaultAutoSpeed = RobotConfig.drive_auto_forward_velocity_max;
 
   // Various pneumatic shifting methods
   public static void drivetrain_shift_high(){ shifterDoubleSolenoid.set(DoubleSolenoid.Value.kForward); }
@@ -77,7 +75,7 @@ public class Robot extends TimedRobot {
     
     drivetrain.init();
     elevator.init();
-    wrist.init();
+    // wrist.init();
     gyro.reset();
 
     startingDistance = drivetrain.getLeftDistance();
@@ -86,6 +84,9 @@ public class Robot extends TimedRobot {
     // m_chooser.addObject("Square Auto", new auto_action_SQUARE(2));
     // chooser.addObject("My Auto", new MyAutoCommand());
 
+    if ( RobotConfig.auto.auto_gear == Gear.HIGH ) { drivetrain.setHighGear(); }
+    else { drivetrain.setLowGear(); }
+    // else { System.out.println("default auto gear " + RobotConfig.auto.auto_gear + " is not a valid choice!"); }
 
 
   }
@@ -99,9 +100,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    if ( RobotConfig.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
-    else if ( RobotConfig.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
-    else { System.out.println("default auto gear " + RobotConfig.default_auto_gear + " is not a valid choice!"); }
+    if ( RobotConfig.auto.auto_gear == Gear.LOW ) { drivetrain.setLowGear(); }
+    else if ( RobotConfig.auto.auto_gear == Gear.HIGH ) { drivetrain.setHighGear(); }
+    else { System.out.println("default auto gear " + RobotConfig.auto.auto_gear + " is not a valid choice!"); }
   }
 
   @Override
@@ -127,9 +128,13 @@ public class Robot extends TimedRobot {
     gyro.reset(); // Reset the current gyro heading to zero
     drivetrain.zeroEncoders();
     
-    if ( RobotConfig.default_auto_gear == "low" ) { drivetrain.setLowGear(); }
-    else if ( RobotConfig.default_auto_gear == "high" ) { drivetrain.setHighGear(); }
-    else { System.out.println("default auto gear " + RobotConfig.default_auto_gear + " is not a valid choice!"); }
+    if ( RobotConfig.auto.auto_gear == Gear.LOW) {
+      drivetrain.setLowGear();
+    }
+    else if ( RobotConfig.auto.auto_gear == Gear.HIGH ) { 
+      drivetrain.setHighGear(); 
+    }
+    else { System.out.println("default auto gear " + RobotConfig.auto.auto_gear + " is not a valid choice!"); }
 
 
   }
@@ -182,7 +187,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putNumber("get forward axis", m_oi.getForwardAxis());
     SmartDashboard.putNumber("get turn axis", m_oi.getTurnAxis());
-    SmartDashboard.putString("Drivetrain gear", drivetrain.current_gear); 
+    // SmartDashboard.putenum("Drivetrain gear", drivetrain.current_gear); 
     // SmartDashboard.putNumber("setVelocityRight output: ", encoderlib.distanceToRaw(12/12, 4096, 6/12) / 10 ); // This *should* return 1 ft/sec to raw/0.1 sec
     SmartDashboard.putNumber("target left speed raw",  
       ((m_oi.getForwardAxis() * 4) / (Math.PI * 6 / 12)) * 4096 / 10
@@ -211,16 +216,16 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Current Gyro angle", gyro.getAngle());
 
     // Limelight stuff
-    double[] limelightdata = limelight.getData();
+    // double[] limelightdata = limelight.getData();
 
-    SmartDashboard.putNumber("Vision targets?", limelightdata[0]);
-    SmartDashboard.putNumber("Horizontal offset", limelightdata[1]);
-    SmartDashboard.putNumber("Vertical offset", limelightdata[2]);
-    SmartDashboard.putNumber("Target area", limelightdata[3]);
-    SmartDashboard.putNumber("Target skew", limelightdata[4]);
-    SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
+    // SmartDashboard.putNumber("Vision targets?", limelightdata[0]);
+    // SmartDashboard.putNumber("Horizontal offset", limelightdata[1]);
+    // SmartDashboard.putNumber("Vertical offset", limelightdata[2]);
+    // SmartDashboard.putNumber("Target area", limelightdata[3]);
+    // SmartDashboard.putNumber("Target skew", limelightdata[4]);
+    // SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
 
-    
+    // logger.update();
   }
 
 }

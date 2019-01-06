@@ -1,1 +1,2 @@
-# FRC java command codebase
+# frc-java-command-codeabase
+FRC Command based codebase

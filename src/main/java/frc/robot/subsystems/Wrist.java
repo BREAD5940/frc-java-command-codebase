@@ -11,12 +11,15 @@ import frc.robot.lib.EncoderLib;;
 
 
 /**
- * The intake subsystem. Contains method setSpeed, openClamp and closeClamp
+ * A wrist subsystem with Talon hardware PID
+ * Was never tested, the 775s burned out
+ * 
+ * @author Matthew Morley
  */
 public class Wrist extends Subsystem {
 
-  public TalonSRX m_wrist_talon = new TalonSRX(RobotConfig.m_wrist_talon_port);
-  private TalonSRX s_wrist_talon = new TalonSRX(RobotConfig.s_wrist_talon_port);
+  public TalonSRX m_wrist_talon = new TalonSRX(RobotConfig.wrist.m_wrist_talon_port);
+  private TalonSRX s_wrist_talon = new TalonSRX(RobotConfig.wrist.s_wrist_talon_port);
 
   public void init() {
 
@@ -29,29 +32,29 @@ public class Wrist extends Subsystem {
     this.m_wrist_talon.setSelectedSensorPosition(0, 0, 10); // WARNING TODO so if the robot calls init(), the wrist will zero itself. Is this the behavior we want? Limit switches? 
 
     // configure PID
-    this.m_wrist_talon.config_kP(0, RobotConfig.m_left_velocity_kp_low, 0);
-    this.m_wrist_talon.config_kI(0, RobotConfig.m_left_velocity_ki_low, 0);
-    this.m_wrist_talon.config_kD(0, RobotConfig.m_left_velocity_kd_low, 0);
-    this.m_wrist_talon.config_kF(0, RobotConfig.m_left_velocity_kf_low, 0);
-    this.m_wrist_talon.config_IntegralZone(0, RobotConfig.m_left_velocity_izone_low, 0);
+    this.m_wrist_talon.config_kP(0, RobotConfig.wrist.talon_config.position_kp, 0);
+    this.m_wrist_talon.config_kI(0, RobotConfig.wrist.talon_config.position_ki, 0);
+    this.m_wrist_talon.config_kD(0, RobotConfig.wrist.talon_config.position_kd, 0);
+    this.m_wrist_talon.config_kF(0, RobotConfig.wrist.talon_config.position_kf, 0);
+    this.m_wrist_talon.config_IntegralZone(0, RobotConfig.wrist.talon_config.position_izone, 0);
     // this.m_wrist_talon.configMaxIntegralAccumulator(0, RobotConfig.m_left_velocity_max_integral_low, 0);
   }
   
   public double getAngle(){
     return EncoderLib.rawToDegrees(
       this.m_wrist_talon.getSelectedSensorPosition(0), 
-      RobotConfig.POSITION_PULSES_PER_ROTATION);
+      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
   }
   public double getAngularVelocity(){
     return EncoderLib.rawToDegrees(
       this.m_wrist_talon.getSelectedSensorVelocity(0), 
-      RobotConfig.POSITION_PULSES_PER_ROTATION) * 10; // Angular velocity. Natively is raw per 100ms, so times by 10 to get degrees per second
+      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) * 10; // Angular velocity. Natively is raw per 100ms, so times by 10 to get degrees per second
   }
 
   public void setAngle(double target_angle){ // TODO verify math
     double targetRaw = EncoderLib.degreesToRaw(
       target_angle,
-      RobotConfig.POSITION_PULSES_PER_ROTATION);
+      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
     m_wrist_talon.set(ControlMode.Position, targetRaw);
   }
 

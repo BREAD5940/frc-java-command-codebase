@@ -156,5 +156,7 @@ gradle-app.setting
 .settings/
 bin/
 
+.code-workspace
 
 # End of https://www.gitignore.io/api/c++,java,linux,macos,gradle,windows,visualstudiocode
+2019-workspace.code-workspace
