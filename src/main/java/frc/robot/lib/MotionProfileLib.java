@@ -112,7 +112,7 @@ public class MotionProfileLib {
         point.headingDeg = profile.get(i)[7];
         
         //   point.timeDur = TrajectoryPoint.TrajectoryDuration.Trajectory_Duration_50ms;
-        point.profileSlotSelect = 0;
+        // point.profileSlotSelect = 0;
 
         point.zeroPos = i == 0; // This is true if i is zero??
         point.isLastPoint = (i + 1) == profile.size(); // This is true if i+1 is the size?

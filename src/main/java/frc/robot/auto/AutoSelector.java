@@ -62,7 +62,7 @@ public class AutoSelector{
     private ArrayList<AutoMotion> checkCompat(ArrayList<AutoMotion> paths){
         ArrayList<AutoMotion> toReturn = new ArrayList<AutoMotion>();
         for(AutoMotion path : paths){
-            if (path.getGoal() == this.goal){
+            if (path.getGoal() == this.goalHeight){
                 toReturn.add(path);
             }
         }
