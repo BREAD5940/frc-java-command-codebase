@@ -17,8 +17,15 @@ public class AutoMotion {
         HATCH, CARGO, NONE
     }
 
+    /**
+     * different heights of goals
+     * LOW: the lowest level of the rocket; through the hatch of the cargo ship
+     * MIDDLE: the middle level of the rocket
+     * HIGH: the highest level of the rocket
+     * OVER: dropped into the cargo ship from above
+     */
     public enum goalHeight{
-        LOW, MIDDLE, HIGH
+        LOW, MIDDLE, HIGH, OVER
     }
 
     // TODO remember there's actually a difference for cargo, but not for hatches
@@ -65,48 +72,48 @@ public class AutoMotion {
     }
 
     private ArrayList<Command> genCommands(){
-        // TODO Things this should do: align with auto tape/line; raise 'elevator'; place piece
         ArrayList<Command> toReturn = new ArrayList<Command>();
         if (gHeight == goalHeight.LOW){
-            //Align with tape OR line
+            // Could also align with line
             // TODO find out the actual units for the speed
             toReturn.add(new FollowVisionTarget(1, 20));
         }else{
-            //TODO Align with line
-            //Raise elevator
-            //there's got to be a less-bad way to do this
-            double elevatorHeight = 0;
-            switch (gHeight){
-                case MIDDLE:
-                    switch (sPiece){
-                        case CARGO:
-                            elevatorHeight = RobotConfig.auto.fieldPositions.middle_rocket_port;
-                        case HATCH:
-                            elevatorHeight = RobotConfig.auto.fieldPositions.middle_rocket_hatch;
-                    }
-                case HIGH:
-                    switch (sPiece){
-                        case CARGO:
-                            elevatorHeight = RobotConfig.auto.fieldPositions.high_rocket_port;
-                        case HATCH:
-                            elevatorHeight = RobotConfig.auto.fieldPositions.high_rocket_hatch;
-                    }
-            }
-
-            toReturn.add(new auto_Elevator(elevatorHeight));
+            //TODO Align with line (IR sensor?)
+            toReturn.add(new auto_Elevator(getElevatorHeight()));
         }
 
         switch (sPiece){
             case HATCH:
-                //TODO Place hatch pannel
+                //TODO when we have a hatch outtake command, put it here
             case CARGO:
-                //TODO Place cargo
+                //TODO when we have a cargo outtake command, put it here
             default:
                 break;
         }
 
         return toReturn;
 
+    }
+
+    private double getElevatorHeight(){
+        switch (this.gHeight){
+            case MIDDLE:
+                switch (this.sPiece){
+                    case CARGO:
+                        return RobotConfig.auto.fieldPositions.middle_rocket_port;
+                    case HATCH:
+                        return RobotConfig.auto.fieldPositions.middle_rocket_hatch;
+                }
+            case HIGH:
+                switch (this.sPiece){
+                    case CARGO:
+                        return RobotConfig.auto.fieldPositions.high_rocket_port;
+                    case HATCH:
+                        return RobotConfig.auto.fieldPositions.high_rocket_hatch;
+                }
+            default:
+                return 0;
+        }
     }
 
     // id functions
