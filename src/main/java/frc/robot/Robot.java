@@ -19,7 +19,7 @@ import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Wrist;
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
-import frc.robot.auto.AutoPath;
+import frc.robot.auto.AutoMotion;
 
 import edu.wpi.first.wpilibj.SPI;
 
@@ -52,7 +52,7 @@ public class Robot extends TimedRobot {
   public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
 
   AutoSelector autoSelect;
-  public static AutoPath m_auto;
+  public static AutoMotion m_auto;
 
   Compressor compressor = new Compressor(9);
 
@@ -123,8 +123,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     autoSelect = new AutoSelector();
-    SmartDashboard.putData("Robot Location Chooser", autoSelect.rbLoc);
-    SmartDashboard.putData("Goal Chooser", autoSelect.usrGoal);
     SmartDashboard.putData("Number of Cubes", autoSelect.usrCubes);
     SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
     m_auto = autoSelect.choosePath();
