@@ -2,11 +2,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.AutoSelector;
 import frc.robot.auto.actions.auto_DriveDistance;
 import frc.robot.auto.actions.auto_DriveTrajectoryPathfinder;
 import frc.robot.lib.EncoderLib;
+import edu.wpi.first.wpilibj.command.Command;
 // import frc.robot.lib.TerribleLogger;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
@@ -58,6 +60,8 @@ public class Robot extends TimedRobot {
   AutoSelector autoSelect;
   public static AutoMotion m_auto;
 
+  SendableChooser<Command> m_chooser = new SendableChooser<Command>();
+
   Compressor compressor = new Compressor(9);
 
   public static double startingDistance;
@@ -75,6 +79,12 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
+    
+    autoSelect = new AutoSelector();
+    SmartDashboard.putData("Starting Piece", autoSelect.hp);
+    SmartDashboard.putData("Goal Height", autoSelect.gh);
+    SmartDashboard.putData("Goal Type", autoSelect.gt);
+    SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
 
     compressor.setClosedLoopControl(true);
 
@@ -128,8 +138,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    autoSelect = new AutoSelector();
-    SmartDashboard.putData("Starting Piece", autoSelect.sp);
+    
+    SmartDashboard.putData("Starting Piece", autoSelect.hp);
     SmartDashboard.putData("Goal Height", autoSelect.gh);
     SmartDashboard.putData("Goal Type", autoSelect.gt);
     SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
