@@ -14,8 +14,6 @@ public class AutoMotion {
         LOW, MIDDLE, HIGH
     }
 
-
-    robotLoc location;
     String setup;
     String name;
     goals goal;

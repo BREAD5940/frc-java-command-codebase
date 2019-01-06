@@ -4,6 +4,8 @@ package frc.robot.auto;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.DriverStation;
 import java.util.ArrayList;
+
+import frc.robot.auto.AutoMotion.goals;
 import frc.robot.auto.AutoMotion.startingPiece;
 import frc.robot.auto.groups.*;
 
@@ -24,6 +26,7 @@ public class AutoSelector{
     DriverStation ds;
     String fieldSetup;
     AutoMotion defaultPath;
+    goals goalHeight = goals.LOW;
     public AutoSelector(){
 
         backupAutoSelect.addDefault("Default Path", defaultPath);
@@ -42,27 +45,8 @@ public class AutoSelector{
      * all inputs from sendable chooser
      */
     public AutoMotion choosePath() {
-        // String order is: near switch, scale, far switch
-        this.fieldSetup = ds.getGameSpecificMessage();
-        this.location = rbLoc.getSelected();
-        this.goal = usrGoal.getSelected();
         this.cubes = usrCubes.getSelected();
         
-
-        switch (this.location){
-            case CENTER:
-                usablePaths = checkCompat(checkSetup(centerPaths));
-            case LEFT:
-                usablePaths = checkCompat(checkSetup(leftPaths));
-            case RIGHT:
-                usablePaths = checkCompat(checkSetup(rightPaths));
-            case FAR_LEFT:
-                usablePaths = checkCompat(checkSetup(farLeftPaths));
-            case FAR_RIGHT:
-                usablePaths = checkCompat(checkSetup(farRightPaths));
-            default:
-                usablePaths.add(this.defaultPath);
-        }
         if(usablePaths.size()<=1){
             return usablePaths.get(0);
         }else{
@@ -85,17 +69,4 @@ public class AutoSelector{
         return toReturn;
     }
 
-
-    private ArrayList<AutoMotion> checkSetup(ArrayList<AutoMotion> possiblePaths){
-        ArrayList<AutoMotion> goodPaths = new ArrayList<AutoMotion>();
-        for (AutoMotion path : possiblePaths){
-            if ((path.getReqSetup().charAt(0) == this.fieldSetup.charAt(0) || path.getReqSetup().charAt(0)=='X')
-                    &&(path.getReqSetup().charAt(1)==this.fieldSetup.charAt(1) || path.getReqSetup().charAt(1)=='X')
-                    &&(path.getReqSetup().charAt(2)==this.fieldSetup.charAt(2) || path.getReqSetup().charAt(2)=='X')){
-                goodPaths.add(path);
-            }
-
-        }
-        return goodPaths;
-    }
 }
