@@ -19,9 +19,9 @@ public class AutoSelector{
     public SendableChooser<AutoMotion> backupAutoSelect = new SendableChooser<AutoMotion>();
 
 
-    ArrayList<AutoMotion> usableMotions;
-    ArrayList<AutoMotion> rocketMotions;
-    ArrayList<AutoMotion> cargoMotions;
+    ArrayList<AutoMotion> usableMotions = new ArrayList<AutoMotion>();
+    ArrayList<AutoMotion> rocketMotions = new ArrayList<AutoMotion>();
+    ArrayList<AutoMotion> cargoMotions = new ArrayList<AutoMotion>();
 
     AutoMotion defaultMotion = new AutoMotion("Default motion", heldPiece.NONE, goalHeight.LOW, goalType.CARGO);
     goalHeight goalH;
