@@ -16,7 +16,7 @@ public class AutoMotion {
     /**
      * pieces the robot can be holding (the piece to be scored)
      */
-    public enum startingPiece{
+    public enum heldPiece{
         HATCH, CARGO, NONE
     }
 
@@ -38,21 +38,21 @@ public class AutoMotion {
      * ROCKET: the rocket
      */
     public enum goalType{
-        CARGO, ROCKET
+        CARGO, ROCKET, RETRIEVE
     }
 
     String setup;
     String name;
     goalHeight gHeight;
     goalType gType;
-    startingPiece sPiece;
+    heldPiece piece;
     AutoCommandGroup bigCommandGroup;
 
     /**
      * creates a new AutoPath for the current match
      * @param name
      *      name of the path
-     * @param startingPiece
+     * @param piece
      *      the type of game piece the robot is currently holding (HATCH, CARGO, NONE)
      * @param gHeight
      *      the height of the goal the robot should aim for (LOW, MIDDLE, HIGH)
@@ -62,12 +62,12 @@ public class AutoMotion {
      *      list of sequential commandgroups for this path that are turned into one giant AutoCommandGroup
      */
 
-    public AutoMotion (String name, startingPiece sPiece, goalHeight gHeight, goalType gType){
+    public AutoMotion (String name, heldPiece piece, goalHeight gHeight, goalType gType){
         this.name = name;
         this.gHeight = gHeight;
         this.gType = gType;
-        this.sPiece = sPiece;
-        if (sPiece!=startingPiece.NONE){
+        this.piece = piece;
+        if (piece!=heldPiece.NONE){
             this.bigCommandGroup = new AutoCommandGroup(genCommands());
         }else{
             System.out.println("No starting piece. Aborting auto section");
@@ -92,7 +92,7 @@ public class AutoMotion {
 
         toReturn.add(new auto_Elevator(getElevatorHeight()));
 
-        switch (sPiece){
+        switch (piece){
             case HATCH:
                 //TODO when we have a hatch outtake command, put it here
             case CARGO:
@@ -106,7 +106,7 @@ public class AutoMotion {
     }
 
     /**
-     * selects the correct elevator height from RobotConfig based on the goalHeight, the goalType, and the startingPiece
+     * selects the correct elevator height from RobotConfig based on the goalHeight, the goalType, and the heldPiece
      */
     private double getElevatorHeight(){
         switch (this.gHeight){
@@ -115,7 +115,7 @@ public class AutoMotion {
                     case CARGO:
                         return RobotConfig.auto.fieldPositions.cargo_ship_hatch;
                     case ROCKET:
-                        switch (this.sPiece){
+                        switch (this.piece){
                             case CARGO:
                                 return RobotConfig.auto.fieldPositions.low_rocket_port;
                             case HATCH:
@@ -123,14 +123,14 @@ public class AutoMotion {
                         }
                 }
             case MIDDLE:
-                switch (this.sPiece){
+                switch (this.piece){
                     case CARGO:
                         return RobotConfig.auto.fieldPositions.middle_rocket_port;
                     case HATCH:
                         return RobotConfig.auto.fieldPositions.middle_rocket_hatch;
                 }
             case HIGH:
-                switch (this.sPiece){
+                switch (this.piece){
                     case CARGO:
                         return RobotConfig.auto.fieldPositions.high_rocket_port;
                     case HATCH:
@@ -174,10 +174,10 @@ public class AutoMotion {
     /**
      * 
      * @return
-     *  the required startingPiece of the AutoMotion
+     *  the required heldPiece of the AutoMotion
      */
-    public startingPiece getStartingPiece(){
-        return this.sPiece;
+    public heldPiece getheldPiece(){
+        return this.piece;
     }
 
     /**

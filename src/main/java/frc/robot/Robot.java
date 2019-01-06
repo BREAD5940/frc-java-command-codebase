@@ -2,11 +2,13 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.AutoSelector;
 import frc.robot.auto.actions.auto_DriveDistance;
 import frc.robot.auto.actions.auto_DriveTrajectoryPathfinder;
 import frc.robot.lib.EncoderLib;
+import edu.wpi.first.wpilibj.command.Command;
 // import frc.robot.lib.TerribleLogger;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
@@ -58,6 +60,9 @@ public class Robot extends TimedRobot {
   AutoSelector autoSelect;
   public static AutoMotion m_auto;
 
+  SendableChooser<Command> m_chooser = new SendableChooser<Command>();
+  public static SendableChooser<AutoMotion.heldPiece> hp = new SendableChooser<AutoMotion.heldPiece>();
+
   Compressor compressor = new Compressor(9);
 
   public static double startingDistance;
@@ -75,6 +80,16 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
+
+    autoSelect = new AutoSelector();
+
+        hp.setDefaultOption("None", AutoMotion.heldPiece.NONE);
+        hp.addOption("Hatch", AutoMotion.heldPiece.HATCH);
+        hp.addOption("Cargo", AutoMotion.heldPiece.CARGO);
+    SmartDashboard.putData("Starting Piece", hp);
+    SmartDashboard.putData("Goal Height", autoSelect.gh);
+    SmartDashboard.putData("Goal Type", autoSelect.gt);
+    SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
 
     compressor.setClosedLoopControl(true);
 
@@ -96,11 +111,6 @@ public class Robot extends TimedRobot {
     Trajectory trajectory = Pathfinder.generate(points, config);
 
     TankModifier modifier = new TankModifier(trajectory).modify(2);
-
-    m_chooser.setDefaultOption("Drive Auto", new auto_DriveDistance(10));
-    m_chooser.addOption("This is a test", new auto_DriveDistance(2));
-    m_chooser.addOption("Pathfinder test", new auto_DriveTrajectoryPathfinder("trajectory"));
-    SmartDashboard.putData("auto mode", m_chooser);
 
     if ( RobotConfig.auto.auto_gear == Gear.HIGH ) { drivetrain.setHighGear(); }
     else { drivetrain.setLowGear(); }
@@ -133,8 +143,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    autoSelect = new AutoSelector();
-    SmartDashboard.putData("Starting Piece", autoSelect.sp);
+    
+    SmartDashboard.putData("Starting Piece", hp);
     SmartDashboard.putData("Goal Height", autoSelect.gh);
     SmartDashboard.putData("Goal Type", autoSelect.gt);
     SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
