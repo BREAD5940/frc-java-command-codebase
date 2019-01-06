@@ -61,6 +61,7 @@ public class Robot extends TimedRobot {
   public static AutoMotion m_auto;
 
   SendableChooser<Command> m_chooser = new SendableChooser<Command>();
+  public static SendableChooser<AutoMotion.heldPiece> hp = new SendableChooser<AutoMotion.heldPiece>();
 
   Compressor compressor = new Compressor(9);
 
@@ -79,9 +80,13 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    
+
     autoSelect = new AutoSelector();
-    SmartDashboard.putData("Starting Piece", autoSelect.hp);
+
+        hp.setDefaultOption("None", AutoMotion.heldPiece.NONE);
+        hp.addOption("Hatch", AutoMotion.heldPiece.HATCH);
+        hp.addOption("Cargo", AutoMotion.heldPiece.CARGO);
+    SmartDashboard.putData("Starting Piece", hp);
     SmartDashboard.putData("Goal Height", autoSelect.gh);
     SmartDashboard.putData("Goal Type", autoSelect.gt);
     SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
@@ -144,7 +149,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     
-    SmartDashboard.putData("Starting Piece", autoSelect.hp);
+    SmartDashboard.putData("Starting Piece", hp);
     SmartDashboard.putData("Goal Height", autoSelect.gh);
     SmartDashboard.putData("Goal Type", autoSelect.gt);
     SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
