@@ -79,8 +79,9 @@ public class AutoMotion {
             toReturn.add(new FollowVisionTarget(1, 20));
         }else{
             //TODO Align with line (IR sensor?)
-            toReturn.add(new auto_Elevator(getElevatorHeight()));
         }
+
+        toReturn.add(new auto_Elevator(getElevatorHeight()));
 
         switch (sPiece){
             case HATCH:
@@ -97,6 +98,18 @@ public class AutoMotion {
 
     private double getElevatorHeight(){
         switch (this.gHeight){
+            case LOW:
+                switch (this.gType){
+                    case CARGO:
+                        return RobotConfig.auto.fieldPositions.cargo_ship_hatch;
+                    case ROCKET:
+                        switch (this.sPiece){
+                            case CARGO:
+                                return RobotConfig.auto.fieldPositions.low_rocket_port;
+                            case HATCH:
+                                return RobotConfig.auto.fieldPositions.low_rocket_hatch;
+                        }
+                }
             case MIDDLE:
                 switch (this.sPiece){
                     case CARGO:
@@ -111,6 +124,8 @@ public class AutoMotion {
                     case HATCH:
                         return RobotConfig.auto.fieldPositions.high_rocket_hatch;
                 }
+            case OVER:
+                return RobotConfig.auto.fieldPositions.cargo_ship_wall;
             default:
                 return 0;
         }

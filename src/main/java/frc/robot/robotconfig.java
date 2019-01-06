@@ -156,7 +156,8 @@ public class RobotConfig {
     public static Gear auto_gear = Gear.HIGH;
 
     public class fieldPositions {
-      // Positions of objects on the field (ports, etc.) in inches
+      // Positions of objects on the field (ports, etc.) in inches. distances are to the center of the object
+      // unless otherwise indicated
       // TODO check that these values are accurate (currently taken from the game manual)
       public static final double low_rocket_port = 27.5;
       public static final double middle_rocket_port = 55.5;
@@ -165,6 +166,9 @@ public class RobotConfig {
       public static final double low_rocket_hatch = 19;
       public static final double middle_rocket_hatch = 47;
       public static final double high_rocket_hatch = 75;
+
+      public static final double cargo_ship_hatch = 19.75; // TODO this should be even with the low rocket hatch. According to the game manual, it isn't
+      public static final double cargo_ship_wall = 31.5; //top of wall
     }
 
 
