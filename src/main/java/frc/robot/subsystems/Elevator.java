@@ -33,7 +33,7 @@ public class Elevator extends Subsystem {
 
 
   
-  public enum ElevatorHeight {
+  public enum ElevatorPresets {
     LOW_ROCKET_PORT,
     MIDDLE_ROCKET_PORT,
     HIGH_ROCKET_PORT,
@@ -44,7 +44,7 @@ public class Elevator extends Subsystem {
     CARGO_SHIP_HATCH, // TODO this should be even with the low rocket hatch. According to the game manual, it isn't
     CARGO_SHIP_WALL; //top of wall
   }
-  public static double getHeightEnumValue(ElevatorHeight height) {
+  public static double getHeightEnumValue(ElevatorPresets height) {
     switch (height) {
       case LOW_ROCKET_PORT:
         return RobotConfig.auto.fieldPositions.low_rocket_port;
