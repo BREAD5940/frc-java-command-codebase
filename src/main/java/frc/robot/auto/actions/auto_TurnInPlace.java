@@ -54,6 +54,7 @@ public class auto_TurnInPlace extends Command {
    * The angle passed is an absolute angle relative to the 
    * angle upon autonomous init.
    * @param target_angle
+   * @param isAbsolute
    */
   public auto_TurnInPlace(double target_angle, boolean isAbsolute) {
     this.isAbsolute = isAbsolute;
@@ -66,8 +67,6 @@ public class auto_TurnInPlace extends Command {
   @Override
   protected void initialize() {
     starting_angle = Robot.gyro.getAngle();
-    turnPID.setSetpoint(target_angle);
-
 
     // If the angle is relative (which it should not be), setup target angle.
     // Otherwise the angle is absolute (relative to auto init) so we don't care.
@@ -76,6 +75,7 @@ public class auto_TurnInPlace extends Command {
     }
 
     turnPID.setSetpoint(target_angle);
+    System.out.println("Turn in place init'ed!");
 
   }
 
@@ -86,6 +86,7 @@ public class auto_TurnInPlace extends Command {
     raw_left = EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.left_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
     raw_right = (-1) * EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.right_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
     Robot.drivetrain.setSpeeds(raw_left, raw_right);
+    System.out.println("Turn in place execute! Output: " + output);
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -98,7 +99,7 @@ public class auto_TurnInPlace extends Command {
 
     // TODO so this is how a return works
     return ( (Math.abs(Robot.gyro.getRate() ) < RobotConfig.auto.tolerences.angular_velocity_tolerence)
-      && (Math.abs(Robot.gyro.getAngle()) < RobotConfig.auto.tolerences.angle_tolerence));
+      && (Math.abs(Robot.gyro.getAngle() - target_angle) < RobotConfig.auto.tolerences.angle_tolerence));
 
   }
 
