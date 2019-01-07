@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 import frc.robot.auto.actions.auto_DriveStraight;
 import frc.robot.auto.actions.auto_Elevator;
+import frc.robot.auto.actions.auto_TurnInPlace;
 import frc.robot.auto.groups.*;
 import frc.robot.commands.FollowVisionTarget;
 import frc.robot.RobotConfig;
@@ -69,6 +70,8 @@ public class AutoMotion {
         this.piece = piece;
         if (piece!=heldPiece.NONE){
             this.bigCommandGroup = new AutoCommandGroup(genCommands());
+        }else{
+            this.bigCommandGroup = new AutoCommandGroup(new auto_TurnInPlace(15));
         }
     }
 

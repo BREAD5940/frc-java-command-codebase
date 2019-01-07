@@ -19,6 +19,12 @@ public class AutoCommandGroup extends CommandGroup{
         }
     }
 
+    public AutoCommandGroup(Command... commands) {
+        for (Command command : commands){
+            addSequential(command);
+        }
+    }
+
     /**
      * just makes a proper command group out of the inputted Commands
      * @param commands
