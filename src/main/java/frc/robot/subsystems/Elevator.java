@@ -58,6 +58,8 @@ public class Elevator extends Subsystem {
         return RobotConfig.auto.fieldPositions.middle_rocket_hatch;
       case HIGH_ROCKET_HATCH:
         return RobotConfig.auto.fieldPositions.high_rocket_hatch;
+      case CARGO_SHIP_HATCH:
+        return RobotConfig.auto.fieldPositions.cargo_ship_hatch;
       default:
         return 0;
     }
