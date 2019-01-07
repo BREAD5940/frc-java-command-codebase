@@ -36,11 +36,16 @@ public class RobotConfig {
     public static final float maximum_wrist_angle = 90;
     public static final double wrist_position_tolerence = 5; // 5 degree tolerence, be sure to convert to raw!
     public static final double wrist_velocity_tolerence = 2; // 2 degrees per second??
+    // public static final double kStaticCoefficient = 0.3;
     public class talon_config {
       public static final double position_kp = 0.1;
       public static final double position_ki = 0;
       public static final double position_kd = 0;
       public static final double position_kf = 0;
+      public static final double software_position_kp = 0.1;
+      public static final double software_position_ki = 0;
+      public static final double software_position_kd = 0;
+      public static final double software_position_kf = 0;
       public static final int position_izone = 200;
       public static final double position_max_integral = 0.5;
     }

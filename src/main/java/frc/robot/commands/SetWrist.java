@@ -39,7 +39,6 @@ public class SetWrist extends Command {
         // requires(Robot.wrist); // reserve the wrist subsystem
     }
 
-    // public static final drivetrain drivetrain  = new drivetrain();
 
     // Called just before this Command runs the first time
     @Override
