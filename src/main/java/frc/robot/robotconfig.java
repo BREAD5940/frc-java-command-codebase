@@ -159,6 +159,7 @@ public class RobotConfig {
       // Positions of objects on the field (ports, etc.) in inches. distances are to the center of the object
       // unless otherwise indicated
       // TODO check that these values are accurate (currently taken from the game manual)
+      
       public static final double low_rocket_port = 27.5;
       public static final double middle_rocket_port = 55.5;
       public static final double high_rocket_port = 83.5;
