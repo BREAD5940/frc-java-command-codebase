@@ -97,7 +97,7 @@ public class auto_DriveTrajectoryPathfinder extends Command {
     m_turn = RobotConfig.auto.pathfinder.gyro_correct_kp * m_angularError;
     
     // Robot.drive.addDesiredVelocities(m_leftFollower.getSegment().velocity, m_rightFollower.getSegment().velocity);
-    Robot.drivetrain.setPowers(m_leftOutput - m_turn, m_rightOutput + m_turn);
+    Robot.drivetrain.setVoltages(m_leftOutput - m_turn, m_rightOutput + m_turn);
     SmartDashboard.putNumber("Velocity", m_leftFollower.getSegment().velocity);
   }
 
