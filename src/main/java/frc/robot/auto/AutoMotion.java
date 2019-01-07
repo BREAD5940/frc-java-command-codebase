@@ -102,6 +102,7 @@ public class AutoMotion {
         if(gHeight == goalHeight.OVER){
           toReturn.add(new DropCargo(true));
         }else{
+            this.bigCommandGroup = new AutoCommandGroup(new auto_DriveStraight(7));
           toReturn.add(new DropCargo(false));
         }
       default:
