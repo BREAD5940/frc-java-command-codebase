@@ -69,8 +69,6 @@ public class AutoMotion {
         this.piece = piece;
         if (piece!=heldPiece.NONE){
             this.bigCommandGroup = new AutoCommandGroup(genCommands());
-        }else{
-            System.out.println("No starting piece. Aborting auto section");
         }
     }
 
