@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.auto.AutoMotion;
 import frc.robot.commands.*;
 
 /**
@@ -22,11 +23,16 @@ public class OI {
   Button open_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
   Button close_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
 
+  Button auto_place_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
+  Button auto_place_hatch_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
+
   public OI(){
     shift_up_button.whenPressed(new DriveShiftHigh());
     shift_down_button.whenPressed(new DriveShiftLow());
     open_clamp_button.whenPressed(new OpenClamp());
     close_clamp_button.whenPressed(new CloseClamp());
+    auto_place_cargo_button.whenPressed(new RunAuto(AutoMotion.heldPiece.CARGO));
+    auto_place_hatch_button.whenPressed(new RunAuto(AutoMotion.heldPiece.CARGO));
   }
 
   public double getForwardAxis(){ return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis); }

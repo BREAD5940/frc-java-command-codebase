@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
 
   // public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
 
-  AutoSelector autoSelect;
+  public static AutoSelector autoSelect;
   public static AutoMotion m_auto;
 
   SendableChooser<Command> m_chooser = new SendableChooser<Command>();
