@@ -61,10 +61,10 @@ public class RobotConfig {
     public static final double left_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
     public static final double right_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
     // Set speeds for teleop
-    public static final double max_forward_speed_high = 4; // Feet per second forward velocity
-    public static final double max_turn_speed_high = 4; // Max turn speed in degrees per second
-    public static final double max_forward_speed_low = 4; // Feet per second forward velocity
-    public static final double max_turn_speed_low = 4; // Max turn speed in degrees per second
+    public static final double max_forward_speed_high = 7; // Feet per second forward velocity
+    public static final double max_turn_speed_high = 7; // Max turn speed in degrees per second
+    public static final double max_forward_speed_low = 7; // Feet per second forward velocity
+    public static final double max_turn_speed_low = 7; // Max turn speed in degrees per second
 
     // Encoder stuff, dunno where else to put this
     // public static final double VELOCITY_PULSES_PER_ROTATION = 409.6f;
@@ -203,12 +203,13 @@ public class RobotConfig {
     }
 
     public class auto_turnInPlace {
-      public static final double kp = 1.0;
-      public static final double ki = 0.0;
+      public static final double kp = 0.1;
+      public static final double ki = 0.3;
       public static final double max_integral = 0.5;
       public static final double integral_zone = 10; // 10 degrees izone
-      public static final double min_turn_speed = -10; // in ft/sec
-      public static final double max_turn_speed = 10; // in ft/sec
+      public static final double min_turn_speed = -4; // in ft/sec
+      public static final double max_turn_speed = 4; // in ft/sec
+      public static final double kf = 0;
     }
 
     public class followVisionTarget {
