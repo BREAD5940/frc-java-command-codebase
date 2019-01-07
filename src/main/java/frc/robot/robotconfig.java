@@ -36,11 +36,16 @@ public class RobotConfig {
     public static final float maximum_wrist_angle = 90;
     public static final double wrist_position_tolerence = 5; // 5 degree tolerence, be sure to convert to raw!
     public static final double wrist_velocity_tolerence = 2; // 2 degrees per second??
+    // public static final double kStaticCoefficient = 0.3;
     public class talon_config {
       public static final double position_kp = 0.1;
       public static final double position_ki = 0;
       public static final double position_kd = 0;
       public static final double position_kf = 0;
+      public static final double software_position_kp = 0.1;
+      public static final double software_position_ki = 0;
+      public static final double software_position_kd = 0;
+      public static final double software_position_kf = 0;
       public static final int position_izone = 200;
       public static final double position_max_integral = 0.5;
     }
@@ -159,6 +164,7 @@ public class RobotConfig {
       // Positions of objects on the field (ports, etc.) in inches. distances are to the center of the object
       // unless otherwise indicated
       // TODO check that these values are accurate (currently taken from the game manual)
+      
       public static final double low_rocket_port = 27.5;
       public static final double middle_rocket_port = 55.5;
       public static final double high_rocket_port = 83.5;

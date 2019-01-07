@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Command;
 
 import frc.robot.auto.actions.auto_DriveStraight;
-import frc.robot.auto.actions.auto_Elevator;
+import frc.robot.commands.SetElevatorHeight;
 import frc.robot.auto.actions.auto_TurnInPlace;
 import frc.robot.auto.groups.*;
 import frc.robot.commands.FollowVisionTarget;
@@ -91,7 +91,7 @@ public class AutoMotion {
             //TODO Align with line (IR sensor?)
         }
 
-        toReturn.add(new auto_Elevator(getElevatorHeight()));
+        toReturn.add(new SetElevatorHeight(getElevatorHeight())); // TODO is this the right constructor? Maybe pass an ElevatorPresets enum
 
         switch (piece){
             case HATCH:

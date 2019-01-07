@@ -104,8 +104,11 @@ public class Robot extends TimedRobot {
         drivetrain.setLowGear();
       default:
         drivetrain.setHighGear();
-
     }
+
+    SmartDashboard.putData(drivetrain);
+    SmartDashboard.putData(elevator);
+    SmartDashboard.putData(intake);
   }
 
 

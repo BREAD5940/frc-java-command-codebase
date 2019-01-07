@@ -2,6 +2,7 @@
 package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation;
 import java.util.ArrayList;
 
@@ -17,6 +18,10 @@ public class AutoSelector{
     public SendableChooser<AutoMotion.goalHeight> gh;
     public SendableChooser<AutoMotion.goalType> gt;
     public SendableChooser<AutoMotion> backupAutoSelect = new SendableChooser<AutoMotion>();
+    public enum autoPathValid {
+        YES, NO, NULL;
+    }
+    public autoPathValid validPath = autoPathValid.NULL;
 
 
     ArrayList<AutoMotion> usableMotions = new ArrayList<AutoMotion>();
@@ -79,6 +84,16 @@ public class AutoSelector{
         this.goalH = gh.getSelected();
         this.goalT = gt.getSelected();
         this.piece = hp.getSelected();
+
+        if (!(goalH==goalHeight.LOW || goalH == goalHeight.OVER)&&goalT!=goalType.ROCKET){
+            System.out.println("You can't select those options together");
+            this.validPath = autoPathValid.NO;
+        }
+        else{
+            this.validPath = autoPathValid.YES;
+        }
+        SmartDashboard.putString("Valid auto path?", validPath.name());
+        // TODO check if this updates every robot tick!
 
         switch (this.goalT){
             case ROCKET:
