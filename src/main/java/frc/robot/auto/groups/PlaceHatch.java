@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import java.util.ArrayList;
 
 public class PlaceHatch extends CommandGroup{
-    public PlaceHatch() {
-    }
+  public PlaceHatch() {
+  }
 
 }
