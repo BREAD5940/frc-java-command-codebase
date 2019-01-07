@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 import frc.robot.auto.actions.auto_DriveStraight;
 import frc.robot.commands.SetElevatorHeight;
+import frc.robot.subsystems.Elevator.ElevatorPresets;
 import frc.robot.auto.actions.auto_TurnInPlace;
 import frc.robot.auto.groups.*;
 import frc.robot.commands.FollowVisionTarget;
@@ -91,7 +92,7 @@ public class AutoMotion {
             //TODO Align with line (IR sensor?)
         }
 
-        toReturn.add(new SetElevatorHeight(getElevatorHeight())); // TODO is this the right constructor? Maybe pass an ElevatorPresets enum
+        toReturn.add(new SetElevatorHeight(getElevatorPreset(), false)); // TODO is this the right constructor? Maybe pass an ElevatorPresets enum
 
         switch (piece){
             case HATCH:
@@ -107,40 +108,40 @@ public class AutoMotion {
     }
 
     /**
-     * selects the correct elevator height from RobotConfig based on the goalHeight, the goalType, and the heldPiece
+     * selects the correct ElevatorPresets from RobotConfig based on the goalHeight, the goalType, and the heldPiece
      */
-    private double getElevatorHeight(){
+    private ElevatorPresets getElevatorPreset(){
         switch (this.gHeight){
             case LOW:
                 switch (this.gType){
                     case CARGO:
-                        return RobotConfig.auto.fieldPositions.cargo_ship_hatch;
+                        return ElevatorPresets.CARGO_SHIP_HATCH;
                     case ROCKET:
                         switch (this.piece){
                             case CARGO:
-                                return RobotConfig.auto.fieldPositions.low_rocket_port;
+                                return ElevatorPresets.LOW_ROCKET_PORT;
                             case HATCH:
-                                return RobotConfig.auto.fieldPositions.low_rocket_hatch;
+                                return ElevatorPresets.LOW_ROCKET_HATCH;
                         }
                 }
             case MIDDLE:
                 switch (this.piece){
                     case CARGO:
-                        return RobotConfig.auto.fieldPositions.middle_rocket_port;
+                        return ElevatorPresets.MIDDLE_ROCKET_PORT;
                     case HATCH:
-                        return RobotConfig.auto.fieldPositions.middle_rocket_hatch;
+                        return ElevatorPresets.MIDDLE_ROCKET_HATCH;
                 }
             case HIGH:
                 switch (this.piece){
                     case CARGO:
-                        return RobotConfig.auto.fieldPositions.high_rocket_port;
+                        return ElevatorPresets.HIGH_ROCKET_PORT;
                     case HATCH:
-                        return RobotConfig.auto.fieldPositions.high_rocket_hatch;
+                        return ElevatorPresets.HIGH_ROCKET_HATCH;
                 }
             case OVER:
-                return RobotConfig.auto.fieldPositions.cargo_ship_wall;
+                return ElevatorPresets.CARGO_SHIP_WALL; 
             default:
-                return 0;
+                return ElevatorPresets.LOW_ROCKET_PORT;
         }
     }
 
