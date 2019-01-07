@@ -2,14 +2,13 @@ package frc.robot.commands.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
-import frc.robot.auto.actions.auto_Elevator;
+import frc.robot.commands.SetElevatorHeight;
 import frc.robot.commands.SetWrist;
-import frc.robot.subsystems.Elevator.ElevatorHeight;
+import frc.robot.subsystems.Elevator.ElevatorPresets;
 
 public class PrepareIntake extends CommandGroup {
-    public PrepareIntake(ElevatorHeight height) {
-        Robot.intake.setSpeed(0);
-        addParallel( new auto_Elevator(Robot.elevator.getHeightEnumValue(ElevatorHeight.CARGO_SHIP_HATCH), true) );
-        addParallel( new SetWrist(90) );
+    public PrepareIntake(ElevatorPresets height) {
+        addParallel( new SetElevatorHeight(Robot.elevator.getHeightEnumValue(height), false) );
+        addParallel( new SetWrist(90, false) );
     }
 }
