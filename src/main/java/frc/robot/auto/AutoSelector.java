@@ -18,10 +18,7 @@ public class AutoSelector{
     public SendableChooser<AutoMotion.goalHeight> gh;
     public SendableChooser<AutoMotion.goalType> gt;
     public SendableChooser<AutoMotion> backupAutoSelect = new SendableChooser<AutoMotion>();
-    public enum autoPathValid {
-        YES, NO, NULL;
-    }
-    public autoPathValid validPath = autoPathValid.NULL;
+    public boolean pathIsValid = true;
 
 
     ArrayList<AutoMotion> usableMotions = new ArrayList<AutoMotion>();
@@ -87,12 +84,12 @@ public class AutoSelector{
 
         if (!(goalH==goalHeight.LOW || goalH == goalHeight.OVER)&&goalT!=goalType.ROCKET){
             System.out.println("You can't select those options together");
-            this.validPath = autoPathValid.NO;
+            this.pathIsValid = false;
         }
         else{
-            this.validPath = autoPathValid.YES;
+            this.pathIsValid = true;
         }
-        SmartDashboard.putString("Valid auto path?", validPath.name());
+        SmartDashboard.putBoolean("Valid auto path?", pathIsValid);
         // TODO check if this updates every robot tick! (It doesn't)
 
         switch (this.goalT){
