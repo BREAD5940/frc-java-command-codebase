@@ -197,12 +197,12 @@ public class RobotConfig {
     }
 
     public class auto_turnInPlace {
-      public static final double kp = 0.2;
-      public static final double ki = 0.05;
+      public static final double kp = 1.0;
+      public static final double ki = 0.0;
       public static final double max_integral = 0.5;
       public static final double integral_zone = 10; // 10 degrees izone
-      public static final double min_turn_speed = -1; // in ft/sec
-      public static final double max_turn_speed = 1; // in ft/sec
+      public static final double min_turn_speed = -10; // in ft/sec
+      public static final double max_turn_speed = 10; // in ft/sec
     }
 
     public class followVisionTarget {

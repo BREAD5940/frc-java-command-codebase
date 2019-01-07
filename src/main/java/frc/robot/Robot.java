@@ -33,6 +33,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 import frc.robot.subsystems.DriveTrain.Gear;
 
+import com.kauailabs.navx.frc.AHRS;
+
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly
  * init functions and smartdashboard stuff.
@@ -40,7 +42,7 @@ import frc.robot.subsystems.DriveTrain.Gear;
  * @author Matthew Morley
  */
 public class Robot extends TimedRobot {
-
+  public static AHRS gyro = new AHRS(SPI.Port.kMXP);
   public static boolean arcade_running = false;
   public static DriveTrain drivetrain = new DriveTrain();
   public static Intake intake = new Intake();
@@ -55,7 +57,7 @@ public class Robot extends TimedRobot {
   private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 7, 3);
   private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 0, 6);
 
-  public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+  // public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
 
   AutoSelector autoSelect;
   public static AutoMotion m_auto;

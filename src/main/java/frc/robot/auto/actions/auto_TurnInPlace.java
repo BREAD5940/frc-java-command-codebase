@@ -86,7 +86,7 @@ public class auto_TurnInPlace extends Command {
     raw_left = EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.left_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
     raw_right = (-1) * EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.right_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
     Robot.drivetrain.setSpeeds(raw_left, raw_right);
-    System.out.println("Turn in place execute! Output: " + output);
+    System.out.println(String.format("Turn in place execute! Gyro output: %s,Output: %s, Raw left: %s Raw right %s", Robot.gyro.getAngle(), output, raw_left, raw_right));
   }
 
   // Make this return true when this Command no longer needs to run execute()
