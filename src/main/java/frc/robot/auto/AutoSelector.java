@@ -47,6 +47,7 @@ public class AutoSelector{
         gh.setDefaultOption("Low", goalHeight.LOW);
         gh.addOption("Middle", goalHeight.MIDDLE);
         gh.addOption("High", goalHeight.HIGH);
+        gh.addOption("Dropped into the cargo ship", goalHeight.OVER);
 
         gt = new SendableChooser<AutoMotion.goalType>();
         gt.setDefaultOption("Rocket", goalType.ROCKET);
