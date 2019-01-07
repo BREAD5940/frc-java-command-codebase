@@ -1,6 +1,6 @@
 package frc.math;
 
-public class coordinateSystems {
+public class CoordinateSystems {
   // double[] xyArray = new double[2];
   public static double pi = Math.PI;
 
@@ -56,7 +56,7 @@ public class coordinateSystems {
       double Rl = deltaLeft/ (pi * (deltaTheta/360) * 2);
       double Rr = deltaRight / (pi * (deltaTheta/360) * 2);
       double Rc = (Rl + Rr) / 2;
-      chordLen = coordinateSystems.calculateChordLen(Rc, deltaTheta);
+      chordLen = CoordinateSystems.calculateChordLen(Rc, deltaTheta);
 
       System.out.println(String.format("Rl (Rr) Rc (Chordlen): %s (%s) %s (%s)", Rl, Rr, Rc, chordLen));
 
@@ -72,7 +72,7 @@ public class coordinateSystems {
 
     System.out.println(String.format("polar theta (magnitude): %s (%s)", polarCoordinates[0], polarCoordinates[1]));
 
-    double[] cartesianCoordinates = coordinateSystems.polarToCartesian(polarCoordinates);
+    double[] cartesianCoordinates = CoordinateSystems.polarToCartesian(polarCoordinates);
 
     System.out.println(String.format("deltaX (deltaY): %s (%s)", cartesianCoordinates[0], cartesianCoordinates[1] ));
     
