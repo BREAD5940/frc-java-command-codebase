@@ -74,7 +74,7 @@ public class AutoMotion {
         if (piece!=heldPiece.NONE){
             this.bigCommandGroup = new AutoCommandGroup(genCommands());
         }else{
-            this.bigCommandGroup = new AutoCommandGroup(new auto_TurnInPlace(60));
+            this.bigCommandGroup = new AutoCommandGroup(new auto_DriveStraight(7));
         }
     }
 
