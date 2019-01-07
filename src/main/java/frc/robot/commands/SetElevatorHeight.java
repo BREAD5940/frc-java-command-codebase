@@ -5,10 +5,11 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.auto.actions;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.Elevator.ElevatorPresets;
 
 /**
  * Run the elevator to a set height during autonomous using one of the constructors lol.
@@ -16,11 +17,17 @@ import frc.robot.Robot;
  * have a bunch of different parameters, so I went crazy with mixtures of demand, isInstant,
  * and timeout.
  */
-public class auto_Elevator extends Command {
+public class SetElevatorHeight extends Command {
 
   double demand;
   boolean isInstant;
   double timeout = 10; // default dimeout to 10s
+  ElevatorPresets heightEnum;
+
+  private enum HeightMode {
+    INCHES, PRESET;
+  }
+  HeightMode heightmode;
 
   /**
    * Run the elevator to a set height during autonomous. Also set boolean flag
@@ -28,22 +35,25 @@ public class auto_Elevator extends Command {
    * @param demand in inches
    * @param isInstant flag
    */
-  public auto_Elevator(double demand, boolean isInstant) {
+  public SetElevatorHeight(double demand, boolean isInstant) {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.elevator);
     this.demand = demand;
     this.isInstant = isInstant;
+    this.heightmode = HeightMode.INCHES;
   }
 
   /**
    * This comstructor defaults to waiting for the elevator to reach the target height
    * set in inches. Timeout will default to 10 seconds 
+   * @param demand in inches
    */
-  public auto_Elevator(double demand) {
+  public SetElevatorHeight(double demand) {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.elevator);
     this.demand = demand;
     this.isInstant = false;
+    this.heightmode = HeightMode.INCHES;
   }
 
   /**
@@ -54,30 +64,32 @@ public class auto_Elevator extends Command {
    * @param isInstant flag
    * @param timeout of this command in seconds
    */
-  public auto_Elevator(double demand, boolean isInstant, double timeout) {
+  public SetElevatorHeight(double demand, boolean isInstant, double timeout) {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.elevator);
     this.demand = demand;
     this.isInstant = isInstant;
     this.timeout = timeout;
+    this.heightmode = HeightMode.INCHES;
   }
 
-  /**
-   * This comstructor defaults to waiting for the elevator to reach the target height
-   * set in inches. Timeout will *not* default and must be set in arguments.
-   * @param demand in inches
-   * @param timeout of this command in seconds
-   */
-  public auto_Elevator(double demand, double timeout) {
-    // Use requires() here to declare subsystem dependencies
+  public SetElevatorHeight(ElevatorPresets height, boolean isInstant) {
     requires(Robot.elevator);
-    this.demand = demand;
-    this.isInstant = false;
-    this.timeout = timeout;
+    this.heightEnum = height;
+    this.isInstant = isInstant;
+    this.heightmode = HeightMode.PRESET;
   }
 
   @Override
   protected void initialize() {
+    switch (heightmode) {
+      case INCHES:
+        break;
+      case PRESET:
+        demand = Robot.elevator.getHeightEnumValue(heightEnum);
+      default:
+        break;
+    }
     Robot.elevator.setHeight(demand);
     setTimeout(timeout);
   }
