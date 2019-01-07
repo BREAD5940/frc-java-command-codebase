@@ -30,6 +30,40 @@ public class Elevator extends Subsystem {
 
   float position_setpoint;
 
+
+
+  
+  public enum ElevatorHeight {
+    LOW_ROCKET_PORT,
+    MIDDLE_ROCKET_PORT,
+    HIGH_ROCKET_PORT,
+    LOW_ROCKET_HATCH,
+    MIDDLE_ROCKET_HATCH,
+    HIGH_ROCKET_HATCH,
+
+    CARGO_SHIP_HATCH, // TODO this should be even with the low rocket hatch. According to the game manual, it isn't
+    CARGO_SHIP_WALL; //top of wall
+  }
+  public static double getHeightEnumValue(ElevatorHeight height) {
+    switch (height) {
+      case LOW_ROCKET_PORT:
+        return RobotConfig.auto.fieldPositions.low_rocket_port;
+      case MIDDLE_ROCKET_PORT:
+        return RobotConfig.auto.fieldPositions.middle_rocket_port;
+      case HIGH_ROCKET_PORT:
+        return RobotConfig.auto.fieldPositions.high_rocket_port;
+      case LOW_ROCKET_HATCH:
+        return RobotConfig.auto.fieldPositions.low_rocket_hatch;
+      case MIDDLE_ROCKET_HATCH:
+        return RobotConfig.auto.fieldPositions.middle_rocket_hatch;
+      case HIGH_ROCKET_HATCH:
+        return RobotConfig.auto.fieldPositions.high_rocket_hatch;
+      default:
+        return 0;
+    }
+  }
+
+
 /**
  * Set height to raise elevator to
  * @param double height
