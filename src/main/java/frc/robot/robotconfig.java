@@ -194,10 +194,10 @@ public class RobotConfig {
 
     public class drive_straight {
       public static final double forward_kp = 2;
-      public static final double turn_kp = 1.25;
-      public static final double turn_ki = 0.01;
+      public static final double turn_kp = 0.1;
+      public static final double turn_ki = 2;
       public static final double turn_izone = 20; // +- 4 degrees of setpoint for izone
-      public static final double turn_integral_max = 3; // Maximum integral weight for turning
+      public static final double turn_integral_max = 5; // Maximum integral weight for turning
       public static final double maximum_turn_speed = 3;
       public static final double minimum_turn_speed = -maximum_turn_speed;
     }
