@@ -74,7 +74,7 @@ public class AutoMotion {
 
 
     /**
-     * based on the parameters of the current AutoMotion
+     * Generate commands based on the parameters of the current AutoMotion
      * @return
      *    returns an ArrayList of commands
      */
