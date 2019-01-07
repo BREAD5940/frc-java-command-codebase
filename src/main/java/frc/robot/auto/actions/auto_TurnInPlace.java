@@ -12,6 +12,8 @@ import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 import frc.robot.lib.TerriblePID;
+import frc.robot.lib.TerriblePID.FeedForwardMode;
+import frc.robot.lib.TerriblePID.FeedForwardBehavior;
 
 /**
  * Literally just pivot in place by a desired amount
@@ -28,12 +30,26 @@ public class auto_TurnInPlace extends Command {
   double raw_left;
   double raw_right;
 
+  // TerriblePID turnPID = new TerriblePID(RobotConfig.auto.auto_turnInPlace.kp, RobotConfig.auto.auto_turnInPlace.ki, 
+  //   RobotConfig.auto.auto_turnInPlace.min_turn_speed, 
+  //   RobotConfig.auto.auto_turnInPlace.max_turn_speed, 
+  //   RobotConfig.auto.auto_turnInPlace.integral_zone, 
+  //   RobotConfig.auto.auto_turnInPlace.max_integral);
+  
+  // public TerriblePID(double kp, double ki, double minOutput, double maxOutput, double integralZone, double maxIntegralAccum, double kf, FeedForwardMode feedforwardmode, FeedForwardBehavior feedforwardbehavior, double unitsPerQuarterWave) {
   TerriblePID turnPID = new TerriblePID(RobotConfig.auto.auto_turnInPlace.kp, RobotConfig.auto.auto_turnInPlace.ki, 
     RobotConfig.auto.auto_turnInPlace.min_turn_speed, 
     RobotConfig.auto.auto_turnInPlace.max_turn_speed, 
     RobotConfig.auto.auto_turnInPlace.integral_zone, 
-    RobotConfig.auto.auto_turnInPlace.max_integral);
-  
+    RobotConfig.auto.auto_turnInPlace.max_integral,
+    RobotConfig.auto.auto_turnInPlace.kf,
+    FeedForwardMode.LINEAR, 
+    FeedForwardBehavior.NORMAL,
+    1
+    );
+
+
+
   /**
    * Turn a specified number of degrees in the default auto gear.
    * This constructor will default to taking the angle relative to

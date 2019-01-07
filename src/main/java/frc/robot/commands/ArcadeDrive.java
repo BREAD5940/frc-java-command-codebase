@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
@@ -33,6 +35,10 @@ public class ArcadeDrive extends Command {
   protected void execute() {
     Robot.drivetrain.arcadeDriveMethod(Robot.m_oi.getForwardAxis(), Robot.m_oi.getTurnAxis());
     // Robot.drivetrain.arcadeDriveMethod(0,0.1);
+
+    // Robot.drivetrain.setPowers( Robot.m_oi.getForwardAxis() + Robot.m_oi.getTurnAxis(), 
+      // Robot.m_oi.getForwardAxis() - Robot.m_oi.getTurnAxis() );
+
     // System.out.println("arcade drive command execute");
   }
 
