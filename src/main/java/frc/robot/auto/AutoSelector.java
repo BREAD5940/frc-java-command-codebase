@@ -90,7 +90,6 @@ public class AutoSelector{
             this.pathIsValid = true;
         }
         SmartDashboard.putBoolean("Valid auto path?", pathIsValid);
-        // TODO check if this updates every robot tick! (It doesn't)
 
         switch (this.goalT){
             case ROCKET:
