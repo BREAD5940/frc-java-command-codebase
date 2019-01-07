@@ -86,8 +86,15 @@ public class AutoSelector{
                 usableMotions = checkCompat(cargoMotions);
         }
         
-        if(usableMotions.size()<=1){
-            return usableMotions.get(0);
+        if(usableMotions.size() !=1){
+            try {
+                return usableMotions.get(0);
+            } catch (IndexOutOfBoundsException e) {
+                //TODO: handle exception
+                System.out.println("array out of bounds exception on chooseMotion");
+                return defaultMotion;
+            }
+
         }else{
             for (AutoMotion motion : usableMotions){
                 backupAutoSelect.addOption(motion.getName(), motion);
