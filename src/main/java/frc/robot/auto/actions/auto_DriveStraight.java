@@ -8,6 +8,7 @@
 package frc.robot.auto.actions;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
@@ -25,9 +26,9 @@ public class auto_DriveStraight extends Command {
   double distance;
   double actionMaxSpeed;
   double timeout = 15;
-  double start_left_distance = Robot.drivetrain.getLeftDistance();
+  double start_left_distance;
   double start_right_distance = Robot.drivetrain.getRightDistance();
-  double end_distance_left;
+  double end_distance;
   double start_gyro_angle;
   double target_gyro_angle;
   double current_angle;
@@ -37,7 +38,7 @@ public class auto_DriveStraight extends Command {
   double left_speed_raw, right_speed_raw;
 
   private TerriblePID forwardPID = new TerriblePID(
-    RobotConfig.auto.drive_straight.turn_kp, 
+    RobotConfig.auto.drive_straight.forward_kp, 
     RobotConfig.auto.drive_auto_forward_velocity_min,
     RobotConfig.auto.drive_auto_forward_velocity_max 
   );
@@ -95,19 +96,23 @@ public class auto_DriveStraight extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    start_left_distance = Robot.drivetrain.getLeftDistance();
+    start_right_distance = Robot.drivetrain.getRightDistance();
     current_angle = Robot.gyro.getAngle();
-    end_distance_left = start_left_distance + distance;
+    end_distance = start_left_distance + distance;
     setTimeout(timeout); // set the timeout
-    forwardPID.setSetpoint(end_distance_left);
+    forwardPID.setSetpoint(end_distance);
     turnPID.setSetpoint(target_gyro_angle);
     forwardPID.setMaxOutput(actionMaxSpeed);
+    
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     forward_speed = forwardPID.update(Robot.drivetrain.getLeftDistance());
-    turn_speed = 1 + turnPID.update(Robot.gyro.getAngle());
+    turn_speed = turnPID.update(Robot.gyro.getAngle());
+    SmartDashboard.putNumber("TurnPID output",  turnPID.update(Robot.gyro.getAngle()));
 
     left_speed_raw = EncoderLib.distanceToRaw(forward_speed + turn_speed, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, 
       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
@@ -116,24 +121,29 @@ public class auto_DriveStraight extends Command {
 
     Robot.drivetrain.setSpeeds(left_speed_raw, right_speed_raw);
 
-    System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeftDistance() + 
-      " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());
-    System.out.println("TURN PID: Setpoint: " + turnPID.getSetpoint() + " Measured: " + Robot.gyro.getAngle() + 
-      " Error: " + turnPID.getError() + " OUTPUT VELOCITY (ft/s): " + turnPID.getOutput());
+    // System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeftDistance() + 
+      // " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());
+    // System.out.println("TURN PID: Setpoint: " + turnPID.getSetpoint() + " Measured: " + Robot.gyro.getAngle() + 
+      // " Error: " + turnPID.getError() + " OUTPUT VELOCITY (ft/s): " + turnPID.getOutput());
+    System.out.println(String.format("FORWARD PID: setpoint (error) output | %s (%s) %s", 
+      forwardPID.getSetpoint(), forwardPID.getError(), forwardPID.getOutput()));
+    System.out.println(String.format("TURN PID: setpoint (error) output | %s (%s) %s", 
+      turnPID.getSetpoint(), turnPID.getError(), turnPID.getOutput()));
 
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.distance) < RobotConfig.auto.tolerences.position_tolerence) 
-      // && (Math.abs(Robot.drivetrain.getLeftDistance() - this.distance) < RobotConfig.drive_auto_position_tolerence) 
-      && (Math.abs(Robot.drivetrain.getLeftVelocity()) < RobotConfig.auto.tolerences.velocity_tolerence) 
-      && (Math.abs(Robot.drivetrain.getRightVelocity()) < RobotConfig.auto.tolerences.position_tolerence)
-      && (Math.abs(target_gyro_angle - current_angle) < RobotConfig.auto.tolerences.angle_tolerence ))
-      || (isTimedOut()) 
-    ){ return true; }
-    else { return false; }
+    // if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.distance) < RobotConfig.auto.tolerences.position_tolerence) 
+    //   // && (Math.abs(Robot.drivetrain.getLeftDistance() - this.distance) < RobotConfig.drive_auto_position_tolerence) 
+    //   && (Math.abs(Robot.drivetrain.getLeftVelocity()) < RobotConfig.auto.tolerences.velocity_tolerence) 
+    //   && (Math.abs(Robot.drivetrain.getRightVelocity()) < RobotConfig.auto.tolerences.position_tolerence)
+    //   && (Math.abs(target_gyro_angle - current_angle) < RobotConfig.auto.tolerences.angle_tolerence ))
+    //   || (isTimedOut()) 
+    // ){ return true; }
+    // else { return false; }
+    return false;
   }
 
   // Called once after isFinished returns true
