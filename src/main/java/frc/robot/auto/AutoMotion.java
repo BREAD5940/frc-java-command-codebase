@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 import frc.robot.auto.actions.auto_DriveStraight;
 import frc.robot.commands.SetElevatorHeight;
+import frc.robot.commands.groups.PrepareIntake;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
 import frc.robot.auto.actions.auto_TurnInPlace;
 import frc.robot.auto.groups.*;
@@ -92,13 +93,17 @@ public class AutoMotion {
             //TODO Align with line (IR sensor?)
         }
 
-        toReturn.add(new SetElevatorHeight(getElevatorPreset(), false)); // TODO is this the right constructor? Maybe pass an ElevatorPresets enum
+        toReturn.add(new PrepareIntake(getElevatorPreset()));
 
         switch (piece){
             case HATCH:
-                //TODO when we have a hatch outtake command, put it here
+                toReturn.add(new PlaceHatch());
             case CARGO:
-                //TODO when we have a cargo outtake command, put it here
+                if(gHeight == goalHeight.OVER){
+                    toReturn.add(new DropCargo(true));
+                }else{
+                    toReturn.add(new DropCargo(false));
+                }
             default:
                 break;
         }
