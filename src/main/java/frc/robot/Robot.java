@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.AutoSelector;
-import frc.robot.auto.actions.auto_DriveDistance;
+import frc.robot.auto.actions.DriveDistance;
 import frc.robot.auto.actions.auto_DriveTrajectoryPathfinder;
 import frc.robot.lib.EncoderLib;
 import edu.wpi.first.wpilibj.command.Command;
