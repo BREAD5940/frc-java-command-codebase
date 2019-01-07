@@ -2,7 +2,7 @@ package frc.robot.lib;
 
 import frc.robot.Robot;
 // import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import frc.math.coordinateSystems;
+import frc.math.CoordinateSystems;
 
 import java.lang.ArrayIndexOutOfBoundsException;
 
@@ -86,7 +86,7 @@ public class Odometry {
         // incrament/decrement the global pos by that much
         // TODO tests for negtive movement
 
-        cartesianCoordinates = coordinateSystems.calculaeDisplacement(deltaLeft, deltaRight, oldAngle, currentAngle);
+        cartesianCoordinates = CoordinateSystems.calculaeDisplacement(deltaLeft, deltaRight, oldAngle, currentAngle);
 
         // Update the "global" x, y, theta values and log them to the array
         globalX += cartesianCoordinates[0];

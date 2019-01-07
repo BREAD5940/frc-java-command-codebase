@@ -7,7 +7,7 @@ import java.util.List;
 
 import java.util.ArrayList;
 
-import frc.math.coordinateSystems;
+import frc.math.CoordinateSystems;
 
 import org.junit.jupiter.api.Test;
 
@@ -35,14 +35,14 @@ public class MathTests {
         double[] expectedQ3n = {1.879, 0.684};
         double[] expectedQ4p = {1.532, -1.286};
         double[] expectedQ4n = {-2.298, 1.928};
-        double[] calcQ1p = coordinateSystems.polarToCartesian(polarQuadrent1positiveMagnitude);
-        double[] calcQ1n = coordinateSystems.polarToCartesian(polarQuadrent1negativeMagnitude);
-        double[] calcQ2p = coordinateSystems.polarToCartesian(polarQuadrent2positiveMagnitude);
-        double[] calcQ2n = coordinateSystems.polarToCartesian(polarQuadrent2negativeMagnitude);
-        double[] calcQ3p = coordinateSystems.polarToCartesian(polarQuadrent3positiveMagnitude);
-        double[] calcQ3n = coordinateSystems.polarToCartesian(polarQuadrent3negativeMagnitude);
-        double[] calcQ4p = coordinateSystems.polarToCartesian(polarQuadrent4positiveMagnitude);
-        double[] calcQ4n = coordinateSystems.polarToCartesian(polarQuadrent4negativeMagnitude);
+        double[] calcQ1p = CoordinateSystems.polarToCartesian(polarQuadrent1positiveMagnitude);
+        double[] calcQ1n = CoordinateSystems.polarToCartesian(polarQuadrent1negativeMagnitude);
+        double[] calcQ2p = CoordinateSystems.polarToCartesian(polarQuadrent2positiveMagnitude);
+        double[] calcQ2n = CoordinateSystems.polarToCartesian(polarQuadrent2negativeMagnitude);
+        double[] calcQ3p = CoordinateSystems.polarToCartesian(polarQuadrent3positiveMagnitude);
+        double[] calcQ3n = CoordinateSystems.polarToCartesian(polarQuadrent3negativeMagnitude);
+        double[] calcQ4p = CoordinateSystems.polarToCartesian(polarQuadrent4positiveMagnitude);
+        double[] calcQ4n = CoordinateSystems.polarToCartesian(polarQuadrent4negativeMagnitude);
 
         // Check all 16 indexes of the expected vs actual cartesial coordinates
         assertEquals( expectedQ1p[0], calcQ1p[0], 0.01 );
@@ -77,9 +77,9 @@ public class MathTests {
         double expected2 = 9.877;
         double expected3 = 4.854;
 
-        double actual1 = coordinateSystems.calculateChordLen(input1[0], input1[1]);
-        double actual2 = coordinateSystems.calculateChordLen(input2[0], input2[1]);
-        double actual3 = coordinateSystems.calculateChordLen(input3[0], input3[1]);
+        double actual1 = CoordinateSystems.calculateChordLen(input1[0], input1[1]);
+        double actual2 = CoordinateSystems.calculateChordLen(input2[0], input2[1]);
+        double actual3 = CoordinateSystems.calculateChordLen(input3[0], input3[1]);
 
         assertEquals(expected1, actual1, 0.01);
         assertEquals(expected2, actual2, 0.01);
@@ -112,7 +112,7 @@ public class MathTests {
         expecteds[5] = new double[]{0.64, 3.828};
 
         for ( int i=0; i < tests; i++) {
-            calculateds[i] = coordinateSystems.calculaeDisplacement(inputs[i][0], inputs[i][1], inputs[i][2], inputs[i][3]);
+            calculateds[i] = CoordinateSystems.calculaeDisplacement(inputs[i][0], inputs[i][1], inputs[i][2], inputs[i][3]);
             System.out.println("Calcualteds: " + calculateds[i][0] + ", " + calculateds[i][1]);
             System.out.println("Expecteds: " + expecteds[i][0] + ", " + expecteds[i][1]);
 

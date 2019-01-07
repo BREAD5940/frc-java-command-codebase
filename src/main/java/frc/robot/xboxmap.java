@@ -4,7 +4,7 @@ public interface xboxmap {
 
 	public interface Axis {
 		public static final int LEFT_JOYSTICK_X = 0;
-		
+
 		public static final int LEFT_JOYSTICK_Y = 1;
 
 		public static final int LEFT_TRIGGER = 2;
@@ -12,7 +12,7 @@ public interface xboxmap {
 		public static final int RIGHT_TRIGGER = 3;
 
 		public static final int RIGHT_JOYSTICK_X = 4;
-		
+
 		public static final int RIGHT_JOYSTICK_Y = 5;
 	}
 
@@ -30,8 +30,8 @@ public interface xboxmap {
 		public static final int RB_BUTTON = 6;
 
 		/**
-		 * This is the small buttons right by the xBox logo. I am not sure of
-		 * the actual name.
+		 * This is the small buttons right by the xBox logo. I am not sure of the actual
+		 * name.
 		 */
 		public static final int LEFT_START_BUTTON = 7;
 
