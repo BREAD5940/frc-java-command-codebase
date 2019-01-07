@@ -80,6 +80,10 @@ public class AutoSelector{
         this.goalT = gt.getSelected();
         this.piece = hp.getSelected();
 
+        if (!(goalH==goalHeight.LOW || goalH == goalHeight.OVER)&&goalT!=goalType.ROCKET){
+            System.out.println("You can't select those options together");
+        }
+
         switch (this.goalT){
             case ROCKET:
                 usableMotions = checkCompat(rocketMotions);
