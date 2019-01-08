@@ -42,19 +42,19 @@ import com.kauailabs.navx.frc.AHRS;
  * @author Matthew Morley
  */
 public class Robot extends TimedRobot {
-  public static AHRS gyro = new AHRS(SPI.Port.kMXP);
-  public static boolean arcade_running = false;
-  public static DriveTrain drivetrain = new DriveTrain();
-  public static Intake intake = new Intake();
-  public static Elevator elevator = new Elevator();
-  // public static Wrist wrist = new Wrist();
-  public static LimeLight limelight = new LimeLight();
-  /** Poorly named Operator Input value for Robot */
   public static OI m_oi;
-  // public static TerribleLogger logger = new TerribleLogger();
-
+  public static double startingDistance;
   public static double elevator_setpoint = 0;
   public static double wrist_setpoint = 0;
+  
+  public static boolean arcade_running = false;
+  public static Intake intake = new Intake();
+  public static Elevator elevator = new Elevator();
+  public static DriveTrain drivetrain = new DriveTrain();  
+  // public static Wrist wrist = new Wrist();
+  public static AHRS gyro = new AHRS(SPI.Port.kMXP);
+  public static LimeLight limelight = new LimeLight();
+  /** Poorly named Operator Input value for Robot */
   private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 7, 3);
   private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 0, 6);
 
@@ -67,7 +67,7 @@ public class Robot extends TimedRobot {
 
   Compressor compressor = new Compressor(9);
 
-  public static double startingDistance;
+  
 
   // Various pneumatic shifting methods
   public static void drivetrain_shift_high() {
