@@ -40,45 +40,45 @@ public class DriveTrajectoryPathfinder extends Command {
     requires(Robot.drivetrain);
 
     File traj = new File("/home/lvuser/deploy/paths/test.pf1.csv");
-    Trajectory m_sourceTrajectory = Pathfinder.readFromCSV(traj);
+    m_sourceTrajectory = Pathfinder.readFromCSV(traj);
     File leftTraj = new File("/home/lvuser/deploy/paths/test.left.pf1.csv");
-    Trajectory m_leftTrajectory = Pathfinder.readFromCSV(leftTraj);
+    m_leftTrajectory = Pathfinder.readFromCSV(leftTraj);
     File rightTraj = new File("/home/lvuser/deploy/paths/test.right.pf1.csv");
-    Trajectory m_rightTrajectory = Pathfinder.readFromCSV(rightTraj);
+    m_rightTrajectory = Pathfinder.readFromCSV(rightTraj);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
 
-    if(RobotConfig.auto.auto_gear == Gear.LOW){
-      left_kp = RobotConfig.driveTrain.left_talons.velocity_kp_low;
-      left_ki = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_low;
-      left_kd = RobotConfig.driveTrain.left_talons.velocity_kd_low;
-      left_kv = RobotConfig.driveTrain.left_talons.velocity_kv_low;
-      left_ka = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_low;
+    // if(RobotConfig.auto.auto_gear == Gear.LOW){
+    //   left_kp = RobotConfig.driveTrain.left_talons.velocity_kp_low;
+    //   left_ki = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_low;
+    //   left_kd = RobotConfig.driveTrain.left_talons.velocity_kd_low;
+    //   left_kv = RobotConfig.driveTrain.left_talons.velocity_kv_low;
+    //   left_ka = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_low;
 
-      right_kp = RobotConfig.driveTrain.left_talons.velocity_kp_low;
-      right_ki = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_low;
-      right_kd = RobotConfig.driveTrain.left_talons.velocity_kd_low;
-      right_kv = RobotConfig.driveTrain.left_talons.velocity_kv_low;
-      right_ka = 0;//RobotConfig.driveTrain.left_talons.velocity_ka_low;
-    }
+    //   right_kp = RobotConfig.driveTrain.left_talons.velocity_kp_low;
+    //   right_ki = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_low;
+    //   right_kd = RobotConfig.driveTrain.left_talons.velocity_kd_low;
+    //   right_kv = RobotConfig.driveTrain.left_talons.velocity_kv_low;
+    //   right_ka = 0;//RobotConfig.driveTrain.left_talons.velocity_ka_low;
+    // }
 
-    // Modify the variables if the gear is high, yes this is a bit of a hack but 
-    else {
-      left_kp = RobotConfig.driveTrain.left_talons.velocity_kp_high;
+    // // Modify the variables if the gear is high, yes this is a bit of a hack but 
+    // else {
+      left_kp = 1.2;//RobotConfig.driveTrain.left_talons.velocity_kp_high;
       left_ki = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_high;
-      left_kd = RobotConfig.driveTrain.left_talons.velocity_kd_high;
+      left_kd = 0;//RobotConfig.driveTrain.left_talons.velocity_kd_high;
       left_kv = RobotConfig.driveTrain.left_talons.velocity_kv_high;
       left_ka = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_high;
 
-      right_kp = RobotConfig.driveTrain.left_talons.velocity_kp_high;
+      right_kp = 1.2;//RobotConfig.driveTrain.left_talons.velocity_kp_high;
       right_ki = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_high;
-      right_kd = RobotConfig.driveTrain.left_talons.velocity_kd_high;
+      right_kd = 0;//RobotConfig.driveTrain.left_talons.velocity_kd_high;
       right_kv = RobotConfig.driveTrain.left_talons.velocity_kv_high;
       right_ka = 0;//RobotConfig.driveTrain.left_talons.velocity_ka_high;
-    }
+    // }
 
     leftStartDistance = Robot.drivetrain.getLeftDistance();
     rightStartDistance = Robot.drivetrain.getRightDistance();
@@ -95,26 +95,28 @@ public class DriveTrajectoryPathfinder extends Command {
   @Override
   protected void execute() {
     m_leftOutput = m_leftFollower.calculate(Robot.drivetrain.getLeftDistance() - leftStartDistance) + RobotConfig.driveTrain.left_static_kv;
-    m_rightOutput = m_rightFollower.calculate(Robot.drivetrain.getLeftDistance() - rightStartDistance) + RobotConfig.driveTrain.right_static_kv;
+    m_rightOutput = m_rightFollower.calculate(Robot.drivetrain.getRightDistance() - rightStartDistance) + RobotConfig.driveTrain.right_static_kv;
     
     desired_heading = Pathfinder.r2d(m_leftFollower.getHeading());
     m_angularError = Pathfinder.boundHalfDegrees(desired_heading - Robot.gyro.getAngle());
         
     // TODO make sure that the sign is the correct direction, it should be!
-    m_turn = -RobotConfig.auto.pathfinder.gyro_correct_kp * m_angularError;
+    m_turn = 0;// -RobotConfig.auto.pathfinder.gyro_correct_kp * m_angularError;
     
     Robot.drivetrain.setVoltages(m_leftOutput + m_turn, m_rightOutput - m_turn);
 
-    SmartDashboard.putString("Left pathfinder data: ", 
-      String.format("Velocity (position) heading: %s (%s) %s", 
+    SmartDashboard.putString("Left target pathfinder data: ", 
+      String.format("Velocity (position) heading (current): %s (%s) %s (%s)", 
       m_leftFollower.getSegment().velocity, 
       m_leftFollower.getSegment().position, 
-      m_leftFollower.getSegment().heading));
-    SmartDashboard.putString("Right pathfinder data: ", 
-      String.format("Velocity (position) heading: %s (%s) %s", 
+      m_leftFollower.getSegment().heading,
+      Robot.drivetrain.getLeftDistance()));
+    SmartDashboard.putString("Right target pathfinder data: ", 
+      String.format("Velocity (position) heading (current): %s (%s) %s (%s)", 
       m_rightFollower.getSegment().velocity, 
       m_rightFollower.getSegment().position, 
-      m_rightFollower.getSegment().heading));
+      m_rightFollower.getSegment().heading,
+      Robot.drivetrain.getRightDistance()));
 
   }
 

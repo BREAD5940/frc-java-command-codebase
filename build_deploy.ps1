@@ -1,4 +1,4 @@
-$name = (Get-NetConnectionProfile -InterfaceAlias "Wi-Fi 3").name
+$name = (Get-NetConnectionProfile -InterfaceAlias "Wi-Fi 4").name
 if ( $name -match "5940" ) {
   # Connected to some sort of 5940 network
   ./buildDeploy.bat

@@ -95,11 +95,10 @@ public class Robot extends TimedRobot {
     m_oi = new OI();
 
     autoSelect = new AutoSelector();
-    SmartDashboard.putData("Starting Piece", autoSelect.hp);
+    // SmartDashboard.putData("Starting Piece", autoSelect.hp);
     SmartDashboard.putData("Goal Height", autoSelect.gh);
-    SmartDashboard.putData("Goal Type", autoSelect.gt);
+    // SmartDashboard.putData("Goal Type", autoSelect.gt);
     SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
-
 
     compressor.setClosedLoopControl(true);
 
@@ -147,6 +146,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    DriveTrajectoryPathfinder meme = new DriveTrajectoryPathfinder("file");
+    meme.start();
 
     gyro.reset(); // Reset the current gyro heading to zero
     drivetrain.zeroEncoders();
