@@ -8,21 +8,28 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 // import frc.robot.Robot;
-import frc.robot.auto.AutoMotion;
+import frc.robot.auto.AutoMotion.heldPiece;;
 
 /**
  * Shifter command to shift to high gear
  */
 public class RunAuto extends Command {
-  public RunAuto(AutoMotion.heldPiece piece) {
+  public heldPiece piece;
+
+  public RunAuto(heldPiece piece) {
     // Use requires() here to declare subsystem dependencies
+    this.piece = piece;
+    
+
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // pick path and start command
+    Robot.m_auto = Robot.autoSelect.chooseMotion(piece);
+    Robot.m_auto.getCommandGroup().start();
   }
 
   // Called repeatedly when this Command is scheduled to run

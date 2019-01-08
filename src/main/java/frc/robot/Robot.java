@@ -99,7 +99,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Goal Height", autoSelect.gh);
     SmartDashboard.putData("Goal Type", autoSelect.gt);
     SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
-    m_auto = autoSelect.chooseMotion();
+
 
     compressor.setClosedLoopControl(true);
 
@@ -147,8 +147,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-
-    m_auto.getCommandGroup().start();
 
     gyro.reset(); // Reset the current gyro heading to zero
     drivetrain.zeroEncoders();

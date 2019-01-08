@@ -77,10 +77,10 @@ public class AutoSelector{
    * selects the best AutoMotion for the game
    * all inputs from sendable chooser
    */
-  public AutoMotion chooseMotion() {
+  public AutoMotion chooseMotion(heldPiece piece) {
     this.goalH = gh.getSelected();
     this.goalT = gt.getSelected();
-    this.piece = hp.getSelected();
+    this.piece = piece;
 
     if (!(goalH==goalHeight.LOW || goalH == goalHeight.OVER)&&goalT!=goalType.ROCKET){
       System.out.println("You can't select those options together");

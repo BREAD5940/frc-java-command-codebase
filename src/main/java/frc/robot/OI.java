@@ -33,7 +33,7 @@ public class OI {
     open_clamp_button.whenPressed(new OpenClamp());
     close_clamp_button.whenPressed(new CloseClamp());
     auto_place_cargo_button.whenPressed(new RunAuto(AutoMotion.heldPiece.CARGO));
-    auto_place_hatch_button.whenPressed(new RunAuto(AutoMotion.heldPiece.CARGO));
+    auto_place_hatch_button.whenPressed(new RunAuto(AutoMotion.heldPiece.HATCH));
   }
 
   public double getForwardAxis() { return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis); }
