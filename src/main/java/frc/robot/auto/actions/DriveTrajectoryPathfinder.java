@@ -101,10 +101,10 @@ public class DriveTrajectoryPathfinder extends Command {
     m_angularError = Pathfinder.boundHalfDegrees(desired_heading - Robot.gyro.getAngle());
         
     // TODO make sure that the sign is the correct direction, it should be!
-    m_turn = RobotConfig.auto.pathfinder.gyro_correct_kp * m_angularError;
+    m_turn = -RobotConfig.auto.pathfinder.gyro_correct_kp * m_angularError;
     
-    // Robot.drive.addDesiredVelocities(m_leftFollower.getSegment().velocity, m_rightFollower.getSegment().velocity);
     Robot.drivetrain.setVoltages(m_leftOutput + m_turn, m_rightOutput - m_turn);
+
     SmartDashboard.putString("Left pathfinder data: ", 
       String.format("Velocity (position) heading: %s (%s) %s", 
       m_leftFollower.getSegment().velocity, 
