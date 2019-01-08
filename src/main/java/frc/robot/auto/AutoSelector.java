@@ -73,8 +73,9 @@ public class AutoSelector{
   
 
   /**
-   * selects the best AutoMotion for the game
-   * all inputs from sendable chooser
+   * selects the best AutoMotion for the current moment
+   * @param goal
+   *    the desired goal of the AutoMotion
    */
   public AutoMotion chooseMotion(goalType goal) {
     this.goalH = gh.getSelected();
@@ -87,7 +88,8 @@ public class AutoSelector{
       this.piece=heldPiece.NONE;
     }
 
-    if (!(goalH==goalHeight.LOW || goalH == goalHeight.OVER)&&!(goalT==goalType.ROCKET_CARGO||goalT==goalType.ROCKET_HATCH)){
+    if (!(goalH==goalHeight.LOW || goalH == goalHeight.OVER)
+        &&!(goalT==goalType.ROCKET_CARGO||goalT==goalType.ROCKET_HATCH)){
       System.out.println("You can't select those options together");
       this.pathIsValid = false;
     }
@@ -101,7 +103,7 @@ public class AutoSelector{
     }else if (goalT==goalType.CARGO_CARGO||goalT==goalType.CARGO_HATCH){
       usableMotions=checkCompat(cargoMotions);
     }else{
-      
+      // TODO put retrieve motions check here
     }
     
     if(usableMotions.size() !=1){

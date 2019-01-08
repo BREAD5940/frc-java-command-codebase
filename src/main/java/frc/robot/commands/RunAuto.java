@@ -13,7 +13,7 @@ import frc.robot.Robot;
 import frc.robot.auto.AutoMotion.goalType;
 
 /**
- * Shifter command to shift to high gear
+ * Selects and runs an auto command group
  */
 public class RunAuto extends Command {
   public goalType goal;

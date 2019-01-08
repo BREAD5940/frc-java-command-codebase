@@ -23,10 +23,10 @@ public class AutoMotion {
   }
   
   /**
-   * different heights of goals
-   * LOW: the lowest level of the rocket; through the hatch of the cargo ship
-   * MIDDLE: the middle level of the rocket
-   * HIGH: the highest level of the rocket
+   * different heights of goals.
+   * LOW: the lowest level of the rocket & through the hatch of the cargo ship;
+   * MIDDLE: the middle level of the rocket;
+   * HIGH: the highest level of the rocket;
    * OVER: dropped into the cargo ship from above
    */
   public enum goalHeight{
@@ -35,15 +35,16 @@ public class AutoMotion {
 
   // TODO remember there's actually a difference for cargo, but not for hatches
   /**
-   * different types of goals on the field
-   * CARGO_CARGO: put cargo in the cargo ship
-   * ROCKET_CARGO: put cargo in the rocket
-   * CARGO_HATCH: put a hatch on the cargo ship
-   * ROCKET_HATCH: put a hatch on the rocket
-   * RETRIEVE_HATCH: pick up a hatch from the loading station
+   * different types of goals on the field.
+   * CARGO_CARGO: put cargo in the cargo ship;
+   * ROCKET_CARGO: put cargo in the rocket;
+   * CARGO_HATCH: put a hatch on the cargo ship;
+   * ROCKET_HATCH: put a hatch on the rocket;
+   * RETRIEVE_HATCH: pick up a hatch from the loading station;
+   * RETRIEVE_CARGO: pick up cargo from an unspecified location
    */
   public enum goalType{
-    CARGO_CARGO, CARGO_HATCH, ROCKET_CARGO, ROCKET_HATCH, RETRIEVE_HATCH
+    CARGO_CARGO, CARGO_HATCH, ROCKET_CARGO, ROCKET_HATCH, RETRIEVE_HATCH, RETRIEVE_CARGO
   }
 
   String setup;

@@ -22,25 +22,27 @@ public class OI {
 
   private Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
   private Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
-  private Button open_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
-  private Button close_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
+  // private Button open_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
+  // private Button close_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
 
   Button auto_place_cargo_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
   Button auto_place_hatch_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
-  Button auto_place_cargo_rocket_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_JOYSTICK_BUTTON);
-  Button auto_place_hatch_rocket_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_JOYSTICK_BUTTON);
+  Button auto_place_cargo_rocket_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
+  Button auto_place_hatch_rocket_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
   Button auto_grab_hatch_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
+  Button auto_grab_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
 
   public OI() {
     shift_up_button.whenPressed(new DriveShiftHigh());
     shift_down_button.whenPressed(new DriveShiftLow());
-    open_clamp_button.whenPressed(new OpenClamp());
-    close_clamp_button.whenPressed(new CloseClamp());
+    // open_clamp_button.whenPressed(new OpenClamp());
+    // close_clamp_button.whenPressed(new CloseClamp());
     auto_place_cargo_cargo_button.whenPressed(new RunAuto(goalType.CARGO_CARGO));
     auto_place_hatch_cargo_button.whenPressed(new RunAuto(goalType.CARGO_HATCH));
     auto_place_cargo_rocket_button.whenPressed(new RunAuto(goalType.ROCKET_CARGO));
     auto_place_hatch_rocket_button.whenPressed(new RunAuto(goalType.ROCKET_HATCH));
-    auto_grab_hatch_button.whenPressed(new RunAuto(AutoMotion.goalType.RETRIEVE_HATCH));
+    auto_grab_hatch_button.whenPressed(new RunAuto(goalType.RETRIEVE_HATCH));
+    auto_grab_cargo_button.whenPressed(new RunAuto(goalType.RETRIEVE_CARGO));
   }
 
   public double getForwardAxis() { return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis); }
