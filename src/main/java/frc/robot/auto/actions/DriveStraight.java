@@ -125,10 +125,10 @@ public class DriveStraight extends Command {
       // " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());
     // System.out.println("TURN PID: Setpoint: " + turnPID.getSetpoint() + " Measured: " + Robot.gyro.getAngle() + 
       // " Error: " + turnPID.getError() + " OUTPUT VELOCITY (ft/s): " + turnPID.getOutput());
-    System.out.println(String.format("FORWARD PID: setpoint (error) output | %s (%s) %s", 
-      forwardPID.getSetpoint(), forwardPID.getError(), forwardPID.getOutput()));
-    System.out.println(String.format("TURN PID: setpoint (error) output | %s (%s) %s", 
-      turnPID.getSetpoint(), turnPID.getError(), turnPID.getOutput()));
+    System.out.println(String.format("FORWARD PID: setpoint (error) output (iAccum) | %s (%s) %s (%s)", 
+      forwardPID.getSetpoint(), forwardPID.getError(), forwardPID.getOutput(), forwardPID.getIntegralAccum()));
+    System.out.println(String.format("TURN PID: setpoint (error) output (iAccum) | %s (%s) %s (%s)", 
+      turnPID.getSetpoint(), turnPID.getError(), turnPID.getOutput(), turnPID.getIntegralAccum()));
 
   }
 

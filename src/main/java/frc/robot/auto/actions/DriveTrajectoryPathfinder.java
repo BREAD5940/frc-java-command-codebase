@@ -33,16 +33,14 @@ public class DriveTrajectoryPathfinder extends Command {
   }
 
   public DriveTrajectoryPathfinder(String file) {
-    File traj = new File("/home/lvuser/deploy/paths/test.pf1.traj");
-    SmartDashboard.putBoolean("Source exists", true);
-    m_sourceTrajectory = Pathfinder.readFromFile(traj);
-    File leftTraj = new File("/home/deploy/lvuser/paths/test.left.pf1.traj");
-    SmartDashboard.putBoolean("Left exists", true);
-    m_leftTrajectory = Pathfinder.readFromFile(leftTraj);
-    File rightTraj = new File("/home/deploy/lvuser/paths/test.right.pf1.traj");
-    SmartDashboard.putBoolean("Right exists", true);
-    m_rightTrajectory = Pathfinder.readFromFile(rightTraj);
     requires(Robot.drivetrain);
+
+    File traj = new File("/home/lvuser/deploy/paths/test.pf1.csv");
+    Trajectory m_sourceTrajectory = Pathfinder.readFromCSV(traj);
+    File leftTraj = new File("/home/lvuser/deploy/paths/test.left.pf1.csv");
+    Trajectory m_leftTrajectory = Pathfinder.readFromCSV(leftTraj);
+    File rightTraj = new File("/home/lvuser/deploy/paths/test.right.pf1.csv");
+    Trajectory m_rightTrajectory = Pathfinder.readFromCSV(rightTraj);
   }
 
   // Called just before this Command runs the first time

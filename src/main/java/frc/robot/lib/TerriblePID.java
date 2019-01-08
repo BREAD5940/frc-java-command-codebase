@@ -131,6 +131,14 @@ public class TerriblePID {
     return output;
   }
 
+  /** 
+   * Get the value of the integral accumulator
+   * @return integral accum
+   */
+  public double getIntegralAccum() {
+    return iAccum;
+  }
+
   /**
    * Clamps the integral accumulator to the max output/min accum as set up on class construction
    * @param iAccum
@@ -203,6 +211,7 @@ public class TerriblePID {
      */
     pOutput = kp * error;
 
+    System.out.println("ki is " + ki);
     /**
      * The iAccum should start at 0, but is incramented by error 
      * times dt. This is then clamped to the minimum/maximum of 
