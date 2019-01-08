@@ -19,7 +19,7 @@ public class CloseClamp extends Command {
     // requires(Robot.intake);
   }
 
-  // private static final intake intake  = new intake();
+  // private static final intake intake = new intake();
 
   // Called just before this Command runs the first time
   @Override

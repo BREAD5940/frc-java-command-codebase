@@ -3,12 +3,13 @@
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
+/* well this is 2019 so it probably doesn't matter.                           */
 /*----------------------------------------------------------------------------*/
 
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
+// import frc.robot.Robot;
 
   /**
    * auto_DriveDistance is a basic auto action. It should drive in a straight-ish line, as it uses 

@@ -1,23 +1,26 @@
 package frc.robot.commands;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
+// import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 /**
- * Default drivetrain command. This *should* be called as the default drivetrain command and be overridden in autononmous (provided auto requires drivetrain???)
- * This command uses the Robot.m_oi to set the speed based on xbox controller inputs, arcade style
+ * Default drivetrain command. This *should* be called as the default drivetrain
+ * command and be overridden in autononmous (provided auto requires
+ * drivetrain???) This command uses the Robot.m_oi to set the speed based on
+ * xbox controller inputs, arcade style
+ * 
  * @author Matthew Morley
  */
 public class ArcadeDrive extends Command {
-  
+
   // System.out.println("im an arcade drive command!");
-  /** 
+  /**
    * This command runs arcade drive as the default command for the drivetrain.
    * This command will reserve the drivetrain.
    */
-  public ArcadeDrive(){
+  public ArcadeDrive() {
     requires(Robot.drivetrain);
   }
 
@@ -33,11 +36,12 @@ public class ArcadeDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Robot.drivetrain.arcadeDriveMethod(Robot.m_oi.getForwardAxis(), Robot.m_oi.getTurnAxis());
+    // Robot.drivetrain.arcadeDriveMethod(Robot.m_oi.getForwardAxis(),
+    // Robot.m_oi.getTurnAxis());
     // Robot.drivetrain.arcadeDriveMethod(0,0.1);
 
-    Robot.drivetrain.setPowers( Robot.m_oi.getForwardAxis() + Robot.m_oi.getTurnAxis(), 
-      Robot.m_oi.getForwardAxis() - Robot.m_oi.getTurnAxis() );
+    Robot.drivetrain.setPowers(Robot.m_oi.getForwardAxis() + Robot.m_oi.getTurnAxis(),
+        Robot.m_oi.getForwardAxis() - Robot.m_oi.getTurnAxis());
 
     // System.out.println("arcade drive command execute");
   }

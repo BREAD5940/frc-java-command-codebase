@@ -11,14 +11,14 @@ import frc.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-
 /**
  * Shifter command to shift to high gear
  */
 public class DriveShiftHigh extends Command {
   public DriveShiftHigh() {
     // Use requires() here to declare subsystem dependencies
-    // requires(Robot.drivetrain); // I don't think it's strictly necessary to require the drivetrain for an instant action
+    // requires(Robot.drivetrain); // I don't think it's strictly necessary to
+    // require the drivetrain for an instant action
   }
 
   // Called just before this Command runs the first time

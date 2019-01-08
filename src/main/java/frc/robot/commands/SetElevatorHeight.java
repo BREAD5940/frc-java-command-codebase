@@ -12,10 +12,10 @@ import frc.robot.Robot;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
 
 /**
- * Run the elevator to a set height during autonomous using one of the constructors lol.
- * When I wrote this I just realized you could have multiple constructors, so you could 
- * have a bunch of different parameters, so I went crazy with mixtures of demand, isInstant,
- * and timeout.
+ * Run the elevator to a set height during autonomous using one of the
+ * constructors lol. When I wrote this I just realized you could have multiple
+ * constructors, so you could have a bunch of different parameters, so I went
+ * crazy with mixtures of demand, isInstant, and timeout.
  */
 public class SetElevatorHeight extends Command {
 
@@ -27,12 +27,14 @@ public class SetElevatorHeight extends Command {
   private enum HeightMode {
     INCHES, PRESET;
   }
+
   HeightMode heightmode;
 
   /**
-   * Run the elevator to a set height during autonomous. Also set boolean flag
-   * for if this command runs instantly or not. Timeout defaults to 10 seconds.
-   * @param demand in inches
+   * Run the elevator to a set height during autonomous. Also set boolean flag for
+   * if this command runs instantly or not. Timeout defaults to 10 seconds.
+   * 
+   * @param demand    in inches
    * @param isInstant flag
    */
   public SetElevatorHeight(double demand, boolean isInstant) {
@@ -44,8 +46,9 @@ public class SetElevatorHeight extends Command {
   }
 
   /**
-   * This comstructor defaults to waiting for the elevator to reach the target height
-   * set in inches. Timeout will default to 10 seconds 
+   * This comstructor defaults to waiting for the elevator to reach the target
+   * height set in inches. Timeout will default to 10 seconds
+   * 
    * @param demand in inches
    */
   public SetElevatorHeight(double demand) {
@@ -57,12 +60,13 @@ public class SetElevatorHeight extends Command {
   }
 
   /**
-   * Run the elevator to a set height during autonomous. Also set boolean flag
-   * for if this command runs instantly or not. Timeout will *not* default and 
-   * must be set in arguments.
-   * @param demand in inches
+   * Run the elevator to a set height during autonomous. Also set boolean flag for
+   * if this command runs instantly or not. Timeout will *not* default and must be
+   * set in arguments.
+   * 
+   * @param demand    in inches
    * @param isInstant flag
-   * @param timeout of this command in seconds
+   * @param timeout   of this command in seconds
    */
   public SetElevatorHeight(double demand, boolean isInstant, double timeout) {
     // Use requires() here to declare subsystem dependencies
@@ -83,12 +87,12 @@ public class SetElevatorHeight extends Command {
   @Override
   protected void initialize() {
     switch (heightmode) {
-      case INCHES:
-        break;
-      case PRESET:
-        demand = Robot.elevator.getHeightEnumValue(heightEnum);
-      default:
-        break;
+    case INCHES:
+      break;
+    case PRESET:
+      demand = Robot.elevator.getHeightEnumValue(heightEnum);
+    default:
+      break;
     }
     Robot.elevator.setHeight(demand);
     setTimeout(timeout);
@@ -99,14 +103,14 @@ public class SetElevatorHeight extends Command {
   }
 
   /**
-   * Return boolean of if the elevator is within 0.5 inches of the set height OR the command is supposed to run instantly. 
+   * Return boolean of if the elevator is within 0.5 inches of the set height OR
+   * the command is supposed to run instantly.
    */
   @Override
   protected boolean isFinished() {
-    if ((isInstant) || (Math.abs(Robot.elevator.getHeight() - demand) < 0.5) || isTimedOut() ) { 
+    if ((isInstant) || (Math.abs(Robot.elevator.getHeight() - demand) < 0.5) || isTimedOut()) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }

@@ -18,7 +18,15 @@ import edu.wpi.first.wpilibj.command.Command;
  * Follow a vision target tracked by a limelight
  */
 public class FollowVisionTarget extends Command {
-  double timeout, targetSpeed, targetPercentOfFrame, angleDeltaX, angleDeltaY, forwardSpeed, turnSpeed, leftSpeedRaw, rightSpeedRaw;
+  double timeout,
+  targetSpeed,
+  targetPercentOfFrame,
+  angleDeltaX,
+  angleDeltaY,
+  forwardSpeed,
+  turnSpeed,
+  leftSpeedRaw,
+  rightSpeedRaw;
   boolean followRange = false;
 
   private TerriblePID forwardPID = new TerriblePID(

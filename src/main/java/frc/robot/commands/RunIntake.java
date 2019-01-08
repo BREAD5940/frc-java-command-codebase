@@ -10,22 +10,20 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-
-
 /**
  * Shifter command to shift to high gear
  */
 public class RunIntake extends Command {
   public RunIntake() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.intake); 
+    requires(Robot.intake);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     System.out.println("Run intake init!");
-    Robot.intake.setSpeed(Robot.m_oi.getIntakeAxis() );
+    Robot.intake.setSpeed(Robot.m_oi.getIntakeAxis());
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -43,12 +41,10 @@ public class RunIntake extends Command {
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
-  }
+  protected void end() { }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
-  }
+  protected void interrupted() { }
 }

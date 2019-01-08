@@ -7,9 +7,10 @@ import frc.robot.auto.AutoMotion;
 import frc.robot.commands.*;
 
 /**
+ * Operator Input not Out-In
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
- * For use with commands and stuff. 
+ * For use with commands and stuff.
  * 
  * @author Matthew Morley
  */
@@ -18,15 +19,15 @@ public class OI {
   private Joystick primaryJoystick = new Joystick(RobotConfig.controls.primary_joystick_port);
   private Joystick secondaryJoystick = new Joystick(RobotConfig.controls.secondary_joystick_port);
 
-  Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
-  Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
-  Button open_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
-  Button close_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
+  private Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
+  private Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
+  private Button open_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
+  private Button close_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
 
   Button auto_place_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
   Button auto_place_hatch_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
 
-  public OI(){
+  public OI() {
     shift_up_button.whenPressed(new DriveShiftHigh());
     shift_down_button.whenPressed(new DriveShiftLow());
     open_clamp_button.whenPressed(new OpenClamp());
@@ -35,10 +36,10 @@ public class OI {
     auto_place_hatch_button.whenPressed(new RunAuto(AutoMotion.heldPiece.CARGO));
   }
 
-  public double getForwardAxis(){ return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis); }
-  public double getTurnAxis(){ return primaryJoystick.getRawAxis(RobotConfig.controls.turn_axis); }
-  public double getIntakeAxis(){ return primaryJoystick.getRawAxis(RobotConfig.controls.intakeAxis); }
-  public double getOuttakeAxis(){ return primaryJoystick.getRawAxis(RobotConfig.controls.outtakeAxis); }
+  public double getForwardAxis() { return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis); }
+  public double getTurnAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.turn_axis); }
+  public double getIntakeAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.intakeAxis); }
+  public double getOuttakeAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.outtakeAxis); }
   /**
    * Get intake speed is the difference between intake and outtake axis speeds
    */

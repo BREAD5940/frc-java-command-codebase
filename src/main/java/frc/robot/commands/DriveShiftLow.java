@@ -19,7 +19,7 @@ public class DriveShiftLow extends Command {
     // requires(Robot.drivetrain); // Not really necessary.... commented out
   }
 
-  // public static final drivetrain drivetrain  = new drivetrain();
+  // public static final drivetrain drivetrain = new drivetrain();
 
   // Called just before this Command runs the first time
   @Override

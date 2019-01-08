@@ -26,13 +26,12 @@ public class Elevator extends Subsystem {
 
   public TalonSRX elevator_talon = new TalonSRX(RobotConfig.elevator.elevator_talon.elevator_talon_port);
 
-  double raw_max_height = EncoderLib.distanceToRaw(RobotConfig.elevator.elevator_maximum_height, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION, RobotConfig.elevator.elevator_effective_diameter);
-
+  double raw_max_height = EncoderLib.distanceToRaw(
+    RobotConfig.elevator.elevator_maximum_height,
+    RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
+    RobotConfig.elevator.elevator_effective_diameter
+  );
   float position_setpoint;
-
-
-
-  
   public enum ElevatorPresets {
     LOW_ROCKET_PORT,
     MIDDLE_ROCKET_PORT,
@@ -41,8 +40,10 @@ public class Elevator extends Subsystem {
     MIDDLE_ROCKET_HATCH,
     HIGH_ROCKET_HATCH,
 
-    CARGO_SHIP_HATCH, // TODO this should be even with the low rocket hatch. According to the game manual, it isn't
-    CARGO_SHIP_WALL; //top of wall
+    CARGO_SHIP_HATCH,
+    // TODO this should be even with the low rocket hatch. According to the game manual, it isn't
+    CARGO_SHIP_WALL;
+    //top of wall
   }
   public static double getHeightEnumValue(ElevatorPresets height) {
     switch (height) {
@@ -63,15 +64,10 @@ public class Elevator extends Subsystem {
       default:
         return 0;
     }
+    // Reminder: Breaks aren't needed because of return
   }
-
-
-/**
- * Set height to raise elevator to
- * @param double height
- */
-
-  public void init(){
+  /** Set height to raise elevator to */
+  public void init() {
     elevator_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,30);
     elevator_talon.setSelectedSensorPosition(0, 0, 10); // zero the encoder
     elevator_talon.setInverted(false);
@@ -87,13 +83,10 @@ public class Elevator extends Subsystem {
    * Get the current elevator height from the throttle in inches. For passing into setHeight
    * @return height in inches
    */
-  public double getElevatorAxisInches(){
+  public double getElevatorAxisInches() {
     return (Robot.m_oi.getThrottleAxis() / (RobotConfig.controls.throttle_maximum_value - RobotConfig.controls.throttle_minimum_value)) 
       * RobotConfig.elevator.elevator_maximum_height;
   }
-
-
-
   /**
    * Set the elevator height, in inches
    * @param height in inches
