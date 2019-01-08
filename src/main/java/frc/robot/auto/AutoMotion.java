@@ -2,12 +2,12 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Command;
-
-import frc.robot.auto.actions.auto_DriveStraight;
+import frc.robot.auto.actions.DriveStraight;
+import frc.robot.auto.actions.DriveStraight;
 import frc.robot.commands.SetElevatorHeight;
 import frc.robot.commands.groups.PrepareIntake;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
-import frc.robot.auto.actions.auto_TurnInPlace;
+import frc.robot.auto.actions.TurnInPlace;
 import frc.robot.auto.groups.*;
 import frc.robot.commands.FollowVisionTarget;
 import frc.robot.RobotConfig;
@@ -73,7 +73,7 @@ public class AutoMotion {
     if (piece!=heldPiece.NONE){
       this.bigCommandGroup = new AutoCommandGroup(genCommands());
     }else{
-      this.bigCommandGroup = new AutoCommandGroup(new auto_DriveStraight(7));
+      this.bigCommandGroup = new AutoCommandGroup(new DriveStraight(7));
     }
   }
 
@@ -102,7 +102,7 @@ public class AutoMotion {
         if(gHeight == goalHeight.OVER){
           toReturn.add(new DropCargo(true));
         }else{
-            this.bigCommandGroup = new AutoCommandGroup(new auto_DriveStraight(7));
+            this.bigCommandGroup = new AutoCommandGroup(new DriveStraight(7));
           toReturn.add(new DropCargo(false));
         }
       default:

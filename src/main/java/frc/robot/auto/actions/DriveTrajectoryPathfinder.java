@@ -14,7 +14,7 @@ import jaci.pathfinder.modifiers.TankModifier;
 
 import frc.robot.subsystems.DriveTrain.Gear;
 
-public class auto_DriveTrajectoryPathfinder extends Command {
+public class DriveTrajectoryPathfinder extends Command {
   private Trajectory m_leftTrajectory, m_rightTrajectory, m_sourceTrajectory;
   private DistanceFollower m_leftFollower, m_rightFollower;
   private double m_leftOutput, m_rightOutput, m_turn, m_angularError;
@@ -23,7 +23,7 @@ public class auto_DriveTrajectoryPathfinder extends Command {
   double left_kp, left_ki, left_kd, left_kv, left_ka, right_kp, right_ki, right_kd, right_kv, right_ka;
 
 
-  public auto_DriveTrajectoryPathfinder(Trajectory traj) {
+  public DriveTrajectoryPathfinder(Trajectory traj) {
     m_sourceTrajectory = traj;
     m_modifier = new TankModifier(m_sourceTrajectory);
     m_modifier.modify(RobotConfig.driveTrain.drivetrain_width);    
@@ -32,7 +32,7 @@ public class auto_DriveTrajectoryPathfinder extends Command {
     requires(Robot.drivetrain);
   }
 
-  public auto_DriveTrajectoryPathfinder(String file) {
+  public DriveTrajectoryPathfinder(String file) {
     File traj = new File("/home/lvuser/deploy/paths/test.pf1.traj");
     SmartDashboard.putBoolean("Source exists", true);
     m_sourceTrajectory = Pathfinder.readFromFile(traj);

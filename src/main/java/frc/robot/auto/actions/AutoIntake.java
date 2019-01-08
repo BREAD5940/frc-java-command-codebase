@@ -14,7 +14,7 @@ import frc.robot.Robot;
    * auto_DriveDistance is a basic auto action. It should drive in a straight-ish line, as it uses 
    * nested PID loops to correct for errors caused by differing coefficients of friction. 
    */
-public class auto_Intake extends Command {
+public class AutoIntake extends Command {
   double demand, runtime;
 
   /**
@@ -23,7 +23,7 @@ public class auto_Intake extends Command {
    * @param demand from -1 (outtake) to 1 (intake)
    * @param runtime in seconds
    */
-  public auto_Intake(double demand, double runtime) {
+  public AutoIntake(double demand, double runtime) {
     this.demand = demand;
     this.runtime = runtime;
     requires(Robot.intake);

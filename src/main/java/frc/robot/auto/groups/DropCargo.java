@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Command;
 
 import frc.robot.auto.actions.*;
+import frc.robot.subsystems.Intake;
 
 import java.util.ArrayList;
 
@@ -16,9 +17,9 @@ public class DropCargo extends CommandGroup{
    */
   public DropCargo(boolean isDrop) {
     if (!isDrop){
-      addSequential(new auto_Intake(-1, 5));
+      addSequential(new AutoIntake(-1, 5));
     }else{
-      addSequential(new auto_Intake(-0.5, 5));
+      addSequential(new AutoIntake(-0.5, 5));
     }
     
   }

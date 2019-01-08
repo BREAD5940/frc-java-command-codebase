@@ -18,7 +18,7 @@ import frc.robot.lib.TerriblePID.FeedForwardBehavior;
 /**
  * Literally just pivot in place by a desired amount
  */
-public class auto_TurnInPlace extends Command {
+public class TurnInPlace extends Command {
 
   double starting_angle;
   double target_angle_relative;
@@ -30,11 +30,11 @@ public class auto_TurnInPlace extends Command {
   double raw_left;
   double raw_right;
 
-  // TerriblePID turnPID = new TerriblePID(RobotConfig.auto.auto_turnInPlace.kp, RobotConfig.auto.auto_turnInPlace.ki, 
-  //   RobotConfig.auto.auto_turnInPlace.min_turn_speed, 
-  //   RobotConfig.auto.auto_turnInPlace.max_turn_speed, 
-  //   RobotConfig.auto.auto_turnInPlace.integral_zone, 
-  //   RobotConfig.auto.auto_turnInPlace.max_integral);
+  // TerriblePID turnPID = new TerriblePID(RobotConfig.auto.TurnInPlace.kp, RobotConfig.auto.TurnInPlace.ki, 
+  //   RobotConfig.auto.TurnInPlace.min_turn_speed, 
+  //   RobotConfig.auto.TurnInPlace.max_turn_speed, 
+  //   RobotConfig.auto.TurnInPlace.integral_zone, 
+  //   RobotConfig.auto.TurnInPlace.max_integral);
   
   // public TerriblePID(double kp, double ki, double minOutput, double maxOutput, double integralZone, double maxIntegralAccum, double kf, FeedForwardMode feedforwardmode, FeedForwardBehavior feedforwardbehavior, double unitsPerQuarterWave) {
   TerriblePID turnPID = new TerriblePID(RobotConfig.auto.auto_turnInPlace.kp, RobotConfig.auto.auto_turnInPlace.ki, 
@@ -59,7 +59,7 @@ public class auto_TurnInPlace extends Command {
    * or not.
    * @param target_angle
    */
-  public auto_TurnInPlace(double target_angle) {
+  public TurnInPlace(double target_angle) {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.drivetrain);
     this.target_angle = target_angle;
@@ -72,7 +72,7 @@ public class auto_TurnInPlace extends Command {
    * @param target_angle
    * @param isAbsolute
    */
-  public auto_TurnInPlace(double target_angle, boolean isAbsolute) {
+  public TurnInPlace(double target_angle, boolean isAbsolute) {
     this.isAbsolute = isAbsolute;
     // Use requires() here to declare subsystem dependencies
     requires(Robot.drivetrain);

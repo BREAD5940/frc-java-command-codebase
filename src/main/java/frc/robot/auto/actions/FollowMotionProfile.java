@@ -23,7 +23,7 @@ import frc.robot.lib.MotionProfileLib;
 /**
  * Future pathfinder auto comand. Not functional right now.
  */
-public class auto_FollowMotionProfile extends Command {
+public class FollowMotionProfile extends Command {
   String leftProfilePath, rightProfilePath;
   MotionProfileStatus leftMPStatus = Robot.drivetrain.m_left_MP_Status;
   MotionProfileStatus rightMPStatus = Robot.drivetrain.m_right_MP_Status;
@@ -36,7 +36,7 @@ public class auto_FollowMotionProfile extends Command {
    * @param path to left side csv on roboRio file system
    * @param path to right side csv on roboRio file system
    */
-  public auto_FollowMotionProfile(String leftProfilePath, String rightProfilePath) {
+  public FollowMotionProfile(String leftProfilePath, String rightProfilePath) {
     this.leftProfilePath = leftProfilePath;
     this.rightProfilePath = rightProfilePath;
     requires(Robot.drivetrain); // reserve the drivetrain subsystem

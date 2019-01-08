@@ -22,7 +22,7 @@ import frc.robot.lib.TerriblePID;
    * // TODO determine how the difference in encoder positions if the angle is changed will affect pid
    * @param distance in feet
    */
-public class auto_DriveStraight extends Command {
+public class DriveStraight extends Command {
   double distance;
   double actionMaxSpeed;
   double timeout = 15;
@@ -54,12 +54,12 @@ public class auto_DriveStraight extends Command {
   
 
   /**
-   * auto_DriveStraight drives in a straight line. The target angle is the same angle as the gyro
+   * DriveStraight drives in a straight line. The target angle is the same angle as the gyro
    * is initilized with. Timeout is 15 seconds.
    * @param distance in feet
    * @param speed maximum speed in feet per second
    */
-  public auto_DriveStraight(double distance, double speed, double timeout) {
+  public DriveStraight(double distance, double speed, double timeout) {
     this.distance = distance;
     this.actionMaxSpeed = speed;
     this.target_gyro_angle = Robot.gyro.getAngle(); // TODO make sure that the angle is set correctly.
@@ -67,11 +67,11 @@ public class auto_DriveStraight extends Command {
   }
 
   /**
-   * Auto_DriveStraight drives in a straight line. Target angle is the angle at which the action
+   * DriveStraight drives in a straight line. Target angle is the angle at which the action
    * is init'ed at. Speed is default auto speed, and timeout is 15 seconds.
    * @param distance in feet
    */
-  public auto_DriveStraight(double distance) {
+  public DriveStraight(double distance) {
     this.distance = distance;
     this.actionMaxSpeed = RobotConfig.auto.drive_auto_forward_velocity_max;
     this.target_gyro_angle = Robot.gyro.getAngle(); // TODO make sure that the angle is set correctly on constructor call.
@@ -79,14 +79,14 @@ public class auto_DriveStraight extends Command {
   }
 
   /**
-   * Auto_DriveStraight drives in a straight line. Target angle is the angle at which the action
+   * DriveStraight drives in a straight line. Target angle is the angle at which the action
    * is init'ed at. Speed is default auto speed, and timeout is 15 seconds.
    * @param distance in feet
    * @param angle absolute angle in degrees from auto init
    * 
    * <p> MAKE SURE THAT YOU USE AN ABSOLUTE ANGLE WITH THIS CONSTRUCTOR!
    */
-  public auto_DriveStraight(double distance, double angle) {
+  public DriveStraight(double distance, double angle) {
     this.distance = distance;
     this.actionMaxSpeed = RobotConfig.auto.drive_auto_forward_velocity_max;
     this.target_gyro_angle = angle; // TODO make sure that the angle is set correctly.
