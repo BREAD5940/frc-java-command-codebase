@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auto.AutoSelector;
 import frc.robot.auto.actions.DriveDistance;
-import frc.robot.auto.actions.DriveTrajectoryPathfinder;;
+import frc.robot.auto.actions.DriveTrajectoryPathfinder;
 import frc.robot.lib.EncoderLib;
 import edu.wpi.first.wpilibj.command.Command;
 // import frc.robot.lib.TerribleLogger;
