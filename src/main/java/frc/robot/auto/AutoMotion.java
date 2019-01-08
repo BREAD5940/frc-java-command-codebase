@@ -41,29 +41,20 @@ public class AutoMotion {
     CARGO_CARGO, CARGO_HATCH, ROCKET_CARGO, ROCKET_HATCH, RETRIEVE_HATCH, RETRIEVE_CARGO
   }
 
-  String setup;
-  String name;
-  goalHeight gHeight;
-  goalType gType;
-  heldPiece piece;
-  AutoCommandGroup bigCommandGroup;
+  public goalHeight gHeight;
+  public goalType gType;
+  public heldPiece piece;
+  public AutoCommandGroup bigCommandGroup;
 
   /**
-   * creates a new AutoPath for the current match
-   * @param name
-   *    name of the path
-   * @param piece
-   *    the type of game piece the robot is currently holding (HATCH, CARGO, NONE)
+   * creates a new AutoMotion based on button press
    * @param gHeight
-   *    the height of the goal the robot should aim for (LOW, MIDDLE, HIGH)
+   *    the height of the goal the robot should aim for (LOW, MIDDLE, HIGH, OVER)
    * @param gType
-   *    the type of goal (ROCKET, CARGO)
-   * @param  commands
-   *    list of sequential commandgroups for this path that are turned into one giant AutoCommandGroup
+   *    the type of goal
    */
 
-  public AutoMotion (String name, goalHeight gHeight, goalType gType){
-    this.name = name;
+  public AutoMotion (goalHeight gHeight, goalType gType){
     this.gHeight = gHeight;
     this.gType = gType;
     if (gType==goalType.CARGO_CARGO||gType==goalType.ROCKET_CARGO){
@@ -159,14 +150,6 @@ public class AutoMotion {
   }
 
   // id functions
-
-  /**
-   * @return
-   *  the name of the AutoMotion
-   */
-  public String getName(){
-    return this.name;
-  }
 
   /**
    * 

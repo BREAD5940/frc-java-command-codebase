@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.auto.AutoSelector;
 import frc.robot.auto.actions.DriveDistance;
 import frc.robot.auto.actions.DriveTrajectoryPathfinder;
 import frc.robot.lib.EncoderLib;
@@ -53,6 +52,9 @@ public class Robot extends TimedRobot {
   public static OI m_oi;
   // public static TerribleLogger logger = new TerribleLogger();
 
+  public static SendableChooser<AutoMotion.goalHeight> gh;
+  public static SendableChooser<AutoMotion> backupAutoSelect = new SendableChooser<AutoMotion>();
+
   public static double elevator_setpoint = 0;
   public static double wrist_setpoint = 0;
   private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 7, 3);
@@ -60,7 +62,6 @@ public class Robot extends TimedRobot {
 
   // public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
 
-  public static AutoSelector autoSelect;
   public static AutoMotion m_auto;
 
   SendableChooser<Command> m_chooser = new SendableChooser<Command>();
@@ -94,11 +95,13 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_oi = new OI();
 
-    autoSelect = new AutoSelector();
-    SmartDashboard.putData("Starting Piece", autoSelect.hp);
-    SmartDashboard.putData("Goal Height", autoSelect.gh);
-    SmartDashboard.putData("Goal Type", autoSelect.gt);
-    SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
+    gh = new SendableChooser<AutoMotion.goalHeight>();
+    gh.setDefaultOption("Low", AutoMotion.goalHeight.LOW);
+    gh.addOption("Middle", AutoMotion.goalHeight.MIDDLE);
+    gh.addOption("High", AutoMotion.goalHeight.HIGH);
+    gh.addOption("Dropped into the cargo ship", AutoMotion.goalHeight.OVER);
+    SmartDashboard.putData("Goal Height", gh);
+    SmartDashboard.putData("Backup Selector (Will not be used in most cases)", backupAutoSelect);
 
 
     compressor.setClosedLoopControl(true);

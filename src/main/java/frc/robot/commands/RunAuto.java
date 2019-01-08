@@ -8,50 +8,57 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
 // import frc.robot.Robot;
 import frc.robot.auto.AutoMotion.goalType;
+import frc.robot.auto.AutoMotion.goalHeight;
+import frc.robot.auto.AutoMotion;
 
 /**
  * Selects and runs an auto command group
  */
 public class RunAuto extends Command {
   public goalType goal;
+  public goalHeight height;
+  public AutoMotion motion;
 
-  public RunAuto(goalType goal) {
+  public RunAuto(goalType goal, goalHeight height) {
     // Use requires() here to declare subsystem dependencies
     this.goal = goal;
+    this.height = height;
     
 
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.m_auto = Robot.autoSelect.chooseMotion(goal);
-    Robot.m_auto.getCommandGroup().start();
+    motion = new AutoMotion(height, goal);
+    motion.bigCommandGroup.start();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // does nothing
+    Scheduler.getInstance().run();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    if(motion.bigCommandGroup.isFinished()){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
-  }
+  protected void end() { }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
-  }
+  protected void interrupted() { }
 }
