@@ -28,7 +28,7 @@ public class TerriblePID {
    * Create a basic PI controller, sans the derivative term. When |error| < integralZone, 
    * the Integral term will be active. If this is no longer true, the interal accum will
    * be flushed and the controller will effectively be a P controller. Slightly less
-   * shitty version of drivetrain.shitty_p_loop :P 
+   * shitty version of drivetrain.shitty_p_loop :P
    * @param kp gain
    * @param ki gain
    * @param integralZone about which integral will be active
@@ -52,7 +52,6 @@ public class TerriblePID {
    * @param kp gain
    * @param ki gain
    * @param integralZone about which integral will be active
-   * @param maxIntegralAccum same as minimum accum, i term will top/bottom out here
    */
   public TerriblePID(double kp, double minOutput, double maxOutput) {
       this.kp = kp;
@@ -74,7 +73,18 @@ public class TerriblePID {
    * @param integralZone about which integral will be active
    * @param maxIntegralAccum same as minimum accum, i term will top/bottom out here
    */
-  public TerriblePID(double kp, double ki, double minOutput, double maxOutput, double integralZone, double maxIntegralAccum, double kf, FeedForwardMode feedforwardmode, FeedForwardBehavior feedforwardbehavior, double unitsPerQuarterWave) {
+  public TerriblePID(
+    double kp,
+    double ki,
+    double minOutput,
+    double maxOutput,
+    double integralZone,
+    double maxIntegralAccum,
+    double kf,
+    FeedForwardMode feedforwardmode,
+    FeedForwardBehavior feedforwardbehavior,
+    double unitsPerQuarterWave
+  ) {
       this.kp = kp;
       this.ki = ki;
       this.minOutput = minOutput;
@@ -183,9 +193,7 @@ public class TerriblePID {
       case NORMAL:
         break;
     }
-
     return fOutput;
-
   }
 
   /**
