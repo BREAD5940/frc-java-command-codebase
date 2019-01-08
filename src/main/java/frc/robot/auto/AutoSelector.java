@@ -3,7 +3,6 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.DriverStation;
 import java.util.ArrayList;
 
 import frc.robot.auto.AutoMotion;
@@ -11,7 +10,6 @@ import frc.robot.auto.AutoMotion.goalType;
 import frc.robot.auto.AutoMotion.goalHeight;
 import frc.robot.auto.AutoMotion.heldPiece;
 import frc.robot.auto.groups.*;
-import frc.robot.Robot;
 
 public class AutoSelector{
   public SendableChooser<AutoMotion.heldPiece> hp;

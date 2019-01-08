@@ -1,16 +1,11 @@
 package frc.robot.auto;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.auto.actions.DriveStraight;
 import frc.robot.auto.actions.DriveTrajectoryPathfinder;
-import frc.robot.commands.SetElevatorHeight;
 import frc.robot.commands.groups.PrepareIntake;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
-import frc.robot.auto.actions.TurnInPlace;
 import frc.robot.auto.groups.*;
 import frc.robot.commands.FollowVisionTarget;
-import frc.robot.RobotConfig;
 
 import java.util.ArrayList;
 
