@@ -19,6 +19,10 @@ public class DriveTrajectoryPathfinder extends Command {
   private DistanceFollower m_leftFollower, m_rightFollower;
   private double m_leftOutput, m_rightOutput, m_turn, m_angularError;
   private TankModifier m_modifier;
+  /** The start distances of the drivetrain on robot init */
+  private double leftStartDistance, rightStartDistance;
+  /** Gyro variables for turn P */
+  private double desired_heading;
 
   double left_kp, left_ki, left_kd, left_kv, left_ka, right_kp, right_ki, right_kd, right_kv, right_ka;
 
@@ -76,8 +80,11 @@ public class DriveTrajectoryPathfinder extends Command {
       right_ka = 0;//RobotConfig.driveTrain.left_talons.velocity_ka_high;
     }
 
-    DistanceFollower m_leftFollower = new DistanceFollower(m_leftTrajectory);
-    DistanceFollower m_rightFollower = new DistanceFollower(m_rightTrajectory);
+    leftStartDistance = Robot.drivetrain.getLeftDistance();
+    rightStartDistance = Robot.drivetrain.getRightDistance();
+
+    m_leftFollower = new DistanceFollower(m_leftTrajectory);
+    m_rightFollower = new DistanceFollower(m_rightTrajectory);
     m_leftFollower.configurePIDVA(left_kp, left_ki, left_kd, left_kv, left_ka);
     m_rightFollower.configurePIDVA(right_kp, right_ki, right_kd, right_kv, right_ka);
 
@@ -87,16 +94,28 @@ public class DriveTrajectoryPathfinder extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    m_leftOutput = m_leftFollower.calculate(Robot.drivetrain.getLeftDistance() + RobotConfig.driveTrain.left_static_kv);
-    m_rightOutput = m_rightFollower.calculate(Robot.drivetrain.getLeftDistance() + RobotConfig.driveTrain.right_static_kv);
-    m_angularError = Pathfinder.boundHalfDegrees(Pathfinder.r2d(-m_leftFollower.getHeading()) - Robot.gyro.getAngle());
+    m_leftOutput = m_leftFollower.calculate(Robot.drivetrain.getLeftDistance() - leftStartDistance) + RobotConfig.driveTrain.left_static_kv;
+    m_rightOutput = m_rightFollower.calculate(Robot.drivetrain.getLeftDistance() - rightStartDistance) + RobotConfig.driveTrain.right_static_kv;
     
+    desired_heading = Pathfinder.r2d(m_leftFollower.getHeading());
+    m_angularError = Pathfinder.boundHalfDegrees(desired_heading - Robot.gyro.getAngle());
+        
     // TODO make sure that the sign is the correct direction, it should be!
     m_turn = RobotConfig.auto.pathfinder.gyro_correct_kp * m_angularError;
     
     // Robot.drive.addDesiredVelocities(m_leftFollower.getSegment().velocity, m_rightFollower.getSegment().velocity);
-    Robot.drivetrain.setVoltages(m_leftOutput - m_turn, m_rightOutput + m_turn);
-    SmartDashboard.putNumber("Velocity", m_leftFollower.getSegment().velocity);
+    Robot.drivetrain.setVoltages(m_leftOutput + m_turn, m_rightOutput - m_turn);
+    SmartDashboard.putString("Left pathfinder data: ", 
+      String.format("Velocity (position) heading: %s (%s) %s", 
+      m_leftFollower.getSegment().velocity, 
+      m_leftFollower.getSegment().position, 
+      m_leftFollower.getSegment().heading));
+    SmartDashboard.putString("Right pathfinder data: ", 
+      String.format("Velocity (position) heading: %s (%s) %s", 
+      m_rightFollower.getSegment().velocity, 
+      m_rightFollower.getSegment().position, 
+      m_rightFollower.getSegment().heading));
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
