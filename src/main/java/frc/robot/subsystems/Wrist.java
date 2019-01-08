@@ -39,12 +39,15 @@ public class Wrist extends PIDSubsystem  {
   public void init() {
     // setup the mag encoder
     // TODO verify direction of the encoder
-    this.m_wrist_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,30); // TODO put encoder stats on smartdashboard
+    this.m_wrist_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,30);
+    // TODO put encoder stats on smartdashboard
     this.s_wrist_talon.set(ControlMode.Follower, s_wrist_talon.getDeviceID());
-    this.m_wrist_talon.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30); // Quadrature Encoder of current Talon
+    this.m_wrist_talon.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30);
+    // Quadrature Encoder of current Talon
     this.m_wrist_talon.configPeakOutputForward(+1.0, 30);
     this.m_wrist_talon.configPeakOutputReverse(-1.0, 30);
-    this.m_wrist_talon.setSelectedSensorPosition(0, 0, 10); // WARNING TODO so if the robot calls init(), the wrist will zero itself. Is this the behavior we want? Limit switches? 
+    this.m_wrist_talon.setSelectedSensorPosition(0, 0, 10);
+    // WARNING TODO so if the robot calls init(), the wrist will zero itself. Is this the behavior we want? Limit switches? 
 
     // configure PID
     this.m_wrist_talon.config_kP(0, RobotConfig.wrist.talon_config.software_position_kp, 0);
@@ -62,7 +65,8 @@ public class Wrist extends PIDSubsystem  {
 
   @Override
   protected void usePIDOutput(double output) {
-    m_wrist_talon.set(ControlMode.PercentOutput, (output + (Math.abs(kf * Math.cos(output)))) / 11 ); // this is where the computed output value fromthe PIDController is applied to the motor
+    m_wrist_talon.set(ControlMode.PercentOutput, (output + (Math.abs(kf * Math.cos(output)))) / 11 );
+    // this is where the computed output value fromthe PIDController is applied to the motor
   }
   
   public double getAngle(){
@@ -73,7 +77,8 @@ public class Wrist extends PIDSubsystem  {
   public double getAngularVelocity(){
     return EncoderLib.rawToDegrees(
       this.m_wrist_talon.getSelectedSensorVelocity(0), 
-      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) * 10; // Angular velocity. Natively is raw per 100ms, so times by 10 to get degrees per second
+      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) * 10;
+      // Angular velocity. Natively is raw per 100ms, so times by 10 to get degrees per second
   }
 
   // public void setAngle(double target_angle){ // TODO verify math
