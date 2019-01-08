@@ -28,7 +28,6 @@ public class AutoMotion {
     LOW, MIDDLE, HIGH, OVER
   }
 
-  // TODO remember there's actually a difference for cargo, but not for hatches
   /**
    * different types of goals on the field.
    * CARGO_CARGO: put cargo in the cargo ship;
@@ -75,19 +74,28 @@ public class AutoMotion {
       this.piece=heldPiece.NONE;
     }
     if (piece!=heldPiece.NONE){
-      this.bigCommandGroup = new AutoCommandGroup(genCommands());
+      this.bigCommandGroup = new AutoCommandGroup(genPlaceCommands());
     }else{
-      this.bigCommandGroup = new AutoCommandGroup(new DriveTrajectoryPathfinder("yes"));
+      this.bigCommandGroup = new AutoCommandGroup(genGrabCommands());
     }
   }
-
-
   /**
-   * Generate commands based on the parameters of the current AutoMotion
+   * Generates commands to pick up a piece based on the parameters of the current AutoMotion
+   * @return
+   *  returns and ArrayList of commands
+   */
+  private ArrayList<Command> genGrabCommands(){
+    ArrayList<Command> toReturn = new ArrayList<Command>();
+    // TODO actually generate commands
+    return toReturn;
+  }
+  
+  /**
+   * Generates commands to place piece based on the parameters of the current AutoMotion
    * @return
    *  returns an ArrayList of commands
    */
-  private ArrayList<Command> genCommands(){
+  private ArrayList<Command> genPlaceCommands(){
     ArrayList<Command> toReturn = new ArrayList<Command>();
     if (gHeight == goalHeight.LOW){
       // Could also align with line
