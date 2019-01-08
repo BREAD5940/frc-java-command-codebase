@@ -14,15 +14,14 @@ import frc.robot.RobotConfig;
 
 import java.util.ArrayList;
 
+import javax.lang.model.element.ElementKind;
+
 public class AutoMotion {
 
-  /**
-   * pieces the robot can be holding (the piece to be scored)
-   */
   public enum heldPiece{
     HATCH, CARGO, NONE
   }
-
+  
   /**
    * different heights of goals
    * LOW: the lowest level of the rocket; through the hatch of the cargo ship
@@ -37,11 +36,14 @@ public class AutoMotion {
   // TODO remember there's actually a difference for cargo, but not for hatches
   /**
    * different types of goals on the field
-   * CARGO: the cargo ship
-   * ROCKET: the rocket
+   * CARGO_CARGO: put cargo in the cargo ship
+   * ROCKET_CARGO: put cargo in the rocket
+   * CARGO_HATCH: put a hatch on the cargo ship
+   * ROCKET_HATCH: put a hatch on the rocket
+   * RETRIEVE_HATCH: pick up a hatch from the loading station
    */
   public enum goalType{
-    CARGO, ROCKET, RETRIEVE
+    CARGO_CARGO, CARGO_HATCH, ROCKET_CARGO, ROCKET_HATCH, RETRIEVE_HATCH
   }
 
   String setup;
@@ -65,11 +67,17 @@ public class AutoMotion {
    *    list of sequential commandgroups for this path that are turned into one giant AutoCommandGroup
    */
 
-  public AutoMotion (String name, heldPiece piece, goalHeight gHeight, goalType gType){
+  public AutoMotion (String name, goalHeight gHeight, goalType gType){
     this.name = name;
     this.gHeight = gHeight;
     this.gType = gType;
-    this.piece = piece;
+    if (gType==goalType.CARGO_CARGO||gType==goalType.ROCKET_CARGO){
+      this.piece = heldPiece.CARGO;
+    }else if (gType==goalType.CARGO_HATCH||gType==goalType.ROCKET_HATCH){
+      this.piece = heldPiece.HATCH;
+    }else{
+      this.piece=heldPiece.NONE;
+    }
     if (piece!=heldPiece.NONE){
       this.bigCommandGroup = new AutoCommandGroup(genCommands());
     }else{
@@ -116,37 +124,33 @@ public class AutoMotion {
    * selects the correct ElevatorPresets from RobotConfig based on the goalHeight, the goalType, and the heldPiece
    */
   private ElevatorPresets getElevatorPreset(){
-    switch (this.gHeight){
-      case LOW:
-        switch (this.gType){
-          case CARGO:
-            return ElevatorPresets.CARGO_SHIP_HATCH;
-          case ROCKET:
-            switch (this.piece){
-              case CARGO:
-                return ElevatorPresets.LOW_ROCKET_PORT;
-              case HATCH:
-                return ElevatorPresets.LOW_ROCKET_HATCH;
-            }
+    switch (gType){
+      case CARGO_CARGO:
+        if (gHeight == goalHeight.LOW){
+          return ElevatorPresets.CARGO_SHIP_HATCH;
+        }else{
+          return ElevatorPresets.CARGO_SHIP_WALL;
         }
-      case MIDDLE:
-        switch (this.piece){
-          case CARGO:
-            return ElevatorPresets.MIDDLE_ROCKET_PORT;
-          case HATCH:
-            return ElevatorPresets.MIDDLE_ROCKET_HATCH;
+      case CARGO_HATCH:
+        return ElevatorPresets.CARGO_SHIP_HATCH;
+      case ROCKET_CARGO:
+        if (gHeight == goalHeight.LOW){
+          return ElevatorPresets.LOW_ROCKET_PORT;
+        }else if (gHeight == goalHeight.MIDDLE){
+          return ElevatorPresets.MIDDLE_ROCKET_PORT;
+        }else{
+          return ElevatorPresets.HIGH_ROCKET_PORT;
         }
-      case HIGH:
-        switch (this.piece){
-          case CARGO:
-            return ElevatorPresets.HIGH_ROCKET_PORT;
-          case HATCH:
-            return ElevatorPresets.HIGH_ROCKET_HATCH;
+      case ROCKET_HATCH:
+        if (gHeight == goalHeight.LOW){
+          return ElevatorPresets.LOW_ROCKET_HATCH;
+        }else if (gHeight == goalHeight.MIDDLE){
+          return ElevatorPresets.MIDDLE_ROCKET_HATCH;
+        }else{
+          return ElevatorPresets.HIGH_ROCKET_HATCH;
         }
-      case OVER:
-        return ElevatorPresets.CARGO_SHIP_WALL; 
       default:
-        return ElevatorPresets.LOW_ROCKET_PORT;
+        return ElevatorPresets.CARGO_SHIP_HATCH;
     }
   }
 

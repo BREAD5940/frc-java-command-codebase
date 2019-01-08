@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class GrabHatch extends CommandGroup{
     public GrabHatch() {
+        //run whatever commands make the robot intake a hatch
     }
 
 }

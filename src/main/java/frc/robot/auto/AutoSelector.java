@@ -25,7 +25,7 @@ public class AutoSelector{
   ArrayList<AutoMotion> rocketMotions = new ArrayList<AutoMotion>();
   ArrayList<AutoMotion> cargoMotions = new ArrayList<AutoMotion>();
 
-  AutoMotion defaultMotion = new AutoMotion("Default motion", heldPiece.NONE, goalHeight.LOW, goalType.CARGO);
+  AutoMotion defaultMotion = new AutoMotion("Default motion", goalHeight.LOW, goalType.CARGO_CARGO);
   goalHeight goalH;
   heldPiece piece;
   goalType goalT;
@@ -40,10 +40,6 @@ public class AutoSelector{
 
     /* TODO so this should really all be done with buttons for speed, but we don't have enough atm, so I'm putting it in sendable chooser for now*/
 
-    hp = new SendableChooser<AutoMotion.heldPiece>();
-    hp.setDefaultOption("None", heldPiece.NONE);
-    hp.addOption("Hatch", heldPiece.HATCH);
-    hp.addOption("Cargo", heldPiece.CARGO);
 
     gh = new SendableChooser<AutoMotion.goalHeight>();
     gh.setDefaultOption("Low", goalHeight.LOW);
@@ -52,23 +48,26 @@ public class AutoSelector{
     gh.addOption("Dropped into the cargo ship", goalHeight.OVER);
 
     gt = new SendableChooser<AutoMotion.goalType>();
-    gt.setDefaultOption("Rocket", goalType.ROCKET);
-    gt.addOption("Cargo Ship", goalType.CARGO);
+    gt.setDefaultOption("Rocket Hatch", goalType.ROCKET_HATCH);
+    gt.addOption("Cargo Ship Hatch", goalType.CARGO_HATCH);
+    gt.addOption("Rocket Cargo", goalType.ROCKET_CARGO);
+    gt.addOption("Cargo Ship Cargo", goalType.CARGO_CARGO);
+    gt.addOption("Pick Up Hatch", goalType.RETRIEVE_HATCH);
 
 
-    rocketMotions.add(new AutoMotion("Bottom level rocket cargo", heldPiece.CARGO, goalHeight.LOW, goalType.ROCKET));
-    rocketMotions.add(new AutoMotion("Middle level rocket cargo", heldPiece.CARGO, goalHeight.MIDDLE, goalType.ROCKET));
-    rocketMotions.add(new AutoMotion("Top level rocket cargo", heldPiece.CARGO, goalHeight.HIGH, goalType.ROCKET));
+    rocketMotions.add(new AutoMotion("Bottom level rocket cargo", goalHeight.LOW, goalType.ROCKET_CARGO));
+    rocketMotions.add(new AutoMotion("Middle level rocket cargo", goalHeight.MIDDLE, goalType.ROCKET_CARGO));
+    rocketMotions.add(new AutoMotion("Top level rocket cargo", goalHeight.HIGH, goalType.ROCKET_CARGO));
 
-    rocketMotions.add(new AutoMotion("Bottom level rocket hatch", heldPiece.HATCH, goalHeight.LOW, goalType.ROCKET));
-    rocketMotions.add(new AutoMotion("Middle level rocket hatch", heldPiece.HATCH, goalHeight.MIDDLE, goalType.ROCKET));
-    rocketMotions.add(new AutoMotion("Top level rocket hatch", heldPiece.HATCH, goalHeight.HIGH, goalType.ROCKET));
+    rocketMotions.add(new AutoMotion("Bottom level rocket hatch", goalHeight.LOW, goalType.ROCKET_HATCH));
+    rocketMotions.add(new AutoMotion("Middle level rocket hatch", goalHeight.MIDDLE, goalType.ROCKET_HATCH));
+    rocketMotions.add(new AutoMotion("Top level rocket hatch", goalHeight.HIGH, goalType.ROCKET_HATCH));
 
 
-    cargoMotions.add(new AutoMotion("Cargo ship direct cargo", heldPiece.CARGO, goalHeight.LOW, goalType.CARGO));
-    cargoMotions.add(new AutoMotion("Cargo ship drop cargo", heldPiece.CARGO, goalHeight.OVER, goalType.CARGO));
+    cargoMotions.add(new AutoMotion("Cargo ship direct cargo", goalHeight.LOW, goalType.CARGO_CARGO));
+    cargoMotions.add(new AutoMotion("Cargo ship drop cargo", goalHeight.OVER, goalType.CARGO_CARGO));
 
-    cargoMotions.add(new AutoMotion("Cargo ship hatch", heldPiece.HATCH, goalHeight.LOW, goalType.CARGO));
+    cargoMotions.add(new AutoMotion("Cargo ship hatch", goalHeight.LOW, goalType.CARGO_HATCH));
 
   }
   
@@ -77,12 +76,18 @@ public class AutoSelector{
    * selects the best AutoMotion for the game
    * all inputs from sendable chooser
    */
-  public AutoMotion chooseMotion(heldPiece piece) {
+  public AutoMotion chooseMotion(goalType goal) {
     this.goalH = gh.getSelected();
-    this.goalT = gt.getSelected();
-    this.piece = piece;
+    this.goalT = goal;
+    if (goalT==goalType.CARGO_CARGO||goalT==goalType.ROCKET_CARGO){
+      this.piece = heldPiece.CARGO;
+    }else if (goalT==goalType.CARGO_HATCH||goalT==goalType.ROCKET_HATCH){
+      this.piece = heldPiece.HATCH;
+    }else{
+      this.piece=heldPiece.NONE;
+    }
 
-    if (!(goalH==goalHeight.LOW || goalH == goalHeight.OVER)&&goalT!=goalType.ROCKET){
+    if (!(goalH==goalHeight.LOW || goalH == goalHeight.OVER)&&!(goalT==goalType.ROCKET_CARGO||goalT==goalType.ROCKET_HATCH)){
       System.out.println("You can't select those options together");
       this.pathIsValid = false;
     }
@@ -91,11 +96,12 @@ public class AutoSelector{
     }
     SmartDashboard.putBoolean("Valid auto path?", pathIsValid);
 
-    switch (this.goalT){
-      case ROCKET:
-        usableMotions = checkCompat(rocketMotions);
-      case CARGO:
-        usableMotions = checkCompat(cargoMotions);
+    if(goalT==goalType.ROCKET_CARGO||goalT==goalType.ROCKET_HATCH){
+      usableMotions=checkCompat(rocketMotions);
+    }else if (goalT==goalType.CARGO_CARGO||goalT==goalType.CARGO_HATCH){
+      usableMotions=checkCompat(cargoMotions);
+    }else{
+      
     }
     
     if(usableMotions.size() !=1){

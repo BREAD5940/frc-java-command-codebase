@@ -10,17 +10,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 // import frc.robot.Robot;
-import frc.robot.auto.AutoMotion.heldPiece;;
+import frc.robot.auto.AutoMotion.goalType;
 
 /**
  * Shifter command to shift to high gear
  */
 public class RunAuto extends Command {
-  public heldPiece piece;
+  public goalType goal;
 
-  public RunAuto(heldPiece piece) {
+  public RunAuto(goalType goal) {
     // Use requires() here to declare subsystem dependencies
-    this.piece = piece;
+    this.goal = goal;
     
 
   }
@@ -28,7 +28,7 @@ public class RunAuto extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.m_auto = Robot.autoSelect.chooseMotion(piece);
+    Robot.m_auto = Robot.autoSelect.chooseMotion(goal);
     Robot.m_auto.getCommandGroup().start();
   }
 
