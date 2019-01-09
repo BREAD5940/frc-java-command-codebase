@@ -206,7 +206,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-
+    
+    // TODO make a function or class that does all this calculation for us
     SmartDashboard.putNumber("get forward axis", m_oi.getForwardAxis());
     SmartDashboard.putNumber("get turn axis", m_oi.getTurnAxis());
     // SmartDashboard.putenum("Drivetrain gear", drivetrain.current_gear);
@@ -214,7 +215,7 @@ public class Robot extends TimedRobot {
     // encoderlib.distanceToRaw(12/12, 4096, 6/12) / 10 ); // This *should* return 1
     // ft/sec to raw/0.1 sec
     SmartDashboard.putNumber("target left speed raw", ((m_oi.getForwardAxis() * 4) / (Math.PI * 6 / 12)) * 4096 / 10);
-    // TODO make a function or class that does all this calculation for us
+    
     SmartDashboard.putNumber("Left talon speed", drivetrain.m_left_talon.getSelectedSensorVelocity(0));
     SmartDashboard.putNumber("Left talon error", drivetrain.m_left_talon.getClosedLoopError(0));
     SmartDashboard.putNumber("Right talon speed", drivetrain.m_right_talon.getSelectedSensorVelocity(0));
