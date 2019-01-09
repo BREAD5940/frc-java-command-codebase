@@ -92,9 +92,9 @@ public class Elevator extends Subsystem {
    * @param height in inches
    */
   public void setHeight(double height) {
-    if(height>RobotConfig.elevator.elevator_maximum_height){
+    if (height>RobotConfig.elevator.elevator_maximum_height) {
       height = RobotConfig.elevator.elevator_maximum_height;//reset to maximum if too high
-    }else if (height<RobotConfig.elevator.elevator_minimum_height){
+    } else if (height<RobotConfig.elevator.elevator_minimum_height) {
       height = RobotConfig.elevator.elevator_minimum_height;
     }
       //  however you may want to consider catching errors like elevator below minimum height, or elevator above maximum height, and allowing the elevator to move
@@ -102,7 +102,9 @@ public class Elevator extends Subsystem {
       ControlMode.Position, EncoderLib.distanceToRaw(
         height, 
         RobotConfig.elevator.elevator_effective_diameter, 
-        RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION));
+        RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION
+      )
+    );
   }
 
   public void setPercent(double percent){

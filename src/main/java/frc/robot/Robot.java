@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LIDARSubsystem;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Wrist;
 // import frc.robot.commands.drivetrain_shift_high;
@@ -54,6 +55,7 @@ public class Robot extends TimedRobot {
   // public static Wrist wrist = new Wrist();
   public static AHRS gyro = new AHRS(SPI.Port.kMXP);
   public static LimeLight limelight = new LimeLight();
+  public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
   /** Poorly named Operator Input value for Robot */
   private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 7, 3);
   private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 0, 6);
@@ -95,11 +97,10 @@ public class Robot extends TimedRobot {
     m_oi = new OI();
 
     autoSelect = new AutoSelector();
-    SmartDashboard.putData("Starting Piece", autoSelect.hp);
+    // SmartDashboard.putData("Starting Piece", autoSelect.hp);
     SmartDashboard.putData("Goal Height", autoSelect.gh);
-    SmartDashboard.putData("Goal Type", autoSelect.gt);
+    // SmartDashboard.putData("Goal Type", autoSelect.gt);
     SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
-
 
     compressor.setClosedLoopControl(true);
 
@@ -147,6 +148,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    DriveTrajectoryPathfinder meme = new DriveTrajectoryPathfinder("file");
+    meme.start();
 
     gyro.reset(); // Reset the current gyro heading to zero
     drivetrain.zeroEncoders();

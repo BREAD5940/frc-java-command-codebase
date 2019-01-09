@@ -1,4 +1,3 @@
-  
 package frc.robot.lib;
 
 import java.io.BufferedReader;
