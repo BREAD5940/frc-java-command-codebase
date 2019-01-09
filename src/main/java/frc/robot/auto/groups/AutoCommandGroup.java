@@ -6,7 +6,7 @@ import frc.robot.lib.AutoAction;
 
 import java.util.ArrayList;
 
-public class AutoCommandGroup extends AutoAction {
+public class AutoCommandGroup extends CommandGroup {
 
   ArrayList<Command> commands;
 
@@ -22,6 +22,10 @@ public class AutoCommandGroup extends AutoAction {
     for (Command command : commands){
       addSequential(command);
     }
+  }
+
+  public boolean done(){
+    return this.isFinished();
   }
 
 }
