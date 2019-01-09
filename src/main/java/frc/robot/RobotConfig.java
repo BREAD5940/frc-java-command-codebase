@@ -234,6 +234,10 @@ public class RobotConfig {
     public static final double camera_angle = 0; // degrees from horizon - positive is up, negative is down
   }
 
+  public class lidar {
+    public static final int port = 6;
+  }
+
   /**
    * Elevator configuration
    */
