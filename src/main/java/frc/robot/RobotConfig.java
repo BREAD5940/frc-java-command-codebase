@@ -71,8 +71,8 @@ public class RobotConfig {
     public static final double POSITION_PULSES_PER_ROTATION = 4096;
 
     // Pathfinder shit
-    public static final double left_static_kv = 0.1; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
-    public static final double right_static_kv = 0.1; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
+    public static final double left_static_kv = 0; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
+    public static final double right_static_kv = 0; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
 
     public class left_talons {
       /**
@@ -181,7 +181,7 @@ public class RobotConfig {
     // String default_auto_gear = "low"; // Set the default gear for auto. If not otherwise specified, this will be used
     
     public class pathfinder {
-      public static final double gyro_correct_kp = 0.02;
+      public static final double gyro_correct_kp = 0.2;
     }
 
     public class tolerences {

@@ -103,7 +103,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Goal Height", gh);
     SmartDashboard.putData("Backup Selector (Will not be used in most cases)", backupAutoSelect);
 
-
     compressor.setClosedLoopControl(true);
 
     drivetrain.init();
@@ -150,6 +149,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
+    DriveTrajectoryPathfinder meme = new DriveTrajectoryPathfinder("file");
+    meme.start();
 
     gyro.reset(); // Reset the current gyro heading to zero
     drivetrain.zeroEncoders();
