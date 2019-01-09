@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LIDARSubsystem;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Wrist;
 // import frc.robot.commands.drivetrain_shift_high;
@@ -41,22 +42,24 @@ import com.kauailabs.navx.frc.AHRS;
  * @author Matthew Morley
  */
 public class Robot extends TimedRobot {
-  public static AHRS gyro = new AHRS(SPI.Port.kMXP);
+  public static OI m_oi = new OI();
+  public static double startingDistance;
+  public static double elevator_setpoint = 0;
+  public static double wrist_setpoint = 0;
+  
   public static boolean arcade_running = false;
-  public static DriveTrain drivetrain = new DriveTrain();
   public static Intake intake = new Intake();
   public static Elevator elevator = new Elevator();
+  public static DriveTrain drivetrain = new DriveTrain();  
   // public static Wrist wrist = new Wrist();
+  public static AHRS gyro = new AHRS(SPI.Port.kMXP);
   public static LimeLight limelight = new LimeLight();
+  public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
   /** Poorly named Operator Input value for Robot */
-  public static OI m_oi;
   // public static TerribleLogger logger = new TerribleLogger();
 
   public static SendableChooser<AutoMotion.goalHeight> gh;
   public static SendableChooser<AutoMotion> backupAutoSelect = new SendableChooser<AutoMotion>();
-
-  public static double elevator_setpoint = 0;
-  public static double wrist_setpoint = 0;
   private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 7, 3);
   private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 0, 6);
 
@@ -68,7 +71,7 @@ public class Robot extends TimedRobot {
 
   Compressor compressor = new Compressor(9);
 
-  public static double startingDistance;
+  
 
   // Various pneumatic shifting methods
   public static void drivetrain_shift_high() {
@@ -210,7 +213,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-
+    
+    // TODO make a function or class that does all this calculation for us
     SmartDashboard.putNumber("get forward axis", m_oi.getForwardAxis());
     SmartDashboard.putNumber("get turn axis", m_oi.getTurnAxis());
     // SmartDashboard.putenum("Drivetrain gear", drivetrain.current_gear);
@@ -218,7 +222,7 @@ public class Robot extends TimedRobot {
     // encoderlib.distanceToRaw(12/12, 4096, 6/12) / 10 ); // This *should* return 1
     // ft/sec to raw/0.1 sec
     SmartDashboard.putNumber("target left speed raw", ((m_oi.getForwardAxis() * 4) / (Math.PI * 6 / 12)) * 4096 / 10);
-    // TODO make a function or class that does all this calculation for us
+    
     SmartDashboard.putNumber("Left talon speed", drivetrain.m_left_talon.getSelectedSensorVelocity(0));
     SmartDashboard.putNumber("Left talon error", drivetrain.m_left_talon.getClosedLoopError(0));
     SmartDashboard.putNumber("Right talon speed", drivetrain.m_right_talon.getSelectedSensorVelocity(0));

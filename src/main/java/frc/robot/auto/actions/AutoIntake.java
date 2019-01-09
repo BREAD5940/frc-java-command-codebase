@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
   /**
-   * auto_DriveDistance is a basic auto action. It should drive in a straight-ish line, as it uses 
-   * nested PID loops to correct for errors caused by differing coefficients of friction. 
+   * auto_Intake is a basic auto action. It activates the intake based on an inputted
+   * demand and runtime
    */
 public class AutoIntake extends Command {
   double demand, runtime;

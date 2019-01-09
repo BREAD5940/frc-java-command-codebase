@@ -38,18 +38,18 @@ public class DriveStraight extends Command {
   double left_speed_raw, right_speed_raw;
 
   private TerriblePID forwardPID = new TerriblePID(
-    RobotConfig.auto.drive_straight.forward_kp, 
+    RobotConfig.auto.driveStraight.forward_kp, 
     RobotConfig.auto.drive_auto_forward_velocity_min,
     RobotConfig.auto.drive_auto_forward_velocity_max 
   );
 
   private TerriblePID turnPID = new TerriblePID(
-    RobotConfig.auto.drive_straight.turn_kp, 
-    RobotConfig.auto.drive_straight.turn_ki, 
-    RobotConfig.auto.drive_straight.minimum_turn_speed, 
-    RobotConfig.auto.drive_straight.maximum_turn_speed, 
-    RobotConfig.auto.drive_straight.turn_izone, 
-    RobotConfig.auto.drive_straight.turn_integral_max
+    RobotConfig.auto.driveStraight.turn_kp, 
+    RobotConfig.auto.driveStraight.turn_ki, 
+    RobotConfig.auto.driveStraight.minimum_turn_speed, 
+    RobotConfig.auto.driveStraight.maximum_turn_speed, 
+    RobotConfig.auto.driveStraight.turn_izone, 
+    RobotConfig.auto.driveStraight.turn_integral_max
   );
   
 

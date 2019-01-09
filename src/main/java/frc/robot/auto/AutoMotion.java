@@ -79,7 +79,7 @@ public class AutoMotion {
   /**
    * Generates commands to pick up a piece based on the parameters of the current AutoMotion
    * @return
-   *  returns and ArrayList of commands
+   *  an ArrayList of commands
    */
   private ArrayList<Command> genGrabCommands(){
     ArrayList<Command> toReturn = new ArrayList<Command>();
@@ -90,7 +90,7 @@ public class AutoMotion {
   /**
    * Generates commands to place piece based on the parameters of the current AutoMotion
    * @return
-   *  returns an ArrayList of commands
+   *  an ArrayList of commands
    */
   private ArrayList<Command> genPlaceCommands(){
     ArrayList<Command> toReturn = new ArrayList<Command>();
@@ -122,12 +122,13 @@ public class AutoMotion {
   }
 
   /**
-   * selects the correct ElevatorPresets from RobotConfig based on the goalHeight, the goalType, and the heldPiece
+   * selects the correct ElevatorPreset from the Elevator subsystems enum based on 
+   * the goalHeight, the goalType, and the heldPiece
    */
   private ElevatorPresets getElevatorPreset(){
-    switch (gType){
+    switch (this.gType){
       case CARGO_CARGO:
-        if (gHeight == goalHeight.LOW){
+        if (this.gHeight == goalHeight.LOW){
           return ElevatorPresets.CARGO_SHIP_HATCH;
         }else{
           return ElevatorPresets.CARGO_SHIP_WALL;
@@ -135,7 +136,7 @@ public class AutoMotion {
       case CARGO_HATCH:
         return ElevatorPresets.CARGO_SHIP_HATCH;
       case ROCKET_CARGO:
-        if (gHeight == goalHeight.LOW){
+        if (this.gHeight == goalHeight.LOW){
           return ElevatorPresets.LOW_ROCKET_PORT;
         }else if (gHeight == goalHeight.MIDDLE){
           return ElevatorPresets.MIDDLE_ROCKET_PORT;
@@ -143,9 +144,9 @@ public class AutoMotion {
           return ElevatorPresets.HIGH_ROCKET_PORT;
         }
       case ROCKET_HATCH:
-        if (gHeight == goalHeight.LOW){
+        if (this.gHeight == goalHeight.LOW){
           return ElevatorPresets.LOW_ROCKET_HATCH;
-        }else if (gHeight == goalHeight.MIDDLE){
+        }else if (this.gHeight == goalHeight.MIDDLE){
           return ElevatorPresets.MIDDLE_ROCKET_HATCH;
         }else{
           return ElevatorPresets.HIGH_ROCKET_HATCH;
@@ -160,25 +161,25 @@ public class AutoMotion {
   /**
    * 
    * @return
-   *  the required goalHeight of the AutoMotion
+   *  the goalHeight of the AutoMotion
    */
   public goalHeight getGoalHeight(){
     return this.gHeight;
   }
 
   /**
-   * 
+   * identification function
    * @return
-   *  the required goalType of the AutoMotion
+   *  the goalType of the AutoMotion
    */
   public goalType getGoalType(){
     return this.gType;
   }
 
   /**
-   * 
+   * identification function
    * @return
-   *  the required heldPiece of the AutoMotion
+   *  the heldPiece of the AutoMotion
    */
   public heldPiece getheldPiece(){
     return this.piece;

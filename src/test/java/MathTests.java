@@ -1,5 +1,3 @@
-
-
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -8,9 +6,12 @@ import java.util.List;
 import java.util.ArrayList;
 
 import frc.math.CoordinateSystems;
+import frc.math.Translation2d;
 
 import org.junit.jupiter.api.Test;
 
+import frc.robot.lib.Odometry2;
+import frc.robot.lib.Odometry3;
 import frc.robot.subsystems.DriveTrain;
 
 public class MathTests {
@@ -118,6 +119,14 @@ public class MathTests {
 
             assertArrayEquals(expecteds[i], calculateds[i], 0.02);
         }
+
+    }
+
+    @Test
+    public void TestOdometry3() {
+        Odometry3 odometry_ = new Odometry3();
+
+        
 
     }
 

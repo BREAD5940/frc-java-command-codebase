@@ -9,12 +9,12 @@ import frc.robot.RobotConfig;
 
 
 /**
- * tv	Whether the limelight has any valid targets (0 or 1)
- * tx	Horizontal Offset From Crosshair To Target (-27 degrees to 27 degrees)
- * ty	Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees)
- * ta	Target Area (0% of image to 100% of image)
- * ts	Skew or rotation (-90 degrees to 0 degrees)
- * tl	The pipeline’s latency contribution (ms) Add at least 11ms for image capture latency.
+ * tv  Whether the limelight has any valid targets (0 or 1)
+ * tx  Horizontal Offset From Crosshair To Target (-27 degrees to 27 degrees)
+ * ty  Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees)
+ * ta  Target Area (0% of image to 100% of image)
+ * ts  Skew or rotation (-90 degrees to 0 degrees)
+ * tl  The pipeline’s latency contribution (ms) Add at least 11ms for image capture latency.
  * TODO Move this to Pantry Vision
  * 
  * @author Matthew Morley
@@ -35,12 +35,18 @@ public class LimeLight {
   double distance, relativeAngle;
 
   public double[] getData() {
-    NetworkTableEntry tv = table.getEntry("tv"); // Whether the limelight has any valid targets (0 or 1)
-    NetworkTableEntry tx = table.getEntry("tx"); // tx	Horizontal Offset From Crosshair To Target (-27 degrees to 27 degrees)
-    NetworkTableEntry ty = table.getEntry("ty"); // ty	Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees)
-    NetworkTableEntry ta = table.getEntry("ta"); // ta	Target Area (0% of image to 100% of image)
-    NetworkTableEntry ts = table.getEntry("ts"); // ts	Skew or rotation (-90 degrees to 0 degrees)
-    NetworkTableEntry tl = table.getEntry("tl"); // tl	The pipeline’s latency contribution (ms) Add at least 11ms for image capture latency.
+    /** Whether the limelight has any valid targets (0 or 1) */
+    NetworkTableEntry tv = table.getEntry("tv");
+    /** Horizontal Offset From Crosshair To Target (-27 degrees to 27 degrees) */
+    NetworkTableEntry tx = table.getEntry("tx");
+    /** Vertical Offset From Crosshair To Target (-20.5 degrees to 20.5 degrees) */
+    NetworkTableEntry ty = table.getEntry("ty");
+    /** Target Area (0% of image to 100% of image) */
+    NetworkTableEntry ta = table.getEntry("ta");
+    /** Skew or rotation (-90 degrees to 0 degrees) */
+    NetworkTableEntry ts = table.getEntry("ts");
+    /** The pipeline’s latency contribution (ms) Add at least 11ms for image capture latency. */
+    NetworkTableEntry tl = table.getEntry("tl");
     data[0] = tv.getDouble(0);
     data[1] = tx.getDouble(0);
     data[2] = ty.getDouble(0);
