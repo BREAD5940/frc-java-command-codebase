@@ -24,7 +24,7 @@ public class Elevator extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  public TalonSRX elevator_talon = new TalonSRX(RobotConfig.elevator.elevator_talon.elevator_talon_port);
+  public TalonSRX elevator_talon = new TalonSRX(RobotConfig.elevator.elevatorTalon.elevator_talon_port);
 
   double raw_max_height = EncoderLib.distanceToRaw(
     RobotConfig.elevator.elevator_maximum_height,
@@ -72,10 +72,10 @@ public class Elevator extends Subsystem {
     elevator_talon.setSelectedSensorPosition(0, 0, 10); // zero the encoder
     elevator_talon.setInverted(false);
     elevator_talon.setSensorPhase(true);
-    this.elevator_talon.config_kP(0, RobotConfig.elevator.elevator_talon.elevator_position_kp, 30);
-    this.elevator_talon.config_kI(0, RobotConfig.elevator.elevator_talon.elevator_position_ki, 30);
-    this.elevator_talon.config_kD(0, RobotConfig.elevator.elevator_talon.elevator_position_kd, 30);
-    this.elevator_talon.config_kF(0, RobotConfig.elevator.elevator_talon.elevator_position_kf, 30);
+    this.elevator_talon.config_kP(0, RobotConfig.elevator.elevatorTalon.elevator_position_kp, 30);
+    this.elevator_talon.config_kI(0, RobotConfig.elevator.elevatorTalon.elevator_position_ki, 30);
+    this.elevator_talon.config_kD(0, RobotConfig.elevator.elevatorTalon.elevator_position_kd, 30);
+    this.elevator_talon.config_kF(0, RobotConfig.elevator.elevatorTalon.elevator_position_kf, 30);
     setHeight(Robot.elevator.getElevatorAxisInches());
   }
 

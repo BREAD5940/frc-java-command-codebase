@@ -24,14 +24,14 @@ public class Wrist extends PIDSubsystem  {
   public TalonSRX m_wrist_talon = new TalonSRX(RobotConfig.wrist.m_wrist_talon_port);
   private TalonSRX s_wrist_talon = new TalonSRX(RobotConfig.wrist.s_wrist_talon_port);
 
-  double kf = RobotConfig.wrist.talon_config.software_position_kf;
+  double kf = RobotConfig.wrist.talonConfig.software_position_kf;
 
 
   public Wrist() {
     // The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
-    super("Wrist",  RobotConfig.wrist.talon_config.software_position_kp, 
-      RobotConfig.wrist.talon_config.software_position_ki, 
-      RobotConfig.wrist.talon_config.software_position_kd);
+    super("Wrist",  RobotConfig.wrist.talonConfig.software_position_kp, 
+      RobotConfig.wrist.talonConfig.software_position_ki, 
+      RobotConfig.wrist.talonConfig.software_position_kd);
 		setAbsoluteTolerance(0.05);
 		getPIDController().setContinuous(false);
   }
@@ -50,11 +50,11 @@ public class Wrist extends PIDSubsystem  {
     // WARNING TODO so if the robot calls init(), the wrist will zero itself. Is this the behavior we want? Limit switches? 
 
     // configure PID
-    this.m_wrist_talon.config_kP(0, RobotConfig.wrist.talon_config.software_position_kp, 0);
-    this.m_wrist_talon.config_kI(0, RobotConfig.wrist.talon_config.software_position_ki, 0);
-    this.m_wrist_talon.config_kD(0, RobotConfig.wrist.talon_config.software_position_kd, 0);
-    this.m_wrist_talon.config_kF(0, RobotConfig.wrist.talon_config.software_position_kf, 0);
-    this.m_wrist_talon.config_IntegralZone(0, RobotConfig.wrist.talon_config.position_izone, 0);
+    this.m_wrist_talon.config_kP(0, RobotConfig.wrist.talonConfig.software_position_kp, 0);
+    this.m_wrist_talon.config_kI(0, RobotConfig.wrist.talonConfig.software_position_ki, 0);
+    this.m_wrist_talon.config_kD(0, RobotConfig.wrist.talonConfig.software_position_kd, 0);
+    this.m_wrist_talon.config_kF(0, RobotConfig.wrist.talonConfig.software_position_kf, 0);
+    this.m_wrist_talon.config_IntegralZone(0, RobotConfig.wrist.talonConfig.position_izone, 0);
     // this.m_wrist_talon.configMaxIntegralAccumulator(0, RobotConfig.m_left_velocity_max_integral_low, 0);
   }
 

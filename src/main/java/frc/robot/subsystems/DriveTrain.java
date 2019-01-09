@@ -33,10 +33,10 @@ public class DriveTrain extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  public TalonSRX m_left_talon = new TalonSRX(RobotConfig.driveTrain.left_talons.m_left_talon_port);
-  public TalonSRX s_left_talon = new TalonSRX(RobotConfig.driveTrain.left_talons.s_left_talon_port);
-  public TalonSRX m_right_talon = new TalonSRX(RobotConfig.driveTrain.right_talons.m_right_talon_port);
-  public TalonSRX s_right_talon = new TalonSRX(RobotConfig.driveTrain.right_talons.s_right_talon_port);
+  public TalonSRX m_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.m_left_talon_port);
+  public TalonSRX s_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.s_left_talon_port);
+  public TalonSRX m_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.m_right_talon_port);
+  public TalonSRX s_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.s_right_talon_port);
   public String current_gear;
   public double tVoltage_l, tVoltage_r, tRaw_l, tRaw_r;
 
@@ -76,19 +76,19 @@ public class DriveTrain extends Subsystem {
   }
 
   public void setHighGear() {
-    this.m_left_talon.config_kP(0, RobotConfig.driveTrain.left_talons.velocity_kp_high, 30);
-    this.m_left_talon.config_kI(0, RobotConfig.driveTrain.left_talons.velocity_ki_high, 30);
-    this.m_left_talon.config_kD(0, RobotConfig.driveTrain.left_talons.velocity_kd_high, 30);
-    this.m_left_talon.config_kF(0, RobotConfig.driveTrain.left_talons.velocity_kf_high, 30);
-    this.m_left_talon.config_IntegralZone(0, RobotConfig.driveTrain.left_talons.velocity_izone_high, 30);
+    this.m_left_talon.config_kP(0, RobotConfig.driveTrain.leftTalons.velocity_kp_high, 30);
+    this.m_left_talon.config_kI(0, RobotConfig.driveTrain.leftTalons.velocity_ki_high, 30);
+    this.m_left_talon.config_kD(0, RobotConfig.driveTrain.leftTalons.velocity_kd_high, 30);
+    this.m_left_talon.config_kF(0, RobotConfig.driveTrain.leftTalons.velocity_kf_high, 30);
+    this.m_left_talon.config_IntegralZone(0, RobotConfig.driveTrain.leftTalons.velocity_izone_high, 30);
     // this.m_left_talon.configMaxIntegralAccumulator(0,
     // RobotConfig.driveTrain.left_talons.velocity_max_integral_high, 0);
 
-    this.m_right_talon.config_kP(0, RobotConfig.driveTrain.right_talons.velocity_kp_high, 30);
-    this.m_right_talon.config_kI(0, RobotConfig.driveTrain.left_talons.velocity_ki_high, 30);
-    this.m_right_talon.config_kD(0, RobotConfig.driveTrain.left_talons.velocity_kd_high, 30);
-    this.m_right_talon.config_kF(0, RobotConfig.driveTrain.left_talons.velocity_kf_high, 30);
-    this.m_right_talon.config_IntegralZone(0, RobotConfig.driveTrain.left_talons.velocity_izone_high, 30);
+    this.m_right_talon.config_kP(0, RobotConfig.driveTrain.rightTalons.velocity_kp_high, 30);
+    this.m_right_talon.config_kI(0, RobotConfig.driveTrain.leftTalons.velocity_ki_high, 30);
+    this.m_right_talon.config_kD(0, RobotConfig.driveTrain.leftTalons.velocity_kd_high, 30);
+    this.m_right_talon.config_kF(0, RobotConfig.driveTrain.leftTalons.velocity_kf_high, 30);
+    this.m_right_talon.config_IntegralZone(0, RobotConfig.driveTrain.leftTalons.velocity_izone_high, 30);
     // this.m_right_talon.configMaxIntegralAccumulator(0,
     // RobotConfig.m_right_velocity_max_integral_high, 0);
 
@@ -98,19 +98,19 @@ public class DriveTrain extends Subsystem {
   }
 
   public void setLowGear() {
-    this.m_left_talon.config_kP(0, RobotConfig.driveTrain.left_talons.velocity_kp_low, 0);
-    this.m_left_talon.config_kI(0, RobotConfig.driveTrain.left_talons.velocity_ki_low, 0);
-    this.m_left_talon.config_kD(0, RobotConfig.driveTrain.left_talons.velocity_kd_low, 0);
-    this.m_left_talon.config_kF(0, RobotConfig.driveTrain.left_talons.velocity_kf_low, 0);
-    this.m_left_talon.config_IntegralZone(0, RobotConfig.driveTrain.left_talons.velocity_izone_low, 0);
+    this.m_left_talon.config_kP(0, RobotConfig.driveTrain.leftTalons.velocity_kp_low, 0);
+    this.m_left_talon.config_kI(0, RobotConfig.driveTrain.leftTalons.velocity_ki_low, 0);
+    this.m_left_talon.config_kD(0, RobotConfig.driveTrain.leftTalons.velocity_kd_low, 0);
+    this.m_left_talon.config_kF(0, RobotConfig.driveTrain.leftTalons.velocity_kf_low, 0);
+    this.m_left_talon.config_IntegralZone(0, RobotConfig.driveTrain.leftTalons.velocity_izone_low, 0);
     // this.m_left_talon.configMaxIntegralAccumulator(0,
     // RobotConfig.driveTrain.left_talons.velocity_max_integral_low, 0);
 
-    this.m_right_talon.config_kP(0, RobotConfig.driveTrain.right_talons.velocity_kp_low, 0);
-    this.m_right_talon.config_kI(0, RobotConfig.driveTrain.right_talons.velocity_ki_low, 0);
-    this.m_right_talon.config_kD(0, RobotConfig.driveTrain.right_talons.velocity_kd_low, 0);
-    this.m_right_talon.config_kF(0, RobotConfig.driveTrain.right_talons.velocity_kf_low, 0);
-    this.m_right_talon.config_IntegralZone(0, RobotConfig.driveTrain.right_talons.velocity_izone_low, 0);
+    this.m_right_talon.config_kP(0, RobotConfig.driveTrain.rightTalons.velocity_kp_low, 0);
+    this.m_right_talon.config_kI(0, RobotConfig.driveTrain.rightTalons.velocity_ki_low, 0);
+    this.m_right_talon.config_kD(0, RobotConfig.driveTrain.rightTalons.velocity_kd_low, 0);
+    this.m_right_talon.config_kF(0, RobotConfig.driveTrain.rightTalons.velocity_kf_low, 0);
+    this.m_right_talon.config_IntegralZone(0, RobotConfig.driveTrain.rightTalons.velocity_izone_low, 0);
     // this.m_right_talon.configMaxIntegralAccumulator(0,
     // RobotConfig.m_right_velocity_max_integral_low, 0);
 
