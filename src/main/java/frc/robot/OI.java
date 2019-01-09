@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.auto.AutoMotion;
 import frc.robot.auto.AutoMotion.goalType;
 import frc.robot.commands.*;
+import frc.robot.auto.*;
 
 /**
  * Operator Input not Out-In
