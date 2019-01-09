@@ -2,7 +2,6 @@ package frc.robot.auto.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.lib.AutoAction;
 
 import java.util.ArrayList;
 
