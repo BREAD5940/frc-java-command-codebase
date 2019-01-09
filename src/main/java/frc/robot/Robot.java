@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.LIDARSubsystem;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Wrist;
 // import frc.robot.commands.drivetrain_shift_high;
@@ -49,6 +50,7 @@ public class Robot extends TimedRobot {
   public static Elevator elevator = new Elevator();
   // public static Wrist wrist = new Wrist();
   public static LimeLight limelight = new LimeLight();
+  public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
   /** Poorly named Operator Input value for Robot */
   public static OI m_oi;
   // public static TerribleLogger logger = new TerribleLogger();

@@ -181,7 +181,7 @@ public class RobotConfig {
     // String default_auto_gear = "low"; // Set the default gear for auto. If not otherwise specified, this will be used
     
     public class pathfinder {
-      public static final double gyro_correct_kp = 0.02;
+      public static final double gyro_correct_kp = 0.2;
     }
 
     public class tolerences {
@@ -232,6 +232,10 @@ public class RobotConfig {
   public class limeLight {
     public static final double camera_height = 1; // units are in feet
     public static final double camera_angle = 0; // degrees from horizon - positive is up, negative is down
+  }
+
+  public class lidar {
+    public static final int port = 6;
   }
 
   /**
