@@ -2,13 +2,15 @@ package frc.robot.states;
 
 public class SuperStructureState {
 
-  public enum WristState {
+  public static enum WristState {
     MOVING, HOLDING;
   }
 
-  public enum ElevatorState {
+  public static enum ElevatorState {
     MOVING, HOLDING;
   }
+
+  public static ElevatorState elevatorstate = ElevatorState.HOLDING; 
 
   
 
