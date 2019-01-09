@@ -20,12 +20,14 @@ public class OI {
   
   private Joystick primaryJoystick = new Joystick(RobotConfig.controls.primary_joystick_port);
   private Joystick secondaryJoystick = new Joystick(RobotConfig.controls.secondary_joystick_port);
+  private Joystick controlPannel = new Joystick(RobotConfig.controls.control_pannel_port);
 
   private Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
   private Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
   // private Button open_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
   // private Button close_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
 
+  // TODO change these to a button console once I build said button console
   Button auto_place_cargo_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
   Button auto_place_hatch_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
   Button auto_place_cargo_rocket_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);

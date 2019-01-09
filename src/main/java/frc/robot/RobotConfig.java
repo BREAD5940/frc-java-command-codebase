@@ -10,6 +10,7 @@ public class RobotConfig {
 
   public class controls {
     public static final int primary_joystick_port = 0;
+    public static final int control_pannel_port = 2; // TODO actually confirm this
     public static final int forward_axis = xboxmap.Axis.LEFT_JOYSTICK_Y;
     public static final int turn_axis = xboxmap.Axis.RIGHT_JOYSTICK_X;
     public static final boolean driving_squared = false;

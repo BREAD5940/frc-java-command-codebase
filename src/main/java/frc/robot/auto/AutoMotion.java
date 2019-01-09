@@ -11,6 +11,12 @@ import java.util.ArrayList;
 
 import javax.lang.model.element.ElementKind;
 
+/**
+ * Creates a command group for a specific automatic motion.
+ * Input a type of goal and a height then start the bigCommandGroup externally
+ * 
+ * @author Jocelyn McHugo
+ */
 public class AutoMotion {
 
   public enum heldPiece{
@@ -176,15 +182,6 @@ public class AutoMotion {
    */
   public heldPiece getheldPiece(){
     return this.piece;
-  }
-
-  /**
-   * 
-   * @return
-   *  the full AutoCommandGroup of the AutoMotion
-   */
-  public AutoCommandGroup getCommandGroup(){
-    return this.bigCommandGroup;
   }
   
 }

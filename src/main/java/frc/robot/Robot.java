@@ -179,7 +179,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
     if (m_auto != null) {
-      m_auto.getCommandGroup().cancel();
+      m_auto.bigCommandGroup.cancel();
     }
     // TODO reset subsystems on teleop init?
   }
