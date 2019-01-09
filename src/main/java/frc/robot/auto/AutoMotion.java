@@ -47,7 +47,7 @@ public class AutoMotion {
   public AutoCommandGroup bigCommandGroup;
 
   /**
-   * creates a new AutoMotion based on button press
+   * generates the command groups based on the inputted goal height/type
    * @param gHeight
    *    the height of the goal the robot should aim for (LOW, MIDDLE, HIGH, OVER)
    * @param gType
