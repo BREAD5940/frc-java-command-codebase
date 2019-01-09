@@ -38,13 +38,19 @@ public class DriveTrajectoryPathfinder extends Command {
 
   public DriveTrajectoryPathfinder(String file) {
     requires(Robot.drivetrain);
-
-    File traj = new File("/home/lvuser/deploy/paths/test.pf1.csv");
+    
+    // So I flipped this because Pathweaver seems to be exporting the left and right
+    // flipped for some reason. so fix dis. k thx
+    File traj = new File("/home/lvuser/deploy/paths/meme.pf1.csv");
     m_sourceTrajectory = Pathfinder.readFromCSV(traj);
-    File leftTraj = new File("/home/lvuser/deploy/paths/test.left.pf1.csv");
-    m_leftTrajectory = Pathfinder.readFromCSV(leftTraj);
-    File rightTraj = new File("/home/lvuser/deploy/paths/test.right.pf1.csv");
-    m_rightTrajectory = Pathfinder.readFromCSV(rightTraj);
+    // File leftTraj = new File("/home/lvuser/deploy/paths/test.left.pf1.csv");
+    // m_leftTrajectory = Pathfinder.readFromCSV(leftTraj);
+    // File rightTraj = new File("/home/lvuser/deploy/paths/test.right.pf1.csv");
+    // m_rightTrajectory = Pathfinder.readFromCSV(rightTraj);
+    File leftTraj = new File("/home/lvuser/deploy/paths/meme.left.pf1.csv");
+    File rightTraj = new File("/home/lvuser/deploy/paths/meme.right.pf1.csv");
+    m_rightTrajectory = Pathfinder.readFromCSV(leftTraj);
+    m_leftTrajectory = Pathfinder.readFromCSV(rightTraj);
   }
 
   // Called just before this Command runs the first time
@@ -67,16 +73,16 @@ public class DriveTrajectoryPathfinder extends Command {
 
     // // Modify the variables if the gear is high, yes this is a bit of a hack but 
     // else {
-      left_kp = 1.2;//RobotConfig.driveTrain.left_talons.velocity_kp_high;
+      left_kp = 1;//RobotConfig.driveTrain.left_talons.velocity_kp_high;
       left_ki = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_high;
       left_kd = 0;//RobotConfig.driveTrain.left_talons.velocity_kd_high;
-      left_kv = RobotConfig.driveTrain.left_talons.velocity_kv_high;
+      left_kv = 1.2;//RobotConfig.driveTrain.left_talons.velocity_kv_high;
       left_ka = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_high;
 
-      right_kp = 1.2;//RobotConfig.driveTrain.left_talons.velocity_kp_high;
+      right_kp = left_kp;//RobotConfig.driveTrain.left_talons.velocity_kp_high;
       right_ki = 0;//RobotConfig.driveTrain.left_talons.velocity_ki_high;
       right_kd = 0;//RobotConfig.driveTrain.left_talons.velocity_kd_high;
-      right_kv = RobotConfig.driveTrain.left_talons.velocity_kv_high;
+      right_kv = left_kv;//RobotConfig.driveTrain.left_talons.velocity_kv_high;
       right_ka = 0;//RobotConfig.driveTrain.left_talons.velocity_ka_high;
     // }
 
@@ -94,14 +100,19 @@ public class DriveTrajectoryPathfinder extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    m_leftOutput = m_leftFollower.calculate(Robot.drivetrain.getLeftDistance() - leftStartDistance) + RobotConfig.driveTrain.left_static_kv;
-    m_rightOutput = m_rightFollower.calculate(Robot.drivetrain.getRightDistance() - rightStartDistance) + RobotConfig.driveTrain.right_static_kv;
+    try {
+      m_leftOutput = m_leftFollower.calculate(Robot.drivetrain.getLeftDistance() - leftStartDistance) + RobotConfig.driveTrain.left_static_kv;
+      m_rightOutput = m_rightFollower.calculate(Robot.drivetrain.getRightDistance() - rightStartDistance) + RobotConfig.driveTrain.right_static_kv;
+    } catch (ArrayIndexOutOfBoundsException e) {
+      m_leftOutput = 0;
+      m_rightOutput = 0;
+    }
     
     desired_heading = Pathfinder.r2d(m_leftFollower.getHeading());
     m_angularError = Pathfinder.boundHalfDegrees(desired_heading - Robot.gyro.getAngle());
         
     // TODO make sure that the sign is the correct direction, it should be!
-    m_turn = 0;// -RobotConfig.auto.pathfinder.gyro_correct_kp * m_angularError;
+    m_turn = m_angularError * RobotConfig.auto.pathfinder.gyro_correct_kp;
     
     Robot.drivetrain.setVoltages(m_leftOutput + m_turn, m_rightOutput - m_turn);
 

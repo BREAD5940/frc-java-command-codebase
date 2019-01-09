@@ -181,7 +181,7 @@ public class RobotConfig {
     // String default_auto_gear = "low"; // Set the default gear for auto. If not otherwise specified, this will be used
     
     public class pathfinder {
-      public static final double gyro_correct_kp = 0.02;
+      public static final double gyro_correct_kp = 0.2;
     }
 
     public class tolerences {
