@@ -10,6 +10,7 @@
     ".classpath": true,
     ".project": true
   },
+  "workbench.colorTheme": "Material Theme Palenight",
   "wpilib.online": true,
   "editor.tabSize": 2
 }
