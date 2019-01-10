@@ -101,7 +101,7 @@ public class FollowVisionTarget extends Command {
       double[] data = Robot.limelight.getData();
       double limelightData = data[1];
       double sizeData = data[3];
-      turnSpeed = limelightData * (1/30) ;
+      turnSpeed = limelightData * (1/45) ;
 
       forwardSpeed = 0;
       
@@ -115,17 +115,17 @@ public class FollowVisionTarget extends Command {
       // System.out.println("TURN PID: Setpoint: " + turnPID.getSetpoint()+ 
         // " Error: " + turnPID.getError() + " OUTPUT VELOCITY (ft/s): " + turnPID.getOutput());
 
-      System.out.println("Limelight data: " + limelightData + " Turn speed: " + turnSpeed);
 
-      double targetSizeSetpoint = 2;
-      double distanceRatio = targetSizeSetpoint - sizeData;
+      // double targetSizeSetpoint = 0.8;
+      double distanceRatio = 4.8 - sizeData;
 
-      double forwardSpeed = distanceRatio * 0.5;
+      double forwardSpeed = distanceRatio * 1;
 
       if ( forwardSpeed > 0.5 ) { forwardSpeed = 0.5;}
       if ( forwardSpeed < -0.5 ) { forwardSpeed = -0.5;}
 
- 
+      System.out.println("forward speed: " + forwardSpeed + " Turn speed: " + turnSpeed);
+
       // Robot.drivetrain.setSpeeds(leftSpeedRaw, rightSpeedRaw);
       Robot.drivetrain.setPowers(forwardSpeed + limelightData / 20, forwardSpeed - limelightData / 20);
 

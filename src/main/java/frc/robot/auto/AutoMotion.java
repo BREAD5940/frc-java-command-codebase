@@ -6,6 +6,7 @@ import frc.robot.commands.groups.PrepareIntake;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
 import frc.robot.auto.groups.*;
 import frc.robot.commands.FollowVisionTarget;
+import frc.robot.commands.SetElevatorHeight;
 
 import java.util.ArrayList;
 
@@ -97,6 +98,7 @@ public class AutoMotion {
     if (gHeight == goalHeight.LOW){
       // Could also align with line
       // TODO find out the actual units for the speed
+      toReturn.add(new SetElevatorHeight(14, false));
       toReturn.add(new FollowVisionTarget(1, 20));
     }else{
       //TODO Align with line (IR sensor?)
