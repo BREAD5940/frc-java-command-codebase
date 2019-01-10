@@ -44,7 +44,7 @@ import com.kauailabs.navx.frc.AHRS;
  */
 public class Robot extends TimedRobot {
   public static SendableChooser<AutoMotion.goalHeight> gh;
-  public static OI m_oi = new OI();
+  public static OI m_oi;
   public static double startingDistance;
   public static double elevator_setpoint = 0;
   public static double wrist_setpoint = 0;
