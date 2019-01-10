@@ -29,7 +29,11 @@ public class RobotState  {
    * @return bool, true if the robot is within tolerence
    */
   public boolean isWithinTolerence(Pose2d pose) {
-    return (new Translation2d(pose_.getTranslation(), pose.getTranslation()).norm() < RobotConfig.auto.tolerences.position_tolerence) ;
+    Translation2d delta = new Translation2d(pose.getTranslation(), pose_.getTranslation());
+    double magnitude = delta.norm();
+    // System.out.println("Magnitude: " + magnitude);
+    boolean isWithinTolerence = magnitude < RobotConfig.auto.tolerences.position_tolerence;
+    return isWithinTolerence;
   }
 
 }

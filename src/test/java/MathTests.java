@@ -119,8 +119,8 @@ public class MathTests {
 
         for ( int i=0; i < tests; i++) {
             calculateds[i] = CoordinateSystems.calculaeDisplacement(inputs[i][0], inputs[i][1], inputs[i][2], inputs[i][3]);
-            System.out.println("Calcualteds: " + calculateds[i][0] + ", " + calculateds[i][1]);
-            System.out.println("Expecteds: " + expecteds[i][0] + ", " + expecteds[i][1]);
+            // System.out.println("Calcualteds: " + calculateds[i][0] + ", " + calculateds[i][1]);
+            // System.out.println("Expecteds: " + expecteds[i][0] + ", " + expecteds[i][1]);
 
             assertArrayEquals(expecteds[i], calculateds[i], 0.02);
         }
