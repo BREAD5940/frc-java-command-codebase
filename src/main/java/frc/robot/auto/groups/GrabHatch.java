@@ -1,7 +1,9 @@
 package frc.robot.auto.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.commands.SetElevatorHeight;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.subsystems.Elevator.ElevatorPresets;
 
 import java.util.ArrayList;
 
@@ -10,14 +12,13 @@ import java.util.ArrayList;
  */
 public class GrabHatch extends CommandGroup{
     public GrabHatch() {
-        //run whatever commands make the robot intake a hatch
-        /*
-        Idea for what should happen: Get to known distance from goal and set the wrist, go forward
-        to the distance such that the intake scrapes against the wall, intake while moving the elevator up,
-        and once the elevator achives a target height start backing up.
-        Start the elevator with a paralel command group, in which there is a waitForCondition command 
-        followed sequentailly by a setdrivetrainspeeds command.
+        /* The plan right now is to lower the elevator, drive to
+         a distance from the loading station based on the Lidar, 
+         move the elevator up while intaking and once up to a 
+        set height start slowly backing up.
         */
+        addSequential(new SetElevatorHeight(ElevatorPresets.CARGO_SHIP_HATCH.getValue(), true));
+        
     }
 
 }

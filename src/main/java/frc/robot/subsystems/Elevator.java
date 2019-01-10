@@ -31,17 +31,26 @@ public class Elevator extends Subsystem {
   );
   float position_setpoint;
   public enum ElevatorPresets {
-    LOW_ROCKET_PORT,
-    MIDDLE_ROCKET_PORT,
-    HIGH_ROCKET_PORT,
-    LOW_ROCKET_HATCH,
-    MIDDLE_ROCKET_HATCH,
-    HIGH_ROCKET_HATCH,
+    LOW_ROCKET_PORT(27),
+    MIDDLE_ROCKET_PORT(55),
+    HIGH_ROCKET_PORT(84),
+    LOW_ROCKET_HATCH(19),
+    MIDDLE_ROCKET_HATCH(47),
+    HIGH_ROCKET_HATCH(75),
 
-    CARGO_SHIP_HATCH,
+    CARGO_SHIP_HATCH(20),
     // TODO this should be even with the low rocket hatch. According to the game manual, it isn't
-    CARGO_SHIP_WALL;
+    CARGO_SHIP_WALL(31);
     //top of wall
+
+    private int height;
+
+    ElevatorPresets(int height){
+      this.height = height;
+    }
+    public int getValue(){
+      return height;
+    }
   }
   public static double getHeightEnumValue(ElevatorPresets height) {
     switch (height) {
