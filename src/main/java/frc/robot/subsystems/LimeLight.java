@@ -47,6 +47,9 @@ public class LimeLight {
     NetworkTableEntry ts = table.getEntry("ts");
     /** The pipeline’s latency contribution (ms) Add at least 11ms for image capture latency. */
     NetworkTableEntry tl = table.getEntry("tl");
+
+    double[] data = new double[6];
+
     data[0] = tv.getDouble(0);
     data[1] = tx.getDouble(0);
     data[2] = ty.getDouble(0);

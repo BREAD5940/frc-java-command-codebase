@@ -11,6 +11,12 @@ import java.util.ArrayList;
 
 import javax.lang.model.element.ElementKind;
 
+/**
+ * Creates a command group for a specific automatic motion.
+ * Input a type of goal and a height then start the bigCommandGroup externally
+ * 
+ * @author Jocelyn McHugo
+ */
 public class AutoMotion {
 
   public enum heldPiece{
@@ -41,25 +47,20 @@ public class AutoMotion {
     CARGO_CARGO, CARGO_HATCH, ROCKET_CARGO, ROCKET_HATCH, RETRIEVE_HATCH, RETRIEVE_CARGO
   }
 
-  String setup;
-  String name;
-  goalHeight gHeight;
-  goalType gType;
-  heldPiece piece;
-  AutoCommandGroup bigCommandGroup;
+  public goalHeight gHeight;
+  public goalType gType;
+  public heldPiece piece;
+  public AutoCommandGroup bigCommandGroup;
 
   /**
-   * creates a new AutoPath for the current match
-   * @param name
-   *    name of the path
+   * generates the command groups based on the inputted goal height/type
    * @param gHeight
-   *    the height of the goal the robot should aim for
+   *    the height of the goal the robot should aim for (LOW, MIDDLE, HIGH, OVER)
    * @param gType
    *    the type of goal
    */
 
-  public AutoMotion (String name, goalHeight gHeight, goalType gType){
-    this.name = name;
+  public AutoMotion (goalHeight gHeight, goalType gType){
     this.gHeight = gHeight;
     this.gType = gType;
     if (gType==goalType.CARGO_CARGO||gType==goalType.ROCKET_CARGO){
@@ -101,16 +102,16 @@ public class AutoMotion {
       //TODO Align with line (IR sensor?)
     }
 
-    toReturn.add(new PrepareIntake(getElevatorPreset()));
+    // toReturn.add(new PrepareIntake(getElevatorPreset()));
 
     switch (piece){
       case HATCH:
-        toReturn.add(new PlaceHatch());
+        // toReturn.add(new PlaceHatch());
       case CARGO:
         if(gHeight == goalHeight.OVER){
-          toReturn.add(new DropCargo(true));
+          // toReturn.add(new DropCargo(true));
         }else{
-          toReturn.add(new DropCargo(false));
+          // toReturn.add(new DropCargo(false));
         }
       default:
         break;
@@ -158,16 +159,7 @@ public class AutoMotion {
   // id functions
 
   /**
-   * identification function
-   * @return
-   *  the name of the AutoMotion
-   */
-  public String getName(){
-    return this.name;
-  }
-
-  /**
-   * identification function
+   * 
    * @return
    *  the goalHeight of the AutoMotion
    */
@@ -191,15 +183,6 @@ public class AutoMotion {
    */
   public heldPiece getheldPiece(){
     return this.piece;
-  }
-
-  /**
-   * identification function
-   * @return
-   *  the full AutoCommandGroup of the AutoMotion
-   */
-  public AutoCommandGroup getCommandGroup(){
-    return this.bigCommandGroup;
   }
   
 }

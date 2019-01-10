@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.auto.AutoSelector;
 import frc.robot.auto.actions.DriveDistance;
 import frc.robot.auto.actions.DriveTrajectoryPathfinder;
 import frc.robot.lib.EncoderLib;
@@ -44,6 +43,7 @@ import com.kauailabs.navx.frc.AHRS;
  * @author Matthew Morley
  */
 public class Robot extends TimedRobot {
+  public static SendableChooser<AutoMotion.goalHeight> gh;
   public static OI m_oi = new OI();
   public static double startingDistance;
   public static double elevator_setpoint = 0;
@@ -58,12 +58,15 @@ public class Robot extends TimedRobot {
   public static LimeLight limelight = new LimeLight();
   public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
   /** Poorly named Operator Input value for Robot */
+  // public static TerribleLogger logger = new TerribleLogger();
+
+  
+  public static SendableChooser<AutoMotion> backupAutoSelect = new SendableChooser<AutoMotion>();
   private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 7, 3);
   private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 0, 6);
 
   // public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
 
-  public static AutoSelector autoSelect;
   public static AutoMotion m_auto;
 
   SendableChooser<Command> m_chooser = new SendableChooser<Command>();
@@ -95,11 +98,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    autoSelect = new AutoSelector();
-    // SmartDashboard.putData("Starting Piece", autoSelect.hp);
-    SmartDashboard.putData("Goal Height", autoSelect.gh);
-    // SmartDashboard.putData("Goal Type", autoSelect.gt);
-    SmartDashboard.putData("Backup Selector (Will not be used in most cases)", autoSelect.backupAutoSelect);
+    m_oi = new OI();
+
+    gh = new SendableChooser<AutoMotion.goalHeight>();
+    gh.setDefaultOption("Low", AutoMotion.goalHeight.LOW);
+    gh.addOption("Middle", AutoMotion.goalHeight.MIDDLE);
+    gh.addOption("High", AutoMotion.goalHeight.HIGH);
+    gh.addOption("Dropped into the cargo ship", AutoMotion.goalHeight.OVER);
+    SmartDashboard.putData("Goal Height", gh);
+    SmartDashboard.putData("Backup Selector (Will not be used in most cases)", backupAutoSelect);
 
     compressor.setClosedLoopControl(true);
 
@@ -147,8 +154,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    DriveTrajectoryPathfinder meme = new DriveTrajectoryPathfinder("file");
-    meme.start();
+    // DriveTrajectoryPathfinder meme = new DriveTrajectoryPathfinder("file");
+    // meme.start();
 
     gyro.reset(); // Reset the current gyro heading to zero
     drivetrain.zeroEncoders();
@@ -177,7 +184,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
     if (m_auto != null) {
-      m_auto.getCommandGroup().cancel();
+      m_auto.bigCommandGroup.cancel();
     }
     // TODO reset subsystems on teleop init?
   }
