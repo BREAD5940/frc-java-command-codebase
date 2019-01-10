@@ -39,12 +39,12 @@ public class OI {
     shift_down_button.whenPressed(new DriveShiftLow());
     // open_clamp_button.whenPressed(new OpenClamp());
     // close_clamp_button.whenPressed(new CloseClamp());
-    auto_place_cargo_cargo_button.whenPressed(new RunAuto(goalType.CARGO_CARGO, Robot.gh.getSelected()));
-    auto_place_hatch_cargo_button.whenPressed(new RunAuto(goalType.CARGO_HATCH, Robot.gh.getSelected()));
-    auto_place_cargo_rocket_button.whenPressed(new RunAuto(goalType.ROCKET_CARGO, Robot.gh.getSelected()));
-    auto_place_hatch_rocket_button.whenPressed(new RunAuto(goalType.ROCKET_HATCH, Robot.gh.getSelected()));
-    auto_grab_hatch_button.whenPressed(new RunAuto(goalType.RETRIEVE_HATCH, Robot.gh.getSelected()));
-    auto_grab_cargo_button.whenPressed(new RunAuto(goalType.RETRIEVE_CARGO, Robot.gh.getSelected()));
+    auto_place_cargo_cargo_button.whenPressed(new RunAuto(goalType.CARGO_CARGO, AutoMotion.goalHeight.LOW));
+    auto_place_hatch_cargo_button.whenPressed(new RunAuto(goalType.CARGO_HATCH, AutoMotion.goalHeight.LOW));
+    auto_place_cargo_rocket_button.whenPressed(new RunAuto(goalType.ROCKET_CARGO, AutoMotion.goalHeight.LOW));
+    auto_place_hatch_rocket_button.whenPressed(new RunAuto(goalType.ROCKET_HATCH, AutoMotion.goalHeight.LOW));
+    auto_grab_hatch_button.whenPressed(new RunAuto(goalType.RETRIEVE_HATCH, AutoMotion.goalHeight.LOW));
+    auto_grab_cargo_button.whenPressed(new RunAuto(goalType.RETRIEVE_CARGO, AutoMotion.goalHeight.LOW));
   }
 
   public double getForwardAxis() { return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis); }

@@ -102,16 +102,16 @@ public class AutoMotion {
       //TODO Align with line (IR sensor?)
     }
 
-    toReturn.add(new PrepareIntake(getElevatorPreset()));
+    // toReturn.add(new PrepareIntake(getElevatorPreset()));
 
     switch (piece){
       case HATCH:
-        toReturn.add(new PlaceHatch());
+        // toReturn.add(new PlaceHatch());
       case CARGO:
         if(gHeight == goalHeight.OVER){
-          toReturn.add(new DropCargo(true));
+          // toReturn.add(new DropCargo(true));
         }else{
-          toReturn.add(new DropCargo(false));
+          // toReturn.add(new DropCargo(false));
         }
       default:
         break;

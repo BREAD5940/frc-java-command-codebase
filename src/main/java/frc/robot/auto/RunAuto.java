@@ -40,7 +40,7 @@ public class RunAuto extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Scheduler.getInstance().run();
+    // Scheduler.getInstance().run();
   }
 
   // Make this return true when this Command no longer needs to run execute()

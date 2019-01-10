@@ -43,6 +43,7 @@ import com.kauailabs.navx.frc.AHRS;
  * @author Matthew Morley
  */
 public class Robot extends TimedRobot {
+  public static SendableChooser<AutoMotion.goalHeight> gh;
   public static OI m_oi = new OI();
   public static double startingDistance;
   public static double elevator_setpoint = 0;
@@ -59,7 +60,7 @@ public class Robot extends TimedRobot {
   /** Poorly named Operator Input value for Robot */
   // public static TerribleLogger logger = new TerribleLogger();
 
-  public static SendableChooser<AutoMotion.goalHeight> gh;
+  
   public static SendableChooser<AutoMotion> backupAutoSelect = new SendableChooser<AutoMotion>();
   private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 7, 3);
   private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 0, 6);
@@ -153,8 +154,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    DriveTrajectoryPathfinder meme = new DriveTrajectoryPathfinder("file");
-    meme.start();
+    // DriveTrajectoryPathfinder meme = new DriveTrajectoryPathfinder("file");
+    // meme.start();
 
     gyro.reset(); // Reset the current gyro heading to zero
     drivetrain.zeroEncoders();

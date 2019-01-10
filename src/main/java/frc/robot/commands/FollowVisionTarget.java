@@ -90,25 +90,47 @@ public class FollowVisionTarget extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if ( Robot.limelight.getTrackedTargets() != 0 ) {
-      if (followRange) {
-        forwardSpeed = forwardPID.update(Robot.limelight.getTargetArea());
-      } else {
-        forwardSpeed = forwardPID.update(Robot.drivetrain.getLeftVelocity());
-      }
-      turnSpeed = turnPID.update(Robot.limelight.getDxAngle());
+    if ( Robot.limelight.getData()[0] != 0 ) {
+      // if (followRange) {
+      //   forwardSpeed = forwardPID.update(Robot.limelight.getTargetArea());
+      // } else {
+      //   forwardSpeed = forwardPID.update(Robot.drivetrain.getLeftVelocity());
+      // }
+      // turnSpeed = turnPID.update(Robot.limelight.getData()[1]);
+      double[] data = Robot.limelight.getData();
+      double limelightData = data[1];
+      double sizeData = data[3];
+      turnSpeed = limelightData * (1/30) ;
+
+      forwardSpeed = 0;
       
       leftSpeedRaw = EncoderLib.distanceToRaw(forwardSpeed + turnSpeed, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, 
       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
       rightSpeedRaw = EncoderLib.distanceToRaw(forwardSpeed - turnSpeed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, 
       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
 
-      System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeftDistance() + 
-        " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());
-      System.out.println("TURN PID: Setpoint: " + turnPID.getSetpoint()+ 
-        " Error: " + turnPID.getError() + " OUTPUT VELOCITY (ft/s): " + turnPID.getOutput());
+      // System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeftDistance() + 
+        // " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());
+      // System.out.println("TURN PID: Setpoint: " + turnPID.getSetpoint()+ 
+        // " Error: " + turnPID.getError() + " OUTPUT VELOCITY (ft/s): " + turnPID.getOutput());
+
+      System.out.println("Limelight data: " + limelightData + " Turn speed: " + turnSpeed);
+
+      double targetSizeSetpoint = 2;
+      double distanceRatio = targetSizeSetpoint - sizeData;
+
+      double forwardSpeed = distanceRatio * 0.5;
+
+      if ( forwardSpeed > 0.5 ) { forwardSpeed = 0.5;}
+      if ( forwardSpeed < -0.5 ) { forwardSpeed = -0.5;}
+
+ 
+      // Robot.drivetrain.setSpeeds(leftSpeedRaw, rightSpeedRaw);
+      Robot.drivetrain.setPowers(forwardSpeed + limelightData / 20, forwardSpeed - limelightData / 20);
+
     } else {
       System.out.println("No targets currently being tracked! Can't track thin air, can I?");
+      Robot.drivetrain.setPowers(0, 0);
     }
   }
 
