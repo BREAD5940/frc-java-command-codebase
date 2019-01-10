@@ -19,30 +19,58 @@ public class Pose2d {
     protected final Translation2d translation_;
     protected final Rotation2d rotation_;
 
+    /**
+     * Construct a new Pose2d from a Translation2d centered
+     * at (0,0) and a new non-normalized Rotation2d with 
+     * magnitude (1,0)
+     */
     public Pose2d() {
         translation_ = new Translation2d();
         rotation_ = new Rotation2d();
     }
 
+    /**
+     * Construct a new Pose2d, given a current x,y position and
+     * a previous Rotation2d
+     * @param x
+     * @param y
+     * @param rotation2d rotation
+     */
     public Pose2d(double x, double y, final Rotation2d rotation) {
         translation_ = new Translation2d(x, y);
         rotation_ = rotation;
     }
 
+    /**
+     * Construct a new Pose2d given a old Translation2d and Rotation2d
+     * @param Translation2d
+     * @param Rotation2d
+     */
     public Pose2d(final Translation2d translation, final Rotation2d rotation) {
         translation_ = translation;
         rotation_ = rotation;
     }
 
+    /**
+     * Construct a new Pose2d given an old Pose2d
+     * @param Pose2d
+     */
     public Pose2d(final Pose2d other) {
         translation_ = new Translation2d(other.translation_);
         rotation_ = new Rotation2d(other.rotation_);
     }
 
+    /**
+     * Return a Pose2d given a transation. Rotation is set to the default value.
+     * @param Translation2d
+     */
     public static Pose2d fromTranslation(final Translation2d translation) {
         return new Pose2d(translation, new Rotation2d());
     }
 
+    /**
+     * Return a new Pose2d given a rotation, with a Transation2d of (0,0)
+     */
     public static Pose2d fromRotation(final Rotation2d rotation) {
         return new Pose2d(new Translation2d(), rotation);
     }
@@ -50,6 +78,8 @@ public class Pose2d {
     /**
      * Obtain a new Pose2d from a (constant curvature) velocity. See:
      * https://github.com/strasdat/Sophus/blob/master/sophus/se2.hpp
+     * <p>
+     * This would probubly be useful for Pure Persuit
      */
     public static Pose2d exp(final Twist2d delta) {
         double sin_theta = Math.sin(delta.dtheta);
@@ -67,7 +97,9 @@ public class Pose2d {
     }
 
     /**
-     * Logical inverse of the above.
+     * Logical inverse of the above - get a Twist2d from a Pose2d
+     * @param Pose2d transform
+     * @return Twist2d from the pose
      */
     public static Twist2d log(final Pose2d transform) {
         final double dtheta = transform.getRotation().getRadians();
@@ -84,24 +116,30 @@ public class Pose2d {
         return new Twist2d(translation_part.x(), translation_part.y(), dtheta);
     }
 
-    
+    /**
+     * Get this' Translation2d component
+     * @return translation_
+     */
     public Translation2d getTranslation() {
         return translation_;
     }
 
-    
+    /**
+     * Get this' Rotation2d component
+     * @return rotation_
+     */
     public Rotation2d getRotation() {
         return rotation_;
     }
 
     /**
-     * Transforming this RigidTransform2d means first translating by other.translation and then rotating by
+     * Transform this' Pose2d by another Pose2d
+     * This means first translating by other.translation and then rotating by
      * other.rotation
      *
      * @param other The other transform.
      * @return This transform * other
      */
-    
     public Pose2d transformBy(final Pose2d other) {
         return new Pose2d(translation_.translateBy(other.translation_.rotateBy(rotation_)),
                 rotation_.rotateBy(other.rotation_));

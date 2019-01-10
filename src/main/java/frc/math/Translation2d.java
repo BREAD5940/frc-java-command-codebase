@@ -17,21 +17,40 @@ public class Translation2d {
     protected final double x_;
     protected final double y_;
 
+    /**
+     * Construct a new translation2d at (0,0)
+     */
     public Translation2d() {
         x_ = 0;
         y_ = 0;
     }
 
+    /**
+     * Construct a new Translation2d given a
+     * x and y position
+     * @param x
+     * @param y
+     */
     public Translation2d(double x, double y) {
         x_ = x;
         y_ = y;
     }
 
+    /**
+     * Construct a new Translation2d given another instance
+     * of Translation2d
+     * @param other
+     */
     public Translation2d(final Translation2d other) {
         x_ = other.x_;
         y_ = other.y_;
     }
 
+    /**
+     * Construct a 2d Translation given a translation start and translation end
+     * @param start
+     * @param end
+     */
     public Translation2d(final Translation2d start, final Translation2d end) {
         x_ = end.x_ - start.x_;
         y_ = end.y_ - start.y_;

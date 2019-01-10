@@ -14,6 +14,11 @@ import org.junit.jupiter.api.Test;
 // import frc.robot.lib.Odometry3;
 import frc.robot.subsystems.DriveTrain;
 
+/**
+ * Test some math stuff I used to use for odometry.
+ * @author Matthew Morley
+ * @deprecated
+ */
 public class MathTests {
 
     @Test
