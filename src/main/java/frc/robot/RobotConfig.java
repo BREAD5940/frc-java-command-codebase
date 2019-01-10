@@ -187,10 +187,10 @@ public class RobotConfig {
     
     public class tolerences {
       public static final double position_tolerence = 1; // units are in incehs
+      public static final double velocity_tolerence = 0.5; // units are in inches per second
       public static final double angle_tolerence = 1; // units are in degrees
       public static final double angular_velocity_tolerence = 0.5; // units are in degrees per second
-      public static final double velocity_tolerence = 0.5; // units are in inches per second
-      public static final double drive_auto_straight_angle_tolerence = 2; // units are in degrees
+      // public static final double drive_auto_straight_angle_tolerence = 2; // units are in degrees
     }
     
     public class driveStraight {
