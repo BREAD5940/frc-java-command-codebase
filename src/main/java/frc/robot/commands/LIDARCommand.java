@@ -27,7 +27,7 @@ public class LIDARCommand extends Command{
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	SmartDashboard.putNumber("LIDAR Distance",Robot.lidarSubsystem.getDistanceIn(true));
+    	SmartDashboard.putNumber("LIDAR Distance",Robot.lidarSubsystem.getDistanceIn());
     }
 
     // Make this return true when this Command no longer needs to run execute()

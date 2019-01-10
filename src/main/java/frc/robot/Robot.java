@@ -43,7 +43,7 @@ import com.kauailabs.navx.frc.AHRS;
  * @author Matthew Morley
  */
 public class Robot extends TimedRobot {
-  public static OI m_oi = new OI();
+  public static OI m_oi ;
   public static double startingDistance;
   public static double elevator_setpoint = 0;
   public static double wrist_setpoint = 0;
@@ -95,6 +95,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     autoSelect = new AutoSelector();
+    m_oi = new OI();
     // SmartDashboard.putData("Starting Piece", autoSelect.hp);
     SmartDashboard.putData("Goal Height", autoSelect.gh);
     // SmartDashboard.putData("Goal Type", autoSelect.gt);
