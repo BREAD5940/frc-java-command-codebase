@@ -219,7 +219,7 @@ public class RobotConfig {
         public static final double kp_rangeMode = 0.1;
       }
       public class turn {
-        public static final double kp = 0.05;
+        public static final double kp = 0.25;
         public static final double ki = 0.05;
         public static final double integral_zone = 10; // 10 degrees izone
         public static final double max_integral = 0.3;
