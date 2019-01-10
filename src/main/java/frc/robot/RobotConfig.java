@@ -272,6 +272,10 @@ public class RobotConfig {
       public static final int elevator_position_izone = 5000;
       public static final double elevator_max_position_integral = 5000;
     }
+    public class elevatorTolerences {
+      public static final double position_tolerence = 2;// Units are in inches
+      public static final double velocity_tolerence = 0.5;// Units are in inches per second
+    }
   }
   
   public static class intake {

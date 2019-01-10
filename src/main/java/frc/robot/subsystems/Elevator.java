@@ -6,8 +6,6 @@ import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.ElevatorTelop;
 import frc.robot.lib.EncoderLib;
-
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -131,6 +129,10 @@ public class Elevator extends Subsystem {
    */
   public double iterativeSetHeight(double delta) {
     return delta + getHeight();
+  }
+
+  public boolean isWithinTolerence(double target) {
+    return ( Math.abs(target - getHeight()) < RobotConfig.elevator.elevatorTolerences.position_tolerence );
   }
 
   @Override

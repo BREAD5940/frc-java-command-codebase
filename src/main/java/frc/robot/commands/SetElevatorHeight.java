@@ -9,7 +9,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
 
 /**
@@ -109,7 +108,7 @@ public class SetElevatorHeight extends Command {
    */
   @Override
   protected boolean isFinished() {
-    return isInstant || (SuperStructureState.elevatorstate == SuperStructureState.ElevatorState.HOLDING);
+    return isInstant || Robot.elevator.isWithinTolerence(demand);
     
     // if ((isInstant) || (Math.abs(Robot.elevator.getHeight() - demand) < 0.5) || isTimedOut()) {
     //   return true;
