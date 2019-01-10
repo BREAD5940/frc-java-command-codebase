@@ -8,6 +8,7 @@ import frc.robot.auto.AutoSelector;
 import frc.robot.auto.actions.DriveDistance;
 import frc.robot.auto.actions.DriveTrajectoryPathfinder;
 import frc.robot.lib.EncoderLib;
+import frc.robot.subsystems.LimeLight;
 import edu.wpi.first.wpilibj.command.Command;
 // import frc.robot.lib.TerribleLogger;
 import frc.robot.subsystems.DriveTrain;
@@ -242,15 +243,17 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Current Gyro angle", gyro.getAngle());
 
-    // Limelight stuff
-    // double[] limelightdata = limelight.getData();
+    // SmartDashboard.putString("Limelight Ntables", LimeLight.getData().toString());
 
-    // SmartDashboard.putNumber("Vision targets?", limelightdata[0]);
-    // SmartDashboard.putNumber("Horizontal offset", limelightdata[1]);
-    // SmartDashboard.putNumber("Vertical offset", limelightdata[2]);
-    // SmartDashboard.putNumber("Target area", limelightdata[3]);
-    // SmartDashboard.putNumber("Target skew", limelightdata[4]);
-    // SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
+    // Limelight stuff
+    double[] limelightdata = limelight.getData();
+
+    SmartDashboard.putNumber("Vision targets?", limelightdata[0]);
+    SmartDashboard.putNumber("Horizontal offset", limelightdata[1]);
+    SmartDashboard.putNumber("Vertical offset", limelightdata[2]);
+    SmartDashboard.putNumber("Target area", limelightdata[3]);
+    SmartDashboard.putNumber("Target skew", limelightdata[4]);
+    SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
 
     // logger.update();
   }
