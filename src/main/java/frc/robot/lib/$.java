@@ -12,7 +12,8 @@ import java.lang.RuntimeException;
  * "hello${foobar} world"
  * @author Cole Gannon
  */
-public class BashInterpolation {
+public class $ {
+  // go ahead and complain that "$" for the name is too terse but it'll save you a lot of typing
   private static Pattern $pattern = Pattern.compile("\\${?(\\w+)}?");
 
   /**
@@ -21,7 +22,7 @@ public class BashInterpolation {
    */
   // might be able to use this elsewhere since it's general but who cares really
   private static String replaceAll(String s, Function<String, String> fn) {
-    var matcher = BashInterpolation.$pattern.matcher(s);
+    var matcher = $.$pattern.matcher(s);
     var foundAtLeastOne = false;
     var res = "";
     var lastEnd = 0;
@@ -43,11 +44,11 @@ public class BashInterpolation {
     return this.result;
   }
   /** Gets an environment variable. Probably not what you want to do */
-  public BashInterpolation(String s) {
-    this.result = BashInterpolation.replaceAll(s, System::getenv);
+  public $(String s) {
+    this.result = $.replaceAll(s, System::getenv);
   }
-  public BashInterpolation(String s, String[] ary) {
-    this.result = BashInterpolation.replaceAll(s, (String match) -> {
+  public $(String s, String[] ary) {
+    this.result = $.replaceAll(s, (String match) -> {
       int i;
       try {
         i = Integer.parseInt(match);
@@ -57,8 +58,8 @@ public class BashInterpolation {
       return ary[i];
     });
   }
-  public BashInterpolation(String s, ArrayList<String> ary) {
-    this.result = BashInterpolation.replaceAll(s, (String match) -> {
+  public $(String s, ArrayList<String> ary) {
+    this.result = $.replaceAll(s, (String match) -> {
       int i;
       try {
         i = Integer.parseInt(match);
@@ -69,9 +70,9 @@ public class BashInterpolation {
     });
   }
   /** Given a String and an input Object */
-  public BashInterpolation(String s, Object o) {
+  public $(String s, Object o) {
     Class<?> cls = o.getClass();
-    this.result = BashInterpolation.replaceAll(s, (String match) -> {
+    this.result = $.replaceAll(s, (String match) -> {
       try {
         Field f = cls.getField(match);
         if (f.getType().equals(String.class)) {
@@ -84,8 +85,8 @@ public class BashInterpolation {
     });
   }
   /** Interpolate using static fields from a Class */
-  public BashInterpolation(String s, Class<?> c) {
-    this.result = BashInterpolation.replaceAll(s, (String match) -> {
+  public $(String s, Class<?> c) {
+    this.result = $.replaceAll(s, (String match) -> {
       try {
         Field f = c.getField(match);
         if (f.getType().equals(String.class)) {
@@ -97,4 +98,10 @@ public class BashInterpolation {
       throw new RuntimeException("Found " + match + " but it was not a String!");
     });
   }
+  /** Interpolate and return the interpolated value */
+  public static String i(String s, Object o) { return new $(s, o).result(); }
+  /** Interpolate and return the interpolated value */
+  public static String i(String s, String[] ary) { return new $(s, ary).result(); }
+  /** Interpolate and return the interpolated value */
+  public static String i(String s, ArrayList<String> ary) { return new $(s, ary).result(); }
 }
