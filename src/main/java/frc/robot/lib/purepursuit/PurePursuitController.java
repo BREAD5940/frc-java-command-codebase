@@ -1,7 +1,4 @@
-package frc.robot.lib;
-
-import frc.math.Pose2d;
-import frc.robot.lib.PursuitWaypoint;
+package frc.robot.lib.purepursuit;
 
 import java.util.ArrayList;
 
@@ -15,16 +12,6 @@ public class PurePursuitController {
     waypoints_ = waypoints;
     lookahead_ = lookahead;
     goalTolerence_ = goalTolerence;
-  }
-
-  /**
-   * Return the closest PursuitWaypoint to the robotPose
-   * @param robotPose
-   * @return the closest PursuitWaypoint
-   */
-  public PursuitWaypoint getClosestPoint(Pose2d robotPose) {
-    return null;
-    // TODO make this do stuff
   }
 
 }
