@@ -40,7 +40,7 @@ public class PurePursuitTrajectory {
    */
   public int getClosestWaypoint(Pose2d pose, int lastKnown) {
     ArrayList<Double> distances = new ArrayList<Double>();
-    for ( int i=0; i<trajectory_.size(); i++ ) {
+    for ( int i=lastKnown; i<trajectory_.size(); i++ ) {
       distances.add(i, getDistance(pose, i));
     }
     int minIndex = distances.indexOf(Collections.min(distances));
