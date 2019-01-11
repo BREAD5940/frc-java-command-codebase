@@ -1,5 +1,6 @@
 package frc.robot.lib;
 
+import frc.math.Pose2d;
 import frc.robot.lib.PursuitWaypoint;
 
 import java.util.ArrayList;
@@ -16,6 +17,14 @@ public class PurePursuitController {
     goalTolerence_ = goalTolerence;
   }
 
-  public getClosestPoint(Pose2d )
+  /**
+   * Return the closest PursuitWaypoint to the robotPose
+   * @param robotPose
+   * @return the closest PursuitWaypoint
+   */
+  public PursuitWaypoint getClosestPoint(Pose2d robotPose) {
+    return null;
+    // TODO make this do stuff
+  }
 
 }
