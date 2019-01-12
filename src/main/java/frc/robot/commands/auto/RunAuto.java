@@ -5,47 +5,55 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
+import frc.robot.commands.auto.AutoMotion.goalHeight;
+import frc.robot.commands.auto.AutoMotion.goalType;
+
 
 /**
- * Shifter command to shift to low gear
+ * Selects and runs an auto command group
  */
-public class DriveShiftLow extends Command {
-  public DriveShiftLow() {
+public class RunAuto extends Command {
+  public goalType goal;
+  public goalHeight height;
+  public AutoMotion motion;
+
+  public RunAuto(goalType goal, goalHeight height) {
     // Use requires() here to declare subsystem dependencies
-    // requires(Robot.drivetrain); // Not really necessary.... commented out
+    this.goal = goal;
+    this.height = height;
+    
+
   }
 
-  // public static final drivetrain drivetrain = new drivetrain();
-
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.drivetrain.setLowGear();
+    motion = new AutoMotion(height, goal);
+    motion.bigCommandGroup.start();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    // Scheduler.getInstance().run();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return motion.bigCommandGroup.done();
   }
 
   // Called once after isFinished returns true
   @Override
-  protected void end() {
-  }
+  protected void end() { }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
-  protected void interrupted() {
-  }
+  protected void interrupted() { }
 }

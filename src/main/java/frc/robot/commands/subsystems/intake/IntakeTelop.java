@@ -5,48 +5,38 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.auto;
+package frc.robot.commands.subsystems.intake;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
-// import frc.robot.Robot;
-import frc.robot.auto.AutoMotion.goalType;
-import frc.robot.auto.AutoMotion.goalHeight;
-import frc.robot.auto.AutoMotion;
 
 /**
- * Selects and runs an auto command group
+ * Shifter command to shift to high gear
  */
-public class RunAuto extends Command {
-  public goalType goal;
-  public goalHeight height;
-  public AutoMotion motion;
-
-  public RunAuto(goalType goal, goalHeight height) {
+public class IntakeTelop extends Command {
+  public IntakeTelop() {
     // Use requires() here to declare subsystem dependencies
-    this.goal = goal;
-    this.height = height;
-    
-
+    requires(Robot.intake);
   }
 
+  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    motion = new AutoMotion(height, goal);
-    motion.bigCommandGroup.start();
+    System.out.println("Run intake init!");
+    Robot.intake.setSpeed(Robot.m_oi.getIntakeAxis());
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Scheduler.getInstance().run();
+    // System.out.println("Run intake execute!");
+    Robot.intake.setSpeed(Robot.m_oi.getIntakeSpeed());
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return motion.bigCommandGroup.done();
+    return false;
   }
 
   // Called once after isFinished returns true

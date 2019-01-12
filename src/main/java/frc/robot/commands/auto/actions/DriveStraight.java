@@ -1,11 +1,4 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
-package frc.robot.auto.actions;
+package frc.robot.commands.auto.actions;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,8 +12,10 @@ import frc.robot.lib.TerriblePID;
    * Drive straight ahead. The target angle is set based on the current robot angle.
    * This uses a position PID loop to set drivetrain speeds. The left and right speeds
    * are manipulated based on a turn PID loop such that the angle remains constant.
+   * Distance is in feet.
    * // TODO determine how the difference in encoder positions if the angle is changed will affect pid
-   * @param distance in feet
+   * 
+   * @author Matthew Morley
    */
 public class DriveStraight extends Command {
   double distance;

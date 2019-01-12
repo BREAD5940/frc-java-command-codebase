@@ -1,4 +1,4 @@
-package frc.robot.auto.actions;
+package frc.robot.commands.auto.actions;
 
 import java.io.File;
 
