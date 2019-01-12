@@ -5,6 +5,7 @@ import frc.robot.commands.auto.groups.AutoCommandGroup;
 // import frc.robot.auto.actions.DriveTrajectoryPathfinder;
 import frc.robot.commands.groups.PrepareIntake;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
+import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
 // import frc.robot.auto.groups.*;
 // import frc.robot.commands.FollowVisionTarget;
