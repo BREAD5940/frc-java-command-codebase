@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.subsystems.drivetrain;
 
 // import com.ctre.phoenix.motorcontrol.ControlMode;
 

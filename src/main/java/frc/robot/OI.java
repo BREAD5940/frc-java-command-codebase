@@ -3,10 +3,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.auto.AutoMotion;
-import frc.robot.auto.AutoMotion.goalType;
-import frc.robot.commands.*;
-import frc.robot.auto.*;
+import frc.robot.commands.auto.RunAuto;
+import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
+import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
+import frc.robot.commands.auto.AutoMotion.goalType;
+import frc.robot.commands.auto.AutoMotion;
+
 
 /**
  * Operator Input not Out-In

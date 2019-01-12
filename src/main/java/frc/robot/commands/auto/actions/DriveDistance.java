@@ -1,11 +1,4 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
-package frc.robot.auto.actions;
+package frc.robot.commands.auto.actions;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,7 +35,8 @@ public class DriveDistance extends Command {
 
   /**
    * auto_action_DRIVE is a basic auto action. It should drive in a straight-ish line, as it uses 
-   * nested PID loops to correct for errors caused by differing coefficients of friction. 
+   * nested PID loops to correct for errors caused by differing coefficients of friction. Distance
+   * is in feet, target speed in ft/sec, and timeout is in seconds.
    * @param distance
    * @param targetSpeed
    * @param timeout

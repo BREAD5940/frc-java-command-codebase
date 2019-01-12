@@ -1,11 +1,13 @@
-package frc.robot.auto;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.auto.actions.DriveTrajectoryPathfinder;
+import frc.robot.commands.auto.groups.AutoCommandGroup;
+// import frc.robot.auto.actions.DriveTrajectoryPathfinder;
 import frc.robot.commands.groups.PrepareIntake;
+import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
-import frc.robot.auto.groups.*;
-import frc.robot.commands.FollowVisionTarget;
+// import frc.robot.auto.groups.*;
+// import frc.robot.commands.FollowVisionTarget;
 
 import java.util.ArrayList;
 
@@ -25,7 +27,7 @@ public class AutoMotion {
   
   /**
    * different heights of goals.
-   * LOW: the lowest level of the rocket & through the hatch of the cargo ship;
+   * LOW: the lowest level of the rocket and through the hatch of the cargo ship;
    * MIDDLE: the middle level of the rocket;
    * HIGH: the highest level of the rocket;
    * OVER: dropped into the cargo ship from above

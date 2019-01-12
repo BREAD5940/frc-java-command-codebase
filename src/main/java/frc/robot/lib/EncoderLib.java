@@ -14,7 +14,9 @@ public class EncoderLib extends Subsystem {
     }
 
     /**
-     * Converts raw sensor position to rotations. Units are full rotations of the object.
+     * Converts raw sensor position to rotations. rawPosition is the raw ticks (out
+     * of 4096) of the encoder, unitsPerRotation are 40996, and this will return
+     * the total number of rotations
      * 
      * @param rawPosition
      * @param unitsPerRotation

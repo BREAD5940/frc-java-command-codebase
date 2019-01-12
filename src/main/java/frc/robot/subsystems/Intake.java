@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotConfig;
-import frc.robot.commands.RunIntake;
+import frc.robot.commands.subsystems.intake.IntakeTelop;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
@@ -26,7 +26,7 @@ public class Intake extends Subsystem {
 
 /**
  * Set speed to raw percent output
- * @param double speed
+ * @param speed
  */
   public void setSpeed(double speed) {
     talon_left.set(ControlMode.PercentOutput, speed);
@@ -37,6 +37,6 @@ public class Intake extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new RunIntake());
+    setDefaultCommand(new IntakeTelop());
   }
 }
