@@ -4,6 +4,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -11,8 +12,11 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
+import frc.robot.lib.EncoderLib;
+import frc.robot.lib.Odometry;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
+import jaci.pathfinder.Pathfinder;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LIDARSubsystem;
@@ -27,32 +31,19 @@ import frc.robot.subsystems.LimeLight;
 public class Robot extends TimedRobot {
   public static SendableChooser<AutoMotion.goalHeight> gh;
   public static OI m_oi;
-  public static double startingDistance;
-  public static double elevator_setpoint = 0;
-  public static double wrist_setpoint = 0;
-
-  public static boolean arcade_running = false;
   public static Intake intake = new Intake();
   public static Elevator elevator = new Elevator();
-  public static DriveTrain drivetrain = new DriveTrain();
-  // public static Wrist wrist = new Wrist();
+  public static DriveTrain drivetrain = DriveTrain.getInstance();
   public static AHRS gyro = new AHRS(SPI.Port.kMXP);
   public static LimeLight limelight = new LimeLight();
   public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
-  /** Poorly named Operator Input value for Robot */
-  // public static TerribleLogger logger = new TerribleLogger();
-
   public static SendableChooser<AutoMotion> backupAutoSelect = new SendableChooser<AutoMotion>();
   private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 7, 3);
   private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 0, 6);
-
-  // public static ADXRS450_Gyro gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-
   public static AutoMotion m_auto;
-
   SendableChooser<Command> m_chooser = new SendableChooser<Command>();
-
-  Compressor compressor = new Compressor(9);
+  public static Compressor compressor = new Compressor(9);
+  private static Odometry odometry_;
 
   
 
@@ -88,6 +79,9 @@ public class Robot extends TimedRobot {
     gh.addOption("Dropped into the cargo ship", AutoMotion.goalHeight.OVER);
     SmartDashboard.putData("Goal Height", gh);
     SmartDashboard.putData("Backup Selector (Will not be used in most cases)", backupAutoSelect);
+    SmartDashboard.putData(drivetrain);
+    SmartDashboard.putData(elevator);
+    SmartDashboard.putData(intake);
 
     compressor.setClosedLoopControl(true);
 
@@ -95,8 +89,6 @@ public class Robot extends TimedRobot {
     elevator.init();
     // wrist.init();
     gyro.reset();
-
-    startingDistance = drivetrain.getLeftDistance();
 
     switch (RobotConfig.auto.auto_gear) {
     case HIGH:
@@ -107,9 +99,24 @@ public class Robot extends TimedRobot {
       drivetrain.setHighGear();
     }
 
-    SmartDashboard.putData(drivetrain);
-    SmartDashboard.putData(elevator);
-    SmartDashboard.putData(intake);
+    // Thanks to RoboLancers for odometry code
+    odometry_ = Odometry.getInstance();
+    new Notifier(() -> {
+        // odometry_.setCurrentEncoderPosition((DriveTrain.getInstance().getLeft().getEncoderCount() + DriveTrain.getInstance().getRight().getEncoderCount()) / 2.0);
+        odometry_.setCurrentEncoderPosition((DriveTrain.getInstance().m_left_talon.getSelectedSensorPosition() + DriveTrain.getInstance().m_right_talon.getSelectedSensorPosition()) / 2.0);
+
+        // odometry_.setDeltaPosition(RobotUtil.encoderTicksToFeets(odometry_.getCurrentEncoderPosition() - odometry_.getLastPosition()));
+        odometry_.setDeltaPosition(EncoderLib.rawToDistance(odometry_.getCurrentEncoderPosition() - odometry_.getLastPosition(), RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
+                  (RobotConfig.driveTrain.left_wheel_effective_diameter + RobotConfig.driveTrain.right_wheel_effective_diameter)/2.0));
+
+        odometry_.setTheta(Math.toRadians(Pathfinder.boundHalfDegrees(gyro.getAngle())));
+
+        odometry_.addX(Math.cos(odometry_.getTheta()) * odometry_.getDeltaPosition());
+        odometry_.addY(Math.sin(odometry_.getTheta()) * odometry_.getDeltaPosition());
+
+        odometry_.setLastPosition(odometry_.getCurrentEncoderPosition());
+    }).startPeriodic(0.01);
+
   }
 
   /**
@@ -217,8 +224,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Elevator setpoint", 20000);
     SmartDashboard.putNumber("Elevator height", elevator.getHeight());
     SmartDashboard.putNumber("Elevator error", 4096 - elevator.getHeight());
-
-    SmartDashboard.putBoolean("Arcade command running", arcade_running);
 
     // SmartDashboard.putNumber("Wrist angle setpoint", wrist_setpoint);
     // SmartDashboard.putNumber("Wrist talon pos",

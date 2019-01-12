@@ -30,22 +30,33 @@ import frc.robot.lib.EncoderLib;
  * @author Matthew Morley
  */
 public class DriveTrain extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-
-  public TalonSRX m_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.m_left_talon_port);
-  public TalonSRX s_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.s_left_talon_port);
-  public TalonSRX m_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.m_right_talon_port);
-  public TalonSRX s_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.s_right_talon_port);
-  public String current_gear;
-  public double tVoltage_l, tVoltage_r, tRaw_l, tRaw_r;
 
   public MotionProfileStatus m_left_MP_Status = new MotionProfileStatus();
   public MotionProfileStatus m_right_MP_Status = new MotionProfileStatus();
 
+  public TalonSRX m_left_talon, s_left_talon, m_right_talon, s_right_talon;
+
   public enum Gear {
     LOW, HIGH;
   }
+
+  private static DriveTrain instance;
+
+  private DriveTrain() {
+    m_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.m_left_talon_port);
+    s_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.s_left_talon_port);
+    m_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.m_right_talon_port);
+    s_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.s_right_talon_port);
+  }
+
+  public synchronized static DriveTrain getInstance() {
+    if (instance == null) {
+        instance = new DriveTrain();
+    }
+
+    return instance;
+}
+
 
   Gear gear;
 
