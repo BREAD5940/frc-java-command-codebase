@@ -1,7 +1,7 @@
-package frc.robot.auto.groups;
+package frc.robot.commands.auto.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.SetElevatorHeight;
+import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
 

@@ -2,8 +2,8 @@ package frc.robot.commands.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
-import frc.robot.commands.SetElevatorHeight;
-import frc.robot.commands.SetWrist;
+import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
+import frc.robot.commands.subsystems.wrist.SetWrist;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
 
 public class PrepareIntake extends CommandGroup {

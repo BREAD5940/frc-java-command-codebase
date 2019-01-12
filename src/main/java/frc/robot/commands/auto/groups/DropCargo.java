@@ -1,9 +1,9 @@
-package frc.robot.auto.groups;
+package frc.robot.commands.auto.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.commands.auto.actions.AutoIntake;
+import frc.robot.commands.subsystems.wrist.SetWrist;
 
-import frc.robot.auto.actions.*;
-import frc.robot.commands.*;
 
 public class DropCargo extends CommandGroup{
   /**

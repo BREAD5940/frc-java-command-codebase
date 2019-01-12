@@ -1,14 +1,11 @@
-package frc.robot.auto.actions;
+package frc.robot.commands.auto.actions;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public abstract class CommandOnCondition extends Command {
 
   /**
-   * Run the intake at a set speed for a set number of seconds.
-   * To outtake, set the speed to a negative number.
-   * @param demand from -1 (outtake) to 1 (intake)
-   * @param runtime in seconds
+   * (Maybe) run a command on a cnodition
    */
   public CommandOnCondition() {
   }
