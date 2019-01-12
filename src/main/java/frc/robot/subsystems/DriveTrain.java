@@ -180,11 +180,6 @@ public class DriveTrain extends Subsystem {
   public void setSpeeds(double speed_left_raw, double speed_right_raw) {
     setLeftSpeedRaw(speed_left_raw);
     setRightSpeedRaw(speed_right_raw);
-
-    // Record the data for the logger to grab
-    tRaw_l = speed_left_raw;
-    tRaw_r = speed_right_raw;
-    tVoltage_l = tVoltage_r = 0;
   }
 
   /**
@@ -197,11 +192,6 @@ public class DriveTrain extends Subsystem {
   public void setVoltages(double left_voltage, double right_voltage) {
     m_left_talon.set(ControlMode.PercentOutput, left_voltage / 11);
     m_right_talon.set(ControlMode.PercentOutput, right_voltage / 11);
-
-    // Record the data for the logger to grab
-    tVoltage_l = left_voltage;
-    tVoltage_r = right_voltage;
-    tRaw_l = tRaw_r = 0;
   }
 
   /**

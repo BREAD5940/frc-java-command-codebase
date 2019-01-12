@@ -1,4 +1,4 @@
-package frc.robot.lib;
+package frc.robot.lib.motion;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

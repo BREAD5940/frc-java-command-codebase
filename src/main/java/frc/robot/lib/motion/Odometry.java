@@ -1,4 +1,4 @@
-package frc.robot.lib;
+package frc.robot.lib.motion;
 
 import jaci.pathfinder.Trajectory;
 

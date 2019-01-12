@@ -1,4 +1,4 @@
-package frc.robot.lib.purepursuit;
+package frc.robot.lib.motion.purepursuit;
 
 import frc.math.Pose2d;
 import frc.math.Rotation2d;
