@@ -1,6 +1,6 @@
 package frc.robot.lib;
 
-/** @author Coalpha */
+/** @author Cole Gannon */
 public class Colors {
   public static String reset = "\u001b[0m";
   public static String red = "\u001b[31m";

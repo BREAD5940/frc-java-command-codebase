@@ -7,18 +7,20 @@ import java.util.function.Function;
 import java.lang.RuntimeException;
 
 /**
- * Java interpolation doesn't HAVE to suck
- * It's so you can do stuff like this:
- * "hello${foobar} world"
+ * Java interpolation doesn't <i>have</i> to suck.
+ * This class is a loose implementation of bash's $ variable syntax.
  * @author Cole Gannon
  */
 public class $ {
   // go ahead and complain that "$" for the name is too terse but it'll save you a lot of typing
+  // also, if you're gonna read this file it'd be worth reading up on lambdas
+  /** A Regex designed to get variable names from bash <code>$</code> expression compiled to a Pattern */
   private static Pattern $pattern = Pattern.compile("\\${?(\\w+)}?");
-
   /**
+   * Replace every $<variable> with the output of applying <variable> to fn
    * @param s Input string to search for matches
-   * @param fn It's a thing
+   * @param fn A function that bash variables will be applied to.
+   * It returns a String which the bash <code>$</code> expression will be replaced with
    */
   // might be able to use this elsewhere since it's general but who cares really
   private static String replaceAll(String s, Function<String, String> fn) {
@@ -43,10 +45,15 @@ public class $ {
   public String result() {
     return this.result;
   }
-  /** Gets an environment variable. Probably not what you want to do */
+  /** Gets environment variables as specified by <code>$</code>. */
   public $(String s) {
     this.result = $.replaceAll(s, System::getenv);
   }
+  /**
+   * Interpolate given a String and an Array of Strings.
+   * @param s The input String
+   * @param ary The Array of variables to access
+   */
   public $(String s, String[] ary) {
     this.result = $.replaceAll(s, (String match) -> {
       int i;
@@ -58,6 +65,11 @@ public class $ {
       return ary[i];
     });
   }
+  /**
+   * Interpolate given a String and an ArrayList&lt;String&gt;
+   * @param s The input String
+   * @param ary The ArrayList of Strings to access
+   */
   public $(String s, ArrayList<String> ary) {
     this.result = $.replaceAll(s, (String match) -> {
       int i;
@@ -69,7 +81,11 @@ public class $ {
       return ary.get(i);
     });
   }
-  /** Given a String and an input Object */
+  /**
+   * Interpolate given a String and an input Object
+   * @param s The input String
+   * @param o Literally any Java Object
+   */
   public $(String s, Object o) {
     Class<?> cls = o.getClass();
     this.result = $.replaceAll(s, (String match) -> {
@@ -98,10 +114,48 @@ public class $ {
       throw new RuntimeException("Found " + match + " but it was not a String!");
     });
   }
-  /** Interpolate and return the interpolated value */
+  /**
+   * Faster way to interpolate <code>$</code> environment variables
+   * @param s Input
+   */
+  public static String i(String s) { return new $(s).result(); }
+  /**
+   * Given a String and any Object. Example:
+   * <pre>
+   *String foo = $.i(
+   *  "Java is as fast as a $noun",
+   *  new Object() {
+   *    static String animal = "sloth";
+   *  }
+   *);
+   * </pre>
+   * @param s The input String
+   * @param o Literally any Object
+   */
   public static String i(String s, Object o) { return new $(s, o).result(); }
-  /** Interpolate and return the interpolated value */
+  /**
+   * Given a String and an Array of Strings. Example:
+   * <pre>
+   *String bar = $.i(
+   *  "It ain't much but it's $0 $1",
+   *  {"honest", "work"}
+   *);
+   * // yes, it's zero indexed
+   * </pre>
+   * @param s The input String
+   * @param ary The Array of variables to access
+   */
   public static String i(String s, String[] ary) { return new $(s, ary).result(); }
-  /** Interpolate and return the interpolated value */
+  /**
+   * Given a String and an ArrayList of Strings. Example:
+   * <pre>
+   *var nouns = new ArrayList&lt;String&gt;();
+   *nouns.add("bacon");
+   *nouns.add("calorie counts");
+   *String baz = $.i("With great $0 comes great $1", nouns);
+   * </pre>
+   * @param s The input String
+   * @param ary The ArrayList of Strings to access
+   */
   public static String i(String s, ArrayList<String> ary) { return new $(s, ary).result(); }
 }
