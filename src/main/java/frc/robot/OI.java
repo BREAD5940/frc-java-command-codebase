@@ -3,10 +3,12 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.auto.AutoMotion;
-import frc.robot.auto.AutoMotion.goalType;
-import frc.robot.commands.*;
-import frc.robot.auto.*;
+import frc.robot.commands.auto.RunAuto;
+import frc.robot.commands.auto.AutoMotion.mGoalType;
+import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
+import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
+import frc.robot.commands.auto.AutoMotion;
+
 
 /**
  * Operator Input not Out-In
@@ -39,12 +41,12 @@ public class OI {
     shift_down_button.whenPressed(new DriveShiftLow());
     // open_clamp_button.whenPressed(new OpenClamp());
     // close_clamp_button.whenPressed(new CloseClamp());
-    auto_place_cargo_cargo_button.whenPressed(new RunAuto(goalType.CARGO_CARGO, AutoMotion.goalHeight.LOW));
-    auto_place_hatch_cargo_button.whenPressed(new RunAuto(goalType.CARGO_HATCH, AutoMotion.goalHeight.LOW));
-    auto_place_cargo_rocket_button.whenPressed(new RunAuto(goalType.ROCKET_CARGO, AutoMotion.goalHeight.LOW));
-    auto_place_hatch_rocket_button.whenPressed(new RunAuto(goalType.ROCKET_HATCH, AutoMotion.goalHeight.LOW));
-    auto_grab_hatch_button.whenPressed(new RunAuto(goalType.RETRIEVE_HATCH, AutoMotion.goalHeight.LOW));
-    auto_grab_cargo_button.whenPressed(new RunAuto(goalType.RETRIEVE_CARGO, AutoMotion.goalHeight.LOW));
+    auto_place_cargo_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_CARGO, AutoMotion.mGoalHeight.LOW));
+    auto_place_hatch_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_HATCH, AutoMotion.mGoalHeight.LOW));
+    auto_place_cargo_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_CARGO, AutoMotion.mGoalHeight.LOW));
+    auto_place_hatch_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_HATCH, AutoMotion.mGoalHeight.LOW));
+    auto_grab_hatch_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_HATCH, AutoMotion.mGoalHeight.LOW));
+    auto_grab_cargo_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_CARGO, AutoMotion.mGoalHeight.LOW));
   }
 
   public double getForwardAxis() { return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis); }

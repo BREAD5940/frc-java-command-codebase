@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 // import frc.robot.RobotConfig.driveTrain;
-import frc.robot.commands.ArcadeDrive;
+import frc.robot.commands.subsystems.drivetrain.ArcadeDrive;
 // import frc.robot.commands.stick_drive;
 import frc.robot.lib.EncoderLib;
 
@@ -197,8 +197,8 @@ public class DriveTrain extends Subsystem {
    * An even more lazy version of @link setSpeeds This will literally set the
    * throttle of the left and right talons (from -1 to 1 ofc, like normal)
    * 
-   * @param leftspeed
-   * @param rightspeed
+   * @param left_power
+   * @param right_power
    */
   public void setPowers(double left_power, double right_power) {
     m_left_talon.set(ControlMode.PercentOutput, left_power);
