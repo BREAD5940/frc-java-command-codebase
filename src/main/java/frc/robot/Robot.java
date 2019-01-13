@@ -39,7 +39,7 @@ import com.kauailabs.navx.frc.AHRS;
  * @author Matthew Morley
  */
 public class Robot extends TimedRobot {
-  public static SendableChooser<AutoMotion.goalHeight> gh;
+  public static SendableChooser<AutoMotion.mGoalHeight> mGh;
   public static OI m_oi;
   public static double startingDistance;
   public static double elevator_setpoint = 0;
@@ -96,12 +96,12 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_oi = new OI();
 
-    gh = new SendableChooser<AutoMotion.goalHeight>();
-    gh.setDefaultOption("Low", AutoMotion.goalHeight.LOW);
-    gh.addOption("Middle", AutoMotion.goalHeight.MIDDLE);
-    gh.addOption("High", AutoMotion.goalHeight.HIGH);
-    gh.addOption("Dropped into the cargo ship", AutoMotion.goalHeight.OVER);
-    SmartDashboard.putData("Goal Height", gh);
+    mGh = new SendableChooser<AutoMotion.mGoalHeight>();
+    mGh.setDefaultOption("Low", AutoMotion.mGoalHeight.LOW);
+    mGh.addOption("Middle", AutoMotion.mGoalHeight.MIDDLE);
+    mGh.addOption("High", AutoMotion.mGoalHeight.HIGH);
+    mGh.addOption("Dropped into the cargo ship", AutoMotion.mGoalHeight.OVER);
+    SmartDashboard.putData("Goal Height", mGh);
     SmartDashboard.putData("Backup Selector (Will not be used in most cases)", backupAutoSelect);
 
     compressor.setClosedLoopControl(true);
@@ -180,7 +180,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
     if (m_auto != null) {
-      m_auto.bigCommandGroup.cancel();
+      m_auto.mBigCommandGroup.cancel();
     }
     // TODO reset subsystems on teleop init?
   }
