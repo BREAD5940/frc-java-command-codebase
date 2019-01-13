@@ -49,6 +49,7 @@ checkstyle {
     configFile file("config/checkstyle/checkstyle.xml")
     showViolations = true
     ignoreFailures = false
+    sourceSets = []
 }
 checkstyleMain {
     source ='src/main/java'
