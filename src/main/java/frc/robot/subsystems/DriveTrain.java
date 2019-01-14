@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
@@ -182,6 +183,40 @@ public class DriveTrain extends Subsystem {
     setRightSpeedRaw(speed_right_raw);
   }
 
+  // /**
+  //  * Set the drivetrain speeds in feet per second
+  //  * @param mleftSpeed in feet per second
+  //  * @param mRightSpeed in feet per second
+  //  */
+  // public void setFeetPerSecond(double mleftSpeed, double mRightSpeed) {
+  //   setSpeeds(
+  //     EncoderLib.distanceToRaw(
+  //       mleftSpeed,
+  //       RobotConfig.driveTrain.left_wheel_effective_diameter / 12,
+  //       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10, 
+  //     EncoderLib.distanceToRaw(
+  //       mRightSpeed,
+  //       RobotConfig.driveTrain.left_wheel_effective_diameter / 12,
+  //       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10
+  //     );
+  // }
+
+  public void setFeetPerSecond(double left, double right, double acceleration){
+    double ka;
+    switch(gear){
+      case LOW:
+        ka = 1.0 / 10;
+      default:
+        ka = 1.0 / 10;
+    }
+    m_left_talon.set(ControlMode.Velocity, 
+      EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10,
+      DemandType.ArbitraryFeedForward, 0.1 + acceleration * ka);
+    m_right_talon.set(ControlMode.Velocity, 
+      EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10,
+      DemandType.ArbitraryFeedForward, 0.1 + acceleration * ka);
+}
+
   /**
    * An even more lazy version of @link setSpeeds This will literally set the
    * voltage of the left and right talons (from -1 to 1 ofc, like normal)
@@ -205,6 +240,17 @@ public class DriveTrain extends Subsystem {
     m_left_talon.set(ControlMode.PercentOutput, left_power);
     m_right_talon.set(ControlMode.PercentOutput, right_power);
   }
+
+  /**
+   * Set the neutral mode of the talons
+   * @param mode the mode to set the talons to
+   */
+  public void setMode(NeutralMode mode) {
+    m_left_talon.setNeutralMode(mode);
+    m_right_talon.setNeutralMode(mode);
+    s_left_talon.setNeutralMode(mode);
+    s_right_talon.setNeutralMode(mode);
+}
 
   /**
    * Set the target left speed. Units are in raw units.

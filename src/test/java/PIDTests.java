@@ -36,7 +36,7 @@ public class PIDTests {
 
   @Test
   public void testIntegral() {
-    TerriblePID mIntegralPid = new TerriblePID(0, 1, -1, 1, 100000, 1);
+    TerriblePID mIntegralPid = new TerriblePID(1, 0, 0, 0, -1, 1, 0, 1000, 0, null, null);
     mIntegralPid.setSetpoint(10);
     
     double mOutput = mIntegralPid.update(9);
