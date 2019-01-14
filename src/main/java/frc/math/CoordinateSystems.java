@@ -7,7 +7,7 @@ public class CoordinateSystems {
   /** 
    * Convert from polar to cartesian. Input array should be
    * in the form theta, magnitude, where theta is in degrees
-   * @param double[theta,magnitude] 
+   * @param polar double[theta, magnitude]
    * @return a double[] in the form x, y
    */
   public static double[] polarToCartesian(double[] polar) {

@@ -57,7 +57,7 @@ public class TurnInPlace extends Command {
    * absolute angle. If you want to specify, use a bool as the second
    * argument to specify if the angle should be interpreted as absolute 
    * or not.
-   * @param target_angle
+   * @param target_angle angle the robot should turn to in degrees 
    */
   public TurnInPlace(double target_angle) {
     // Use requires() here to declare subsystem dependencies
@@ -69,8 +69,8 @@ public class TurnInPlace extends Command {
    * Turn a specified number of degrees in the default auto gear. 
    * The angle passed is an absolute angle relative to the 
    * angle upon autonomous init.
-   * @param target_angle
-   * @param isAbsolute
+   * @param target_angle angle robot should turn to in degrees 
+   * @param isAbsolute true if angle is absolute relative to auto init
    */
   public TurnInPlace(double target_angle, boolean isAbsolute) {
     this.isAbsolute = isAbsolute;

@@ -25,7 +25,7 @@ public class TerriblePID {
   double unitsPerQuarterWave;
 
   /**
-   * Create a basic PI controller, sans the derivative term. When |error| < integralZone, 
+   * Create a basic PI controller, sans the derivative term. When |error| is less than integralZone, 
    * the Integral term will be active. If this is no longer true, the interal accum will
    * be flushed and the controller will effectively be a P controller. Slightly less
    * shitty version of drivetrain.shitty_p_loop :P
@@ -45,13 +45,13 @@ public class TerriblePID {
   }
 
   /**
-   * Create a basic PI controller, sans the derivative term. When |error| < integralZone, 
+   * Create a basic PI controller, sans the derivative term. When |error| is less than integralZone, 
    * the Integral term will be active. If this is no longer true, the interal accum will
    * be flushed and the controller will effectively be a P controller. Slightly less
    * shitty version of drivetrain.shitty_p_loop :P 
    * @param kp gain
-   * @param ki gain
-   * @param integralZone about which integral will be active
+   * @param minOutput min output
+   * @param maxOutput max output
    */
   public TerriblePID(double kp, double minOutput, double maxOutput) {
       this.kp = kp;
@@ -63,11 +63,12 @@ public class TerriblePID {
   }
 
   /**
-   * Create a basic PI controller, sans the derivative term. When |error| < integralZone, 
+   * Create a basic PI controller, sans the derivative term. When |error| is less then integralZone, 
    * the Integral term will be active. If this is no longer true, the interal accum will
    * be flushed and the controller will effectively be a P controller. Slightly less
    * shitty version of drivetrain.shitty_p_loop :P 
    * This constructor also has support for different "shapes" of feedForward term. Depending on the 
+   * 
    * @param kp gain
    * @param ki gain
    * @param integralZone about which integral will be active
@@ -98,7 +99,7 @@ public class TerriblePID {
   }
   /**
    * Set the setpoint for this instance of the PID loop. Should be preserved.
-   * @param setpoint
+   * @param demand new setpoint
    */
   public void setSetpoint(double demand) {
     setpoint = demand;
@@ -111,7 +112,7 @@ public class TerriblePID {
 
   /**
    * Set the maximum output of the controller
-   * @param maxOutput
+   * @param max maximum output 
    */
   public void setMaxOutput(double max) {
     maxOutput = max;

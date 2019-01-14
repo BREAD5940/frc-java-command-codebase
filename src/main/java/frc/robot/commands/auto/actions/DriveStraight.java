@@ -53,6 +53,7 @@ public class DriveStraight extends Command {
    * is initilized with. Timeout is 15 seconds.
    * @param distance in feet
    * @param speed maximum speed in feet per second
+   * @param timeout timeout in seconds
    */
   public DriveStraight(double distance, double speed, double timeout) {
     this.distance = distance;

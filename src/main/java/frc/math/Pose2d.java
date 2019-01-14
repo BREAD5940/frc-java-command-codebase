@@ -34,7 +34,7 @@ public class Pose2d {
      * a previous Rotation2d
      * @param x
      * @param y
-     * @param rotation2d rotation
+     * @param rotation 2d rotation
      */
     public Pose2d(double x, double y, final Rotation2d rotation) {
         translation_ = new Translation2d(x, y);
@@ -43,8 +43,8 @@ public class Pose2d {
 
     /**
      * Construct a new Pose2d given a old Translation2d and Rotation2d
-     * @param Translation2d
-     * @param Rotation2d
+     * @param translation 2d translation
+     * @param rotation 2d rotation
      */
     public Pose2d(final Translation2d translation, final Rotation2d rotation) {
         translation_ = translation;
@@ -53,7 +53,7 @@ public class Pose2d {
 
     /**
      * Construct a new Pose2d given an old Pose2d
-     * @param Pose2d
+     * @param other old Pose2d
      */
     public Pose2d(final Pose2d other) {
         translation_ = new Translation2d(other.translation_);
@@ -62,7 +62,8 @@ public class Pose2d {
 
     /**
      * Return a Pose2d given a transation. Rotation is set to the default value.
-     * @param Translation2d
+     * @param translation the translation of the Pose
+     * @return a Pose2d given a translation. 
      */
     public static Pose2d fromTranslation(final Translation2d translation) {
         return new Pose2d(translation, new Rotation2d());
@@ -80,6 +81,9 @@ public class Pose2d {
      * https://github.com/strasdat/Sophus/blob/master/sophus/se2.hpp
      * <p>
      * This would probubly be useful for Pure Persuit
+     * 
+     * @param delta Twist2d 
+     * @return delta pose of the robot interpolated from the twist 2d
      */
     public static Pose2d exp(final Twist2d delta) {
         double sin_theta = Math.sin(delta.dtheta);
@@ -98,7 +102,7 @@ public class Pose2d {
 
     /**
      * Logical inverse of the above - get a Twist2d from a Pose2d
-     * @param Pose2d transform
+     * @param transform transform- delta 
      * @return Twist2d from the pose
      */
     public static Twist2d log(final Pose2d transform) {

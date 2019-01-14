@@ -33,8 +33,8 @@ public class FollowMotionProfile extends Command {
 
   /**
    * Run a motion profile path given the path to the csv file on the RoboRio
-   * @param path to left side csv on roboRio file system
-   * @param path to right side csv on roboRio file system
+   * @param leftProfilePath to left side csv on roboRio file system
+   * @param rightProfilePath to right side csv on roboRio file system
    */
   public FollowMotionProfile(String leftProfilePath, String rightProfilePath) {
     this.leftProfilePath = leftProfilePath;
