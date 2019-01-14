@@ -25,16 +25,11 @@ public class FollowVisionTarget extends Command {
 
   private TerriblePID forwardPID = new TerriblePID(
     RobotConfig.auto.followVisionTarget.forward.kp,
-    RobotConfig.auto.drive_auto_forward_velocity_min,
     RobotConfig.auto.drive_auto_forward_velocity_max 
   );
   private TerriblePID turnPID = new TerriblePID(
     RobotConfig.auto.followVisionTarget.turn.kp,
-    RobotConfig.auto.followVisionTarget.turn.ki,
-    RobotConfig.auto.followVisionTarget.turn.min_turn_speed,
-    RobotConfig.auto.followVisionTarget.turn.max_turn_speed, 
-    RobotConfig.auto.followVisionTarget.turn.integral_zone, 
-    RobotConfig.auto.followVisionTarget.turn.max_integral
+    RobotConfig.auto.followVisionTarget.turn.max_turn_speed
   );
   
   /**

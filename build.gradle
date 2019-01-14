@@ -43,6 +43,24 @@ repositories {
   mavenCentral()
 }
 
+// Configure javadoc generation
+javadoc {
+    doFirst {
+    
+        // Generate HTML5 javadoc
+        options.addBooleanOption('html5', true)
+    
+        // OPTIONAL - Define window and doc titles
+        options.setWindowTitle('My Project | Javadoc')
+        options.setDocTitle('My Project')
+        
+        // OPTIONAL - Some usefull options
+        options.setUse(true)
+        options.setVersion(true)
+        options.setAuthor(true)
+    }
+}
+
 apply plugin: 'checkstyle'
 checkstyle {
     toolVersion '7.8.1'
