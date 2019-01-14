@@ -190,7 +190,7 @@ public class TerriblePID {
     lastMeasured = measured;
 
     /*
-     * The iAccum should start at 0, but is incramented by error 
+       * The iAccum should start at 0, but is incramented by error 
      * times dt. This is then clamped to the minimum/maximum of 
      * the i term. This only happens if the integral gain is set.
      */
