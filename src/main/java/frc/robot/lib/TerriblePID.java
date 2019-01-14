@@ -29,7 +29,10 @@ public class TerriblePID {
    * Create a basic PI controller, sans the derivative term. When |error| < integralZone, 
    * the Integral term will be active. If this is no longer true, the interal accum will
    * be flushed and the controller will effectively be a P controller. Slightly less
-   * shitty version of drivetrain.shitty_p_loop :P
+   * shitty version of drivetrain.shitty_p_loop. Use like this:
+   * <code>
+   * TerriblePID mPid = new TerriblePID(1 (kp), 0 (ki), 0 (kd), 0 (kf), -1 (min output), 1  (max output), 0  (integral zone), 1000  (max integral accum), 0 (ramp rate, null, null)
+   * </code>
    * @param kp gain
    * @param ki gain
    * @param kd gain 

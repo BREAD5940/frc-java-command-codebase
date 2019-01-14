@@ -3,13 +3,19 @@ import static org.junit.Assert.*;
 import org.junit.jupiter.api.Test;
 
 import frc.robot.lib.TerriblePID;
+import frc.robot.lib.TerriblePID.FeedForwardMode;
 
 public class PIDTests {
 
   @Test
   public void testBasicPID() {
-    TerriblePID mPid = new TerriblePID(1, 0, -1, 1, 0, 1000);
-    TerriblePID mSecondaryPid = new TerriblePID(2, 0, -2, 2, 0, 1000);
+
+    // public TerriblePID(double kp, double ki, double kd, double kf, double minOutput, double maxOutput, 
+    // double integralZone, double maxIntegralAccum, double rampRate, FeedForwardMode forwardMode,
+    // FeedForwardBehavior feedforwardbehavior) {
+
+    TerriblePID mPid = new TerriblePID(1 /* kp */, 0 /* ki */, 0 /* kd */, 0 /* kf */, -1 /* min output */, 1  /* max output */, 0  /* integral zone */, 1000  /* max integral accum */, 0 /* ramp rate */, null, null);
+    TerriblePID mSecondaryPid = new TerriblePID(2 /* kp */, 0 /* ki */, 0 /* kd */, 0 /* kf */, -2 /* min output */, 2 /* max output */, 0  /* integral zone */, 1000  /* max integral accum */, 0 /* ramp rate */, null, null);
 
     mPid.setSetpoint(10);
     mSecondaryPid.setSetpoint(5);
