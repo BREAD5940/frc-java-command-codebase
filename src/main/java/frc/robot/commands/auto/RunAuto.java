@@ -10,19 +10,19 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
-import frc.robot.commands.auto.AutoMotion.goalHeight;
-import frc.robot.commands.auto.AutoMotion.goalType;
+import frc.robot.commands.auto.AutoMotion.mGoalHeight;
+import frc.robot.commands.auto.AutoMotion.mGoalType;
 
 
 /**
  * Selects and runs an auto command group
  */
 public class RunAuto extends Command {
-  public goalType goal;
-  public goalHeight height;
+  public mGoalType goal;
+  public mGoalHeight height;
   public AutoMotion motion;
 
-  public RunAuto(goalType goal, goalHeight height) {
+  public RunAuto(mGoalType goal, mGoalHeight height) {
     // Use requires() here to declare subsystem dependencies
     this.goal = goal;
     this.height = height;
@@ -33,7 +33,7 @@ public class RunAuto extends Command {
   @Override
   protected void initialize() {
     motion = new AutoMotion(height, goal);
-    motion.bigCommandGroup.start();
+    motion.mBigCommandGroup.start();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -45,7 +45,7 @@ public class RunAuto extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return motion.bigCommandGroup.done();
+    return motion.mBigCommandGroup.done();
   }
 
   // Called once after isFinished returns true

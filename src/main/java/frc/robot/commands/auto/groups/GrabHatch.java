@@ -2,10 +2,7 @@ package frc.robot.commands.auto.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
-import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
-
-import java.util.ArrayList;
 
 /** 
  * runs a series of commands to pick up a hatch from the loading station
