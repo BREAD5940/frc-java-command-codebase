@@ -18,7 +18,8 @@ public class TerriblePID {
 
   double kp, ki, kd, kf, pOutput, iOutput, fOutput, iAccum, dOutput, integralZone, 
     maxIntegralAccum, minOutput, maxOutput, setpoint, input, error, output;
-  double dt = 1 / 50; // Set delta time to 50 hz, this is likely good enough
+  double lastOutput, lastMeasured;
+  double dt = 1.0 / 50; // Set delta time to 50 hz, this is likely good enough
   FeedForwardMode feedforwardmode;
   FeedForwardBehavior feedforwardbehavior;
   /** The number of input units per quarter sine/cosine wave */
@@ -31,71 +32,37 @@ public class TerriblePID {
    * shitty version of drivetrain.shitty_p_loop :P
    * @param kp gain
    * @param ki gain
+   * @param kd gain 
+   * @param kf
+   * @param minOutput
+   * @param maxOutput
    * @param integralZone about which integral will be active
    * @param maxIntegralAccum same as minimum accum, i term will top/bottom out here
+   * @param rampRate
+   * @param FeedForwardMode
+   * @param FeedForwardBehavior
    */
-  public TerriblePID(double kp, double ki, double minOutput, double maxOutput, 
-    double integralZone, double maxIntegralAccum) {
+  public TerriblePID(double kp, double ki, double kd, double kf, double minOutput, double maxOutput, 
+    double integralZone, double maxIntegralAccum, double rampRate, FeedForwardMode forwardMode,
+    FeedForwardBehavior feedforwardbehavior) {
       this.kp = kp;
       this.ki = ki;
-      this.minOutput = minOutput;
-      this.maxOutput = maxOutput;
-      this.integralZone = integralZone;
-      this.maxIntegralAccum = maxIntegralAccum;
-  }
-
-  /**
-   * Create a basic PI controller, sans the derivative term. When |error| < integralZone, 
-   * the Integral term will be active. If this is no longer true, the interal accum will
-   * be flushed and the controller will effectively be a P controller. Slightly less
-   * shitty version of drivetrain.shitty_p_loop :P 
-   * @param kp gain
-   * @param ki gain
-   * @param integralZone about which integral will be active
-   */
-  public TerriblePID(double kp, double minOutput, double maxOutput) {
-      this.kp = kp;
-      this.ki = 0;
-      this.minOutput = minOutput;
-      this.maxOutput = maxOutput;
-      this.integralZone = 0;
-      this.maxIntegralAccum = 0;
-  }
-
-  /**
-   * Create a basic PI controller, sans the derivative term. When |error| < integralZone, 
-   * the Integral term will be active. If this is no longer true, the interal accum will
-   * be flushed and the controller will effectively be a P controller. Slightly less
-   * shitty version of drivetrain.shitty_p_loop :P 
-   * This constructor also has support for different "shapes" of feedForward term. Depending on the 
-   * @param kp gain
-   * @param ki gain
-   * @param integralZone about which integral will be active
-   * @param maxIntegralAccum same as minimum accum, i term will top/bottom out here
-   */
-  public TerriblePID(
-    double kp,
-    double ki,
-    double minOutput,
-    double maxOutput,
-    double integralZone,
-    double maxIntegralAccum,
-    double kf,
-    FeedForwardMode feedforwardmode,
-    FeedForwardBehavior feedforwardbehavior,
-    double unitsPerQuarterWave
-  ) {
-      this.kp = kp;
-      this.ki = ki;
+      this.kd = kd;
+      this.kf = kf;
       this.minOutput = minOutput;
       this.maxOutput = maxOutput;
       this.integralZone = integralZone;
       this.maxIntegralAccum = maxIntegralAccum;
       this.feedforwardmode = feedforwardmode;
       this.feedforwardbehavior = feedforwardbehavior;
-      this.kf = kf;
-      this.unitsPerQuarterWave = unitsPerQuarterWave;
   }
+
+  public TerriblePID(double kp, double maxOutput) {
+    this.kp = kp;
+    this.maxOutput = maxOutput;
+    this.minOutput = -1 * maxOutput;
+  }
+
   /**
    * Set the setpoint for this instance of the PID loop. Should be preserved.
    * @param setpoint
@@ -214,27 +181,33 @@ public class TerriblePID {
   public double update(double measured) {
     error = setpoint - measured;
 
-    /**
+    /*
      * P output is just the error times porportional gain
      */
     pOutput = kp * error;
 
-    System.out.println("ki is " + ki);
-    /**
+    if (kd != 0) {
+      dOutput = -1 * kd * (measured - lastMeasured);
+    }
+    lastMeasured = measured;
+
+    /*
      * The iAccum should start at 0, but is incramented by error 
      * times dt. This is then clamped to the minimum/maximum of 
      * the i term. This only happens if the integral gain is set.
      */
     if(ki != 0) {
       iAccum += error * ki * dt; // incrament the I term by error times integral gain times delta time (numerical integration yeet)
+      System.out.println(String.format("Error (%s) ki (%s) dt (%s) iAccum (%s)", error, ki, dt, iAccum));
       iAccum = clampIntegral(iAccum + iOutput); // clamp the term to the min/max   
     }
+    System.out.println("Ki: " + ki + " iAccum: " + iAccum);
 
     if(kf != 0) {
       fOutput = calculateFeedForward(measured);
     }
 
-    /**
+    /*
      * This will make sure the output of the loop does not exceed the specified min/max.
      */
     output = clampOutput(pOutput + iAccum  + fOutput); 
