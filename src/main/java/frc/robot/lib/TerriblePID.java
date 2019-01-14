@@ -219,7 +219,6 @@ public class TerriblePID {
      */
     pOutput = kp * error;
 
-    System.out.println("ki is " + ki);
     /**
      * The iAccum should start at 0, but is incramented by error 
      * times dt. This is then clamped to the minimum/maximum of 
