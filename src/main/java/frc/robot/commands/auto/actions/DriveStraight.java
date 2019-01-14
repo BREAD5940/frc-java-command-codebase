@@ -34,7 +34,6 @@ public class DriveStraight extends Command {
 
   private TerriblePID forwardPID = new TerriblePID(
     RobotConfig.auto.driveStraight.forward_kp, 
-    RobotConfig.auto.drive_auto_forward_velocity_min,
     RobotConfig.auto.drive_auto_forward_velocity_max 
   );
 

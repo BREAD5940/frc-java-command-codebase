@@ -58,9 +58,7 @@ public class TerriblePID {
   }
 
   public TerriblePID(double kp, double maxOutput) {
-    this.kp = kp;
-    this.maxOutput = maxOutput;
-    this.minOutput = -1 * maxOutput;
+    this(kp, 0.0, 0.0, 0.0, -maxOutput, maxOutput, 0.0, 0.0, 0.0, null, null);
   }
 
   /**
@@ -203,7 +201,7 @@ public class TerriblePID {
     }
     System.out.println("Ki: " + ki + " iAccum: " + iAccum);
 
-    if(kf != 0) {
+    if ((kf != 0) && (feedforwardbehavior != null) && (feedforwardmode != null)) {
       fOutput = calculateFeedForward(measured);
     }
 

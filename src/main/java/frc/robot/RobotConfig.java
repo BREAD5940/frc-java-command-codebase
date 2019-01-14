@@ -1,5 +1,7 @@
 package frc.robot;
 
+import frc.robot.lib.TerriblePID.FeedForwardBehavior;
+import frc.robot.lib.TerriblePID.FeedForwardMode;
 import frc.robot.subsystems.DriveTrain.Gear;
 
 public class RobotConfig {
@@ -204,13 +206,20 @@ public class RobotConfig {
     }
     
     public class turnInPlace {
+
+      //  public TerriblePID(double kp, double ki, double kd, double kf, double minOutput, double maxOutput, 
+      // double integralZone, double maxIntegralAccum, double rampRate, FeedForwardMode forwardMode,
+      // FeedForwardBehavior feedforwardbehavior) {
+
       public static final double kp = 0.1;
       public static final double ki = 0.3;
-      public static final double max_integral = 0.5;
-      public static final double integral_zone = 10; // 10 degrees izone
+      public static final double kd = 0.0;
+      public static final double kf = 0.0;
       public static final double min_turn_speed = -4; // in ft/sec
       public static final double max_turn_speed = 4; // in ft/sec
-      public static final double kf = 0;
+      public static final double integral_zone = 10; // 10 degrees izone
+      public static final double max_integral = 0.5;
+      public static final double ramp_rate = 0.2;
     }
     
     public class followVisionTarget {
