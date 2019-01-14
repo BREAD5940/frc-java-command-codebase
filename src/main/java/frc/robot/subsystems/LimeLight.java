@@ -86,7 +86,7 @@ public class LimeLight {
   }
   
   /**
-   * Get the latency from photon -> NT entry
+   * Get the latency from camera data to NT entry
    * @return pipeline latency contribution
    */
   public double getPipelineLatency() {
