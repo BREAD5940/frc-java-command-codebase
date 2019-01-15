@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.lib.EncoderLib;
+import frc.robot.lib.Logger;
+import frc.robot.lib.motion.Odometer;
 import frc.robot.lib.motion.Odometry;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
@@ -43,7 +45,8 @@ public class Robot extends TimedRobot {
   public static AutoMotion m_auto;
   SendableChooser<Command> m_chooser = new SendableChooser<Command>();
   public static Compressor compressor = new Compressor(9);
-  private static Odometry odometry_;
+  private static Odometer odometry_;
+  private Logger logger;
 
   
 
@@ -70,8 +73,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    logger = Logger.getInstance();
     m_oi = new OI();
-
     mGh = new SendableChooser<AutoMotion.mGoalHeight>();
     mGh.setDefaultOption("Low", AutoMotion.mGoalHeight.LOW);
     mGh.addOption("Middle", AutoMotion.mGoalHeight.MIDDLE);
@@ -93,29 +96,37 @@ public class Robot extends TimedRobot {
     switch (RobotConfig.auto.auto_gear) {
     case HIGH:
       drivetrain.setHighGear();
+      break;
     case LOW:
       drivetrain.setLowGear();
+      break;
     default:
       drivetrain.setHighGear();
     }
 
+    odometry_ = Odometer.getInstance();
     // Thanks to RoboLancers for odometry code
-    odometry_ = Odometry.getInstance();
-    new Notifier(() -> {
-        // odometry_.setCurrentEncoderPosition((DriveTrain.getInstance().getLeft().getEncoderCount() + DriveTrain.getInstance().getRight().getEncoderCount()) / 2.0);
-        odometry_.setCurrentEncoderPosition((drivetrain.m_left_talon.getSelectedSensorPosition() + drivetrain.m_right_talon.getSelectedSensorPosition()) / 2.0);
+    // odometry_ = Odometry.getInstance();
+    // new Notifier(() -> {
+    //     // odometry_.setCurrentEncoderPosition((DriveTrain.getInstance().getLeft().getEncoderCount() + DriveTrain.getInstance().getRight().getEncoderCount()) / 2.0);
+        
+    //     // Incrament the current encoder position by the average 
+    //     odometry_.setCurrentEncoderPosition((drivetrain.m_left_talon.getSelectedSensorPosition() + drivetrain.m_right_talon.getSelectedSensorPosition()) / 2.0);
 
-        // odometry_.setDeltaPosition(RobotUtil.encoderTicksToFeets(odometry_.getCurrentEncoderPosition() - odometry_.getLastPosition()));
-        odometry_.setDeltaPosition(EncoderLib.rawToDistance(odometry_.getCurrentEncoderPosition() - odometry_.getLastPosition(), RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
-                  (RobotConfig.driveTrain.left_wheel_effective_diameter / 12 + RobotConfig.driveTrain.right_wheel_effective_diameter / 12)/2.0));
+    //     // odometry_.setDeltaPosition(RobotUtil.encoderTicksToFeets(odometry_.getCurrentEncoderPosition() - odometry_.getLastPosition()));
+    //     odometry_.setDeltaPosition(EncoderLib.rawToDistance(odometry_.getCurrentEncoderPosition() - odometry_.getLastPosition(), RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
+    //               (RobotConfig.driveTrain.left_wheel_effective_diameter / 12 + RobotConfig.driveTrain.right_wheel_effective_diameter / 12)/2.0));
 
-        odometry_.setTheta(Math.toRadians(Pathfinder.boundHalfDegrees(gyro.getAngle())));
+    //     odometry_.setTheta(Math.toRadians(Pathfinder.boundHalfDegrees(gyro.getAngle())));
 
-        odometry_.addX(Math.cos(odometry_.getTheta()) * odometry_.getDeltaPosition());
-        odometry_.addY(Math.sin(odometry_.getTheta()) * odometry_.getDeltaPosition());
+    //     odometry_.addX(Math.cos(odometry_.getTheta()) * odometry_.getDeltaPosition());
+    //     odometry_.addY(Math.sin(odometry_.getTheta()) * odometry_.getDeltaPosition());
 
-        odometry_.setLastPosition(odometry_.getCurrentEncoderPosition());
-    }).startPeriodic(0.02);
+    //     odometry_.setLastPosition(odometry_.getCurrentEncoderPosition());
+    // }).startPeriodic(0.02);
+
+    drivetrain.zeroEncoders();
+    System.out.println("Robot init'ed and encoders zeroed!");
 
   }
 
@@ -206,6 +217,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    odometry_.update(drivetrain.getLeftDistance(), drivetrain.getRightDistance(), gyro.getAngle());
 
     SmartDashboard.putNumber("Robot X per odometry: ", odometry_.getX());
     SmartDashboard.putNumber("Robot Y per odometry: ", odometry_.getY());

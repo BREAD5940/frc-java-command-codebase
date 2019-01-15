@@ -23,7 +23,8 @@ public class TerriblePID {
   FeedForwardMode feedforwardmode;
   FeedForwardBehavior feedforwardbehavior;
   /** The number of input units per quarter sine/cosine wave */
-  double unitsPerQuarterWave;
+  private double unitsPerQuarterWave;
+  private double maxAcceleration;
 
   /**
    * Create a basic PI controller, sans the derivative term. When |error| < integralZone, 
@@ -41,12 +42,12 @@ public class TerriblePID {
    * @param maxOutput
    * @param integralZone about which integral will be active
    * @param maxIntegralAccum same as minimum accum, i term will top/bottom out here
-   * @param rampRate
+   * @param maxAcceleration
    * @param FeedForwardMode
    * @param FeedForwardBehavior
    */
   public TerriblePID(double kp, double ki, double kd, double kf, double minOutput, double maxOutput, 
-    double integralZone, double maxIntegralAccum, double rampRate, FeedForwardMode forwardMode,
+    double integralZone, double maxIntegralAccum, double maxAcceleration, FeedForwardMode forwardMode,
     FeedForwardBehavior feedforwardbehavior) {
       this.kp = kp;
       this.ki = ki;
@@ -58,6 +59,7 @@ public class TerriblePID {
       this.maxIntegralAccum = maxIntegralAccum;
       this.feedforwardmode = feedforwardmode;
       this.feedforwardbehavior = feedforwardbehavior;
+      this.maxAcceleration = maxAcceleration;
   }
 
   public TerriblePID(double kp, double maxOutput) {
@@ -156,20 +158,33 @@ public class TerriblePID {
     switch (feedforwardmode) {
       case SINE:
         fOutput = Math.sin(Math.toRadians( input * unitsPerQuarterWave ));
+        break;
       case COSINE:
         fOutput = Math.cos(Math.toRadians( input * unitsPerQuarterWave ));
+        break;
       default:
         fOutput = input * kf;
     }
     switch (feedforwardbehavior) {
       case ALWAYSPOSITIVE:
         fOutput = Math.abs(fOutput);
+        break;
       case INVERTED:
         fOutput = fOutput * -1;
+        break;
       case NORMAL:
         break;
     }
     return fOutput;
+  }
+
+  private double ramp(double output, double previousOutput) {
+    if (output - previousOutput > maxAcceleration) {
+      output += maxAcceleration;
+    } else if (output - previousOutput < -maxAcceleration) {
+      output -= maxAcceleration;
+    }
+      return output;
   }
 
   /**
@@ -211,6 +226,12 @@ public class TerriblePID {
      * This will make sure the output of the loop does not exceed the specified min/max.
      */
     output = clampOutput(pOutput + iAccum  + fOutput); 
+
+    if(maxAcceleration != 0) {
+      output = ramp(output, lastOutput);
+    }
+
+    lastOutput = output;
 
     return output;
   }

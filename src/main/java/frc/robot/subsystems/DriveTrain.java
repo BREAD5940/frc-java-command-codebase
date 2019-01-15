@@ -230,7 +230,7 @@ public class DriveTrain extends Subsystem {
   }
 
   /**
-   * An even more lazy version of @link setSpeeds This will literally set the
+   * An even more lazy version of setspeeds This will literally set the
    * throttle of the left and right talons (from -1 to 1 ofc, like normal)
    * 
    * @param left_power
