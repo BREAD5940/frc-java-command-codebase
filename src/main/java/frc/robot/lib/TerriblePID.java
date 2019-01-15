@@ -158,16 +158,20 @@ public class TerriblePID {
     switch (feedforwardmode) {
       case SINE:
         fOutput = Math.sin(Math.toRadians( input * unitsPerQuarterWave ));
+        break;
       case COSINE:
         fOutput = Math.cos(Math.toRadians( input * unitsPerQuarterWave ));
+        break;
       default:
         fOutput = input * kf;
     }
     switch (feedforwardbehavior) {
       case ALWAYSPOSITIVE:
         fOutput = Math.abs(fOutput);
+        break;
       case INVERTED:
         fOutput = fOutput * -1;
+        break;
       case NORMAL:
         break;
     }
