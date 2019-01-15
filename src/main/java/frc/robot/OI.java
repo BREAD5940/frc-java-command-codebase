@@ -25,6 +25,7 @@ public class OI {
 
   private Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
   private Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
+  
   // private Button open_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
   // private Button close_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
 
@@ -53,6 +54,8 @@ public class OI {
   public double getTurnAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.turn_axis); }
   public double getIntakeAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.intakeAxis); }
   public double getOuttakeAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.outtakeAxis); }
+  public double getDpadAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.dpadAxis); }
+
   /**
    * Get intake speed is the difference between intake and outtake axis speeds
    */
