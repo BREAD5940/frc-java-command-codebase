@@ -18,7 +18,6 @@ public class RobotConfig {
     public static final int shift_up_button = xboxmap.Buttons.RB_BUTTON;
     public static final int intakeAxis = xboxmap.Axis.RIGHT_TRIGGER;
     public static final int outtakeAxis = xboxmap.Axis.LEFT_TRIGGER;
-    public static final int dpadAxis = xboxmap.Axis.DPAD_Y;
     public static final int intakeOpen = xboxmap.Buttons.LB_BUTTON;
     public static final int intakeClose = xboxmap.Buttons.RB_BUTTON;
     public static final int secondary_joystick_port = 1;

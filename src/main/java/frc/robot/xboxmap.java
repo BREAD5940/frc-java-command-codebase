@@ -14,9 +14,6 @@ public interface xboxmap {
     public static final int RIGHT_JOYSTICK_X = 4;
 
     public static final int RIGHT_JOYSTICK_Y = 5;
-
-    //Driver station only transmits 6 axis, so this is the limit
-    public static final int DPAD_Y = 7;
   }
 
   public interface Buttons {

@@ -7,6 +7,7 @@ import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.AutoMotion.mGoalType;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
+import frc.robot.lib.DPadButton;
 import frc.robot.commands.auto.AutoMotion;
 
 
@@ -25,7 +26,10 @@ public class OI {
 
   private Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
   private Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
-  
+  private Button shift_sensitivity_up_button = new DPadButton(primaryJoystick, DPadButton.Direction.UP);
+  private Button shift_sensitivity_down_button = new DPadButton(primaryJoystick, DPadButton.Direction.DOWN);
+
+
   // private Button open_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
   // private Button close_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
 
@@ -36,7 +40,7 @@ public class OI {
   Button auto_place_hatch_rocket_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
   Button auto_grab_hatch_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
   Button auto_grab_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
-
+  
   public OI() {
     shift_up_button.whenPressed(new DriveShiftHigh());
     shift_down_button.whenPressed(new DriveShiftLow());
@@ -48,13 +52,14 @@ public class OI {
     auto_place_hatch_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_HATCH, AutoMotion.mGoalHeight.LOW));
     auto_grab_hatch_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_HATCH, AutoMotion.mGoalHeight.LOW));
     auto_grab_cargo_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_CARGO, AutoMotion.mGoalHeight.LOW));
+    shift_sensitivity_up_button.whenPressed(new ArcadeSensitivityUp());
+    shift_sensitivity_down_button.whenPressed(new ArcadeSensitivityDown());
   }
 
   public double getForwardAxis() { return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis); }
   public double getTurnAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.turn_axis); }
   public double getIntakeAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.intakeAxis); }
   public double getOuttakeAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.outtakeAxis); }
-  public double getDpadAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.dpadAxis); }
 
   /**
    * Get intake speed is the difference between intake and outtake axis speeds
