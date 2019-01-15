@@ -103,11 +103,11 @@ public class Robot extends TimedRobot {
     odometry_ = Odometry.getInstance();
     new Notifier(() -> {
         // odometry_.setCurrentEncoderPosition((DriveTrain.getInstance().getLeft().getEncoderCount() + DriveTrain.getInstance().getRight().getEncoderCount()) / 2.0);
-        odometry_.setCurrentEncoderPosition((DriveTrain.getInstance().m_left_talon.getSelectedSensorPosition() + DriveTrain.getInstance().m_right_talon.getSelectedSensorPosition()) / 2.0);
+        odometry_.setCurrentEncoderPosition((drivetrain.m_left_talon.getSelectedSensorPosition() + drivetrain.m_right_talon.getSelectedSensorPosition()) / 2.0);
 
         // odometry_.setDeltaPosition(RobotUtil.encoderTicksToFeets(odometry_.getCurrentEncoderPosition() - odometry_.getLastPosition()));
         odometry_.setDeltaPosition(EncoderLib.rawToDistance(odometry_.getCurrentEncoderPosition() - odometry_.getLastPosition(), RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
-                  (RobotConfig.driveTrain.left_wheel_effective_diameter + RobotConfig.driveTrain.right_wheel_effective_diameter)/2.0));
+                  (RobotConfig.driveTrain.left_wheel_effective_diameter / 12 + RobotConfig.driveTrain.right_wheel_effective_diameter / 12)/2.0));
 
         odometry_.setTheta(Math.toRadians(Pathfinder.boundHalfDegrees(gyro.getAngle())));
 
@@ -115,7 +115,7 @@ public class Robot extends TimedRobot {
         odometry_.addY(Math.sin(odometry_.getTheta()) * odometry_.getDeltaPosition());
 
         odometry_.setLastPosition(odometry_.getCurrentEncoderPosition());
-    }).startPeriodic(0.01);
+    }).startPeriodic(0.02);
 
   }
 
@@ -175,6 +175,9 @@ public class Robot extends TimedRobot {
       m_auto.mBigCommandGroup.cancel();
     }
     // TODO reset subsystems on teleop init?
+    
+    odometry_.setX(0);
+    odometry_.setY(0);
   }
 
   /**
@@ -203,7 +206,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    
+
+    SmartDashboard.putNumber("Robot X per odometry: ", odometry_.getX());
+    SmartDashboard.putNumber("Robot Y per odometry: ", odometry_.getY());
+
     // TODO make a function or class that does all this calculation for us
     SmartDashboard.putNumber("get forward axis", m_oi.getForwardAxis());
     SmartDashboard.putNumber("get turn axis", m_oi.getTurnAxis());
