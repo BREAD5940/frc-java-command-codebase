@@ -60,6 +60,7 @@ public class TerriblePID {
       this.feedforwardmode = feedforwardmode;
       this.feedforwardbehavior = feedforwardbehavior;
       this.maxAcceleration = maxAcceleration;
+      lastMeasured = 0;
   }
 
   public TerriblePID(double kp, double maxOutput) {
@@ -235,4 +236,15 @@ public class TerriblePID {
 
     return output;
   }
+
+
+  @Override
+	public String toString() {
+    try {
+      return String.format("Terrible PID Instance: Setpoint (%s) last measured (%s) kP (%s) kI (%s) kD (%s) kF (%s)  minOutput (%s) maxOutput (%s) iZone (%s) max integral accum (%s) maxAcceleration (%s) feedForwardMode (%s) feedForwardBehavior (%s) output (%s) last output (%s)", setpoint, lastMeasured, kp, ki, kd, kf, minOutput, maxOutput, integralZone, maxIntegralAccum, maxAcceleration, feedforwardmode.toString(), feedforwardbehavior.toString(), output, lastOutput);
+    } catch (Exception e) {
+      //TODO: handle exception
+      return "";
+    }
+	}
 }

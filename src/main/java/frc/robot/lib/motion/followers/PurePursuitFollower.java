@@ -18,12 +18,12 @@ public class PurePursuitFollower {
   public void initPath() {
     // double angle = 0;
     Point pos = new Point();
-    double maxVel = 0.3; // 6 feet/s
-    double maxAcc = 0.1; // m/sec every sec
-    double spacing = 0.1, maxAngVel = 0.6; // 3 in simu
-    double lookAheadDistance = 0.1524 * 3/* 6 inches */;
-    double trackWidth = 0.8;// 0.5842; // 23 inches
-    double targetTolerance = 0.1;// m
+    double maxVel = 2; // 2 feet/s
+    double maxAcc = 1; // ft/sec every sec
+    double spacing = 0.3, maxAngVel = 0.6; // 3 in simu
+    double lookAheadDistance = 0.5/* 6 inches */;
+    double trackWidth = 2;// 2 feet
+    double targetTolerance = 0.3;// ft
     // double maxVel = 250, maxAcc = 70, spacing = 6, maxAngVel = 6;
     // double lookAheadDistance = 12;
 
@@ -55,9 +55,8 @@ public class PurePursuitFollower {
     Odometer.getInstance().setY(pos.y);
   }
 
-  public void update() {
-    DriveMotorState driveMotorState = pathFollower.update(Odometer.getInstance().getPoint(), Robot.gyro.getAngle(), 1.0/50);
-    Robot.drivetrain.setPowers(driveMotorState.leftVel / 1.8288 * 2, driveMotorState.rightVel / 1.8288 * 2);
+  public DriveMotorState getNextSignal() {
+    return pathFollower.update(Odometer.getInstance().getPoint(), Robot.gyro.getAngle(), 1.0/50);
   }
 
   public boolean isDone() {

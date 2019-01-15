@@ -3,8 +3,10 @@ package frc.robot.commands.auto.actions;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.lib.motion.followers.PurePursuitFollower;
+import frc.robot.lib.motion.purepursuit.DriveMotorState;
 
 public class PurePursuitPathCommand extends Command {
+  private DriveMotorState signal;
 
   private PurePursuitFollower mFollower;
 
@@ -22,7 +24,8 @@ public class PurePursuitPathCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    mFollower.update();
+    signal = mFollower.getNextSignal();
+    Robot.drivetrain.setPowers(driveMotorState.leftVel / 1.8288 * 2, driveMotorState.rightVel / 1.8288 * 2);
   }
 
   // Make this return true when this Command no longer needs to run execute()
