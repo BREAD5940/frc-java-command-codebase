@@ -9,6 +9,16 @@ import java.util.ArrayList;
  * @author Cole Gannon
  */
 public class Logger {
+  private static Logger mInstance;
+
+  public synchronized static Logger getInstance(){
+    if(mInstance == null){
+      mInstance = new Logger();
+    }
+
+    return mInstance;
+}
+
   /** Last index of groupNames */
   private static int i = -1;
   private static ArrayList<String> groupNames = new ArrayList<String>();
