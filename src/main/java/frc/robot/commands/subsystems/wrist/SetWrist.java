@@ -1,7 +1,6 @@
 package frc.robot.commands.subsystems.wrist;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 
