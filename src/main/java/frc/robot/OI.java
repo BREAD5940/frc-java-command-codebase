@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.AutoMotion.mGoalType;
+import frc.robot.commands.auto.actions.RamsetePathFollower;
 import frc.robot.commands.auto.actions.TurnInPlace;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
@@ -28,7 +29,7 @@ public class OI {
   private Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
   // private Button open_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
   // private Button close_clamp_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
-  Button turnAutoButton = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
+  Button turnAutoButton = new JoystickButton(secondaryJoystick, xboxmap.Buttons.B_BUTTON);
 
   // TODO change these to a button console once created
   Button auto_place_cargo_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
@@ -49,7 +50,7 @@ public class OI {
     auto_place_hatch_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_HATCH, AutoMotion.mGoalHeight.LOW));
     auto_grab_hatch_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_HATCH, AutoMotion.mGoalHeight.LOW));
     auto_grab_cargo_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_CARGO, AutoMotion.mGoalHeight.LOW));
-    turnAutoButton.whenPressed(new TurnInPlace(90));
+    turnAutoButton.whenPressed(new RamsetePathFollower("test"));
   }
 
   public double getForwardAxis() { return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis); }

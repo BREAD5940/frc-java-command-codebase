@@ -1,5 +1,7 @@
 package frc.robot.commands.auto.actions;
 
+import java.io.File;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -7,6 +9,7 @@ import frc.robot.Robot;
 import frc.robot.lib.enums.MotionProfileDirection;
 import frc.robot.lib.motion.DriveSignal;
 import frc.robot.lib.motion.followers.RamseteFollower;
+import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 
 @SuppressWarnings("FieldCanBeLocal")
@@ -18,6 +21,13 @@ public class RamsetePathFollower extends Command{
 
     public RamsetePathFollower(Trajectory trajectory){
         this(trajectory, MotionProfileDirection.FORWARD);
+    }
+
+    public RamsetePathFollower(String filePath) {
+        File traj = new File("/home/lvuser/deploy/paths/test.pf1.csv");
+        Trajectory mSource = Pathfinder.readFromCSV(traj);
+        ramseteFollower = new RamseteFollower(mSource, MotionProfileDirection.FORWARD);
+        requires(Robot.drivetrain);
     }
 
     public RamsetePathFollower(Trajectory trajectory, MotionProfileDirection direction){

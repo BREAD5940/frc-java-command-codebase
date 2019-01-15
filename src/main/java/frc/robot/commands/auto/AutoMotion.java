@@ -95,7 +95,7 @@ public class AutoMotion {
       // Could also align with line
       // TODO find out the actual units for the speed
       toReturn.add(new SetElevatorHeight(14, false));
-      toReturn.add(new FollowVisionTarget(1, 20));
+      // toReturn.add(new FollowVisionTarget(1, 20));
     }else{
       //TODO Align with line (IR sensor?)
     }
