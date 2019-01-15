@@ -19,6 +19,7 @@ import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.enums.MotionProfileDirection;
 import frc.robot.lib.motion.DriveSignal;
+import frc.robot.lib.motion.Odometer;
 import frc.robot.lib.motion.Odometry;
 import frc.robot.lib.motion.TrajectoryUtil;
 import frc.robot.lib.motion.Velocity;
@@ -45,7 +46,7 @@ public class RamseteFollower {
     private Trajectory trajectory;
 
     //The robot's x and y position and angle
-    private Odometry odometry;
+    private Odometer odometry;
 
     //Variable used to calculate linear and angular velocity
     private double lastTheta, nextTheta;
@@ -66,7 +67,7 @@ public class RamseteFollower {
         this.trajectory = direction == MotionProfileDirection.FORWARD ? trajectory : TrajectoryUtil.reversePath(trajectory);
 
         segmentIndex = 0;
-        odometry = Odometry.getInstance();
+        odometry = Odometer.getInstance();
 
         driveSignal = new DriveSignal();
     }

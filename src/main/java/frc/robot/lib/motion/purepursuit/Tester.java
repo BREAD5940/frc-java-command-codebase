@@ -16,6 +16,8 @@ import java.util.TimerTask;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import frc.robot.lib.motion.Odometer;
+
 /**
  * This is a simlator made for the pure pursuit algorithm. It has a robot object
  * that stores all the robot properties, and a JPanel class that updates those
@@ -185,8 +187,8 @@ class Robot {
 		pos = path.waypoints.get(0).p.copy();
 		// pos = new Point(700, 100);
 		// pos = new Point(80, 100);
-		this.odometer.setX(pos.x);
-		this.odometer.setY(pos.y);
+		Odometer.getInstance().setX(pos.x);
+		Odometer.getInstance().setY(pos.y);
 	}
 
 	public void generatePath() {

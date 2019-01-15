@@ -1,11 +1,13 @@
 package frc.robot.lib.motion;
 
 import frc.robot.lib.motion.purepursuit.Point;
+import jaci.pathfinder.Trajectory;
 
 public class Odometer /* extends LogBase */ {
 	private double accumulativeDistance;
 	private double x;
 	private double y;
+	private double theta;
 
 	private double prevLeftEncoderValue;
 	private double prevRightEncoderValue;
@@ -25,7 +27,14 @@ public class Odometer /* extends LogBase */ {
 
 	}
 
+	public void setOdometryForPathfinder(Trajectory trajectory){
+		setX(trajectory.get(0).x);
+		setY(trajectory.get(0).y);
+		setTheta(trajectory.get(0).heading);
+	}
+
 	public void update(double leftEncoder, double rightEncoder, double gyroAngle) {
+		this.theta = gyroAngle;
 		gyroAngle = Math.toRadians(gyroAngle + 90);
 
 		gyroAngle = Math.PI - gyroAngle;
@@ -60,6 +69,14 @@ public class Odometer /* extends LogBase */ {
 
 	public double getY() {
 		return y;
+	}
+
+	public double getTheta() {
+		return theta % (2 * Math.PI);
+	}
+
+	public synchronized void setTheta(double theta){
+		this.theta = theta;
 	}
 
 	@Deprecated

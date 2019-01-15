@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.lib.EncoderLib;
+import frc.robot.lib.Logger;
 import frc.robot.lib.motion.Odometer;
 import frc.robot.lib.motion.Odometry;
 import frc.robot.subsystems.DriveTrain;
@@ -45,6 +46,7 @@ public class Robot extends TimedRobot {
   SendableChooser<Command> m_chooser = new SendableChooser<Command>();
   public static Compressor compressor = new Compressor(9);
   private static Odometer odometry_;
+  private Logger logger;
 
   
 
@@ -71,8 +73,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    logger = Logger.getInstance();
     m_oi = new OI();
-
     mGh = new SendableChooser<AutoMotion.mGoalHeight>();
     mGh.setDefaultOption("Low", AutoMotion.mGoalHeight.LOW);
     mGh.addOption("Middle", AutoMotion.mGoalHeight.MIDDLE);
@@ -94,8 +96,10 @@ public class Robot extends TimedRobot {
     switch (RobotConfig.auto.auto_gear) {
     case HIGH:
       drivetrain.setHighGear();
+      break;
     case LOW:
       drivetrain.setLowGear();
+      break;
     default:
       drivetrain.setHighGear();
     }
@@ -120,6 +124,9 @@ public class Robot extends TimedRobot {
 
     //     odometry_.setLastPosition(odometry_.getCurrentEncoderPosition());
     // }).startPeriodic(0.02);
+
+    drivetrain.zeroEncoders();
+    System.out.println("Robot init'ed and encoders zeroed!");
 
   }
 

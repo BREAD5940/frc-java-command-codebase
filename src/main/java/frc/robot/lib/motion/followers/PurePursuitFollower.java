@@ -2,7 +2,7 @@ package frc.robot.lib.motion.followers;
 
 import java.util.Arrays;
 
-import frc.robot.lib.motion.purepursuit.Odometer;
+import frc.robot.lib.motion.Odometer;
 import frc.robot.lib.motion.purepursuit.PPWaypoint;
 import frc.robot.lib.motion.purepursuit.Path;
 import frc.robot.lib.motion.purepursuit.PathFollower;
