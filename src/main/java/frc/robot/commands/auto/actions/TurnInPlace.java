@@ -36,11 +36,17 @@ public class TurnInPlace extends Command {
   //   RobotConfig.auto.TurnInPlace.integral_zone, 
   //   RobotConfig.auto.TurnInPlace.max_integral);
   
-  // public TerriblePID(double kp, double ki, double minOutput, double maxOutput, double integralZone, double maxIntegralAccum, double kf, FeedForwardMode feedforwardmode, FeedForwardBehavior feedforwardbehavior, double unitsPerQuarterWave) {
-  TerriblePID turnPID = new TerriblePID(RobotConfig.auto.turnInPlace.kp,
-    RobotConfig.auto.turnInPlace.max_turn_speed
-  );
+  double kp = 0.0;
+  double ki = 0.0; 
+  double integralZone = 0.0;
+  double maxIntegralAccum = 0.0;
 
+  // public TerriblePID(double kp, double ki, double minOutput, double maxOutput, double integralZone, double maxIntegralAccum, double kf, FeedForwardMode feedforwardmode, FeedForwardBehavior feedforwardbehavior, double unitsPerQuarterWave) {
+  // TerriblePID turnPID = new TerriblePID(kp,
+  //   RobotConfig.auto.turnInPlace.max_turn_speed
+  // );
+
+  TerriblePID turnPID = new TerriblePID(kp, ki, 0, 0, -1, 1, integralZone, maxIntegralAccum, 0, null, null);
 
 
   /**
