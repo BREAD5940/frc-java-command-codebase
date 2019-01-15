@@ -36,17 +36,18 @@ public class TurnInPlace extends Command {
   //   RobotConfig.auto.TurnInPlace.integral_zone, 
   //   RobotConfig.auto.TurnInPlace.max_integral);
   
-  double kp = 0.0;
+  double kp = 0.015;
   double ki = 0.0; 
-  double integralZone = 0.0;
-  double maxIntegralAccum = 0.0;
+  double kd = 0.1;
+  double integralZone = 1000;
+  double maxIntegralAccum =1000;
 
   // public TerriblePID(double kp, double ki, double minOutput, double maxOutput, double integralZone, double maxIntegralAccum, double kf, FeedForwardMode feedforwardmode, FeedForwardBehavior feedforwardbehavior, double unitsPerQuarterWave) {
   // TerriblePID turnPID = new TerriblePID(kp,
   //   RobotConfig.auto.turnInPlace.max_turn_speed
   // );
 
-  TerriblePID turnPID = new TerriblePID(kp, ki, 0, 0, -1, 1, integralZone, maxIntegralAccum, 0, null, null);
+  TerriblePID turnPID = new TerriblePID(kp, ki, kd, 0, -1, 1, integralZone, maxIntegralAccum, 0, null, null);
 
 
   /**
@@ -92,6 +93,8 @@ public class TurnInPlace extends Command {
     turnPID.setSetpoint(target_angle);
     System.out.println("Turn in place init'ed!");
 
+
+
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -100,8 +103,8 @@ public class TurnInPlace extends Command {
     output = turnPID.update(Robot.gyro.getAngle());
     raw_left = EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.left_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
     raw_right = (-1) * EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.right_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
-    Robot.drivetrain.setSpeeds(raw_left, raw_right);
-    System.out.println(String.format("Turn in place execute! Gyro output: %s,Output: %s, Raw left: %s Raw right %s", Robot.gyro.getAngle(), output, raw_left, raw_right));
+    Robot.drivetrain.setPowers(output, -output);
+    System.out.println(String.format("Turn in place execute! Target: %s Gyro output: %s,Output: %s, Raw left: %s Raw right %s", turnPID.getSetpoint(), Robot.gyro.getAngle(), output, raw_left, raw_right));
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -113,9 +116,9 @@ public class TurnInPlace extends Command {
     //   } else { return false; }
 
     // TODO so this is how a return works
-    return ( (Math.abs(Robot.gyro.getRate() ) < RobotConfig.auto.tolerences.angular_velocity_tolerence)
-      && (Math.abs(Robot.gyro.getAngle() - target_angle) < RobotConfig.auto.tolerences.angle_tolerence));
-
+    // return ( (Math.abs(Robot.gyro.getRate() ) < RobotConfig.auto.tolerences.angular_velocity_tolerence)
+    //   && (Math.abs(Robot.gyro.getAngle() - target_angle) < RobotConfig.auto.tolerences.angle_tolerence));
+    return false;
   }
 
   // Called once after isFinished returns true
