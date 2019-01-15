@@ -8,21 +8,21 @@ public class PathGenerator {
 
 	public static void main(String[] args) {
 		PathGenerator p = new PathGenerator();
-		// List<Waypoint> waypoints = Arrays.asList(
-		// new Waypoint(new Point(0, 0), 0),
-		// new Waypoint(new Point(10, 10), 0),
-		// new Waypoint(new Point(20, 30), 0),
-		// new Waypoint(new Point(30, 30), 0),
-		// new Waypoint(new Point(-10, -10), 0));
+		// List<PPWaypoint> waypoints = Arrays.asList(
+		// new PPWaypoint(new Point(0, 0), 0),
+		// new PPWaypoint(new Point(10, 10), 0),
+		// new PPWaypoint(new Point(20, 30), 0),
+		// new PPWaypoint(new Point(30, 30), 0),
+		// new PPWaypoint(new Point(-10, -10), 0));
 
-		// List<Waypoint> waypoints = Arrays.asList(new Waypoint(new Point(0, 0), 0),
-		// new Waypoint(new Point(9, 17), 0),
-		// new Waypoint(new Point(19, 60), 0), new Waypoint(new Point(60, 40), 0),
-		// new Waypoint(new Point(80, 10), 0));
-		List<Waypoint> waypoints = Arrays.asList(new Waypoint(new Point(0, 350), 0),
-				new Waypoint(new Point(100, 350), 0), new Waypoint(new Point(150, 300), 0),
-				new Waypoint(new Point(150, 200), 0), new Waypoint(new Point(200, 150), 0),
-				new Waypoint(new Point(300, 150), 0));
+		// List<PPWaypoint> waypoints = Arrays.asList(new PPWaypoint(new Point(0, 0), 0),
+		// new PPWaypoint(new Point(9, 17), 0),
+		// new PPWaypoint(new Point(19, 60), 0), new PPWaypoint(new Point(60, 40), 0),
+		// new PPWaypoint(new Point(80, 10), 0));
+		List<PPWaypoint> waypoints = Arrays.asList(new PPWaypoint(new Point(0, 350), 0),
+				new PPWaypoint(new Point(100, 350), 0), new PPWaypoint(new Point(150, 300), 0),
+				new PPWaypoint(new Point(150, 200), 0), new PPWaypoint(new Point(200, 150), 0),
+				new PPWaypoint(new Point(300, 150), 0));
 
 		// Path(spacing, maxVel, kTurnConst
 		Path injected = p.generatePath(new Path(10, 100, 10, 3, waypoints));
@@ -47,7 +47,7 @@ public class PathGenerator {
 		return smoothed;
 	}
 
-	public List<Waypoint> inject(Path path, int numToInject) {
+	public List<PPWaypoint> inject(Path path, int numToInject) {
 
 		double[][] orig = waypoints2Array(path.waypoints);
 
@@ -88,7 +88,7 @@ public class PathGenerator {
 		return array2Waypoints(morePoints);
 	}
 
-	public double[][] waypoints2Array(List<Waypoint> waypoints) {
+	public double[][] waypoints2Array(List<PPWaypoint> waypoints) {
 		double[][] arr = new double[waypoints.size()][2];
 		for (int i = 0; i < waypoints.size(); i++) {
 			arr[i][0] = waypoints.get(i).p.x;
@@ -97,10 +97,10 @@ public class PathGenerator {
 		return arr;
 	}
 
-	public List<Waypoint> array2Waypoints(double[][] arr) {
-		List<Waypoint> waypoints = new ArrayList<Waypoint>();
+	public List<PPWaypoint> array2Waypoints(double[][] arr) {
+		List<PPWaypoint> waypoints = new ArrayList<PPWaypoint>();
 		for (int i = 0; i < arr.length; i++) {
-			waypoints.add(new Waypoint(arr[i][0], arr[i][1]));
+			waypoints.add(new PPWaypoint(arr[i][0], arr[i][1]));
 		}
 		return waypoints;
 	}
@@ -120,7 +120,7 @@ public class PathGenerator {
 	 * @param tolerance
 	 * @return
 	 */
-	public List<Waypoint> smoother(Path OrigPath, double weight_data, double weight_smooth, double tolerance) {
+	public List<PPWaypoint> smoother(Path OrigPath, double weight_data, double weight_smooth, double tolerance) {
 
 		double[][] path = waypoints2Array(OrigPath.waypoints);
 		// copy array
@@ -164,10 +164,10 @@ public class PathGenerator {
 	// desired accuracy (spacing)
 	//
 	//
-	// List<Waypoint> waypoints = path.waypoints;
+	// List<PPWaypoint> waypoints = path.waypoints;
 	// double spacing = path.spacing;
 	//
-	// List<Waypoint> totalWaypoints = new ArrayList<Waypoint>();
+	// List<PPWaypoint> totalWaypoints = new ArrayList<PPWaypoint>();
 	//
 	// //fill in
 	//
@@ -187,7 +187,7 @@ public class PathGenerator {
 	//
 	//
 	// for (int j = 0; j < numOfWaypoints; j++) {
-	// totalWaypoints.add(new Waypoint(new Point(waypoints.get(i).p.x + j *
+	// totalWaypoints.add(new PPWaypoint(new Point(waypoints.get(i).p.x + j *
 	// normalizedVector.dx,
 	// waypoints.get(i).p.y + j * normalizedVector.dy), vel)); // TODO: velocity?
 	// }
@@ -202,10 +202,10 @@ public class PathGenerator {
 	@Deprecated
 	public Path generatePath(Path path) {
 
-		List<Waypoint> waypoints = path.waypoints;
+		List<PPWaypoint> waypoints = path.waypoints;
 		double spacing = path.spacing;
 
-		List<Waypoint> totalWaypoints = new ArrayList<Waypoint>();
+		List<PPWaypoint> totalWaypoints = new ArrayList<PPWaypoint>();
 
 		for (int i = 0; i < waypoints.size() - 1; i++) {
 			double distance = distanceBetween(waypoints.get(i).p, waypoints.get(i + 1).p);
@@ -217,7 +217,7 @@ public class PathGenerator {
 				// vel at between two points: lowerPoint+ j*(unitstep*difference); step=
 				// difference *
 
-				totalWaypoints.add(new Waypoint(new Point(waypoints.get(i).p.x + j * normalizedVector.dx,
+				totalWaypoints.add(new PPWaypoint(new Point(waypoints.get(i).p.x + j * normalizedVector.dx,
 						waypoints.get(i).p.y + j * normalizedVector.dy), vel)); // TODO: velocity?
 			}
 		}
@@ -233,8 +233,8 @@ public class PathGenerator {
 
 		double weight_data = 1 - weight_smooth;
 
-		List<Waypoint> path = originalPath.waypoints;
-		List<Waypoint> newPath = originalPath.copy().waypoints;
+		List<PPWaypoint> path = originalPath.waypoints;
+		List<PPWaypoint> newPath = originalPath.copy().waypoints;
 
 		double change = tolerance;
 		while (change >= tolerance) {
@@ -354,7 +354,7 @@ public class PathGenerator {
 		tagInjectionCounter2Steps(nodeOnlyPath);
 
 		Path smoothPath = new Path(nodeOnlyPath);
-		smoothPath.waypoints = new ArrayList<Waypoint>();
+		smoothPath.waypoints = new ArrayList<PPWaypoint>();
 
 		smoothPath.waypoints = inject(nodeOnlyPath, nodeOnlyPath.injectionSteps[0]);
 		smoothPath.waypoints = smoother(smoothPath, pathAlpha, pathBeta, pathTolerance);
@@ -370,7 +370,7 @@ public class PathGenerator {
 
 	public void tagVelocity(Path path) {
 
-		List<Waypoint> waypoints = path.waypoints;
+		List<PPWaypoint> waypoints = path.waypoints;
 
 		// getting direct DISTANCE between all adjacent smoothed points
 		for (int i = 0; i < waypoints.size() - 1; i++) {

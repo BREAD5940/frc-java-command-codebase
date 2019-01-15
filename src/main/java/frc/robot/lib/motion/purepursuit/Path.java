@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Path {
-	public List<Waypoint> waypoints;
+	public List<PPWaypoint> waypoints;
 	public double spacing;
 	public double maxVelocity;
 	public double maxAcceleration;
@@ -16,13 +16,13 @@ public class Path {
 	double numFinalPoints = 0;// Don't touch this, it's in 1712's code algorithm
 
 	@Deprecated
-	public Path(List<Waypoint> waypoints, double spacing) {
+	public Path(List<PPWaypoint> waypoints, double spacing) {
 		this.waypoints = waypoints;
 		this.spacing = spacing;
 	}
 
 	public Path(double spacing, double maxVelocity, double maxAcceleration, double maxAngleVel,
-			List<Waypoint> waypoints) {
+			List<PPWaypoint> waypoints) {
 		this.waypoints = waypoints;
 		this.spacing = spacing;
 		this.maxVelocity = maxVelocity;
@@ -35,16 +35,16 @@ public class Path {
 		this.maxVelocity = path.maxVelocity;
 		this.maxAcceleration = path.maxAcceleration;
 		this.maxAngleVel = path.maxAngleVel;
-		this.waypoints = new ArrayList<Waypoint>();
-		waypoints.forEach((Waypoint waypoint) -> {
+		this.waypoints = new ArrayList<PPWaypoint>();
+		waypoints.forEach((PPWaypoint waypoint) -> {
 			this.waypoints.add(waypoint.copy());
 		});
 	}
 
 	public Path copy() {
-		Path newPath = new Path(spacing, maxVelocity, maxAcceleration, maxAngleVel, new ArrayList<Waypoint>());
+		Path newPath = new Path(spacing, maxVelocity, maxAcceleration, maxAngleVel, new ArrayList<PPWaypoint>());
 
-		waypoints.forEach((Waypoint waypoint) -> {
+		waypoints.forEach((PPWaypoint waypoint) -> {
 			newPath.waypoints.add(waypoint.copy());
 		});
 		return newPath;

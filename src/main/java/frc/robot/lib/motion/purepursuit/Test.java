@@ -8,12 +8,12 @@ public class Test {
 
 		Path path = p.generate(0.4, 0.01, new Path(10, 100, 10, 3,
 		        Arrays.asList(
-		        		new Waypoint(0, 350), 
-		        		new Waypoint(100, 350),
-		                new Waypoint(150, 300), 
-		                new Waypoint(150, 200),
-		                new Waypoint(200, 150), 
-		                new Waypoint(300, 150))));
+		        		new PPWaypoint(0, 350), 
+		        		new PPWaypoint(100, 350),
+		                new PPWaypoint(150, 300), 
+		                new PPWaypoint(150, 200),
+		                new PPWaypoint(200, 150), 
+		                new PPWaypoint(300, 150))));
 		
 		System.out.println(path);
 	}

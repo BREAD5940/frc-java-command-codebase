@@ -112,7 +112,7 @@ class DrawArea extends JPanel {
 	}
 
 	protected void drawPath(Graphics g) {
-		List<Waypoint> waypoints = r.path.waypoints;
+		List<PPWaypoint> waypoints = r.path.waypoints;
 		g.setColor(Color.red);
 
 		// connects the path in red
@@ -213,7 +213,7 @@ class Robot {
 		// Arrays.asList(new Waypoint(0, 50),
 		// new Waypoint(100, 50), new Waypoint(160, 90), new Waypoint(160, 110))));
 		path = p.calculate(new Path(spacing, maxVel, maxAcc, maxAngVel,
-				Arrays.asList(new Waypoint(0, 0), new Waypoint(0, 2), new Waypoint(-2, 2))));
+				Arrays.asList(new PPWaypoint(0, 0), new PPWaypoint(0, 2), new PPWaypoint(-2, 2))));
 		// path = p.calculate(new Path(spacing, maxVel, maxAcc, maxAngVel,
 
 		// Arrays.asList(new Waypoint(10, 10), new Waypoint(100, 70), new Waypoint(300,

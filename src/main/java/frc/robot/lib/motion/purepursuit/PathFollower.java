@@ -22,7 +22,7 @@ public class PathFollower {
 
 	/// test vars
 
-	public Waypoint closestpoint = new Waypoint(0, 0);
+	public PPWaypoint closestpoint = new PPWaypoint(0, 0);
 	public double debugcurvature = 0.0001;
 
 	public static void main(String[] args) {
@@ -411,7 +411,7 @@ public class PathFollower {
 		return index + 1;
 	}
 
-	private Waypoint getInterpolatedWaypoint(Point robotPos) {
+	private PPWaypoint getInterpolatedWaypoint(Point robotPos) {
 
 		// get the two closest points on path to robot
 		int index1 = getClosestWaypointIndex(robotPos);
@@ -459,7 +459,7 @@ public class PathFollower {
 		// finally put all that info into a waypoint
 		// the position of that point = as base position + deltaPosition
 		// so position = idx1.position + xVector
-		Waypoint newWaypoint = new Waypoint(
+		PPWaypoint newWaypoint = new PPWaypoint(
 				new Point(path.waypoints.get(index1).p.x + xVector.dx, path.waypoints.get(index1).p.y + xVector.dy),
 				vel);
 		// // uh oh, the point is actually off our segment. because this is calculated
@@ -494,7 +494,7 @@ public class PathFollower {
 	public DriveMotorState update(Point robotPos, double gyro, double dt) {
 		gyro = Math.toRadians(gyro + 90);
 
-		Waypoint waypoint = getInterpolatedWaypoint(robotPos);
+		PPWaypoint waypoint = getInterpolatedWaypoint(robotPos);
 		// log("found closest waypoint:" + waypoint);
 		double curvature = getCurvature(robotPos, gyro);
 
