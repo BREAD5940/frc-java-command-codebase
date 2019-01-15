@@ -18,8 +18,8 @@ public class EncoderLib extends Subsystem {
      * of 4096) of the encoder, unitsPerRotation are 40996, and this will return
      * the total number of rotations
      * 
-     * @param rawPosition
-     * @param unitsPerRotation
+     * @param rawPosition raw sensor position
+     * @param unitsPerRotation 40996
      * @return rotations
      */
     public static double rawToRotation(int rawPosition, double unitsPerRotation) {
@@ -30,8 +30,8 @@ public class EncoderLib extends Subsystem {
     /**
      * Converts raw sensor position to rotations. Units are full rotations of the object.
      * 
-     * @param rotations
-     * @param unitsPerRotation
+     * @param rotations number of rotations
+     * @param unitsPerRotation 40996
      * @return rawPosition
      */
     public static double rotationsToRaw(double rotations, double unitsPerRotation) {
@@ -40,8 +40,8 @@ public class EncoderLib extends Subsystem {
 
     /**
      * Converts rotations to physical distance. Units are the same as the radius.
-     * @param rotations
-     * @param effectiveDiam
+     * @param rotations nuber of rotations
+     * @param effectiveDiam diameter of wheel in in. 
      * @return distance
      */
     public static double rotationsToDistance(double rotations, double effectiveDiam){
@@ -52,8 +52,8 @@ public class EncoderLib extends Subsystem {
 
     /**
      * Converts distance to rotations. Units are the same as the radius.
-     * @param distance
-     * @param effectiveDiam
+     * @param distance distance traveled
+     * @param effectiveDiam diameter of wheel in in. 
      * @return rotations
      */
     public static double distanceToRotations(double distance, double effectiveDiam){
@@ -63,9 +63,9 @@ public class EncoderLib extends Subsystem {
     }
 
     /** Converts a raw position (delta or absolute) to a distance.
-     * @param rawPosition
-     * @param unitsPerRotation
-     * @param effectiveDiam
+     * @param rawPosition raw potsition of encoders 
+     * @param unitsPerRotation 40996
+     * @param effectiveDiam diameter of wheels in in. 
      * @return distance
      * 
      */
@@ -91,8 +91,8 @@ public class EncoderLib extends Subsystem {
 
     /**
      * Converts raw distance to degrees
-     * @param rawPosition
-     * @param unitsPerRotation
+     * @param rawPosition raw pos. of encoder
+     * @param unitsPerRotation 40996
      * @return degrees
      */
     public static double rawToDegrees(int rawPosition, double unitsPerRotation) {
@@ -101,8 +101,8 @@ public class EncoderLib extends Subsystem {
 
     /**
      * Converts degrees to raw distance
-     * @param degrees
-     * @param unitsPerRotation
+     * @param degrees degrees rotated
+     * @param unitsPerRotation 40996
      * @return rawPosition
      */
     public static double degreesToRaw(double degrees, double unitsPerRotation) {
