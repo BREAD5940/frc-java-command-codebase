@@ -2,13 +2,16 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
+import frc.robot.commands.groups.PrepareIntake;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
+import frc.robot.commands.auto.groups.*;
+import frc.robot.commands.auto.actions.*;
 
 import java.util.ArrayList;
 
 /**
- * Creates a command group for a specific automatic motion.
+ * Creates a command group for a specific automatic motion. 
  * Input a type of goal and a height then start the mBigCommandGroup externally
  * 
  * @author Jocelyn McHugo
@@ -43,10 +46,10 @@ public class AutoMotion {
     CARGO_CARGO, CARGO_HATCH, ROCKET_CARGO, ROCKET_HATCH, RETRIEVE_HATCH, RETRIEVE_CARGO
   }
 
-  public mGoalHeight gHeight;
-  public mGoalType gType;
-  public mHeldPiece piece;
-  public AutoCommandGroup mBigCommandGroup;
+  private mGoalHeight gHeight;
+  private mGoalType gType;
+  private mHeldPiece piece;
+  private AutoCommandGroup mBigCommandGroup;
 
   /**
    * generates the command groups based on the inputted goal height/type
@@ -59,6 +62,7 @@ public class AutoMotion {
   public AutoMotion (mGoalHeight gHeight, mGoalType gType){
     this.gHeight = gHeight;
     this.gType = gType;
+    //select heldPiece
     if (gType == mGoalType.CARGO_CARGO || gType == mGoalType.ROCKET_CARGO){
       this.piece = mHeldPiece.CARGO;
     }else if (gType == mGoalType.CARGO_HATCH || gType == mGoalType.ROCKET_HATCH){
@@ -66,6 +70,7 @@ public class AutoMotion {
     }else{
       this.piece=mHeldPiece.NONE;
     }
+
     if (piece!=mHeldPiece.NONE){
       this.mBigCommandGroup = new AutoCommandGroup(genPlaceCommands());
     }else{
@@ -79,7 +84,11 @@ public class AutoMotion {
    */
   private ArrayList<Command> genGrabCommands(){
     ArrayList<Command> toReturn = new ArrayList<Command>();
-    // TODO actually generate commands
+    if (gType==mGoalType.RETRIEVE_CARGO){
+      toReturn.add(new GrabCargo());
+    }else if (gType==mGoalType.RETRIEVE_HATCH){
+      toReturn.add(new GrabHatch());
+    }
     return toReturn;
   }
   
@@ -98,16 +107,16 @@ public class AutoMotion {
       //TODO Align with line (IR sensor?)
     }
 
-    // toReturn.add(new PrepareIntake(getElevatorPreset()));
+    toReturn.add(new PrepareIntake(getElevatorPreset()));
 
     switch (piece){
       case HATCH:
         // toReturn.add(new PlaceHatch());
       case CARGO:
         if(gHeight == mGoalHeight.OVER){
-          // toReturn.add(new DropCargo(true));
+          toReturn.add(new DropCargo(true));
         }else{
-          // toReturn.add(new DropCargo(false));
+          toReturn.add(new DropCargo(false));
         }
       default:
         break;
@@ -179,6 +188,15 @@ public class AutoMotion {
    */
   public mHeldPiece getmHeldPiece(){
     return this.piece;
+  }
+
+  /**
+   * identification function
+   * @return
+   *  the mBigCommandGroup of the function
+   */
+  public AutoCommandGroup getBigCommandGroup(){
+    return this.mBigCommandGroup;
   }
   
 }

@@ -14,7 +14,7 @@ public class GrabHatch extends CommandGroup{
          move the elevator up while intaking and once up to a 
         set height start slowly backing up.
         */
-        addSequential(new SetElevatorHeight(ElevatorPresets.CARGO_SHIP_HATCH.getValue(), true));
+        addSequential(new SetElevatorHeight(ElevatorPresets.CARGO_SHIP_HATCH, true)); //cs hatch is same as loading station
         
     }
 

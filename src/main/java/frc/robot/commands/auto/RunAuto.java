@@ -33,7 +33,7 @@ public class RunAuto extends Command {
   @Override
   protected void initialize() {
     motion = new AutoMotion(height, goal);
-    motion.mBigCommandGroup.start();
+    motion.getBigCommandGroup().start();
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -45,7 +45,7 @@ public class RunAuto extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return motion.mBigCommandGroup.done();
+    return motion.getBigCommandGroup().done();
   }
 
   // Called once after isFinished returns true
