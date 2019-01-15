@@ -40,8 +40,15 @@ public class ArcadeDrive extends Command {
     // Robot.m_oi.getTurnAxis());
     // Robot.drivetrain.arcadeDriveMethod(0,0.1);
 
-    Robot.drivetrain.setPowers(Robot.m_oi.getForwardAxis() + Robot.m_oi.getTurnAxis(),
-        Robot.m_oi.getForwardAxis() - Robot.m_oi.getTurnAxis());
+    Robot.arcade_drive_sensitivity += Robot.m_oi.getDpadAxis() * 0.1;
+    if (Robot.arcade_drive_sensitivity > 1.5) {
+      Robot.arcade_drive_sensitivity = 1.5;
+    } else if (Robot.arcade_drive_sensitivity < 0.5) {
+      Robot.arcade_drive_sensitivity = 0.5;
+    }
+
+    Robot.drivetrain.setPowers((Robot.m_oi.getForwardAxis() + Robot.m_oi.getTurnAxis())*Robot.arcade_drive_sensitivity,
+        (Robot.m_oi.getForwardAxis() - Robot.m_oi.getTurnAxis())*Robot.arcade_drive_sensitivity);
 
     // System.out.println("arcade drive command execute");
   }
