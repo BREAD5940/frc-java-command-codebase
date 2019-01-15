@@ -2,7 +2,9 @@ package frc.robot.lib.motion.followers;
 
 import java.util.Arrays;
 
+import frc.robot.Robot;
 import frc.robot.lib.motion.Odometer;
+import frc.robot.lib.motion.purepursuit.DriveMotorState;
 import frc.robot.lib.motion.purepursuit.PPWaypoint;
 import frc.robot.lib.motion.purepursuit.Path;
 import frc.robot.lib.motion.purepursuit.PathFollower;
@@ -51,5 +53,14 @@ public class PurePursuitFollower {
     pos = path.waypoints.get(0).p.copy();
     Odometer.getInstance().setX(pos.x);
     Odometer.getInstance().setY(pos.y);
+  }
+
+  public void update() {
+    DriveMotorState driveMotorState = pathFollower.update(Odometer.getInstance().getPoint(), Robot.gyro.getAngle(), 1.0/50);
+    Robot.drivetrain.setPowers(driveMotorState.leftVel / 1.8288 * 2, driveMotorState.rightVel / 1.8288 * 2);
+  }
+
+  public boolean isDone() {
+    return pathFollower.done;
   }
 }

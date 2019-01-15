@@ -347,6 +347,11 @@ public class PathGenerator {
 		nodeOnlyPath.numFinalPoints = numFinalPoints;
 	}
 
+	/**
+	 * Create a new path pased on waypoints
+	 * @param nodeOnlyPath
+	 * @return calculated path
+	 */
 	public Path calculate(Path nodeOnlyPath) {
 		double pathAlpha = 0.7, pathBeta = 0.3, pathTolerance = 0.0000001;
 
