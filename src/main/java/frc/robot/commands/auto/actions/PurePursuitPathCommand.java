@@ -6,7 +6,7 @@ import frc.robot.lib.motion.followers.PurePursuitFollower;
 import frc.robot.lib.motion.purepursuit.DriveMotorState;
 
 public class PurePursuitPathCommand extends Command {
-  private DriveMotorState signal;
+  private DriveMotorState mSignal;
 
   private PurePursuitFollower mFollower;
 
@@ -24,8 +24,8 @@ public class PurePursuitPathCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    signal = mFollower.getNextSignal();
-    Robot.drivetrain.setPowers(driveMotorState.leftVel / 1.8288 * 2, driveMotorState.rightVel / 1.8288 * 2);
+    mSignal = mFollower.getNextSignal();
+    Robot.drivetrain.setPowers(mSignal.leftVel / 1.8288 * 2, mSignal.rightVel / 1.8288 * 2);
   }
 
   // Make this return true when this Command no longer needs to run execute()

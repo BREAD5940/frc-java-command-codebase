@@ -189,6 +189,7 @@ public class Robot extends TimedRobot {
     
     odometry_.setX(0);
     odometry_.setY(0);
+    gyro.reset();
   }
 
   /**
