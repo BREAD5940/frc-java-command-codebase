@@ -35,14 +35,14 @@ public class PurePursuitFollower {
   }
 
   public ArrayList<PurePoint> convert(Trajectory input) {
-    ArrayList<PurePoint> mOutput;
+    ArrayList<PurePoint> mOutput = new ArrayList<PurePoint>();
     double curvature, velocity;
     Point point;
     PurePoint toAppend;
 
     for(int i=0; i<input.length(); i++) {
       curvature = curvatureFromPathfinder(i);
-      point = new Point(input.get(i).x, input.get(i).y)
+      point = new Point(input.get(i).x, input.get(i).y);
       velocity = input.get(i).velocity;
       toAppend = new PurePoint(point, curvature, velocity);
       mOutput.add(toAppend);
@@ -63,7 +63,7 @@ public class PurePursuitFollower {
   // public PurePoint getInitialOdometry() {
   //   Segment mInitialSegment = mSourceTraj.get(0);
   //   return new PurePoint(new Point(mInitialSegment.x, mInitialSegment.y), calculateCurvature(0), mInitialSegment.velocity);
-  }
+  // }
 
 
 
