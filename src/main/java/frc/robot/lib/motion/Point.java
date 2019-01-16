@@ -1,4 +1,4 @@
-package frc.robot.lib.motion.purepursuit;
+package frc.robot.lib.motion;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

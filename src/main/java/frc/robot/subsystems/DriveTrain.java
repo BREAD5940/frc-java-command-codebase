@@ -206,8 +206,9 @@ public class DriveTrain extends Subsystem {
     switch(gear){
       case LOW:
         ka = 1.0 / 10;
+        break;
       default:
-        ka = 1.0 / 10;
+        ka = 1.0 / 17;
     }
     m_left_talon.set(ControlMode.Velocity, 
       EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10,

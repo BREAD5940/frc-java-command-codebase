@@ -74,8 +74,8 @@ public class RobotConfig {
     public static final double POSITION_PULSES_PER_ROTATION = 4096;
     
     // Pathfinder shit
-    public static final double left_static_kv = 0; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
-    public static final double right_static_kv = 0; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
+    public static final double left_static_kv = 0.05; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
+    public static final double right_static_kv = 0.05; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
     
     public class leftTalons {
       /**

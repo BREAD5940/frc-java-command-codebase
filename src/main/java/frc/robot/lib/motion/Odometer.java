@@ -1,6 +1,6 @@
 package frc.robot.lib.motion;
 
-import frc.robot.lib.motion.purepursuit.Point;
+import frc.robot.lib.motion.Point;
 import jaci.pathfinder.Trajectory;
 
 public class Odometer /* extends LogBase */ {

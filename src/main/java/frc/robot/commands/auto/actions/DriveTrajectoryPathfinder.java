@@ -77,14 +77,14 @@ public class DriveTrajectoryPathfinder extends Command {
     
     // So I flipped this because Pathweaver seems to be exporting the left and right
     // flipped for some reason. so fix dis. k thx
-    File traj = new File("/home/lvuser/deploy/paths/meme.pf1.csv");
+    File traj = new File("/home/lvuser/deploy/paths/test.pf1.csv");
     mSourceTrajectory = Pathfinder.readFromCSV(traj);
     // File leftTraj = new File("/home/lvuser/deploy/paths/test.left.pf1.csv");
     // mLeftTrajectory = Pathfinder.readFromCSV(leftTraj);
     // File rightTraj = new File("/home/lvuser/deploy/paths/test.right.pf1.csv");
     // mRightTrajectory = Pathfinder.readFromCSV(rightTraj);
-    File leftTraj = new File("/home/lvuser/deploy/paths/meme.left.pf1.csv");
-    File rightTraj = new File("/home/lvuser/deploy/paths/meme.right.pf1.csv");
+    File leftTraj = new File("/home/lvuser/deploy/paths/test.left.pf1.csv");
+    File rightTraj = new File("/home/lvuser/deploy/paths/test.right.pf1.csv");
     mRightTrajectory = Pathfinder.readFromCSV(leftTraj);
     mLeftTrajectory = Pathfinder.readFromCSV(rightTraj);
   }
@@ -109,15 +109,15 @@ public class DriveTrajectoryPathfinder extends Command {
 
     // // Modify the variables if the gear is high, yes this is a bit of a hack but 
     // else {
-    mLeftKp = 1; //RobotConfig.driveTrain.left_talons.velocity_kp_high;
+    mLeftKp = 3; //RobotConfig.driveTrain.left_talons.velocity_kp_high;
     mLeftKi = 0; //RobotConfig.driveTrain.left_talons.velocity_ki_high;
-    mLeftKd = 0; //RobotConfig.driveTrain.left_talons.velocity_kd_high;
-    mLeftKv = 1.2; //RobotConfig.driveTrain.left_talons.velocity_kv_high;
+    mLeftKd = 1; //RobotConfig.driveTrain.left_talons.velocity_kd_high;
+    mLeftKv = 1.0 / 13; //RobotConfig.driveTrain.left_talons.velocity_kv_high;
     mLeftKa = 0; //RobotConfig.driveTrain.left_talons.velocity_ki_high;
 
     mRightKp = mLeftKp; //RobotConfig.driveTrain.left_talons.velocity_kp_high;
-    mRightKi = 0; //RobotConfig.driveTrain.left_talons.velocity_ki_high;
-    mRightKd = 0; //RobotConfig.driveTrain.left_talons.velocity_kd_high;
+    mRightKi = mLeftKi; //RobotConfig.driveTrain.left_talons.velocity_ki_high;
+    mRightKd = mLeftKd; //RobotConfig.driveTrain.left_talons.velocity_kd_high;
     mRightKv = mLeftKv; //RobotConfig.driveTrain.left_talons.velocity_kv_high;
     mRightKa = 0; //RobotConfig.driveTrain.left_talons.velocity_ka_high;
     // }
@@ -129,6 +129,8 @@ public class DriveTrajectoryPathfinder extends Command {
     mRightFollower = new DistanceFollower(mRightTrajectory);
     mLeftFollower.configurePIDVA(mLeftKp, mLeftKi, mLeftKd, mLeftKv, mLeftKa);
     mRightFollower.configurePIDVA(mRightKp, mRightKi, mRightKd, mRightKv, mRightKa);
+
+    Robot.gyro.reset();
 
     System.out.println("Pathfinder auto init-ed!");
   }
