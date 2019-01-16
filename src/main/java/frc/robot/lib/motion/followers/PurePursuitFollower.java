@@ -41,7 +41,7 @@ public class PurePursuitFollower {
     PurePoint toAppend;
 
     for(int i=0; i<input.length(); i++) {
-      curvature = curvatureFromPathfinder(i);
+      curvature = curvatureFromPathfinder(input, i);
       point = new Point(input.get(i).x, input.get(i).y);
       velocity = input.get(i).velocity;
       toAppend = new PurePoint(point, curvature, velocity);
@@ -52,25 +52,32 @@ public class PurePursuitFollower {
     return mOutput;
   }
 
+    /**
+      * To calculate curvature at a point we must first find the radius of 
+      * the circle that intersects this point, the point ahead of it, and the point 
+      * behind it. Once we have this, curvature is simply 1 / radius. From the pdf:
+      * <p>
+      * Given  P(x1, y1), Q(x2, y2), and R(x3, y3):
+      * <p>
+      * k  = 0.5 * ( x_1^2 + y_1^2 - Math.pow(x_2, 2) - y_^2)/(x_1 - x_2)
+      * <p>
+      * k_2 = (y_1 - y_2)/(x_1 - x_2)
+      * <p> 
+      * b = 0.5 * (Math.pow(x_2, 2) - 2 * x_2 * k_1 + Math.pow(y_2, 2) - Math.pow(x_3, 2) + 2 * x_3 * k_1 - Math.pow(y_3, 2)) / (x_3 * k_2 - y_3 + y_2 - x_2 * k_2)
+      * <p>
+      * a = k_1 - k_2 * b
+      * <p>
+      * r = sqrt((x_1 - a)^2 + (y_1 - b)^2)
+      * <p>
+      * curvature = 1/r
+      * <p>
+      * However, consider that if x_1 = x_2 you divide by zero. (try adding 0.0001 to x?)
+      * Also, if 1/r = NaN, the curvature is zero.
+      * Furthermore, the first and last points don't have any preceding points, so just
+      * set their curvature to zero.
+    */
   public double curvatureFromPathfinder(Trajectory path, int index) {
 
-    /*
-    To calculate curvature at a point we must first find the radius of 
-      the circle that intersects this point, the point ahead of it, and the point 
-      behind it. Once we have this, curvature is simply 1 / radius. From the pdf:
-    Given  P(x1, y1), Q(x2, y2), and R(x3, y3):
-    k  = 0.5 * ( x_1^2 + y_1^2 - Math.pow(x_2, 2) - y_^2)/(x_1 - x_2)
-    k_2 = (y_1 - y_2)/(x_1 - x_2)
-    b = 0.5 * (Math.pow(x_2, 2) - 2 * x_2 * k_1 + Math.pow(y_2, 2) - Math.pow(x_3, 2) + 2 * x_3 * k_1 - Math.pow(y_3, 2)) / (x_3 * k_2 - y_3 + y_2 - x_2 * k_2)
-    a = k_1 - k_2 * b
-    r = sqrt((x_1 - a)^2 + (y_1 - b)^2)
-    curvature = 1/r
-
-    However, consider that if x_1 = x_2 you divide by zero. (try adding 0.0001 to x?)
-    Also, if 1/r = NaN, the curvature is zero.
-    Furthermore, the first and last points don't have any preceding points, so just
-      set their curvature to zero.
-    */
     double k_1, k_2, a, b, r;
 
     if ( (index == path.length()) || (index == 0) ) {
