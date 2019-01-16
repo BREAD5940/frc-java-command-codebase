@@ -23,7 +23,7 @@ public class PurePursuitFollower {
     double spacing = 0.3, maxAngVel = 0.6; // 3 in simu
     double lookAheadDistance = 0.5/* 6 inches */;
     double trackWidth = 2;// 2 feet
-    double targetTolerance = 0.3;// ft
+    double targetTolerance = 1;// ft
     // double maxVel = 250, maxAcc = 70, spacing = 6, maxAngVel = 6;
     // double lookAheadDistance = 12;
 
@@ -42,7 +42,7 @@ public class PurePursuitFollower {
     // Arrays.asList(new Waypoint(0, 0), new Waypoint(0, 4), new Waypoint(-2, 4),
     // new Waypoint(-2, 0))));
     path = pathGenerator.calculate(new Path(spacing, maxVel, maxAcc, maxAngVel,
-        Arrays.asList(new PPWaypoint(0, 0), new PPWaypoint(0, -4), new PPWaypoint(-2, -4), new PPWaypoint(-2, 0))));
+        Arrays.asList(new PPWaypoint(0, 0), new PPWaypoint(0, 4), new PPWaypoint(3, 7))));
 
     // log.log("Path: [" + path.waypoints.size() + "]");
     // log.log(path);

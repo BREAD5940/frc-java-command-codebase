@@ -25,7 +25,7 @@ public class PurePursuitPathCommand extends Command {
   @Override
   protected void execute() {
     mSignal = mFollower.getNextSignal();
-    Robot.drivetrain.setPowers(mSignal.leftVel / 1.8288 * 2, mSignal.rightVel / 1.8288 * 2);
+    Robot.drivetrain.setPowers(mSignal.leftVel / 1.8288, mSignal.rightVel / 1.8288);
   }
 
   // Make this return true when this Command no longer needs to run execute()
