@@ -1,11 +1,11 @@
 package frc.robot.lib;
-
+// DO NOT FORMAT THIS FILE!
+import java.util.Map;
 import java.util.ArrayList;
 import java.lang.reflect.Field;
 import java.util.regex.Pattern;
 import java.util.function.Function;
 import java.lang.RuntimeException;
-
 /**
  * Java interpolation doesn't <i>have</i> to suck.
  * This class is a loose implementation of bash's $ variable syntax.
@@ -15,7 +15,7 @@ public class $ {
   // go ahead and complain that "$" for the name is too terse but it'll save you a lot of typing
   // also, if you're gonna read this file it'd be worth reading up on lambdas
   /** A Regex designed to get variable names from bash <code>$</code> expression compiled to a Pattern */
-  private static Pattern $pattern = Pattern.compile("\\${?(\\w+)}?");
+  private static Pattern $pattern = Pattern.compile("\\$({)?(\\w+)((1)})");
   /**
    * Replace every $<variable> with the output of applying <variable> to fn
    * @param s Input string to search for matches
@@ -40,69 +40,9 @@ public class $ {
     }
     return res;
   }
-  private String result;
-  /** Get the result */
-  public String result() {
-    return this.result;
-  }
-  /** Gets environment variables as specified by <code>$</code>. */
-  public $(String s) {
-    this.result = $.replaceAll(s, System::getenv);
-  }
-  /**
-   * Interpolate given a String and an Array of Strings.
-   * @param s The input String
-   * @param ary The Array of variables to access
-   */
-  public $(String s, String[] ary) {
-    this.result = $.replaceAll(s, (String match) -> {
-      int i;
-      try {
-        i = Integer.parseInt(match);
-      } catch (Exception e) {
-        throw new RuntimeException("BashInterpolation: Cannot interpolate " + match + " from a Array<String>!");
-      }
-      return ary[i];
-    });
-  }
-  /**
-   * Interpolate given a String and an ArrayList&lt;String&gt;
-   * @param s The input String
-   * @param ary The ArrayList of Strings to access
-   */
-  public $(String s, ArrayList<String> ary) {
-    this.result = $.replaceAll(s, (String match) -> {
-      int i;
-      try {
-        i = Integer.parseInt(match);
-      } catch (Exception e) {
-        throw new RuntimeException("BashInterpolation: Cannot interpolate " + match + " from a ArrayList<String>!");
-      }
-      return ary.get(i);
-    });
-  }
-  /**
-   * Interpolate given a String and an input Object
-   * @param s The input String
-   * @param o Literally any Java Object
-   */
-  public $(String s, Object o) {
-    Class<?> cls = o.getClass();
-    this.result = $.replaceAll(s, (String match) -> {
-      try {
-        Field f = cls.getField(match);
-        if (f.getType().equals(String.class)) {
-          return (String) f.get(o);
-        }
-      } catch (Exception e) {
-        throw new RuntimeException("Couldn't access " + match + " on the provided Object");
-      }
-      throw new RuntimeException("Found " + match + " but it was not a String!");
-    });
-  }
   /** Interpolate using static fields from a Class */
-  public $(String s, Class<?> c) {
-    this.result = $.replaceAll(s, (String match) -> {
+  public static String i(String s, Class<?> c) {
+    return $.replaceAll(s, (String match) -> {
       try {
         Field f = c.getField(match);
         if (f.getType().equals(String.class)) {
@@ -118,23 +58,34 @@ public class $ {
    * Faster way to interpolate <code>$</code> environment variables
    * @param s Input
    */
-  public static String i(String s) { return new $(s).result(); }
+  public static String i(String s) { return $.replaceAll(s, System::getenv); }
   /**
-   * Given a String and any Object. Example:
    * <pre>
    *String foo = $.i(
    *  "Java is as fast as a $noun",
    *  new Object() {
-   *    static String animal = "sloth";
+   *    static String noun = "sloth";
    *  }
    *);
    * </pre>
    * @param s The input String
    * @param o Literally any Object
    */
-  public static String i(String s, Object o) { return new $(s, o).result(); }
+  public static String i(String s, Object o) {
+    Class<?> cls = o.getClass();
+    return $.replaceAll(s, (String match) -> {
+      try {
+        Field f = cls.getField(match);
+        if (f.getType().equals(String.class)) {
+          return (String) f.get(o);
+        }
+      } catch (Exception e) {
+        throw new RuntimeException("Couldn't access " + match + " on the provided Object");
+      }
+      throw new RuntimeException("Found " + match + " but it was not a String!");
+    });
+  }
   /**
-   * Given a String and an Array of Strings. Example:
    * <pre>
    *String bar = $.i(
    *  "It ain't much but it's $0 $1",
@@ -145,9 +96,18 @@ public class $ {
    * @param s The input String
    * @param ary The Array of variables to access
    */
-  public static String i(String s, String[] ary) { return new $(s, ary).result(); }
+  public static String i(String s, String[] ary) {
+    return $.replaceAll(s, (String match) -> {
+      int i;
+      try {
+        i = Integer.parseInt(match);
+      } catch (Exception e) {
+        throw new RuntimeException("BashInterpolation: Cannot interpolate " + match + " from a Array<String>!");
+      }
+      return ary[i];
+    });
+  }
   /**
-   * Given a String and an ArrayList of Strings. Example:
    * <pre>
    *var nouns = new ArrayList&lt;String&gt;();
    *nouns.add("bacon");
@@ -157,5 +117,25 @@ public class $ {
    * @param s The input String
    * @param ary The ArrayList of Strings to access
    */
-  public static String i(String s, ArrayList<String> ary) { return new $(s, ary).result(); }
+  public static String i(String s, ArrayList<String> ary) {
+    return $.replaceAll(s, (String match) -> {
+      int i;
+      try {
+        i = Integer.parseInt(match);
+      } catch (Exception e) {
+        throw new RuntimeException("BashInterpolation: Cannot interpolate " + match + " from a ArrayList<String>!");
+      }
+      return ary.get(i);
+    });
+  }
+
+  public static String i(String s, Map<String, String> map) {
+    return $.replaceAll(s, (String match) -> {
+      String value = map.get(match);
+      if (value == null) {
+        throw new RuntimeException("The key \"" + match + "\" was null on the provided map!");
+      }
+      return value;
+    });
+  }
 }
