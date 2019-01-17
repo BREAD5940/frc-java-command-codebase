@@ -49,12 +49,12 @@ public class PurePursuit extends Command {
     Logger.log("Right Vel" + round(driveMotorState.rightVel));
 
     Logger.log("_____________________________________\n");
-    Robot.drivetrain.setPowers(driveMotorState.leftVel / 1.8288 * 2, driveMotorState.rightVel / 1.8288 * 2);
+    Robot.drivetrain.setPowers(driveMotorState.leftVel / 0.8 , driveMotorState.rightVel / 0.8 );
   }
 
   @Override
   protected boolean isFinished() {
-    return false;
+    return pathFollower.done;
   }
 
   @Override
@@ -74,7 +74,7 @@ public class PurePursuit extends Command {
     double maxVel = 0.4; // 6 feet/s
     double maxAcc = 0.1; // m/sec every sec
     double spacing = 0.1, maxAngVel = 1.5; // 3 in simu
-    double lookAheadDistance = 0.1524 * 4;
+    double lookAheadDistance = 0.1524 * 8;
     /* 6 inches */
     double trackWidth = 0.8;// 0.5842; // 23 inches
     double targetTolerance = 0.1;// m
@@ -88,19 +88,19 @@ public class PurePursuit extends Command {
     PathGenerator pathGenerator = new PathGenerator();
     // path = pathGenerator
     // .calculate(new Path(spacing, maxVel, maxAcc, maxAngVel, Arrays.asList(new
-    // Waypoint(0, 0), new Waypoint(0, 2))));
-    // path = pathGenerator.calculate(new Path(spacing, maxVel, maxAcc, maxAngVel,
-    // Arrays.asList(new Waypoint(0, 0), new Waypoint(0, 2), new Waypoint(-2, 2),
-    // new Waypoint(-2, 6.5))));
+    // WayPoint2(0, 0), new WayPoint2(0, 2))));
     path = pathGenerator.calculate(new Path(spacing, maxVel, maxAcc, maxAngVel,
-        Arrays.asList(new WayPoint2(0, 0), new WayPoint2(0, 4), new WayPoint2(-2, 4), new WayPoint2(-2, 2),
-            new WayPoint2(0, 2), new WayPoint2(0, 4), new WayPoint2(-2, 4), new WayPoint2(-2, 2), new WayPoint2(2, 2))));
+    Arrays.asList(new WayPoint2(0, 0), new WayPoint2(0, 3.6576), new WayPoint2(3.6576, 3.6576 * 2),
+    new WayPoint2(3.6576 * 2, 3.6576 * 2))));
     // path = pathGenerator.calculate(new Path(spacing, maxVel, maxAcc, maxAngVel,
-    // Arrays.asList(new Waypoint(0, 0), new Waypoint(0, 4), new Waypoint(-2, 4),
-    // new Waypoint(-2, 0))));
+    //     Arrays.asList(new WayPoint2(0, 0), new WayPoint2(0, 4), new WayPoint2(-2, 4), new WayPoint2(-2, 2),
+    //         new WayPoint2(0, 2), new WayPoint2(0, 4), new WayPoint2(-2, 4), new WayPoint2(-2, 2), new WayPoint2(2, 2))));
     // path = pathGenerator.calculate(new Path(spacing, maxVel, maxAcc, maxAngVel,
-    // Arrays.asList(new Waypoint(0, 0), new Waypoint(0, -4), new Waypoint(-2, -4),
-    // new Waypoint(-2, 0))));
+    // Arrays.asList(new WayPoint2(0, 0), new WayPoint2(0, 4), new WayPoint2(-2, 4),
+    // new WayPoint2(-2, 0))));
+    // path = pathGenerator.calculate(new Path(spacing, maxVel, maxAcc, maxAngVel,
+    // Arrays.asList(new WayPoint2(0, 0), new WayPoint2(0, -4), new WayPoint2(-2, -4),
+    // new WayPoint2(-2, 0))));
 
     Logger.log("Path: [" + path.waypoints.size() + "]");
     for (int i = 0; i < path.waypoints.size(); i++) {

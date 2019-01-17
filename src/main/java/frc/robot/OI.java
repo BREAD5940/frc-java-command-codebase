@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.AutoMotion.mGoalType;
 import frc.robot.commands.auto.actions.DriveTrajectoryPathfinder;
+import frc.robot.commands.auto.actions.PurePursuit;
 import frc.robot.commands.auto.actions.TurnInPlace;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
@@ -58,8 +59,9 @@ public class OI {
     // turnAutoButton.whenPressed(new PurePursuitPathCommand());
     // autobutton2.whenPressed(new RamsetePathFollower("filePath"));
     autobutton3.whenPressed(new DriveTrajectoryPathfinder("mFile"));
-    open_clamp_button.whenPressed(new OpenClamp());
-    close_clamp_button.whenPressed(new CloseClamp());
+    // open_clamp_button.whenPressed(new OpenClamp());
+    // close_clamp_button.whenPressed(new CloseClamp());
+    open_clamp_button.whenPressed(new PurePursuit());
   }
 
   public double getForwardAxis() { return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis); }
