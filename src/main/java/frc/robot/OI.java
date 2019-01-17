@@ -7,6 +7,8 @@ import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.AutoMotion.mGoalType;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
+import frc.robot.commands.subsystems.drivetrain.ArcadeSensitivityDown;
+import frc.robot.commands.subsystems.drivetrain.ArcadeSensitivityUp;
 import frc.robot.lib.DPadButton;
 import frc.robot.commands.auto.AutoMotion;
 

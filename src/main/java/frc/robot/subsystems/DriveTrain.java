@@ -39,6 +39,7 @@ public class DriveTrain extends Subsystem {
   public TalonSRX s_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.s_right_talon_port);
   public String current_gear;
   public double tVoltage_l, tVoltage_r, tRaw_l, tRaw_r;
+  public double arcade_drive_sensitivity = 1;
 
   public MotionProfileStatus m_left_MP_Status = new MotionProfileStatus();
   public MotionProfileStatus m_right_MP_Status = new MotionProfileStatus();

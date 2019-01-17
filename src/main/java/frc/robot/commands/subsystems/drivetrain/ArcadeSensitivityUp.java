@@ -14,12 +14,10 @@ public class ArcadeSensitivityUp extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    System.out.println("Command ArcadeSensitivityUp triggered");
-    Robot.arcade_drive_sensitivity += 0.1;
-    if (Robot.arcade_drive_sensitivity > 1.5) {
-      Robot.arcade_drive_sensitivity = 1.5;
+    Robot.drivetrain.arcade_drive_sensitivity += 0.1;
+    if (Robot.drivetrain.arcade_drive_sensitivity > 1.5) {
+      Robot.drivetrain.arcade_drive_sensitivity = 1.5;
     }
-    System.out.println("Robot.arcade_drive_sensitivity: " + Robot.arcade_drive_sensitivity);
   }
 
   // Called repeatedly when this Command is scheduled to run

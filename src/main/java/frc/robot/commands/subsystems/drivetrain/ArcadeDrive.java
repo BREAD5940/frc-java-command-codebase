@@ -40,9 +40,9 @@ public class ArcadeDrive extends Command {
     // Robot.m_oi.getTurnAxis());
     // Robot.drivetrain.arcadeDriveMethod(0,0.1);
 
-    Robot.drivetrain.setPowers((Robot.m_oi.getForwardAxis() + Robot.m_oi.getTurnAxis()) * Robot.arcade_drive_sensitivity,
-        (Robot.m_oi.getForwardAxis() - Robot.m_oi.getTurnAxis()) * Robot.arcade_drive_sensitivity);
-    System.out.println("Arcade drive sensitivity: " + Robot.arcade_drive_sensitivity);
+    Robot.drivetrain.setPowers((Robot.m_oi.getForwardAxis() + Robot.m_oi.getTurnAxis()) * Robot.drivetrain.arcade_drive_sensitivity,
+        (Robot.m_oi.getForwardAxis() - Robot.m_oi.getTurnAxis()) * Robot.drivetrain.arcade_drive_sensitivity);
+    System.out.println("Arcade drive sensitivity: " + Robot.drivetrain.arcade_drive_sensitivity);
     // System.out.println("arcade drive command execute");
   }
 
