@@ -82,7 +82,7 @@ public class TurnInPlace extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    starting_angle = Robot.gyro.getAngle();
+    starting_angle = Robot.drivetrain.getGyro() ;
 
     // If the angle is relative (which it should not be), setup target angle.
     // Otherwise the angle is absolute (relative to auto init) so we don't care.
@@ -100,11 +100,11 @@ public class TurnInPlace extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    output = turnPID.update(Robot.gyro.getAngle());
+    output = turnPID.update(Robot.drivetrain.getGyro());
     raw_left = EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.left_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
     raw_right = (-1) * EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.right_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
     Robot.drivetrain.setPowers(output, -output);
-    System.out.println(String.format("Turn in place execute! Target: %s Gyro output: %s,Output: %s, Raw left: %s Raw right %s", turnPID.getSetpoint(), Robot.gyro.getAngle(), output, raw_left, raw_right));
+    System.out.println(String.format("Turn in place execute! Target: %s Gyro output: %s,Output: %s, Raw left: %s Raw right %s", turnPID.getSetpoint(), Robot.drivetrain.getGyro(), output, raw_left, raw_right));
   }
 
   // Make this return true when this Command no longer needs to run execute()

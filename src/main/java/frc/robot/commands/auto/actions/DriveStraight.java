@@ -52,7 +52,7 @@ public class DriveStraight extends Command {
   public DriveStraight(double distance, double speed, double timeout) {
     this.distance = distance;
     this.actionMaxSpeed = speed;
-    this.target_gyro_angle = Robot.gyro.getAngle(); // TODO make sure that the angle is set correctly.
+    this.target_gyro_angle = Robot.drivetrain.getGyro(); // TODO make sure that the angle is set correctly.
     requires(Robot.drivetrain);
   }
 
@@ -64,7 +64,7 @@ public class DriveStraight extends Command {
   public DriveStraight(double distance) {
     this.distance = distance;
     this.actionMaxSpeed = RobotConfig.auto.drive_auto_forward_velocity_max;
-    this.target_gyro_angle = Robot.gyro.getAngle(); // TODO make sure that the angle is set correctly on constructor call.
+    this.target_gyro_angle = Robot.drivetrain.getGyro(); // TODO make sure that the angle is set correctly on constructor call.
     requires(Robot.drivetrain);
   }
 
@@ -88,7 +88,7 @@ public class DriveStraight extends Command {
   protected void initialize() {
     start_left_distance = Robot.drivetrain.getLeftDistance();
     start_right_distance = Robot.drivetrain.getRightDistance();
-    current_angle = Robot.gyro.getAngle();
+    current_angle = Robot.drivetrain.getGyro();
     end_distance = start_left_distance + distance;
     setTimeout(timeout); // set the timeout
     forwardPID.setSetpoint(end_distance);
@@ -101,8 +101,8 @@ public class DriveStraight extends Command {
   @Override
   protected void execute() {
     forward_speed = forwardPID.update(Robot.drivetrain.getLeftDistance());
-    turn_speed = turnPID.update(Robot.gyro.getAngle());
-    SmartDashboard.putNumber("TurnPID output",  turnPID.update(Robot.gyro.getAngle()));
+    turn_speed = turnPID.update(Robot.drivetrain.getGyro());
+    SmartDashboard.putNumber("TurnPID output",  turnPID.update(Robot.drivetrain.getGyro()));
 
     left_speed_raw = EncoderLib.distanceToRaw(forward_speed + turn_speed, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, 
       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;

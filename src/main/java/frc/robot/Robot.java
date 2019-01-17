@@ -88,7 +88,7 @@ public class Robot extends TimedRobot {
     drivetrain.init();
     elevator.init();
     // wrist.init();
-    gyro.reset();
+    drivetrain.zeroGyro();
 
     switch (RobotConfig.auto.auto_gear) {
     case HIGH:
@@ -153,7 +153,7 @@ public class Robot extends TimedRobot {
     // DriveTrajectoryPathfinder meme = new DriveTrajectoryPathfinder("file");
     // meme.start();
 
-    gyro.reset(); // Reset the current gyro heading to zero
+    // drivetrain.gyro.reset(); // Reset the current gyro heading to zero
     drivetrain.zeroEncoders();
 
     if (RobotConfig.auto.auto_gear == Gear.LOW) {
@@ -186,7 +186,7 @@ public class Robot extends TimedRobot {
     
     odometry_.setX(0);
     odometry_.setY(0);
-    gyro.reset();
+    drivetrain.zeroGyro();
   }
 
   /**
@@ -215,7 +215,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    odometry_.update(drivetrain.getLeftDistance() * 0.3048 , drivetrain.getRightDistance() * 0.3048 , gyro.getAngle());
+    odometry_.update(drivetrain.getLeftDistance() * 0.3048 , drivetrain.getRightDistance() * 0.3048 , drivetrain.getGyro());
 
     SmartDashboard.putNumber("Robot X per odometry: ", odometry_.getX());
     SmartDashboard.putNumber("Robot Y per odometry: ", odometry_.getY());
@@ -250,7 +250,7 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("Wrist angular velocity (deg/s)",
     // wrist.getAngularVelocity());
 
-    SmartDashboard.putNumber("Current Gyro angle", gyro.getAngle());
+    SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
 
     // SmartDashboard.putString("Limelight Ntables", LimeLight.getData().toString());
 

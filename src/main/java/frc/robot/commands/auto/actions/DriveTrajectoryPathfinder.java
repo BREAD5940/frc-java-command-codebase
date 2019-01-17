@@ -130,7 +130,7 @@ public class DriveTrajectoryPathfinder extends Command {
     mLeftFollower.configurePIDVA(mLeftKp, mLeftKi, mLeftKd, mLeftKv, mLeftKa);
     mRightFollower.configurePIDVA(mRightKp, mRightKi, mRightKd, mRightKv, mRightKa);
 
-    Robot.gyro.reset();
+    Robot.drivetrain.zeroGyro();
 
     System.out.println("Pathfinder auto init-ed!");
   }
@@ -147,7 +147,7 @@ public class DriveTrajectoryPathfinder extends Command {
     }
     
     mDesiredHeading = Pathfinder.r2d(mLeftFollower.getHeading());
-    mAngularError = Pathfinder.boundHalfDegrees(mDesiredHeading - Robot.gyro.getAngle());
+    mAngularError = Pathfinder.boundHalfDegrees(mDesiredHeading - Robot.drivetrain.getGyro());
         
     // TODO make sure that the sign is the correct direction, it should be!
     mTurn = mAngularError * RobotConfig.auto.pathfinder.gyro_correct_kp;

@@ -104,7 +104,7 @@ public class PurePursuit extends Command {
 
     Logger.log("Path: [" + path.waypoints.size() + "]");
     for (int i = 0; i < path.waypoints.size(); i++) {
-      Logger.log("path", path.waypoints.get(i));
+      Logger.log("path", path.waypoints.get(i).toString() );
     }
     Logger.log("__________________________\n\n");
     // end generate path
