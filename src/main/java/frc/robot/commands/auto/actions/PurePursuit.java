@@ -34,6 +34,7 @@ public class PurePursuit extends Command {
   @Override
   protected void initialize() {
     initPath();
+    
   }
 
   @Override
