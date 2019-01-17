@@ -65,7 +65,9 @@ public class Path {
 		// return a new Path instance which contains all the settings that this was 
 		// instantiated with, but with x,y taken from pathfinder
 		ArrayList<WayPoint2> newPath = new ArrayList<WayPoint2>();
-		double maxSpacing, maxSpeed, maxAccel, maxAngVel;
+
+		// TODO check if these are constants that can be called from the constructor instead?
+		double maxSpacing, maxSpeed, maxAccel;
 
 		for(int i=0; i<mSource.length(); i++) {
 			// Each waypoint must hold a Point x,y, and a velocity.
