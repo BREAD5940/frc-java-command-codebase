@@ -63,7 +63,18 @@ public class Logger {
     }
   }
 
-  public static void log(String s) { Logger.log(s); }
+  public static void log(String s, String t) {
+    Logger.log(s + " " + t);
+  }
+
+  public static void log(String s, double d) {
+    Logger.log(s + Double.toString(d));
+  }
+
+  public static void log(String s) { //Logger.log(s);
+    System.out.println(s);
+  
+  }
   
   public static void log(Object o) { }
   // TODO actually make this work. Maybe toPairs.java?

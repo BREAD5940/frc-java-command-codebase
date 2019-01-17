@@ -1,11 +1,9 @@
 package frc.robot;
 
-import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -36,7 +34,6 @@ public class Robot extends TimedRobot {
   public static Intake intake = new Intake();
   public static Elevator elevator = new Elevator();
   public static DriveTrain drivetrain = DriveTrain.getInstance();
-  public static AHRS gyro = new AHRS(SPI.Port.kMXP);
   public static LimeLight limelight = new LimeLight();
   public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
   public static SendableChooser<AutoMotion> backupAutoSelect = new SendableChooser<AutoMotion>();
@@ -45,7 +42,7 @@ public class Robot extends TimedRobot {
   public static AutoMotion m_auto;
   SendableChooser<Command> m_chooser = new SendableChooser<Command>();
   public static Compressor compressor = new Compressor(9);
-  private static Odometer odometry_;
+  public static Odometer odometry_;
   private Logger logger;
 
   
@@ -218,7 +215,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    odometry_.update(drivetrain.getLeftDistance(), drivetrain.getRightDistance(), gyro.getAngle());
+    odometry_.update(drivetrain.getLeftDistance() * 0.3048 , drivetrain.getRightDistance() * 0.3048 , gyro.getAngle());
 
     SmartDashboard.putNumber("Robot X per odometry: ", odometry_.getX());
     SmartDashboard.putNumber("Robot Y per odometry: ", odometry_.getY());

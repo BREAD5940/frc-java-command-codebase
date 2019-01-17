@@ -11,7 +11,7 @@ import frc.robot.lib.motion.purepursuit.Point;
 import frc.robot.lib.motion.purepursuit.Vector;
 import frc.robot.lib.motion.purepursuit.WayPoint2;
 
-public class PurePursuitFollower {
+public class PathFollower {
 	private Path path;
 	private double lookAheadDistance;// TODO: lookaheaddistance should vary based on robot velocity to make sharp
 										// turns
@@ -37,7 +37,7 @@ public class PurePursuitFollower {
 
 	}
 
-	public PurePursuitFollower(Path path, double lookAheadDistance, double trackWidth, double targetTolerance) {
+	public PathFollower(Path path, double lookAheadDistance, double trackWidth, double targetTolerance) {
 		// setLogSenderName("PathFollower");
 		this.lookAheadDistance = lookAheadDistance;
 		this.trackWidth = trackWidth;
@@ -45,7 +45,7 @@ public class PurePursuitFollower {
 		this.targetTolerance = targetTolerance;
 		this.done = false;
 		searchLimit = (int) (lookAheadDistance / path.spacing * 2) + 1; // leave 2x margin, and ceil it
-		Logger.log("searchLimit", searchLimit);
+		Logger.log("searchLimit", Integer.toString(searchLimit));
 	}
 
 	private int getClosestWaypointIndex(Point robotPos) {
@@ -248,8 +248,8 @@ public class PurePursuitFollower {
 		gyro = Math.PI - gyro;
 
 		Point lookAheadPoint = lookAheadPoint(robotPos);
-		Logger.log("robotpos", robotPos.toString() );
-		Logger.log("lookaheadpoint", lookAheadPoint.toString() );
+		Logger.log("robotpos", robotPos.toString());
+		Logger.log("lookaheadpoint", lookAheadPoint.toString());
 		double horizontalDistance2LookAheadPoint;
 		double a = -Math.tan(gyro);
 		double b = 1;
@@ -372,8 +372,8 @@ public class PurePursuitFollower {
 
 		gyro = Math.toRadians(gyro + 90);
 
-		WayPoint2 WayPoint2 = getInterpolatedWaypoint(robotPos);
-		Logger.log("closestwaypoint", WayPoint2.toString());
+		WayPoint2 waypoint = getInterpolatedWaypoint(robotPos);
+		Logger.log("closestwaypoint", waypoint.toString());
 		double curvature = getCurvature(robotPos, gyro);
 
 		// double angularVel = waypoint.v * curvature; // w=v/r
@@ -403,7 +403,7 @@ public class PurePursuitFollower {
 		// linearVel = angVel / curvature
 		double targetVelocity;
 		if (onPath) {
-			targetVelocity = Math.min(WayPoint2.v, path.maxAngleVel / Math.abs(curvature));
+			targetVelocity = Math.min(waypoint.v, path.maxAngleVel / Math.abs(curvature));
 		} else {
 			targetVelocity = path.maxAngleVel / Math.abs(curvature);
 		}

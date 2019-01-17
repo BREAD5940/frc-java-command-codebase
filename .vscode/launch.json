@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "CodeLens (Launch) - PurePursuitFollower",
+      "request": "launch",
+      "mainClass": "frc.robot.lib.motion.followers.PurePursuitFollower",
+      "projectName": "command-codebase"
+    },
+    {
+      "type": "java",
       "name": "CodeLens (Launch) - Tester",
       "request": "launch",
       "mainClass": "frc.robot.lib.motion.purepursuit.Tester",

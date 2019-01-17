@@ -2,15 +2,34 @@ import static org.junit.Assert.*;
 
 import org.junit.jupiter.api.Test;
 
-import frc.robot.lib.TerriblePID;
-import frc.robot.lib.TerriblePID.FeedForwardMode;
 import frc.robot.lib.motion.followers.PurePursuitFollower;
+import jaci.pathfinder.Pathfinder;
+import jaci.pathfinder.Trajectory;
+import jaci.pathfinder.Waypoint;
 
 public class PurePursuitFollowerTest {
   @Test
   public void testCurvature() {
     System.out.println("Curature: " + curvatureFromPathfinder());
   }
+
+  @Test
+  public void testTrajectory() {
+
+    
+
+  }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -74,7 +93,7 @@ public class PurePursuitFollowerTest {
     a = k_1 - k_2 * b;
     r = Math.sqrt(Math.pow((x_1 - a),2) + Math.pow((y_1 - b),2));
 
-    double curvature = 1/r;
+    double curvature = 1.0/r;
 
     if (Double.isNaN(curvature)) {
       System.out.println("Curvature is nan");

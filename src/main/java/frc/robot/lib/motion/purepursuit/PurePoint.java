@@ -1,6 +1,8 @@
 package frc.robot.lib.motion.purepursuit;
 
-import frc.robot.lib.motion.Point;
+import java.text.DecimalFormat;
+
+import frc.robot.lib.motion.purepursuit.Point;
 
 /**
  * This object holds all the information needed by the Pure Pursuit
@@ -9,8 +11,6 @@ import frc.robot.lib.motion.Point;
  */
 public class PurePoint {
   Point mPoint;
-  
-  double mCurvature;
 
   double mVelocity;
 
@@ -19,14 +19,37 @@ public class PurePoint {
    */
   public PurePoint() {
     this.mPoint = new Point();
-    this.mCurvature = 0;
     this.mVelocity = 0;
   }
 
-  public PurePoint(Point point, double curvature, double velocity) {
+  public PurePoint(Point point, double velocity) {
     this.mPoint = point;
-    this.mCurvature = curvature;
     this.mVelocity = velocity;
+  }
+
+
+	public PurePoint subtract(PurePoint waypoint) {
+		return new PurePoint(this.mPoint.subtract(waypoint.mPoint), this.mVelocity - waypoint.mVelocity);
+	}
+
+	public PurePoint add(PurePoint waypoint) {
+		return new PurePoint(this.mPoint.add(waypoint.mPoint), this.mVelocity + waypoint.mVelocity);
+	}
+
+	public PurePoint scale(double scale) {
+		return new PurePoint(this.mPoint.scale(scale), this.mVelocity * scale);
+	}
+
+	public PurePoint copy() {
+		return new PurePoint(mPoint.copy(), this.mVelocity);
+	}
+
+
+
+  @Override
+  public String toString(){
+    final DecimalFormat fmt = new DecimalFormat("#0.000");
+    return "(" + mPoint.toString() + "," + "," + "Velocity: " + fmt.format(mVelocity);
   }
 
 }

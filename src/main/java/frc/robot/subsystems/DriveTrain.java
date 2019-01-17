@@ -8,6 +8,9 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
+
 
 // import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -36,6 +39,10 @@ public class DriveTrain extends Subsystem {
   public MotionProfileStatus m_right_MP_Status = new MotionProfileStatus();
 
   public TalonSRX m_left_talon, s_left_talon, m_right_talon, s_right_talon;
+
+  public AHRS gyro = new AHRS(SPI.Port.kMXP);
+
+  double gyroZero;
 
   public enum Gear {
     LOW, HIGH;
@@ -323,6 +330,14 @@ public class DriveTrain extends Subsystem {
     // Maybe move to Robot
     setLeftSpeedRaw(leftspeedraw);
     setRightSpeedRaw(rightspeedraw);
+  }
+
+  public double getGyro() {
+    return gyro.getAngle() - gyroZero;
+  }
+
+  public void zeroGyro() {
+    gyroZero = gyro.getAngle();
   }
 
   @Override
