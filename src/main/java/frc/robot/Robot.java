@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
   public static double startingDistance;
   public static double elevator_setpoint = 0;
   public static double wrist_setpoint = 0;
-  
+
   public static boolean arcade_running = false;
   public static Intake intake = new Intake();
   public static Elevator elevator = new Elevator();
