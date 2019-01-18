@@ -54,8 +54,8 @@ public class OI {
     // autobutton3.whenPressed(new DriveTrajectoryPathfinder("mFile"));
     // open_clamp_button.whenPressed(new OpenClamp());
     // close_clamp_button.whenPressed(new CloseClamp());
-    auto_place_cargo_cargo_button.whenPressed(new SetElevatorHeight(9.316859344380049 - 1.5 ) );
-    auto_place_hatch_cargo_button.whenPressed(new SetElevatorHeight(30));
+    // auto_place_cargo_cargo_button.whenPressed(new SetElevatorHeight(9.316859344380049 - 1.5 ) );
+    // auto_place_hatch_cargo_button.whenPressed(new SetElevatorHeight(30));
     // auto_place_hatch_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_HATCH, AutoMotion.mGoalHeight.LOW));
     // auto_place_cargo_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_CARGO, AutoMotion.mGoalHeight.LOW));
     // auto_place_hatch_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_HATCH, AutoMotion.mGoalHeight.LOW));
