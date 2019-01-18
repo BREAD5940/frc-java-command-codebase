@@ -1,5 +1,11 @@
 package frc.robot;
 
+
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -141,6 +147,9 @@ public class Robot extends TimedRobot {
     } else {
       System.out.println("default auto gear " + RobotConfig.auto.auto_gear + " is not a valid choice!");
     }
+
+    drivetrain.setMode(NeutralMode.Coast);
+
   }
 
   @Override

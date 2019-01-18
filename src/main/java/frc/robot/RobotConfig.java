@@ -64,8 +64,8 @@ public class RobotConfig {
     // Set speeds for teleop
     public static final double max_forward_speed_high = 7; // Feet per second forward velocity
     public static final double max_turn_speed_high = 7; // Max turn speed in degrees per second
-    public static final double max_forward_speed_low = 7; // Feet per second forward velocity
-    public static final double max_turn_speed_low = 7; // Max turn speed in degrees per second
+    public static final double max_forward_speed_low = 3; // Feet per second forward velocity
+    public static final double max_turn_speed_low = 3; // Max turn speed in degrees per second
     
     // Encoder stuff, dunno where else to put this
     // public static final double VELOCITY_PULSES_PER_ROTATION = 409.6f;

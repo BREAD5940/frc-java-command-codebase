@@ -2,11 +2,15 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.SPI;
+
 
 // import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -30,22 +34,37 @@ import frc.robot.lib.EncoderLib;
  * @author Matthew Morley
  */
 public class DriveTrain extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-
-  public TalonSRX m_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.m_left_talon_port);
-  public TalonSRX s_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.s_left_talon_port);
-  public TalonSRX m_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.m_right_talon_port);
-  public TalonSRX s_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.s_right_talon_port);
-  public String current_gear;
-  public double tVoltage_l, tVoltage_r, tRaw_l, tRaw_r;
 
   public MotionProfileStatus m_left_MP_Status = new MotionProfileStatus();
   public MotionProfileStatus m_right_MP_Status = new MotionProfileStatus();
 
+  public TalonSRX m_left_talon, s_left_talon, m_right_talon, s_right_talon;
+
+  public AHRS gyro = new AHRS(SPI.Port.kMXP);
+
+  double gyroZero;
+
   public enum Gear {
     LOW, HIGH;
   }
+
+  private static DriveTrain instance;
+
+  private DriveTrain() {
+    m_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.m_left_talon_port);
+    s_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.s_left_talon_port);
+    m_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.m_right_talon_port);
+    s_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.s_right_talon_port);
+  }
+
+  public synchronized static DriveTrain getInstance() {
+    if (instance == null) {
+        instance = new DriveTrain();
+    }
+
+    return instance;
+}
+
 
   Gear gear;
 
@@ -169,12 +188,42 @@ public class DriveTrain extends Subsystem {
   public void setSpeeds(double speed_left_raw, double speed_right_raw) {
     setLeftSpeedRaw(speed_left_raw);
     setRightSpeedRaw(speed_right_raw);
-
-    // Record the data for the logger to grab
-    tRaw_l = speed_left_raw;
-    tRaw_r = speed_right_raw;
-    tVoltage_l = tVoltage_r = 0;
   }
+
+  // /**
+  //  * Set the drivetrain speeds in feet per second
+  //  * @param mleftSpeed in feet per second
+  //  * @param mRightSpeed in feet per second
+  //  */
+  // public void setFeetPerSecond(double mleftSpeed, double mRightSpeed) {
+  //   setSpeeds(
+  //     EncoderLib.distanceToRaw(
+  //       mleftSpeed,
+  //       RobotConfig.driveTrain.left_wheel_effective_diameter / 12,
+  //       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10, 
+  //     EncoderLib.distanceToRaw(
+  //       mRightSpeed,
+  //       RobotConfig.driveTrain.left_wheel_effective_diameter / 12,
+  //       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10
+  //     );
+  // }
+
+  public void setFeetPerSecond(double left, double right, double acceleration){
+    double ka;
+    switch(gear){
+      case LOW:
+        ka = 1.0 / 10;
+        break;
+      default:
+        ka = 1.0 / 17;
+    }
+    m_left_talon.set(ControlMode.Velocity, 
+      EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10,
+      DemandType.ArbitraryFeedForward, 0.1 + acceleration * ka);
+    m_right_talon.set(ControlMode.Velocity, 
+      EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10,
+      DemandType.ArbitraryFeedForward, 0.1 + acceleration * ka);
+}
 
   /**
    * An even more lazy version of @link setSpeeds This will literally set the
@@ -186,15 +235,10 @@ public class DriveTrain extends Subsystem {
   public void setVoltages(double left_voltage, double right_voltage) {
     m_left_talon.set(ControlMode.PercentOutput, left_voltage / 11);
     m_right_talon.set(ControlMode.PercentOutput, right_voltage / 11);
-
-    // Record the data for the logger to grab
-    tVoltage_l = left_voltage;
-    tVoltage_r = right_voltage;
-    tRaw_l = tRaw_r = 0;
   }
 
   /**
-   * An even more lazy version of @link setSpeeds This will literally set the
+   * An even more lazy version of setspeeds This will literally set the
    * throttle of the left and right talons (from -1 to 1 ofc, like normal)
    * 
    * @param left_power
@@ -204,6 +248,17 @@ public class DriveTrain extends Subsystem {
     m_left_talon.set(ControlMode.PercentOutput, left_power);
     m_right_talon.set(ControlMode.PercentOutput, right_power);
   }
+
+  /**
+   * Set the neutral mode of the talons
+   * @param mode the mode to set the talons to
+   */
+  public void setMode(NeutralMode mode) {
+    m_left_talon.setNeutralMode(mode);
+    m_right_talon.setNeutralMode(mode);
+    s_left_talon.setNeutralMode(mode);
+    s_right_talon.setNeutralMode(mode);
+}
 
   /**
    * Set the target left speed. Units are in raw units.
@@ -227,28 +282,32 @@ public class DriveTrain extends Subsystem {
     // double forwardspeed = Robot.m_oi.getForwardAxis() * -1;
     // double turnspeed = Robot.m_oi.getTurnAxis();
 
-    if ((forwardspeed < 0.02) && (forwardspeed > -0.02)) {
-      forwardspeed = 0;
-    }
-    if ((turnspeed < 0.01) && (turnspeed > -0.01)) {
-      turnspeed = 0;
-    }
+    // if ((forwardspeed < 0.02) && (forwardspeed > -0.02)) {
+    //   forwardspeed = 0;
+    // }
+    // if ((turnspeed < 0.01) && (turnspeed > -0.01)) {
+    //   turnspeed = 0;
+    // }
 
-    if (RobotConfig.controls.driving_squared) {
+    // if (RobotConfig.controls.driving_squared) {
       forwardspeed = forwardspeed * Math.abs(forwardspeed);
       turnspeed = turnspeed * Math.abs(turnspeed);
-    }
-    if (Robot.drivetrain.gear == Gear.HIGH) {
-      forwardspeed = forwardspeed * RobotConfig.driveTrain.max_forward_speed_high;
-      turnspeed = turnspeed * RobotConfig.driveTrain.max_turn_speed_high;
-    }
-    if (Robot.drivetrain.gear == Gear.LOW) {
-      forwardspeed = forwardspeed * RobotConfig.driveTrain.max_forward_speed_low;
-      turnspeed = turnspeed * RobotConfig.driveTrain.max_turn_speed_low;
-    }
+    // }
+    // if (Robot.drivetrain.gear == Gear.HIGH) {
+    //   forwardspeed = forwardspeed * RobotConfig.driveTrain.max_forward_speed_high;
+    //   turnspeed = turnspeed * RobotConfig.driveTrain.max_turn_speed_high;
+    // }
+    // if (Robot.drivetrain.gear == Gear.LOW) {
+    //   forwardspeed = forwardspeed * RobotConfig.driveTrain.max_forward_speed_low;
+    //   turnspeed = turnspeed * RobotConfig.driveTrain.max_turn_speed_low;
+    // }
 
-    double leftspeed = forwardspeed + turnspeed; // units are in feet
-    double rightspeed = forwardspeed - turnspeed;
+    double leftspeed = forwardspeed * 0.2 + turnspeed * 0.1; // units are in feet
+    double rightspeed = forwardspeed * 0.211 - turnspeed * 0.1;
+
+    setMode(NeutralMode.Brake);
+    m_left_talon.configOpenloopRamp(0.2);
+    m_right_talon.configOpenloopRamp(0.2);
 
     /**
      * Set left speed raw in feet per 100ms
@@ -273,8 +332,17 @@ public class DriveTrain extends Subsystem {
     SmartDashboard.putNumber("right speed target", rightspeedraw);
     // TODO SmartDashboard code should NOT be placed in DriveTrain
     // Maybe move to Robot
-    setLeftSpeedRaw(leftspeedraw);
-    setRightSpeedRaw(rightspeedraw);
+    // setLeftSpeedRaw(leftspeedraw);
+    // setRightSpeedRaw(rightspeedraw);
+    setPowers(leftspeed, rightspeed);
+  }
+
+  public double getGyro() {
+    return gyro.getAngle() - gyroZero;
+  }
+
+  public void zeroGyro() {
+    gyroZero = gyro.getAngle();
   }
 
   @Override
