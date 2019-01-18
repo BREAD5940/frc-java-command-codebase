@@ -25,6 +25,7 @@ public class ElevatorTelop extends Command {
   @Override
   protected void initialize() {
     System.out.println("Elevator telop init!");
+    targetHeight = Robot.elevator.getHeight();
   }
 
   /**
@@ -33,8 +34,8 @@ public class ElevatorTelop extends Command {
    */
   @Override
   protected void execute() {
-    if (Math.abs(Robot.m_oi.getElevatorAxis()) > 0.07) {
-      targetHeight += Robot.m_oi.getElevatorAxis();
+    if (Math.abs(Robot.m_oi.getElevatorAxis()) > 0.03) {
+      targetHeight += Robot.m_oi.getElevatorAxis() / 2 ;
       Robot.elevator.setHeight(targetHeight);// targetHeight);
       // System.out.println("targetHeight: " + targetHeight + " Elevator axis: "
       // + Robot.m_oi.getElevatorAxis() * 1 + " Get elevator height inches: " +
