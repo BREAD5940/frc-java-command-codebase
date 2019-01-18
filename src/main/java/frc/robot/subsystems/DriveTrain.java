@@ -282,28 +282,32 @@ public class DriveTrain extends Subsystem {
     // double forwardspeed = Robot.m_oi.getForwardAxis() * -1;
     // double turnspeed = Robot.m_oi.getTurnAxis();
 
-    if ((forwardspeed < 0.02) && (forwardspeed > -0.02)) {
-      forwardspeed = 0;
-    }
-    if ((turnspeed < 0.01) && (turnspeed > -0.01)) {
-      turnspeed = 0;
-    }
+    // if ((forwardspeed < 0.02) && (forwardspeed > -0.02)) {
+    //   forwardspeed = 0;
+    // }
+    // if ((turnspeed < 0.01) && (turnspeed > -0.01)) {
+    //   turnspeed = 0;
+    // }
 
-    if (RobotConfig.controls.driving_squared) {
+    // if (RobotConfig.controls.driving_squared) {
       forwardspeed = forwardspeed * Math.abs(forwardspeed);
       turnspeed = turnspeed * Math.abs(turnspeed);
-    }
-    if (Robot.drivetrain.gear == Gear.HIGH) {
-      forwardspeed = forwardspeed * RobotConfig.driveTrain.max_forward_speed_high;
-      turnspeed = turnspeed * RobotConfig.driveTrain.max_turn_speed_high;
-    }
-    if (Robot.drivetrain.gear == Gear.LOW) {
-      forwardspeed = forwardspeed * RobotConfig.driveTrain.max_forward_speed_low;
-      turnspeed = turnspeed * RobotConfig.driveTrain.max_turn_speed_low;
-    }
+    // }
+    // if (Robot.drivetrain.gear == Gear.HIGH) {
+    //   forwardspeed = forwardspeed * RobotConfig.driveTrain.max_forward_speed_high;
+    //   turnspeed = turnspeed * RobotConfig.driveTrain.max_turn_speed_high;
+    // }
+    // if (Robot.drivetrain.gear == Gear.LOW) {
+    //   forwardspeed = forwardspeed * RobotConfig.driveTrain.max_forward_speed_low;
+    //   turnspeed = turnspeed * RobotConfig.driveTrain.max_turn_speed_low;
+    // }
 
-    double leftspeed = forwardspeed + turnspeed; // units are in feet
-    double rightspeed = forwardspeed - turnspeed;
+    double leftspeed = forwardspeed * 0.2 + turnspeed * 0.1; // units are in feet
+    double rightspeed = forwardspeed * 0.2 - turnspeed * 0.1;
+
+    setMode(NeutralMode.Brake);
+    m_left_talon.configOpenloopRamp(0.2);
+    m_right_talon.configOpenloopRamp(0.2);
 
     /**
      * Set left speed raw in feet per 100ms
@@ -328,8 +332,9 @@ public class DriveTrain extends Subsystem {
     SmartDashboard.putNumber("right speed target", rightspeedraw);
     // TODO SmartDashboard code should NOT be placed in DriveTrain
     // Maybe move to Robot
-    setLeftSpeedRaw(leftspeedraw);
-    setRightSpeedRaw(rightspeedraw);
+    // setLeftSpeedRaw(leftspeedraw);
+    // setRightSpeedRaw(rightspeedraw);
+    setPowers(leftspeed, rightspeed);
   }
 
   public double getGyro() {
