@@ -10,6 +10,7 @@ import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
 import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
 import frc.robot.commands.subsystems.intake.CloseClamp;
 import frc.robot.commands.subsystems.intake.OpenClamp;
+
 import frc.robot.commands.auto.AutoMotion;
 
 /**
@@ -35,6 +36,7 @@ public class OI {
   Button close_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.A_BUTTON);
 
 
+
   public OI() {
     shift_up_button.whenPressed(new DriveShiftHigh());
     shift_down_button.whenPressed(new DriveShiftLow());
@@ -52,6 +54,18 @@ public class OI {
     // autobutton3.whenPressed(new DriveTrajectoryPathfinder("mFile"));
     // open_clamp_button.whenPressed(new OpenClamp());
     // close_clamp_button.whenPressed(new CloseClamp());
+    auto_place_cargo_cargo_button.whenPressed(new SetElevatorHeight(9.316859344380049 - 1.5 ) );
+    auto_place_hatch_cargo_button.whenPressed(new SetElevatorHeight(30));
+    // auto_place_hatch_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_HATCH, AutoMotion.mGoalHeight.LOW));
+    // auto_place_cargo_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_CARGO, AutoMotion.mGoalHeight.LOW));
+    // auto_place_hatch_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_HATCH, AutoMotion.mGoalHeight.LOW));
+    // auto_grab_hatch_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_HATCH, AutoMotion.mGoalHeight.LOW));
+    // auto_grab_cargo_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_CARGO, AutoMotion.mGoalHeight.LOW));
+    // turnAutoButton.whenPressed(new PurePursuitPathCommand());
+    // autobutton2.whenPressed(new RamsetePathFollower("filePath"));
+    // autobutton3.whenPressed(new DriveTrajectoryPathfinder("mFile"));
+    open_clamp_button.whenPressed(new OpenClamp());
+    close_clamp_button.whenPressed(new CloseClamp());
     // open_clamp_button.whenPressed(new PurePursuit());
   }
 
