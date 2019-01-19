@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotConfig;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -9,8 +8,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.robot.lib.EncoderLib;
-
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 
 /**

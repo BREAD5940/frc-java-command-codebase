@@ -4,7 +4,6 @@ import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 import frc.robot.lib.TerriblePID;
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 
 
@@ -52,7 +51,7 @@ public class FollowVisionTarget extends Command {
   /**
    * Follow a limelight vision target. Track both range and angle
    * of the target to the limelight
-   * @param speed to track forwards at
+   * @param speed to track forwards at between -1 and 1
    * @param targetPercentOfFrame percent of frame taken up by target
    * @param timeout
    */

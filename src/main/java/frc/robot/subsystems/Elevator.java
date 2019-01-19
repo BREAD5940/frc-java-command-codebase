@@ -52,7 +52,7 @@ public class Elevator extends Subsystem {
       return height;
     }
   }
-  public static double getHeightEnumValue(ElevatorPresets height) {
+  public double getHeightEnumValue(ElevatorPresets height) {
     switch (height) {
       case LOW_ROCKET_PORT:
         return RobotConfig.auto.fieldPositions.low_rocket_port;

@@ -5,30 +5,19 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
-import frc.robot.lib.EncoderLib;
 import frc.robot.subsystems.LimeLight;
 import edu.wpi.first.wpilibj.command.Command;
-// import frc.robot.lib.TerribleLogger;
+
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LIDARSubsystem;
-import frc.robot.subsystems.LimeLight;
-import frc.robot.subsystems.Wrist;
-// import frc.robot.subsystems.Wrist;
 
 import frc.robot.subsystems.DriveTrain.Gear;
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Trajectory;
-import jaci.pathfinder.Waypoint;
-import jaci.pathfinder.modifiers.TankModifier;
 import edu.wpi.first.wpilibj.SPI;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-
-import frc.robot.subsystems.DriveTrain.Gear;
 
 import com.kauailabs.navx.frc.AHRS;
 

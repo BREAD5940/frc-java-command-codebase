@@ -13,6 +13,7 @@ import java.util.ArrayList;
 /**
  * Creates a command group for a specific automatic motion. 
  * Input a type of goal and a height then start the mBigCommandGroup externally
+ * In the future, this could change to more inputs depending on the button setup
  * 
  * @author Jocelyn McHugo
  */
@@ -56,22 +57,22 @@ public class AutoMotion {
    * @param gHeight
    *    the height of the goal the robot should aim for (LOW, MIDDLE, HIGH, OVER)
    * @param gType
-   *    the type of goal
+   *    the type of goal 
    */
 
   public AutoMotion (mGoalHeight gHeight, mGoalType gType){
     this.gHeight = gHeight;
     this.gType = gType;
     //select heldPiece
-    if (gType == mGoalType.CARGO_CARGO || gType == mGoalType.ROCKET_CARGO){
+    if (this.gType == mGoalType.CARGO_CARGO || this.gType == mGoalType.ROCKET_CARGO){
       this.piece = mHeldPiece.CARGO;
-    }else if (gType == mGoalType.CARGO_HATCH || gType == mGoalType.ROCKET_HATCH){
+    }else if (this.gType == mGoalType.CARGO_HATCH || this.gType == mGoalType.ROCKET_HATCH){
       this.piece = mHeldPiece.HATCH;
     }else{
       this.piece=mHeldPiece.NONE;
     }
 
-    if (piece!=mHeldPiece.NONE){
+    if (this.piece!=mHeldPiece.NONE){
       this.mBigCommandGroup = new AutoCommandGroup(genPlaceCommands());
     }else{
       this.mBigCommandGroup = new AutoCommandGroup(genGrabCommands());
@@ -84,12 +85,12 @@ public class AutoMotion {
    */
   private ArrayList<Command> genGrabCommands(){
     ArrayList<Command> toReturn = new ArrayList<Command>();
-    if (gType==mGoalType.RETRIEVE_CARGO){
+    if (this.gType==mGoalType.RETRIEVE_CARGO){
       // Set the intake to cargo mode
       toReturn.add(new SetIntakeMode(mHeldPiece.CARGO));
       // Predefined grab command
       toReturn.add(new GrabCargo());
-    }else if (gType==mGoalType.RETRIEVE_HATCH){
+    }else if (this.gType==mGoalType.RETRIEVE_HATCH){
       // Set the intake to hatch mode
       toReturn.add(new SetIntakeMode(mHeldPiece.HATCH));
       // Predefined grab command
@@ -99,7 +100,7 @@ public class AutoMotion {
   }
   
   /**
-   * Generates commands to place piece based on the parameters of the current AutoMotion
+   * Generates commands to place a piece based on the parameters of the current AutoMotion
    * @return
    *  an ArrayList of commands
    */
@@ -107,15 +108,15 @@ public class AutoMotion {
     ArrayList<Command> toReturn = new ArrayList<Command>();
 
     // Set intake mode
-    toReturn.add(new SetIntakeMode(piece));
+    toReturn.add(new SetIntakeMode(this.piece));
 
     // Align with the vision targets, slightly back from the goal
-    toReturn.add(new FollowVisionTarget(0.7, 70, 20)); // TODO check % value
+    toReturn.add(new FollowVisionTarget(0.7, 70, 20)); // TODO check % value TODO this assumes a perfect FollowVisionTarget command
 
     // Set the elevator to the correct height
     toReturn.add(new SetElevatorHeight(getElevatorPreset(),false));
 
-    if(gType==mGoalType.CARGO_CARGO){
+    if(this.gType==mGoalType.CARGO_CARGO){
       // Drive forward so the intake is over the bay and the bumpers are in the indent thingy
       toReturn.add(new DriveDistance(2,20)); // TODO check distances
 
@@ -126,9 +127,9 @@ public class AutoMotion {
       toReturn.add(new DriveDistance(1,20)); // TODO check distances
     }
 
-    if(piece==mHeldPiece.CARGO){
+    if(this.piece==mHeldPiece.CARGO){
       toReturn.add(new AutoIntake(-1, 5));
-    }else if (piece==mHeldPiece.HATCH){
+    }else if (this.piece==mHeldPiece.HATCH){
       toReturn.add(new PlaceHatch());
     }
 
