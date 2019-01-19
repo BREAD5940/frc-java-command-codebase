@@ -40,7 +40,7 @@ public class FollowVisionTarget extends Command {
   /**
    * Follow a limelight vision target. Move toward the target at the set speed 
    * and timeout after a set time. Tracks only angle, not range!
-   * @param speed
+   * @param speed between -1 and 1
    * @param timeout
    */
   public FollowVisionTarget(double speed, double timeout) {

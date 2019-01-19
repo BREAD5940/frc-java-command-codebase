@@ -2,7 +2,7 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
-import frc.robot.commands.groups.PrepareIntake;
+import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
 import frc.robot.commands.auto.groups.*;
@@ -85,8 +85,14 @@ public class AutoMotion {
   private ArrayList<Command> genGrabCommands(){
     ArrayList<Command> toReturn = new ArrayList<Command>();
     if (gType==mGoalType.RETRIEVE_CARGO){
+      // Set the intake to cargo mode
+      toReturn.add(new SetIntakeMode(mHeldPiece.CARGO));
+      // Predefined grab command
       toReturn.add(new GrabCargo());
     }else if (gType==mGoalType.RETRIEVE_HATCH){
+      // Set the intake to hatch mode
+      toReturn.add(new SetIntakeMode(mHeldPiece.HATCH));
+      // Predefined grab command
       toReturn.add(new GrabHatch());
     }
     return toReturn;
@@ -99,27 +105,31 @@ public class AutoMotion {
    */
   private ArrayList<Command> genPlaceCommands(){
     ArrayList<Command> toReturn = new ArrayList<Command>();
-    if (gHeight == mGoalHeight.LOW){
-      // Could also align with line
-      // TODO find out the actual units for the speed
-      toReturn.add(new FollowVisionTarget(1, 20));
+
+    // Set intake mode
+    toReturn.add(new SetIntakeMode(piece));
+
+    // Align with the vision targets, slightly back from the goal
+    toReturn.add(new FollowVisionTarget(0.7, 70, 20)); // TODO check % value
+
+    // Set the elevator to the correct height
+    toReturn.add(new SetElevatorHeight(getElevatorPreset(),false));
+
+    if(gType==mGoalType.CARGO_CARGO){
+      // Drive forward so the intake is over the bay and the bumpers are in the indent thingy
+      toReturn.add(new DriveDistance(2,20)); // TODO check distances
+
+      // Actuate intake so it points down into the bay
+      toReturn.add(new SetIntakeMode());
     }else{
-      //TODO Align with line (IR sensor?)
+      // Drive forward so the intake is flush with the port/hatch
+      toReturn.add(new DriveDistance(1,20)); // TODO check distances
     }
 
-    toReturn.add(new PrepareIntake(getElevatorPreset()));
-
-    switch (piece){
-      case HATCH:
-        // toReturn.add(new PlaceHatch());
-      case CARGO:
-        if(gHeight == mGoalHeight.OVER){
-          toReturn.add(new DropCargo(true));
-        }else{
-          toReturn.add(new DropCargo(false));
-        }
-      default:
-        break;
+    if(piece==mHeldPiece.CARGO){
+      toReturn.add(new AutoIntake(-1, 5));
+    }else if (piece==mHeldPiece.HATCH){
+      toReturn.add(new PlaceHatch());
     }
 
     return toReturn;

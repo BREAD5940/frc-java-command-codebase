@@ -21,6 +21,7 @@ public class OI {
   
   private Joystick primaryJoystick = new Joystick(RobotConfig.controls.primary_joystick_port);
   private Joystick secondaryJoystick = new Joystick(RobotConfig.controls.secondary_joystick_port);
+  private Joystick buttonPanel = new Joystick(RobotConfig.controls.control_pannel_port);
 
   private Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
   private Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
