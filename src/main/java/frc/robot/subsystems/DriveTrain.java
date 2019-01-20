@@ -51,6 +51,8 @@ public class DriveTrain extends Subsystem {
   private static DriveTrain instance;
 
   private DriveTrain() {
+  
+  public DriveTrain() {
     m_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.m_left_talon_port);
     s_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.s_left_talon_port);
     m_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.m_right_talon_port);
@@ -137,6 +139,19 @@ public class DriveTrain extends Subsystem {
     Robot.drivetrain_shift_low();
 
     gear = Gear.LOW;
+  }
+
+  public void setGear(Gear gear) {
+    switch (gear) {
+      case HIGH:
+        setHighGear();
+        break;
+      case LOW:
+        setLowGear();
+        break;
+      default:
+        break;
+    }
   }
 
   /** Return the current distance in feet of the left wheels */
