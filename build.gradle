@@ -65,6 +65,7 @@ dependencies {
   compile wpi.deps.vendor.java()
   nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
   nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
+  simulation "edu.wpi.first.halsim:halsim_lowfi:${wpi.wpilibVersion}:${wpi.platforms.desktop}@zip"
   // testCompile 'junit:junit:4.12'
   compile 'com.google.code.gson:gson:2.8.2'
   // testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.1'
