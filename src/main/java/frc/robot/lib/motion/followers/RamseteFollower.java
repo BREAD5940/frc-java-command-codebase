@@ -1,5 +1,7 @@
 package frc.robot.lib.motion.followers;
 
+import java.io.File;
+
 import frc.math.Pose2d;
 import frc.math.Rotation2d;
 import frc.robot.lib.motion.DriveMotorState;
@@ -29,6 +31,10 @@ public class RamseteFollower {
       this.path = path;
       segmentIndex = 0;
       this.odo = Odometer.getInstance(); // set up Odometer object
+  }
+
+  public RamseteFollower(double wheelBase, String sourceTrajName) {
+    this(wheelBase, Pathfinder.readFromCSV(new File("/home/lvuser/deploy/paths/" + sourceTrajName + ".pf1.csv")));
   }
 
   private double calcW_d() {
