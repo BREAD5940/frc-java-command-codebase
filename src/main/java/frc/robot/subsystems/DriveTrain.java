@@ -233,8 +233,8 @@ public class DriveTrain extends Subsystem {
    * @param right_voltage
    */
   public void setVoltages(double left_voltage, double right_voltage) {
-    m_left_talon.set(ControlMode.PercentOutput, left_voltage / 11);
-    m_right_talon.set(ControlMode.PercentOutput, right_voltage / 11);
+    m_left_talon.set(ControlMode.PercentOutput, left_voltage / 12);
+    m_right_talon.set(ControlMode.PercentOutput, right_voltage / 12);
   }
 
   /**
