@@ -57,7 +57,7 @@ public class Wrist extends Subsystem  {
     m_wrist_talon.config_kP(0, wrist.talonConfig.position_kp, 0);
     m_wrist_talon.config_kI(0, wrist.talonConfig.position_ki, 0);
     m_wrist_talon.config_kD(0, wrist.talonConfig.position_kd, 0);
-    m_wrist_talon.config_kF(0, wrist.talonConfig.position_kf, 0);
+    m_wrist_talon.config_kF(0, wrist.talonConfig.gravity_ff, 0);
     m_wrist_talon.config_IntegralZone(0, wrist.talonConfig.position_izone, 0);
     // m_wrist_talon.configMaxIntegralAccumulator(0, RobotConfig.m_left_velocity_max_integral_low, 0);
   }

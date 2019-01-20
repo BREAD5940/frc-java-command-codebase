@@ -65,7 +65,7 @@ public class DriveTrajectoryPathfinder extends Command {
 
     mModifier = new TankModifier(mSourceTrajectory);
 
-    mModifier.modify(RobotConfig.driveTrain.drivetrain_width);    
+    mModifier.modify(RobotConfig.driveTrain.wheel_base);    
     mLeftTrajectory = mModifier.getLeftTrajectory();
     mRightTrajectory = mModifier.getRightTrajectory();
     

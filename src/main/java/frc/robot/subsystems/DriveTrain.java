@@ -47,13 +47,11 @@ public class DriveTrain extends Subsystem {
   public enum Gear {
     LOW, HIGH;
   }
+  Gear gear;
 
   private static DriveTrain instance;
 
   private DriveTrain() {
-  Gear gear;
-  
-  public DriveTrain() {
     m_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.m_left_talon_port);
     s_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.s_left_talon_port);
     m_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.m_right_talon_port);
@@ -69,7 +67,7 @@ public class DriveTrain extends Subsystem {
 }
 
 
-  Gear gear;
+
 
   public void init() {
     m_left_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);

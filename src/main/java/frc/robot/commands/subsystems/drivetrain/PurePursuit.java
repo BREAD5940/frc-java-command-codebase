@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.lib.Logger;
 import frc.robot.lib.motion.DriveMotorState;
+import frc.robot.lib.motion.Odometer;
 import frc.robot.lib.motion.followers.PathFollower;
 import frc.robot.lib.motion.purepursuit.Path;
 import frc.robot.lib.motion.purepursuit.PathGenerator;
@@ -39,7 +40,7 @@ public class PurePursuit extends Command {
 
   @Override
   public void execute() {
-    DriveMotorState driveMotorState = pathFollower.update(Robot.odometry_.getPoint(), Robot.drivetrain.getGyro(), dt);
+    DriveMotorState driveMotorState = pathFollower.update(Odometer.getInstance().getPoint(), Robot.drivetrain.getGyro(), dt);
 
     // updateSmartDashboard();
 
