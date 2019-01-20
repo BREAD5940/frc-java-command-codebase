@@ -17,20 +17,21 @@ import jaci.pathfinder.Trajectory.Segment;
  */
 public class RamseteFollower {
   
-
-  private static final double b = 1.0;                // greater than zero; increases correction
-  private static final double zeta = 0.2;             // between zero and one; increases dampening
+  /** greater than zero; increases correction */
+  private static final double b = 1.0;        
+  /** between zero and one; increases dampening */         
+  private static final double zeta = 0.2;              
   private double wheelBase;
   private int segmentIndex;
   private Trajectory path;                            //this is the path that we will follow
-  private Odometer odo;                               //this is the robot's x and y position, as well as its heading
+  private Pose2d pose_;                               //this is the robot's x and y position, as well as its heading
 
   public RamseteFollower(double wheelBase, Trajectory path) {
       System.out.println("Initializing Ramsete Follower");
       this.wheelBase = wheelBase;
       this.path = path;
       segmentIndex = 0;
-      this.odo = Odometer.getInstance(); // set up Odometer object
+    //   this.odo = Odometer.getInstance(); // set up Odometer object
   }
 
   public RamseteFollower(double wheelBase, String sourceTrajName) {
@@ -47,6 +48,7 @@ public class RamseteFollower {
   }
 
   public DriveMotorState getNextDriveSignal() {
+      pose_ = Odometer.getInstance().getPose();
       double left = 0;
       double right = 0;
       if (isFinished()) {
@@ -74,42 +76,30 @@ public class RamseteFollower {
       return new DriveMotorState(left, right);
   }
 
-  public void setOdometry(Odometer odometer) {
-      odo = odometer;
-  }
-
   private double calcVel(double x_d, double y_d, double theta_d, double v_d, double w_d) {
       double k = calcK(v_d, w_d);
-      double thetaError = theta_d-odo.getTheta();
+      double thetaError = theta_d - pose_.getRotation().getDegrees();
       thetaError = Pathfinder.d2r(Pathfinder.boundHalfDegrees(Pathfinder.r2d(thetaError)));
-      return v_d * Math.cos(thetaError) + k * (Math.cos(odo.getTheta()) * (x_d - odo.getX()) + Math.sin(odo.getTheta()) * (y_d - odo.getY()));
+      return v_d * Math.cos(thetaError) + k * (Math.cos(pose_.getRotation().getDegrees()) * 
+            (x_d - pose_.getTranslation().x()) + Math.sin(pose_.getRotation().getDegrees()) * (y_d - pose_.getTranslation().y()));
   }
 
   private double calcAngleVel(double x_d, double y_d, double theta_d, double v_d, double w_d) {
       double k = calcK(v_d, w_d);
-      System.out.println("Theta" + odo.getTheta());
-      double thetaError = theta_d - odo.getTheta();
+      System.out.println("Theta" + pose_.getRotation().getDegrees());
+      double thetaError = theta_d - pose_.getRotation().getDegrees();
       thetaError = Pathfinder.d2r(Pathfinder.boundHalfDegrees(Pathfinder.r2d(thetaError)));
       double sinThetaErrOverThetaErr;
       if (Math.abs(thetaError) < 0.00001)
           sinThetaErrOverThetaErr = 1; //this is the limit as sin(x)/x approaches zero
       else
           sinThetaErrOverThetaErr = Math.sin(thetaError) / (thetaError);
-      return w_d + b * v_d * (sinThetaErrOverThetaErr) * (Math.cos(odo.getTheta()) * (y_d - odo.getY()) - Math.sin(odo.getTheta()) * (x_d - odo.getX())) + k * (thetaError); //from eq. 5.12
+      return w_d + b * v_d * (sinThetaErrOverThetaErr) * (Math.cos(pose_.getRotation().getDegrees()) * 
+            (y_d - pose_.getTranslation().y()) - Math.sin(pose_.getRotation().getDegrees()) * (x_d - pose_.getTranslation().x())) + k * (thetaError); //from eq. 5.12
   }
 
   private double calcK(double v_d, double w_d) {
       return 2 * zeta * Math.sqrt(Math.pow(w_d, 2) + b * Math.pow(v_d, 2)); //from eq. 5.12
-  }
-
-  private double clamp(double value, double min, double max){
-      if(value > max){
-          return max;
-      } else if(value < min){
-          return min;
-      }
-      else
-          return value;
   }
 
   public Pose2d getInitialPose() {
