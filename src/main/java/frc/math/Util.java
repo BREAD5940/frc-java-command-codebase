@@ -61,4 +61,13 @@ public class Util {
         }
         return result;
     }
+
+    public static double toFeet(double meters) {
+        return meters * 3.28084;
+    }
+
+    public static double toMeters(double feet) {
+        return feet * 0.3048;
+    }
+
 }
