@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
   SendableChooser<Command> m_chooser = new SendableChooser<Command>();
   public static Compressor compressor = new Compressor(9);
   public static Odometer odometry_;
-  private Logger logger;
+  // private Logger logger;
 
   
 
@@ -71,7 +71,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    logger = Logger.getInstance();
+    // logger = Logger.getInstance();
     m_oi = new OI();
     mGh = new SendableChooser<AutoMotion.mGoalHeight>();
     mGh.setDefaultOption("Low", AutoMotion.mGoalHeight.LOW);

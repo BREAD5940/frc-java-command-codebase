@@ -1,4 +1,4 @@
-package frc.robot.commands.auto.groups;
+package frc.robot.commands.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Command;
