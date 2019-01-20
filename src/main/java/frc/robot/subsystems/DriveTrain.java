@@ -222,7 +222,7 @@ public class DriveTrain extends Subsystem {
   //     );
   // }
 
-  public void setFeetPerSecond(double left, double right, double acceleration){
+  public void setFeetPerSecondArbitraryFeedForward(double left, double right, double acceleration){
     double ka;
     switch(gear){
       case LOW:
@@ -237,7 +237,15 @@ public class DriveTrain extends Subsystem {
     m_right_talon.set(ControlMode.Velocity, 
       EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10,
       DemandType.ArbitraryFeedForward, 0.1 + acceleration * ka);
-}
+  }
+
+  public void setFeetPerSecond(double left, double right){
+    m_left_talon.set(ControlMode.Velocity, 
+      EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10);
+    m_right_talon.set(ControlMode.Velocity, 
+      EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10);
+  }
+
 
   /**
    * An even more lazy version of @link setSpeeds This will literally set the
