@@ -1,17 +1,35 @@
 package frc.robot.commands.subsystems.drivetrain;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.command.Command;
+import frc.math.Pose2d;
+import frc.math.Util;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
+import frc.robot.lib.Logger;
+import frc.robot.lib.motion.DriveMotorState;
+import frc.robot.lib.motion.Odometer;
 import frc.robot.lib.motion.followers.RamseteFollower;
+import frc.robot.subsystems.DriveTrain.Gear;
 
 public class RamsetePathFollower extends Command {
 
-  RamseteFollower mFollower;
+  private RamseteFollower mFollower;
+  // private Gear gear;
+  private double start;
+  private DriveMotorState mDriveMotorState;
 
-  public RamsetePathFollower(String trajectory) {
+  public RamsetePathFollower(String trajectory, boolean setInitialOdometry, Gear gear) {
     requires(Robot.drivetrain);
-    mFollower = new RamseteFollower(RobotConfig.driveTrain.wheel_base, trajectory);
+    mFollower = new RamseteFollower(Util.toMeters(RobotConfig.driveTrain.wheel_base) , trajectory);
+    // this.gear = gear;
+    Logger.log("Ramsete follower instantiated");
+    Robot.drivetrain.setGear(gear);
+    start = System.nanoTime();
+    if (setInitialOdometry) {
+      Odometer.getInstance().setPose( mFollower.getInitialPose() );
+    }
   }
 
   // Called just before this Command runs the first time
@@ -23,17 +41,25 @@ public class RamsetePathFollower extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    // we don't need to set odometry because it's called in update
+    Logger.log("getting next drive signal");
+    mDriveMotorState = mFollower.getNextDriveSignal();
+    Logger.log("drive signal: ", mDriveMotorState);
+    Robot.drivetrain.setFeetPerSecond(mDriveMotorState.leftVel, mDriveMotorState.rightVel);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return mFollower.isFinished();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Logger.log("Follower is done!");
+    System.out.println("Time to completion: " + ((System.nanoTime()-start)/1000000));
+    Robot.drivetrain.setSpeeds(0, 0);
   }
 
   // Called when another command which requires one or more of the same
