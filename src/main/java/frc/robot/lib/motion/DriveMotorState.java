@@ -76,5 +76,10 @@ public class DriveMotorState {
 		this.mAccelMode = false;
 	}
 
+	@Override
+	public String toString() {
+		return "DriveMotorState, leftVel, " + leftVel +", leftAcc, " + leftAcc +", rightVel, " + rightVel +
+						", rightAcc, " + rightAcc +", mBrakeMode, " + mBrakeMode + ", mAccelMode, " + mAccelMode;
+	}
 
 }
