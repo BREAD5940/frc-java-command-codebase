@@ -1,8 +1,5 @@
 package frc.robot;
 
-import frc.math.Util;
-import frc.robot.lib.TerriblePID.FeedForwardBehavior;
-import frc.robot.lib.TerriblePID.FeedForwardMode;
 import frc.robot.subsystems.DriveTrain.Gear;
 
 public class RobotConfig {

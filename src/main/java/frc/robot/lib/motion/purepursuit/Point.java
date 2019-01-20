@@ -1,8 +1,5 @@
 package frc.robot.lib.motion.purepursuit;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 public class Point {
 	public double x;
 	public double y;

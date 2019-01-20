@@ -1,9 +1,6 @@
 package frc.robot.commands.subsystems.drivetrain;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-
 import edu.wpi.first.wpilibj.command.Command;
-import frc.math.Pose2d;
 import frc.math.Util;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
