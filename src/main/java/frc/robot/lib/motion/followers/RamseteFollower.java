@@ -8,6 +8,11 @@ import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Trajectory.Segment;
 
+
+/**
+ * This class handles all the stuff necessary to calculate angular and linear velocities for a ramsete follower.
+ * Thanks to Pantherbotics at https://github.com/Pantherbotics/FRC-2018-PowerUp/
+ */
 public class RamseteFollower {
   
 
