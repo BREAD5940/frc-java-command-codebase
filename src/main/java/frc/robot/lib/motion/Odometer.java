@@ -1,5 +1,7 @@
 package frc.robot.lib.motion;
 
+import frc.math.Pose2d;
+import frc.math.Rotation2d;
 import frc.robot.lib.motion.purepursuit.Point;
 import jaci.pathfinder.Trajectory;
 
@@ -87,6 +89,16 @@ public class Odometer /* extends LogBase */ {
 	@Deprecated
 	public void setY(double y) {
 		this.y = y;
+	}
+
+	public void setPose(Pose2d pose) {
+		setX(pose.getTranslation().x());
+		setY(pose.getTranslation().y());
+		setTheta(pose.getRotation().getDegrees());
+	}
+
+	public Pose2d getPose() {
+		return new Pose2d(x, y, Rotation2d.fromDegrees(getTheta()));
 	}
 
 	public Point getPoint() {
