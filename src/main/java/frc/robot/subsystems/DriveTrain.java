@@ -51,6 +51,7 @@ public class DriveTrain extends Subsystem {
   private static DriveTrain instance;
 
   private DriveTrain() {
+  Gear gear;
   
   public DriveTrain() {
     m_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.m_left_talon_port);
