@@ -245,6 +245,18 @@ public class RobotConfig {
     public static final double camera_height = 1; // units are in feet
     public static final double camera_angle = 0; // degrees from horizon - positive is up, negative is down
   }
+
+  public static class ultrasonicSensors {
+    public static class sensor1 {
+      public static final int echoPort = 0;
+      public static final int triggerPort = 0;
+    }
+      public static class sensor2 {
+      public static final int echoPort = 1;
+      public static final int triggerPort = 1;
+    }
+    public static double sensorCenterDistance = 20; // inches
+  }
   
   public class lidar {
     public static final int port = 6;
