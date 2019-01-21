@@ -1,19 +1,29 @@
 package frc.robot.lib;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class NetworkTableInterface {
   NetworkTable mTable;
+  ArrayList<String> keys;
   // private ArrayList<NetworkTableEntry> networkTableEntries;
 
-  public NetworkTableInterface(String database, String[] keys) {
+  public NetworkTableInterface(String database, ArrayList<String> keys) {
     NetworkTableInstance nt = NetworkTableInstance.getDefault();
     mTable = nt.getTable(database);
-    // for(int i=0; i<databaseLen; i++) {
-    //   networkTableEntries.add( mTable.getEntry(keys[i]) );
-    // }
+    this.keys = keys;
+  }
+
+  public NetworkTableInterface(String database) {
+    NetworkTableInstance nt = NetworkTableInstance.getDefault();
+    mTable = nt.getTable(database);
+  }
+
+  public NetworkTable getTable() {
+    return mTable;
   }
 
   public NetworkTableEntry getEntry(String key) {
