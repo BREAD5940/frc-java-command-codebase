@@ -1,5 +1,6 @@
 package frc.robot.commands.auto.actions;
 
+import frc.math.Util;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
@@ -10,6 +11,9 @@ import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * Follow a vision target tracked by a limelight
+ * It's pretty terrible right now
+ * 
+ * @author Matthew Morley
  */
 public class FollowVisionTarget extends Command {
   double timeout,
@@ -22,6 +26,12 @@ public class FollowVisionTarget extends Command {
   leftSpeedRaw,
   rightSpeedRaw;
   boolean followRange = false;
+
+  double targetSizeSetpoint = 6;
+
+  boolean noCurrentTarget = false;
+
+  boolean tooClose = false;
 
   boolean hadTarget = false;
   double lastKnownYaw;
@@ -77,12 +87,16 @@ public class FollowVisionTarget extends Command {
 
     angleDeltaX = Robot.limelight.getDx();
     targetPercentOfFrame = Robot.limelight.getTargetArea();
+
+    Logger.log("Command init");
+    
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     if ( Robot.limelight.getData()[0] != 0 ) {
+      noCurrentTarget = false;
       hadTarget = true;
 
       double[] data = Robot.limelight.getData();
@@ -90,44 +104,55 @@ public class FollowVisionTarget extends Command {
       double sizeData = data[3];
 
       lastKnownYaw = limelightData;
-      turnSpeed = limelightData * (1/45) ;
+      // turnSpeed = ;
+      turnSpeed = Util.limit( limelightData * (1/10), -0.5, 0.5);
+
+      Logger.log("Turn speed: " + turnSpeed);
 
       forwardSpeed = 0;
-      
-      leftSpeedRaw = EncoderLib.distanceToRaw(forwardSpeed + turnSpeed, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, 
-      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
-      rightSpeedRaw = EncoderLib.distanceToRaw(forwardSpeed - turnSpeed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, 
-      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
 
+      double distanceRatio = targetSizeSetpoint - sizeData;
 
-      // double targetSizeSetpoint = 0.8;
-      double distanceRatio = 4.8 - sizeData;
+      double forwardSpeed = distanceRatio * 0.2;
 
-      double forwardSpeed = distanceRatio * 1;
+      if (sizeData > targetSizeSetpoint) { tooClose = true; Logger.log("Too close"); }
 
       if ( forwardSpeed > 0.5 ) { forwardSpeed = 0.5;}
       if ( forwardSpeed < -0.5 ) { forwardSpeed = -0.5;}
 
-      System.out.println("forward speed: " + forwardSpeed + " Turn speed: " + turnSpeed);
+      // System.out.println("forward speed: " + forwardSpeed + " Turn speed: " + turnSpeed);
 
       // Robot.drivetrain.setSpeeds(leftSpeedRaw, rightSpeedRaw);
-      Robot.drivetrain.setPowers(forwardSpeed + limelightData / 20, forwardSpeed - limelightData / 20);
+      // Robot.drivetrain.setPowers(forwardSpeed + turnSpeed, forwardSpeed - turnSpeed);
+
+      Robot.drivetrain.setFeetPerSecond(0.5,0.5);
 
     } else {
-      if (hadTarget) {
-        // just spin in a circle in the last knwon direction
-        Logger.log("I can't see anything and I *had* a target, lets just spin in a circle like a chump");
-        double speed = (lastKnownYaw > 0) ? 0.3 : -0.3;
-        Robot.drivetrain.setPowers(speed, -speed);
-      }
+      noCurrentTarget = true;
     }
   }
+  
   
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return isTimedOut();
+    double datainYaw = Robot.limelight.getData()[1];
+    double datainSize = Robot.limelight.getData()[3];
+
+    
+    Logger.log("Am I done? " + (isTimedOut() || (hadTarget && noCurrentTarget) || (((datainSize > targetSizeSetpoint))  || (datainYaw < 0.5) )));
+
+
+
+    Logger.log("Do I have no target but I used to?? " + ((hadTarget && noCurrentTarget)));
+    Logger.log("Am I within yaw tolerence?" + (lastKnownYaw < 0.5 && lastKnownYaw != 0));
+    Logger.log("Am I too close?" + (datainSize > targetSizeSetpoint) );
+    Logger.log("is the yaw within tolerence? " + (datainYaw < 0.5));
+    
+
+
+    return (isTimedOut() || (hadTarget && noCurrentTarget) || (((datainSize > targetSizeSetpoint))  && (datainYaw < 0.5) ));
   }
 
   // Called once after isFinished returns true

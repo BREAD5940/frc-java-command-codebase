@@ -1,6 +1,7 @@
 package frc.robot.commands.subsystems.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
 public class FollowPoseFromVisionTarget extends Command {
 
@@ -27,6 +28,12 @@ public class FollowPoseFromVisionTarget extends Command {
     // for now the robot just sits and checks for a target,
     // in the future make it active and try to find them,
     // based on odometry?
+
+    if(!hadTarget) {
+      if (Robot.limelight.getData()[0] == 1) {
+        hadTarget = true;
+      }
+    }
 
     
 
