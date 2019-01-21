@@ -1,8 +1,8 @@
 package frc.robot;
 
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Notifier;
@@ -72,7 +72,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    logger = Logger.getInstance();
+    CameraServer.getInstance().startAutomaticCapture();
+
+    // logger = Logger.getInstance();
     m_oi = new OI();
     mGh = new SendableChooser<AutoMotion.mGoalHeight>();
     mGh.setDefaultOption("Low", AutoMotion.mGoalHeight.LOW);
