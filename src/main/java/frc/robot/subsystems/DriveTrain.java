@@ -185,6 +185,10 @@ public class DriveTrain extends Subsystem {
     );
   }
 
+  public double getAverageVelocity() {
+    return (getLeftVelocity() + getRightVelocity()) / 2;
+  }
+
   public void zeroEncoders() {
     m_left_talon.setSelectedSensorPosition(0, 0, 30);
     m_right_talon.setSelectedSensorPosition(0, 0, 30);
@@ -351,6 +355,10 @@ public class DriveTrain extends Subsystem {
     setPowers(leftspeed, rightspeed);
   }
 
+  /**
+   * Get the angle of the gyro, accounting for the gyro zero angle
+   * @return compensated gyro angle
+   */
   public double getGyro() {
     return gyro.getAngle() - gyroZero;
   }

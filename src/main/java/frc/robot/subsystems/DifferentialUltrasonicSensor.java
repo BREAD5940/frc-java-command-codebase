@@ -45,7 +45,7 @@ public class DifferentialUltrasonicSensor {
 
   public double getRangeSensor2() { return getDistance(sensor2, mMode); }
 
-  public double[] getRangeAsDouble() { return new double[]{getDistance(sensor1, mMode), getDistance(sensor2, mMode)}; }
+  public double[] getRangesAsDouble() { return new double[]{getDistance(sensor1, mMode), getDistance(sensor2, mMode)}; }
 
   public double getRangeSensor1(RangeMode mode) { return getDistance(sensor1, mode); }
 
