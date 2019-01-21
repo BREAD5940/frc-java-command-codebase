@@ -41,7 +41,7 @@ public class RobotConfig {
     public static final double maxWrist1Angle = 90;
     public static final double maxWrist2Angle = 90;
 
-    
+    //TODO add values for certain elevator positions (ex. the wrist can be <0 if the elevator is >10)
   }
   
   public class wrist {

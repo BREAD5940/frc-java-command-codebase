@@ -3,7 +3,6 @@ package frc.robot.commands.subsystems.wrist;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
-import frc.robot.subsystems.Wrist;
 
 /**
 * 
@@ -45,15 +44,6 @@ public class SetWrist extends Command {
     this.target_angle = target_angle;
     // requires(Robot.wrist); // reserve the wrist subsystem
   }
-
-  public SetWrist(Wrist.WristPos pos){
-    //TODO maybe actually make this do something?
-  }
-
-  public SetWrist(double targetAngle1, double targetAngle2){
-    //TODO make this do a thing
-  }
-
   
   // Called just before this Command runs the first time
   @Override

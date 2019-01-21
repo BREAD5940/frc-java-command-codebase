@@ -19,6 +19,7 @@ public class SuperstructureState{
   private double wrist1Angle; //TODO maybe rename these to be more descriptive?
   private double wrist2Angle;
   private boolean hIntakeOpen = false; // TODO again with the descriptive thing
+  private WristPos wristPosition;
 
   /**
    * Create a new state with default params
