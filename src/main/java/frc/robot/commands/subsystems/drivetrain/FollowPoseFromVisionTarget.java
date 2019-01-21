@@ -1,13 +1,16 @@
-package frc.robot.commands.auto.actions;
+package frc.robot.commands.subsystems.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public abstract class CommandOnCondition extends Command {
+public class FollowPoseFromVisionTarget extends Command {
 
-  /**
-   * (Maybe) run a command on a cnodition
-   */
-  public CommandOnCondition() {
+  boolean hadTarget;
+
+  double[] visionData, rangeData;
+
+  public FollowPoseFromVisionTarget() {
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
   }
 
   // Called just before this Command runs the first time
@@ -15,18 +18,18 @@ public abstract class CommandOnCondition extends Command {
   protected void initialize() {
   }
 
-  public boolean readyForExecute() {
-    return false;
-  }
-
-  public void executeOnCondition() {}
-
   // Called repeatedly when this Command is scheduled to run
   @Override
-  public void execute() {
-    if (readyForExecute()) {
-      executeOnCondition();
-    }
+  protected void execute() {
+
+    // We first try to aquire a vision target
+    // this part doesn't need to run once you've found one
+    // for now the robot just sits and checks for a target,
+    // in the future make it active and try to find them,
+    // based on odometry?
+
+    
+
   }
 
   // Make this return true when this Command no longer needs to run execute()

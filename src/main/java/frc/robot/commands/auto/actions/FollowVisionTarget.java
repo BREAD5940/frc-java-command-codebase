@@ -3,8 +3,8 @@ package frc.robot.commands.auto.actions;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
+import frc.robot.lib.Logger;
 import frc.robot.lib.TerriblePID;
-import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 
 
@@ -22,6 +22,9 @@ public class FollowVisionTarget extends Command {
   leftSpeedRaw,
   rightSpeedRaw;
   boolean followRange = false;
+
+  boolean hadTarget = false;
+  double lastKnownYaw;
 
   private TerriblePID forwardPID = new TerriblePID(
     RobotConfig.auto.followVisionTarget.forward.kp,
@@ -80,15 +83,13 @@ public class FollowVisionTarget extends Command {
   @Override
   protected void execute() {
     if ( Robot.limelight.getData()[0] != 0 ) {
-      // if (followRange) {
-      //   forwardSpeed = forwardPID.update(Robot.limelight.getTargetArea());
-      // } else {
-      //   forwardSpeed = forwardPID.update(Robot.drivetrain.getLeftVelocity());
-      // }
-      // turnSpeed = turnPID.update(Robot.limelight.getData()[1]);
+      hadTarget = true;
+
       double[] data = Robot.limelight.getData();
       double limelightData = data[1];
       double sizeData = data[3];
+
+      lastKnownYaw = limelightData;
       turnSpeed = limelightData * (1/45) ;
 
       forwardSpeed = 0;
@@ -97,11 +98,6 @@ public class FollowVisionTarget extends Command {
       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
       rightSpeedRaw = EncoderLib.distanceToRaw(forwardSpeed - turnSpeed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, 
       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
-
-      // System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeftDistance() + 
-        // " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());
-      // System.out.println("TURN PID: Setpoint: " + turnPID.getSetpoint()+ 
-        // " Error: " + turnPID.getError() + " OUTPUT VELOCITY (ft/s): " + turnPID.getOutput());
 
 
       // double targetSizeSetpoint = 0.8;
@@ -118,10 +114,15 @@ public class FollowVisionTarget extends Command {
       Robot.drivetrain.setPowers(forwardSpeed + limelightData / 20, forwardSpeed - limelightData / 20);
 
     } else {
-      System.out.println("No targets currently being tracked! Can't track thin air, can I?");
-      Robot.drivetrain.setPowers(0, 0);
+      if (hadTarget) {
+        // just spin in a circle in the last knwon direction
+        Logger.log("I can't see anything and I *had* a target, lets just spin in a circle like a chump");
+        double speed = (lastKnownYaw > 0) ? 0.3 : -0.3;
+        Robot.drivetrain.setPowers(speed, -speed);
+      }
     }
   }
+  
 
   // Make this return true when this Command no longer needs to run execute()
   @Override

@@ -1,9 +1,8 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
 import frc.robot.lib.TerriblePID;
-import frc.robot.lib.TerriblePID.FeedForwardMode;
 
 public class PIDTests {
 

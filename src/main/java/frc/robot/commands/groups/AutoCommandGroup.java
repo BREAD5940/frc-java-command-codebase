@@ -1,4 +1,4 @@
-package frc.robot.commands.auto.groups;
+package frc.robot.commands.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Command;
@@ -12,7 +12,8 @@ public class AutoCommandGroup extends CommandGroup {
   // TODO change this to parallel?
 
   /**
-   * just makes a proper command group out of the inputted Commands
+   * just makes a proper command group out of the inputted Commands. 
+   * These commands are added sequentially to the group
    * @param commands
    *    an ArrayList of Commands
    */

@@ -1,4 +1,5 @@
-package frc.robot.commands.auto.actions;
+package frc.robot.commands.subsystems.drivetrain;
+
 import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;

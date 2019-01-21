@@ -47,7 +47,7 @@ public class TerriblePID {
    * @param FeedForwardBehavior
    */
   public TerriblePID(double kp, double ki, double kd, double kf, double minOutput, double maxOutput, 
-    double integralZone, double maxIntegralAccum, double maxAcceleration, FeedForwardMode forwardMode,
+    double integralZone, double maxIntegralAccum, double maxAcceleration, FeedForwardMode feedForwardMode,
     FeedForwardBehavior feedforwardbehavior) {
       this.kp = kp;
       this.ki = ki;
@@ -57,7 +57,7 @@ public class TerriblePID {
       this.maxOutput = maxOutput;
       this.integralZone = integralZone;
       this.maxIntegralAccum = maxIntegralAccum;
-      this.feedforwardmode = feedforwardmode;
+      this.feedforwardmode = feedForwardMode;
       this.feedforwardbehavior = feedforwardbehavior;
       this.maxAcceleration = maxAcceleration;
       lastMeasured = 0;
@@ -156,27 +156,32 @@ public class TerriblePID {
    * Calculates the feed forward term based on set settings
    */
   private double calculateFeedForward(double input) {
-    switch (feedforwardmode) {
-      case SINE:
-        fOutput = Math.sin(Math.toRadians( input * unitsPerQuarterWave ));
-        break;
-      case COSINE:
-        fOutput = Math.cos(Math.toRadians( input * unitsPerQuarterWave ));
-        break;
-      default:
-        fOutput = input * kf;
+    if ( feedforwardmode != null && feedforwardbehavior != null ) {
+
+      switch (feedforwardmode) {
+        case SINE:
+          fOutput = Math.sin(Math.toRadians( input * unitsPerQuarterWave ));
+          break;
+        case COSINE:
+          fOutput = Math.cos(Math.toRadians( input * unitsPerQuarterWave ));
+          break;
+        default:
+          fOutput = input * kf;
+      }
+      switch (feedforwardbehavior) {
+        case ALWAYSPOSITIVE:
+          fOutput = Math.abs(fOutput);
+          break;
+        case INVERTED:
+          fOutput = fOutput * -1;
+          break;
+        case NORMAL:
+          break;
+      }
+      return fOutput;
+    } else { // feedforward mode/behavor are null, return
+      return 0; 
     }
-    switch (feedforwardbehavior) {
-      case ALWAYSPOSITIVE:
-        fOutput = Math.abs(fOutput);
-        break;
-      case INVERTED:
-        fOutput = fOutput * -1;
-        break;
-      case NORMAL:
-        break;
-    }
-    return fOutput;
   }
 
   private double ramp(double output, double previousOutput) {

@@ -1,7 +1,5 @@
 package frc.robot;
 
-import frc.robot.lib.TerriblePID.FeedForwardBehavior;
-import frc.robot.lib.TerriblePID.FeedForwardMode;
 import frc.robot.subsystems.DriveTrain.Gear;
 
 public class RobotConfig {
@@ -38,13 +36,17 @@ public class RobotConfig {
     public static final float minimum_wrist_angle = 0;
     public static final float maximum_wrist_angle = 90;
     public static final double wrist_position_tolerence = 5; // 5 degree tolerence, be sure to convert to raw!
-    public static final double wrist_velocity_tolerence = 2; // 2 degrees per second??
+    // public static final double wrist_velocity_tolerence = 2; // 2 degrees per second??
+    
+    public static final boolean talon_direction_inverted = false;
+    public static final boolean talon_encoder_inverted = false;
+    
     // public static final double kStaticCoefficient = 0.3;
     public class talonConfig {
       public static final double position_kp = 0.1;
       public static final double position_ki = 0;
       public static final double position_kd = 0;
-      public static final double position_kf = 0;
+      public static final double gravity_ff = 0.1; // the gain on the gravity feedforward
       public static final double software_position_kp = 0.1;
       public static final double software_position_ki = 0;
       public static final double software_position_kd = 0;
@@ -60,7 +62,7 @@ public class RobotConfig {
     */
     
     /** Drivetrain width in feet */
-    public static final double drivetrain_width = 2;
+    public static final double wheel_base = 2.5;
     public static final double left_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
     public static final double right_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
     // Set speeds for teleop
@@ -242,6 +244,18 @@ public class RobotConfig {
   public class limeLight {
     public static final double camera_height = 1; // units are in feet
     public static final double camera_angle = 0; // degrees from horizon - positive is up, negative is down
+  }
+
+  public static class ultrasonicSensors {
+    public static class sensor1 {
+      public static final int echoPort = 0;
+      public static final int triggerPort = 0;
+    }
+      public static class sensor2 {
+      public static final int echoPort = 1;
+      public static final int triggerPort = 1;
+    }
+    public static double sensorCenterDistance = 20; // inches
   }
   
   public class lidar {

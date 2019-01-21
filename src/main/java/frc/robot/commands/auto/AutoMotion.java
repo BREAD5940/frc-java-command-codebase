@@ -1,8 +1,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
-import frc.robot.commands.auto.actions.FollowVisionTarget;
+import frc.robot.commands.groups.AutoCommandGroup;
 import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
 

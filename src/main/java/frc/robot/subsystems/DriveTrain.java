@@ -35,6 +35,8 @@ import frc.robot.lib.EncoderLib;
  */
 public class DriveTrain extends Subsystem {
 
+  private static DriveTrain instance = new DriveTrain();
+
   public MotionProfileStatus m_left_MP_Status = new MotionProfileStatus();
   public MotionProfileStatus m_right_MP_Status = new MotionProfileStatus();
 
@@ -47,8 +49,8 @@ public class DriveTrain extends Subsystem {
   public enum Gear {
     LOW, HIGH;
   }
+  Gear gear;
 
-  private static DriveTrain instance;
 
   private DriveTrain() {
     m_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.m_left_talon_port);
@@ -58,15 +60,11 @@ public class DriveTrain extends Subsystem {
   }
 
   public synchronized static DriveTrain getInstance() {
-    if (instance == null) {
-        instance = new DriveTrain();
-    }
-
     return instance;
 }
 
 
-  Gear gear;
+
 
   public void init() {
     m_left_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
@@ -139,6 +137,19 @@ public class DriveTrain extends Subsystem {
     gear = Gear.LOW;
   }
 
+  public void setGear(Gear gear) {
+    switch (gear) {
+      case HIGH:
+        setHighGear();
+        break;
+      case LOW:
+        setLowGear();
+        break;
+      default:
+        break;
+    }
+  }
+
   /** Return the current distance in feet of the left wheels */
   public double getLeftDistance() {
     return EncoderLib.rawToDistance(
@@ -172,6 +183,10 @@ public class DriveTrain extends Subsystem {
       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
       RobotConfig.driveTrain.right_wheel_effective_diameter
     );
+  }
+
+  public double getAverageVelocity() {
+    return (getLeftVelocity() + getRightVelocity()) / 2;
   }
 
   public void zeroEncoders() {
@@ -208,7 +223,7 @@ public class DriveTrain extends Subsystem {
   //     );
   // }
 
-  public void setFeetPerSecond(double left, double right, double acceleration){
+  public void setFeetPerSecondArbitraryFeedForward(double left, double right, double acceleration){
     double ka;
     switch(gear){
       case LOW:
@@ -223,7 +238,15 @@ public class DriveTrain extends Subsystem {
     m_right_talon.set(ControlMode.Velocity, 
       EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10,
       DemandType.ArbitraryFeedForward, 0.1 + acceleration * ka);
-}
+  }
+
+  public void setFeetPerSecond(double left, double right){
+    m_left_talon.set(ControlMode.Velocity, 
+      EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10);
+    m_right_talon.set(ControlMode.Velocity, 
+      EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10);
+  }
+
 
   /**
    * An even more lazy version of @link setSpeeds This will literally set the
@@ -233,8 +256,8 @@ public class DriveTrain extends Subsystem {
    * @param right_voltage
    */
   public void setVoltages(double left_voltage, double right_voltage) {
-    m_left_talon.set(ControlMode.PercentOutput, left_voltage / 11);
-    m_right_talon.set(ControlMode.PercentOutput, right_voltage / 11);
+    m_left_talon.set(ControlMode.PercentOutput, left_voltage / 12);
+    m_right_talon.set(ControlMode.PercentOutput, right_voltage / 12);
   }
 
   /**
@@ -312,31 +335,30 @@ public class DriveTrain extends Subsystem {
     /**
      * Set left speed raw in feet per 100ms
      */
-    double leftspeedraw = EncoderLib.distanceToRaw(
-      leftspeed,
-      RobotConfig.driveTrain.left_wheel_effective_diameter / 12,
-      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION
-    ) / 10;
+    // double leftspeedraw = EncoderLib.distanceToRaw(
+    //   leftspeed,
+    //   RobotConfig.driveTrain.left_wheel_effective_diameter / 12,
+    //   RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION
+    // ) / 10;
     // ((leftspeed) / (Math.PI *
     // RobotConfig.driveTrain.left_wheel_effective_diameter
     // / 12)) *
     // RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION
     // / 10;
     // divide by 10 becuase the talons want units per 100ms
-    double rightspeedraw = EncoderLib.distanceToRaw(
-      rightspeed,
-      RobotConfig.driveTrain.right_wheel_effective_diameter / 12,
-      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION
-    ) / 10;
-    SmartDashboard.putNumber("left speed target", leftspeedraw);
-    SmartDashboard.putNumber("right speed target", rightspeedraw);
-    // TODO SmartDashboard code should NOT be placed in DriveTrain
-    // Maybe move to Robot
-    // setLeftSpeedRaw(leftspeedraw);
-    // setRightSpeedRaw(rightspeedraw);
+    // double rightspeedraw = EncoderLib.distanceToRaw(
+    //   rightspeed,
+    //   RobotConfig.driveTrain.right_wheel_effective_diameter / 12,
+    //   RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION
+    // ) / 10;
+
     setPowers(leftspeed, rightspeed);
   }
 
+  /**
+   * Get the angle of the gyro, accounting for the gyro zero angle
+   * @return compensated gyro angle
+   */
   public double getGyro() {
     return gyro.getAngle() - gyroZero;
   }

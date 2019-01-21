@@ -3,17 +3,11 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.auto.RunAuto;
-import frc.robot.commands.auto.AutoMotion.mGoalType;
-import frc.robot.commands.auto.actions.DriveTrajectoryPathfinder;
-import frc.robot.commands.auto.actions.PurePursuit;
-import frc.robot.commands.auto.actions.TurnInPlace;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
 import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
 import frc.robot.commands.subsystems.intake.CloseClamp;
 import frc.robot.commands.subsystems.intake.OpenClamp;
-import frc.robot.commands.auto.AutoMotion;
 
 
 /**
