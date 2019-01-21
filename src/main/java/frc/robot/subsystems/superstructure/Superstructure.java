@@ -1,25 +1,21 @@
 package frc.robot.subsystems.superstructure;
 
-import frc.robot.Robot;
-import frc.robot.RobotConfig;
-import frc.robot.subsystems.*;
-import frc.robot.states.SuperstructureState;
-import frc.robot.lib.SuperstructurePlanner;
-
-import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-
-import java.util.ArrayList;
-import java.util.Optional;
+import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotConfig;
+import frc.robot.lib.SuperstructurePlanner;
+import frc.robot.states.SuperstructureState;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Wrist;
 
 /**
- * First level of control for the superstructure of the robot.
- * Contains all the callable methods for the superstructure.
+ * First level of control for the superstructure of the robot. Contains all the
+ * callable methods for the superstructure.
  * 
  * @author Jocelyn McHugo
  */
-public class Superstructure extends Subsystem{
+public class Superstructure extends Subsystem {
 
   private SuperstructureState mReqState = new SuperstructureState();
   private CommandGroup mCurrentCommandGroup;
@@ -42,6 +38,7 @@ public class Superstructure extends Subsystem{
   public void planSuperstructure(){
     
     mCurrentState.updateToCurrent();   
+    
     if(!(mReqState==mCurrentState)){
       this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
     }

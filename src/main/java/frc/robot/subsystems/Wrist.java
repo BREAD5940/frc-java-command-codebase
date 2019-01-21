@@ -25,7 +25,9 @@ public class Wrist extends PIDSubsystem  {
 
   public enum WristPos {
     // TODO add positions
-    DEFAULT(0,90);
+    DEFAULT(0,0),
+    INSIDE_ELEVATOR(0, 90),
+    OUTSIDE_ELEVATOR(0,0);
 
     public double angle1, angle2;
 
