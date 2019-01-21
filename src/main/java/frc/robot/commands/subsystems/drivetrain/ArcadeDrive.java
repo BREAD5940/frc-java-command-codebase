@@ -36,12 +36,14 @@ public class ArcadeDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Robot.drivetrain.arcadeDriveMethod(Robot.m_oi.getForwardAxis(),
-    // Robot.m_oi.getTurnAxis());
+    Robot.drivetrain.arcadeDriveMethod(Robot.m_oi.getForwardAxis(),
+      Robot.m_oi.getTurnAxis());
     // Robot.drivetrain.arcadeDriveMethod(0,0.1);
 
-    Robot.drivetrain.setPowers(Robot.m_oi.getForwardAxis() + Robot.m_oi.getTurnAxis(),
-        Robot.m_oi.getForwardAxis() - Robot.m_oi.getTurnAxis());
+    // Robot.drivetrain.setPowers(Robot.m_oi.getForwardAxis() + Robot.m_oi.getTurnAxis(),
+    //     Robot.m_oi.getForwardAxis() - Robot.m_oi.getTurnAxis());
+
+  
 
     // System.out.println("arcade drive command execute");
   }

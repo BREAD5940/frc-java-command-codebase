@@ -3,11 +3,14 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.groups.visionTest;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
+import frc.robot.commands.subsystems.drivetrain.RamsetePathFollower;
 import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
 import frc.robot.commands.subsystems.intake.CloseClamp;
 import frc.robot.commands.subsystems.intake.OpenClamp;
+import frc.robot.subsystems.DriveTrain.Gear;
 
 
 /**
@@ -35,8 +38,8 @@ public class OI {
   // TODO change these to a button console once created
   Button auto_place_cargo_cargo_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
   Button auto_place_hatch_cargo_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.B_BUTTON);
-  // Button auto_place_cargo_rocket_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
-  // Button auto_place_hatch_rocket_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
+  Button auto_place_cargo_rocket_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
+  Button auto_place_hatch_rocket_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
   Button auto_grab_hatch_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
   Button auto_grab_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
 
@@ -47,6 +50,11 @@ public class OI {
     // close_clamp_button.whenPressed(new CloseClamp());
     auto_place_cargo_cargo_button.whenPressed(new SetElevatorHeight(9.316859344380049 - 1.5 ) );
     auto_place_hatch_cargo_button.whenPressed(new SetElevatorHeight(30));
+
+    auto_place_cargo_rocket_button.whenPressed(new visionTest());
+    auto_place_hatch_rocket_button.whenPressed(new RamsetePathFollower("test", true, Gear.LOW) );
+
+
     // auto_place_hatch_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_HATCH, AutoMotion.mGoalHeight.LOW));
     // auto_place_cargo_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_CARGO, AutoMotion.mGoalHeight.LOW));
     // auto_place_hatch_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_HATCH, AutoMotion.mGoalHeight.LOW));

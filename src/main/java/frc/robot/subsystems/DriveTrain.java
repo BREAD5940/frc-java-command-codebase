@@ -241,10 +241,10 @@ public class DriveTrain extends Subsystem {
   }
 
   public void setFeetPerSecond(double left, double right){
-    m_left_talon.set(ControlMode.Velocity, 
-      EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10);
-    m_right_talon.set(ControlMode.Velocity, 
-      EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10);
+    setSpeeds(
+      EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10,
+      EncoderLib.distanceToRaw(right, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10
+    );
   }
 
 
@@ -314,7 +314,7 @@ public class DriveTrain extends Subsystem {
 
     // if (RobotConfig.controls.driving_squared) {
       forwardspeed = forwardspeed * Math.abs(forwardspeed);
-      turnspeed = turnspeed * Math.abs(turnspeed);
+      // turnspeed = turnspeed * Math.abs(turnspeed);
     // }
     // if (Robot.drivetrain.gear == Gear.HIGH) {
     //   forwardspeed = forwardspeed * RobotConfig.driveTrain.max_forward_speed_high;
@@ -325,12 +325,14 @@ public class DriveTrain extends Subsystem {
     //   turnspeed = turnspeed * RobotConfig.driveTrain.max_turn_speed_low;
     // }
 
-    double leftspeed = forwardspeed * 0.2 + turnspeed * 0.1; // units are in feet
-    double rightspeed = forwardspeed * 0.2 - turnspeed * 0.1;
+    SmartDashboard.putString("forwardspeed / turnspeed: ", forwardspeed + " / " + turnspeed);
+
+    double leftspeed = forwardspeed * 5 + turnspeed * 4; // units are in feet
+    double rightspeed = forwardspeed * 5 - turnspeed * 4;
 
     setMode(NeutralMode.Brake);
-    m_left_talon.configOpenloopRamp(0.2);
-    m_right_talon.configOpenloopRamp(0.2);
+    m_left_talon.configClosedloopRamp(0.3);
+    m_right_talon.configClosedloopRamp(0.3);
 
     /**
      * Set left speed raw in feet per 100ms
@@ -352,7 +354,9 @@ public class DriveTrain extends Subsystem {
     //   RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION
     // ) / 10;
 
-    setPowers(leftspeed, rightspeed);
+    // setPowers(leftspeed, rightspeed);
+    setFeetPerSecond(leftspeed, rightspeed);
+    // setSpeeds(-500, -500);
   }
 
   /**

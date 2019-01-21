@@ -10,6 +10,12 @@ import frc.robot.lib.motion.Odometer;
 import frc.robot.lib.motion.followers.RamseteFollower;
 import frc.robot.subsystems.DriveTrain.Gear;
 
+/**
+ * Follow a path using a Ramsete Follower. Paths are generated 
+ * by pathweaver and uploaded via CSV.
+ * 
+ * @author Matthew Morley
+ */
 public class RamsetePathFollower extends Command {
 
   private RamseteFollower mFollower;
@@ -42,7 +48,7 @@ public class RamsetePathFollower extends Command {
     Logger.log("getting next drive signal");
     mDriveMotorState = mFollower.getNextDriveSignal();
     Logger.log("drive signal: ", mDriveMotorState);
-    Robot.drivetrain.setFeetPerSecond(mDriveMotorState.leftVel, mDriveMotorState.rightVel);
+    Robot.drivetrain.setFeetPerSecond( Util.toMeters( mDriveMotorState.leftVel), Util.toMeters(mDriveMotorState.rightVel));
   }
 
   // Make this return true when this Command no longer needs to run execute()
