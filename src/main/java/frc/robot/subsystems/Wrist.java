@@ -69,6 +69,10 @@ public class Wrist extends Subsystem  {
   //   // this is where the computed output value fromthe PIDController is applied to the motor
   // }
   
+  /**
+   * Get the raw position of the wrist
+   * @return degrees of the wrist
+   */
   public double getAngle(){
     return EncoderLib.rawToDegrees(
       m_wrist_talon.getSelectedSensorPosition(0), 
@@ -95,12 +99,12 @@ public class Wrist extends Subsystem  {
     wrist.talonConfig.gravity_ff * Math.abs(Math.cos( Math.toRadians(getAngle()))));
   }
 
-  // public void setAngle(double target_angle){ // TODO verify math
-  //   double targetRaw = EncoderLib.degreesToRaw(
-  //     target_angle,
-  //     RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
-  //   m_wrist_talon.set(ControlMode.Position, targetRaw);
-  // }
+  /**
+   * Return if the wrist is within a specified target angle
+   */
+  public boolean isWithinTolerence(double target) {
+    return ( Math.abs(target - getAngle()) < RobotConfig.wrist.wrist_position_tolerence );
+  }
 
   @Override
   public void initDefaultCommand() {

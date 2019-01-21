@@ -7,6 +7,12 @@ import frc.robot.RobotConfig.ultrasonicSensors;;
 
 public class DifferentialUltrasonicSensor {
 
+  public static DifferentialUltrasonicSensor instance_ = new DifferentialUltrasonicSensor();
+  
+  public synchronized static DifferentialUltrasonicSensor getInstance() {
+    return instance_;
+  }
+
   Ultrasonic sensor1, sensor2;
 
   /**
@@ -57,7 +63,9 @@ public class DifferentialUltrasonicSensor {
     * @return theta, where positive is more clockwise
     */
   public double getAngleOffset() {
-
+    double delta = getDistance(sensor2, RangeMode.INCHES) - getDistance(sensor1, RangeMode.INCHES);
+    double theta = Math.toDegrees( Math.atan( delta / ultrasonicSensors.sensorCenterDistance ));
+    return theta;
   }
 
   private double getDistance(Ultrasonic sensor, RangeMode mMode) {
