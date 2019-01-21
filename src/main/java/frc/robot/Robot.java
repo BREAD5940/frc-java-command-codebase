@@ -6,11 +6,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.subsystems.LimeLight;
-import frc.robot.subsystems.superstructure.*;
-import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.command.Command;
 
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LIDARSubsystem;
 
@@ -34,14 +33,11 @@ public class Robot extends TimedRobot {
   public static double startingDistance;
   public static double elevator_setpoint = 0;
   public static double wrist_setpoint = 0;
-
-  public static boolean intakeOpen = false; //TODO I'm aware this shouldn't go here, I'll rewrite the intake subsystem later
   
   public static boolean arcade_running = false;
   public static Intake intake = new Intake();
   public static Elevator elevator = new Elevator();
-  public static DriveTrain drivetrain = new DriveTrain();
-  public static Superstructure superstructure = new Superstructure();  
+  public static DriveTrain drivetrain = new DriveTrain();  
   // public static Wrist wrist = new Wrist();
   public static AHRS gyro = new AHRS(SPI.Port.kMXP);
   public static LimeLight limelight = new LimeLight();
@@ -75,12 +71,10 @@ public class Robot extends TimedRobot {
 
   public static void intake_close() {
     intakeDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
-    intakeOpen = false;
   }
 
   public static void intake_open() {
     intakeDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
-    intakeOpen = true;
   }
 
   /**
@@ -254,10 +248,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
 
     // logger.update();
-
-
-    // Superstructure plan update
-    superstructure.planSuperstructure();
   }
 
 }

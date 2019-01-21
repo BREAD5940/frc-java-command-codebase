@@ -23,18 +23,6 @@ public class Wrist extends PIDSubsystem  {
 
   double kf = RobotConfig.wrist.talonConfig.software_position_kf;
 
-  public enum WristPos {
-    // TODO add positions
-    DEFAULT(0,90);
-
-    public double angle1, angle2;
-
-    WristPos(double angle1, double angle2){
-      this.angle1=angle1;
-      this.angle2=angle2;
-    }
-  }
-
 
   public Wrist() {
     // The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
