@@ -3,8 +3,6 @@ package frc.robot.states;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.subsystems.superstructure.*;
-import frc.robot.subsystems.Wrist;
-import frc.robot.subsystems.Wrist.WristPos;
 import frc.robot.subsystems.superstructure.Superstructure;
 
 

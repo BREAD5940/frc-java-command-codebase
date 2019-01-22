@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -52,7 +52,7 @@ public class Elevator extends Subsystem {
       return height;
     }
   }
-  public double getHeightEnumValue(ElevatorPresets height) {
+  public static double getHeightEnumValue(ElevatorPresets height) {
     switch (height) {
       case LOW_ROCKET_PORT:
         return RobotConfig.auto.fieldPositions.low_rocket_port;

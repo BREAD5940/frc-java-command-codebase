@@ -5,9 +5,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotConfig;
 import frc.robot.lib.SuperstructurePlanner;
 import frc.robot.states.SuperstructureState;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Wrist;
+import frc.robot.subsystems.superstructure.*;
 
 /**
  * First level of control for the superstructure of the robot. Contains all the

@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import frc.robot.RobotConfig;

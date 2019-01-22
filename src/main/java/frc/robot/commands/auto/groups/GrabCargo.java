@@ -1,6 +1,7 @@
 package frc.robot.commands.auto.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.Robot;
 import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
 
 /** 
@@ -8,7 +9,7 @@ import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
  */
 public class GrabCargo extends CommandGroup{
     public GrabCargo() {
-        addSequential(new SetElevatorHeight(0, true));
+        addSequential(Robot.superstructure.moveSuperstructureElevator(0));
         // TODO intake cargo
     }
 

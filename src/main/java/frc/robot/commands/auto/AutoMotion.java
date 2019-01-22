@@ -4,8 +4,10 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
-import frc.robot.subsystems.Elevator.ElevatorPresets;
+import frc.robot.subsystems.superstructure.Elevator;
+import frc.robot.subsystems.superstructure.Elevator.ElevatorPresets;
 import frc.robot.commands.auto.groups.*;
+import frc.robot.Robot;
 import frc.robot.commands.auto.actions.*;
 
 import java.util.ArrayList;
@@ -114,7 +116,7 @@ public class AutoMotion {
     toReturn.add(new FollowVisionTarget(0.7, 70, 20)); // TODO check % value TODO this assumes a perfect FollowVisionTarget command
 
     // Set the elevator to the correct height
-    toReturn.add(new SetElevatorHeight(getElevatorPreset(),false));
+    toReturn.add(Robot.superstructure.moveSuperstructureElevator(Elevator.getHeightEnumValue(getElevatorPreset())));
 
     if(this.gType==mGoalType.CARGO_CARGO){
       // Drive forward so the intake is over the bay and the bumpers are in the indent thingy
