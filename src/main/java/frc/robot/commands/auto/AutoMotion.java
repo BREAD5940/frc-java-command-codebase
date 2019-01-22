@@ -1,19 +1,20 @@
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.auto.actions.AutoIntake;
+import frc.robot.commands.auto.actions.DriveDistance;
+import frc.robot.commands.auto.actions.SetIntakeMode;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
-import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
+import frc.robot.commands.auto.groups.GrabCargo;
+import frc.robot.commands.auto.groups.GrabHatch;
+import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
+import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
-import frc.robot.commands.auto.groups.*;
-import frc.robot.commands.auto.actions.*;
-
-import java.util.ArrayList;
 
 /**
- * Creates a command group for a specific automatic motion. 
- * Input a type of goal and a height then start the mBigCommandGroup externally
- * In the future, this could change to more inputs depending on the button setup
+ * Creates a command group for a specific automatic motion. Input a type of goal
+ * and a height then start the mBigCommandGroup externally In the future, this
+ * could change to more inputs depending on the button setup
  * 
  * @author Jocelyn McHugo
  */
@@ -73,9 +74,9 @@ public class AutoMotion {
     }
 
     if (this.piece!=mHeldPiece.NONE){
-      this.mBigCommandGroup = new AutoCommandGroup(genPlaceCommands());
+      this.mBigCommandGroup = genPlaceCommands();
     }else{
-      this.mBigCommandGroup = new AutoCommandGroup(genGrabCommands());
+      this.mBigCommandGroup = genGrabCommands();
     }
   }
   /**
@@ -83,18 +84,18 @@ public class AutoMotion {
    * @return
    *  an ArrayList of commands
    */
-  private ArrayList<Command> genGrabCommands(){
-    ArrayList<Command> toReturn = new ArrayList<Command>();
+  private AutoCommandGroup genGrabCommands(){
+    AutoCommandGroup toReturn = new AutoCommandGroup();
     if (this.gType==mGoalType.RETRIEVE_CARGO){
       // Set the intake to cargo mode
-      toReturn.add(new SetIntakeMode(mHeldPiece.CARGO));
+      toReturn.addSequential(new SetIntakeMode(mHeldPiece.CARGO));
       // Predefined grab command
-      toReturn.add(new GrabCargo());
+      toReturn.addSequential(new GrabCargo());
     }else if (this.gType==mGoalType.RETRIEVE_HATCH){
       // Set the intake to hatch mode
-      toReturn.add(new SetIntakeMode(mHeldPiece.HATCH));
+      toReturn.addSequential(new SetIntakeMode(mHeldPiece.HATCH));
       // Predefined grab command
-      toReturn.add(new GrabHatch());
+      toReturn.addSequential(new GrabHatch());
     }
     return toReturn;
   }
@@ -104,33 +105,33 @@ public class AutoMotion {
    * @return
    *  an ArrayList of commands
    */
-  private ArrayList<Command> genPlaceCommands(){
-    ArrayList<Command> toReturn = new ArrayList<Command>();
+  private AutoCommandGroup genPlaceCommands(){
+    AutoCommandGroup toReturn = new AutoCommandGroup();
 
     // Set intake mode
-    toReturn.add(new SetIntakeMode(this.piece));
+    toReturn.addSequential(new SetIntakeMode(this.piece));
 
     // Align with the vision targets, slightly back from the goal
-    toReturn.add(new FollowVisionTarget(0.7, 70, 20)); // TODO check % value TODO this assumes a perfect FollowVisionTarget command
+    toReturn.addSequential(new FollowVisionTarget(0.7, 70, 20)); // TODO check % value TODO this assumes a perfect FollowVisionTarget command
 
     // Set the elevator to the correct height
-    toReturn.add(new SetElevatorHeight(getElevatorPreset(),false));
+    toReturn.addSequential(new SetElevatorHeight(getElevatorPreset(),false));
 
     if(this.gType==mGoalType.CARGO_CARGO){
       // Drive forward so the intake is over the bay and the bumpers are in the indent thingy
-      toReturn.add(new DriveDistance(2,20)); // TODO check distances
+      toReturn.addSequential(new DriveDistance(2,20)); // TODO check distances
 
       // Actuate intake so it points down into the bay
-      toReturn.add(new SetIntakeMode());
+      toReturn.addSequential(new SetIntakeMode());
     }else{
       // Drive forward so the intake is flush with the port/hatch
-      toReturn.add(new DriveDistance(1,20)); // TODO check distances
+      toReturn.addSequential(new DriveDistance(1,20)); // TODO check distances
     }
 
     if(this.piece==mHeldPiece.CARGO){
-      toReturn.add(new AutoIntake(-1, 5));
+      toReturn.addSequential(new AutoIntake(-1, 5));
     }else if (this.piece==mHeldPiece.HATCH){
-      toReturn.add(new PlaceHatch());
+      toReturn.addSequential(new PlaceHatch());
     }
 
     return toReturn;
