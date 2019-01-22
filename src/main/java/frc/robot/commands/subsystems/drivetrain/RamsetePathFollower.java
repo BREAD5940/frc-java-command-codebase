@@ -29,14 +29,14 @@ public class RamsetePathFollower extends Command{
 
     public RamsetePathFollower(Trajectory trajectory, MotionProfileDirection direction, double timeout){
         requires(Robot.drivetrain);
-        ramseteFollower = new RamseteFollower(trajectory, direction);
+        // ramseteFollower = new RamseteFollower(trajectory, direction);
         setTimeout(timeout);
         path = trajectory;
     }
 
     public RamsetePathFollower(Trajectory trajectory, double b, double zeta, MotionProfileDirection direction, double timeout){
         requires(Robot.drivetrain);
-        ramseteFollower = new RamseteFollower(trajectory, b, zeta, direction);
+        // ramseteFollower = new RamseteFollower(trajectory, b, zeta, direction);
         setTimeout(timeout);
         path = trajectory;
     }

@@ -3,7 +3,6 @@ package frc.robot.commands.auto.actions;
 import frc.math.Util;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
-import frc.robot.lib.EncoderLib;
 import frc.robot.lib.Logger;
 import frc.robot.lib.TerriblePID;
 import edu.wpi.first.wpilibj.command.Command;

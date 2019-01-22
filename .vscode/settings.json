@@ -10,7 +10,7 @@
     ".classpath": true,
     ".project": true
   },
-  "workbench.colorTheme": "One Dark Pro Bold",
+  "workbench.colorTheme": "Default Dark+",
   "wpilib.online": true,
   "editor.tabSize": 2
 }
