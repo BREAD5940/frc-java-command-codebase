@@ -34,6 +34,7 @@ public class PurePursuit extends Command {
   @Override
   protected void initialize() {
     initPath();
+    setTimeout(10);
     
   }
 
@@ -55,7 +56,7 @@ public class PurePursuit extends Command {
 
   @Override
   protected boolean isFinished() {
-    return pathFollower.done;
+    return pathFollower.done || isTimedOut() ;
   }
 
   @Override
@@ -72,9 +73,9 @@ public class PurePursuit extends Command {
   private void initPath() {
     // double angle = 0;
     Point pos = new Point();
-    double maxVel = 0.4; // 6 feet/s
-    double maxAcc = 0.1; // m/sec every sec
-    double spacing = 0.1, maxAngVel = 1.5; // 3 in simu
+    double maxVel = 1.5; // 6 feet/s
+    double maxAcc = 2; // m/sec every sec
+    double spacing = 0.05, maxAngVel = 1; // 3 in simu
     double lookAheadDistance = 0.1524 * 8;
     /* 6 inches */
     double trackWidth = 0.8;// 0.5842; // 23 inches
@@ -91,8 +92,8 @@ public class PurePursuit extends Command {
     // .calculate(new Path(spacing, maxVel, maxAcc, maxAngVel, Arrays.asList(new
     // WayPoint2(0, 0), new WayPoint2(0, 2))));
     path = pathGenerator.calculate(new Path(spacing, maxVel, maxAcc, maxAngVel,
-    Arrays.asList(new WayPoint2(0, 0), new WayPoint2(0, 3.6576), new WayPoint2(3.6576, 3.6576 * 2),
-    new WayPoint2(3.6576 * 2, 3.6576 * 2))));
+    Arrays.asList(new WayPoint2(5.083, 1.354), new WayPoint2(5.649, 3.6576), new WayPoint2(6.766, 4.99),
+    /*new WayPoint2(6.37, 6.518),*/ new WayPoint2(5.5, 6.1))));
     // path = pathGenerator.calculate(new Path(spacing, maxVel, maxAcc, maxAngVel,
     //     Arrays.asList(new WayPoint2(0, 0), new WayPoint2(0, 4), new WayPoint2(-2, 4), new WayPoint2(-2, 2),
     //         new WayPoint2(0, 2), new WayPoint2(0, 4), new WayPoint2(-2, 4), new WayPoint2(-2, 2), new WayPoint2(2, 2))));
@@ -114,6 +115,7 @@ public class PurePursuit extends Command {
     pos = path.waypoints.get(0).p.copy();
     Robot.odometry_.setX(pos.x);
     Robot.odometry_.setY(pos.y);
+    Robot.drivetrain.zeroGyro();
   }
 
   public static double round(double value) {

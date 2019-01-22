@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.groups.visionTest;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
+import frc.robot.commands.subsystems.drivetrain.PurePursuit;
 import frc.robot.commands.subsystems.drivetrain.RamsetePathFollower;
 import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
 import frc.robot.commands.subsystems.intake.CloseClamp;
@@ -52,7 +53,7 @@ public class OI {
     auto_place_hatch_cargo_button.whenPressed(new SetElevatorHeight(30));
 
     auto_place_cargo_rocket_button.whenPressed(new visionTest());
-    auto_place_hatch_rocket_button.whenPressed(new RamsetePathFollower("test", true, Gear.LOW) );
+    auto_place_hatch_rocket_button.whenPressed(new RamsetePathFollower("asdf") );
 
 
     // auto_place_hatch_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_HATCH, AutoMotion.mGoalHeight.LOW));

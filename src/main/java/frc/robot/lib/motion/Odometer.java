@@ -3,7 +3,9 @@ package frc.robot.lib.motion;
 import frc.math.Pose2d;
 import frc.math.Rotation2d;
 import frc.robot.lib.motion.purepursuit.Point;
+import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
+import frc.robot.Robot;
 
 public class Odometer /* extends LogBase */ {
 	private double accumulativeDistance;
@@ -14,6 +16,8 @@ public class Odometer /* extends LogBase */ {
 	private double prevLeftEncoderValue;
 	private double prevRightEncoderValue;
 	private static Odometer instance;
+
+	private boolean flipped = false;
 
 	public static Odometer getInstance() {
 		if (instance == null)
@@ -32,12 +36,15 @@ public class Odometer /* extends LogBase */ {
 	public void setOdometryForPathfinder(Trajectory trajectory){
 		setX(trajectory.get(0).x);
 		setY(trajectory.get(0).y);
-		setTheta(trajectory.get(0).heading);
+		// setTheta(trajectory.get(0).heading);
 	}
 
 	public void update(double leftEncoder, double rightEncoder, double gyroAngle) {
-		this.theta = gyroAngle;
-		gyroAngle = Math.toRadians(gyroAngle + 90);
+		this.theta = Math.toRadians(Pathfinder.boundHalfDegrees(Robot.drivetrain.getGyro()) );
+
+		gyroAngle = (flipped) ? gyroAngle - 270 : gyroAngle + 90;
+
+		gyroAngle = Math.toRadians(gyroAngle);
 
 		gyroAngle = Math.PI - gyroAngle;
 
@@ -97,12 +104,16 @@ public class Odometer /* extends LogBase */ {
 		setTheta(pose.getRotation().getDegrees());
 	}
 
+	public void reverseXY(boolean reversed) {
+		this.flipped = reversed;
+	}
+
 	public Pose2d getPose() {
-		return new Pose2d(x, y, Rotation2d.fromDegrees(getTheta()));
+				return new Pose2d(x, y, Rotation2d.fromDegrees(getTheta()));
 	}
 
 	public Point getPoint() {
-		return new Point(x, y);
+			return new Point(x, y);
 	}
 
 	@Override

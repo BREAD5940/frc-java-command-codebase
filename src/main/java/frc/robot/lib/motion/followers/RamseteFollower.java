@@ -1,113 +1,151 @@
 package frc.robot.lib.motion.followers;
 
-import java.io.File;
-
-import frc.math.Pose2d;
-import frc.math.Rotation2d;
-import frc.robot.lib.motion.DriveMotorState;
-import frc.robot.lib.motion.Odometer;
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Trajectory.Segment;
 
+import java.io.File;
 
+import frc.robot.RobotConfig;
+import frc.robot.lib.enums.MotionProfileDirection;
+import frc.robot.lib.motion.Odometer;
+import frc.robot.lib.motion.TrajectoryUtil;
+import frc.robot.lib.motion.Velocity;
+import frc.robot.lib.obj.DriveSignal;
+
+@SuppressWarnings("FieldCanBeLocal")
 /**
- * This class handles all the stuff necessary to calculate angular and linear velocities for a ramsete follower.
- * Thanks to Pantherbotics at https://github.com/Pantherbotics/FRC-2018-PowerUp/
+ * Ramsete implementation by Brian for Team 321 based on Aaron's implementation with help from Prateek and all on the FIRST programming discord server
+ * Borrowed from the robolancers 2018 offseason code
+ * 
+ * @author Matthew Morley
  */
 public class RamseteFollower {
-  
-  /** greater than zero; increases correction */
-  private static final double b = 1.0;        
-  /** between zero and one; increases dampening */         
-  private static final double zeta = 0.2;              
-  private double wheelBase;
-  private int segmentIndex;
-  private Trajectory path;                            //this is the path that we will follow
-  private Pose2d pose_;                               //this is the robot's x and y position, as well as its heading
 
-  public RamseteFollower(double wheelBase, Trajectory path) {
-      System.out.println("Initializing Ramsete Follower");
-      this.wheelBase = wheelBase;
-      this.path = path;
-      segmentIndex = 0;
-    //   this.odo = Odometer.getInstance(); // set up Odometer object
-  }
+    //Should be greater than zero and this increases correction
+    private double b = 1.5;
 
-  public RamseteFollower(double wheelBase, String sourceTrajName) {
-    this(wheelBase, Pathfinder.readFromCSV(new File("/home/lvuser/deploy/paths/" + sourceTrajName + ".pf1.csv")));
-  }
+    //Should be between zero and one and this increases dampening
+    private double zeta = 0.7;
 
-  private double calcW_d() {
-      if (segmentIndex < path.length()-1) {
-          double lastTheta = path.get(segmentIndex).heading;
-          double nextTheta = path.get(segmentIndex + 1).heading;
-          return (nextTheta - lastTheta) / path.get(segmentIndex).dt;
-      } else
-          return  0;
-  }
+    //Holds what segment we are on
+    private int segmentIndex;
+    private Segment current;
 
-  public DriveMotorState getNextDriveSignal() {
-      pose_ = Odometer.getInstance().getPose();
-      double left = 0;
-      double right = 0;
-      if (isFinished()) {
-          return new DriveMotorState(left, right, true);
-      }
-      System.out.println("Getting segment segmentIndex number: " + segmentIndex + " out of " + (path.length()-1) + " segments");
+    //The trajectory to follow
+    private Trajectory trajectory;
 
-      Segment current = path.get(segmentIndex);                                                   //look at segment of path
-      double w_d = calcW_d();                                                                     //need to find wanted rate of change of heading
+    //The robot's x and y position and angle
+    private Odometer odometry;
 
-      double v = calcVel(current.x, current.y, current.heading, current.velocity, w_d);           //v = linear velocity
-      double w = calcAngleVel(current.x, current.y, current.heading, current.velocity, w_d);      //w = angular velocity
+    //Variable used to calculate linear and angular velocity
+    private double lastTheta, nextTheta;
+    private double k, thetaError, sinThetaErrorOverThetaError;
+    private double desiredAngularVelocity, linearVelocity, angularVelocity;
+    private double odometryError;
 
-      //v = clamp(v, -20, 20);                                                           //clamp values to be between -20 and 20 fps
-      //w = clamp(w, Math.PI * -2.0, Math.PI * 2.0);                                     //clamp values to be between -2pi and 2pi rad/s
+    //Constants
+    private static final double EPSILON = 0.00000001;
+    private static final double TWO_PI = 2 * Math.PI;
 
-      System.out.println("Velocity " + v + " Angular Velocity " + w);
+    //Variable for holding velocity for robot to drive on
+    private Velocity velocity;
+    private DriveSignal driveSignal;
+    private double left, right;
 
-      left = (-wheelBase * w) / 2 + v;                                                            //do math to convert angular velocity + linear velocity
-      right = (+wheelBase * w) / 2 + v;                                                           //into left and right wheel speeds (fps)
+    public RamseteFollower(Trajectory trajectory, MotionProfileDirection direction){
+        this.trajectory = direction == MotionProfileDirection.FORWARD ? trajectory : TrajectoryUtil.reversePath(trajectory);
 
+        segmentIndex = 0;
+        odometry = Odometer.getInstance();
 
-      System.out.println("Left: " + left + " Right: " + right);
-      segmentIndex++;
-      return new DriveMotorState(left, right);
-  }
+        driveSignal = new DriveSignal();
+    }
 
-  private double calcVel(double x_d, double y_d, double theta_d, double v_d, double w_d) {
-      double k = calcK(v_d, w_d);
-      double thetaError = theta_d - pose_.getRotation().getDegrees();
-      thetaError = Pathfinder.d2r(Pathfinder.boundHalfDegrees(Pathfinder.r2d(thetaError)));
-      return v_d * Math.cos(thetaError) + k * (Math.cos(pose_.getRotation().getDegrees()) * 
-            (x_d - pose_.getTranslation().x()) + Math.sin(pose_.getRotation().getDegrees()) * (y_d - pose_.getTranslation().y()));
-  }
+    public RamseteFollower(Trajectory trajectory, double b, double zeta, MotionProfileDirection direction){
+        this(trajectory, direction);
 
-  private double calcAngleVel(double x_d, double y_d, double theta_d, double v_d, double w_d) {
-      double k = calcK(v_d, w_d);
-      System.out.println("Theta" + pose_.getRotation().getDegrees());
-      double thetaError = theta_d - pose_.getRotation().getDegrees();
-      thetaError = Pathfinder.d2r(Pathfinder.boundHalfDegrees(Pathfinder.r2d(thetaError)));
-      double sinThetaErrOverThetaErr;
-      if (Math.abs(thetaError) < 0.00001)
-          sinThetaErrOverThetaErr = 1; //this is the limit as sin(x)/x approaches zero
-      else
-          sinThetaErrOverThetaErr = Math.sin(thetaError) / (thetaError);
-      return w_d + b * v_d * (sinThetaErrOverThetaErr) * (Math.cos(pose_.getRotation().getDegrees()) * 
-            (y_d - pose_.getTranslation().y()) - Math.sin(pose_.getRotation().getDegrees()) * (x_d - pose_.getTranslation().x())) + k * (thetaError); //from eq. 5.12
-  }
+        this.b = b;
+        this.zeta = zeta;
+    }
 
-  private double calcK(double v_d, double w_d) {
-      return 2 * zeta * Math.sqrt(Math.pow(w_d, 2) + b * Math.pow(v_d, 2)); //from eq. 5.12
-  }
+    public Velocity getVelocity(){
+        if(isFinished()){
+            return new Velocity(0, 0);
+        }
 
-  public Pose2d getInitialPose() {
-      return new Pose2d(path.get(0).x,path.get(0).y, Rotation2d.fromRadians(path.get(0).heading));
-  }
+        current = trajectory.get(segmentIndex);
 
-  public boolean isFinished() {
-      return segmentIndex == path.length();
-  }
+        desiredAngularVelocity = calculateDesiredAngular();
 
+        linearVelocity = calculateLinearVelocity(current.x, current.y, current.heading, current.velocity, desiredAngularVelocity);
+        angularVelocity = calculateAngularVelocity(current.x, current.y, current.heading, current.velocity, desiredAngularVelocity);
+
+        return new Velocity(linearVelocity, angularVelocity);
+    }
+
+    public DriveSignal getNextDriveSignal(){
+        velocity = getVelocity();
+
+        left = (-(velocity.getAngular() * RobotConfig.driveTrain.wheel_base) + (2 * velocity.getLinear())) / 2;
+        right = ((velocity.getAngular() * RobotConfig.driveTrain.wheel_base) + (2 * velocity.getLinear())) / 2;
+
+        driveSignal.setL(left);
+        driveSignal.setR(right);
+
+        segmentIndex++;
+
+        return driveSignal;
+    }
+
+    private double calculateDesiredAngular(){
+        if(segmentIndex < trajectory.length() - 1){
+            lastTheta = trajectory.get(segmentIndex).heading;
+            nextTheta = trajectory.get(segmentIndex + 1).heading;
+            return boundHalfRadians(nextTheta - lastTheta) / current.dt;
+        }else{
+            return 0;
+        }
+    }
+
+    private double calculateLinearVelocity(double desiredX, double desiredY, double desiredTheta, double desiredLinearVelocity, double desiredAngularVelocity){
+        k = calculateK(desiredLinearVelocity, desiredAngularVelocity);
+        thetaError = boundHalfRadians(desiredTheta - odometry.getTheta());
+        odometryError = (Math.cos(odometry.getTheta()) * (desiredX - odometry.getX())) + (Math.sin(odometry.getTheta()) * (desiredY - odometry.getY()));
+        return (desiredLinearVelocity * Math.cos(thetaError)) + (k * odometryError);
+    }
+
+    private double calculateAngularVelocity(double desiredX, double desiredY, double desiredTheta, double desiredLinearVelocity, double desiredAngularVelocity){
+        k = calculateK(desiredLinearVelocity, desiredAngularVelocity);
+        thetaError = boundHalfRadians(desiredTheta - odometry.getTheta());
+
+        if(Math.abs(thetaError) < EPSILON){
+            //This is for the limit as sin(x)/x approaches zero
+            sinThetaErrorOverThetaError = 1;
+        }else{
+            sinThetaErrorOverThetaError = Math.sin(thetaError)/thetaError;
+        }
+
+        odometryError = (Math.cos(odometry.getTheta()) * (desiredY - odometry.getY())) - (Math.sin(odometry.getTheta()) * (desiredX - odometry.getX()));
+
+        return desiredAngularVelocity + (b * desiredLinearVelocity * sinThetaErrorOverThetaError * odometryError) + (k * thetaError);
+    }
+
+    private double calculateK(double desiredLinearVelocity, double desiredAngularVelocity){
+        return 2 * zeta * Math.sqrt(Math.pow(desiredAngularVelocity, 2) + (b * Math.pow(desiredLinearVelocity, 2)));
+    }
+
+    private double boundHalfRadians(double radians){
+        while (radians >= Math.PI) radians -= TWO_PI;
+        while (radians < -Math.PI) radians += TWO_PI;
+        return radians;
+    }
+
+    public Segment currentSegment(){
+        return current;
+    }
+
+    public boolean isFinished(){
+        return segmentIndex >= trajectory.length();
+    }
 }

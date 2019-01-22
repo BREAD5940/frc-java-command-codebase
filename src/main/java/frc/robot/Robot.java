@@ -2,6 +2,7 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -63,13 +64,24 @@ public class Robot extends TimedRobot {
     intakeDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
+  UsbCamera camera;
+
+  CameraServer serverOne;
+
   /**
    * This function is run when the robot is first started up and should be used
    * for any initialization code.
    */
   @Override
   public void robotInit() {
-    CameraServer.getInstance().startAutomaticCapture();
+    // camera = CameraServer.getInstance().startAutomaticCapture(0);
+
+    serverOne = CameraServer.getInstance();
+
+    camera = serverOne.startAutomaticCapture(0);
+
+    camera.setResolution(533,300);
+
 
     // logger = Logger.getInstance();
     m_oi = new OI();

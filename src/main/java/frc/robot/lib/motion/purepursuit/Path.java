@@ -54,39 +54,6 @@ public class Path {
 		return newPath;
 	}
 
-	public Path readFromFile(String filePath) {
-		File traj = new File("/home/lvuser/deploy/paths/test.pf1.csv");
-		Trajectory pathfinderTraj = Pathfinder.readFromCSV(traj);
-		
-		return readFromPathfinder(pathfinderTraj);
-	}
-
-	public Path readFromPathfinder(Trajectory mSource) {
-		// return a new Path instance which contains all the settings that this was 
-		// instantiated with, but with x,y taken from pathfinder
-		ArrayList<WayPoint2> newPath = new ArrayList<WayPoint2>();
-
-		// TODO check if these are constants that can be called from the constructor instead?
-		double maxSpacing, maxSpeed, maxAccel;
-
-		for(int i=0; i<mSource.length(); i++) {
-			// Each waypoint must hold a Point x,y, and a velocity.
-			// Curvature and distance is ommited from this.
-			newPath.add(i, new WayPoint2(mSource.get(i).x, mSource.get(i).y, mSource.get(i).velocity));
-
-			// TODO check for max values
-			// if ((i > 0) && (i <= mSource.length()) && (mSource.get(i).distance > maxDelta) ){
-
-			// }
-		}
-
-		return null;
-
-	}
-
-
-
-
 	@Override
 	public String toString() {
 		String str = "";

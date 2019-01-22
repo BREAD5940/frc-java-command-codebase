@@ -114,9 +114,9 @@ public class RobotConfig {
       
       // kv/ka settings for pathfinder
       public static final double velocity_kv_high = 0.63768115942028985507246376811594;
-      public static final double velocity_ka_high = 0;
+      public static final double velocity_ka_high = 1.0 / 30; // borrowed from robolancers, so idk if this is a good value
       public static final double velocity_kv_low = 0.63768115942028985507246376811594;
-      public static final double velocity_ka_low = 0;
+      public static final double velocity_ka_low = 1.0 / 30; // borrowed from robolancers, so idk if this is a good number
     }
     public class rightTalons {
       /**
