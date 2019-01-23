@@ -1,32 +1,40 @@
 package frc.robot.lib.obj;
 
+/**
+ * A drivetrain command consisting of the left, right motor settings and whether the brake mode is enabled.
+ */
 public class DriveSignal {
-	double l;
-	double r;
+    protected double mLeftMotor;
+    protected double mRightMotor;
+    protected boolean mBrakeMode;
 
-	public DriveSignal() {
-		l = r = 0.0;
-	}
+    public DriveSignal(double left, double right) {
+        this(left, right, false);
+    }
 
-	public DriveSignal(double l, double r) {
-		this.l = l;
-		this.r = r;
-	}
+    public DriveSignal(double left, double right, boolean brakeMode) {
+        mLeftMotor = left;
+        mRightMotor = right;
+        mBrakeMode = brakeMode;
+    }
 
-	public double getL() {
-		return l;
-	}
+    public static DriveSignal NEUTRAL = new DriveSignal(0, 0);
+    public static DriveSignal BRAKE = new DriveSignal(0, 0, true);
 
-	public void setL(double l) {
-		this.l = l;
-	}
+    public double getLeft() {
+        return mLeftMotor;
+    }
 
-	public double getR() {
-		return r;
-	}
+    public double getRight() {
+        return mRightMotor;
+    }
 
-	public void setR(double r) {
-		this.r = r;
-	}
+    public boolean getBrakeMode() {
+        return mBrakeMode;
+    }
 
+    @Override
+    public String toString() {
+        return "L: " + mLeftMotor + ", R: " + mRightMotor + (mBrakeMode ? ", BRAKE" : "");
+    }
 }

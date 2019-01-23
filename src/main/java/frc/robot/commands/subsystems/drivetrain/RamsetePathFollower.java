@@ -58,15 +58,15 @@ public class RamsetePathFollower extends Command{
         driveSignal = ramseteFollower.getNextDriveSignal();
         current = ramseteFollower.currentSegment();
 
-        double leftVelocity = Util.toFeet(driveSignal.getL());
-        double rightVelocity = Util.toFeet(driveSignal.getR());
+        // double leftVelocity = Util.toFeet(driveSignal.getL());
+        // double rightVelocity = Util.toFeet(driveSignal.getR());
 
         Logger.log("--------------------------");
-        Logger.log("left velocity: " + leftVelocity + " right velocity: " + rightVelocity);
+        // Logger.log("left velocity: " + leftVelocity + " right velocity: " + rightVelocity);
 
         // Robot.drivetrain.setVelocity(driveSignal.getL(), driveSignal.getR(), current.acceleration);
         // Robot.drivetrain.setFeetPerSecondArbitraryFeedForward(leftVelocity, rightVelocity, current.acceleration);
-        Robot.drivetrain.setFeetPerSecond(leftVelocity, rightVelocity);
+        // Robot.drivetrain.setFeetPerSecond(leftVelocity, rightVelocity);
 
         // OI.liveDashboardTable.getEntry("Path X").setNumber(current.x);
         // OI.liveDashboardTable.getEntry("Path Y").setNumber(current.y);
@@ -74,8 +74,8 @@ public class RamsetePathFollower extends Command{
         SmartDashboard.putNumber("Path X", current.x);
         SmartDashboard.putNumber("Path Y", current.y);
 
-        SmartDashboard.putNumber("Path Left Wheel Velocity", driveSignal.getL());
-        SmartDashboard.putNumber("Path Right Wheel Velocity", driveSignal.getR());
+        // SmartDashboard.putNumber("Path Left Wheel Velocity", driveSignal.getL());
+        // SmartDashboard.putNumber("Path Right Wheel Velocity", driveSignal.getR());
 
         SmartDashboard.putNumber("Robot Left Velocity", Util.toMeters(Robot.drivetrain.getLeftVelocity()));
         SmartDashboard.putNumber("Robot Right Velocity", Util.toMeters(Robot.drivetrain.getRightVelocity()));

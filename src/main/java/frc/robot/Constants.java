@@ -26,4 +26,7 @@ public class Constants {
   public static final double kDriveKv = 0.135;  // V per rad/s
   public static final double kDriveKa = 0.012;  // V per rad/s^2
 
+  // PID stuff that I need
+  public static final double kDriveLowGearVelocityKd = 10.0;
+
 }

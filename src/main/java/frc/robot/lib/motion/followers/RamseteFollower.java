@@ -59,7 +59,7 @@ public class RamseteFollower {
         segmentIndex = 0;
         odometry = Odometer.getInstance();
 
-        driveSignal = new DriveSignal();
+        // driveSignal = new DriveSignal();
     }
 
     public RamseteFollower(Trajectory trajectory, double b, double zeta, MotionProfileDirection direction){
@@ -90,8 +90,8 @@ public class RamseteFollower {
         left = (-(velocity.getAngular() * RobotConfig.driveTrain.wheel_base) + (2 * velocity.getLinear())) / 2;
         right = ((velocity.getAngular() * RobotConfig.driveTrain.wheel_base) + (2 * velocity.getLinear())) / 2;
 
-        driveSignal.setL(left);
-        driveSignal.setR(right);
+        // driveSignal.setL(left);
+        // driveSignal.setR(right);
 
         segmentIndex++;
 

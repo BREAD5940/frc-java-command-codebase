@@ -11,16 +11,18 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 
-
 // import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 // import frc.robot.RobotConfig.driveTrain;
 import frc.robot.commands.subsystems.drivetrain.ArcadeDrive;
 // import frc.robot.commands.stick_drive;
 import frc.robot.lib.EncoderLib;
+import frc.robot.lib.Logger;
+import frc.robot.lib.obj.DriveSignal;
 
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
@@ -301,6 +303,25 @@ public class DriveTrain extends Subsystem {
     m_right_talon.set(ControlMode.Velocity, speed);
   }
 
+  public void setVelocity(DriveSignal signal, DriveSignal feedforward, double leftAccel, double rightAccel) {
+    // feesignal.getLeft() = signal.getLeft();
+    // signal.getRight() = signal.getRight();
+    // feedforward.getLeft() = feedforward.getLeft();
+    // feedforward.getRight() = feedforward.getRight();
+
+    // m_left_talon.set(ControlMode.Velocity, signal.getLeft(), DemandType.ArbitraryFeedForward,
+    //         feedforward.getLeft() + Constants.kDriveLowGearVelocityKd * leftAccel / 1023.0);
+    // m_right_talon.set(ControlMode.Velocity, signal.getRight(), DemandType.ArbitraryFeedForward,
+    //         feedforward.getRight() + Constants.kDriveLowGearVelocityKd * rightAccel / 1023.0);
+
+    Logger.log(String.format("Set velocity: left speed %s left feedforward %s right speed %s right feedforward %s",
+      signal.getLeft(), feedforward.getLeft() + Constants.kDriveLowGearVelocityKd * leftAccel / 1023.0,
+      signal.getRight(), feedforward.getRight() + Constants.kDriveLowGearVelocityKd * rightAccel / 1023.0
+    ));
+
+  }
+
+
   public void arcadeDriveMethod(double forwardspeed, double turnspeed) {
     // double forwardspeed = Robot.m_oi.getForwardAxis() * -1;
     // double turnspeed = Robot.m_oi.getTurnAxis();
@@ -358,6 +379,29 @@ public class DriveTrain extends Subsystem {
     setFeetPerSecond(leftspeed, rightspeed);
     // setSpeeds(-500, -500);
   }
+
+  public static double rotationsToInches(double rotations) {
+    return rotations * (Constants.kDriveWheelDiameterInches * Math.PI);
+  }
+
+  public static double rpmToInchesPerSecond(double rpm) {
+      return rotationsToInches(rpm) / 60;
+  }
+
+  public static double inchesToRotations(double inches) {
+      return inches / (Constants.kDriveWheelDiameterInches * Math.PI);
+  }
+
+  public static double inchesPerSecondToRpm(double inches_per_second) {
+      return inchesToRotations(inches_per_second) * 60;
+  }
+
+  public static double radiansPerSecondToTicksPer100ms(double rad_s) {
+      return rad_s / (Math.PI * 2.0) * 4096.0 / 10.0;
+  }
+
+
+
 
   /**
    * Get the angle of the gyro, accounting for the gyro zero angle

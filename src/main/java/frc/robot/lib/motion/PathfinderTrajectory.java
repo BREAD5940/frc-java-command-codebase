@@ -1,7 +1,9 @@
 package frc.robot.lib.motion;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Trajectory.Segment;
 
@@ -27,6 +29,11 @@ public class PathfinderTrajectory {
 
   public PathfinderTrajectory(Trajectory trajectory) {
     mTrajectory = readFromTrajectory(trajectory);
+    length = mTrajectory.size();
+  }
+
+  public PathfinderTrajectory(String filepath) {
+    mTrajectory = readFromTrajectory( Pathfinder.readFromCSV(new File("/home/lvuser/deploy/paths/" + filepath + ".pf1.csv")));
     length = mTrajectory.size();
   }
 

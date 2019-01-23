@@ -8,10 +8,13 @@ import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
 import frc.robot.commands.subsystems.drivetrain.PurePursuit;
 import frc.robot.commands.subsystems.drivetrain.RamsetePathFollower;
+import frc.robot.commands.subsystems.drivetrain.RunDriveMotionPlanner;
 import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
 import frc.robot.commands.subsystems.intake.CloseClamp;
 import frc.robot.commands.subsystems.intake.OpenClamp;
+import frc.robot.lib.motion.PathfinderTrajectory;
 import frc.robot.subsystems.DriveTrain.Gear;
+import jaci.pathfinder.Trajectory;
 
 
 /**
@@ -44,6 +47,8 @@ public class OI {
   Button auto_grab_hatch_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
   Button auto_grab_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
 
+  File file = new File("/home/lvuser/deploy/paths/test.pf1.csv");
+
   public OI() {
     shift_up_button.whenPressed(new DriveShiftHigh());
     shift_down_button.whenPressed(new DriveShiftLow());
@@ -53,7 +58,7 @@ public class OI {
     auto_place_hatch_cargo_button.whenPressed(new SetElevatorHeight(30));
 
     auto_place_cargo_rocket_button.whenPressed(new visionTest());
-    auto_place_hatch_rocket_button.whenPressed(new RamsetePathFollower("asdf") );
+    auto_place_hatch_rocket_button.whenPressed(new RunDriveMotionPlanner(new PathfinderTrajectory("test") ) );
 
 
     // auto_place_hatch_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_HATCH, AutoMotion.mGoalHeight.LOW));
