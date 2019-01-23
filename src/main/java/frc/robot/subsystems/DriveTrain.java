@@ -303,16 +303,24 @@ public class DriveTrain extends Subsystem {
     m_right_talon.set(ControlMode.Velocity, speed);
   }
 
+  /**
+   * Set the velocity of the wheels using raw units per 100ms velocities, feedforward rates
+   * and accelerations.
+   * @param signal
+   * @param feedforward
+   * @param leftAccel
+   * @param rightAccel
+   */
   public void setVelocity(DriveSignal signal, DriveSignal feedforward, double leftAccel, double rightAccel) {
     // feesignal.getLeft() = signal.getLeft();
     // signal.getRight() = signal.getRight();
     // feedforward.getLeft() = feedforward.getLeft();
     // feedforward.getRight() = feedforward.getRight();
 
-    // m_left_talon.set(ControlMode.Velocity, signal.getLeft(), DemandType.ArbitraryFeedForward,
-    //         feedforward.getLeft() + Constants.kDriveLowGearVelocityKd * leftAccel / 1023.0);
-    // m_right_talon.set(ControlMode.Velocity, signal.getRight(), DemandType.ArbitraryFeedForward,
-    //         feedforward.getRight() + Constants.kDriveLowGearVelocityKd * rightAccel / 1023.0);
+     m_left_talon.set(ControlMode.Velocity, signal.getLeft(), DemandType.ArbitraryFeedForward,
+             feedforward.getLeft());// + Constants.kDriveLowGearVelocityKd * leftAccel / 1023.0);
+     m_right_talon.set(ControlMode.Velocity, signal.getRight(), DemandType.ArbitraryFeedForward,
+             feedforward.getRight());// + Constants.kDriveLowGearVelocityKd * rightAccel / 1023.0);
 
     m_left_talon.set(ControlMode.Velocity, signal.getLeft());// DemandType.ArbitraryFeedForward,
             // feedforward.getLeft() + Constants.kDriveLowGearVelocityKd * leftAccel / 1023.0);
