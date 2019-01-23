@@ -25,10 +25,11 @@ public class GrabHatch extends CommandGroup{
         addSequential(new FollowVisionTarget(0.6, 100, 20)); //FIXME percent frame check
         // grabs the hatch by opening the clamp
         addSequential(new OpenClamp());
-        // lifts the hatch out of the brushes
+        // lifts the hatch out of the brushes //TODO is this necessary?
         addSequential(new SetElevatorHeight(RobotConfig.auto.fieldPositions.cargo_ship_hatch+10, false));
         // moves the robot back slightly
         addSequential(new DriveDistance(-1, 20)); // FIXME check values
+        //robot returns to operator control
     }
 
 }

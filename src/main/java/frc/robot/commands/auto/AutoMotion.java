@@ -109,7 +109,11 @@ public class AutoMotion {
     AutoCommandGroup toReturn = new AutoCommandGroup();
 
     // Set intake mode
-    toReturn.addSequential(new SetIntakeMode(this.piece));
+    if (this.gType==mGoalType.CARGO_CARGO){
+      toReturn.addSequential(new SetIntakeMode(this.piece, true));
+    }else{
+      toReturn.addSequential(new SetIntakeMode(this.piece));
+    }
 
     // Align with the vision targets, slightly back from the goal
     toReturn.addSequential(new FollowVisionTarget(0.7, 70, 20)); // FIXME check % value TODO this assumes a perfect FollowVisionTarget command
@@ -120,9 +124,6 @@ public class AutoMotion {
     if(this.gType==mGoalType.CARGO_CARGO){
       // Drive forward so the intake is over the bay and the bumpers are in the indent thingy
       toReturn.addSequential(new DriveDistance(2,20)); // FIXME check distances
-
-      // Actuate intake so it points down into the bay
-      toReturn.addSequential(new SetIntakeMode());
     }else{
       // Drive forward so the intake is flush with the port/hatch
       toReturn.addSequential(new DriveDistance(1,20)); // FIXME check distances

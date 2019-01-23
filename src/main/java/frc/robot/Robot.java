@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
+import frc.robot.commands.subsystems.drivetrain.ArcadeDrive;
+import frc.robot.commands.subsystems.elevator.ElevatorTelop;
 import frc.robot.subsystems.LimeLight;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -248,6 +250,15 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
 
     // logger.update();
+
+    // Stop auto from hindering human operators/drivers 
+    //TODO not sure if this is right and/or the best way to do this
+    if(m_oi.getForwardAxis()>0.5||m_oi.getTurnAxis()>0.5){
+      new ArcadeDrive().start();
+    }
+    if(m_oi.getElevatorAxis()>0.5){
+      new ElevatorTelop().start();
+    }
   }
 
 }

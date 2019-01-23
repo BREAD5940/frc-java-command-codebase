@@ -4,52 +4,54 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 
   /**
-   * auto_Intake is a basic auto action. It activates the intake based on an inputted
-   * demand and runtime
+   * SetIntakeMode sets the wrist to either cargo or hatch 'mode', then either 
+   * switches to pointing down to drop/grab cargo or... doesn't
    */
 public class SetIntakeMode extends Command {
   mHeldPiece intakeType;
-  boolean isDrop=false;
+  boolean isDown=false;
 
   public SetIntakeMode(mHeldPiece iType){
     this.intakeType=iType;
-    this.isDrop=false;
+    this.isDown=false;
+    // requires(Robot.wrist); //TODO this will be a thing that will be uncommented but right now it makes the whole program sad
   }
 
-  public SetIntakeMode(){
-    this.isDrop=true;
+  public SetIntakeMode(mHeldPiece iType, boolean isDown){
+    this.intakeType=iType;
+    this.isDown=isDown;
+    // requires(Robot.wrist); //TODO this will be a thing that will be uncommented but right now it makes the whole program sad
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if(isDrop){
-      // TODO code for actuating wrist to cargo side pointed down here
-    }else{
-      switch(intakeType){
-        case CARGO:
-          // TODO code for actuating wrist to cargo side here?
-          break;
-        case HATCH:
-          // TODO code for actuating wrist to hatch side here?
-          break;
-        case NONE:
-          // This should actually never happen, but if it does it just doesn't do anything
-          break;
-      }
+    switch(intakeType){
+      case CARGO:
+        // TODO set angle to the cargo side
+        if(isDown){
+          // TODO change angle to pointing down
+        } // doesn't need an else
+        break;
+      case HATCH:
+        // TODO set angle to the hatch side
+        break;
+      case NONE:
+        // This should actually never happen, but if it does it just doesn't do anything
+        break;
     }
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    // Don't have to do anything, just wait for the timeout to trigger
+    // Don't have to do anything
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true; // TODO change this?
+    return true; //basically instant command
   }
 
   // Called once after isFinished returns true

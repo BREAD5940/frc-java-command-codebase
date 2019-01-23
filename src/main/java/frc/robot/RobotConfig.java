@@ -164,7 +164,7 @@ public class RobotConfig {
     public class fieldPositions {
       // Positions of objects on the field (ports, etc.) in inches. distances are to the center of the object
       // unless otherwise indicated
-      // TODO check that these values are accurate (currently taken from the game manual)
+      // FIXME change these values to be the distance the elevator has to go to have the intake be at the center of the object
       
       public static final double low_rocket_port = 27.5;
       public static final double middle_rocket_port = 55.5;
@@ -175,7 +175,7 @@ public class RobotConfig {
       public static final double high_rocket_hatch = 75;
       
       public static final double cargo_ship_hatch = 19.75; // TODO this should be even with the low rocket hatch. According to the game manual, it isn't
-      public static final double cargo_ship_wall = 31.5; //top of wall
+      public static final double cargo_ship_wall = 31.5+3; //top of wall (+3 is to get the intake OVER the wall)
     }
     
     
