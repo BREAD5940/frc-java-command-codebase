@@ -65,7 +65,7 @@ public class PathfinderTrajectory {
   }
 
   public TimedTrajectorySegment getLast() {
-    return mTrajectory.get(mTrajectory.size());
+    return mTrajectory.get(mTrajectory.size() - 1);
   }
 
 }

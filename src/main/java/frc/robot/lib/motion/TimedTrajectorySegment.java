@@ -31,6 +31,10 @@ public class TimedTrajectorySegment {
     this(time, seg.pose, seg.velocity, seg.acceleration, seg.jerk);
   }
 
+  public TimedTrajectorySegment() {
+    this(0, new TrajectorySegment());
+  }
+
   public TimedTrajectorySegment(TimedTrajectorySegment other) {
     this(other.time, other.pose(), other.velocity, other.acceleration, other.jerk);
   }
@@ -42,6 +46,11 @@ public class TimedTrajectorySegment {
 
   public Pose2dWithCurvature pose() {
     return pose_;
+  }
+
+  @Override
+  public String toString() {
+    return "time: " + time + " pose: " + pose_.toString() + " velocity: " + velocity + " acceleration: " + acceleration + " jerk: " + jerk;
   }
 
 }

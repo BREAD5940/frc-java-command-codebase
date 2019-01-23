@@ -61,7 +61,7 @@ public class DriveMotionPlanner {
   }
 
   public void setTrajectory( PathfinderTrajectory _trajectory_ ) {
-    mCurrentTrajectory.setTrajectory(_trajectory_);
+    mCurrentTrajectory = new PathfinderTrajectoryIterator(_trajectory_);
   }
 
   public Output update(double timestamp, Pose2d current_state) {
@@ -79,12 +79,13 @@ public class DriveMotionPlanner {
     if (!mCurrentTrajectory.isDone(current_state)) {
       
       // Generate feedforward voltages.
-      final double velocity_m = /*Units.inches_to_meters*/(mSetpoint.velocity);
-      final double curvature_m = Units.meters_to_inches(mSetpoint.pose().getCurvature());
-      final double dcurvature_ds_m = Units.meters_to_inches(Units.meters_to_inches(mSetpoint.pose()
+      System.out.println("mSetpoint.velocity is: " + mSetpoint.velocity);
+      double velocity_m = mSetpoint.velocity;
+      double curvature_m = Units.meters_to_inches(mSetpoint.pose().getCurvature());
+      double dcurvature_ds_m = Units.meters_to_inches(Units.meters_to_inches(mSetpoint.pose()
               .getDCurvatureDs()));
-      final double acceleration_m = /*Units.inches_to_meters*/(mSetpoint.acceleration);
-      final DifferentialDrive.DriveDynamics dynamics = mModel.solveInverseDynamics(
+      double acceleration_m = /*Units.inches_to_meters*/(mSetpoint.acceleration);
+      DifferentialDrive.DriveDynamics dynamics = mModel.solveInverseDynamics(
               new DifferentialDrive.ChassisState(velocity_m, velocity_m * curvature_m),
               new DifferentialDrive.ChassisState(acceleration_m,
                       acceleration_m * curvature_m + velocity_m * velocity_m * dcurvature_ds_m));

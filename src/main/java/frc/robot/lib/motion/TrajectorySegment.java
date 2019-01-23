@@ -19,6 +19,10 @@ public class TrajectorySegment {
       this.jerk = jerk;
       this.heading = heading;
     }
+  
+  public TrajectorySegment() {
+    this(new Pose2dWithCurvature(), 0, 0, 0);
+  }
 
   public static TrajectorySegment fromPathfinderSegment(double time, Segment seg) {
     Pose2dWithCurvature pose_ = new Pose2dWithCurvature(new Pose2d(seg.y, seg.x, Rotation2d.fromRadians(seg.heading)), 0); // TODO generate curvature

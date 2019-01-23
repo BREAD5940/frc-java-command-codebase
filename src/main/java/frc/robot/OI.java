@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.io.File;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -14,6 +16,7 @@ import frc.robot.commands.subsystems.intake.CloseClamp;
 import frc.robot.commands.subsystems.intake.OpenClamp;
 import frc.robot.lib.motion.PathfinderTrajectory;
 import frc.robot.subsystems.DriveTrain.Gear;
+import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 
 
@@ -48,6 +51,8 @@ public class OI {
   Button auto_grab_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
 
   File file = new File("/home/lvuser/deploy/paths/test.pf1.csv");
+  Trajectory trajectory = Pathfinder.readFromCSV(file);
+  PathfinderTrajectory pftraj = new PathfinderTrajectory(trajectory);
 
   public OI() {
     shift_up_button.whenPressed(new DriveShiftHigh());
@@ -58,7 +63,7 @@ public class OI {
     auto_place_hatch_cargo_button.whenPressed(new SetElevatorHeight(30));
 
     auto_place_cargo_rocket_button.whenPressed(new visionTest());
-    auto_place_hatch_rocket_button.whenPressed(new RunDriveMotionPlanner(new PathfinderTrajectory("test") ) );
+    auto_place_hatch_rocket_button.whenPressed(new RunDriveMotionPlanner(  pftraj ) );
 
 
     // auto_place_hatch_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_HATCH, AutoMotion.mGoalHeight.LOW));

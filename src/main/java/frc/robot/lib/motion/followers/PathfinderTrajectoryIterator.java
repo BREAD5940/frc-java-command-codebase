@@ -7,6 +7,7 @@ import frc.math.Pose2dWithCurvature;
 import frc.math.Translation2d;
 import frc.math.Util;
 import frc.robot.Constants;
+import frc.robot.lib.Logger;
 import frc.robot.lib.Units;
 import frc.robot.lib.motion.DCMotorTransmission;
 import frc.robot.lib.motion.DifferentialDrive;
@@ -30,12 +31,15 @@ public class PathfinderTrajectoryIterator {
 
   PathfinderTrajectory mTrajectory;
 
-  TimedTrajectorySegment lastSegment;
+  TimedTrajectorySegment lastSegment = new TimedTrajectorySegment();
 
-  private int progress;
+  private int progress = 0;
+
+  private boolean trajectoryOutOfBounds = false;
 
   public PathfinderTrajectoryIterator(Trajectory traj) {
     mTrajectory = new PathfinderTrajectory(traj);
+    lastSegment = mTrajectory.getLast();
   }
 
   public PathfinderTrajectoryIterator(File file) {
@@ -44,6 +48,11 @@ public class PathfinderTrajectoryIterator {
 
   public PathfinderTrajectoryIterator(String file) {
     this(new File("/home/lvuser/deploy/paths/" + file + ".pf1.csv"));
+  }
+
+  public PathfinderTrajectoryIterator(PathfinderTrajectory traj) {
+    mTrajectory = traj;
+    lastSegment = traj.getLast();
   }
 
   public void setTrajectory(PathfinderTrajectory _traj_) {
@@ -59,7 +68,9 @@ public class PathfinderTrajectoryIterator {
     boolean withinAngleTolerence = (error.getRotation().getRadians() - mTrajectory.getLast().pose().getRotation().getRadians() < Constants.kPathingAngleTolerence );
     boolean withinPositionTolerence = ( error.getTranslation().x() < Constants.kPathingPositionTolerence.x() && 
                                       error.getTranslation().y() < Constants.kPathingPositionTolerence.y() );
-    return (progress >= mTrajectory.length ) && withinAngleTolerence && withinPositionTolerence;
+    
+    //TODO figure out better end behavior than just being ded
+    return (progress >= mTrajectory.length - 1 ) || trajectoryOutOfBounds || (withinAngleTolerence && withinPositionTolerence);
   }
 
   public int getProgress() {
@@ -67,13 +78,24 @@ public class PathfinderTrajectoryIterator {
   }
 
   public TimedTrajectorySegment advance(double mDt) {
-    if ( mDt < Util.kEpsilon ) {
+    Logger.log("trying to advance the segment");
+    if ( progress >= mTrajectory.length  ) {
+      Logger.log("not advancing, array out of bounds! returning the last known segment instead"); 
+      trajectoryOutOfBounds = true;
+      // TODO figure out better end behavior than just being ded
       return lastSegment;
-    } else {
-      // Here we incrament progress by 1 and return it immedietly and get that index of the trajectory
-      // Fancy and maybe not broken
-      return mTrajectory.get(++progress);
     }
+    TimedTrajectorySegment seg;
+    if ( mDt < Util.kEpsilon ) {
+      seg = lastSegment;
+    } else {
+      seg = mTrajectory.get(progress);
+      progress += 1;
+      // return seg;
+    }
+    Logger.log("segmant iterated!");
+    Logger.log("velocity of the segment: " + seg.velocity);
+    return seg;
   }
 
 }
