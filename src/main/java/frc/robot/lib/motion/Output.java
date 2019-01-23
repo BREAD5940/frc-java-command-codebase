@@ -2,6 +2,7 @@ package frc.robot.lib.motion;
 
 public class Output {
   public Output() {
+      this(0, 0, 0, 0, 0, 0);
   }
 
   public Output(double left_velocity, double right_velocity, double left_accel, double right_accel,

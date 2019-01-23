@@ -52,7 +52,7 @@ public class OI {
 
   File file = new File("/home/lvuser/deploy/paths/test.pf1.csv");
   Trajectory trajectory = Pathfinder.readFromCSV(file);
-  PathfinderTrajectory pftraj = new PathfinderTrajectory(trajectory);
+  PathfinderTrajectory pftraj = /*new PathfinderTrajectory(trajectory);*/ PathfinderTrajectory.readFromTrajectory(trajectory);
 
   public OI() {
     shift_up_button.whenPressed(new DriveShiftHigh());

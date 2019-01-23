@@ -39,9 +39,45 @@ public class TimedTrajectorySegment {
     this(other.time, other.pose(), other.velocity, other.acceleration, other.jerk);
   }
 
-  public static TimedTrajectorySegment fromPathfinderSegment(double time, Segment seg) {
-    Pose2dWithCurvature _pose_ = new Pose2dWithCurvature(new Pose2d(seg.y, seg.x, Rotation2d.fromRadians(seg.heading)), 0); // TODO generate curvature
-    return new TimedTrajectorySegment(time, _pose_, seg.velocity, seg.acceleration, seg.jerk);
+  /**
+   * Generate a TimedTrajectorySegment from a pathfinder
+   * segment, the previous pathfinder segment and the
+   * next pathfinder segment
+   */
+  public static TimedTrajectorySegment fromPathfinderSegment(double time, Segment cSegment, Segment lSegment, Segment nSegment) {
+
+    // calcualte the curvature
+
+    Pose2dWithCurvature _pose_ = new Pose2dWithCurvature(new Pose2d(cSegment.y, cSegment.x, Rotation2d.fromRadians(cSegment.heading)), 0); // TODO generate curvature
+    return new TimedTrajectorySegment(time, _pose_, cSegment.velocity, cSegment.acceleration, cSegment.jerk);
+  }
+
+  /**
+   * Calculate the curvature of the arc that passes through point 1 (last point), 2 (current point) 
+   * and 3 (next point). From https://stackoverflow.com/questions/41144224/calculate-curvature-for-3-points-x-y
+   * <p>
+   * Positive curvature will be "rightward" and negative curvature is "leftward"
+   */
+  public static double curvatureFromPathfinder(Segment p0, Segment p1, Segment p2) {
+
+    double dist1 = distanceFromPathfinder(p0, p1);
+    double dist2 = distanceFromPathfinder(p1, p2);
+    double dist3 = distanceFromPathfinder(p2, p0);
+
+    double area = ((p0.x * (p1.y - p2.y)) 
+            + (p1.x * (p2.y - p0.y)) 
+            + (p2.x * (p0.y - p1.y))
+        )/2.0f;
+
+    double curvature = 4*area/(dist1*dist2*dist3);
+
+    return curvature * -1; // TODO verify curvature sign
+  }
+
+  public static double distanceFromPathfinder(Segment p1, Segment p2) {
+    double x = p2.x - p1.x;
+    double y = p2.y - p1.y;
+    return Math.sqrt(x * x + y * y);
   }
 
   public Pose2dWithCurvature pose() {

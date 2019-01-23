@@ -27,15 +27,10 @@ public class PathfinderTrajectory {
     length = trajectory.size();
   }
 
-  public PathfinderTrajectory(Trajectory trajectory) {
-    mTrajectory = readFromTrajectory(trajectory);
-    length = mTrajectory.size();
-  }
-
-  public PathfinderTrajectory(String filepath) {
-    mTrajectory = readFromTrajectory( Pathfinder.readFromCSV(new File("/home/lvuser/deploy/paths/" + filepath + ".pf1.csv")));
-    length = mTrajectory.size();
-  }
+  // public PathfinderTrajectory(Trajectory trajectory) {
+  //   mTrajectory = readFromTrajectory(trajectory);
+  //   length = mTrajectory.size();
+  // }
 
   /**
    * Loop through a provided Trajectory to extract parameters like
@@ -43,17 +38,21 @@ public class PathfinderTrajectory {
    * in radians, distance along the path and curvature (which is
    * coming soon^tm, but maybe never because pure pursuit sucks)
    */
-  public ArrayList<TimedTrajectorySegment> readFromTrajectory(Trajectory trajectory) {
+  public static /*ArrayList<TimedTrajectorySegment>*/ PathfinderTrajectory readFromTrajectory(Trajectory trajectory) {
     ArrayList<TimedTrajectorySegment> path = new ArrayList<TimedTrajectorySegment>();
 
     // Loop thru all the points in the trajectory and convert them to TimedTrajectorySegments
     for( int i=0; i < trajectory.length() - 1; i++ ) {
-      Segment seg_ = trajectory.get(i);
-      TimedTrajectorySegment segment = TimedTrajectorySegment.fromPathfinderSegment(seg_.dt * i + seg_.dt, seg_ );
+      Segment thisSegment = trajectory.get(i);
+      Segment lastSegment = (i == 0) ? thisSegment : trajectory.get(i-1);
+      Segment nextSegment = (i >= trajectory.length() - 1) ? thisSegment : trajectory.get(i+1);
+
+      TimedTrajectorySegment segment = TimedTrajectorySegment.fromPathfinderSegment(thisSegment.dt * i, thisSegment, lastSegment, nextSegment );
       path.add(segment);
     }
     
-    return path;
+    // return path;
+    return new PathfinderTrajectory(path);
   }
 
   public TimedTrajectorySegment get(int index) {

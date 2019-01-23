@@ -3,6 +3,7 @@ package frc.robot.lib.motion.planners;
 import frc.math.Pose2d;
 import frc.math.Util;
 import frc.robot.Constants;
+import frc.robot.lib.Logger;
 import frc.robot.lib.Units;
 import frc.robot.lib.motion.DCMotorTransmission;
 import frc.robot.lib.motion.DifferentialDrive;
@@ -85,8 +86,9 @@ public class DriveMotionPlanner {
       double dcurvature_ds_m = Units.meters_to_inches(Units.meters_to_inches(mSetpoint.pose()
               .getDCurvatureDs()));
       double acceleration_m = /*Units.inches_to_meters*/(mSetpoint.acceleration);
+
       DifferentialDrive.DriveDynamics dynamics = mModel.solveInverseDynamics(
-              new DifferentialDrive.ChassisState(velocity_m, velocity_m * curvature_m),
+              new DifferentialDrive.ChassisState(velocity_m, velocity_m * curvature_m), // linear and agular velocity
               new DifferentialDrive.ChassisState(acceleration_m,
                       acceleration_m * curvature_m + velocity_m * velocity_m * dcurvature_ds_m));
       mError = current_state.inverse().transformBy(mSetpoint.pose().getPose());
@@ -100,9 +102,11 @@ public class DriveMotionPlanner {
       // } else if (mFollowerType == FollowerType.PID) {
       //     mOutput = updatePID(dynamics, current_state);
       } else if (mFollowerType == FollowerType.NONLINEAR_FEEDBACK) {
+          Logger.log("updating in nonlinear feedback mode...");
           mOutput = updateNonlinearFeedback(dynamics, current_state);
       }
     } else {
+      Logger.log("returning a null brake output, cant stop me haha");
       mOutput = new Output();
     }
     return mOutput;

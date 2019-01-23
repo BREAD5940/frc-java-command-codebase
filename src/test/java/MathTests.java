@@ -114,6 +114,7 @@ public class MathTests {
             // System.out.println("Expecteds: " + expecteds[i][0] + ", " + expecteds[i][1]);
 
             assertArrayEquals(expecteds[i], calculateds[i], 0.02);
+            // System.out.println("hi");
         }
 
     }

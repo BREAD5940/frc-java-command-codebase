@@ -38,7 +38,7 @@ public class PathfinderTrajectoryIterator {
   private boolean trajectoryOutOfBounds = false;
 
   public PathfinderTrajectoryIterator(Trajectory traj) {
-    mTrajectory = new PathfinderTrajectory(traj);
+    mTrajectory = PathfinderTrajectory.readFromTrajectory(traj);
     lastSegment = mTrajectory.getLast();
   }
 
@@ -70,6 +70,7 @@ public class PathfinderTrajectoryIterator {
                                       error.getTranslation().y() < Constants.kPathingPositionTolerence.y() );
     
     //TODO figure out better end behavior than just being ded
+    Logger.log("Is the progress too great? " + ((progress >= mTrajectory.length - 1 ) ? "yes" : "no"));
     return (progress >= mTrajectory.length - 1 ) || trajectoryOutOfBounds || (withinAngleTolerence && withinPositionTolerence);
   }
 

@@ -317,22 +317,25 @@ public class DriveTrain extends Subsystem {
     // feedforward.getLeft() = feedforward.getLeft();
     // feedforward.getRight() = feedforward.getRight();
 
-     m_left_talon.set(ControlMode.Velocity, signal.getLeft(), DemandType.ArbitraryFeedForward,
-             feedforward.getLeft());// + Constants.kDriveLowGearVelocityKd * leftAccel / 1023.0);
-     m_right_talon.set(ControlMode.Velocity, signal.getRight(), DemandType.ArbitraryFeedForward,
-             feedforward.getRight());// + Constants.kDriveLowGearVelocityKd * rightAccel / 1023.0);
+    //  m_left_talon.set(ControlMode.Velocity, signal.getLeft(), DemandType.ArbitraryFeedForward,
+    //          feedforward.getLeft());// + Constants.kDriveLowGearVelocityKd * leftAccel / 1023.0);
+    //  m_right_talon.set(ControlMode.Velocity, signal.getRight(), DemandType.ArbitraryFeedForward,
+    //          feedforward.getRight());// + Constants.kDriveLowGearVelocityKd * rightAccel / 1023.0);
 
-    m_left_talon.set(ControlMode.Velocity, signal.getLeft());// DemandType.ArbitraryFeedForward,
-            // feedforward.getLeft() + Constants.kDriveLowGearVelocityKd * leftAccel / 1023.0);
-    m_right_talon.set(ControlMode.Velocity, signal.getRight());//, DemandType.ArbitraryFeedForward,
-            // feedforward.getRight() + Constants.kDriveLowGearVelocityKd * rightAccel / 1023.0);
+    m_left_talon.set(ControlMode.Velocity, signal.getLeft(), DemandType.ArbitraryFeedForward,
+        feedforward.getLeft() + leftAccel * Constants.kDriveLowGearVelocityKa);
+
+    // m_left_talon.set(ControlMode.Velocity, signal.getLeft());// DemandType.ArbitraryFeedForward,
+    //         // feedforward.getLeft() + Constants.kDriveLowGearVelocityKd * leftAccel / 1023.0);
+    // m_right_talon.set(ControlMode.Velocity, signal.getRight());//, DemandType.ArbitraryFeedForward,
+    //         // feedforward.getRight() + Constants.kDriveLowGearVelocityKd * rightAccel / 1023.0);
 
     // setPowers(0.3, 0.3);
 
-    Logger.log(String.format("Set velocity: left speed %s left feedforward %s right speed %s right feedforward %s",
-      signal.getLeft(), feedforward.getLeft() + Constants.kDriveLowGearVelocityKd * leftAccel / 1023.0,
-      signal.getRight(), feedforward.getRight() + Constants.kDriveLowGearVelocityKd * rightAccel / 1023.0
-    ));
+    // Logger.log(String.format("Set velocity: left speed %s left feedforward %s right speed %s right feedforward %s",
+    //   signal.getLeft(), feedforward.getLeft() + Constants.kDriveLowGearVelocityKa * leftAccel / 1023.0,
+    //   signal.getRight(), feedforward.getRight() + Constants.kDriveLowGearVelocityKd * rightAccel / 1023.0
+    // ));
 
   }
 

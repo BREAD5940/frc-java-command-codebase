@@ -45,8 +45,10 @@ public class RunDriveMotionPlanner extends Command {
     // mPeriodicIO.path_setpoint = mMotionPlanner.setpoint();
 
     if (!mOverrideTrajectory) {
-      Robot.drivetrain.setVelocity(new DriveSignal(DriveTrain.radiansPerSecondToTicksPer100ms(output.left_velocity), DriveTrain.radiansPerSecondToTicksPer100ms(output.right_velocity)),
-                new DriveSignal(output.left_feedforward_voltage / 12.0, output.right_feedforward_voltage / 12.0),
+      Robot.drivetrain.setVelocity(
+        new DriveSignal(DriveTrain.radiansPerSecondToTicksPer100ms(output.left_velocity), DriveTrain.radiansPerSecondToTicksPer100ms(output.right_velocity)),
+                
+        new DriveSignal(output.left_feedforward_voltage / 12.0, output.right_feedforward_voltage / 12.0),
                 DriveTrain.radiansPerSecondToTicksPer100ms(output.left_accel) / 1000.0,
                 DriveTrain.radiansPerSecondToTicksPer100ms(output.right_accel) / 1000.0         
       );
