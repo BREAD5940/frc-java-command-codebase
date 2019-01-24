@@ -33,19 +33,6 @@ public class Superstructure extends Subsystem {
 
   private SuperstructureState mCurrentState = new SuperstructureState();
 
-  /**
-   * plans the motion of the superstructure based on the current reqState and currentState of the superstructure.
-   * should be called periodically while the robot is running
-   */
-  public void planSuperstructure(){
-    
-    mCurrentState.updateToCurrent();   
-    
-    if(!(mReqState==mCurrentState)){
-      this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
-    }
-  
-  }
 
   public CommandGroup moveSuperstructureCombo(double height, WristPos angle, AutoMotion.mHeldPiece piece){
     mCurrentState.updateToCurrent();
@@ -53,17 +40,21 @@ public class Superstructure extends Subsystem {
     mReqState.setWristAngle(angle);
     mReqState.setHeldPiece(piece);
 
-    planSuperstructure();
+    mCurrentState.updateToCurrent();   
+    
+    if(!(mReqState==mCurrentState)){
+      this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
+    }
 
     return this.mCurrentCommandGroup;
   }
 
   public CommandGroup moveSuperstructureElevator(double height){
-    return this.moveSuperstructureCombo(height, mCurrentState.getWristAngle(), defaultPiece);
+    return this.moveSuperstructureCombo(height, mCurrentState.getWristAngle(), mCurrentState.getHeldPiece());
   }
 
   public CommandGroup moveSuperstructureWrist(Wrist.WristPos angle){
-    return this.moveSuperstructureCombo(defaultHeight, angle, defaultPiece);
+    return this.moveSuperstructureCombo(mCurrentState.getElevatorHeight(), angle, mCurrentState.getHeldPiece());
   }
 
 

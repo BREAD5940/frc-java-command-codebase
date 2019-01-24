@@ -252,10 +252,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
 
     // logger.update();
-
-
-    // Superstructure plan update
-    superstructure.planSuperstructure();
   }
 
 }

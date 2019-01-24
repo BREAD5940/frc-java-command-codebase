@@ -3,6 +3,8 @@ package frc.robot.subsystems.superstructure;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import frc.robot.RobotConfig;
 
+import java.util.Optional;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
@@ -23,6 +25,8 @@ public class Wrist extends PIDSubsystem  {
 
   double kf = RobotConfig.wrist.talonConfig.software_position_kf;
   public WristPos presetAngle;
+  public boolean stanAngle=false;
+  public double rawAngle;
 
   public enum WristPos {
     //TODO get actual angles
@@ -93,17 +97,21 @@ public class Wrist extends PIDSubsystem  {
       // Angular velocity. Natively is raw per 100ms, so times by 10 to get degrees per second
   }
 
-  // public void setAngle(double target_angle){ // TODO verify math
-  //   double targetRaw = EncoderLib.degreesToRaw(
-  //     target_angle,
-  //     RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
-  //   m_wrist_talon.set(ControlMode.Position, targetRaw);
-  // }
+  public void setAngle(double target_angle){ // TODO verify math
+    // double targetRaw = EncoderLib.degreesToRaw(
+    //   target_angle,
+    //   RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
+    // m_wrist_talon.set(ControlMode.Position, targetRaw);
+
+       this.stanAngle=false;
+      this.rawAngle = target_angle;
+  }
 
   public void setAngle(WristPos target){
     // TODO double angle set code here
 
     this.presetAngle = target;
+    this.stanAngle = true;
   }
 
   @Override

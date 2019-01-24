@@ -1,5 +1,6 @@
 package frc.robot.states;
 
+import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
@@ -15,6 +16,8 @@ public class SuperstructureState{
 
   private double elevatorHeight;
   private Wrist.WristPos wristAngle;
+  private boolean stanAngle = true;
+  private double rawAngle;
   private AutoMotion.mHeldPiece piece = mHeldPiece.NONE;
 
   /**
@@ -66,12 +69,23 @@ public class SuperstructureState{
    */
   public void setWristAngle(Wrist.WristPos angle){
     this.wristAngle = angle;
+    this.stanAngle=true;
+  }
+
+  /**
+   * set the angle of the wrist for the state with a raw double value
+   * @param angle
+   *    the desired wrist angle
+   */
+  public void setWristAngle(double angle){
+    this.rawAngle=angle;
+    this.stanAngle=false;
   }
 
   /**
    * set the status of the hatch intake for the state
-   * @param open
-   *    if the hatch intake is open
+   * @param piece
+   *    the piece the robot is currently holding
    */
   public void setHeldPiece(mHeldPiece piece){
     this.piece = piece;
@@ -81,9 +95,13 @@ public class SuperstructureState{
    * updates the state to the current positions of each part
    */
   public void updateToCurrent(){
-    //TODO make seperate wrist angles, change intakeOpen from public boolean to get() function in Intake.java
-    this.elevatorHeight = Superstructure.elevator.getHeight();
-    this.wristAngle= Superstructure.wrist.presetAngle;
+    this.elevatorHeight = Robot.superstructure.elevator.getHeight();
+    if(Robot.superstructure.wrist.stanAngle){
+      this.wristAngle= Robot.superstructure.wrist.presetAngle;
+    }else{
+      this.rawAngle=Robot.superstructure.wrist.rawAngle;
+    }
+    
     // can't automatically set what piece is held w/o a bunch of sensors
   }
 
@@ -96,7 +114,15 @@ public class SuperstructureState{
     return this.wristAngle;
   }
 
+  public double getRawWristAngle(){
+    return this.rawAngle;
+  }
+
   public mHeldPiece getHeldPiece(){
     return this.piece;
+  }
+
+  public boolean getStanAngle(){
+    return this.stanAngle;
   }
 }

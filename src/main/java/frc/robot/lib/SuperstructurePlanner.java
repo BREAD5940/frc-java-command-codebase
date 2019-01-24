@@ -53,14 +53,22 @@ public class SuperstructurePlanner{
       goalState.setHeldPiece(currentState.getHeldPiece());
     }
 
-    // Checks if the intake will ever be inside the elevator
-    if((currentState.getWristAngle()==WristPos.HATCH) || (goalState.getWristAngle()==WristPos.HATCH)){
-          intakeAtRisk=true;
-    }
+    if(goalState.getStanAngle()||currentState.getStanAngle()){
+      System.out.println("MOTION UNSAFE -- Wrist position is wildcard. Setting to default position for movement.");
+      toReturn.addSequential(new SetWrist(WristPos.CARGO));
+      errorCount++;
+      intakeAtRisk=false;
+      intakeCrashable=false;
+    }else{
+      // Checks if the intake will ever be inside the elevator
+      if((currentState.getWristAngle()==WristPos.HATCH) || (goalState.getWristAngle()==WristPos.HATCH)){
+            intakeAtRisk=true;
+      }
 
-    //checks if the intake will tilt/is tilted below the bottom of the elevator
-    if((goalState.getWristAngle()==WristPos.DOWN) ||(currentState.getWristAngle()==WristPos.DOWN)){
-      intakeCrashable=true;
+      //checks if the intake will tilt/is tilted below the bottom of the elevator
+      if((goalState.getWristAngle()==WristPos.DOWN) ||(currentState.getWristAngle()==WristPos.DOWN)){
+        intakeCrashable=true;
+      }
     }
 
     //checks if the elevator will move past the crossbar
@@ -70,7 +78,7 @@ public class SuperstructurePlanner{
         System.out.println("MOTION UNSAFE -- Intake will hit crossbar and cannot be moved. Moving to max possible height.");
         errorCount++;
         corrCount++;
-        goalState.setElevatorHeight(crossbarHeight-1.5); //crossbarHeight - how much intake there is inside the elevator
+        goalState.setElevatorHeight(crossbarHeight-1.5); //crossbarHeight - how much intake there is inside the elevator TODO confirm
       }else{
         System.out.println("MOTION UNSAFE -- Intake will hit crossbar. Setting to default intake position for movement.");
         errorCount++;
@@ -93,11 +101,16 @@ public class SuperstructurePlanner{
     //move to corrected state
     toReturn.addSequential(new SetElevatorHeight(goalState.getElevatorHeight()));
     currentState.setElevatorHeight(goalState.getElevatorHeight());
-    toReturn.addSequential(new SetWrist(goalState.getWristAngle()));
-    currentState.setWristAngle(goalState.getWristAngle());
+    if(goalState.getStanAngle()){
+      toReturn.addSequential(new SetWrist(goalState.getWristAngle()));
+      currentState.setWristAngle(goalState.getWristAngle());
+    }else{
+      toReturn.addSequential(new SetWrist(goalState.getRawWristAngle()));
+      currentState.setWristAngle(goalState.getRawWristAngle());
+    }
 
     // current and goal should now be equal
-    if(currentState==goalState){
+    if(currentState==goalState){ //TODO check if this throws errors with preset vs. raw values
       System.out.println("MOTION COMPLETED -- "+Integer.valueOf(errorCount)+" error(s) and "
         +Integer.valueOf(corrCount)+" final correction(s)\n");
       return toReturn;
