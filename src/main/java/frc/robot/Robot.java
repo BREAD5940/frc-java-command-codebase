@@ -30,7 +30,7 @@ import frc.robot.subsystems.LimeLight;
 public class Robot extends TimedRobot {
   public static SendableChooser<AutoMotion.mGoalHeight> mGh;
   public static OI m_oi;
-  public static Intake intake = new Intake();
+  // public static Intake intake = new Intake();
   public static Elevator elevator = new Elevator();
   public static DriveTrain drivetrain = DriveTrain.getInstance();
   public static LimeLight limelight = new LimeLight();
@@ -94,7 +94,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Backup Selector (Will not be used in most cases)", backupAutoSelect);
     SmartDashboard.putData(drivetrain);
     SmartDashboard.putData(elevator);
-    SmartDashboard.putData(intake);
+    // SmartDashboard.putData(intake);
 
     compressor.setClosedLoopControl(true);
 
