@@ -6,27 +6,24 @@ import frc.math.Util;
 import frc.robot.lib.Units;
 
 public class Constants {
-  /* Graciously borrowed from 254 2018 */
+  /* Graciously borrowed from 5190*/
+  public static final double kRobotMass = 54.53 /* Robot */ + 5.669 /* Battery */ + 7; /* Bumpers */ // kg
+  public static final double kRobotMomentOfInertia = 10.0; // kg m^2 // TODO Tune
+  public static final double kRobotAngularDrag = 12.0; // N*m / (rad/sec)
 
-  // Trajectory stuff
-  public static final double kPathingAngleTolerence = 4;
-  public static final Translation2d kPathingPositionTolerence = new Translation2d(Units.inches_to_meters(6), Units.inches_to_meters(3));
+  public static final double kStaticFrictionVoltage = 1.8; // Volts
+  public static final double kVDrive = 0.115; // Volts per radians per second
+  public static final double kADrive = 0.0716; // Volts per radians per second per second
 
-  // Wheels
-  public static final double kDriveWheelTrackWidthInches = 25.54;
-  public static final double kDriveWheelDiameterInches = 3.92820959548 * 0.99;
-  public static final double kDriveWheelRadiusInches = kDriveWheelDiameterInches / 2.0;
-  public static final double kTrackScrubFactor = 1.0;  // Tune me!
+  public static final double kDriveBeta = 1.4; // Inverse meters squared
+  public static final double kDriveZeta = 0.9; // Unitless dampening co-efficient
 
-  // Tuned dynamics
-  public static final double kRobotLinearInertia = 60.0;  // kg TODO tune
-  public static final double kRobotAngularInertia = 10.0;  // kg m^2 TODO tune
-  public static final double kRobotAngularDrag = 12.0;  // N*m / (rad/sec) TODO tune
-  public static final double kDriveVIntercept = 1.055;  // V
-  public static final double kDriveKv = 0.135;  // V per rad/s
-  public static final double kDriveKa = 0.012;  // V per rad/s^2
+  public static final double kWheelRadius = 2.92;// inches
+  public static final double kTrackWidth = 0.61;// meters
 
-  // PID stuff that I need
-  public static final double kDriveLowGearVelocityKa = 1.0/10.0;
+  public static final double kDriveLowGearVelocityKa = 0.1; // TODO tune!
+
+  // public static final double kDriveBeta = 1.4; // Inverse meters squared
+  // public static final double kDriveZeta = 0.9; // Unitless dampening co-efficient
 
 }

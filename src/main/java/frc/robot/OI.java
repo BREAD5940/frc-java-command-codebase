@@ -10,7 +10,7 @@ import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
 import frc.robot.commands.subsystems.drivetrain.PurePursuit;
 import frc.robot.commands.subsystems.drivetrain.RamsetePathFollower;
-import frc.robot.commands.subsystems.drivetrain.RunDriveMotionPlanner;
+// import frc.robot.commands.subsystems.drivetrain.RunDriveMotionPlanner;
 import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
 import frc.robot.commands.subsystems.intake.CloseClamp;
 import frc.robot.commands.subsystems.intake.OpenClamp;
@@ -50,9 +50,9 @@ public class OI {
   Button auto_grab_hatch_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
   Button auto_grab_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
 
-  File file = new File("/home/lvuser/deploy/paths/test.pf1.csv");
-  Trajectory trajectory = Pathfinder.readFromCSV(file);
-  PathfinderTrajectory pftraj = /*new PathfinderTrajectory(trajectory);*/ PathfinderTrajectory.readFromTrajectory(trajectory);
+  // File file = new File("/home/lvuser/deploy/paths/test.pf1.csv");
+  // Trajectory trajectory = Pathfinder.readFromCSV(file);
+  // PathfinderTrajectory pftraj = /*new PathfinderTrajectory(trajectory);*/ PathfinderTrajectory.readFromTrajectory(trajectory);
 
   public OI() {
     shift_up_button.whenPressed(new DriveShiftHigh());
@@ -63,7 +63,7 @@ public class OI {
     auto_place_hatch_cargo_button.whenPressed(new SetElevatorHeight(30));
 
     auto_place_cargo_rocket_button.whenPressed(new visionTest());
-    auto_place_hatch_rocket_button.whenPressed(new RunDriveMotionPlanner(  pftraj ) );
+    // auto_place_hatch_rocket_button.whenPressed(new RunDriveMotionPlanner(  pftraj ) );
 
 
     // auto_place_hatch_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_HATCH, AutoMotion.mGoalHeight.LOW));
@@ -81,8 +81,8 @@ public class OI {
 
   public double getForwardAxis() { return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis); }
   public double getTurnAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.turn_axis); }
-  public double getIntakeAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.intakeAxis); }
-  public double getOuttakeAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.outtakeAxis); }
+  public double getIntakeAxis() { return secondaryJoystick.getRawAxis(RobotConfig.controls.intakeAxis); }
+  public double getOuttakeAxis() { return secondaryJoystick.getRawAxis(RobotConfig.controls.outtakeAxis); }
   /**
    * Get intake speed is the difference between intake and outtake axis speeds
    */

@@ -40,6 +40,7 @@ def includeDesktopSupport = true
 
 // Maven central needed for JUnit
 repositories {
+  maven { url 'https://jitpack.io' }
   mavenCentral()
 }
 
@@ -68,10 +69,18 @@ dependencies {
   simulation "edu.wpi.first.halsim:halsim_lowfi:${wpi.wpilibVersion}:${wpi.platforms.desktop}@zip"
   // testCompile 'junit:junit:4.12'
   compile 'com.google.code.gson:gson:2.8.2'
+
+	compile 'com.github.5190GreenHopeRobotics:FalconLibrary:2019.1.19'
+  // compile("org.ghrobotics:FalconLibrary:2019.1.17")
+
   // compile group: 'org.openpnp', name: 'opencv', version: '3.2.0-0'
   // testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.1'
   // testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.1'
-  compile group: 'net.sf.jchart2d', name: 'jchart2d', version: '3.3.2'
+//  compile group: 'net.sf.jchart2d', name: 'jchart2d', version: '3.3.2'
+
+//  compile "org.ghrobotics:lib:0.0.0"
+
+
   testCompileOnly(
     'junit:junit:4.12'
   )

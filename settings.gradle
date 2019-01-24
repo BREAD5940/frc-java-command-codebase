@@ -24,4 +24,3 @@ pluginManagement {
   }
 }
 
-includeBuild '../FalconLibrary/'

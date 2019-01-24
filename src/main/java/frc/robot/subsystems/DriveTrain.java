@@ -9,6 +9,11 @@ import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
+import com.team254.lib.physics.DCMotorTransmission;
+import com.team254.lib.physics.DifferentialDrive;
+
+import org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker;
+
 import edu.wpi.first.wpilibj.SPI;
 
 // import edu.wpi.first.wpilibj.DriverStation;
@@ -47,6 +52,24 @@ public class DriveTrain extends Subsystem {
   public AHRS gyro = new AHRS(SPI.Port.kMXP);
 
   double gyroZero;
+
+  private DCMotorTransmission transmission = new DCMotorTransmission(
+    1 / Constants.kVDrive,
+    Constants.kWheelRadius * Constants.kWheelRadius * Constants.kRobotMass / (2.0 * Constants.kADrive),
+    Constants.kStaticFrictionVoltage
+);
+
+  private DifferentialDrive differentialDrive = new DifferentialDrive(
+      Constants.kRobotMass,
+      Constants.kRobotMomentOfInertia,
+      Constants.kRobotAngularDrag,
+      Constants.kWheelRadius,
+      Constants.kTrackWidth / 2.0,
+      transmission,
+      transmission
+  );
+
+  RamseteTracker trajectoryTracker = new RamseteTracker(Constants.kDriveBeta, Constants.kDriveZeta);
 
   public enum Gear {
     LOW, HIGH;
@@ -196,6 +219,13 @@ public class DriveTrain extends Subsystem {
     m_right_talon.setSelectedSensorPosition(0, 0, 30);
   }
 
+  
+  // Torque per volt derivation
+  // Ka is in radians per second per second. Multiply by wheel radius to get in meters per second per second.
+  // Multiply acceleration by robot mass to get force.
+  // Multiply force by wheel radius to get torque.
+  // Divide by 2 to get the torque for one side because the Ka is for the overall robot.
+
   /**
    * Set the drivetrain target speed as two doubles. For all ye lazy programmers
    * 
@@ -206,24 +236,6 @@ public class DriveTrain extends Subsystem {
     setLeftSpeedRaw(speed_left_raw);
     setRightSpeedRaw(speed_right_raw);
   }
-
-  // /**
-  //  * Set the drivetrain speeds in feet per second
-  //  * @param mleftSpeed in feet per second
-  //  * @param mRightSpeed in feet per second
-  //  */
-  // public void setFeetPerSecond(double mleftSpeed, double mRightSpeed) {
-  //   setSpeeds(
-  //     EncoderLib.distanceToRaw(
-  //       mleftSpeed,
-  //       RobotConfig.driveTrain.left_wheel_effective_diameter / 12,
-  //       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10, 
-  //     EncoderLib.distanceToRaw(
-  //       mRightSpeed,
-  //       RobotConfig.driveTrain.left_wheel_effective_diameter / 12,
-  //       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10
-  //     );
-  // }
 
   public void setFeetPerSecondArbitraryFeedForward(double left, double right, double acceleration){
     double ka;
@@ -263,7 +275,7 @@ public class DriveTrain extends Subsystem {
   }
 
   /**
-   * An even more lazy version of setspeeds This will literally set the
+   * An even more lazy version of set speeds. This will literally set the
    * throttle of the left and right talons (from -1 to 1 ofc, like normal)
    * 
    * @param left_power
@@ -312,10 +324,7 @@ public class DriveTrain extends Subsystem {
    * @param rightAccel
    */
   public void setVelocity(DriveSignal signal, DriveSignal feedforward, double leftAccel, double rightAccel) {
-    // feesignal.getLeft() = signal.getLeft();
-    // signal.getRight() = signal.getRight();
-    // feedforward.getLeft() = feedforward.getLeft();
-    // feedforward.getRight() = feedforward.getRight();
+
 
     //  m_left_talon.set(ControlMode.Velocity, signal.getLeft(), DemandType.ArbitraryFeedForward,
     //          feedforward.getLeft());// + Constants.kDriveLowGearVelocityKd * leftAccel / 1023.0);
@@ -324,6 +333,9 @@ public class DriveTrain extends Subsystem {
 
     m_left_talon.set(ControlMode.Velocity, signal.getLeft(), DemandType.ArbitraryFeedForward,
         feedforward.getLeft() + leftAccel * Constants.kDriveLowGearVelocityKa);
+
+    m_right_talon.set(ControlMode.Velocity, signal.getRight(), DemandType.ArbitraryFeedForward,
+            feedforward.getRight() + rightAccel * Constants.kDriveLowGearVelocityKa);
 
     // m_left_talon.set(ControlMode.Velocity, signal.getLeft());// DemandType.ArbitraryFeedForward,
     //         // feedforward.getLeft() + Constants.kDriveLowGearVelocityKd * leftAccel / 1023.0);
@@ -366,12 +378,12 @@ public class DriveTrain extends Subsystem {
 
     SmartDashboard.putString("forwardspeed / turnspeed: ", forwardspeed + " / " + turnspeed);
 
-    double leftspeed = forwardspeed * 5 + turnspeed * 4; // units are in feet
-    double rightspeed = forwardspeed * 5 - turnspeed * 4;
+    double leftspeed = forwardspeed * 4 + turnspeed * 5; // units are in feet
+    double rightspeed = forwardspeed * 4 - turnspeed * 5;
 
     setMode(NeutralMode.Brake);
-    m_left_talon.configClosedloopRamp(0.3);
-    m_right_talon.configClosedloopRamp(0.3);
+    m_left_talon.configClosedloopRamp(0.4);
+    m_right_talon.configClosedloopRamp(0.4);
 
     /**
      * Set left speed raw in feet per 100ms
@@ -397,29 +409,6 @@ public class DriveTrain extends Subsystem {
     setFeetPerSecond(leftspeed, rightspeed);
     // setSpeeds(-500, -500);
   }
-
-  public static double rotationsToInches(double rotations) {
-    return rotations * (Constants.kDriveWheelDiameterInches * Math.PI);
-  }
-
-  public static double rpmToInchesPerSecond(double rpm) {
-      return rotationsToInches(rpm) / 60;
-  }
-
-  public static double inchesToRotations(double inches) {
-      return inches / (Constants.kDriveWheelDiameterInches * Math.PI);
-  }
-
-  public static double inchesPerSecondToRpm(double inches_per_second) {
-      return inchesToRotations(inches_per_second) * 60;
-  }
-
-  public static double radiansPerSecondToTicksPer100ms(double rad_s) {
-      return rad_s / (Math.PI * 2.0) * 4096.0 / 10.0;
-  }
-
-
-
 
   /**
    * Get the angle of the gyro, accounting for the gyro zero angle
