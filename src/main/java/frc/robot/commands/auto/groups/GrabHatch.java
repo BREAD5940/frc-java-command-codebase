@@ -4,14 +4,13 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.actions.DriveDistance;
-import frc.robot.commands.subsystems.superstructure.elevator.SetElevatorHeight;
+import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.commands.subsystems.intake.OpenClamp;
 import frc.robot.subsystems.superstructure.Elevator.ElevatorPresets;
-import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 
-/** 
- * runs a series of commands to pick up a hatch from the loading station
- * TODO test irl
+/**
+ * runs a series of commands to pick up a hatch from the loading station TODO
+ * test irl
  */
 public class GrabHatch extends CommandGroup{
     public GrabHatch() {

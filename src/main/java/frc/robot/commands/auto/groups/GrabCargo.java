@@ -2,7 +2,6 @@ package frc.robot.commands.auto.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
-import frc.robot.commands.subsystems.superstructure.elevator.SetElevatorHeight;
 
 /** 
  * runs a series of commands to pick up a cargo from the ground

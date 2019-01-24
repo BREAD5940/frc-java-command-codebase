@@ -1,29 +1,31 @@
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
-import frc.robot.commands.subsystems.superstructure.elevator.SetElevatorHeight;
-import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
-import frc.robot.subsystems.superstructure.Elevator;
-import frc.robot.subsystems.superstructure.Wrist;
-import frc.robot.subsystems.superstructure.Elevator.ElevatorPresets;
-import frc.robot.subsystems.superstructure.Wrist.WristPos;
-import frc.robot.commands.auto.groups.*;
-import frc.robot.Robot;
-import frc.robot.commands.auto.actions.*;
-
 import java.util.ArrayList;
 
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
+import frc.robot.commands.auto.actions.AutoIntake;
+import frc.robot.commands.auto.actions.DriveDistance;
+import frc.robot.commands.auto.groups.AutoCommandGroup;
+import frc.robot.commands.auto.groups.GrabCargo;
+import frc.robot.commands.auto.groups.GrabHatch;
+import frc.robot.commands.auto.groups.PlaceHatch;
+import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
+import frc.robot.subsystems.superstructure.Elevator;
+import frc.robot.subsystems.superstructure.Elevator.ElevatorPresets;
+import frc.robot.subsystems.superstructure.Wrist;
+import frc.robot.subsystems.superstructure.Wrist.WristPos;
+
 /**
- * Creates a command group for a specific automatic motion. 
- * Input a type of goal and a height then start the mBigCommandGroup externally
- * In the future, this could change to more inputs depending on the button setup
+ * Creates a command group for a specific automatic motion. Input a type of goal
+ * and a height then start the mBigCommandGroup externally In the future, this
+ * could change to more inputs depending on the button setup
  * 
  * @author Jocelyn McHugo
  */
 public class AutoMotion {
 
-  public enum mHeldPiece{
+  public enum mHeldPiece {
     HATCH, CARGO, NONE
   }
   

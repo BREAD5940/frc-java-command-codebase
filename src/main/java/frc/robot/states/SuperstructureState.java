@@ -1,12 +1,10 @@
 package frc.robot.states;
 
-import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
-import frc.robot.subsystems.superstructure.*;
 import frc.robot.subsystems.superstructure.Superstructure;
-
+import frc.robot.subsystems.superstructure.Wrist;
 
 /**
  * A state the robot superstructure (elevator, wrist, intake, etc.) can be in. Used mainly by the SuperstructurePlanner

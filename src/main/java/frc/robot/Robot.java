@@ -1,26 +1,23 @@
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
-import frc.robot.subsystems.LimeLight;
-import frc.robot.subsystems.superstructure.*;
-import frc.robot.subsystems.*;
-import edu.wpi.first.wpilibj.command.Command;
-
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LIDARSubsystem;
-
-import frc.robot.subsystems.DriveTrain.Gear;
-import edu.wpi.first.wpilibj.SPI;
-
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-
-import com.kauailabs.navx.frc.AHRS;
+import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.superstructure.Elevator;
+import frc.robot.subsystems.superstructure.Superstructure;
 
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly init
@@ -35,8 +32,9 @@ public class Robot extends TimedRobot {
   public static double elevator_setpoint = 0;
   public static double wrist_setpoint = 0;
 
-  public static boolean intakeOpen = false; //TODO I'm aware this shouldn't go here, I'll rewrite the intake subsystem later
-  
+  public static boolean intakeOpen = false; // TODO I'm aware this shouldn't go here, I'll rewrite the intake subsystem
+                                            // later
+
   public static boolean arcade_running = false;
   public static Intake intake = new Intake();
   public static Elevator elevator = new Elevator();
