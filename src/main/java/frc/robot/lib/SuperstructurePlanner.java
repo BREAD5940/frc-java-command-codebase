@@ -6,6 +6,8 @@ import frc.robot.states.SuperstructureState;
 import frc.robot.subsystems.superstructure.*;
 import frc.robot.subsystems.superstructure.Wrist.WristPos;
 import frc.robot.subsystems.superstructure.Superstructure;
+import frc.robot.commands.auto.AutoMotion.mHeldPiece;
+import frc.robot.commands.auto.actions.SetIntakeMode;
 import frc.robot.commands.subsystems.elevator.*;
 import frc.robot.commands.subsystems.intake.CloseClamp;
 import frc.robot.commands.subsystems.intake.OpenClamp;
@@ -25,89 +27,85 @@ public class SuperstructurePlanner{
   //TODO add values for certain elevator positions (ex. the wrist can be <0 if the elevator is >10)
 
   //TODO get actual irl angles TODO make the names less horrible
-  final double eleBottomAngle1 = -10; //The lowest angle1 at which the intake is above the bottom of the elevator
-  final double eleBottomAngle2 = 0; //The lowest angle2 at which the intake is above the bottom of the elevator
-  final double minUnCrashHeight=5; //min height of the elevator where the intake will never hit the ground
+  final double minUnCrashHeight=5; //min elevator height + how much intake is below the bottom of the elevator
 
   final double crossbarHeight = 20;
 
   boolean intakeCrashable = false; //intake capable of hitting the ground
   boolean intakeAtRisk = false; //intake at risk of hitting the crossbar
+  int errorCount; //number of errors in motion
+  int corrCount; //number of corrected items in motion
 
   /**
    * Creates a command group of superstructure motions that will prevent any damage to the intake/elevator
-   * @param goalState
+   * @param goalStateIn
    *    the desired SuperstructureState
    * @param currentState
    *    the current SuperstructureState
    * @return
    *    the ideal command group to get from the currentState to the goalState
    */
-  public CommandGroup plan(SuperstructureState goalState, SuperstructureState currentState){
+  public CommandGroup plan(SuperstructureState goalStateIn, SuperstructureState currentState){
     CommandGroup toReturn = new CommandGroup();
+    SuperstructureState goalState = new SuperstructureState(goalStateIn);
+
+    if(goalState.getHeldPiece()!=currentState.getHeldPiece()){
+      System.out.println("MOTION IMPOSSIBLE -- Superstructure motion cannot change heldPiece. Resolving error.");
+      errorCount++;
+      corrCount++;
+      goalState.setHeldPiece(currentState.getHeldPiece());
+    }
 
     // Checks if the intake will ever be inside the elevator
-    if((currentState.getWrist1Angle()==WristPos.INSIDE_ELEVATOR.angle1 
-        && currentState.getWrist2Angle()==WristPos.INSIDE_ELEVATOR.angle2)
-        || (goalState.getWrist1Angle()==WristPos.INSIDE_ELEVATOR.angle1
-        && goalState.getWrist2Angle()==WristPos.INSIDE_ELEVATOR.angle2)){
+    if((currentState.getWristAngle()==WristPos.HATCH) || (goalState.getWristAngle()==WristPos.HATCH)){
           intakeAtRisk=true;
     }
 
     //checks if the intake will tilt/is tilted below the bottom of the elevator
-    if((goalState.getWrist1Angle()<=eleBottomAngle1 || goalState.getWrist2Angle()<=eleBottomAngle2)
-        ||(currentState.getWrist1Angle()<=eleBottomAngle1 || currentState.getWrist2Angle()<=eleBottomAngle2)){
+    if((goalState.getWristAngle()==WristPos.DOWN) ||(currentState.getWristAngle()==WristPos.DOWN)){
       intakeCrashable=true;
     }
 
     //checks if the elevator will move past the crossbar
     if(intakeAtRisk&&(goalState.getElevatorHeight()>=crossbarHeight&&currentState.getElevatorHeight()<=crossbarHeight)
         || (goalState.getElevatorHeight()<=crossbarHeight&&currentState.getElevatorHeight()>=crossbarHeight)){
-      toReturn.addSequential(new SetWrist(WristPos.OUTSIDE_ELEVATOR)); //Keeps intake outside the elevator so it doesn't hit the crossbar
+      if(currentState.getHeldPiece()==mHeldPiece.HATCH){
+        System.out.println("MOTION UNSAFE -- Intake will hit crossbar and cannot be moved. Moving to max possible height.");
+        errorCount++;
+        corrCount++;
+        goalState.setElevatorHeight(crossbarHeight-1.5); //crossbarHeight - how much intake there is inside the elevator
+      }else{
+        System.out.println("MOTION UNSAFE -- Intake will hit crossbar. Setting to default intake position for movement.");
+        errorCount++;
+        toReturn.addSequential(new SetWrist(WristPos.CARGO)); //Keeps intake outside the elevator so it doesn't hit the crossbar
+      }
     }else{
       intakeAtRisk=false;
     }
     
     //checks if the elevator will move low enough to crash the intake
-    if (goalState.getElevatorHeight()<minUnCrashHeight&&intakeCrashable){
-      toReturn.addSequential(new SetElevatorHeight(goalState.getElevatorHeight()));//set the elevator to the desired height
-      currentState.setElevatorHeight(goalState.getElevatorHeight());
-      //set the intake to just above the bottom of the elevator
-      toReturn.addSequential(new SetWrist(eleBottomAngle1, eleBottomAngle2));//TODO should probably change this to be less bad. something with circles
-      currentState.setWristAngle(goalState.getWrist1Angle(), goalState.getWrist2Angle());
+    if (goalState.getElevatorHeight()<=minUnCrashHeight&&intakeCrashable){
+      System.out.println("MOTION UNSAFE -- Intake will hit ground. Setting to default intake position.");
+      errorCount++;
+      corrCount++;
+      goalState.setWristAngle(Wrist.WristPos.CARGO);
+    }else{
+      intakeCrashable=false;
     }
 
-
-
-    //checks done, fix any remaining differences between current and goal
-
-    if(currentState.getHIntakeOpen()!=goalState.getHIntakeOpen()){
-      if(goalState.getHIntakeOpen()){
-        toReturn.addSequential(new OpenClamp());
-      }else{
-        toReturn.addSequential(new CloseClamp());
-      }
-      currentState.setHIntakeOpen(goalState.getHIntakeOpen());
-    }
-
-    if(currentState.getElevatorHeight()!=goalState.getElevatorHeight()){
-      toReturn.addSequential(new SetElevatorHeight(goalState.getElevatorHeight()));
-      currentState.setElevatorHeight(goalState.getElevatorHeight());
-    }
-
-    if(currentState.getWrist1Angle()!=goalState.getWrist1Angle()){
-      toReturn.addSequential(new SetWrist(goalState.getWrist1Angle()));
-    }
-    if(currentState.getWrist2Angle()!=goalState.getWrist2Angle()){
-      toReturn.addSequential(new SetWrist(goalState.getWrist2Angle()));
-    }
-    currentState.setWristAngle(goalState.getWrist1Angle(), goalState.getWrist2Angle());
+    //move to corrected state
+    toReturn.addSequential(new SetElevatorHeight(goalState.getElevatorHeight()));
+    currentState.setElevatorHeight(goalState.getElevatorHeight());
+    toReturn.addSequential(new SetWrist(goalState.getWristAngle()));
+    currentState.setWristAngle(goalState.getWristAngle());
 
     // current and goal should now be equal
     if(currentState==goalState){
+      System.out.println("MOTION COMPLETED -- "+Integer.valueOf(errorCount)+" error(s) and "
+        +Integer.valueOf(corrCount)+" final correction(s)\n");
       return toReturn;
     }else{
-      System.out.println("We done goofed");
+      System.out.println("MOTION FAILED -- Final states not equal.");
       return null;
     }
   }

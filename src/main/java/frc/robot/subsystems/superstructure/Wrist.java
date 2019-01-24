@@ -22,12 +22,13 @@ public class Wrist extends PIDSubsystem  {
   private TalonSRX s_wrist_talon = new TalonSRX(RobotConfig.wrist.s_wrist_talon_port);
 
   double kf = RobotConfig.wrist.talonConfig.software_position_kf;
+  public WristPos presetAngle;
 
   public enum WristPos {
-    // TODO add positions
-    DEFAULT(0,0),
-    INSIDE_ELEVATOR(0, 90),
-    OUTSIDE_ELEVATOR(0,0);
+    //TODO get actual angles
+    CARGO(0,0),
+    HATCH(90,90),
+    DOWN(-10,0);
 
     public double angle1, angle2;
 
@@ -98,6 +99,12 @@ public class Wrist extends PIDSubsystem  {
   //     RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
   //   m_wrist_talon.set(ControlMode.Position, targetRaw);
   // }
+
+  public void setAngle(WristPos target){
+    // TODO double angle set code here
+
+    this.presetAngle = target;
+  }
 
   @Override
   public void initDefaultCommand() {

@@ -3,9 +3,12 @@ package frc.robot.subsystems.superstructure;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotConfig;
+import frc.robot.commands.auto.AutoMotion;
+import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 import frc.robot.lib.SuperstructurePlanner;
 import frc.robot.states.SuperstructureState;
 import frc.robot.subsystems.superstructure.*;
+import frc.robot.subsystems.superstructure.Wrist.WristPos;
 
 /**
  * First level of control for the superstructure of the robot. Contains all the
@@ -22,7 +25,8 @@ public class Superstructure extends Subsystem {
   public static Intake intake = new Intake();
   private SuperstructurePlanner planner = new SuperstructurePlanner();
   private static final double defaultHeight = RobotConfig.Superstructure.minElevatorHeight;
-  private static final Wrist.WristPos defaultAngle = Wrist.WristPos.DEFAULT;
+  private static final WristPos defaultAngle = Wrist.WristPos.CARGO;
+  private static final mHeldPiece defaultPiece = mHeldPiece.NONE;
   
   public Superstructure(){}
 
@@ -43,11 +47,11 @@ public class Superstructure extends Subsystem {
   
   }
 
-  public CommandGroup moveSuperstructureCombo(double height, double angle1, double angle2, boolean openIntake){
+  public CommandGroup moveSuperstructureCombo(double height, WristPos angle, AutoMotion.mHeldPiece piece){
     mCurrentState.updateToCurrent();
     mReqState.setElevatorHeight(height);
-    mReqState.setWristAngle(angle1, angle2);
-    mReqState.setHIntakeOpen(openIntake);
+    mReqState.setWristAngle(angle);
+    mReqState.setHeldPiece(piece);
 
     planSuperstructure();
 
@@ -55,15 +59,11 @@ public class Superstructure extends Subsystem {
   }
 
   public CommandGroup moveSuperstructureElevator(double height){
-    return this.moveSuperstructureCombo(height, mCurrentState.getWrist1Angle(), mCurrentState.getWrist2Angle(), false);
+    return this.moveSuperstructureCombo(height, mCurrentState.getWristAngle(), defaultPiece);
   }
 
   public CommandGroup moveSuperstructureWrist(Wrist.WristPos angle){
-    return this.moveSuperstructureCombo(defaultHeight, angle.angle1, angle.angle2, false);
-  }
-
-  public CommandGroup moveSuperstructureIntake(boolean openIntake){
-    return this.moveSuperstructureCombo(defaultHeight, defaultAngle.angle1, defaultAngle.angle2, openIntake);
+    return this.moveSuperstructureCombo(defaultHeight, angle, defaultPiece);
   }
 
 

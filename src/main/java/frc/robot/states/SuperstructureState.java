@@ -2,28 +2,28 @@ package frc.robot.states;
 
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
+import frc.robot.commands.auto.AutoMotion;
+import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 import frc.robot.subsystems.superstructure.*;
 import frc.robot.subsystems.superstructure.Superstructure;
 
 
 /**
- * A state the robot superstructure (elevator, wrist, intake, etc.) can be in. Used mainly by the SuperStructurePlanner
+ * A state the robot superstructure (elevator, wrist, intake, etc.) can be in. Used mainly by the SuperstructurePlanner
  * 
  * @author Jocelyn McHugo
  */
 public class SuperstructureState{
 
   private double elevatorHeight;
-  private double wrist1Angle; //TODO maybe rename these to be more descriptive?
-  private double wrist2Angle;
-  private boolean hIntakeOpen = false; // TODO again with the descriptive thing
+  private Wrist.WristPos wristAngle;
+  private AutoMotion.mHeldPiece piece = mHeldPiece.NONE;
 
   /**
    * Create a new state with default params
    */
   public SuperstructureState(){
-    this(RobotConfig.Superstructure.minElevatorHeight, RobotConfig.Superstructure.minWrist1Angle,
-          RobotConfig.Superstructure.minWrist2Angle, false);
+    this(RobotConfig.Superstructure.minElevatorHeight, Wrist.WristPos.CARGO, mHeldPiece.NONE);
   }
 
   /**
@@ -33,27 +33,23 @@ public class SuperstructureState{
    */
   public SuperstructureState(SuperstructureState existing){
     this.elevatorHeight=existing.getElevatorHeight();
-    this.wrist1Angle=existing.getWrist1Angle();
-    this.wrist2Angle = existing.getWrist2Angle();
-    this.hIntakeOpen=existing.getHIntakeOpen();
+    this.wristAngle=existing.getWristAngle();
+    this.piece=existing.getHeldPiece();
   }
 
   /**
    * create a new state with all params
    * @param height
    *    the height of the elevator for the state
-   * @param angle1
-   *    the first angle of the wrist for the state
-   * @param angle2
-   *    the second angle of the wrist for the state
-   * @param hIntakeOpen
-   *    if the hatch intake is open for the state
+   * @param angle
+   *    the angle preset of the wrist for the state
+   * @param piece
+   *    the piece the robot is holding
    */
-  public SuperstructureState(double height, double angle1, double angle2, boolean hIntakeOpen){
+  public SuperstructureState(double height, Wrist.WristPos angle, mHeldPiece piece){
     this.elevatorHeight = height;
-    this.wrist1Angle = angle1;
-    this.wrist2Angle = angle2;
-    this.hIntakeOpen=hIntakeOpen;
+    this.wristAngle = angle;
+    this.piece = piece;
   }
 
   /**
@@ -71,20 +67,7 @@ public class SuperstructureState{
    *    the desired preset wrist position
    */
   public void setWristAngle(Wrist.WristPos angle){
-    this.wrist1Angle=angle.angle1;
-    this.wrist2Angle=angle.angle2;
-  }
-
-  /**
-   * set the angle of the wrist for the state with raw angles
-   * @param angle1
-   *    the desired angle of the first joint
-   * @param angle2
-   *    the desired angle of the second joint
-   */
-  public void setWristAngle(double angle1, double angle2){
-    this.wrist1Angle=angle1;
-    this.wrist2Angle=angle2;
+    this.wristAngle = angle;
   }
 
   /**
@@ -92,8 +75,8 @@ public class SuperstructureState{
    * @param open
    *    if the hatch intake is open
    */
-  public void setHIntakeOpen(boolean open){
-    this.hIntakeOpen=open;
+  public void setHeldPiece(mHeldPiece piece){
+    this.piece = piece;
   }
 
   /**
@@ -102,9 +85,8 @@ public class SuperstructureState{
   public void updateToCurrent(){
     //TODO make seperate wrist angles, change intakeOpen from public boolean to get() function in Intake.java
     this.elevatorHeight = Superstructure.elevator.getHeight();
-    this.wrist1Angle= Superstructure.wrist.getAngle();
-    this.wrist2Angle= Superstructure.wrist.getAngle();
-    this.hIntakeOpen= Robot.intakeOpen;
+    this.wristAngle= Superstructure.wrist.presetAngle;
+    // can't automatically set what piece is held w/o a bunch of sensors
   }
 
 
@@ -112,15 +94,11 @@ public class SuperstructureState{
     return this.elevatorHeight;
   }
 
-  public double getWrist1Angle(){
-    return this.wrist1Angle;
+  public Wrist.WristPos getWristAngle(){
+    return this.wristAngle;
   }
 
-  public double getWrist2Angle(){
-    return this.wrist2Angle;
-  }
-
-  public boolean getHIntakeOpen(){
-    return this.hIntakeOpen;
+  public mHeldPiece getHeldPiece(){
+    return this.piece;
   }
 }
