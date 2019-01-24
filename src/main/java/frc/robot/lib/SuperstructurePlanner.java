@@ -1,14 +1,14 @@
 package frc.robot.lib;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.subsystems.wrist.SetWrist;
+import frc.robot.commands.subsystems.superstructure.wrist.*;
 import frc.robot.states.SuperstructureState;
 import frc.robot.subsystems.superstructure.*;
 import frc.robot.subsystems.superstructure.Wrist.WristPos;
 import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 import frc.robot.commands.auto.actions.SetIntakeMode;
-import frc.robot.commands.subsystems.elevator.*;
+import frc.robot.commands.subsystems.superstructure.elevator.*;
 import frc.robot.commands.subsystems.intake.CloseClamp;
 import frc.robot.commands.subsystems.intake.OpenClamp;
 

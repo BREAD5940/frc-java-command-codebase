@@ -11,7 +11,7 @@ import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.command.Command;
 
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.superstructure.Intake;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LIDARSubsystem;
 
 import frc.robot.subsystems.DriveTrain.Gear;

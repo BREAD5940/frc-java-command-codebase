@@ -1,4 +1,4 @@
-package frc.robot.commands.subsystems.wrist;
+package frc.robot.commands.subsystems.superstructure.wrist;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotConfig;

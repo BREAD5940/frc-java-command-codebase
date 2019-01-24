@@ -2,10 +2,12 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
-import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
+import frc.robot.commands.subsystems.superstructure.elevator.SetElevatorHeight;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.subsystems.superstructure.Elevator;
+import frc.robot.subsystems.superstructure.Wrist;
 import frc.robot.subsystems.superstructure.Elevator.ElevatorPresets;
+import frc.robot.subsystems.superstructure.Wrist.WristPos;
 import frc.robot.commands.auto.groups.*;
 import frc.robot.Robot;
 import frc.robot.commands.auto.actions.*;
@@ -89,12 +91,12 @@ public class AutoMotion {
     ArrayList<Command> toReturn = new ArrayList<Command>();
     if (this.gType==mGoalType.RETRIEVE_CARGO){
       // Set the intake to cargo mode
-      toReturn.add(new SetIntakeMode(mHeldPiece.CARGO));
+      toReturn.add(Robot.superstructure.moveSuperstructureWrist(WristPos.CARGO));
       // Predefined grab command
       toReturn.add(new GrabCargo());
     }else if (this.gType==mGoalType.RETRIEVE_HATCH){
       // Set the intake to hatch mode
-      toReturn.add(new SetIntakeMode(mHeldPiece.HATCH));
+      toReturn.add(Robot.superstructure.moveSuperstructureWrist(WristPos.HATCH));
       // Predefined grab command
       toReturn.add(new GrabHatch());
     }
@@ -110,7 +112,11 @@ public class AutoMotion {
     ArrayList<Command> toReturn = new ArrayList<Command>();
 
     // Set intake mode
-    toReturn.add(new SetIntakeMode(this.piece));
+    if(this.piece==mHeldPiece.HATCH){
+      toReturn.add(Robot.superstructure.moveSuperstructureWrist(WristPos.HATCH));
+    }else{
+      toReturn.add(Robot.superstructure.moveSuperstructureWrist(WristPos.CARGO));
+    }
 
     // Align with the vision targets, slightly back from the goal
     toReturn.add(new FollowVisionTarget(0.7, 70, 20)); // TODO check % value TODO this assumes a perfect FollowVisionTarget command
@@ -123,7 +129,7 @@ public class AutoMotion {
       toReturn.add(new DriveDistance(2,20)); // TODO check distances
 
       // Actuate intake so it points down into the bay
-      toReturn.add(new SetIntakeMode());
+      toReturn.add(Robot.superstructure.moveSuperstructureWrist(Wrist.WristPos.DOWN));
     }else{
       // Drive forward so the intake is flush with the port/hatch
       toReturn.add(new DriveDistance(1,20)); // TODO check distances
