@@ -27,6 +27,8 @@ import org.ghrobotics.lib.localization.TankEncoderLocalization;
 import frc.robot.lib.EncoderLib;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.DriveSignal;
+import kotlin.ranges.RangesKt;
+
 import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
@@ -71,10 +73,16 @@ public class DriveTrain extends Subsystem {
 
   private RamseteTracker ramseteTracker;
 
-  public enum Gear {
+  public static enum Gear {
     LOW, HIGH;
   }
   Gear gear;
+
+  public static enum TrajectoryTrackerMode {
+    RAMSETE, PUREPURSUIT, FEEDFORWARD, PID
+  }
+  TrajectoryTrackerMode trackerMode = TrajectoryTrackerMode.RAMSETE;
+
 
   private DCMotorTransmission transmission;
   private DifferentialDrive differentialDrive;
@@ -139,13 +147,27 @@ public class DriveTrain extends Subsystem {
     return instance;
   }
 
-  @Override
   public WPI_TalonSRX getLeftMotor() {
     return m_left_talon;
   }
   
   public RamseteTracker getRamseteTracker() {
     return ramseteTracker;
+  }
+
+  public TrajectoryTracker getTrajectoryTracker() {
+    switch (trackerMode) {
+      case RAMSETE:
+        return ramseteTracker;
+      case FEEDFORWARD:
+        return null;
+      case PUREPURSUIT:
+        return null;
+      case PID:
+        return null;
+      default:
+        return ramseteTracker;
+    }
   }
 
   public void init() {

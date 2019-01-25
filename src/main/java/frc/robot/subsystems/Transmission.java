@@ -5,22 +5,32 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
+import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
+import org.ghrobotics.lib.wrappers.ctre.FalconSRXKt;
+
 import frc.robot.lib.enums.TransmissionSide;
+
+import frc.robot.RobotConfig.driveTrain;
 
 public class Transmission {
   public static enum EncoderMode {
     NONE, CTRE_MagEncoder_Relative;
   }
 
-  private WPI_TalonSRX mMaster;
+  private FalconSRX mMaster;
 
-  private WPI_TalonSRX mSlave;
+  private FalconSRX mSlave;
 
   private TransmissionSide side;
 
+  NativeUnitLengthModel lengthModel;
+
   public Transmission(int masterPort, int slavePort, EncoderMode mode, TransmissionSide side, boolean isInverted) {
-    mMaster = new WPI_TalonSRX(masterPort);
-    mSlave = new WPI_TalonSRX(slavePort);
+    if (side == TransmissionSide.LEFT){ lengthModel = driveTrain.LEFT_NATIVE_UNIT_LENGTH_MODEL; } else { lengthModel = driveTrain.RIGHT_NATIVE_UNIT_LENGTH_MODEL; }
+
+    mMaster = new FalconSRX(masterPort);
+    mSlave = new FalconSRX(slavePort, lengthModel);
 
     this.side = side;
     

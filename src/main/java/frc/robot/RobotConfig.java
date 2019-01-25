@@ -1,5 +1,11 @@
 package frc.robot;
 
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
+
 import frc.robot.subsystems.DriveTrain.Gear;
 
 public class RobotConfig {
@@ -56,7 +62,7 @@ public class RobotConfig {
     }
   }
   
-  public class driveTrain {
+  public static class driveTrain {
     /**
     * Robot configuration
     */
@@ -65,6 +71,11 @@ public class RobotConfig {
     public static final double wheel_base = 2.5;
     public static final double left_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
     public static final double right_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
+
+    public static final Length left_radius = LengthKt.getInch(3);
+    public static final Length right_radius = LengthKt.getInch(3);
+
+
     // Set speeds for teleop
     public static final double max_forward_speed_high = 7; // Feet per second forward velocity
     public static final double max_turn_speed_high = 7; // Max turn speed in degrees per second
@@ -75,6 +86,12 @@ public class RobotConfig {
     // public static final double VELOCITY_PULSES_PER_ROTATION = 409.6f;
     public static final double POSITION_PULSES_PER_ROTATION = 4096;
     
+    public static final NativeUnit kDriveSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
+
+    public static final NativeUnitLengthModel LEFT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, left_radius);
+    public static final NativeUnitLengthModel RIGHT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, right_radius);
+
+
     // Pathfinder shit
     public static final double left_static_kv = 0.05; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
     public static final double right_static_kv = 0.05; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction

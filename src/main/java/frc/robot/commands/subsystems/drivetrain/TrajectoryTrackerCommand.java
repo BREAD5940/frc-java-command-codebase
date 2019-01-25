@@ -2,6 +2,9 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Robot;
+import frc.robot.subsystems.DriveTrain;
+
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.localization.Localization;
 import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
@@ -18,22 +21,19 @@ import java.util.function.Supplier;
 public class TrajectoryTrackerCommand extends Command {
     private TrajectoryTracker trajectoryTracker;
     private Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource;
-    private TrajectoryTrackerDriveBase driveBase;
+    private DriveTrain driveBase;
     private Localization localization;
     private boolean reset;
 
-    public TrajectoryTrackerCommand(Subsystem tankDriveSubsystem, TrajectoryTrackerDriveBase driveBase, 
-            Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource){
-        this(tankDriveSubsystem, driveBase, trajectorySource, false);
+    public TrajectoryTrackerCommand(DriveTrain driveBase, Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource){
+        this(driveBase, trajectorySource, false);
     }
 
-    public TrajectoryTrackerCommand(Subsystem tankDriveSubsystem, TrajectoryTrackerDriveBase driveBase, 
-            Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource, boolean reset){
-        requires(tankDriveSubsystem);
-
+    public TrajectoryTrackerCommand(DriveTrain driveBase, Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource, boolean reset){
+        requires(driveBase);
+        this.driveBase = driveBase;
         this.trajectoryTracker = driveBase.getTrajectoryTracker();
         this.trajectorySource = trajectorySource;
-        this.driveBase = driveBase;
         this.reset = reset;
     }
 
