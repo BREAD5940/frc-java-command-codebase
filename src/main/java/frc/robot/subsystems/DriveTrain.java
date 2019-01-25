@@ -11,23 +11,23 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.team254.lib.physics.DCMotorTransmission;
 import com.team254.lib.physics.DifferentialDrive;
-
 import org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker;
-
 import edu.wpi.first.wpilibj.SPI;
-
-// import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
-// import frc.robot.RobotConfig.driveTrain;
 import frc.robot.commands.subsystems.drivetrain.ArcadeDrive;
-// import frc.robot.commands.stick_drive;
+import org.ghrobotics.lib.localization.Localization;
+import org.ghrobotics.lib.localization.TankEncoderLocalization;
 import frc.robot.lib.EncoderLib;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.DriveSignal;
+import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
@@ -50,31 +50,23 @@ public class DriveTrain extends Subsystem {
   public TalonSRX m_left_talon, s_left_talon, m_right_talon, s_right_talon;
 
   public AHRS gyro = new AHRS(SPI.Port.kMXP);
-
   double gyroZero;
 
-  private DCMotorTransmission transmission = new DCMotorTransmission(
-    1 / Constants.kVDrive,
-    Constants.kWheelRadius * Constants.kWheelRadius * Constants.kRobotMass / (2.0 * Constants.kADrive),
-    Constants.kStaticFrictionVoltage
-);
+  private Localization localization;
 
-  private DifferentialDrive differentialDrive = new DifferentialDrive(
-      Constants.kRobotMass,
-      Constants.kRobotMomentOfInertia,
-      Constants.kRobotAngularDrag,
-      Constants.kWheelRadius,
-      Constants.kTrackWidth / 2.0,
-      transmission,
-      transmission
-  );
+  public Localization getLocalization() {
+    return localization;
+  }
 
-  RamseteTracker trajectoryTracker = new RamseteTracker(Constants.kDriveBeta, Constants.kDriveZeta);
+  private RamseteTracker ramseteTracker;
 
   public enum Gear {
     LOW, HIGH;
   }
   Gear gear;
+
+  private DCMotorTransmission transmission;
+  private DifferentialDrive differentialDrive;
 
 
   private DriveTrain() {
@@ -82,16 +74,7 @@ public class DriveTrain extends Subsystem {
     s_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.s_left_talon_port);
     m_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.m_right_talon_port);
     s_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.s_right_talon_port);
-  }
 
-  public synchronized static DriveTrain getInstance() {
-    return instance;
-}
-
-
-
-
-  public void init() {
     m_left_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
     m_right_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
     s_left_talon.set(ControlMode.Follower, m_left_talon.getDeviceID());
@@ -112,6 +95,44 @@ public class DriveTrain extends Subsystem {
 
     m_left_talon.setInverted(true);
     s_left_talon.setInverted(true);
+
+
+    localization = new TankEncoderLocalization(
+      () -> Rotation2dKt.getDegree(DriveTrain.getInstance().getGyro()),
+      () -> LengthKt.getFeet(DriveTrain.getInstance().getLeftDistance() ),
+      () -> LengthKt.getFeet(DriveTrain.getInstance().getRightDistance())
+    );
+
+    transmission = new DCMotorTransmission(
+      1 / Constants.kVDrive,
+      Constants.kWheelRadius * Constants.kWheelRadius * Constants.kRobotMass / (2.0 * Constants.kADrive),
+      Constants.kStaticFrictionVoltage
+    );
+
+    differentialDrive = new DifferentialDrive(
+      Constants.kRobotMass,
+      Constants.kRobotMomentOfInertia,
+      Constants.kRobotAngularDrag,
+      Constants.kWheelRadius,
+      Constants.kTrackWidth / 2.0,
+      transmission,
+      transmission
+    );
+
+    ramseteTracker = new RamseteTracker(Constants.kDriveBeta, Constants.kDriveZeta);
+
+  }
+
+  public synchronized static DriveTrain getInstance() {
+    return instance;
+  }
+
+
+  public RamseteTracker getRamseteTracker() {
+    return ramseteTracker;
+  }
+
+  public void init() {
 
     zeroEncoders();
     setHighGear();
@@ -365,7 +386,7 @@ public class DriveTrain extends Subsystem {
 
     // if (RobotConfig.controls.driving_squared) {
       forwardspeed = forwardspeed * Math.abs(forwardspeed);
-      // turnspeed = turnspeed * Math.abs(turnspeed);
+      turnspeed = turnspeed * Math.abs(turnspeed);
     // }
     // if (Robot.drivetrain.gear == Gear.HIGH) {
     //   forwardspeed = forwardspeed * RobotConfig.driveTrain.max_forward_speed_high;
@@ -378,12 +399,18 @@ public class DriveTrain extends Subsystem {
 
     SmartDashboard.putString("forwardspeed / turnspeed: ", forwardspeed + " / " + turnspeed);
 
+    // turnspeed = turnspeed * 0.7;
+
+    m_left_talon.set(ControlMode.PercentOutput, forwardspeed, DemandType.ArbitraryFeedForward, turnspeed );
+    m_right_talon.set(ControlMode.PercentOutput, forwardspeed, DemandType.ArbitraryFeedForward, -turnspeed );
+    // s_right_talon.set(ControlMode.PercentOutput, forwardspeed, DemandType.ArbitraryFeedForward, -turnspeed );
+
     double leftspeed = forwardspeed * 4 + turnspeed * 5; // units are in feet
     double rightspeed = forwardspeed * 4 - turnspeed * 5;
 
     setMode(NeutralMode.Brake);
-    m_left_talon.configClosedloopRamp(0.4);
-    m_right_talon.configClosedloopRamp(0.4);
+    m_left_talon.configClosedloopRamp(0.2);
+    m_right_talon.configClosedloopRamp(0.2);
 
     /**
      * Set left speed raw in feet per 100ms
@@ -406,7 +433,10 @@ public class DriveTrain extends Subsystem {
     // ) / 10;
 
     // setPowers(leftspeed, rightspeed);
-    setFeetPerSecond(leftspeed, rightspeed);
+    // setFeetPerSecond(leftspeed, rightspeed);
+
+    // setPowers(0.5, 0.5);
+
     // setSpeeds(-500, -500);
   }
 

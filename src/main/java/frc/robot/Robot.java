@@ -31,13 +31,13 @@ public class Robot extends TimedRobot {
   public static SendableChooser<AutoMotion.mGoalHeight> mGh;
   public static OI m_oi;
   // public static Intake intake = new Intake();
-  public static Elevator elevator = new Elevator();
+  // public static Elevator elevator = new Elevator();
   public static DriveTrain drivetrain = DriveTrain.getInstance();
   public static LimeLight limelight = new LimeLight();
   public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
   public static SendableChooser<AutoMotion> backupAutoSelect = new SendableChooser<AutoMotion>();
-  private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 7, 3);
-  private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 0, 6);
+  private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
+  private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 2, 6);
   public static AutoMotion m_auto;
   SendableChooser<Command> m_chooser = new SendableChooser<Command>();
   public static Compressor compressor = new Compressor(9);
@@ -93,13 +93,13 @@ public class Robot extends TimedRobot {
     SmartDashboard.putData("Goal Height", mGh);
     SmartDashboard.putData("Backup Selector (Will not be used in most cases)", backupAutoSelect);
     SmartDashboard.putData(drivetrain);
-    SmartDashboard.putData(elevator);
+    // SmartDashboard.putData(elevator);
     // SmartDashboard.putData(intake);
 
     compressor.setClosedLoopControl(true);
 
     drivetrain.init();
-    elevator.init();
+    // elevator.init();
     // wrist.init();
     drivetrain.zeroGyro();
 
@@ -254,8 +254,8 @@ public class Robot extends TimedRobot {
 
     // SmartDashboard.putNumber("Throttle output", throttle.getRawAxis(1));
     SmartDashboard.putNumber("Elevator setpoint", 20000);
-    SmartDashboard.putNumber("Elevator height", elevator.getHeight());
-    SmartDashboard.putNumber("Elevator error", 4096 - elevator.getHeight());
+    // SmartDashboard.putNumber("Elevator height", elevator.getHeight());
+    // SmartDashboard.putNumber("Elevator error", 4096 - elevator.getHeight());
 
     // SmartDashboard.putNumber("Wrist angle setpoint", wrist_setpoint);
     // SmartDashboard.putNumber("Wrist talon pos",

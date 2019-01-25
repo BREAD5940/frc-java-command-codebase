@@ -16,21 +16,21 @@ import frc.robot.Robot;
 public class IntakeTelop extends Command {
   public IntakeTelop() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.intake);
+    // requires(Robot.intake);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     System.out.println("Run intake init!");
-    Robot.intake.setSpeed(Robot.m_oi.getIntakeAxis());
+    // Robot.intake.setSpeed(Robot.m_oi.getIntakeAxis());
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
     // System.out.println("Run intake execute!");
-    Robot.intake.setSpeed(Robot.m_oi.getIntakeSpeed());
+    // Robot.intake.setSpeed(Robot.m_oi.getIntakeSpeed());
   }
 
   // Make this return true when this Command no longer needs to run execute()
