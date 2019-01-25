@@ -253,7 +253,7 @@ public class Robot extends TimedRobot {
 
     // Stop auto from hindering human operators/drivers 
     //TODO not sure if this is right and/or the best way to do this
-    if(m_oi.getForwardAxis()>0.5||m_oi.getTurnAxis()>0.5){
+    if(Math.abs(m_oi.getForwardAxis())>0.5 || Math.abs(m_oi.getTurnAxis())>0.5) {
       new ArcadeDrive().start();
     }
     if(m_oi.getElevatorAxis()>0.5){
