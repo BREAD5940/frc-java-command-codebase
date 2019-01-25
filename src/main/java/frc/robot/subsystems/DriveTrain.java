@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.team254.lib.physics.DCMotorTransmission;
 import com.team254.lib.physics.DifferentialDrive;
@@ -34,7 +35,6 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerDriveBase;
-import org.ghrobotics.lib.wrappers.FalconMotorKt;
 
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
@@ -47,16 +47,14 @@ import org.ghrobotics.lib.wrappers.FalconMotorKt;
  * 
  * @author Matthew Morley
  */
-public class DriveTrain extends Subsystem implements TrajectoryTrackerDriveBase {
-
-  // private FalconMotorKt test;
-
+public class DriveTrain extends Subsystem {
+  
   private static DriveTrain instance;
 
   public MotionProfileStatus m_left_MP_Status = new MotionProfileStatus();
   public MotionProfileStatus m_right_MP_Status = new MotionProfileStatus();
 
-  public TalonSRX m_left_talon, s_left_talon, m_right_talon, s_right_talon;
+  private WPI_TalonSRX m_left_talon, s_left_talon, m_right_talon, s_right_talon;
 
   public AHRS gyro = new AHRS(SPI.Port.kMXP);
   double gyroZero;
@@ -83,10 +81,10 @@ public class DriveTrain extends Subsystem implements TrajectoryTrackerDriveBase 
 
 
   private DriveTrain() {
-    m_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.m_left_talon_port);
-    s_left_talon = new TalonSRX(RobotConfig.driveTrain.leftTalons.s_left_talon_port);
-    m_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.m_right_talon_port);
-    s_right_talon = new TalonSRX(RobotConfig.driveTrain.rightTalons.s_right_talon_port);
+    m_left_talon = new WPI_TalonSRX(RobotConfig.driveTrain.leftTalons.m_left_talon_port);
+    s_left_talon = new WPI_TalonSRX(RobotConfig.driveTrain.leftTalons.s_left_talon_port);
+    m_right_talon = new WPI_TalonSRX(RobotConfig.driveTrain.rightTalons.m_right_talon_port);
+    s_right_talon = new WPI_TalonSRX(RobotConfig.driveTrain.rightTalons.s_right_talon_port);
 
     m_left_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
     m_right_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
@@ -141,7 +139,11 @@ public class DriveTrain extends Subsystem implements TrajectoryTrackerDriveBase 
     return instance;
   }
 
-
+  @Override
+  public WPI_TalonSRX getLeftMotor() {
+    return m_left_talon;
+  }
+  
   public RamseteTracker getRamseteTracker() {
     return ramseteTracker;
   }
@@ -502,7 +504,7 @@ public class DriveTrain extends Subsystem implements TrajectoryTrackerDriveBase 
   }
 
   public void tankDrive(double leftPercent, double rightPercent){
-    getLeftMotor().setPercentOutput(leftPercent);
+    m_left_talon.setPercentOutput(leftPercent);
     getRightMotor().setPercentOutput(rightPercent);
   }
 
