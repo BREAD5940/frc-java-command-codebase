@@ -1,12 +1,31 @@
 package frc.robot.commands.auto.routines;
 
+import java.util.ArrayList;
+
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.subsystems.drivetrain.RamsetePathFollower;
+import frc.robot.commands.subsystems.drivetrain.SetInitialOdometry;
 
 public class ForwardFiveMeters extends CommandGroup {
   /**
-   * Add your docs here.
+   * Routines are a command group of paths used during autonomous. 
+   * (side note: the only reason that I'm not using Auto Motion is because 
+   * these routines are [for now] mostly sandstorm specific due to positioning
+   * requirements)
+   * Use them just like command groups
    */
   public ForwardFiveMeters() {
+    
+    TimedTrajectory<Pose2dWithCurvature> trajectory = Trajectories.forwardFiveMeters;
+
+    addSequential(new SetInitialOdometry(trajectory));
+    
+    addSequential(new RamsetePathFollower( trajectory ));
+
     // Add Commands here:
     // e.g. addSequential(new Command1());
     // addSequential(new Command2());

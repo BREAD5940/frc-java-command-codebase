@@ -1,30 +1,25 @@
 package frc.robot.commands.subsystems.drivetrain;
 
-import org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class RamsetePathFollower extends Command {
+public class SetInitialOdometry extends Command {
 
-  TimedTrajectory<Pose2dWithCurvature> trajectory_;
+  Pose2dWithCurvature initialPose;
 
-  RamseteTracker tracker_;
-
-  public RamsetePathFollower(TimedTrajectory<Pose2dWithCurvature> trajectory) {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
+  public SetInitialOdometry(TimedTrajectory<Pose2dWithCurvature> trajectory) {
     requires(Robot.drivetrain);
-    trajectory_ = trajectory;
-    tracker_ = Robot.drivetrain.getRamseteTracker();
-    tracker_.reset(trajectory_);
+    initialPose = trajectory.getFirstState().getState();
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.drivetrain.getLocalization().reset(initialPose.getPose());
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -35,7 +30,7 @@ public class RamsetePathFollower extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true
