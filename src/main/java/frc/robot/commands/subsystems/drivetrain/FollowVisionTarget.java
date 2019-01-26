@@ -96,24 +96,26 @@ public class FollowVisionTarget extends Command {
       double sizeData = data[3];
       turnSpeed = limelightData * (1/30) ;
 
-      forwardSpeed = 0;
+      // forwardSpeed = 0;
       
-      leftSpeedRaw = EncoderLib.distanceToRaw(forwardSpeed + turnSpeed, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, 
-      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
-      rightSpeedRaw = EncoderLib.distanceToRaw(forwardSpeed - turnSpeed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, 
-      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
+      // leftSpeedRaw = EncoderLib.distanceToRaw(forwardSpeed + turnSpeed, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, 
+      // RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
+      // rightSpeedRaw = EncoderLib.distanceToRaw(forwardSpeed - turnSpeed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, 
+      // RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
 
-      // System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeftDistance() + 
-        // " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());
-      // System.out.println("TURN PID: Setpoint: " + turnPID.getSetpoint()+ 
-        // " Error: " + turnPID.getError() + " OUTPUT VELOCITY (ft/s): " + turnPID.getOutput());
+      // // System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeftDistance() + 
+      //   // " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());
+      // // System.out.println("TURN PID: Setpoint: " + turnPID.getSetpoint()+ 
+      //   // " Error: " + turnPID.getError() + " OUTPUT VELOCITY (ft/s): " + turnPID.getOutput());
 
-      System.out.println("Limelight data: " + limelightData + " Turn speed: " + turnSpeed);
+      // System.out.println("Limelight data: " + limelightData + " Turn speed: " + turnSpeed);
 
-      double targetSizeSetpoint = 2;
-      double distanceRatio = targetSizeSetpoint - sizeData;
+      // double targetSizeSetpoint = 2;
+      // double distanceRatio = targetSizeSetpoint - sizeData;
 
-      double forwardSpeed = distanceRatio * 0.5;
+      // double forwardSpeed = distanceRatio * 0.5;
+
+      while (limelightData >= -1 && limelightData <= 1) {
 
       if ( forwardSpeed > 0.5 ) { forwardSpeed = 0.5;}
       if ( forwardSpeed < -0.5 ) { forwardSpeed = -0.5;}
@@ -122,8 +124,11 @@ public class FollowVisionTarget extends Command {
       // Robot.drivetrain.setSpeeds(leftSpeedRaw, rightSpeedRaw);
       Robot.drivetrain.setPowers(forwardSpeed + limelightData / 20, forwardSpeed - limelightData / 20);
 
+
+      
+      }
     } else {
-      System.out.println("No targets currently being tracked! Can't track thin air, can I?");
+      System.out.println("No targets currently being tracked!");
       Robot.drivetrain.setPowers(0, 0);
     }
   }

@@ -8,6 +8,7 @@ import frc.robot.commands.auto.AutoMotion.mGoalType;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
 import frc.robot.commands.auto.AutoMotion;
+import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 
 
 /**
@@ -39,10 +40,11 @@ public class OI {
   public OI() {
     shift_up_button.whenPressed(new DriveShiftHigh());
     shift_down_button.whenPressed(new DriveShiftLow());
+    auto_place_hatch_cargo_button.whenPressed(new FollowVisionTarget(0.1, 5));
     // open_clamp_button.whenPressed(new OpenClamp());
     // close_clamp_button.whenPressed(new CloseClamp());
     auto_place_cargo_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_CARGO, AutoMotion.mGoalHeight.LOW));
-    auto_place_hatch_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_HATCH, AutoMotion.mGoalHeight.LOW));
+    //auto_place_hatch_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_HATCH, AutoMotion.mGoalHeight.LOW));
     auto_place_cargo_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_CARGO, AutoMotion.mGoalHeight.LOW));
     auto_place_hatch_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_HATCH, AutoMotion.mGoalHeight.LOW));
     auto_grab_hatch_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_HATCH, AutoMotion.mGoalHeight.LOW));

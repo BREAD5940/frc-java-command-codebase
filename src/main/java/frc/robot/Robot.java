@@ -45,6 +45,7 @@ public class Robot extends TimedRobot {
   public static double elevator_setpoint = 0;
   public static double wrist_setpoint = 0;
   
+  
   public static boolean arcade_running = false;
   public static Intake intake = new Intake();
   public static Elevator elevator = new Elevator();
@@ -249,7 +250,12 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putString("Limelight Ntables", LimeLight.getData().toString());
 
     // Limelight stuff
+    double a = 10.3;
+    double b = 2;
     double[] limelightdata = limelight.getData();
+    double y = limelightdata[3];
+    double distance = Math.round(Math.pow((a/y), (1/b)));
+
 
     SmartDashboard.putNumber("Vision targets?", limelightdata[0]);
     SmartDashboard.putNumber("Horizontal offset", limelightdata[1]);
@@ -257,6 +263,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Target area", limelightdata[3]);
     SmartDashboard.putNumber("Target skew", limelightdata[4]);
     SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
+    SmartDashboard.putNumber("Distance to target", distance);
 
     // logger.update();
   }
