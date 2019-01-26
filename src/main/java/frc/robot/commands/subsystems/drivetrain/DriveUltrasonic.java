@@ -10,7 +10,6 @@ package frc.robot.commands.subsystems.drivetrain;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.lib.TerriblePID;
-import frc.robot.lib.motion.DriveMotorState;
 import frc.robot.lib.obj.DriveSignal;
 import frc.robot.subsystems.DifferentialUltrasonicSensor;
 import frc.robot.subsystems.DifferentialUltrasonicSensor.RangeMode;

@@ -3,18 +3,21 @@ package frc.robot.commands.subsystems.drivetrain;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Arrays;
+import java.util.List;
+
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.lib.Logger;
-import frc.robot.lib.motion.DriveMotorState;
 import frc.robot.lib.motion.Odometer;
 import frc.robot.lib.motion.followers.PathFollower;
 import frc.robot.lib.motion.purepursuit.Path;
 import frc.robot.lib.motion.purepursuit.PathGenerator;
 import frc.robot.lib.motion.purepursuit.Point;
 import frc.robot.lib.motion.purepursuit.WayPoint2;
+import frc.robot.lib.obj.DriveSignal;
 
 public class PurePursuit extends Command {
   PathFollower pathFollower;
@@ -40,18 +43,22 @@ public class PurePursuit extends Command {
 
   @Override
   public void execute() {
-    DriveMotorState driveMotorState = pathFollower.update(Odometer.getInstance().getPoint(), Robot.drivetrain.getGyro(), dt);
+    List<DriveSignal> driveMotorStates = pathFollower.update(Odometer.getInstance().getPoint(), Robot.drivetrain.getGyro(), dt);
 
     // updateSmartDashboard();
 
-    SmartDashboard.putNumber("Left Vel", round(driveMotorState.leftVel));
-    SmartDashboard.putNumber("Right Vel", round(driveMotorState.rightVel));
+    SmartDashboard.putNumber("Left Vel", round(VelocityKt.getFeetPerSecond(driveMotorStates.get(0).getLeft())));
+    SmartDashboard.putNumber("Right Vel", round(VelocityKt.getFeetPerSecond(driveMotorStates.get(0).getRight())));
 
-    Logger.log("Left Vel" + round(driveMotorState.leftVel));
-    Logger.log("Right Vel" + round(driveMotorState.rightVel));
+    Logger.log("Left Vel" + round(VelocityKt.getFeetPerSecond(driveMotorStates.get(0).getLeft())));
+    Logger.log("Right Vel" + round(VelocityKt.getFeetPerSecond(driveMotorStates.get(0).getRight())));
 
     Logger.log("_____________________________________\n");
-    Robot.drivetrain.setPowers(driveMotorState.leftVel / 0.8 , driveMotorState.rightVel / 0.8 );
+    // Robot.drivetrain.setPowers(driveMotorStates.leftVel / 0.8 , driveMotorStates.rightVel / 0.8 );
+
+    DriveSignal velocity = driveMotorStates.get(0);
+
+    Robot.drivetrain.setClosedLoop(velocity);
   }
 
   @Override

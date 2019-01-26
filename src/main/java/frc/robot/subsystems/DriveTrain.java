@@ -251,6 +251,10 @@ public class DriveTrain extends Subsystem {
     getRight().getMaster().set(ControlMode.PercentOutput, right_voltage / 12);
   }
 
+  public void setClosedLoop(DriveSignal signal) {
+    setCLosedLoop(signal.getLeft(), signal.getRight(), signal.getLeftPercent(), signal.getRightPercent(), signal.getBrakeMode());
+  }
+
   /**
    * Set the drivetrain talons to closed loop velocity mode, given a Velocity<Length>
    * object to represent a unit-signed speed for the left and right spides.
@@ -265,10 +269,6 @@ public class DriveTrain extends Subsystem {
 
   public void setClosedLoop(Velocity<Length> left, Velocity<Length> right) {
     setCLosedLoop(left, right, 0, 0, false);
-  }
-
-  public void setClosedLoop(DriveSignal signal) {
-    setCLosedLoop(signal.getLeft(), signal.getRight(), signal.getLeftPercent(), signal.getRightPercent(), signal.getBrakeMode());
   }
 
   /**

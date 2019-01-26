@@ -1,5 +1,8 @@
 package frc.robot.commands.subsystems.drivetrain;
 
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
@@ -22,7 +25,7 @@ public class DriveStraight extends Command {
   double actionMaxSpeed;
   double timeout = 15;
   double start_left_distance;
-  double start_right_distance = Robot.drivetrain.getRightDistance();
+  double start_right_distance = Robot.drivetrain.getRight().getFeet();
   double end_distance;
   double start_gyro_angle;
   double target_gyro_angle;
@@ -86,8 +89,8 @@ public class DriveStraight extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    start_left_distance = Robot.drivetrain.getLeftDistance();
-    start_right_distance = Robot.drivetrain.getRightDistance();
+    start_left_distance = Robot.drivetrain.getLeft().getFeet();
+    start_right_distance = Robot.drivetrain.getRight().getFeet();
     current_angle = Robot.drivetrain.getGyro();
     end_distance = start_left_distance + distance;
     setTimeout(timeout); // set the timeout
@@ -100,16 +103,17 @@ public class DriveStraight extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    forward_speed = forwardPID.update(Robot.drivetrain.getLeftDistance());
+    forward_speed = forwardPID.update(Robot.drivetrain.getLeft().getFeet());
     turn_speed = turnPID.update(Robot.drivetrain.getGyro());
     SmartDashboard.putNumber("TurnPID output",  turnPID.update(Robot.drivetrain.getGyro()));
 
-    left_speed_raw = EncoderLib.distanceToRaw(forward_speed + turn_speed, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, 
-      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
-    right_speed_raw = EncoderLib.distanceToRaw(forward_speed - turn_speed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, 
-      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
+    // left_speed_raw = EncoderLib.distanceToRaw(forward_speed + turn_speed, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, 
+    //   RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
+    // right_speed_raw = EncoderLib.distanceToRaw(forward_speed - turn_speed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, 
+    //   RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
 
-    Robot.drivetrain.setSpeeds(left_speed_raw, right_speed_raw);
+    Robot.drivetrain.setClosedLoop( VelocityKt.getVelocity(LengthKt.getFeet(forward_speed + turn_speed)),
+            VelocityKt.getVelocity(LengthKt.getFeet(forward_speed - turn_speed)) );
 
     // System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeftDistance() + 
       // " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());

@@ -179,7 +179,7 @@ public class DriveTrajectoryPathfinder extends Command {
   @Override
   protected void end() {
     // Robot.drive.setPowerZero();
-    Robot.drivetrain.setSpeeds(0, 0);
+    Robot.drivetrain.stop();
   }
 
   // Called when another command which requires one or more of the same

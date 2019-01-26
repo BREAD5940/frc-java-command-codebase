@@ -2,14 +2,20 @@ package frc.robot.lib.motion.followers;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Arrays;
+import java.util.List;
 
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+
+import frc.math.Util;
 import frc.robot.lib.ExecTimer;
 import frc.robot.lib.Logger;
-import frc.robot.lib.motion.DriveMotorState;
 import frc.robot.lib.motion.purepursuit.Path;
 import frc.robot.lib.motion.purepursuit.Point;
 import frc.robot.lib.motion.purepursuit.Vector;
 import frc.robot.lib.motion.purepursuit.WayPoint2;
+import frc.robot.lib.obj.DriveSignal;
 
 public class PathFollower {
 	private Path path;
@@ -366,7 +372,7 @@ public class PathFollower {
 		return (vel - prevVel) / (dt / 1000);
 	}
 
-	public DriveMotorState update(Point robotPos, double gyro, double dt) {
+	public List<DriveSignal> update(Point robotPos, double gyro, double dt) {
 
 		ExecTimer execTimer = new ExecTimer();
 
@@ -424,11 +430,23 @@ public class PathFollower {
 			Logger.log("FINISHED PATH!!!!!!!!!!!!");
 		}
 		if (done) {
-			return new DriveMotorState(0, 0, 0, 0);
+			return Arrays.asList(
+				DriveSignal.BRAKE,
+				DriveSignal.BRAKE);
 		}
 
 		Logger.log("pathfollowcalctime", execTimer.time());
-		return new DriveMotorState(leftVel, leftAcc, rightVel, rightAcc);
+		
+		DriveSignal velocity = new DriveSignal(VelocityKt.getVelocity(LengthKt.getFeet(Util.toFeet(leftVel))), 
+		VelocityKt.getVelocity(LengthKt.getFeet(Util.toFeet(rightVel))));
+
+		DriveSignal accel = new DriveSignal(VelocityKt.getVelocity(LengthKt.getFeet(Util.toFeet(leftAcc))), 
+		VelocityKt.getVelocity(LengthKt.getFeet(Util.toFeet(rightAcc))));
+
+		return Arrays.asList(
+			velocity, accel);
+
+		// return new DriveMotorState(leftVel, leftAcc, rightVel, rightAcc);
 	}
 	//
 	// private double clampValueWithDerivative(double prevVal, double val, double

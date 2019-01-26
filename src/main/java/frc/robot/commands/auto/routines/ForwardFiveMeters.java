@@ -6,9 +6,10 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.Robot;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.subsystems.drivetrain.RamsetePathFollower;
 import frc.robot.commands.subsystems.drivetrain.SetInitialOdometry;
+import frc.robot.commands.subsystems.drivetrain.TrajectoryTrackerCommand;
 
 public class ForwardFiveMeters extends CommandGroup {
   /**
@@ -24,7 +25,7 @@ public class ForwardFiveMeters extends CommandGroup {
 
     addSequential(new SetInitialOdometry(trajectory));
     
-    addSequential(new RamsetePathFollower( trajectory ));
+    addSequential(Robot.drivetrain.followTrajectory(trajectory, true) );
 
     // Add Commands here:
     // e.g. addSequential(new Command1());
