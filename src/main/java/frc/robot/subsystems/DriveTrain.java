@@ -1,42 +1,30 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motion.MotionProfileStatus;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SensorTerm;
-import com.ctre.phoenix.motorcontrol.StatusFrame;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.team254.lib.physics.DCMotorTransmission;
 import com.team254.lib.physics.DifferentialDrive;
+
+import org.ghrobotics.lib.localization.Localization;
+import org.ghrobotics.lib.localization.TankEncoderLocalization;
 import org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker;
+import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.subsystems.drivetrain.ArcadeDrive;
 import frc.robot.commands.subsystems.drivetrain.TrajectoryTrackerCommand;
-
-import org.ghrobotics.lib.localization.Localization;
-import org.ghrobotics.lib.localization.TankEncoderLocalization;
-import frc.robot.lib.EncoderLib;
-import frc.robot.lib.Logger;
-import frc.robot.lib.obj.DriveSignal;
+import frc.robot.lib.enums.TransmissionSide;
 import kotlin.ranges.RangesKt;
 
-import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
-import org.ghrobotics.lib.mathematics.units.Length;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerDriveBase;
 
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
@@ -53,10 +41,10 @@ public class DriveTrain extends Subsystem {
   
   private static DriveTrain instance;
 
-  public MotionProfileStatus m_left_MP_Status = new MotionProfileStatus();
-  public MotionProfileStatus m_right_MP_Status = new MotionProfileStatus();
+//  public MotionProfileStatus m_left_MP_Status = new MotionProfileStatus();
+//  public MotionProfileStatus m_right_MP_Status = new MotionProfileStatus();
 
-  private WPI_TalonSRX m_left_talon, s_left_talon, m_right_talon, s_right_talon;
+//  private WPI_TalonSRX m_left_talon, s_left_talon, m_right_talon, s_right_talon;
 
   public AHRS gyro = new AHRS(SPI.Port.kMXP);
   double gyroZero;
@@ -84,45 +72,34 @@ public class DriveTrain extends Subsystem {
   TrajectoryTrackerMode trackerMode = TrajectoryTrackerMode.RAMSETE;
 
 
-  private DCMotorTransmission transmission;
+  private DCMotorTransmission mTransmission;
   private DifferentialDrive differentialDrive;
+  private Transmission leftTransmission, rightTransmission;
 
 
   private DriveTrain() {
-    m_left_talon = new WPI_TalonSRX(RobotConfig.driveTrain.leftTalons.m_left_talon_port);
-    s_left_talon = new WPI_TalonSRX(RobotConfig.driveTrain.leftTalons.s_left_talon_port);
-    m_right_talon = new WPI_TalonSRX(RobotConfig.driveTrain.rightTalons.m_right_talon_port);
-    s_right_talon = new WPI_TalonSRX(RobotConfig.driveTrain.rightTalons.s_right_talon_port);
+    leftTransmission = new Transmission(RobotConfig.driveTrain.leftTalons.m_left_talon_port,
+            RobotConfig.driveTrain.leftTalons.s_left_talon_port,
+            Transmission.EncoderMode.CTRE_MagEncoder_Relative,
+            TransmissionSide.LEFT,
+            true
+      );
+      rightTransmission = new Transmission(RobotConfig.driveTrain.rightTalons.m_right_talon_port,
+              RobotConfig.driveTrain.rightTalons.s_right_talon_port,
+              Transmission.EncoderMode.CTRE_MagEncoder_Relative,
+              TransmissionSide.RIGHT,
+              false
+      );
 
-    m_left_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
-    m_right_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
-    s_left_talon.set(ControlMode.Follower, m_left_talon.getDeviceID());
-    s_right_talon.set(ControlMode.Follower, m_right_talon.getDeviceID());
-    m_right_talon.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30);
-    // Quadrature Encoder of current
-    // Talon
-    m_left_talon.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30);
-    // Quadrature Encoder of current
-    // Talon
-    m_left_talon.configPeakOutputForward(+1.0, 30);
-    m_left_talon.configPeakOutputReverse(-1.0, 30);
-    m_right_talon.configPeakOutputForward(+1.0, 30);
-    m_right_talon.configPeakOutputReverse(-1.0, 30);
-
-    m_left_talon.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 0);
-    m_right_talon.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, 0);
-
-    m_left_talon.setInverted(true);
-    s_left_talon.setInverted(true);
-
+    // double meme =  DriveTrain.getInstance().getRight().getDistance().getF;
 
     localization = new TankEncoderLocalization(
       () -> Rotation2dKt.getDegree(DriveTrain.getInstance().getGyro()),
-      () -> LengthKt.getFeet(DriveTrain.getInstance().getLeftDistance() ),
-      () -> LengthKt.getFeet(DriveTrain.getInstance().getRightDistance())
+      () -> DriveTrain.getInstance().getLeft().getDistance(),
+      () -> DriveTrain.getInstance().getRight().getDistance()
     );
 
-    transmission = new DCMotorTransmission(
+    mTransmission = new DCMotorTransmission(
       1 / Constants.kVDrive,
       Constants.kWheelRadius * Constants.kWheelRadius * Constants.kRobotMass / (2.0 * Constants.kADrive),
       Constants.kStaticFrictionVoltage
@@ -134,8 +111,8 @@ public class DriveTrain extends Subsystem {
       Constants.kRobotAngularDrag,
       Constants.kWheelRadius,
       Constants.kTrackWidth / 2.0,
-      transmission,
-      transmission
+      mTransmission,
+      mTransmission
     );
 
     ramseteTracker = new RamseteTracker(Constants.kDriveBeta, Constants.kDriveZeta);
@@ -147,9 +124,9 @@ public class DriveTrain extends Subsystem {
     return instance;
   }
 
-  public WPI_TalonSRX getLeftMotor() {
-    return m_left_talon;
-  }
+//  public WPI_TalonSRX getLeftMotor() {
+//    return m_left_talon;
+//  }
   
   public RamseteTracker getRamseteTracker() {
     return ramseteTracker;
@@ -176,47 +153,46 @@ public class DriveTrain extends Subsystem {
   }
 
   public void setHighGear() {
-    this.m_left_talon.config_kP(0, RobotConfig.driveTrain.leftTalons.velocity_kp_high, 30);
-    this.m_left_talon.config_kI(0, RobotConfig.driveTrain.leftTalons.velocity_ki_high, 30);
-    this.m_left_talon.config_kD(0, RobotConfig.driveTrain.leftTalons.velocity_kd_high, 30);
-    this.m_left_talon.config_kF(0, RobotConfig.driveTrain.leftTalons.velocity_kf_high, 30);
-    this.m_left_talon.config_IntegralZone(0, RobotConfig.driveTrain.leftTalons.velocity_izone_high, 30);
-    // this.m_left_talon.configMaxIntegralAccumulator(0,
-    // RobotConfig.driveTrain.left_talons.velocity_max_integral_high, 0);
-
-    this.m_right_talon.config_kP(0, RobotConfig.driveTrain.rightTalons.velocity_kp_high, 30);
-    this.m_right_talon.config_kI(0, RobotConfig.driveTrain.leftTalons.velocity_ki_high, 30);
-    this.m_right_talon.config_kD(0, RobotConfig.driveTrain.leftTalons.velocity_kd_high, 30);
-    this.m_right_talon.config_kF(0, RobotConfig.driveTrain.leftTalons.velocity_kf_high, 30);
-    this.m_right_talon.config_IntegralZone(0, RobotConfig.driveTrain.leftTalons.velocity_izone_high, 30);
-    // this.m_right_talon.configMaxIntegralAccumulator(0,
-    // RobotConfig.m_right_velocity_max_integral_high, 0);
-
+    leftTransmission.setClosedLoopGains(
+            RobotConfig.driveTrain.leftTalons.velocity_kp_high,
+            RobotConfig.driveTrain.leftTalons.velocity_ki_high,
+            RobotConfig.driveTrain.leftTalons.velocity_kd_high,
+            RobotConfig.driveTrain.leftTalons.velocity_kf_high,
+            RobotConfig.driveTrain.leftTalons.velocity_izone_high,
+            RobotConfig.driveTrain.leftTalons.velocity_max_integral_high
+    );
+    rightTransmission.setClosedLoopGains(
+            RobotConfig.driveTrain.rightTalons.velocity_kp_high,
+            RobotConfig.driveTrain.rightTalons.velocity_ki_high,
+            RobotConfig.driveTrain.rightTalons.velocity_kd_high,
+            RobotConfig.driveTrain.rightTalons.velocity_kf_high,
+            RobotConfig.driveTrain.rightTalons.velocity_izone_high,
+            RobotConfig.driveTrain.rightTalons.velocity_max_integral_high
+    );
     // Trigger solenoids
     Robot.drivetrain_shift_high();
     gear = Gear.HIGH;
   }
 
   public void setLowGear() {
-    this.m_left_talon.config_kP(0, RobotConfig.driveTrain.leftTalons.velocity_kp_low, 0);
-    this.m_left_talon.config_kI(0, RobotConfig.driveTrain.leftTalons.velocity_ki_low, 0);
-    this.m_left_talon.config_kD(0, RobotConfig.driveTrain.leftTalons.velocity_kd_low, 0);
-    this.m_left_talon.config_kF(0, RobotConfig.driveTrain.leftTalons.velocity_kf_low, 0);
-    this.m_left_talon.config_IntegralZone(0, RobotConfig.driveTrain.leftTalons.velocity_izone_low, 0);
-    // this.m_left_talon.configMaxIntegralAccumulator(0,
-    // RobotConfig.driveTrain.left_talons.velocity_max_integral_low, 0);
-
-    this.m_right_talon.config_kP(0, RobotConfig.driveTrain.rightTalons.velocity_kp_low, 0);
-    this.m_right_talon.config_kI(0, RobotConfig.driveTrain.rightTalons.velocity_ki_low, 0);
-    this.m_right_talon.config_kD(0, RobotConfig.driveTrain.rightTalons.velocity_kd_low, 0);
-    this.m_right_talon.config_kF(0, RobotConfig.driveTrain.rightTalons.velocity_kf_low, 0);
-    this.m_right_talon.config_IntegralZone(0, RobotConfig.driveTrain.rightTalons.velocity_izone_low, 0);
-    // this.m_right_talon.configMaxIntegralAccumulator(0,
-    // RobotConfig.m_right_velocity_max_integral_low, 0);
-
+    leftTransmission.setClosedLoopGains(
+            RobotConfig.driveTrain.leftTalons.velocity_kp_low,
+            RobotConfig.driveTrain.leftTalons.velocity_ki_low,
+            RobotConfig.driveTrain.leftTalons.velocity_kd_low,
+            RobotConfig.driveTrain.leftTalons.velocity_kf_low,
+            RobotConfig.driveTrain.leftTalons.velocity_izone_low,
+            RobotConfig.driveTrain.leftTalons.velocity_max_integral_low
+    );
+    rightTransmission.setClosedLoopGains(
+            RobotConfig.driveTrain.rightTalons.velocity_kp_low,
+            RobotConfig.driveTrain.rightTalons.velocity_ki_low,
+            RobotConfig.driveTrain.rightTalons.velocity_kd_low,
+            RobotConfig.driveTrain.rightTalons.velocity_kf_low,
+            RobotConfig.driveTrain.rightTalons.velocity_izone_low,
+            RobotConfig.driveTrain.rightTalons.velocity_max_integral_low
+    );
     // Trigger solenoids
     Robot.drivetrain_shift_low();
-
     gear = Gear.LOW;
   }
 
@@ -233,48 +209,30 @@ public class DriveTrain extends Subsystem {
     }
   }
 
-  /** Return the current distance in feet of the left wheels */
-  public double getLeftDistance() {
-    return EncoderLib.rawToDistance(
-      this.m_left_talon.getSelectedSensorPosition(0),
-      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
-      RobotConfig.driveTrain.left_wheel_effective_diameter / 12
-    );
+  public void setNeutralMode(NeutralMode mode) {
+    getLeft().getMaster().setNeutralMode(mode);
+    getRight().getMaster().setNeutralMode(mode);
   }
 
-  public double getRightDistance() {
-    return EncoderLib.rawToDistance(
-      this.m_right_talon.getSelectedSensorPosition(0),
-      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
-      RobotConfig.driveTrain.right_wheel_effective_diameter
-    ) / 12;
+  public Transmission getLeft() {
+    return leftTransmission;
   }
 
-  public double getLeftVelocity() {
-    return EncoderLib.rawToDistance(
-      this.m_left_talon.getSelectedSensorVelocity(0) * 10,
-      // Mulitply by 10 because units
-      // are per 100ms
-      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
-      RobotConfig.driveTrain.left_wheel_effective_diameter
-    );
-  }
-
-  public double getRightVelocity() {
-    return EncoderLib.rawToDistance(
-      this.m_right_talon.getSelectedSensorVelocity(0) * 10,
-      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
-      RobotConfig.driveTrain.right_wheel_effective_diameter
-    );
-  }
-
-  public double getAverageVelocity() {
-    return (getLeftVelocity() + getRightVelocity()) / 2;
+  public Transmission getRight() {
+    return rightTransmission;
   }
 
   public void zeroEncoders() {
-    m_left_talon.setSelectedSensorPosition(0, 0, 30);
-    m_right_talon.setSelectedSensorPosition(0, 0, 30);
+    leftTransmission.zeroEncoder();
+    rightTransmission.zeroEncoder();
+  }
+
+  /**
+   * Stop the transmissions by zeroing their outputs
+   */
+  public void stop() {
+    getLeft().stop();
+    getRight().stop();
   }
 
   /**
@@ -285,8 +243,8 @@ public class DriveTrain extends Subsystem {
    * @param right_voltage
    */
   public void setVoltages(double left_voltage, double right_voltage) {
-    m_left_talon.set(ControlMode.PercentOutput, left_voltage / 12);
-    m_right_talon.set(ControlMode.PercentOutput, right_voltage / 12);
+    getLeft().getMaster().set(ControlMode.PercentOutput, left_voltage / 12);
+    getRight().getMaster().set(ControlMode.PercentOutput, right_voltage / 12);
   }
 
   /**
@@ -297,142 +255,9 @@ public class DriveTrain extends Subsystem {
    * @param right_power
    */
   public void setPowers(double left_power, double right_power) {
-    m_left_talon.set(ControlMode.PercentOutput, left_power);
-    m_right_talon.set(ControlMode.PercentOutput, right_power);
+    leftTransmission.getMaster().set(ControlMode.PercentOutput, left_power);
+    rightTransmission.getMaster().set(ControlMode.PercentOutput, right_power);
   }
-
-  /**
-   * Set the neutral mode of the talons
-   * @param mode the mode to set the talons to
-   */
-  public void setMode(NeutralMode mode) {
-    m_left_talon.setNeutralMode(mode);
-    m_right_talon.setNeutralMode(mode);
-    s_left_talon.setNeutralMode(mode);
-    s_right_talon.setNeutralMode(mode);
-}
-
-  /**
-   * Set the target left speed. Units are in raw units.
-   * 
-   * @param speed in raw units per 100ms
-   */
-  public void setLeftSpeedRaw(double speed) {
-    m_left_talon.set(ControlMode.Velocity, speed);
-  }
-
-  /**
-   * Set the target right speed. Units are in raw units.
-   * 
-   * @param speed in raw units per 100ms
-   */
-  public void setRightSpeedRaw(double speed) {
-    m_right_talon.set(ControlMode.Velocity, speed);
-  }
-
-  /**
-   * Set the velocity of the wheels using raw units per 100ms velocities, feedforward rates
-   * and accelerations.
-   * @param signal
-   * @param feedforward
-   * @param leftAccel
-   * @param rightAccel
-   */
-  public void setVelocity(DriveSignal signal, DriveSignal feedforward, double leftAccel, double rightAccel) {
-
-
-    //  m_left_talon.set(ControlMode.Velocity, signal.getLeft(), DemandType.ArbitraryFeedForward,
-    //          feedforward.getLeft());// + Constants.kDriveLowGearVelocityKd * leftAccel / 1023.0);
-    //  m_right_talon.set(ControlMode.Velocity, signal.getRight(), DemandType.ArbitraryFeedForward,
-    //          feedforward.getRight());// + Constants.kDriveLowGearVelocityKd * rightAccel / 1023.0);
-
-    m_left_talon.set(ControlMode.Velocity, signal.getLeft(), DemandType.ArbitraryFeedForward,
-        feedforward.getLeft() + leftAccel * Constants.kDriveLowGearVelocityKa);
-
-    m_right_talon.set(ControlMode.Velocity, signal.getRight(), DemandType.ArbitraryFeedForward,
-            feedforward.getRight() + rightAccel * Constants.kDriveLowGearVelocityKa);
-
-    // m_left_talon.set(ControlMode.Velocity, signal.getLeft());// DemandType.ArbitraryFeedForward,
-    //         // feedforward.getLeft() + Constants.kDriveLowGearVelocityKd * leftAccel / 1023.0);
-    // m_right_talon.set(ControlMode.Velocity, signal.getRight());//, DemandType.ArbitraryFeedForward,
-    //         // feedforward.getRight() + Constants.kDriveLowGearVelocityKd * rightAccel / 1023.0);
-
-    // setPowers(0.3, 0.3);
-
-    // Logger.log(String.format("Set velocity: left speed %s left feedforward %s right speed %s right feedforward %s",
-    //   signal.getLeft(), feedforward.getLeft() + Constants.kDriveLowGearVelocityKa * leftAccel / 1023.0,
-    //   signal.getRight(), feedforward.getRight() + Constants.kDriveLowGearVelocityKd * rightAccel / 1023.0
-    // ));
-
-  }
-
-
-  // public void arcadeDriveMethod(double forwardspeed, double turnspeed) {
-  //   // double forwardspeed = Robot.m_oi.getForwardAxis() * -1;
-  //   // double turnspeed = Robot.m_oi.getTurnAxis();
-
-  //   // if ((forwardspeed < 0.02) && (forwardspeed > -0.02)) {
-  //   //   forwardspeed = 0;
-  //   // }
-  //   // if ((turnspeed < 0.01) && (turnspeed > -0.01)) {
-  //   //   turnspeed = 0;
-  //   // }
-
-  //   // if (RobotConfig.controls.driving_squared) {
-  //     forwardspeed = forwardspeed * Math.abs(forwardspeed);
-  //     turnspeed = turnspeed * Math.abs(turnspeed);
-  //   // }
-  //   // if (Robot.drivetrain.gear == Gear.HIGH) {
-  //   //   forwardspeed = forwardspeed * RobotConfig.driveTrain.max_forward_speed_high;
-  //   //   turnspeed = turnspeed * RobotConfig.driveTrain.max_turn_speed_high;
-  //   // }
-  //   // if (Robot.drivetrain.gear == Gear.LOW) {
-  //   //   forwardspeed = forwardspeed * RobotConfig.driveTrain.max_forward_speed_low;
-  //   //   turnspeed = turnspeed * RobotConfig.driveTrain.max_turn_speed_low;
-  //   // }
-
-  //   SmartDashboard.putString("forwardspeed / turnspeed: ", forwardspeed + " / " + turnspeed);
-
-  //   // turnspeed = turnspeed * 0.7;
-
-  //   m_left_talon.set(ControlMode.PercentOutput, forwardspeed, DemandType.ArbitraryFeedForward, turnspeed );
-  //   m_right_talon.set(ControlMode.PercentOutput, forwardspeed, DemandType.ArbitraryFeedForward, -turnspeed );
-  //   // s_right_talon.set(ControlMode.PercentOutput, forwardspeed, DemandType.ArbitraryFeedForward, -turnspeed );
-
-  //   double leftspeed = forwardspeed * 4 + turnspeed * 5; // units are in feet
-  //   double rightspeed = forwardspeed * 4 - turnspeed * 5;
-
-  //   setMode(NeutralMode.Brake);
-  //   m_left_talon.configClosedloopRamp(0.2);
-  //   m_right_talon.configClosedloopRamp(0.2);
-
-  //   /**
-  //    * Set left speed raw in feet per 100ms
-  //    */
-  //   // double leftspeedraw = EncoderLib.distanceToRaw(
-  //   //   leftspeed,
-  //   //   RobotConfig.driveTrain.left_wheel_effective_diameter / 12,
-  //   //   RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION
-  //   // ) / 10;
-  //   // ((leftspeed) / (Math.PI *
-  //   // RobotConfig.driveTrain.left_wheel_effective_diameter
-  //   // / 12)) *
-  //   // RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION
-  //   // / 10;
-  //   // divide by 10 becuase the talons want units per 100ms
-  //   // double rightspeedraw = EncoderLib.distanceToRaw(
-  //   //   rightspeed,
-  //   //   RobotConfig.driveTrain.right_wheel_effective_diameter / 12,
-  //   //   RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION
-  //   // ) / 10;
-
-  //   // setPowers(leftspeed, rightspeed);
-  //   // setFeetPerSecond(leftspeed, rightspeed);
-
-  //   // setPowers(0.5, 0.5);
-
-  //   // setSpeeds(-500, -500);
-  // }
 
   public Pose2d getRobotPosition(){
     return getLocalization().getRobotPosition();
@@ -526,8 +351,8 @@ public class DriveTrain extends Subsystem {
   }
 
   public void tankDrive(double leftPercent, double rightPercent){
-    m_left_talon.setPercentOutput(leftPercent);
-    getRightMotor().setPercentOutput(rightPercent);
+    getLeft().getMaster().set(ControlMode.PercentOutput, leftPercent);
+    getRight().getMaster().set(ControlMode.PercentOutput, rightPercent);
   }
 
   public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory){
@@ -535,7 +360,7 @@ public class DriveTrain extends Subsystem {
   }
 
   public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean reset){
-      return new TrajectoryTrackerCommand(this, this, () -> trajectory, reset);
+      return new TrajectoryTrackerCommand(this, () -> trajectory, reset);
   }
 
 
