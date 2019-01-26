@@ -28,6 +28,9 @@ import frc.robot.lib.enums.TransmissionSide;
 import frc.robot.lib.obj.DriveSignal;
 import kotlin.ranges.RangesKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
+import org.ghrobotics.lib.subsystems.drive.DifferentialTrackerDriveBase;
+import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerDriveBase;
+import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
 
 // import frc.robot.commands.drivetrain_shift_high;
@@ -41,7 +44,7 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
  * 
  * @author Matthew Morley
  */
-public class DriveTrain extends Subsystem {
+public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBase {
   
   private static DriveTrain instance;
 
@@ -73,8 +76,10 @@ public class DriveTrain extends Subsystem {
   public static enum TrajectoryTrackerMode {
     RAMSETE, PUREPURSUIT, FEEDFORWARD, PID
   }
-  TrajectoryTrackerMode trackerMode = TrajectoryTrackerMode.RAMSETE;
-
+  private TrajectoryTrackerMode trackerMode = TrajectoryTrackerMode.RAMSETE;
+  public void setTrackerMode(TrajectoryTrackerMode mode) {
+    trackerMode = mode;
+  }
 
   private DCMotorTransmission mTransmission;
   private DifferentialDrive differentialDrive;
@@ -123,6 +128,22 @@ public class DriveTrain extends Subsystem {
 
   }
 
+  public DifferentialDrive getDifferentialDrive() {
+    return differentialDrive;
+  }
+
+  public DCMotorTransmission getTransmissionModel() {
+    return mTransmission;
+  }
+
+  public FalconSRX<Length> getLeftMotor() {
+    return getLeft().getMaster();
+  }
+
+  public FalconSRX<Length> getRightMotor() {
+    return getLeft().getMaster();
+  }
+
   public synchronized static DriveTrain getInstance() {
     if (instance == null) instance = new DriveTrain();
     return instance;
@@ -138,6 +159,21 @@ public class DriveTrain extends Subsystem {
 
   public TrajectoryTracker getTrajectoryTracker() {
     switch (trackerMode) {
+      case RAMSETE:
+        return ramseteTracker;
+      case FEEDFORWARD:
+        return null;
+      case PUREPURSUIT:
+        return null;
+      case PID:
+        return null;
+      default:
+        return ramseteTracker;
+    }
+  }
+
+  public TrajectoryTracker getTrajectoryTracker(TrajectoryTrackerMode mode) {
+    switch (mode) {
       case RAMSETE:
         return ramseteTracker;
       case FEEDFORWARD:
@@ -387,6 +423,9 @@ public class DriveTrain extends Subsystem {
       return new TrajectoryTrackerCommand(this, () -> trajectory, reset);
   }
 
+  public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, TrajectoryTrackerMode mode, boolean reset){
+    return new TrajectoryTrackerCommand(this, getTrajectoryTracker(mode), () -> trajectory, reset);
+  }
 
   /**
    * Get the angle of the gyro, accounting for the gyro zero angle

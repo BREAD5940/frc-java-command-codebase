@@ -10,6 +10,7 @@ import frc.robot.Robot;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.SetInitialOdometry;
 import frc.robot.commands.subsystems.drivetrain.TrajectoryTrackerCommand;
+import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 
 public class ForwardFiveMeters extends CommandGroup {
   /**
@@ -25,7 +26,7 @@ public class ForwardFiveMeters extends CommandGroup {
 
     addSequential(new SetInitialOdometry(trajectory));
     
-    addSequential(Robot.drivetrain.followTrajectory(trajectory, true) );
+    addSequential(Robot.drivetrain.followTrajectory(trajectory, TrajectoryTrackerMode.FEEDFORWARD, true) );
 
     // Add Commands here:
     // e.g. addSequential(new Command1());
