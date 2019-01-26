@@ -12,6 +12,7 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
@@ -79,7 +80,7 @@ public class Transmission {
   }
 
   public double getFeetPerSecond() {
-    return getVelocity().
+    return VelocityKt.getFeetPerSecond(getVelocity());
   }
 
   public Length getClosedLoopError() {
