@@ -67,7 +67,7 @@ public class TrajectoryTrackerCommand extends Command {
 
     @Override
     protected void end(){
-        driveBase.zeroOutputs();
+        driveBase.stop();
         LiveDashboard.INSTANCE.setFollowingPath(false);
     }
 

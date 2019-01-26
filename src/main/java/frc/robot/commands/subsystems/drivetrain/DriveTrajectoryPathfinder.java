@@ -122,8 +122,8 @@ public class DriveTrajectoryPathfinder extends Command {
     mRightKa = 0; //RobotConfig.driveTrain.left_talons.velocity_ka_high;
     // }
 
-    mLeftStartDistance = Robot.drivetrain.getLeftDistance();
-    mRightStartDistance = Robot.drivetrain.getRightDistance();
+    mLeftStartDistance = Robot.drivetrain.getLeft().getDistance().getFeet();
+    mRightStartDistance = Robot.drivetrain.getRight().getDistance().getFeet();
 
     mLeftFollower = new DistanceFollower(mLeftTrajectory);
     mRightFollower = new DistanceFollower(mRightTrajectory);
@@ -139,8 +139,8 @@ public class DriveTrajectoryPathfinder extends Command {
   @Override
   protected void execute() {
     try {
-      mLeftOutput = mLeftFollower.calculate(Robot.drivetrain.getLeftDistance() - mLeftStartDistance) + RobotConfig.driveTrain.left_static_kv;
-      mRightOutput = mRightFollower.calculate(Robot.drivetrain.getRightDistance() - mRightStartDistance) + RobotConfig.driveTrain.right_static_kv;
+      mLeftOutput = mLeftFollower.calculate(Robot.drivetrain.getLeft().getDistance().getFeet() - mLeftStartDistance) + RobotConfig.driveTrain.left_static_kv;
+      mRightOutput = mRightFollower.calculate(Robot.drivetrain.getRight().getDistance().getFeet()  - mRightStartDistance) + RobotConfig.driveTrain.right_static_kv;
     } catch (ArrayIndexOutOfBoundsException e) {
       mLeftOutput = 0;
       mRightOutput = 0;
@@ -159,13 +159,13 @@ public class DriveTrajectoryPathfinder extends Command {
       mLeftFollower.getSegment().velocity, 
       mLeftFollower.getSegment().position, 
       mLeftFollower.getSegment().heading,
-      Robot.drivetrain.getLeftDistance()));
+      Robot.drivetrain.getLeft().getDistance().getFeet()));
     SmartDashboard.putString("Right target pathfinder data: ", 
       String.format("Velocity (position) heading (current): %s (%s) %s (%s)", 
       mRightFollower.getSegment().velocity, 
       mRightFollower.getSegment().position, 
       mRightFollower.getSegment().heading,
-      Robot.drivetrain.getRightDistance()));
+      Robot.drivetrain.getRight().getDistance().getFeet()));
 
   }
 

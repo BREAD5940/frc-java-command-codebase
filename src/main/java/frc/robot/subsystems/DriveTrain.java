@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
 import com.team254.lib.physics.DCMotorTransmission;
@@ -13,6 +14,7 @@ import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
+import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -23,7 +25,9 @@ import frc.robot.RobotConfig;
 import frc.robot.commands.subsystems.drivetrain.ArcadeDrive;
 import frc.robot.commands.subsystems.drivetrain.TrajectoryTrackerCommand;
 import frc.robot.lib.enums.TransmissionSide;
+import frc.robot.lib.obj.DriveSignal;
 import kotlin.ranges.RangesKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 
 
 // import frc.robot.commands.drivetrain_shift_high;
@@ -245,6 +249,26 @@ public class DriveTrain extends Subsystem {
   public void setVoltages(double left_voltage, double right_voltage) {
     getLeft().getMaster().set(ControlMode.PercentOutput, left_voltage / 12);
     getRight().getMaster().set(ControlMode.PercentOutput, right_voltage / 12);
+  }
+
+  /**
+   * Set the drivetrain talons to closed loop velocity mode, given a Velocity<Length>
+   * object to represent a unit-signed speed for the left and right spides.
+   * @param left velocity in a Velocity<Length> Falconlib object
+   * @param right velocity in a Velocity<Length> Falconlib object
+   */
+  public void setCLosedLoop( Velocity<Length> left, Velocity<Length> right, double leftPercent, double rightPercent, boolean brakeMode) {
+    setNeutralMode((brakeMode) ? NeutralMode.Brake : NeutralMode.Coast);
+    getLeft().getMaster().set(ControlMode.Velocity, left, DemandType.ArbitraryFeedForward, leftPercent);
+    getRight().getMaster().set(ControlMode.Velocity, right, DemandType.ArbitraryFeedForward, rightPercent);
+  }
+
+  public void setClosedLoop(Velocity<Length> left, Velocity<Length> right) {
+    setCLosedLoop(left, right, 0, 0, false);
+  }
+
+  public void setClosedLoop(DriveSignal signal) {
+    setCLosedLoop(signal.getLeft(), signal.getRight(), signal.getLeftPercent(), signal.getRightPercent(), signal.getBrakeMode());
   }
 
   /**

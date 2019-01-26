@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.lib.TerriblePID;
 import frc.robot.lib.motion.DriveMotorState;
+import frc.robot.lib.obj.DriveSignal;
 import frc.robot.subsystems.DifferentialUltrasonicSensor;
 import frc.robot.subsystems.DifferentialUltrasonicSensor.RangeMode;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -44,9 +45,9 @@ public class DriveUltrasonic extends Command {
 
   double forwardOutput;
 
-  private DriveMotorState lastCommandState;
-
   private boolean deceleratePhase;
+
+  DriveSignal mSignal;
 
   private TerriblePID turnPid = new TerriblePID(0.015, 0, 0.1, 0, -0.5, 0.5, 0, 0, 0.1, null, null);
 
@@ -96,15 +97,17 @@ public class DriveUltrasonic extends Command {
     // a fudge factor.
     
     // If we are just now reaching the deceleration phase
-    if ( deceleratePhase == false && distance < 1.1 * Math.pow( 0.0f /* TODO make this use robot speed*/ , 2) / (2 * acceleration)) {
+    if ( deceleratePhase == false && distance < 1.1 * Math.pow( (Robot.drivetrain.getLeft().getFeetPerSecond() + Robot.drivetrain.getRight().getFeetPerSecond() )/ 2/* TODO make this use robot speed*/ , 2) / (2 * acceleration)) {
       deceleratePhase = true;
-      v_i = Robot.drivetrain.getAverageVelocity();
+      v_i = (Robot.drivetrain.getLeft().getFeetPerSecond() + Robot.drivetrain.getRight().getFeetPerSecond() )/ 2;
     }
     
     // use a conditional operator to decide the target speed
     forwardOutput = (deceleratePhase) ? v_i - acceleration * distance : maxSpeed;
 
-    Robot.drivetrain.setFeetPerSecond(forwardOutput + turnOutput, forwardOutput - turnOutput);
+    mSignal = new DriveSignal( VelocityKt.getVelocity(LengthKt.getFeet(forwardOutput + turnOutput) ) , VelocityKt.getVelocity(LengthKt.getFeet(forwardOutput - turnOutput)));
+
+    Robot.drivetrain.setClosedLoop(mSignal);// (forwardOutput + turnOutput, forwardOutput - turnOutput);
   }
 
   // Make this return true when this Command no longer needs to run execute()

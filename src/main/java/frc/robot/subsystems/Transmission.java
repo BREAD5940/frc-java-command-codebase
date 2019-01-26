@@ -83,6 +83,10 @@ public class Transmission {
     return VelocityKt.getFeetPerSecond(getVelocity());
   }
 
+  public double getFeet() {
+    return getDistance().getFeet();
+  }
+
   public Length getClosedLoopError() {
     return lengthModel.toModel(NativeUnitKt.getSTU(mMaster.getClosedLoopError()));
   }
