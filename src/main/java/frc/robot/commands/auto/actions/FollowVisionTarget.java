@@ -124,7 +124,7 @@ public class FollowVisionTarget extends Command {
       // Robot.drivetrain.setSpeeds(leftSpeedRaw, rightSpeedRaw);
       // Robot.drivetrain.setPowers(forwardSpeed + turnSpeed, forwardSpeed - turnSpeed);
 
-      Robot.drivetrain.setFeetPerSecond(0.5,0.5);
+      // Robot.drivetrain.setFeetPerSecond(0.5,0.5);
 
     } else {
       noCurrentTarget = true;
