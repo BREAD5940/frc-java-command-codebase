@@ -34,6 +34,18 @@ public class Superstructure extends Subsystem {
   private SuperstructureState mCurrentState = new SuperstructureState();
 
 
+  /**
+   * move a combination of the sub-subsystems of the superstructure
+   * 
+   * @param height
+   *    the height to raise the elevator to
+   * @param angle
+   *    the preset angle to set the wrist to
+   * @param piece
+   *    the piece the robot is currently holding -- necessary for wrist movements
+   * @return
+   *    the command group necessary to safely move the superstructure
+   */
   public CommandGroup moveSuperstructureCombo(double height, WristPos angle, AutoMotion.mHeldPiece piece){
     mCurrentState.updateToCurrent();
     mReqState.setElevatorHeight(height);
@@ -49,12 +61,53 @@ public class Superstructure extends Subsystem {
     return this.mCurrentCommandGroup;
   }
 
+  /**
+   * move only the elevator of the superstructure
+   * @param height
+   *    the height to raise the elevator to
+   * @return
+   *    the command group necessary to safely move the superstructure
+   */
   public CommandGroup moveSuperstructureElevator(double height){
+    mCurrentState.updateToCurrent();  
     return this.moveSuperstructureCombo(height, mCurrentState.getWristAngle(), mCurrentState.getHeldPiece());
   }
 
-  public CommandGroup moveSuperstructureWrist(Wrist.WristPos angle){
-    return this.moveSuperstructureCombo(mCurrentState.getElevatorHeight(), angle, mCurrentState.getHeldPiece());
+  /**
+   * move only the wrist of the superstructure
+   * @param angle
+   *    the preset angle to set the wrist to
+   * @param piece
+   *    the piece the robot is currently holding -- necessary for wrist movements
+   * @return
+   *    the command group necessary to safely move the superstructure
+   */
+  public CommandGroup moveSuperstructureWrist(Wrist.WristPos angle, AutoMotion.mHeldPiece piece){
+    mCurrentState.updateToCurrent();  
+    return this.moveSuperstructureCombo(mCurrentState.getElevatorHeight(), angle, piece);
+  }
+
+
+  /**
+   * sets only the wrist of the superstructure
+   * @param angle
+   *    the RAW angle to set the wrist to
+   * @param piece
+   *    the piece the robot is currently holding -- necessary for wrist movements
+   * @return
+   *    the command group necessary to safely move the superstructure
+   */
+  public CommandGroup moveSuperstructureWrist(double angle, AutoMotion.mHeldPiece piece){
+    mCurrentState.updateToCurrent();
+    mReqState.setElevatorHeight(mCurrentState.getElevatorHeight());
+    mReqState.setWristAngle(angle);
+    mReqState.setHeldPiece(piece); 
+    
+    if(!(mReqState==mCurrentState)){
+      this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
+    }
+
+    return this.mCurrentCommandGroup;
   }
 
 

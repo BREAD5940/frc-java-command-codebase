@@ -93,12 +93,12 @@ public class AutoMotion {
     ArrayList<Command> toReturn = new ArrayList<Command>();
     if (this.gType==mGoalType.RETRIEVE_CARGO){
       // Set the intake to cargo mode
-      toReturn.add(Robot.superstructure.moveSuperstructureWrist(WristPos.CARGO));
+      toReturn.add(Robot.superstructure.moveSuperstructureWrist(WristPos.CARGO, this.piece));
       // Predefined grab command
       toReturn.add(new GrabCargo());
     }else if (this.gType==mGoalType.RETRIEVE_HATCH){
       // Set the intake to hatch mode
-      toReturn.add(Robot.superstructure.moveSuperstructureWrist(WristPos.HATCH));
+      toReturn.add(Robot.superstructure.moveSuperstructureWrist(WristPos.HATCH, this.piece));
       // Predefined grab command
       toReturn.add(new GrabHatch());
     }
@@ -115,9 +115,9 @@ public class AutoMotion {
 
     // Set intake mode
     if(this.piece==mHeldPiece.HATCH){
-      toReturn.add(Robot.superstructure.moveSuperstructureWrist(WristPos.HATCH));
+      toReturn.add(Robot.superstructure.moveSuperstructureWrist(WristPos.HATCH, this.piece));
     }else{
-      toReturn.add(Robot.superstructure.moveSuperstructureWrist(WristPos.CARGO));
+      toReturn.add(Robot.superstructure.moveSuperstructureWrist(WristPos.CARGO, this.piece));
     }
 
     // Align with the vision targets, slightly back from the goal
@@ -131,7 +131,7 @@ public class AutoMotion {
       toReturn.add(new DriveDistance(2,20)); // TODO check distances
 
       // Actuate intake so it points down into the bay
-      toReturn.add(Robot.superstructure.moveSuperstructureWrist(Wrist.WristPos.DOWN));
+      toReturn.add(Robot.superstructure.moveSuperstructureWrist(Wrist.WristPos.DOWN, this.piece));
     }else{
       // Drive forward so the intake is flush with the port/hatch
       toReturn.add(new DriveDistance(1,20)); // TODO check distances
