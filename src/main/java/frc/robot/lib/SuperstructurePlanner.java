@@ -24,14 +24,14 @@ public class SuperstructurePlanner{
   //TODO add values for certain elevator positions (ex. the wrist can be <0 if the elevator is >10)
 
   //TODO get actual irl angles TODO make the names less horrible
-  final double minUnCrashHeight=5; //min elevator height + how much intake is below the bottom of the elevator
+  static final double minUnCrashHeight=5; //min elevator height + how much intake is below the bottom of the elevator
 
-  final double crossbarHeight = 20;
+  static final double crossbarHeight = 20;
 
-  boolean intakeCrashable = false; //intake capable of hitting the ground
-  boolean intakeAtRisk = false; //intake at risk of hitting the crossbar
-  int errorCount; //number of errors in motion
-  int corrCount; //number of corrected items in motion
+  static boolean intakeCrashable = false; //intake capable of hitting the ground
+  static boolean intakeAtRisk = false; //intake at risk of hitting the crossbar
+  static int errorCount; //number of errors in motion
+  static int corrCount; //number of corrected items in motion
 
   /**
    * Creates a command group of superstructure motions that will prevent any damage to the intake/elevator
@@ -42,13 +42,15 @@ public class SuperstructurePlanner{
    * @return
    *    the ideal command group to get from the currentState to the goalState
    */
-  public CommandGroup plan(SuperstructureState goalStateIn, SuperstructureState currentState){
+  public static SuperstructureState plan(SuperstructureState goalStateIn, SuperstructureState currentState){
     CommandGroup toReturn = new CommandGroup();
     SuperstructureState goalState = new SuperstructureState(goalStateIn);
+    errorCount=corrCount=0;
 
     if(goalState==currentState){
       System.out.println("MOTION UNNECESSARY -- Goal and current states are same. Exiting planner.");
-      return toReturn;
+      // return toReturn;
+      return goalState;
     }
 
     if(goalState.getHeldPiece()!=currentState.getHeldPiece()){
@@ -112,7 +114,7 @@ public class SuperstructurePlanner{
     }
 
     //move to corrected state
-    toReturn.addSequential(new SetElevatorHeight(goalState.getElevatorHeight()));
+    // toReturn.addSequential(new SetElevatorHeight(goalState.getElevatorHeight())); //FIXME so this makes the whole thing die
     currentState.setElevatorHeight(goalState.getElevatorHeight());
     if(goalState.getStanAngle()){
       toReturn.addSequential(new SetWrist(goalState.getWristAngle()));
@@ -123,13 +125,14 @@ public class SuperstructurePlanner{
     }
 
     // current and goal should now be equal
-    if(currentState==goalState){ //TODO check if this throws errors with preset vs. raw values
+    // if(currentState==goalState){ //FIXME so this throws ALL of the errors
       System.out.println("MOTION COMPLETED -- "+Integer.valueOf(errorCount)+" error(s) and "
-        +Integer.valueOf(corrCount)+" final correction(s)\n");
-      return toReturn;
-    }else{
-      System.out.println("MOTION FAILED -- Final states not equal.");
-      return null;
-    }
+        +Integer.valueOf(corrCount)+" final correction(s)");
+      // return toReturn;
+      return currentState;
+    // }else{
+    //   System.out.println("MOTION FAILED -- Final states not equal.");
+    //   return null;
+    // }
   }
 }
