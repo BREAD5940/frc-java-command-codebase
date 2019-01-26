@@ -2,6 +2,8 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
@@ -155,7 +157,7 @@ public class Robot extends TimedRobot {
       System.out.println("default auto gear " + RobotConfig.auto.auto_gear + " is not a valid choice!");
     }
 
-    drivetrain.setMode(NeutralMode.Coast);
+    drivetrain.setNeutralMode(NeutralMode.Coast);
 
   }
 
@@ -231,7 +233,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    odometry_.update(drivetrain.getLeftDistance() * 0.3048 , drivetrain.getRightDistance() * 0.3048 , drivetrain.getGyro());
+    // odometry_.update(drivetrain.getLeftDistance() * 0.3048 , drivetrain.getRightDistance() * 0.3048 , drivetrain.getGyro());
 
     SmartDashboard.putNumber("Robot X per odometry: ", odometry_.getX());
     SmartDashboard.putNumber("Robot Y per odometry: ", odometry_.getY());
@@ -245,10 +247,10 @@ public class Robot extends TimedRobot {
     // ft/sec to raw/0.1 sec
     SmartDashboard.putNumber("target left speed raw", ((m_oi.getForwardAxis() * 4) / (Math.PI * 6 / 12)) * 4096 / 10);
     
-    SmartDashboard.putNumber("Left talon speed", drivetrain.m_left_talon.getSelectedSensorVelocity(0));
-    SmartDashboard.putNumber("Left talon error", drivetrain.m_left_talon.getClosedLoopError(0));
-    SmartDashboard.putNumber("Right talon speed", drivetrain.m_right_talon.getSelectedSensorVelocity(0));
-    SmartDashboard.putNumber("Right talon error", drivetrain.m_right_talon.getClosedLoopError(0));
+    SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getDistance().getFeet() );
+    SmartDashboard.putNumber("Left talon error", drivetrain.getLeft().getClosedLoopError().getFeet() );
+    SmartDashboard.putNumber("Right talon speed", drivetrain.getRight().getDistance().getFeet() );
+    SmartDashboard.putNumber("Right talon error", drivetrain.getRight().getClosedLoopError().getFeet() );
 
     SmartDashboard.putNumber("Intake target speed per OI:", m_oi.getIntakeSpeed());
 

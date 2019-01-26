@@ -29,14 +29,14 @@ public class ArcadeDrive extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.drivetrain.arcadeDriveMethod(0, 0);
+    Robot.drivetrain.arcadeDrive(0, 0);
     System.out.println("arcade drive command init");
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.drivetrain.arcadeDriveMethod(Robot.m_oi.getForwardAxis(),
+    Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis(),
       Robot.m_oi.getTurnAxis());
     // Robot.drivetrain.arcadeDriveMethod(0,0.1);
 
@@ -59,7 +59,7 @@ public class ArcadeDrive extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.drivetrain.arcadeDriveMethod(0, 0);
+    Robot.drivetrain.arcadeDrive(0, 0);
     System.out.println("arcade end called");
   }
 
@@ -67,6 +67,6 @@ public class ArcadeDrive extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.drivetrain.arcadeDriveMethod(0, 0);
+    Robot.drivetrain.arcadeDrive(0, 0);
   }
 }

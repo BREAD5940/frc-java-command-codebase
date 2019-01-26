@@ -109,7 +109,7 @@ public class RobotConfig {
       public static final double velocity_kd_low = 0;
       public static final double velocity_kf_low =  1.4;
       public static final int velocity_izone_low = 800;
-      // public static final double velocity_max_integral_low = 500000;
+      public static final double velocity_max_integral_low = 500000;
       public static final double position_kp_low = 0.4;
       public static final double position_ki_low = 0;
       public static final double position_kd_low = 0;
@@ -121,7 +121,7 @@ public class RobotConfig {
       public static final double velocity_kd_high = 0;
       public static final double velocity_kf_high = 0.4;
       public static final int velocity_izone_high = 800;
-      // public static final double velocity_max_integral_high = 300;
+      public static final double velocity_max_integral_high = 300;
       public static final double position_kp_high = 2;
       public static final double position_ki_high = 0;
       public static final double position_kd_high = 20;

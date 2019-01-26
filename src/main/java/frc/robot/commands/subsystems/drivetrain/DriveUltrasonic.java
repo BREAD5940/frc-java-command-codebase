@@ -13,6 +13,8 @@ import frc.robot.lib.TerriblePID;
 import frc.robot.lib.motion.DriveMotorState;
 import frc.robot.subsystems.DifferentialUltrasonicSensor;
 import frc.robot.subsystems.DifferentialUltrasonicSensor.RangeMode;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 public class DriveUltrasonic extends Command {
 
@@ -94,7 +96,7 @@ public class DriveUltrasonic extends Command {
     // a fudge factor.
     
     // If we are just now reaching the deceleration phase
-    if ( deceleratePhase == false && distance < 1.1 * Math.pow(Robot.drivetrain.getAverageVelocity(), 2) / (2 * acceleration)) {
+    if ( deceleratePhase == false && distance < 1.1 * Math.pow( 0.0f /* TODO make this use robot speed*/ , 2) / (2 * acceleration)) {
       deceleratePhase = true;
       v_i = Robot.drivetrain.getAverageVelocity();
     }

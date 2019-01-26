@@ -15,6 +15,8 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TrajectorySamplePoint;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerDriveBase;
+import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
+
 import java.util.function.Supplier;
 
 // @SuppressWarnings({"WeakerAccess", "unused"})
@@ -24,6 +26,7 @@ public class TrajectoryTrackerCommand extends Command {
     private DriveTrain driveBase;
     private Localization localization;
     private boolean reset;
+    private TrajectoryTrackerOutput output;
 
     public TrajectoryTrackerCommand(DriveTrain driveBase, Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource){
         this(driveBase, trajectorySource, false);
@@ -50,7 +53,7 @@ public class TrajectoryTrackerCommand extends Command {
 
     @Override
     protected void execute(){
-        driveBase.setOutput(trajectoryTracker.nextState(driveBase.getRobotPosition(), TimeUnitsKt.getMillisecond(System.currentTimeMillis())));
+        output = trajectoryTracker.nextState(driveBase.getRobotPosition(), TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
 
         TrajectorySamplePoint<TimedEntry<Pose2dWithCurvature>> referencePoint = trajectoryTracker.getReferencePoint();
         if(referencePoint != null){
