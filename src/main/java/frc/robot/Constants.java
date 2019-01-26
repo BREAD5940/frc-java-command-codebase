@@ -1,5 +1,10 @@
 package frc.robot;
 
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Time;
+import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
+
 import frc.math.Pose2d;
 import frc.math.Translation2d;
 import frc.math.Util;
@@ -19,8 +24,8 @@ public class Constants {
   public static final double kDriveZeta = 0.9; // Unitless dampening co-efficient
 
   public static final double kLat = 0f;
-  public static final double kLookaheadTime = 0.1f;
-  public static final double kMinLookaheadDistance = 0f;
+  public static final Time kLookaheadTime = TimeUnitsKt.getSecond(0.1);
+  public static final Length kMinLookaheadDistance = LengthKt.getFeet(1);
 
   public static final double kWheelRadius = 2;// inches. TODO tune
   public static final double kTrackWidth = 0.61;// meters
