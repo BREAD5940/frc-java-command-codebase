@@ -1,23 +1,17 @@
 package frc.robot;
 
-import java.io.File;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.auto.routines.ForwardFiveMeters;
 import frc.robot.commands.groups.visionTest;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
-import frc.robot.commands.subsystems.drivetrain.PurePursuit;
 // import frc.robot.commands.subsystems.drivetrain.RamsetePathFollower;
 // import frc.robot.commands.subsystems.drivetrain.RunDriveMotionPlanner;
 import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
 import frc.robot.commands.subsystems.intake.CloseClamp;
 import frc.robot.commands.subsystems.intake.OpenClamp;
-import frc.robot.lib.motion.PathfinderTrajectory;
-import frc.robot.subsystems.DriveTrain.Gear;
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Trajectory;
 
 
 /**
@@ -39,7 +33,7 @@ public class OI {
   private Button close_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.Y_BUTTON);
   Button turnAutoButton = new JoystickButton(secondaryJoystick, xboxmap.Buttons.B_BUTTON);
   Button autobutton2 = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
-  Button autobutton3 = new JoystickButton(secondaryJoystick, xboxmap.Buttons.Y_BUTTON);
+  Button autobutton3 = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
 
 
   // TODO change these to a button console once created
@@ -73,7 +67,7 @@ public class OI {
     // auto_grab_cargo_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_CARGO, AutoMotion.mGoalHeight.LOW));
     // turnAutoButton.whenPressed(new PurePursuitPathCommand());
     // autobutton2.whenPressed(new RamsetePathFollower("filePath"));
-    // autobutton3.whenPressed(new DriveTrajectoryPathfinder("mFile"));
+    autobutton3.whenPressed(new ForwardFiveMeters()  );
     open_clamp_button.whenPressed(new OpenClamp());
     close_clamp_button.whenPressed(new CloseClamp());
     // open_clamp_button.whenPressed(new PurePursuit());

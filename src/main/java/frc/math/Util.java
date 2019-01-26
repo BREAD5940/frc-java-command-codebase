@@ -28,6 +28,10 @@ public class Util {
         return Math.min(max, Math.max(min, v));
     }
 
+    public static double deadband(double v, double deadband) {
+        return (Math.abs(v) < deadband) ? 0 : v;
+    }
+
     public static double interpolate(double a, double b, double x) {
         x = limit(x, 0.0, 1.0);
         return a + (b - a) * x;

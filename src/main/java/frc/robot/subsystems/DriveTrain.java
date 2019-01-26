@@ -9,6 +9,8 @@ import com.team254.lib.physics.DifferentialDrive;
 
 import org.ghrobotics.lib.localization.Localization;
 import org.ghrobotics.lib.localization.TankEncoderLocalization;
+import org.ghrobotics.lib.mathematics.twodim.control.FeedForwardTracker;
+import org.ghrobotics.lib.mathematics.twodim.control.PurePursuitTracker;
 import org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker;
 import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
@@ -19,11 +21,14 @@ import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.math.Util;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.subsystems.drivetrain.ArcadeDrive;
 import frc.robot.commands.subsystems.drivetrain.TrajectoryTrackerCommand;
+import frc.robot.lib.Logger;
 import frc.robot.lib.enums.TransmissionSide;
 import frc.robot.lib.obj.DriveSignal;
 import kotlin.ranges.RangesKt;
@@ -67,6 +72,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
   private double quickStopAccumulator = 0;
 
   private RamseteTracker ramseteTracker;
+  private FeedForwardTracker feedForwardTracker;
+  private PurePursuitTracker purePursuitTracker;
 
   public static enum Gear {
     LOW, HIGH;
@@ -125,7 +132,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
     );
 
     ramseteTracker = new RamseteTracker(Constants.kDriveBeta, Constants.kDriveZeta);
-
+    purePursuitTracker = new PurePursuitTracker(Constants.kLat, Constants.kLookaheadTime, Constants.kMinLookaheadDistance);
+    feedForwardTracker = new FeedForwardTracker();
   }
 
   public DifferentialDrive getDifferentialDrive() {
@@ -327,10 +335,28 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
     getLocalization().reset(pose2d);
   }
 
-  public void arcadeDrive(double linearPercent, double rotationPercent){
-    double maxInput = Math.signum(Math.max(Math.abs(linearPercent), Math.abs(rotationPercent)));
+  public void arcadeDrive(double linear, double rotation) {
+    arcadeDrive(linear, rotation, true);
+  }
 
-    double leftMotorOutput, rightMotorOutput;
+  public void arcadeDrive(double linearPercent, double rotationPercent, boolean squareInputs){
+    linearPercent = Util.limit(linearPercent,1);
+    linearPercent = Util.deadband(linearPercent, 0.05);
+
+    rotationPercent = Util.limit(rotationPercent,1);
+    rotationPercent = Util.deadband(rotationPercent, 0.05);
+
+    // Square the inputs (while preserving the sign) to increase fine control
+    // while permitting full power.
+    if (squareInputs) {
+      linearPercent = Math.copySign(linearPercent * linearPercent, linearPercent);
+      rotationPercent = Math.copySign(rotationPercent * rotationPercent, rotationPercent);
+    }
+
+    double leftMotorOutput;
+    double rightMotorOutput;
+
+    double maxInput = Math.copySign(Math.max(Math.abs(linearPercent), Math.abs(rotationPercent)), linearPercent);
 
     if (linearPercent >= 0.0) {
         // First quadrant, else second quadrant
@@ -351,8 +377,10 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
             rightMotorOutput = linearPercent - rotationPercent;
         }
     }
-
+    // Logger.log("Linear input " + linearPercent + " turn input " + rotationPercent);
+    // Logger.log("left motor output " + leftMotorOutput + " right motor output " + rightMotorOutput);
     tankDrive(leftMotorOutput, rightMotorOutput);
+    // tankDrive(0.2, 0.2);
   }
 
   public void curvatureDrive(double linearPercent, double curvaturePercent, boolean isQuickTurn) {

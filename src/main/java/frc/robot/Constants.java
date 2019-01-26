@@ -18,6 +18,10 @@ public class Constants {
   public static final double kDriveBeta = 1.4; // Inverse meters squared
   public static final double kDriveZeta = 0.9; // Unitless dampening co-efficient
 
+  public static final double kLat = 0f;
+  public static final double kLookaheadTime = 0.1f;
+  public static final double kMinLookaheadDistance = 0f;
+
   public static final double kWheelRadius = 2;// inches. TODO tune
   public static final double kTrackWidth = 0.61;// meters
 

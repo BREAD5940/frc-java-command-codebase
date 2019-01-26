@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 
@@ -18,7 +19,9 @@ import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotConfig.driveTrain;
+import frc.robot.lib.Logger;
 import frc.robot.lib.enums.TransmissionSide;
 
 public class Transmission {
@@ -52,9 +55,13 @@ public class Transmission {
     mMaster.configPeakOutputForward(+1.0, 30);
     mMaster.configPeakOutputReverse(-1.0, 30);
 
-    if(isInverted) {
-      mMaster.setInverted(true);
-    }
+    SmartDashboard.putBoolean("Is the " + side.toString() + " transmission inverted", isInverted);
+
+    // if(isInverted == true) {
+      // Logger.log("Making this inverted");
+      mMaster.setInverted(isInverted);
+      mSlave.setInverted(InvertType.FollowMaster);
+    // }
   }
 
   public FalconSRX<Length> getMaster() {
