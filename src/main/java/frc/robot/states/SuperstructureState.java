@@ -95,11 +95,11 @@ public class SuperstructureState{
    * updates the state to the current positions of each part
    */
   public void updateToCurrent(){
-    this.elevatorHeight = Robot.superstructure.elevator.getHeight();
-    if(Robot.superstructure.wrist.stanAngle){
-      this.wristAngle= Robot.superstructure.wrist.presetAngle;
+    this.elevatorHeight = Superstructure.elevator.getHeight();
+    if(Superstructure.wrist.stanAngle){
+      this.wristAngle= Superstructure.wrist.presetAngle;
     }else{
-      this.rawAngle=Robot.superstructure.wrist.rawAngle;
+      this.rawAngle=Superstructure.wrist.rawAngle;
     }
     
     // can't automatically set what piece is held w/o a bunch of sensors

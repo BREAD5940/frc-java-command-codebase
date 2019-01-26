@@ -46,6 +46,11 @@ public class SuperstructurePlanner{
     CommandGroup toReturn = new CommandGroup();
     SuperstructureState goalState = new SuperstructureState(goalStateIn);
 
+    if(goalState==currentState){
+      System.out.println("MOTION UNNECESSARY -- Goal and current states are same. Exiting planner.");
+      return toReturn;
+    }
+
     if(goalState.getHeldPiece()!=currentState.getHeldPiece()){
       System.out.println("MOTION IMPOSSIBLE -- Superstructure motion cannot change heldPiece. Resolving error.");
       errorCount++;
@@ -55,16 +60,17 @@ public class SuperstructurePlanner{
 
     if(!goalState.getStanAngle()||!currentState.getStanAngle()){
       System.out.println("MOTION UNSAFE -- Wrist position is wildcard. Setting to default position for movement.");
-      toReturn.addSequential(new SetWrist(WristPos.CARGO));
       errorCount++;
-      intakeAtRisk=false;
-      intakeCrashable=false;
       if(currentState.getHeldPiece()==mHeldPiece.HATCH){
         //TODO change this so it only happens if the intake will ACTUALLY pass through the elevator
         System.out.println("MOTION UNSAFE -- Cannot move wrist to wildcard position while holding hatch. Aborting wrist movement.");
         errorCount++;
         corrCount++;
         goalState.setWristAngle(WristPos.CARGO);
+      }else{
+        toReturn.addSequential(new SetWrist(WristPos.CARGO));
+        intakeAtRisk=false;
+        intakeCrashable=false;
       }
     }else{
       // Checks if the intake will ever be inside the elevator
