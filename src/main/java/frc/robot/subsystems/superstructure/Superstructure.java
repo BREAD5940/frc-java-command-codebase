@@ -2,9 +2,7 @@ package frc.robot.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion;
-import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 import frc.robot.lib.SuperstructurePlanner;
 import frc.robot.states.SuperstructureState;
 import frc.robot.subsystems.Intake;
@@ -24,9 +22,6 @@ public class Superstructure extends Subsystem {
   public static Wrist wrist = new Wrist();
   public static Intake intake = new Intake();
   private SuperstructurePlanner planner = new SuperstructurePlanner();
-  private static final double defaultHeight = RobotConfig.Superstructure.minElevatorHeight;
-  private static final WristPos defaultAngle = Wrist.WristPos.CARGO;
-  private static final mHeldPiece defaultPiece = mHeldPiece.NONE;
   
   public Superstructure(){}
 

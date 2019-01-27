@@ -3,7 +3,6 @@ package frc.robot.lib;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
-import frc.robot.commands.subsystems.superstructure.elevator.SetElevatorHeight;
 import frc.robot.commands.subsystems.superstructure.wrist.SetWrist;
 import frc.robot.states.SuperstructureState;
 import frc.robot.subsystems.superstructure.Wrist;

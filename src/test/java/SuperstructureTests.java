@@ -1,4 +1,3 @@
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
@@ -6,15 +5,12 @@ import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
-import frc.robot.commands.subsystems.superstructure.wrist.SetWrist;
 import frc.robot.lib.SuperstructurePlanner;
 import frc.robot.states.SuperstructureState;
-import frc.robot.subsystems.superstructure.Wrist;
 import frc.robot.subsystems.superstructure.Wrist.WristPos;
 
-public class SuperstructureTests{
+public class SuperstructureTests {
   
 
   @Test
@@ -60,15 +56,11 @@ public class SuperstructureTests{
     SuperstructureState currentState = new SuperstructureState(0,WristPos.CARGO,mHeldPiece.NONE);
     ArrayList<SuperstructureState> goalStates = new ArrayList<SuperstructureState>(Arrays.asList(
               new SuperstructureState(10,WristPos.CARGO,mHeldPiece.NONE),
-              new SuperstructureState(10,WristPos.HATCH,mHeldPiece.NONE),
               new SuperstructureState(30,WristPos.CARGO,mHeldPiece.NONE),
-              new SuperstructureState(30,WristPos.HATCH,mHeldPiece.NONE),
               new SuperstructureState(80,WristPos.CARGO,mHeldPiece.NONE)));
     ArrayList<SuperstructureState> correctEndStates = new ArrayList<SuperstructureState>(Arrays.asList(
               new SuperstructureState(10,WristPos.CARGO,mHeldPiece.NONE),
-              new SuperstructureState(10,WristPos.HATCH,mHeldPiece.NONE),
               new SuperstructureState(30,WristPos.CARGO,mHeldPiece.NONE),
-              new SuperstructureState(30,WristPos.HATCH,mHeldPiece.NONE),
               new SuperstructureState(70,WristPos.CARGO,mHeldPiece.NONE)));
     ArrayList<SuperstructureState> resultingStates=new ArrayList<SuperstructureState>();
 
@@ -89,17 +81,13 @@ public class SuperstructureTests{
     SuperstructurePlanner planner = new SuperstructurePlanner();
     SuperstructureState currentState = new SuperstructureState(0,WristPos.CARGO,mHeldPiece.NONE);
     ArrayList<SuperstructureState> goalStates = new ArrayList<SuperstructureState>(Arrays.asList(
-              new SuperstructureState(10,WristPos.CARGO,mHeldPiece.NONE),
               new SuperstructureState(10,WristPos.HATCH,mHeldPiece.NONE),
-              new SuperstructureState(30,WristPos.CARGO,mHeldPiece.NONE),
               new SuperstructureState(30,WristPos.HATCH,mHeldPiece.NONE),
-              new SuperstructureState(80,WristPos.CARGO,mHeldPiece.NONE)));
+              new SuperstructureState(30,10,mHeldPiece.NONE)));
     ArrayList<SuperstructureState> correctEndStates = new ArrayList<SuperstructureState>(Arrays.asList(
-              new SuperstructureState(10,WristPos.CARGO,mHeldPiece.NONE),
               new SuperstructureState(10,WristPos.HATCH,mHeldPiece.NONE),
-              new SuperstructureState(30,WristPos.CARGO,mHeldPiece.NONE),
               new SuperstructureState(30,WristPos.HATCH,mHeldPiece.NONE),
-              new SuperstructureState(70,WristPos.CARGO,mHeldPiece.NONE)));
+              new SuperstructureState(30,10,mHeldPiece.NONE)));
     ArrayList<SuperstructureState> resultingStates=new ArrayList<SuperstructureState>();
 
 
