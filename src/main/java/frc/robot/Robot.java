@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
@@ -244,6 +245,10 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
     SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
+
+    LiveDashboard.INSTANCE.setRobotX(drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
+    LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
+    LiveDashboard.INSTANCE.setRobotHeading(drivetrain.getLocalization().getRobotPosition().getRotation().getRadian());
 
     // TODO make a function or class that does all this calculation for us
     SmartDashboard.putNumber("get forward axis", m_oi.getForwardAxis());
