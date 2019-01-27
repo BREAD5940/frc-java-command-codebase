@@ -28,10 +28,10 @@ public class SuperstructurePlanner{
 
   static final double crossbarHeight = 20;
 
-  static boolean intakeCrashable = false; //intake capable of hitting the ground
-  static boolean intakeAtRisk = false; //intake at risk of hitting the crossbar
-  static int errorCount; //number of errors in motion
-  static int corrCount; //number of corrected items in motion
+  boolean intakeCrashable = false; //intake capable of hitting the ground
+  boolean intakeAtRisk = false; //intake at risk of hitting the crossbar
+  int errorCount; //number of errors in motion
+  int corrCount; //number of corrected items in motion
 
   /**
    * Creates a command group of superstructure motions that will prevent any damage to the intake/elevator
@@ -42,7 +42,7 @@ public class SuperstructurePlanner{
    * @return
    *    the ideal command group to get from the currentState to the goalState
    */
-  public static SuperstructureState plan(SuperstructureState goalStateIn, SuperstructureState currentState){
+  public SuperstructureState plan(SuperstructureState goalStateIn, SuperstructureState currentState){
     CommandGroup toReturn = new CommandGroup();
     SuperstructureState goalState = new SuperstructureState(goalStateIn);
     errorCount=corrCount=0;
@@ -60,7 +60,7 @@ public class SuperstructurePlanner{
       goalState.setHeldPiece(currentState.getHeldPiece());
     }
 
-    if(!goalState.getStanAngle()||!currentState.getStanAngle()){
+    if(!goalState.getStanAngle()){
       System.out.println("MOTION UNSAFE -- Wrist position is wildcard. Setting to default position for movement.");
       errorCount++;
       if(currentState.getHeldPiece()==mHeldPiece.HATCH){
@@ -89,16 +89,9 @@ public class SuperstructurePlanner{
     //checks if the elevator will move past the crossbar
     if(intakeAtRisk&&(goalState.getElevatorHeight()>=crossbarHeight&&currentState.getElevatorHeight()<=crossbarHeight)
         || (goalState.getElevatorHeight()<=crossbarHeight&&currentState.getElevatorHeight()>=crossbarHeight)){
-      if(currentState.getHeldPiece()==mHeldPiece.HATCH){
-        System.out.println("MOTION UNSAFE -- Intake will hit crossbar and cannot be moved. Moving to max possible height.");
-        errorCount++;
-        corrCount++;
-        goalState.setElevatorHeight(crossbarHeight-1.5); //crossbarHeight - how much intake there is inside the elevator TODO confirm
-      }else{
-        System.out.println("MOTION UNSAFE -- Intake will hit crossbar. Setting to default intake position for movement.");
-        errorCount++;
-        toReturn.addSequential(new SetWrist(WristPos.CARGO)); //Keeps intake outside the elevator so it doesn't hit the crossbar
-      }
+      System.out.println("MOTION UNSAFE -- Intake will hit crossbar. Setting to default intake position for movement.");
+      errorCount++;
+      toReturn.addSequential(new SetWrist(WristPos.CARGO)); //Keeps intake outside the elevator so it doesn't hit the crossbar
     }else{
       intakeAtRisk=false;
     }

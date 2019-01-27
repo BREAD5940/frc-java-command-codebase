@@ -36,6 +36,8 @@ public class SuperstructureState{
     this.elevatorHeight=existing.getElevatorHeight();
     this.wristAngle=existing.getWristAngle();
     this.piece=existing.getHeldPiece();
+    this.stanAngle=existing.getStanAngle();
+    this.rawAngle=existing.getRawWristAngle();
   }
 
   /**
@@ -51,6 +53,13 @@ public class SuperstructureState{
     this.elevatorHeight = height;
     this.wristAngle = angle;
     this.piece = piece;
+  }
+
+  public SuperstructureState(double height, double angle, mHeldPiece piece){
+    this.elevatorHeight=height;
+    this.rawAngle=angle;
+    this.stanAngle=false;
+    this.piece=piece;
   }
 
   /**
