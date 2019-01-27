@@ -12,7 +12,7 @@ import frc.robot.lib.Units;
 
 public class Constants {
   /* Graciously borrowed from 5190*/
-  public static final double kRobotMass = 54.53 /* Robot */ + 5.669 /* Battery */ + 7; /* Bumpers */ // kg
+  public static final double kRobotMass = 25.8f /* Robot, kg */ + 5f /* Battery, kg */ + 0f; /* Bumpers */ // kg
   public static final double kRobotMomentOfInertia = 10.0; // kg m^2 // TODO Tune
   public static final double kRobotAngularDrag = 12.0; // N*m / (rad/sec)
 

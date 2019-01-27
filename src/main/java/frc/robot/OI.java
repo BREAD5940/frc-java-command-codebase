@@ -56,7 +56,7 @@ public class OI {
     auto_place_cargo_cargo_button.whenPressed(new SetElevatorHeight(9.316859344380049 - 1.5 ) );
     auto_place_hatch_cargo_button.whenPressed(new SetElevatorHeight(30));
 
-    auto_place_cargo_rocket_button.whenPressed(new visionTest());
+    // auto_place_cargo_rocket_button.whenPressed(new visionTest());
     // auto_place_hatch_rocket_button.whenPressed(new RunDriveMotionPlanner(  pftraj ) );
 
 

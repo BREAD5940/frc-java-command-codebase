@@ -28,7 +28,6 @@ public class Trajectories {
 
 
   public static void generateAllTrajectories(){
-
     frontRightCargo = generateTrajectory(
       Arrays.asList(
         new Pose2d(LengthKt.getFeet(2), LengthKt.getFeet(10), Rotation2dKt.getDegree(0)),
@@ -36,7 +35,13 @@ public class Trajectories {
       ),
       false
     );
-
+    forwardFiveMeters = generateTrajectory(
+      Arrays.asList(
+        new Pose2d(LengthKt.getFeet(0f), LengthKt.getFeet(0f), Rotation2dKt.getDegree(0f)),
+        new Pose2d(LengthKt.getFeet(16.404f), LengthKt.getFeet(0f), Rotation2dKt.getDegree(0f))
+      ),
+      false
+    );
   }
 
   public static TimedTrajectory<Pose2dWithCurvature> generateTrajectory(List<Pose2d> waypoints, boolean reversed){

@@ -12,5 +12,6 @@
   },
   "workbench.colorTheme": "Monokai",
   "wpilib.online": true,
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "wpilib.skipTests": true
 }

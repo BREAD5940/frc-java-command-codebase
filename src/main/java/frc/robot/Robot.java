@@ -1,8 +1,12 @@
 package frc.robot;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -14,6 +18,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
+import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.motion.Odometer;
 // import frc.robot.subsystems.DifferentialUltrasonicSensor;
 import frc.robot.subsystems.DriveTrain;
@@ -43,7 +48,7 @@ public class Robot extends TimedRobot {
   public static AutoMotion m_auto;
   SendableChooser<Command> m_chooser = new SendableChooser<Command>();
   public static Compressor compressor = new Compressor(9);
-  public static Odometer odometry_;
+  // public static Odometer odometry_;
   // public static DifferentialUltrasonicSensor differentialUltrasonicSensor = DifferentialUltrasonicSensor.getInstance();
   // private Logger logger;
 
@@ -84,6 +89,7 @@ public class Robot extends TimedRobot {
 
     camera.setResolution(533,300);
 
+    Trajectories.generateAllTrajectories();
 
     // logger = Logger.getInstance();
     m_oi = new OI();
@@ -116,7 +122,7 @@ public class Robot extends TimedRobot {
       drivetrain.setHighGear();
     }
 
-    odometry_ = Odometer.getInstance();
+    // odometry_ = Odometer.getInstance();
     // Thanks to RoboLancers for odometry code
     // odometry_ = Odometry.getInstance();
     // new Notifier(() -> {
@@ -202,8 +208,8 @@ public class Robot extends TimedRobot {
     }
     // TODO reset subsystems on teleop init?
     
-    odometry_.setX(0);
-    odometry_.setY(0);
+    // odometry_.setX(0);
+    // odometry_.setY(0);
     drivetrain.zeroGyro();
   }
 
@@ -233,10 +239,11 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    DriveTrain.getInstance().getLocalization().update();
     // odometry_.update(drivetrain.getLeftDistance() * 0.3048 , drivetrain.getRightDistance() * 0.3048 , drivetrain.getGyro());
 
-    SmartDashboard.putNumber("Robot X per odometry: ", odometry_.getX());
-    SmartDashboard.putNumber("Robot Y per odometry: ", odometry_.getY());
+    SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
+    SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
 
     // TODO make a function or class that does all this calculation for us
     SmartDashboard.putNumber("get forward axis", m_oi.getForwardAxis());
@@ -247,12 +254,40 @@ public class Robot extends TimedRobot {
     // ft/sec to raw/0.1 sec
     SmartDashboard.putNumber("target left speed raw", ((m_oi.getForwardAxis() * 4) / (Math.PI * 6 / 12)) * 4096 / 10);
     
-    SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getDistance().getFeet() );
+    SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getFeetPerSecond() );
     SmartDashboard.putNumber("Left talon error", drivetrain.getLeft().getClosedLoopError().getFeet() );
-    SmartDashboard.putNumber("Right talon speed", drivetrain.getRight().getDistance().getFeet() );
+    SmartDashboard.putNumber("Right talon speed", drivetrain.getRight().getFeetPerSecond() );
     SmartDashboard.putNumber("Right talon error", drivetrain.getRight().getClosedLoopError().getFeet() );
 
     SmartDashboard.putNumber("Intake target speed per OI:", m_oi.getIntakeSpeed());
+
+    if (drivetrain.lastFeetPerSecond == null) {
+      drivetrain.lastFeetPerSecond = Arrays.asList(VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()), VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()));
+    }
+
+    if (drivetrain.lastCommandedVoltages == null) {
+      drivetrain.lastCommandedVoltages = Arrays.asList(0d, 0d);
+    }
+
+    List<Double> feetPerSecond = Arrays.asList(
+            VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()), 
+            VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity())
+    );
+
+    List<Double> feetPerSecondPerSecond = Arrays.asList(
+      (VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()) - drivetrain.lastFeetPerSecond.get(0))/0.02d, 
+      (VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()) - drivetrain.lastFeetPerSecond.get(0))/0.02d
+    );  
+
+    SmartDashboard.putNumber("Left drivetrain commanded voltage", drivetrain.lastCommandedVoltages.get(0));
+    SmartDashboard.putNumber("Right drivetrain commanded voltage", drivetrain.lastCommandedVoltages.get(1));
+    SmartDashboard.putNumber("Left drivetrian feet per second", feetPerSecond.get(0));
+    SmartDashboard.putNumber("Right drivetrian feet per second", feetPerSecond.get(1));
+    SmartDashboard.putNumber("Left drivetrian acceleration, feet per second", feetPerSecondPerSecond.get(0));
+    SmartDashboard.putNumber("Right drivetrian acceleration, feet per second", feetPerSecondPerSecond.get(1));
+
+    drivetrain.lastFeetPerSecond = feetPerSecond;
+
 
     // SmartDashboard.putNumber("Throttle output", throttle.getRawAxis(1));
     SmartDashboard.putNumber("Elevator setpoint", 20000);

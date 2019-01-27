@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -53,10 +56,9 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
   
   private static DriveTrain instance;
 
-//  public MotionProfileStatus m_left_MP_Status = new MotionProfileStatus();
-//  public MotionProfileStatus m_right_MP_Status = new MotionProfileStatus();
+  public List<Double> lastCommandedVoltages;
+  public List<Double> lastFeetPerSecond = Arrays.asList(0d, 0d);
 
-//  private WPI_TalonSRX m_left_talon, s_left_talon, m_right_talon, s_right_talon;
 
   public AHRS gyro = new AHRS(SPI.Port.kMXP);
   double gyroZero;
@@ -114,6 +116,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
       () -> DriveTrain.getInstance().getLeft().getDistance(),
       () -> DriveTrain.getInstance().getRight().getDistance()
     );
+
+    localization.reset( new Pose2d() );
 
     mTransmission = new DCMotorTransmission(
       1 / Constants.kVDrive,
@@ -439,6 +443,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
   }
 
   public void tankDrive(double leftPercent, double rightPercent){
+    lastCommandedVoltages = Arrays.asList(leftPercent * 12, rightPercent * 12);
     getLeft().getMaster().set(ControlMode.PercentOutput, leftPercent);
     getRight().getMaster().set(ControlMode.PercentOutput, rightPercent);
   }
@@ -473,4 +478,5 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
     setDefaultCommand(new ArcadeDrive());
     // setDefaultCommand(new auto_action_DRIVE(5, "high", 5, 30));
   }
+
 }

@@ -19,7 +19,7 @@ public class SetInitialOdometry extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.drivetrain.getLocalization().reset(initialPose.getPose());
+    // Robot.drivetrain.getLocalization().reset(initialPose.getPose());
   }
 
   // Called repeatedly when this Command is scheduled to run
