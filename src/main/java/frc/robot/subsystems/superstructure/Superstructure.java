@@ -55,7 +55,7 @@ public class Superstructure extends Subsystem {
     mCurrentState.updateToCurrent();   
     
     if(!(mReqState==mCurrentState)){
-      // this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
+      this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
     }
 
     return this.mCurrentCommandGroup;
@@ -104,7 +104,7 @@ public class Superstructure extends Subsystem {
     mReqState.setHeldPiece(piece); 
     
     if(!(mReqState==mCurrentState)){
-      // this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
+      this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
     }
 
     return this.mCurrentCommandGroup;

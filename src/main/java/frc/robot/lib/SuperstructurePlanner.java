@@ -1,6 +1,7 @@
 package frc.robot.lib;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 import frc.robot.commands.subsystems.superstructure.elevator.SetElevatorHeight;
 import frc.robot.commands.subsystems.superstructure.wrist.SetWrist;
@@ -28,10 +29,13 @@ public class SuperstructurePlanner{
 
   static final double crossbarHeight = 20;
 
+  static final double maxHeight = RobotConfig.elevator.elevator_maximum_height;
+
   boolean intakeCrashable = false; //intake capable of hitting the ground
   boolean intakeAtRisk = false; //intake at risk of hitting the crossbar
   int errorCount; //number of errors in motion
   int corrCount; //number of corrected items in motion
+  SuperstructureState currentPlannedState;
 
   /**
    * Creates a command group of superstructure motions that will prevent any damage to the intake/elevator
@@ -42,15 +46,15 @@ public class SuperstructurePlanner{
    * @return
    *    the ideal command group to get from the currentState to the goalState
    */
-  public SuperstructureState plan(SuperstructureState goalStateIn, SuperstructureState currentState){
+  public CommandGroup plan(SuperstructureState goalStateIn, SuperstructureState currentState){
     CommandGroup toReturn = new CommandGroup();
     SuperstructureState goalState = new SuperstructureState(goalStateIn);
     errorCount=corrCount=0;
 
     if(goalState==currentState){
       System.out.println("MOTION UNNECESSARY -- Goal and current states are same. Exiting planner.");
-      // return toReturn;
-      return goalState;
+      this.currentPlannedState=goalState;
+      return toReturn;
     }
 
     if(goalState.getHeldPiece()!=currentState.getHeldPiece()){
@@ -86,6 +90,14 @@ public class SuperstructurePlanner{
       }
     }
 
+    //checks if the elevator will go to high
+    if(goalState.getElevatorHeight()>maxHeight){
+      System.out.println("MOTION IMPOSSIBLE -- Elevator will pass maximum height. Setting to maximum height.");
+      errorCount++;
+      corrCount++;
+      goalState.setElevatorHeight(maxHeight);
+    }
+
     //checks if the elevator will move past the crossbar
     if(intakeAtRisk&&(goalState.getElevatorHeight()>=crossbarHeight&&currentState.getElevatorHeight()<=crossbarHeight)
         || (goalState.getElevatorHeight()<=crossbarHeight&&currentState.getElevatorHeight()>=crossbarHeight)){
@@ -117,15 +129,14 @@ public class SuperstructurePlanner{
       currentState.setWristAngle(goalState.getRawWristAngle());
     }
 
-    // current and goal should now be equal
-    // if(currentState==goalState){ //FIXME so this throws ALL of the errors
-      System.out.println("MOTION COMPLETED -- "+Integer.valueOf(errorCount)+" error(s) and "
-        +Integer.valueOf(corrCount)+" final correction(s)");
-      // return toReturn;
-      return currentState;
-    // }else{
-    //   System.out.println("MOTION FAILED -- Final states not equal.");
-    //   return null;
-    // }
+    System.out.println("MOTION COMPLETED -- "+Integer.valueOf(errorCount)+" error(s) and "
+      +Integer.valueOf(corrCount)+" final correction(s)");
+    this.currentPlannedState = currentState;
+    return toReturn;
+  }
+
+  public SuperstructureState getPlannedState(SuperstructureState goalStateIn, SuperstructureState currentState){
+    this.plan(goalStateIn, currentState);
+    return this.currentPlannedState;
   }
 }
