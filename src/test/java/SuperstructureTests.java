@@ -6,7 +6,7 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
-import frc.robot.lib.SuperstructurePlanner;
+import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.SuperstructureState;
 import frc.robot.subsystems.superstructure.Wrist.WristPos;
 

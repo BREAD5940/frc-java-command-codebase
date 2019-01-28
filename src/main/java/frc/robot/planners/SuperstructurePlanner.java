@@ -1,4 +1,4 @@
-package frc.robot.lib;
+package frc.robot.planners;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig;

@@ -3,7 +3,7 @@ package frc.robot.subsystems.superstructure;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.auto.AutoMotion;
-import frc.robot.lib.SuperstructurePlanner;
+import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.SuperstructureState;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.superstructure.Wrist.WristPos;
