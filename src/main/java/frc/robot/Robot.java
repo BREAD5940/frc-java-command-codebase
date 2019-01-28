@@ -2,6 +2,7 @@ package frc.robot;
 
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -19,6 +20,7 @@ import frc.robot.subsystems.LIDARSubsystem;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.subsystems.superstructure.Superstructure;
+import edu.wpi.first.wpilibj.SPI;
 
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly init

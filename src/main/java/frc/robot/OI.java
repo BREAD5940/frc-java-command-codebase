@@ -7,7 +7,7 @@ import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.AutoMotion.mGoalType;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
-import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
+import frc.robot.commands.subsystems.superstructure.elevator.SetElevatorHeight;
 import frc.robot.commands.subsystems.intake.CloseClamp;
 import frc.robot.commands.subsystems.intake.OpenClamp;
 
