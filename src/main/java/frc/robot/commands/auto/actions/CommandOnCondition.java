@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public abstract class CommandOnCondition extends Command {
 
   /**
-   * (Maybe) run a command on a cnodition
+   * (Maybe) run a command on a condition
    */
   public CommandOnCondition() {
   }

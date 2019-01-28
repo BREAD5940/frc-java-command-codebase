@@ -1,7 +1,5 @@
 package frc.robot.lib;
 
-import frc.robot.Robot;
-
 public class Odometry2 {
   double x_, y_, theta_;
   double distance, deltaX, deltaY;

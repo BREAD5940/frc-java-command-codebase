@@ -1,4 +1,4 @@
-package frc.robot.commands.subsystems.elevator;
+package frc.robot.commands.subsystems.superstructure.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;

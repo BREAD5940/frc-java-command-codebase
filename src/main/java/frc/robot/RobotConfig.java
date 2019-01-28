@@ -26,6 +26,23 @@ public class RobotConfig {
     public static final double throttle_minimum_value = 0; // TODO fix elevator minimum height!
     public static final double throttle_maximum_value = 1; // TODO fix elevator maximum height
   }
+
+  /**
+   * Superstructure constants
+   */
+  public class Superstructure{
+    //TODO get accurate values
+    public static final double minElevatorHeight = 0;
+    public static final double minWrist1Angle = 0; //TODO degrees or radians?
+    public static final double minWrist2Angle = 0;
+
+    // TODO get accurate values
+    public static final double maxElevatorHeight = 70;
+    public static final double maxWrist1Angle = 90;
+    public static final double maxWrist2Angle = 90;
+
+    
+  }
   
   public class wrist {
     /**

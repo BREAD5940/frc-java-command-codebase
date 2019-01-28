@@ -1,10 +1,10 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
-import frc.robot.commands.subsystems.elevator.ElevatorTelop;
+import frc.robot.commands.subsystems.superstructure.elevator.ElevatorTelop;
 import frc.robot.lib.EncoderLib;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;

@@ -8,8 +8,6 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.robot.Robot;
 import frc.robot.commands.auto.AutoMotion.mGoalHeight;
 import frc.robot.commands.auto.AutoMotion.mGoalType;
 
@@ -33,19 +31,19 @@ public class RunAuto extends Command {
   @Override
   protected void initialize() {
     motion = new AutoMotion(height, goal);
-    motion.mBigCommandGroup.start();
+    motion.getBigCommandGroup().start();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    // Scheduler.getInstance().run();
+    // Don't need to do anything here
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return motion.mBigCommandGroup.done();
+    return motion.getBigCommandGroup().done();
   }
 
   // Called once after isFinished returns true

@@ -9,8 +9,6 @@ public class AutoCommandGroup extends CommandGroup {
 
   ArrayList<Command> commands;
 
-  // TODO change this to parallel?
-
   /**
    * just makes a proper command group out of the inputted Commands
    * @param commands
