@@ -112,9 +112,9 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
     // double meme =  DriveTrain.getInstance().getRight().getDistance().getF;
 
     localization = new TankEncoderLocalization(
-      () -> Rotation2dKt.getDegree(DriveTrain.getInstance().getGyro()),
-      () -> DriveTrain.getInstance().getLeft().getDistance(),
-      () -> DriveTrain.getInstance().getRight().getDistance()
+      () -> Rotation2dKt.getDegree(getGyro()),
+      () -> getLeft().getDistance(),
+      () -> getRight().getDistance()
     );
 
     localization.reset( new Pose2d() );

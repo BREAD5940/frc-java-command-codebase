@@ -95,7 +95,12 @@ public class Transmission {
   }
 
   public Length getClosedLoopError() {
-    return lengthModel.toModel(NativeUnitKt.getSTU(mMaster.getClosedLoopError()));
+    if (getMaster().getControlMode() != ControlMode.PercentOutput) {
+      return lengthModel.toModel(NativeUnitKt.getSTU(mMaster.getClosedLoopError()));
+    }
+    else {
+      return LengthKt.getFeet(0);
+    }
   }
 
   public void zeroEncoder() {
