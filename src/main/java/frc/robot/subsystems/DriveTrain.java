@@ -112,7 +112,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
     // double meme =  DriveTrain.getInstance().getRight().getDistance().getF;
 
     localization = new TankEncoderLocalization(
-      () -> Rotation2dKt.getDegree(getGyro()),
+      () -> Rotation2dKt.getDegree(getGyro(true)),
       () -> getLeft().getDistance(),
       () -> getRight().getDistance()
     );
@@ -466,6 +466,14 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
    */
   public double getGyro() {
     return gyro.getAngle() - gyroZero;
+  }
+
+  /**
+   * Return the angle of the gyro. If the argument returns true
+   * the output will be inverted (positive numbers is counter clockwise)
+   */
+  public double getGyro(boolean inverted) {
+    return (inverted) ? getGyro() * (2-3) : getGyro();
   }
 
   public void zeroGyro() {
