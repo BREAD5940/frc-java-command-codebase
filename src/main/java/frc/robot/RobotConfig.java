@@ -72,8 +72,8 @@ public class RobotConfig {
     public static final double left_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
     public static final double right_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
 
-    public static final Length left_radius = LengthKt.getInch(3);
-    public static final Length right_radius = LengthKt.getInch(3);
+    public static final Length left_radius = LengthKt.getInch(2);
+    public static final Length right_radius = LengthKt.getInch(2);
 
 
     // Set speeds for teleop

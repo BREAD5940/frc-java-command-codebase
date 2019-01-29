@@ -6,7 +6,9 @@ import java.util.List;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import org.ghrobotics.lib.debug.LiveDashboard;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import edu.wpi.cscore.UsbCamera;
@@ -83,6 +85,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // camera = CameraServer.getInstance().startAutomaticCapture(0);
+
+    drivetrain.getLocalization().reset(new Pose2d(LengthKt.getFeet(5.5), LengthKt.getFeet(17), new Rotation2d(0f, 0f, false) ));
 
     serverOne = CameraServer.getInstance();
 

@@ -20,6 +20,8 @@ import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
+import frc.robot.commands.auto.Trajectories;
+import frc.robot.lib.Logger;
 import frc.robot.subsystems.DriveTrain;
 
 // @SuppressWarnings({"WeakerAccess", "unused"})
@@ -51,13 +53,22 @@ public class TrajectoryTrackerCommand extends Command {
 
   @Override
   protected void initialize(){
-      trajectoryTracker.reset(trajectorySource.get());
 
-      if(reset) {
-          localization.reset(trajectorySource.get().getFirstState().component1().getPose());
-      }
+    if(trajectorySource == null) {
+      Logger.log("Sadly the trajectories are not generated. the person responsible for the trajectories has been sacked.");
+      Trajectories.generateAllTrajectories();
+    }
+    // trajectorySource = Trajectories.generateTrajectory(Trajectories.pathForwardFiveMeters, false);
 
-      LiveDashboard.INSTANCE.setFollowingPath(true);
+    Logger.log("get: " + trajectorySource.get().getFirstState().getState().getCurvature().toString());
+
+    trajectoryTracker.reset(this.trajectorySource.get());
+
+    if(reset) {
+        localization.reset(trajectorySource.get().getFirstState().component1().getPose());
+    }
+
+    LiveDashboard.INSTANCE.setFollowingPath(true);
   }
 
   @Override
