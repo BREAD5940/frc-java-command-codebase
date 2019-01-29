@@ -94,6 +94,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
   private DifferentialDrive differentialDrive;
   private Transmission leftTransmission, rightTransmission;
 
+  private TrajectoryTrackerMode kDefaulTrajectoryTrackerMode = TrajectoryTrackerMode.FEEDFORWARD;
 
   private DriveTrain() {
     leftTransmission = new Transmission(RobotConfig.driveTrain.leftTalons.m_left_talon_port,
@@ -170,18 +171,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
   }
 
   public TrajectoryTracker getTrajectoryTracker() {
-    switch (trackerMode) {
-      case RAMSETE:
-        return ramseteTracker;
-      case FEEDFORWARD:
-        return null;
-      case PUREPURSUIT:
-        return null;
-      case PID:
-        return null;
-      default:
-        return ramseteTracker;
-    }
+    return getTrajectoryTracker(kDefaulTrajectoryTrackerMode);
   }
 
   public TrajectoryTracker getTrajectoryTracker(TrajectoryTrackerMode mode) {
@@ -189,9 +179,9 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
       case RAMSETE:
         return ramseteTracker;
       case FEEDFORWARD:
-        return null;
+        return feedForwardTracker;
       case PUREPURSUIT:
-        return null;
+        return purePursuitTracker;
       case PID:
         return null;
       default:
@@ -457,6 +447,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
   }
 
   public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, TrajectoryTrackerMode mode, boolean reset){
+    kDefaulTrajectoryTrackerMode = mode;
     return new TrajectoryTrackerCommand(this, getTrajectoryTracker(mode), () -> trajectory, reset);
   }
 
