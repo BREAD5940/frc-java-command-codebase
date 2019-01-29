@@ -32,7 +32,7 @@ public class TrajectoryTrackerCommand extends Command {
   private Localization localization;
   private boolean reset;
   private TrajectoryTrackerOutput output;
-  private DifferentialDrive mModel;
+  // private DifferentialDrive mModel;
 
   public TrajectoryTrackerCommand(DriveTrain driveBase, Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource){
       this(driveBase, trajectorySource, false);
@@ -48,24 +48,26 @@ public class TrajectoryTrackerCommand extends Command {
       this.trajectoryTracker = trajectoryTracker;
       this.trajectorySource = trajectorySource;
       this.reset = reset;
-      this.mModel = driveBase.getDifferentialDrive();
+      // this.mModel = driveBase.getDifferentialDrive();
   }
 
   @Override
   protected void initialize(){
+    LiveDashboard.INSTANCE.setFollowingPath(false);
 
     if(trajectorySource == null) {
       Logger.log("Sadly the trajectories are not generated. the person responsible for the trajectories has been sacked.");
       Trajectories.generateAllTrajectories();
     }
-    // trajectorySource = Trajectories.generateTrajectory(Trajectories.pathForwardFiveMeters, false);
 
     Logger.log("get: " + trajectorySource.get().getFirstState().getState().getCurvature().toString());
 
     trajectoryTracker.reset(this.trajectorySource.get());
 
-    if(reset) {
-        localization.reset(trajectorySource.get().getFirstState().component1().getPose());
+    Logger.log("first pose: " + trajectorySource.get().getFirstState().getState().getPose().getTranslation().getX().getFeet() );
+
+    if(reset == true) {
+        Robot.drivetrain.getLocalization().reset( trajectorySource.get().getFirstState().getState().getPose() );
     }
 
     LiveDashboard.INSTANCE.setFollowingPath(true);
@@ -83,7 +85,7 @@ public class TrajectoryTrackerCommand extends Command {
       LiveDashboard.INSTANCE.setPathY(referencePose.getTranslation().getY().getFeet());
       LiveDashboard.INSTANCE.setPathHeading(referencePose.getRotation().getRadian());
     }
-
+    Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
     driveBase.setOutput(output);
   }
 

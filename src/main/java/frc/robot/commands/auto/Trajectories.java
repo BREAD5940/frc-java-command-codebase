@@ -34,7 +34,7 @@ public class Trajectories {
 
   public static List<Pose2d> pathForwardFiveMeters = Arrays.asList(
       new Pose2d(LengthKt.getFeet(5f), LengthKt.getFeet(15f), Rotation2dKt.getDegree(0f)),
-      new Pose2d(LengthKt.getFeet(15f), LengthKt.getFeet(5f), Rotation2dKt.getDegree(0f))
+      new Pose2d(LengthKt.getFeet(11f), LengthKt.getFeet(15f), Rotation2dKt.getDegree(0f))
     );
 
   public static void generateAllTrajectories(){
