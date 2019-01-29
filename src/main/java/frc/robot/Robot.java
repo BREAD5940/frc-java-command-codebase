@@ -244,8 +244,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    DriveTrain.getInstance().getLocalization().update();
-    // odometry_.update(drivetrain.getLeftDistance() * 0.3048 , drivetrain.getRightDistance() * 0.3048 , drivetrain.getGyro());
+    // DriveTrain.getInstance().getLocalization().update(); // depreciated because it should be running in a notifier now
 
     SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
     SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
@@ -253,68 +252,36 @@ public class Robot extends TimedRobot {
     LiveDashboard.INSTANCE.setRobotX(drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
     LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
     LiveDashboard.INSTANCE.setRobotHeading(drivetrain.getLocalization().getRobotPosition().getRotation().getRadian());
-
-    // TODO make a function or class that does all this calculation for us
-    SmartDashboard.putNumber("get forward axis", m_oi.getForwardAxis());
-    SmartDashboard.putNumber("get turn axis", m_oi.getTurnAxis());
-    // SmartDashboard.putenum("Drivetrain gear", drivetrain.current_gear);
-    // SmartDashboard.putNumber("setVelocityRight output: ",
-    // encoderlib.distanceToRaw(12/12, 4096, 6/12) / 10 ); // This *should* return 1
-    // ft/sec to raw/0.1 sec
-    SmartDashboard.putNumber("target left speed raw", ((m_oi.getForwardAxis() * 4) / (Math.PI * 6 / 12)) * 4096 / 10);
     
     SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getFeetPerSecond() );
     SmartDashboard.putNumber("Left talon error", drivetrain.getLeft().getClosedLoopError().getFeet() );
     SmartDashboard.putNumber("Right talon speed", drivetrain.getRight().getFeetPerSecond() );
     SmartDashboard.putNumber("Right talon error", drivetrain.getRight().getClosedLoopError().getFeet() );
 
-    SmartDashboard.putNumber("Intake target speed per OI:", m_oi.getIntakeSpeed());
-
+    // Do a bunch of charicterization stuff
     if (drivetrain.lastFeetPerSecond == null) {
       drivetrain.lastFeetPerSecond = Arrays.asList(VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()), VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()));
     }
-
     if (drivetrain.lastCommandedVoltages == null) {
       drivetrain.lastCommandedVoltages = Arrays.asList(0d, 0d);
     }
-
     List<Double> feetPerSecond = Arrays.asList(
             VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()), 
             VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity())
     );
-
     List<Double> feetPerSecondPerSecond = Arrays.asList(
       (VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()) - drivetrain.lastFeetPerSecond.get(0))/0.02d, 
       (VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()) - drivetrain.lastFeetPerSecond.get(0))/0.02d
     );  
-
     SmartDashboard.putNumber("Left drivetrain commanded voltage", drivetrain.lastCommandedVoltages.get(0));
     SmartDashboard.putNumber("Right drivetrain commanded voltage", drivetrain.lastCommandedVoltages.get(1));
     SmartDashboard.putNumber("Left drivetrian feet per second", feetPerSecond.get(0));
     SmartDashboard.putNumber("Right drivetrian feet per second", feetPerSecond.get(1));
     SmartDashboard.putNumber("Left drivetrian acceleration, feet per second", feetPerSecondPerSecond.get(0));
     SmartDashboard.putNumber("Right drivetrian acceleration, feet per second", feetPerSecondPerSecond.get(1));
-
     drivetrain.lastFeetPerSecond = feetPerSecond;
 
-
-    // SmartDashboard.putNumber("Throttle output", throttle.getRawAxis(1));
-    SmartDashboard.putNumber("Elevator setpoint", 20000);
-    // SmartDashboard.putNumber("Elevator height", elevator.getHeight());
-    // SmartDashboard.putNumber("Elevator error", 4096 - elevator.getHeight());
-
-    // SmartDashboard.putNumber("Wrist angle setpoint", wrist_setpoint);
-    // SmartDashboard.putNumber("Wrist talon pos",
-    // elevator.elevator_talon.getSelectedSensorPosition(0));
-    // SmartDashboard.putNumber("Wrist error",
-    // elevator.elevator_talon.getClosedLoopError(0));
-    // SmartDashboard.putNumber("Wrist angle (deg)", wrist.getAngle());
-    // SmartDashboard.putNumber("Wrist angular velocity (deg/s)",
-    // wrist.getAngularVelocity());
-
     SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
-
-    // SmartDashboard.putString("Limelight Ntables", LimeLight.getData().toString());
 
     // Limelight stuff
     double[] limelightdata = limelight.getData();
@@ -325,8 +292,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Target area", limelightdata[3]);
     SmartDashboard.putNumber("Target skew", limelightdata[4]);
     SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
-
-    // logger.update();
   }
 
 }
