@@ -154,7 +154,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
   }
 
   public FalconSRX<Length> getRightMotor() {
-    return getLeft().getMaster();
+    return getRight().getMaster();
   }
 
   public synchronized static DriveTrain getInstance() {
