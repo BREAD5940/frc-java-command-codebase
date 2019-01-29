@@ -14,7 +14,7 @@ import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.subsystems.superstructure.Elevator.ElevatorPresets;
 import frc.robot.subsystems.superstructure.Wrist;
-import frc.robot.subsystems.superstructure.Wrist.WristPos;
+import frc.robot.subsystems.superstructure.Superstructure.iPosition;
 
 /**
  * Creates a command group for a specific automatic motion. Input a type of goal
@@ -31,10 +31,10 @@ public class AutoMotion {
   
   /**
    * different heights of goals.
-   * LOW: the lowest level of the rocket and through the hatch of the cargo ship;
+   * LOW: the lowest level of the rocket and through the hatch of the CARGO ship;
    * MIDDLE: the middle level of the rocket;
    * HIGH: the highest level of the rocket;
-   * OVER: dropped into the cargo ship from above
+   * OVER: dropped into the CARGO ship from above
    */
   public enum mGoalHeight{
     LOW, MIDDLE, HIGH, OVER
@@ -42,12 +42,12 @@ public class AutoMotion {
 
   /**
    * different types of goals on the field.
-   * CARGO_CARGO: put cargo in the cargo ship;
-   * ROCKET_CARGO: put cargo in the rocket;
-   * CARGO_HATCH: put a hatch on the cargo ship;
+   * CARGO_CARGO: put CARGO in the CARGO ship;
+   * ROCKET_CARGO: put CARGO in the rocket;
+   * CARGO_HATCH: put a hatch on the CARGO ship;
    * ROCKET_HATCH: put a hatch on the rocket;
    * RETRIEVE_HATCH: pick up a hatch from the loading station;
-   * RETRIEVE_CARGO: pick up cargo from an unspecified location
+   * RETRIEVE_CARGO: pick up CARGO from an unspecified location
    */
   public enum mGoalType{
     CARGO_CARGO, CARGO_HATCH, ROCKET_CARGO, ROCKET_HATCH, RETRIEVE_HATCH, RETRIEVE_CARGO
@@ -92,13 +92,13 @@ public class AutoMotion {
   private ArrayList<Command> genGrabCommands(){
     ArrayList<Command> toReturn = new ArrayList<Command>();
     if (this.gType==mGoalType.RETRIEVE_CARGO){
-      // Set the intake to cargo mode
-      toReturn.add(Robot.superstructure.moveSuperstructureWrist(WristPos.CARGO, this.piece));
+      // Set the intake to CARGO mode
+      toReturn.add(Robot.superstructure.moveSuperstructureAngle(iPosition.CARGO_GRAB, this.piece));
       // Predefined grab command
       toReturn.add(new GrabCargo());
     }else if (this.gType==mGoalType.RETRIEVE_HATCH){
       // Set the intake to hatch mode
-      toReturn.add(Robot.superstructure.moveSuperstructureWrist(WristPos.HATCH, this.piece));
+      toReturn.add(Robot.superstructure.moveSuperstructureAngle(iPosition.HATCH, this.piece));
       // Predefined grab command
       toReturn.add(new GrabHatch());
     }
@@ -115,9 +115,9 @@ public class AutoMotion {
 
     // Set intake mode
     if(this.piece==mHeldPiece.HATCH){
-      toReturn.add(Robot.superstructure.moveSuperstructureWrist(WristPos.HATCH, this.piece));
+      toReturn.add(Robot.superstructure.moveSuperstructureAngle(iPosition.HATCH, this.piece));
     }else{
-      toReturn.add(Robot.superstructure.moveSuperstructureWrist(WristPos.CARGO, this.piece));
+      toReturn.add(Robot.superstructure.moveSuperstructureAngle(iPosition.CARGO_GRAB, this.piece));
     }
 
     // Align with the vision targets, slightly back from the goal
@@ -131,7 +131,7 @@ public class AutoMotion {
       toReturn.add(new DriveDistance(2,20)); // TODO check distances
 
       // Actuate intake so it points down into the bay
-      toReturn.add(Robot.superstructure.moveSuperstructureWrist(Wrist.WristPos.DOWN, this.piece));
+      toReturn.add(Robot.superstructure.moveSuperstructureAngle(iPosition.CARGO_DOWN, this.piece));
     }else{
       // Drive forward so the intake is flush with the port/hatch
       toReturn.add(new DriveDistance(1,20)); // TODO check distances

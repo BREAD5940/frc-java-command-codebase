@@ -293,6 +293,10 @@ public class RobotConfig {
   public static class intake {
     public static final int left_intake_talon_port = 6;
     public static final int right_intake_talon_port = 7;
+
+    public class dimensions{
+      //TODO add different dimensions of the intake, preferably WITHOUT having 17000 of them
+    }
   }
   
   public static class pneumatics {

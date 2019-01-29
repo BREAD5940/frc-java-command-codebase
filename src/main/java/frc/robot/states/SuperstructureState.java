@@ -4,6 +4,7 @@ import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 import frc.robot.subsystems.superstructure.Superstructure;
+import frc.robot.subsystems.superstructure.Superstructure.iPosition;
 import frc.robot.subsystems.superstructure.Wrist;
 
 /**
@@ -14,16 +15,14 @@ import frc.robot.subsystems.superstructure.Wrist;
 public class SuperstructureState{
 
   private double elevatorHeight;
-  private Wrist.WristPos wristAngle;
-  private boolean stanAngle = true;
-  private double rawAngle;
+  private IntakeAngle angle;
   private AutoMotion.mHeldPiece piece = mHeldPiece.NONE;
 
   /**
    * Create a new state with default params
    */
   public SuperstructureState(){
-    this(RobotConfig.Superstructure.minElevatorHeight, Wrist.WristPos.CARGO, mHeldPiece.NONE);
+    this(RobotConfig.Superstructure.minElevatorHeight, iPosition.CARGO_GRAB, mHeldPiece.NONE);
   }
 
   /**
@@ -33,10 +32,8 @@ public class SuperstructureState{
    */
   public SuperstructureState(SuperstructureState existing){
     this.elevatorHeight=existing.getElevatorHeight();
-    this.wristAngle=existing.getWristAngle();
+    this.angle=existing.getAngle();
     this.piece=existing.getHeldPiece();
-    this.stanAngle=existing.getStanAngle();
-    this.rawAngle=existing.getRawWristAngle();
   }
 
   /**
@@ -48,18 +45,12 @@ public class SuperstructureState{
    * @param piece
    *    the piece the robot is holding
    */
-  public SuperstructureState(double height, Wrist.WristPos angle, mHeldPiece piece){
+  public SuperstructureState(double height, IntakeAngle angle, mHeldPiece piece){
     this.elevatorHeight = height;
-    this.wristAngle = angle;
+    this.angle = angle;
     this.piece = piece;
   }
 
-  public SuperstructureState(double height, double angle, mHeldPiece piece){
-    this.elevatorHeight=height;
-    this.rawAngle=angle;
-    this.stanAngle=false;
-    this.piece=piece;
-  }
 
   /**
    * set the height of the elevator for the state
@@ -71,24 +62,14 @@ public class SuperstructureState{
   }
 
   /**
-   * set the angle of the wrist for the state from the wrist presets in Wrist.java
+   * set the angle of the wrist for the state
    * @param angle
    *    the desired preset wrist position
    */
-  public void setWristAngle(Wrist.WristPos angle){
-    this.wristAngle = angle;
-    this.stanAngle=true;
+  public void setAngle(IntakeAngle angle){
+    this.angle = angle;
   }
 
-  /**
-   * set the angle of the wrist for the state with a raw double value
-   * @param angle
-   *    the desired wrist angle
-   */
-  public void setWristAngle(double angle){
-    this.rawAngle=angle;
-    this.stanAngle=false;
-  }
 
   /**
    * set the status of the hatch intake for the state
@@ -104,11 +85,7 @@ public class SuperstructureState{
    */
   public void updateToCurrent(){
     this.elevatorHeight = Superstructure.elevator.getHeight();
-    if(Superstructure.wrist.stanAngle){
-      this.wristAngle= Superstructure.wrist.presetAngle;
-    }else{
-      this.rawAngle=Superstructure.wrist.rawAngle;
-    }
+    this.angle= Superstructure.wrist.presetAngle;
     
     // can't automatically set what piece is held w/o a bunch of sensors
   }
@@ -118,19 +95,11 @@ public class SuperstructureState{
     return this.elevatorHeight;
   }
 
-  public Wrist.WristPos getWristAngle(){
-    return this.wristAngle;
-  }
-
-  public double getRawWristAngle(){
-    return this.rawAngle;
+  public IntakeAngle getAngle(){
+    return this.angle;
   }
 
   public mHeldPiece getHeldPiece(){
     return this.piece;
-  }
-
-  public boolean getStanAngle(){
-    return this.stanAngle;
   }
 }
