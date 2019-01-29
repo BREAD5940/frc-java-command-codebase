@@ -16,7 +16,7 @@ public class Constants {
   public static final double kRobotMomentOfInertia = 10.0; // kg m^2 // TODO Tune
   public static final double kRobotAngularDrag = 12.0; // N*m / (rad/sec)
 
-  public static final double kWheelRadius = Util.toMeters(2f/12f);// inches. TODO tune
+  public static final double kWheelRadius = Util.toMeters(2f/12f);// meters. TODO tune
   public static final double kTrackWidth = Util.toMeters(24f/12f);// meters
   
   public static final double kStaticFrictionVoltage = 1.8; // Volts
