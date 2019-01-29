@@ -22,6 +22,7 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -82,6 +83,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
   }
   Gear gear;
 
+  Notifier localizationNotifier;
+
   public static enum TrajectoryTrackerMode {
     RAMSETE, PUREPURSUIT, FEEDFORWARD, PID
   }
@@ -102,23 +105,27 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
             Transmission.EncoderMode.CTRE_MagEncoder_Relative,
             TransmissionSide.LEFT,
             true
-      );
-      rightTransmission = new Transmission(RobotConfig.driveTrain.rightTalons.m_right_talon_port,
-              RobotConfig.driveTrain.rightTalons.s_right_talon_port,
-              Transmission.EncoderMode.CTRE_MagEncoder_Relative,
-              TransmissionSide.RIGHT,
-              false
-      );
+    );
+    rightTransmission = new Transmission(RobotConfig.driveTrain.rightTalons.m_right_talon_port,
+            RobotConfig.driveTrain.rightTalons.s_right_talon_port,
+            Transmission.EncoderMode.CTRE_MagEncoder_Relative,
+            TransmissionSide.RIGHT,
+            false
+    );
 
-    // double meme =  DriveTrain.getInstance().getRight().getDistance().getF;
-
+    /* Create a localization object because lamda expressions are fun */
     localization = new TankEncoderLocalization(
       () -> Rotation2dKt.getDegree(getGyro(true)),
       () -> getLeft().getDistance(),
       () -> getRight().getDistance()
     );
-
+    /* set the robot pose to 0,0,0 */
     localization.reset( new Pose2d() );
+    // create a notifier to update localization and start it every 10ms
+    localizationNotifier = new Notifier(() ->{
+      localization.update();
+    });
+    localizationNotifier.startPeriodic(0.01);
 
     mTransmission = new DCMotorTransmission(
       1 / Constants.kVDrive,
