@@ -7,8 +7,10 @@ import org.junit.jupiter.api.Test;
 
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 import frc.robot.planners.SuperstructurePlanner;
+import frc.robot.lib.SuperstructurePlanner;
+import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperstructureState;
-import frc.robot.subsystems.superstructure.Wrist.WristPos;
+import frc.robot.subsystems.superstructure.Superstructure.iPosition;
 
 public class SuperstructureTests {
   
@@ -16,36 +18,29 @@ public class SuperstructureTests {
   @Test
   public void testWrists(){
     SuperstructurePlanner planner = new SuperstructurePlanner();
-    SuperstructureState currentState = new SuperstructureState(0,WristPos.CARGO,mHeldPiece.NONE);
+    SuperstructureState currentState = new SuperstructureState(0,iPosition.CARGO_GRAB,mHeldPiece.NONE);
     ArrayList<SuperstructureState> goalStates = new ArrayList<SuperstructureState>(Arrays.asList(
-              new SuperstructureState(0,WristPos.CARGO,mHeldPiece.NONE),
-              new SuperstructureState(0,WristPos.HATCH,mHeldPiece.NONE),
-              new SuperstructureState(0,WristPos.DOWN,mHeldPiece.NONE),
-              new SuperstructureState(0,10,mHeldPiece.NONE),
-              new SuperstructureState(0,WristPos.CARGO,mHeldPiece.CARGO)));
+              new SuperstructureState(0,iPosition.CARGO_GRAB,mHeldPiece.NONE),
+              new SuperstructureState(0,iPosition.HATCH,mHeldPiece.NONE),
+              new SuperstructureState(0,iPosition.CARGO_DOWN,mHeldPiece.NONE),
+              new SuperstructureState(0,new IntakeAngle(10,10),mHeldPiece.NONE),
+              new SuperstructureState(0,iPosition.CARGO_GRAB,mHeldPiece.CARGO)));
     ArrayList<SuperstructureState> correctEndStates = new ArrayList<SuperstructureState>(Arrays.asList(
-              new SuperstructureState(0,WristPos.CARGO,mHeldPiece.NONE),
-              new SuperstructureState(0,WristPos.HATCH,mHeldPiece.NONE),
-              new SuperstructureState(0,WristPos.CARGO,mHeldPiece.NONE),
-              new SuperstructureState(0,10,mHeldPiece.NONE),
-              new SuperstructureState(0,WristPos.CARGO,mHeldPiece.NONE)));
+              new SuperstructureState(0,iPosition.CARGO_GRAB,mHeldPiece.NONE),
+              new SuperstructureState(0,iPosition.HATCH,mHeldPiece.NONE),
+              new SuperstructureState(0,iPosition.CARGO_GRAB,mHeldPiece.NONE),
+              new SuperstructureState(0,new IntakeAngle(10,10),mHeldPiece.NONE),
+              new SuperstructureState(0,iPosition.CARGO_GRAB,mHeldPiece.NONE)));
     ArrayList<SuperstructureState> resultingStates=new ArrayList<SuperstructureState>();
 
 
     for(int i=0; i<goalStates.size(); i++){
       resultingStates.add(i,planner.getPlannedState(goalStates.get(i),currentState));
       System.out.print(Integer.valueOf(i)+": ");
-      if(resultingStates.get(i).getStanAngle()&&correctEndStates.get(i).getStanAngle()){
-        System.out.print(correctEndStates.get(i).getWristAngle().angle1);
-        System.out.print(", ");
-        System.out.println(resultingStates.get(i).getWristAngle().angle1);
-        assertEquals(correctEndStates.get(i).getWristAngle().angle1, resultingStates.get(i).getWristAngle().angle1);
-      }else{
-        System.out.print(correctEndStates.get(i).getRawWristAngle());
-        System.out.print(", ");
-        System.out.println(resultingStates.get(i).getRawWristAngle());
-        assertEquals(correctEndStates.get(i).getRawWristAngle(), resultingStates.get(i).getRawWristAngle()); 
-      }
+      System.out.print(correctEndStates.get(i).getAngle());
+      System.out.print(", ");
+      System.out.println(resultingStates.get(i).getAngle());
+      assertEquals(correctEndStates.get(i).getAngle(), resultingStates.get(i).getAngle());
     }
     System.out.println();
   }
@@ -53,15 +48,15 @@ public class SuperstructureTests {
   @Test
   public void testElevator(){
     SuperstructurePlanner planner = new SuperstructurePlanner();
-    SuperstructureState currentState = new SuperstructureState(0,WristPos.CARGO,mHeldPiece.NONE);
+    SuperstructureState currentState = new SuperstructureState(0,iPosition.CARGO_GRAB,mHeldPiece.NONE);
     ArrayList<SuperstructureState> goalStates = new ArrayList<SuperstructureState>(Arrays.asList(
-              new SuperstructureState(10,WristPos.CARGO,mHeldPiece.NONE),
-              new SuperstructureState(30,WristPos.CARGO,mHeldPiece.NONE),
-              new SuperstructureState(80,WristPos.CARGO,mHeldPiece.NONE)));
+              new SuperstructureState(10,iPosition.CARGO_GRAB,mHeldPiece.NONE),
+              new SuperstructureState(30,iPosition.CARGO_GRAB,mHeldPiece.NONE),
+              new SuperstructureState(80,iPosition.CARGO_GRAB,mHeldPiece.NONE)));
     ArrayList<SuperstructureState> correctEndStates = new ArrayList<SuperstructureState>(Arrays.asList(
-              new SuperstructureState(10,WristPos.CARGO,mHeldPiece.NONE),
-              new SuperstructureState(30,WristPos.CARGO,mHeldPiece.NONE),
-              new SuperstructureState(70,WristPos.CARGO,mHeldPiece.NONE)));
+              new SuperstructureState(10,iPosition.CARGO_GRAB,mHeldPiece.NONE),
+              new SuperstructureState(30,iPosition.CARGO_GRAB,mHeldPiece.NONE),
+              new SuperstructureState(70,iPosition.CARGO_GRAB,mHeldPiece.NONE)));
     ArrayList<SuperstructureState> resultingStates=new ArrayList<SuperstructureState>();
 
 
@@ -79,15 +74,15 @@ public class SuperstructureTests {
   @Test
   public void bigScaryComboTests(){
     SuperstructurePlanner planner = new SuperstructurePlanner();
-    SuperstructureState currentState = new SuperstructureState(0,WristPos.CARGO,mHeldPiece.NONE);
+    SuperstructureState currentState = new SuperstructureState(0,iPosition.CARGO_GRAB,mHeldPiece.NONE);
     ArrayList<SuperstructureState> goalStates = new ArrayList<SuperstructureState>(Arrays.asList(
-              new SuperstructureState(10,WristPos.HATCH,mHeldPiece.NONE),
-              new SuperstructureState(30,WristPos.HATCH,mHeldPiece.NONE),
-              new SuperstructureState(30,10,mHeldPiece.NONE)));
+              new SuperstructureState(10,iPosition.HATCH,mHeldPiece.NONE),
+              new SuperstructureState(30,iPosition.HATCH,mHeldPiece.NONE),
+              new SuperstructureState(30,new IntakeAngle(10, 10),mHeldPiece.NONE)));
     ArrayList<SuperstructureState> correctEndStates = new ArrayList<SuperstructureState>(Arrays.asList(
-              new SuperstructureState(10,WristPos.HATCH,mHeldPiece.NONE),
-              new SuperstructureState(30,WristPos.HATCH,mHeldPiece.NONE),
-              new SuperstructureState(30,10,mHeldPiece.NONE)));
+              new SuperstructureState(10,iPosition.HATCH,mHeldPiece.NONE),
+              new SuperstructureState(30,iPosition.HATCH,mHeldPiece.NONE),
+              new SuperstructureState(30,new IntakeAngle(10,10),mHeldPiece.NONE)));
     ArrayList<SuperstructureState> resultingStates=new ArrayList<SuperstructureState>();
 
 
@@ -101,17 +96,12 @@ public class SuperstructureTests {
       assertEquals(correctEndStates.get(i).getElevatorHeight(), resultingStates.get(i).getElevatorHeight()); 
 
       System.out.print(Integer.valueOf(i)+" angles: ");
-      if(resultingStates.get(i).getStanAngle()&&correctEndStates.get(i).getStanAngle()){
-        System.out.print(correctEndStates.get(i).getWristAngle().angle1);
-        System.out.print(", ");
-        System.out.println(resultingStates.get(i).getWristAngle().angle1);
-        assertEquals(correctEndStates.get(i).getWristAngle().angle1, resultingStates.get(i).getWristAngle().angle1);
-      }else{
-        System.out.print(correctEndStates.get(i).getRawWristAngle());
-        System.out.print(", ");
-        System.out.println(resultingStates.get(i).getRawWristAngle());
-        assertEquals(correctEndStates.get(i).getRawWristAngle(), resultingStates.get(i).getRawWristAngle()); 
-      }
+      resultingStates.add(i,planner.getPlannedState(goalStates.get(i),currentState));
+      System.out.print(Integer.valueOf(i)+": ");
+      System.out.print(correctEndStates.get(i).getAngle());
+      System.out.print(", ");
+      System.out.println(resultingStates.get(i).getAngle());
+      assertEquals(correctEndStates.get(i).getAngle(), resultingStates.get(i).getAngle());
     }
     System.out.println();
   }

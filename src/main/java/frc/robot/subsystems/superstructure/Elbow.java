@@ -11,7 +11,6 @@ import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.robot.lib.EncoderLib;
 import frc.robot.states.IntakeAngle;
-import frc.robot.subsystems.superstructure.Superstructure.iPosition;
 
 
 /**
@@ -20,7 +19,7 @@ import frc.robot.subsystems.superstructure.Superstructure.iPosition;
  * 
  * @author Matthew Morley
  */
-public class Wrist extends PIDSubsystem  {
+public class Elbow extends PIDSubsystem  {
 
   public TalonSRX m_wrist_talon = new TalonSRX(RobotConfig.wrist.m_wrist_talon_port);
   private TalonSRX s_wrist_talon = new TalonSRX(RobotConfig.wrist.s_wrist_talon_port);
@@ -30,10 +29,8 @@ public class Wrist extends PIDSubsystem  {
   public boolean stanAngle=false;
   public double rawAngle;
 
-  
 
-
-  public Wrist() {
+  public Elbow() {
     // The constructor passes a name for the subsystem and the P, I and D constants that are used when computing the motor output
     super("Wrist",  RobotConfig.wrist.talonConfig.software_position_kp, 
       RobotConfig.wrist.talonConfig.software_position_ki, 

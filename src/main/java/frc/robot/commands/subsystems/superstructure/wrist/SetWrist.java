@@ -3,7 +3,9 @@ package frc.robot.commands.subsystems.superstructure.wrist;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
+import frc.robot.states.IntakeAngle;
 import frc.robot.subsystems.superstructure.Wrist;
+import frc.robot.subsystems.superstructure.Superstructure.iPosition;
 
 /**
 * 
@@ -46,7 +48,7 @@ public class SetWrist extends Command {
     // requires(Robot.wrist); // reserve the wrist subsystem
   }
 
-  public SetWrist(Wrist.WristPos pos){
+  public SetWrist(IntakeAngle pos){
     //TODO maybe actually make this do something?
   }
 

@@ -1,12 +1,16 @@
 package frc.robot.subsystems.superstructure;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.planners.SuperstructurePlanner;
+import frc.robot.lib.SuperstructurePlanner;
+import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperstructureState;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.superstructure.Wrist.WristPos;
 
 /**
  * First level of control for the superstructure of the robot. Contains all the
@@ -28,6 +32,18 @@ public class Superstructure extends Subsystem {
 
   private SuperstructureState mCurrentState = new SuperstructureState();
 
+  public static class iPosition{
+    public static final IntakeAngle CARGO_GRAB = new IntakeAngle(0,0);
+    public static final IntakeAngle CARGO_DOWN = new IntakeAngle(0,0);
+    public static final IntakeAngle CARGO_DROP = new IntakeAngle(0,0);
+    public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(0,0);
+    public static final IntakeAngle HATCH = new IntakeAngle(0,0);
+    public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(0,0);
+
+    public static final ArrayList<IntakeAngle> presets = new ArrayList<IntakeAngle>(Arrays.asList(CARGO_GRAB, CARGO_DOWN,
+                            CARGO_DROP, CARGO_REVERSE, HATCH, HATCH_REVERSE));
+  }
+
 
   /**
    * move a combination of the sub-subsystems of the superstructure
@@ -41,10 +57,10 @@ public class Superstructure extends Subsystem {
    * @return
    *    the command group necessary to safely move the superstructure
    */
-  public CommandGroup moveSuperstructureCombo(double height, WristPos angle, AutoMotion.mHeldPiece piece){
+  public CommandGroup moveSuperstructureCombo(double height, IntakeAngle angle, AutoMotion.mHeldPiece piece){
     mCurrentState.updateToCurrent();
     mReqState.setElevatorHeight(height);
-    mReqState.setWristAngle(angle);
+    mReqState.setAngle(angle);
     mReqState.setHeldPiece(piece);
 
     mCurrentState.updateToCurrent();   
@@ -65,7 +81,7 @@ public class Superstructure extends Subsystem {
    */
   public CommandGroup moveSuperstructureElevator(double height){
     mCurrentState.updateToCurrent();  
-    return this.moveSuperstructureCombo(height, mCurrentState.getWristAngle(), mCurrentState.getHeldPiece());
+    return this.moveSuperstructureCombo(height, mCurrentState.getAngle(), mCurrentState.getHeldPiece());
   }
 
   /**
@@ -77,32 +93,9 @@ public class Superstructure extends Subsystem {
    * @return
    *    the command group necessary to safely move the superstructure
    */
-  public CommandGroup moveSuperstructureWrist(Wrist.WristPos angle, AutoMotion.mHeldPiece piece){
+  public CommandGroup moveSuperstructureAngle(IntakeAngle angle, AutoMotion.mHeldPiece piece){
     mCurrentState.updateToCurrent();  
     return this.moveSuperstructureCombo(mCurrentState.getElevatorHeight(), angle, piece);
-  }
-
-
-  /**
-   * sets only the wrist of the superstructure
-   * @param angle
-   *    the RAW angle to set the wrist to
-   * @param piece
-   *    the piece the robot is currently holding -- necessary for wrist movements
-   * @return
-   *    the command group necessary to safely move the superstructure
-   */
-  public CommandGroup moveSuperstructureWrist(double angle, AutoMotion.mHeldPiece piece){
-    mCurrentState.updateToCurrent();
-    mReqState.setElevatorHeight(mCurrentState.getElevatorHeight());
-    mReqState.setWristAngle(angle);
-    mReqState.setHeldPiece(piece); 
-    
-    if(!(mReqState==mCurrentState)){
-      this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
-    }
-
-    return this.mCurrentCommandGroup;
   }
 
 

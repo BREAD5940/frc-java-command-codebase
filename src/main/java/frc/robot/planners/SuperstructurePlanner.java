@@ -1,12 +1,16 @@
 package frc.robot.planners;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 import frc.robot.commands.subsystems.superstructure.wrist.SetWrist;
 import frc.robot.states.SuperstructureState;
+import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.subsystems.superstructure.Wrist;
-import frc.robot.subsystems.superstructure.Wrist.WristPos;
+import frc.robot.subsystems.superstructure.Superstructure.iPosition;
 
 /**
  * Plans the best motion of the superstructure based on the inputted current
@@ -24,6 +28,7 @@ public class SuperstructurePlanner{
   //TODO add values for certain elevator positions (ex. the wrist can be <0 if the elevator is >10)
 
   //TODO get actual irl angles TODO make the names less horrible
+  
   static final double minUnCrashHeight=5; //min elevator height + how much intake is below the bottom of the elevator
 
   static final double crossbarHeight = 20;
@@ -49,6 +54,11 @@ public class SuperstructurePlanner{
     CommandGroup toReturn = new CommandGroup();
     SuperstructureState goalState = new SuperstructureState(goalStateIn);
     errorCount=corrCount=0;
+    boolean defAngle=false;
+
+    if(Superstructure.iPosition.presets.contains(goalState.getAngle())){
+      defAngle=true;
+    }
 
     if(goalState==currentState){
       System.out.println("MOTION UNNECESSARY -- Goal and current states are same. Exiting planner.");
@@ -63,7 +73,7 @@ public class SuperstructurePlanner{
       goalState.setHeldPiece(currentState.getHeldPiece());
     }
 
-    if(!goalState.getStanAngle()){
+    if(!defAngle){
       System.out.println("MOTION UNSAFE -- Wrist position is wildcard. Setting to default position for movement.");
       errorCount++;
       if(currentState.getHeldPiece()==mHeldPiece.HATCH){
@@ -71,20 +81,20 @@ public class SuperstructurePlanner{
         System.out.println("MOTION UNSAFE -- Cannot move wrist to wildcard position while holding hatch. Aborting wrist movement.");
         errorCount++;
         corrCount++;
-        goalState.setWristAngle(WristPos.CARGO);
+        goalState.setAngle(iPosition.CARGO_GRAB);
       }else{
-        toReturn.addSequential(new SetWrist(WristPos.CARGO));
+        toReturn.addSequential(new SetWrist(iPosition.CARGO_GRAB));
         intakeAtRisk=false;
         intakeCrashable=false;
       }
     }else{
       // Checks if the intake will ever be inside the elevator
-      if((currentState.getWristAngle()==WristPos.HATCH) || (goalState.getWristAngle()==WristPos.HATCH)){
+      if((currentState.getAngle()==iPosition.HATCH) || (goalState.getAngle()==iPosition.HATCH)){
             intakeAtRisk=true;
       }
 
       //checks if the intake will tilt/is tilted below the bottom of the elevator
-      if((goalState.getWristAngle()==WristPos.DOWN) ||(currentState.getWristAngle()==WristPos.DOWN)){
+      if((goalState.getAngle()==iPosition.CARGO_DOWN) ||(currentState.getAngle()==iPosition.CARGO_DOWN)){
         intakeCrashable=true;
       }
     }
@@ -102,7 +112,7 @@ public class SuperstructurePlanner{
         || (goalState.getElevatorHeight()<=crossbarHeight&&currentState.getElevatorHeight()>=crossbarHeight)){
       System.out.println("MOTION UNSAFE -- Intake will hit crossbar. Setting to default intake position for movement.");
       errorCount++;
-      toReturn.addSequential(new SetWrist(WristPos.CARGO)); //Keeps intake outside the elevator so it doesn't hit the crossbar
+      toReturn.addSequential(new SetWrist(iPosition.CARGO_GRAB)); //Keeps intake outside the elevator so it doesn't hit the crossbar
     }else{
       intakeAtRisk=false;
     }
@@ -112,7 +122,7 @@ public class SuperstructurePlanner{
       System.out.println("MOTION UNSAFE -- Intake will hit ground. Setting to default intake position.");
       errorCount++;
       corrCount++;
-      goalState.setWristAngle(Wrist.WristPos.CARGO);
+      goalState.setAngle(iPosition.CARGO_GRAB);
     }else{
       intakeCrashable=false;
     }
@@ -120,13 +130,8 @@ public class SuperstructurePlanner{
     //move to corrected state
     // toReturn.addSequential(new SetElevatorHeight(goalState.getElevatorHeight())); //FIXME so this makes the whole thing die
     currentState.setElevatorHeight(goalState.getElevatorHeight());
-    if(goalState.getStanAngle()){
-      toReturn.addSequential(new SetWrist(goalState.getWristAngle()));
-      currentState.setWristAngle(goalState.getWristAngle());
-    }else{
-      toReturn.addSequential(new SetWrist(goalState.getRawWristAngle()));
-      currentState.setWristAngle(goalState.getRawWristAngle());
-    }
+    toReturn.addSequential(new SetWrist(goalState.getAngle()));
+    currentState.setAngle(goalState.getAngle());
 
     System.out.println("MOTION COMPLETED -- "+Integer.valueOf(errorCount)+" error(s) and "
       +Integer.valueOf(corrCount)+" final correction(s)");
