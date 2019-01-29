@@ -64,6 +64,12 @@ public class Trajectories {
     Logger.log("Trajectories generated in " + (Timer.getFPGATimestamp() - startTime) + "seconds!");
   }
 
+  /**
+   * Generate a trajectory from a list of waypoints
+   * @param waypoints to follow
+   * @param reversed if the path is reversed
+   * @return
+   */
   public static TimedTrajectory<Pose2dWithCurvature> generateTrajectory(List<Pose2d> waypoints, boolean reversed){
     return generateTrajectory(waypoints, kDefaultConstraints, kDefaultStartVelocity, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, false);
   }
