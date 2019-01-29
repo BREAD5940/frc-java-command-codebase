@@ -19,13 +19,13 @@ public class AutoIntake extends Command {
   public AutoIntake(double demand, double runtime) {
     this.demand = demand;
     this.runtime = runtime;
-    requires(Robot.intake);
+    // requires(Robot.intake);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.intake.setSpeed(demand);
+    // Robot.intake.setSpeed(demand);
     setTimeout(runtime); // set the timeout
     System.out.println("auto intake init!");
   }
@@ -45,13 +45,13 @@ public class AutoIntake extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.intake.setSpeed(0);
+    // Robot.intake.setSpeed(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.intake.setSpeed(0);
+    // Robot.intake.setSpeed(0);
   }
 }
