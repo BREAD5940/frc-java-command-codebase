@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.planners.SuperstructurePlanner;
-import frc.robot.lib.SuperstructurePlanner;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperstructureState;
 import frc.robot.subsystems.Intake;
@@ -66,7 +65,7 @@ public class Superstructure extends Subsystem {
     mCurrentState.updateToCurrent();   
     
     if(!(mReqState==mCurrentState)){
-      this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
+      // this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
     }
 
     return this.mCurrentCommandGroup;

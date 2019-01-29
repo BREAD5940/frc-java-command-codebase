@@ -10,7 +10,7 @@
     ".classpath": true,
     ".project": true
   },
-  "workbench.colorTheme": "Monokai",
+  "workbench.colorTheme": "Solarized Dark",
   "wpilib.online": true,
   "editor.tabSize": 2
 }

@@ -50,8 +50,8 @@ public class SuperstructurePlanner{
    * @return
    *    the ideal command group to get from the currentState to the goalState
    */
-  public CommandGroup plan(SuperstructureState goalStateIn, SuperstructureState currentState){
-    CommandGroup toReturn = new CommandGroup();
+  public ArrayList<SuperstructureState> plan(SuperstructureState goalStateIn, SuperstructureState currentState){
+    ArrayList<SuperstructureState> toReturn = new ArrayList<SuperstructureState>();
     SuperstructureState goalState = new SuperstructureState(goalStateIn);
     errorCount=corrCount=0;
     boolean defAngle=false;
@@ -83,7 +83,7 @@ public class SuperstructurePlanner{
         corrCount++;
         goalState.setAngle(iPosition.CARGO_GRAB);
       }else{
-        toReturn.addSequential(new SetWrist(iPosition.CARGO_GRAB));
+        toReturn.add(new SuperstructureState(currentState.getElevatorHeight(), iPosition.CARGO_GRAB, currentState.getHeldPiece()));
         intakeAtRisk=false;
         intakeCrashable=false;
       }
@@ -112,7 +112,7 @@ public class SuperstructurePlanner{
         || (goalState.getElevatorHeight()<=crossbarHeight&&currentState.getElevatorHeight()>=crossbarHeight)){
       System.out.println("MOTION UNSAFE -- Intake will hit crossbar. Setting to default intake position for movement.");
       errorCount++;
-      toReturn.addSequential(new SetWrist(iPosition.CARGO_GRAB)); //Keeps intake outside the elevator so it doesn't hit the crossbar
+      toReturn.add(new SuperstructureState(currentState.getElevatorHeight(), iPosition.CARGO_GRAB, currentState.getHeldPiece())); //Keeps intake outside the elevator so it doesn't hit the crossbar
     }else{
       intakeAtRisk=false;
     }
@@ -128,10 +128,8 @@ public class SuperstructurePlanner{
     }
 
     //move to corrected state
-    // toReturn.addSequential(new SetElevatorHeight(goalState.getElevatorHeight())); //FIXME so this makes the whole thing die
-    currentState.setElevatorHeight(goalState.getElevatorHeight());
-    toReturn.addSequential(new SetWrist(goalState.getAngle()));
-    currentState.setAngle(goalState.getAngle());
+    toReturn.add(new SuperstructureState(goalState));
+    currentState=goalState;
 
     System.out.println("MOTION COMPLETED -- "+Integer.valueOf(errorCount)+" error(s) and "
       +Integer.valueOf(corrCount)+" final correction(s)");

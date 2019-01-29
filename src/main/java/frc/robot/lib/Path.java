@@ -11,39 +11,14 @@ import frc.robot.states.SuperstructureState;
  */
 public class Path{
     
-    public SuperstructureState[] points;
+    public SuperstructureState[] states;
     public double maxEleAccel, maxEleVel;
     public double maxWAccel, maxWVel;
     public double maxEAccel, maxEVel;
     public int numPoints;
 
-    public Path(SuperstructureState[] states, double mA, double mV, int nPts){
-        this.numPoints = nPts;
-        this.points = generatePoints(waypoints);
-        this.segments = generateSegments();
-        
-    }
-
-    public Segment[] generateSegments(){
-        Segment[] toreturn = new Segment[points.length-1];
-        for (int i=0; i<points.length-2; i++){
-            toreturn[i]=new Segment(points[i],points[i+1]);
-        }
-        return toreturn;
-    }
-
-    public Waypoint[] generatePoints(Waypoint[] wayPoints){
-        double[][] wps = new double[wayPoints.length][2];
-        for(int i=0;i< wayPoints.length; i++){
-            wps[i][0]=wayPoints[i].x;
-            wps[i][1]=wayPoints[i].y;
-        }
-        double[][] doubArray = smoother(inject(wps, numPoints), 0.02, 0.98, 0.001);
-        Waypoint[] toReturn = new Waypoint[doubArray.length];
-        for (int i=0; i<doubArray.length;i++){
-            toReturn[i]=new Waypoint((int)Math.round(doubArray[i][0]), (int)Math.round(doubArray[i][1]));
-        }
-        return toReturn;
+    public Path(SuperstructureState[] states, double mA, double mV){
+        this.states=states;
     }
 
 
@@ -130,19 +105,8 @@ public class Path{
 
     //id functions
 
-    public SuperstructureState[] getPoints(){
-        return this.points;
-    }
-
-    public double[][] pointsAsDoubles(){
-        double[][] toreturn = new double[this.points.length][2];
-
-        for (int i=0; i<this.points.length; i++){
-            toreturn[i][0]=this.points[i].x;
-            toreturn[i][1]=this.points[i].y;
-        }
-
-        return toreturn;
+    public SuperstructureState[] getStates(){
+        return this.states;
     }
 
     public double getMaxAccel(){
