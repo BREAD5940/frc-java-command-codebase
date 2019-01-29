@@ -28,11 +28,7 @@ public class SuperstructurePlanner{
   //TODO add values for certain elevator positions (ex. the wrist can be <0 if the elevator is >10)
 
   //TODO get actual irl angles TODO make the names less horrible
-  private double getMinHeight(double eAngle, double wAngle){
-    double min=0;
-
-    return min;
-  }
+  
   static final double minUnCrashHeight=5; //min elevator height + how much intake is below the bottom of the elevator
 
   static final double crossbarHeight = 20;

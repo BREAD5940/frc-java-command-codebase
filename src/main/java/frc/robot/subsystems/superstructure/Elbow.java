@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import frc.robot.lib.EncoderLib;
+import frc.robot.states.IntakeAngle;
 
 
 /**
@@ -24,23 +25,9 @@ public class Elbow extends PIDSubsystem  {
   private TalonSRX s_wrist_talon = new TalonSRX(RobotConfig.wrist.s_wrist_talon_port);
 
   double kf = RobotConfig.wrist.talonConfig.software_position_kf;
-  public WristPos presetAngle;
+  public IntakeAngle presetAngle;
   public boolean stanAngle=false;
   public double rawAngle;
-
-  public enum WristPos {
-    //TODO get actual angles
-    CARGO(0,0),
-    HATCH(90,90),
-    DOWN(-10,0);
-
-    public double angle1, angle2;
-
-    WristPos(double angle1, double angle2){
-      this.angle1=angle1;
-      this.angle2=angle2;
-    }
-  }
 
 
   public Elbow() {
@@ -107,7 +94,7 @@ public class Elbow extends PIDSubsystem  {
       this.rawAngle = target_angle;
   }
 
-  public void setAngle(WristPos target){
+  public void setAngle(IntakeAngle target){
     // TODO double angle set code here
 
     this.presetAngle = target;
