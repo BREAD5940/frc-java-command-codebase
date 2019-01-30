@@ -27,8 +27,8 @@ public class Trajectories {
   public static Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
   public static Velocity<Length> kDefaultEndVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
 
-  public static Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(3));
-  public static final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(2.0));
+  public static Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(2));
+  public static final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(4));
 
 
   private static List<TimingConstraint<Pose2dWithCurvature>> kDefaultConstraints = Arrays.asList(
@@ -47,7 +47,8 @@ public class Trajectories {
 
   public static List<Pose2d> pathForwardFiveMeters = Arrays.asList(
       new Pose2d(LengthKt.getFeet(5f), LengthKt.getFeet(15f), Rotation2dKt.getDegree(0f)),
-      new Pose2d(LengthKt.getFeet(20f), LengthKt.getFeet(15f), Rotation2dKt.getDegree(0f))
+      // new Pose2d(LengthKt.getFeet(16f), LengthKt.getFeet(17.5f), Rotation2dKt.getDegree(-110f)),
+      new Pose2d(LengthKt.getFeet(13f), LengthKt.getFeet(10f), Rotation2dKt.getDegree(-45f))
     );
 
   public static void generateAllTrajectories(){

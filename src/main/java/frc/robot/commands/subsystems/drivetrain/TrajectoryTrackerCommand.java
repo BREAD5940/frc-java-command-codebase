@@ -78,6 +78,9 @@ public class TrajectoryTrackerCommand extends Command {
 
   @Override
   protected void execute(){
+
+    long now = System.currentTimeMillis();
+
     output = trajectoryTracker.nextState(driveBase.getRobotPosition(), TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
 
     TrajectorySamplePoint<TimedEntry<Pose2dWithCurvature>> referencePoint = trajectoryTracker.getReferencePoint();
@@ -88,8 +91,11 @@ public class TrajectoryTrackerCommand extends Command {
       LiveDashboard.INSTANCE.setPathY(referencePose.getTranslation().getY().getFeet());
       LiveDashboard.INSTANCE.setPathHeading(referencePose.getRotation().getRadian());
     }
-    Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
+    // Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
     driveBase.setOutput(output);
+
+    long elapsed = System.currentTimeMillis() - now;
+    System.out.println("Took " + elapsed + "ms");
   }
 
   @Override

@@ -124,10 +124,10 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
     /* set the robot pose to 0,0,0 */
     localization.reset( new Pose2d() );
     // create a notifier to update localization and start it every 10ms
-    localizationNotifier = new Notifier(() ->{
-      localization.update();
-    });
-    localizationNotifier.startPeriodic(0.01);
+    // localizationNotifier = new Notifier(() ->{
+    //   localization.update();
+    // });
+    // localizationNotifier.startPeriodic(0.01);
 
     mTransmission = new DCMotorTransmission(
       1 / Constants.kVDrive,
@@ -473,7 +473,10 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
    * the output will be inverted (positive numbers is counter clockwise)
    */
   public double getGyro(boolean inverted) {
-    return (inverted) ? getGyro() * (2-3) : getGyro();
+    double gyroang;
+    if(inverted) { gyroang = getGyro() * (-1); } else { gyroang = getGyro(); }
+    Logger.log("Gyroangle: " + gyroang);
+    return gyroang;
   }
 
   public void zeroGyro() {

@@ -10,9 +10,6 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
-
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -74,9 +71,6 @@ public class Robot extends TimedRobot {
     intakeDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
   }
 
-  UsbCamera camera;
-
-  CameraServer serverOne;
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -85,15 +79,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     
-    // camera = CameraServer.getInstance().startAutomaticCapture(0);
-
     drivetrain.getLocalization().reset(new Pose2d(LengthKt.getFeet(5.5), LengthKt.getFeet(17), new Rotation2d(0f, 0f, false) ));
-
-    serverOne = CameraServer.getInstance();
-
-    camera = serverOne.startAutomaticCapture(0);
-
-    camera.setResolution(533,300);
 
     Trajectories.generateAllTrajectories();
 
@@ -245,7 +231,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    long now = System.currentTimeMillis();
+    drivetrain.getLocalization().update();
+    // long now = System.currentTimeMillis();
 
     // DriveTrain.getInstance().getLocalization().update(); // depreciated because it should be running in a notifier now
 
@@ -287,17 +274,17 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
 
     // Limelight stuff
-    double[] limelightdata = limelight.getData();
+    // double[] limelightdata = limelight.getData();
 
-    SmartDashboard.putNumber("Vision targets?", limelightdata[0]);
-    SmartDashboard.putNumber("Horizontal offset", limelightdata[1]);
-    SmartDashboard.putNumber("Vertical offset", limelightdata[2]);
-    SmartDashboard.putNumber("Target area", limelightdata[3]);
-    SmartDashboard.putNumber("Target skew", limelightdata[4]);
-    SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
+    // SmartDashboard.putNumber("Vision targets?", limelightdata[0]);
+    // SmartDashboard.putNumber("Horizontal offset", limelightdata[1]);
+    // SmartDashboard.putNumber("Vertical offset", limelightdata[2]);
+    // SmartDashboard.putNumber("Target area", limelightdata[3]);
+    // SmartDashboard.putNumber("Target skew", limelightdata[4]);
+    // SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
 
-    long elapsed = System.currentTimeMillis() - now;
-    System.out.println("RobotPeriodic took " + elapsed + "ms");
+    // long elapsed = System.currentTimeMillis() - now;
+    // System.out.println("RobotPeriodic took " + elapsed + "ms");
   }
 
 }

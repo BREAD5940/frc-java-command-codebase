@@ -45,7 +45,7 @@ public class ArcadeDrive extends Command {
     Robot.drivetrain.curvatureDrive(Robot.m_oi.getForwardAxis(),
       Robot.m_oi.getTurnAxis(), isQuickTurn);
     
-    Logger.log("forward command: " + Robot.m_oi.getForwardAxis());
+    // Logger.log("forward command: " + Robot.m_oi.getForwardAxis());
 
   }
 

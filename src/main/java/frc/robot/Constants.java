@@ -26,9 +26,9 @@ public class Constants {
   public static final double kDriveBeta = 1.4; // Inverse meters squared
   public static final double kDriveZeta = 0.9; // Unitless dampening co-efficient
 
-  public static final double kLat = 0f;
+  public static final double kLat = 0.05f;
   public static final Time kLookaheadTime = TimeUnitsKt.getSecond(0.1);
-  public static final Length kMinLookaheadDistance = LengthKt.getFeet(1);
+  public static final Length kMinLookaheadDistance = LengthKt.getFeet(2);
 
 
   public static final double kDriveLowGearVelocityKa = 0.1; // TODO tune!
