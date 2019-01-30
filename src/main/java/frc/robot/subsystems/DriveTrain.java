@@ -475,7 +475,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
   public double getGyro(boolean inverted) {
     double gyroang;
     if(inverted) { gyroang = getGyro() * (-1); } else { gyroang = getGyro(); }
-    Logger.log("Gyroangle: " + gyroang);
+    // Logger.log("Gyroangle: " + gyroang);
     return gyroang;
   }
 

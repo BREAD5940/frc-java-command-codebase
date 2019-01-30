@@ -23,7 +23,7 @@ public class Constants {
   public static final double kVDrive = 0.115; // Volts per radians per second
   public static final double kADrive = 0.0716; // Volts per radians per second per second
 
-  public static final double kDriveBeta = 1.4; // Inverse meters squared
+  public static final double kDriveBeta = 1.5; // Inverse meters squared
   public static final double kDriveZeta = 0.9; // Unitless dampening co-efficient
 
   public static final double kLat = 0.05f;
@@ -32,8 +32,4 @@ public class Constants {
 
 
   public static final double kDriveLowGearVelocityKa = 0.1; // TODO tune!
-
-  // public static final double kDriveBeta = 1.4; // Inverse meters squared
-  // public static final double kDriveZeta = 0.9; // Unitless dampening co-efficient
-
 }

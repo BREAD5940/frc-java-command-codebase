@@ -33,7 +33,7 @@ public class Trajectories {
 
   private static List<TimingConstraint<Pose2dWithCurvature>> kDefaultConstraints = Arrays.asList(
     // This limits our centripetal acceleration to 3 feet per second per second
-    new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getFeet(3)))/*,
+    new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getFeet(8)))/*,
     // This limits our velocity while within the given Rectangle2d to 2 feet per second (read: the hab)
     // new VelocityLimitRegionConstraint(new Rectangle2d(7.0, 0.0, 8.0, 13.0), VelocityKt.getVelocity(LengthKt.getFeet(2.0)))*/
   );
@@ -46,9 +46,9 @@ public class Trajectories {
   );
 
   public static List<Pose2d> pathForwardFiveMeters = Arrays.asList(
-      new Pose2d(LengthKt.getFeet(5f), LengthKt.getFeet(15f), Rotation2dKt.getDegree(0f)),
-      // new Pose2d(LengthKt.getFeet(16f), LengthKt.getFeet(17.5f), Rotation2dKt.getDegree(-110f)),
-      new Pose2d(LengthKt.getFeet(13f), LengthKt.getFeet(10f), Rotation2dKt.getDegree(-45f))
+      new Pose2d(LengthKt.getFeet(5f), LengthKt.getFeet(16.7f), Rotation2dKt.getDegree(0f)),
+      new Pose2d(LengthKt.getFeet(13.25f), LengthKt.getFeet(17.9f), Rotation2dKt.getDegree(14f)),
+      new Pose2d(LengthKt.getFeet(21.7f), LengthKt.getFeet(17.4f), Rotation2dKt.getDegree(-90.0))
     );
 
   public static void generateAllTrajectories(){

@@ -30,7 +30,7 @@ public class ForwardFiveMeters extends CommandGroup {
 
     addSequential(new SetInitialOdometry(trajectory));
     
-    addSequential(Robot.drivetrain.followTrajectory(trajectory, TrajectoryTrackerMode.PUREPURSUIT, true) );
+    addSequential(Robot.drivetrain.followTrajectory(trajectory, TrajectoryTrackerMode.FEEDFORWARD, true) );
 
     // Add Commands here:
     // e.g. addSequential(new Command1());
