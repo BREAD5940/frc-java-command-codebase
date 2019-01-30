@@ -6,6 +6,7 @@ import java.util.Arrays;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.auto.AutoMotion;
+import frc.robot.lib.LoopingSubsystem;
 import frc.robot.lib.SuperstructurePlanner;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperstructureState;
@@ -17,7 +18,7 @@ import frc.robot.subsystems.Intake;
  * 
  * @author Jocelyn McHugo
  */
-public class Superstructure extends Subsystem {
+public class Superstructure extends LoopingSubsystem {
 
   private Superstructure instance_;
   private SuperstructureState mReqState = new SuperstructureState();
@@ -129,4 +130,11 @@ public class Superstructure extends Subsystem {
   Furthermore I think we should maybe get rid of the wrist subsystem and elevator subsystem - all their
   suff is relaced with FalconSRX<Length> or FalconSRX<Rotation2d>
   */
+
+  public void initilize() {}
+
+  public void execute() {}
+
+  public void end() {}
+
 }
