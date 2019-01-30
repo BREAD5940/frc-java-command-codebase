@@ -4,6 +4,10 @@ import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 import frc.robot.lib.TerriblePID;
+import frc.robot.lib.Logger;
+
+//import com.ctre.phoenix.Logger;
+
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -95,6 +99,15 @@ public class FollowVisionTarget extends Command {
       double limelightData = data[1];
       double sizeData = data[3];
       turnSpeed = limelightData * (1/30) ;
+      double a = 21.1;
+      double b = 2.3;
+      double y = limelightData;
+      double distance = Math.round(Math.pow((a/y), (1/b)));
+
+      Logger.log(a);
+      Logger.log(b);
+      Logger.log(y);
+      Logger.log(distance);
 
       // forwardSpeed = 0;
       
@@ -115,18 +128,35 @@ public class FollowVisionTarget extends Command {
 
       // double forwardSpeed = distanceRatio * 0.5;
 
-      while (limelightData >= -1 && limelightData <= 1) {
+      while (limelightData <= -1 || limelightData >= 1) {
 
-      if ( forwardSpeed > 0.5 ) { forwardSpeed = 0.5;}
-      if ( forwardSpeed < -0.5 ) { forwardSpeed = -0.5;}
+        if ( forwardSpeed > 0.1 ) { forwardSpeed = 0.1;}
+        if ( forwardSpeed < -0.1 ) { forwardSpeed = -0.1;}
 
  
-      // Robot.drivetrain.setSpeeds(leftSpeedRaw, rightSpeedRaw);
-      Robot.drivetrain.setPowers(forwardSpeed + limelightData / 20, forwardSpeed - limelightData / 20);
+        // Robot.drivetrain.setSpeeds(leftSpeedRaw, rightSpeedRaw);
+        Robot.drivetrain.setPowers(forwardSpeed + limelightData / 20, forwardSpeed - limelightData / 20);
 
+        if (limelightData >= -1 || limelightData <= 1){
+          break;
+        }
 
-      
       }
+        
+        // while (distance >= 4){
+        //   y = limelightData;
+        //   distance = Math.round(Math.pow((a/y), (1/b)));
+        //   Robot.drivetrain.setPowers(0.1, 0.1);
+        //   switch(distance) {
+        //     case 4: 
+            
+        //     break;
+    
+      Robot.drivetrain.setPowers(0.1, 0.1);
+      if(distance <= 2){
+        Robot.drivetrain.setPowers(0, 0);
+      }  
+
     } else {
       System.out.println("No targets currently being tracked!");
       Robot.drivetrain.setPowers(0, 0);

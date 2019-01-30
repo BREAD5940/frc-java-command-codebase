@@ -250,8 +250,8 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putString("Limelight Ntables", LimeLight.getData().toString());
 
     // Limelight stuff
-    double a = 10.3;
-    double b = 2;
+    double a = 17.1;
+    double b = 2.2;
     double[] limelightdata = limelight.getData();
     double y = limelightdata[3];
     double distance = Math.round(Math.pow((a/y), (1/b)));
