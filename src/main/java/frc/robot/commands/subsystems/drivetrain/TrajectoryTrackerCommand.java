@@ -55,6 +55,9 @@ public class TrajectoryTrackerCommand extends Command {
   protected void initialize(){
     LiveDashboard.INSTANCE.setFollowingPath(false);
 
+    driveBase.getLeft().getMaster().configClosedloopRamp(0.5);
+    driveBase.getRight().getMaster().configClosedloopRamp(0.5);
+
     if(trajectorySource == null) {
       Logger.log("Sadly the trajectories are not generated. the person responsible for the trajectories has been sacked.");
       Trajectories.generateAllTrajectories();

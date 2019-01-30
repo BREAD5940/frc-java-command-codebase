@@ -24,11 +24,11 @@ import frc.robot.lib.Logger;
 @SuppressWarnings("WeakerAccess")
 public class Trajectories {
 
-  public static Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(5));
   public static Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
   public static Velocity<Length> kDefaultEndVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
 
-  public static final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(3.0));
+  public static Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(3));
+  public static final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(2.0));
 
 
   private static List<TimingConstraint<Pose2dWithCurvature>> kDefaultConstraints = Arrays.asList(

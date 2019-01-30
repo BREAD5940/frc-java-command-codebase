@@ -112,6 +112,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
             TransmissionSide.RIGHT,
             false
     );
+    getLeft().getMaster().configClosedloopRamp(0.4, 20);
+    getRight().getMaster().configClosedloopRamp(0.4, 20);
 
     /* Create a localization object because lamda expressions are fun */
     localization = new TankEncoderLocalization(

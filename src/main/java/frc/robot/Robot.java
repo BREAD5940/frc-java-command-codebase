@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
   // public static Elevator elevator = new Elevator();
   public static DriveTrain drivetrain = DriveTrain.getInstance();
   public static LimeLight limelight = new LimeLight();
-  public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
+  // public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
   public static SendableChooser<AutoMotion> backupAutoSelect = new SendableChooser<AutoMotion>();
   private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 7, 3);
   private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 0, 6);
@@ -84,6 +84,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    
     // camera = CameraServer.getInstance().startAutomaticCapture(0);
 
     drivetrain.getLocalization().reset(new Pose2d(LengthKt.getFeet(5.5), LengthKt.getFeet(17), new Rotation2d(0f, 0f, false) ));
@@ -244,6 +245,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    long now = System.currentTimeMillis();
+
     // DriveTrain.getInstance().getLocalization().update(); // depreciated because it should be running in a notifier now
 
     SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
@@ -292,6 +295,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Target area", limelightdata[3]);
     SmartDashboard.putNumber("Target skew", limelightdata[4]);
     SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
+
+    long elapsed = System.currentTimeMillis() - now;
+    System.out.println("RobotPeriodic took " + elapsed + "ms");
   }
 
 }

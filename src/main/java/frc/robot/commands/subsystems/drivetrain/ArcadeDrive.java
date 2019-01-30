@@ -4,6 +4,7 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.lib.Logger;
 
 /**
  * Default drivetrain command. This *should* be called as the default drivetrain
@@ -36,16 +37,16 @@ public class ArcadeDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis(),
-      Robot.m_oi.getTurnAxis());
-    // Robot.drivetrain.arcadeDriveMethod(0,0.1);
+    // Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis(),
+    //   Robot.m_oi.getTurnAxis());
 
-    // Robot.drivetrain.setPowers(Robot.m_oi.getForwardAxis() + Robot.m_oi.getTurnAxis(),
-    //     Robot.m_oi.getForwardAxis() - Robot.m_oi.getTurnAxis());
+    boolean isQuickTurn = (Robot.m_oi.getForwardAxis() < 0.08);
 
-  
+    Robot.drivetrain.curvatureDrive(Robot.m_oi.getForwardAxis(),
+      Robot.m_oi.getTurnAxis(), isQuickTurn);
+    
+    Logger.log("forward command: " + Robot.m_oi.getForwardAxis());
 
-    // System.out.println("arcade drive command execute");
   }
 
   // Make this return true when this Command no longer needs to run execute()
