@@ -21,9 +21,9 @@ public class Superstructure extends Subsystem {
 
   private SuperstructureState mReqState = new SuperstructureState();
   private CommandGroup mCurrentCommandGroup;
-  public static Elevator elevator = new Elevator();
-  public static Wrist wrist = new Wrist();
-  public static Intake intake = new Intake();
+  public Elevator elevator = new Elevator();
+  public Wrist wrist = new Wrist();
+  public Intake intake = new Intake();
   private SuperstructurePlanner planner = new SuperstructurePlanner();
   
   public Superstructure(){}

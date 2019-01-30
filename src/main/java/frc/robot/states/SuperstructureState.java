@@ -1,5 +1,6 @@
 package frc.robot.states;
 
+import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
@@ -84,8 +85,8 @@ public class SuperstructureState{
    * updates the state to the current positions of each part
    */
   public void updateToCurrent(){
-    this.elevatorHeight = Superstructure.elevator.getHeight();
-    this.angle= Superstructure.wrist.presetAngle;
+    this.elevatorHeight = Robot.superstructure.elevator.getHeight();
+    this.angle= Robot.superstructure.wrist.presetAngle;
     
     // can't automatically set what piece is held w/o a bunch of sensors
   }

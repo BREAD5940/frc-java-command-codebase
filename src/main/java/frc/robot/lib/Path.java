@@ -15,10 +15,13 @@ public class Path{
     public double maxEleAccel, maxEleVel;
     public double maxWAccel, maxWVel;
     public double maxEAccel, maxEVel;
-    public int numPoints;
 
-    public Path(SuperstructureState[] states, double mA, double mV){
+    public Path(SuperstructureState[] states, double mEleA, double mEleV, double mEA, double mEV, double mWA, double mWV){
         this.states=states;
+    }
+
+    public Path(SuperstructureState[] states){
+        this(states, 1, 1, 1, 1, 1, 1); //defaults maxes to 1
     }
 
 
