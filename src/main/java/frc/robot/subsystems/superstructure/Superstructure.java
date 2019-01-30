@@ -121,6 +121,10 @@ public class Superstructure extends Subsystem {
   think of a good way to do this, and I think the best way to do it might be to put it on a notifier?? 
   that would put everyhing on another thread. Otherwise maybe make a looper abstract class
   and have those calculations happen every tick. Either way the motor states would need to be
-  calculated *as fast as possible*
+  calculated *as fast as possible*. I don't think that a command is the best way to do this either, 
+  because we need the sequential/paralell nature of command groups for safe superstructure movement
+  while preserving the "this happens every tick" part of the whole system.
+  Yeah, heck it. I'm making a looper abstract class which puts everything on a notifier so we 
+  preserve abstraction. That means that this needs an init() and execute() function, as well as an end() function
   */
 }
