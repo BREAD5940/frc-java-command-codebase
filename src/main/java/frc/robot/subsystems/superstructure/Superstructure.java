@@ -26,6 +26,7 @@ public class Superstructure extends LoopingSubsystem {
   public static Elevator elevator = new Elevator();
   public static Wrist wrist = new Wrist();
   public static Intake intake = new Intake();
+  public static Elbow elbow = new Elbow();
   private SuperstructurePlanner planner = new SuperstructurePlanner();
   
   public synchronized Superstructure getInstance() {
@@ -129,12 +130,29 @@ public class Superstructure extends LoopingSubsystem {
   preserve abstraction. That means that this needs an init() and execute() function, as well as an end() function.
   Furthermore I think we should maybe get rid of the wrist subsystem and elevator subsystem - all their
   suff is relaced with FalconSRX<Length> or FalconSRX<Rotation2d>
+  
+  TODO we also need to do the encoders and stuff
   */
 
-  public void initilize() {}
+  public void initilize() {
+    // TODO move the superstructure to a known good starting position
+    // This should be called on auto init, coz that's when the motors init
+  }
 
-  public void execute() {}
+  public void execute() {
+    
+  }
 
   public void end() {}
+
+  
+  public static class mPeriodicIO {
+    
+    public double wristSetpoint, wristVoltage;
+    
+    public mPeriodicIO() {
+
+    }
+  }
 
 }

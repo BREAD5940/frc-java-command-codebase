@@ -19,7 +19,7 @@ public abstract class AbstractRotatingArm extends PIDSubsystem {
 
   private ArrayList<FalconSRX<Rotation2d>> motors = new ArrayList<FalconSRX<Rotation2d>>();
 
-  private PIDSettings pidSettings;
+  // private PIDSettings pidSettings;
 
   private NativeUnitRotationModel mRotationModel;
 
@@ -35,8 +35,8 @@ public abstract class AbstractRotatingArm extends PIDSubsystem {
    * @param motorPort on the CAN Bus (for single talon arms)
    * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
    */
-  public AbstractRotatingArm(PIDSettings settings, int motorPort, FeedbackDevice sensor) {
-    this(settings, Arrays.asList(motorPort), sensor);
+  public AbstractRotatingArm(String name, PIDSettings settings, int motorPort, FeedbackDevice sensor) {
+    this(name, settings, Arrays.asList(motorPort), sensor);
   }
 
   /**
@@ -47,8 +47,8 @@ public abstract class AbstractRotatingArm extends PIDSubsystem {
    * @param ports of talon CAN ports as a List
    * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
    */
-  public AbstractRotatingArm(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor) {
-    super(settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
+  public AbstractRotatingArm(String name, PIDSettings settings, List<Integer> ports, FeedbackDevice sensor) {
+    super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
     
     NativeUnit unitsPerRotation = NativeUnitKt.getSTU(0);
 
@@ -72,6 +72,7 @@ public abstract class AbstractRotatingArm extends PIDSubsystem {
 
   /**
    * Return an ArrayList of all the falconSRXes
+   * @return motors... all of the motors
    */
   public ArrayList<FalconSRX<Rotation2d>> getAllMotors() {
     return motors;
@@ -79,6 +80,7 @@ public abstract class AbstractRotatingArm extends PIDSubsystem {
 
   /**
    * Get the Rotation2d of the encoder of the master talon
+   * @return sensorPosition as a Rotation2d
    */
   public Rotation2d getRotation() {
     return getMaster().getSensorPosition();
@@ -90,6 +92,11 @@ public abstract class AbstractRotatingArm extends PIDSubsystem {
    */
   public void setRotation(Rotation2d pos_) {
     getMaster().setSensorPosition(pos_);
+  }
+
+  public static class RotatingArmPeriodicIO {
+    public double feedForwardVoltage;
+    public double pidOutput;
   }
 
 }

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * functions the same as it, but this also requires the methods initilze(), execute(), and
  * end() to be immplemented
  * 
+ * @author Matthew Morley
  */
 public abstract class LoopingSubsystem extends Subsystem {
   private final double loopTime;
