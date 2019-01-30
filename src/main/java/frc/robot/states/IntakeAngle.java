@@ -11,6 +11,7 @@ public class IntakeAngle{
 
   private double elbowAngle;
   private double wristAngle;
+  // TODO maybe have sanity checking on the angles to make sure they're not out of bounds in the context of the intake?
 
   public IntakeAngle(double eAngle, double wAngle){
     this.wristAngle=wAngle;

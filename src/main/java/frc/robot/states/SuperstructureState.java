@@ -31,9 +31,7 @@ public class SuperstructureState{
    *    the state you want to copy
    */
   public SuperstructureState(SuperstructureState existing){
-    this.elevatorHeight=existing.getElevatorHeight();
-    this.angle=existing.getAngle();
-    this.piece=existing.getHeldPiece();
+    this(existing.elevatorHeight, existing.angle, existing.piece);
   }
 
   /**
@@ -88,6 +86,7 @@ public class SuperstructureState{
     this.angle= Superstructure.wrist.presetAngle;
     
     // can't automatically set what piece is held w/o a bunch of sensors
+    // put them on the week 4 order sheet 
   }
 
 

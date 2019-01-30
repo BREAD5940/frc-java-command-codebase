@@ -19,6 +19,7 @@ import frc.robot.subsystems.Intake;
  */
 public class Superstructure extends Subsystem {
 
+  private Superstructure instance_;
   private SuperstructureState mReqState = new SuperstructureState();
   private CommandGroup mCurrentCommandGroup;
   public static Elevator elevator = new Elevator();
@@ -26,6 +27,13 @@ public class Superstructure extends Subsystem {
   public static Intake intake = new Intake();
   private SuperstructurePlanner planner = new SuperstructurePlanner();
   
+  public synchronized Superstructure getInstance() {
+    if ( instance_ == null ) {
+      instance_ = new Superstructure();
+    }
+    return instance_;
+  }
+
   public Superstructure(){}
 
 
@@ -101,6 +109,18 @@ public class Superstructure extends Subsystem {
   @Override
   protected void initDefaultCommand() {
     // pretty sure it doesn't need a default command, so leaving this empty
+    // Actually yeah all that you really need is the buttons
+    // well also jogging with joysticks but eehhhh
+    // actually that should be the default command, hot prank
   }
 
+  /* so the problem right now is that everything is abstracted
+  which is a great problem to have, except for the part where everything
+  connects together. We need a way to calculate feedforward voltages and velocities based on
+  current angles and desired angles respectively and feed it to the talons. I'm trying to
+  think of a good way to do this, and I think the best way to do it might be to put it on a notifier?? 
+  that would put everyhing on another thread. Otherwise maybe make a looper abstract class
+  and have those calculations happen every tick. Either way the motor states would need to be
+  calculated *as fast as possible*
+  */
 }
