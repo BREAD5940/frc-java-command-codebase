@@ -19,7 +19,7 @@ public class ElevatorTelop extends Command {
    * height will be set to the current target Just In Case^tm.
    */
   public ElevatorTelop() {
-    requires(Robot.elevator);
+    // requires(Robot.elevator);
   }
 
   @Override
@@ -35,7 +35,7 @@ public class ElevatorTelop extends Command {
   protected void execute() {
     if (Math.abs(Robot.m_oi.getElevatorAxis()) > 0.07) {
       targetHeight += Robot.m_oi.getElevatorAxis();
-      Robot.elevator.setHeight(targetHeight);// targetHeight);
+      // Robot.elevator.setHeight(targetHeight);// targetHeight);
       // System.out.println("targetHeight: " + targetHeight + " Elevator axis: "
       // + Robot.m_oi.getElevatorAxis() * 1 + " Get elevator height inches: " +
       // Robot.elevator.getHeight() );
@@ -50,13 +50,13 @@ public class ElevatorTelop extends Command {
   // TODO decide if the elevator should set itself to 0 on command end
   @Override
   protected void end() {
-    Robot.elevator.setHeight(Robot.elevator.getHeight());
+    // Robot.elevator.setHeight(Robot.elevator.getHeight());
   }
 
   // TODO decide if the elevator should set itself to 0 on command end. Because
   // the command should never end right?
   @Override
   protected void interrupted() {
-    Robot.elevator.setHeight(Robot.elevator.getHeight());
+    // Robot.elevator.setHeight(Robot.elevator.getHeight());
   }
 }

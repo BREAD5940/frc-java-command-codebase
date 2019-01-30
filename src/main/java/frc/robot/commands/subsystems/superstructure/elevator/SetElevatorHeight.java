@@ -32,7 +32,7 @@ public class SetElevatorHeight extends Command {
    */
   public SetElevatorHeight(double demand, boolean isInstant) {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.elevator);
+    // requires(Robot.elevator);
     this.demand = demand;
     this.isInstant = isInstant;
     this.heightmode = HeightMode.INCHES;
@@ -46,7 +46,7 @@ public class SetElevatorHeight extends Command {
    */
   public SetElevatorHeight(double demand) {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.elevator);
+    // requires(Robot.elevator);
     this.demand = demand;
     this.isInstant = false;
     this.heightmode = HeightMode.INCHES;
@@ -63,7 +63,7 @@ public class SetElevatorHeight extends Command {
    */
   public SetElevatorHeight(double demand, boolean isInstant, double timeout) {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.elevator);
+    // requires(Robot.elevator);
     this.demand = demand;
     this.isInstant = isInstant;
     this.timeout = timeout;
@@ -71,7 +71,7 @@ public class SetElevatorHeight extends Command {
   }
 
   public SetElevatorHeight(ElevatorPresets height, boolean isInstant) {
-    requires(Robot.elevator);
+    // requires(Robot.elevator);
     this.heightEnum = height;
     this.isInstant = isInstant;
     this.heightmode = HeightMode.PRESET;
@@ -83,11 +83,11 @@ public class SetElevatorHeight extends Command {
     case INCHES:
       break;
     case PRESET:
-      demand = Robot.elevator.getHeightEnumValue(heightEnum);
+      // demand = Robot.elevator.getHeightEnumValue(heightEnum);
     default:
       break;
     }
-    Robot.elevator.setHeight(demand);
+    // Robot.elevator.setHeight(demand);
     setTimeout(timeout);
   }
 
@@ -101,7 +101,8 @@ public class SetElevatorHeight extends Command {
    */
   @Override
   protected boolean isFinished() {
-    return isInstant || Robot.elevator.isWithinTolerence(demand);
+    return false;
+    // return isInstant || Robot.elevator.isWithinTolerence(demand);
     
     // if ((isInstant) || (Math.abs(Robot.elevator.getHeight() - demand) < 0.5) || isTimedOut()) {
     //   return true;

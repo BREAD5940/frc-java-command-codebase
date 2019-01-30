@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
 
   public static boolean arcade_running = false;
   public static Intake intake = new Intake();
-  public static Elevator elevator = new Elevator();
+  // public static Elevator elevator = new Elevator();
   public static DriveTrain drivetrain = new DriveTrain();
   public static Superstructure superstructure = new Superstructure();  
   // public static Wrist wrist = new Wrist();
@@ -100,7 +100,7 @@ public class Robot extends TimedRobot {
     compressor.setClosedLoopControl(true);
 
     drivetrain.init();
-    elevator.init();
+    // elevator.init();
     // wrist.init();
     gyro.reset();
 
@@ -116,7 +116,7 @@ public class Robot extends TimedRobot {
     }
 
     SmartDashboard.putData(drivetrain);
-    SmartDashboard.putData(elevator);
+    SmartDashboard.putData(superstructure); 
     SmartDashboard.putData(intake);
   }
 
@@ -222,9 +222,9 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Intake target speed per OI:", m_oi.getIntakeSpeed());
 
     // SmartDashboard.putNumber("Throttle output", throttle.getRawAxis(1));
-    SmartDashboard.putNumber("Elevator setpoint", 20000);
-    SmartDashboard.putNumber("Elevator height", elevator.getHeight());
-    SmartDashboard.putNumber("Elevator error", 4096 - elevator.getHeight());
+    // SmartDashboard.putNumber("Elevator setpoint", 20000);
+    // SmartDashboard.putNumber("Elevator height", elevator.getHeight());
+    // SmartDashboard.putNumber("Elevator error", 4096 - elevator.getHeight());
 
     SmartDashboard.putBoolean("Arcade command running", arcade_running);
 
