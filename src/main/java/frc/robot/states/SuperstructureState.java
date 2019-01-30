@@ -83,7 +83,7 @@ public class SuperstructureState{
    */
   public void updateToCurrent(){
     this.elevatorHeight = Superstructure.elevator.getHeight();
-    this.angle= Superstructure.wrist.presetAngle;
+    this.angle = new IntakeAngle( Superstructure.elbow.getPosition(), Superstructure.wrist.getPosition() );
     
     // can't automatically set what piece is held w/o a bunch of sensors
     // put them on the week 4 order sheet 

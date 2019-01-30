@@ -28,6 +28,7 @@ public class Superstructure extends LoopingSubsystem {
   public static Intake intake = new Intake();
   public static Elbow elbow = new Elbow();
   private SuperstructurePlanner planner = new SuperstructurePlanner();
+  public SuperStructurePeriodicIO mPeriodicIO;
   
   public synchronized Superstructure getInstance() {
     if ( instance_ == null ) {
@@ -140,19 +141,16 @@ public class Superstructure extends LoopingSubsystem {
   }
 
   public void execute() {
+    // TODO calculate feedforward voltages and shit
     
   }
 
   public void end() {}
 
   
-  public static class mPeriodicIO {
-    
-    public double wristSetpoint, wristVoltage;
-    
-    public mPeriodicIO() {
-
-    }
+  public class SuperStructurePeriodicIO {
+    public double wristSetpoint, wristVoltage, wristPidOutput;
+    public double elbowSetpoint, elbowVoltage, elbowPidOutput;
   }
 
 }

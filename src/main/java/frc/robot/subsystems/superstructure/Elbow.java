@@ -33,7 +33,7 @@ import frc.robot.states.IntakeAngle;
 public class Elbow extends AbstractRotatingArm {
 
   public final double kTolerence = 5; // degrees
-  private RotatingArmPeriodicIO mPeriodicIO;
+  public RotatingArmPeriodicIO mPeriodicIO;
   
   public Elbow() {
     // pass the PID stuff, talon ports and mag encoder angle
@@ -63,6 +63,4 @@ public class Elbow extends AbstractRotatingArm {
   @Override
   protected void initDefaultCommand() {
   }
-
-
 }
