@@ -125,6 +125,8 @@ public class Superstructure extends Subsystem {
   because we need the sequential/paralell nature of command groups for safe superstructure movement
   while preserving the "this happens every tick" part of the whole system.
   Yeah, heck it. I'm making a looper abstract class which puts everything on a notifier so we 
-  preserve abstraction. That means that this needs an init() and execute() function, as well as an end() function
+  preserve abstraction. That means that this needs an init() and execute() function, as well as an end() function.
+  Furthermore I think we should maybe get rid of the wrist subsystem and elevator subsystem - all their
+  suff is relaced with FalconSRX<Length> or FalconSRX<Rotation2d>
   */
 }
