@@ -40,7 +40,7 @@ public class Superstructure extends LoopingSubsystem {
   }
 
   public Superstructure(){
-    super(0.02);
+    super(1);
     startLooper();
   }
 
@@ -152,7 +152,8 @@ public class Superstructure extends LoopingSubsystem {
     if(mPeriodicIO.elbow == null) mPeriodicIO.elbow = new RotatingArmPeriodicIO();
     if(mPeriodicIO.wrist == null) mPeriodicIO.wrist = new RotatingArmPeriodicIO();
 
-    Logger.log(mPeriodicIO.toString());
+    System.out.println(mPeriodicIO.toString());
+
   }
 
   public void end() {}
