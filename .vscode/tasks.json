@@ -38,7 +38,7 @@
     {
       "label": "Simulate Superstructure",
       "type": "shell",
-      "command": " & ~/desktop/python/python37/python.exe superstructure/angles.py",
+      "command": " & ~/desktop/python/python37/python.exe src/main/python/angles.py",
       "group": {
         "kind": "build",
         "isDefault": true
