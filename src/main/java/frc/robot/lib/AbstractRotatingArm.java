@@ -16,11 +16,13 @@ import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
-public abstract class AbstractRotatingArm extends Subsystem {
+public abstract class AbstractRotatingArm extends LoopingSubsystem {
 
   private ArrayList<FalconSRX<Rotation2d>> motors = new ArrayList<FalconSRX<Rotation2d>>();
   
   private TerriblePID mPid;
+
+  public RotatingArmPeriodicIO mPeriodicIO = new RotatingArmPeriodicIO();
 
   // private PIDSettings pidSettings;
 
@@ -51,7 +53,9 @@ public abstract class AbstractRotatingArm extends Subsystem {
    * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
    */
   public AbstractRotatingArm(String name, PIDSettings settings, List<Integer> ports, FeedbackDevice sensor) {
+    super(1);
     // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
+    mPid = new TerriblePID(settings.kp, settings.ki, settings.kd, 0, settings.minOutput, settings.maxOutput, settings.iZone, settings.maxIAccum, 10000, null, null);
 
     NativeUnit unitsPerRotation = NativeUnitKt.getSTU(0);
 
@@ -67,6 +71,7 @@ public abstract class AbstractRotatingArm extends Subsystem {
       motors.add(new FalconSRX<Rotation2d>(i.intValue(), mRotationModel, TimeUnitsKt.getMillisecond(10)));
     }
     
+    startLooper();
   }
 
   /**
@@ -138,5 +143,17 @@ public abstract class AbstractRotatingArm extends Subsystem {
       // return "hellothere";
     }
   }
+
+  public double getDegrees() {
+    return Math.toDegrees(getMaster().getSensorPosition().getValue());
+  }
+
+  public void initilize() {}
+  public void execute() {
+    mPeriodicIO.pidOutput = mPid.update(getDegrees());
+  }
+  public void end() {}
+
+  
 
 }

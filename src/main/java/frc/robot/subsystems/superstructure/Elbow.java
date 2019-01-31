@@ -20,7 +20,6 @@ public class Elbow extends AbstractRotatingArm {
   public double pidOutput = 0;
 
   public final double kTolerence = 1; // degrees
-  public RotatingArmPeriodicIO mPeriodicIO = new RotatingArmPeriodicIO();
   
   public Elbow() {
     // pass the PID stuff, talon ports and mag encoder angle
@@ -34,4 +33,5 @@ public class Elbow extends AbstractRotatingArm {
   @Override
   protected void initDefaultCommand() {
   }
+
 }

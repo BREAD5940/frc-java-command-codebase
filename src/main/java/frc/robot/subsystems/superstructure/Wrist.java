@@ -20,7 +20,6 @@ import frc.robot.lib.PIDSettings.FeedbackMode;
 public class Wrist extends AbstractRotatingArm {
 
   public final double kTolerence = 5; // degrees
-  public RotatingArmPeriodicIO mPeriodicIO = new RotatingArmPeriodicIO();
   
   public Wrist() {
     // pass the PID stuff, talon ports and mag encoder angle
@@ -32,15 +31,10 @@ public class Wrist extends AbstractRotatingArm {
     // setAbsoluteTolerance(kTolerence);
   }
 
-
-
-  public void setSetpoint(Rotation2d setpoint) {
-    // setSetpoint( setpoint.getDegree() );
-  }
-
-
-
   @Override
   protected void initDefaultCommand() {
   }
+
+
+
 }

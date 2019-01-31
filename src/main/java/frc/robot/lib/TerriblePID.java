@@ -232,10 +232,10 @@ public class TerriblePID {
      */
     if(ki != 0) {
       iAccum += error * ki * dt; // incrament the I term by error times integral gain times delta time (numerical integration yeet)
-      System.out.println(String.format("Error (%s) ki (%s) dt (%s) iAccum (%s)", error, ki, dt, iAccum));
+      // System.out.println(String.format("Error (%s) ki (%s) dt (%s) iAccum (%s)", error, ki, dt, iAccum));
       iAccum = clampIntegral(iAccum + iOutput); // clamp the term to the min/max   
     }
-    System.out.println("Ki: " + ki + " iAccum: " + iAccum);
+    // System.out.println("Ki: " + ki + " iAccum: " + iAccum);
 
     if ((kf != 0) && (feedforwardbehavior != null) && (feedforwardmode != null)) {
       fOutput = calculateFeedForward(measured);

@@ -8,6 +8,7 @@ import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotConfig.wrist;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.lib.Logger;
 import frc.robot.lib.LoopingSubsystem;
@@ -164,19 +165,9 @@ public class Superstructure extends LoopingSubsystem {
     elbow.setSetpoint(Rotation2dKt.getDegree(i));
     wrist.setSetpoint(Rotation2dKt.getDegree(20));
 
-    System.out.println("elbow pid output: " + elbow.pidOutput);
-
-    // System.out.println("wrist.mPeriodicIO.pidOutput: " + wrist.mPeriodicIO.pidOutput);
 
 
-    mPeriodicIO.wrist.feedForwardVoltage = 0;
-    mPeriodicIO.wrist.pidOutput = wrist.mPeriodicIO.pidOutput;
-
-
-    mPeriodicIO.elbow.feedForwardVoltage = 0;
-    mPeriodicIO.elbow.pidOutput = elbow.mPeriodicIO.pidOutput;
-
-    System.out.println(mPeriodicIO.toString());
+    System.out.println(elbow.mPeriodicIO.toString() + ", " + wrist.mPeriodicIO.toString());
   }
 
   public void end() {}
