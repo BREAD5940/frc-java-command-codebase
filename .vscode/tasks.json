@@ -8,10 +8,10 @@
       "type": "shell",
       "command": "./gradlew test",
       "windows": {
-        "command": ".\\gradlew.bat test",
+        "command": ".\\gradlew.bat test"
       },
       "linux": {
-        "command": "./gradlew test",
+        "command": "./gradlew test"
       },
       "group": {
         "kind": "test",
@@ -24,11 +24,21 @@
       "type": "shell",
       "command": "./buildDeploy.sh",
       "windows": {
-        "command": "./buildDeploy.ps1",
+        "command": "./buildDeploy.ps1"
       },
       "linux": {
         "command": "./buildDeploy.sh"
       },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Simulate Superstructure",
+      "type": "shell",
+      "command": " & ~/desktop/python/python37/python.exe superstructure/angles.py",
       "group": {
         "kind": "build",
         "isDefault": true
