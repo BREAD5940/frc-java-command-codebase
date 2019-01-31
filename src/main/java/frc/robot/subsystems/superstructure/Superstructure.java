@@ -168,11 +168,11 @@ public class Superstructure extends LoopingSubsystem {
 
     // System.out.println("wrist.mPeriodicIO.pidOutput: " + wrist.mPeriodicIO.pidOutput);
 
-    mPeriodicIO.wrist.setpoint = wrist.getSetpoint();
+
     mPeriodicIO.wrist.feedForwardVoltage = 0;
     mPeriodicIO.wrist.pidOutput = wrist.mPeriodicIO.pidOutput;
 
-    mPeriodicIO.elbow.setpoint = elbow.getSetpoint();
+
     mPeriodicIO.elbow.feedForwardVoltage = 0;
     mPeriodicIO.elbow.pidOutput = elbow.mPeriodicIO.pidOutput;
 

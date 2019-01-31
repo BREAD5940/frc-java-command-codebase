@@ -70,6 +70,29 @@ public abstract class AbstractRotatingArm extends Subsystem {
   }
 
   /**
+   * Get the terriblePID instance
+   */
+  public TerriblePID getPid(){
+    return mPid;
+  }
+
+  public void setSetpoint(double setpoint_) {
+    mPid.setSetpoint(setpoint_);
+  }
+
+  public void setSetpoint(Rotation2d _setpoint) {
+    setSetpoint(Math.toDegrees(_setpoint.getValue()) );
+  }
+
+  public Rotation2d getPosition() {
+    return getMaster().getSensorPosition();
+  }
+
+  public double getSetpoint() {
+    return mPid.getSetpoint();
+  }
+
+  /**
    * Get the master talon of the rotating arm
    */
   public FalconSRX<Rotation2d> getMaster() {

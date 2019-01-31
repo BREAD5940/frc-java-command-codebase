@@ -19,6 +19,7 @@ public class TerriblePID {
   double kp, ki, kd, kf, pOutput, iOutput, fOutput, iAccum, dOutput, integralZone, 
     maxIntegralAccum, minOutput, maxOutput, setpoint, input, error, output;
   double lastOutput, lastMeasured;
+  double tolerence;
   double dt = 1.0 / 50; // Set delta time to 50 hz, this is likely good enough
   FeedForwardMode feedforwardmode;
   FeedForwardBehavior feedforwardbehavior;
@@ -67,6 +68,10 @@ public class TerriblePID {
     this(kp, 0.0, 0.0, 0.0, -maxOutput, maxOutput, 0.0, 0.0, 0.0, null, null);
   }
 
+  public TerriblePID(double kp, double minOutput, double maxOutput) {
+    this(kp, 0.0, 0.0, 0.0, minOutput, maxOutput, 0.0, 0.0, 0.0, null, null);
+  }
+
   /**
    * Set the setpoint for this instance of the PID loop. Should be preserved.
    * @param setpoint
@@ -78,6 +83,14 @@ public class TerriblePID {
   /** Set the kp gain of the controller */
   public void setKpGain(double kpGain) {
     kp = kpGain;
+  }
+
+  public void setTolerence(double tolerence_) {
+    tolerence = Math.abs(tolerence_);
+  }
+
+  public boolean isOnTarget() {
+    return Math.abs(setpoint - lastMeasured) < tolerence;
   }
 
   /**

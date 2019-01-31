@@ -40,11 +40,7 @@ public class DriveStraight extends Command {
 
   private TerriblePID turnPID = new TerriblePID(
     RobotConfig.auto.driveStraight.turn_kp, 
-    RobotConfig.auto.driveStraight.turn_ki, 
-    RobotConfig.auto.driveStraight.minimum_turn_speed, 
-    RobotConfig.auto.driveStraight.maximum_turn_speed, 
-    RobotConfig.auto.driveStraight.turn_izone, 
-    RobotConfig.auto.driveStraight.turn_integral_max
+    -1, 1
   );
   
 
