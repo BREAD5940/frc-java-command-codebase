@@ -106,7 +106,7 @@ public abstract class AbstractRotatingArm extends PIDSubsystem {
 
     @Override
     public String toString() {
-      return feedForwardVoltage + "," + pidOutput;
+      return feedForwardVoltage + ", " + pidOutput;
       // return "hellothere";
     }
   }

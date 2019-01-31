@@ -14,7 +14,7 @@ import frc.robot.commands.auto.AutoMotion;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.LIDARSubsystem;
+// import frc.robot.subsystems.LIDARSubsystem;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.subsystems.superstructure.Superstructure;
@@ -43,7 +43,7 @@ public class Robot extends TimedRobot {
   // public static Wrist wrist = new Wrist();
   public static AHRS gyro = new AHRS(SPI.Port.kMXP);
   public static LimeLight limelight = new LimeLight();
-  public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
+  // public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
   /** Poorly named Operator Input value for Robot */
   // public static TerribleLogger logger = new TerribleLogger();
 
