@@ -1,6 +1,7 @@
 package frc.robot.lib;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,9 +16,11 @@ import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
-public abstract class AbstractRotatingArm extends PIDSubsystem {
+public abstract class AbstractRotatingArm extends Subsystem {
 
   private ArrayList<FalconSRX<Rotation2d>> motors = new ArrayList<FalconSRX<Rotation2d>>();
+  
+  private TerriblePID mPid;
 
   // private PIDSettings pidSettings;
 
@@ -48,8 +51,8 @@ public abstract class AbstractRotatingArm extends PIDSubsystem {
    * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
    */
   public AbstractRotatingArm(String name, PIDSettings settings, List<Integer> ports, FeedbackDevice sensor) {
-    super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
-    
+    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
+
     NativeUnit unitsPerRotation = NativeUnitKt.getSTU(0);
 
     // TODO add support for more sensors
@@ -63,6 +66,7 @@ public abstract class AbstractRotatingArm extends PIDSubsystem {
     for( Integer i : ports ) {
       motors.add(new FalconSRX<Rotation2d>(i.intValue(), mRotationModel, TimeUnitsKt.getMillisecond(10)));
     }
+    
   }
 
   /**
@@ -97,6 +101,7 @@ public abstract class AbstractRotatingArm extends PIDSubsystem {
   }
 
   public static class RotatingArmPeriodicIO {
+    public double setpoint = 0;
     public double feedForwardVoltage = 0;
     public double pidOutput = 0;
     public RotatingArmPeriodicIO() {
@@ -106,7 +111,7 @@ public abstract class AbstractRotatingArm extends PIDSubsystem {
 
     @Override
     public String toString() {
-      return feedForwardVoltage + ", " + pidOutput;
+      return setpoint + ", " + feedForwardVoltage + ", " + pidOutput;
       // return "hellothere";
     }
   }

@@ -33,7 +33,7 @@ import frc.robot.states.IntakeAngle;
 public class Wrist extends AbstractRotatingArm {
 
   public final double kTolerence = 5; // degrees
-  public RotatingArmPeriodicIO mPeriodicIO;
+  public RotatingArmPeriodicIO mPeriodicIO = new RotatingArmPeriodicIO();
   
   public Wrist() {
     // pass the PID stuff, talon ports and mag encoder angle
@@ -48,7 +48,8 @@ public class Wrist extends AbstractRotatingArm {
   @Override
   protected double returnPIDInput() {
     // return the location of the arm in degrees
-    return Math.toDegrees(getMaster().getSensorPosition().getValue());
+    return 0;
+    // return Math.toDegrees(getMaster().getSensorPosition().getValue());
   }
 
   public void setSetpoint(Rotation2d setpoint) {
@@ -57,7 +58,8 @@ public class Wrist extends AbstractRotatingArm {
 
   @Override
   protected void usePIDOutput(double output) {
-    mPeriodicIO.pidOutput = output;
+    System.out.println("yfadhidqgjnpqbbjhbqpiqbjnmbw");
+    mPeriodicIO.pidOutput = 40d;//output;
   }
 
   @Override

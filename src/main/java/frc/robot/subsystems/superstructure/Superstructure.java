@@ -3,6 +3,9 @@ package frc.robot.subsystems.superstructure;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.auto.AutoMotion;
@@ -141,19 +144,39 @@ public class Superstructure extends LoopingSubsystem {
   */
 
   public void initilize() {
+    if(mPeriodicIO == null) mPeriodicIO = new SuperStructurePeriodicIO();
+    if(mPeriodicIO.elbow == null) mPeriodicIO.elbow = new RotatingArmPeriodicIO();
+    if(mPeriodicIO.wrist == null) mPeriodicIO.wrist = new RotatingArmPeriodicIO();
     // TODO move the superstructure to a known good starting position
     // This should be called on auto init, coz that's when the motors init
     System.out.println("Superstructure looper init-ed");
   }
 
+  int i=0;
+
   public void execute() {
+    i++;
     // TODO calculate feedforward voltages and shit
-    if(mPeriodicIO == null) mPeriodicIO = new SuperStructurePeriodicIO();
-    if(mPeriodicIO.elbow == null) mPeriodicIO.elbow = new RotatingArmPeriodicIO();
-    if(mPeriodicIO.wrist == null) mPeriodicIO.wrist = new RotatingArmPeriodicIO();
+    // if(mPeriodicIO == null) mPeriodicIO = new SuperStructurePeriodicIO();
+    // if(mPeriodicIO.elbow == null) mPeriodicIO.elbow = new RotatingArmPeriodicIO();
+    // if(mPeriodicIO.wrist == null) mPeriodicIO.wrist = new RotatingArmPeriodicIO();
+
+    elbow.setSetpoint(Rotation2dKt.getDegree(i));
+    wrist.setSetpoint(Rotation2dKt.getDegree(20));
+
+    System.out.println("elbow pid output: " + elbow.pidOutput);
+
+    // System.out.println("wrist.mPeriodicIO.pidOutput: " + wrist.mPeriodicIO.pidOutput);
+
+    mPeriodicIO.wrist.setpoint = wrist.getSetpoint();
+    mPeriodicIO.wrist.feedForwardVoltage = 0;
+    mPeriodicIO.wrist.pidOutput = wrist.mPeriodicIO.pidOutput;
+
+    mPeriodicIO.elbow.setpoint = elbow.getSetpoint();
+    mPeriodicIO.elbow.feedForwardVoltage = 0;
+    mPeriodicIO.elbow.pidOutput = elbow.mPeriodicIO.pidOutput;
 
     System.out.println(mPeriodicIO.toString());
-
   }
 
   public void end() {}

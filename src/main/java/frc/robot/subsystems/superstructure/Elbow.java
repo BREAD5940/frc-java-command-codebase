@@ -32,13 +32,15 @@ import frc.robot.states.IntakeAngle;
  */
 public class Elbow extends AbstractRotatingArm {
 
-  public final double kTolerence = 5; // degrees
-  public RotatingArmPeriodicIO mPeriodicIO;
+  public double pidOutput = 0;
+
+  public final double kTolerence = 1; // degrees
+  public RotatingArmPeriodicIO mPeriodicIO = new RotatingArmPeriodicIO();
   
   public Elbow() {
     // pass the PID stuff, talon ports and mag encoder angle
     super(/* Name */ "Elbow", 
-        new PIDSettings(/* kp */ 0.1, /* ki */ 0d, /* kd */ 0d, /* kf */ 0d, FeedbackMode.ANGULAR),
+        new PIDSettings(/* kp */ 10d, /* ki */ 0d, /* kd */ 0d, /* kf */ 0d, FeedbackMode.ANGULAR),
         Arrays.asList(37),
         FeedbackDevice.CTRE_MagEncoder_Relative    
     );
@@ -48,7 +50,8 @@ public class Elbow extends AbstractRotatingArm {
   @Override
   protected double returnPIDInput() {
     // return the location of the arm in degrees
-    return Math.toDegrees(getMaster().getSensorPosition().getValue());
+    // return Math.toDegrees(getMaster().getSensorPosition().getValue());
+    return Math.random() * 20;
   }
 
   public void setSetpoint(Rotation2d setpoint) {
@@ -57,7 +60,9 @@ public class Elbow extends AbstractRotatingArm {
 
   @Override
   protected void usePIDOutput(double output) {
+    System.out.println("elbow pid used");
     mPeriodicIO.pidOutput = output;
+    pidOutput = output;
   }
 
   @Override
