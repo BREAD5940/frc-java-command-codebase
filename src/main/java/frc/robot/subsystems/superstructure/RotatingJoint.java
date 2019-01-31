@@ -16,19 +16,19 @@ import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
-public abstract class AbstractRotatingArm extends LoopingSubsystem {
+public abstract class RotatingJoint extends Subsystem {
 
   private ArrayList<FalconSRX<Rotation2d>> motors = new ArrayList<FalconSRX<Rotation2d>>();
   
   private TerriblePID mPid;
 
-  public RotatingArmPeriodicIO mPeriodicIO = new RotatingArmPeriodicIO();
+  private RotatingArmPeriodicIO mPeriodicIO = new RotatingArmPeriodicIO();
 
   // private PIDSettings pidSettings;
 
   private NativeUnitRotationModel mRotationModel;
 
-  // public AbstractRotatingArm(PIDSettings settings, int motorPort) {
+  // public RotatingJoint(PIDSettings settings, int motorPort) {
   //   this(settings, motorPort, null, 0);
   // }
 
@@ -40,7 +40,7 @@ public abstract class AbstractRotatingArm extends LoopingSubsystem {
    * @param motorPort on the CAN Bus (for single talon arms)
    * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
    */
-  public AbstractRotatingArm(String name, PIDSettings settings, int motorPort, FeedbackDevice sensor) {
+  public RotatingJoint(String name, PIDSettings settings, int motorPort, FeedbackDevice sensor) {
     this(name, settings, Arrays.asList(motorPort), sensor);
   }
 
@@ -52,8 +52,8 @@ public abstract class AbstractRotatingArm extends LoopingSubsystem {
    * @param ports of talon CAN ports as a List
    * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
    */
-  public AbstractRotatingArm(String name, PIDSettings settings, List<Integer> ports, FeedbackDevice sensor) {
-    super(1);
+  public RotatingJoint(String name, PIDSettings settings, List<Integer> ports, FeedbackDevice sensor) {
+    super(name);
     // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
     mPid = new TerriblePID(settings.kp, settings.ki, settings.kd, 0, settings.minOutput, settings.maxOutput, settings.iZone, settings.maxIAccum, 10000, null, null);
 
@@ -70,8 +70,6 @@ public abstract class AbstractRotatingArm extends LoopingSubsystem {
     for( Integer i : ports ) {
       motors.add(new FalconSRX<Rotation2d>(i.intValue(), mRotationModel, TimeUnitsKt.getMillisecond(10)));
     }
-    
-    startLooper();
   }
 
   /**
