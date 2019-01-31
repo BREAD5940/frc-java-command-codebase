@@ -6,8 +6,10 @@ import java.util.Arrays;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.auto.AutoMotion;
+import frc.robot.lib.Logger;
 import frc.robot.lib.LoopingSubsystem;
 import frc.robot.lib.SuperstructurePlanner;
+import frc.robot.lib.AbstractRotatingArm.RotatingArmPeriodicIO;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperstructureState;
 import frc.robot.subsystems.Intake;
@@ -28,7 +30,7 @@ public class Superstructure extends LoopingSubsystem {
   public static Intake intake = new Intake();
   public static Elbow elbow = new Elbow();
   private SuperstructurePlanner planner = new SuperstructurePlanner();
-  public SuperStructurePeriodicIO mPeriodicIO;
+  public SuperStructurePeriodicIO mPeriodicIO = new SuperStructurePeriodicIO();
   
   public synchronized Superstructure getInstance() {
     if ( instance_ == null ) {
@@ -37,7 +39,10 @@ public class Superstructure extends LoopingSubsystem {
     return instance_;
   }
 
-  public Superstructure(){}
+  public Superstructure(){
+    super(0.02);
+    startLooper();
+  }
 
 
   private SuperstructureState mCurrentState = new SuperstructureState();
@@ -138,19 +143,32 @@ public class Superstructure extends LoopingSubsystem {
   public void initilize() {
     // TODO move the superstructure to a known good starting position
     // This should be called on auto init, coz that's when the motors init
+    System.out.println("Superstructure looper init-ed");
   }
 
   public void execute() {
     // TODO calculate feedforward voltages and shit
-    
+    if(mPeriodicIO == null) mPeriodicIO = new SuperStructurePeriodicIO();
+    if(mPeriodicIO.elbow == null) mPeriodicIO.elbow = new RotatingArmPeriodicIO();
+    if(mPeriodicIO.wrist == null) mPeriodicIO.wrist = new RotatingArmPeriodicIO();
+
+    Logger.log(mPeriodicIO.toString());
   }
 
   public void end() {}
 
   
   public class SuperStructurePeriodicIO {
-    public double wristSetpoint, wristVoltage, wristPidOutput;
-    public double elbowSetpoint, elbowVoltage, elbowPidOutput;
+    public RotatingArmPeriodicIO elbow, wrist;
+    // public RotatingArmPeriodicIO wrist = new RotatingArmPeriodicIO();
+    public SuperStructurePeriodicIO() {
+      elbow = new RotatingArmPeriodicIO();
+      wrist = new RotatingArmPeriodicIO();
+    }
+    @Override
+    public String toString() {
+      return elbow.toString() + ", " + wrist.toString();
+    }
   }
 
 }

@@ -39,7 +39,7 @@ public class Wrist extends AbstractRotatingArm {
     // pass the PID stuff, talon ports and mag encoder angle
     super(/* Name */ "Wrist", 
         new PIDSettings(/* kp */ 0.1, /* ki */ 0d, /* kd */ 0d, /* kf */ 0d, FeedbackMode.ANGULAR),
-        Arrays.asList(45, 46),
+        Arrays.asList(40),
         FeedbackDevice.CTRE_MagEncoder_Relative    
     );
     setAbsoluteTolerance(kTolerence);

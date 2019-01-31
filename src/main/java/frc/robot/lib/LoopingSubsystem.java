@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public abstract class LoopingSubsystem extends Subsystem {
   private final double loopTime;
-  Notifier notifier_;
+  private Notifier notifier_;
 
   public LoopingSubsystem() {
     this(0.02);
@@ -23,6 +23,13 @@ public abstract class LoopingSubsystem extends Subsystem {
     this.loopTime = loopTime;
     notifier_ = new Notifier(() -> execute());
     initilize();
+  }
+
+  public Notifier getNotifier() {
+    return notifier_;
+  }
+
+  public void startLooper() {
     notifier_.startPeriodic(loopTime);
   }
 

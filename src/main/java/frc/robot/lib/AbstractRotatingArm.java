@@ -57,6 +57,8 @@ public abstract class AbstractRotatingArm extends PIDSubsystem {
       unitsPerRotation = NativeUnitKt.getSTU(4096);
     }
 
+    mRotationModel = new NativeUnitRotationModel(unitsPerRotation);
+
     // add all of our talons to the list
     for( Integer i : ports ) {
       motors.add(new FalconSRX<Rotation2d>(i.intValue(), mRotationModel, TimeUnitsKt.getMillisecond(10)));
@@ -95,8 +97,18 @@ public abstract class AbstractRotatingArm extends PIDSubsystem {
   }
 
   public static class RotatingArmPeriodicIO {
-    public double feedForwardVoltage;
-    public double pidOutput;
+    public double feedForwardVoltage = 0;
+    public double pidOutput = 0;
+    public RotatingArmPeriodicIO() {
+      feedForwardVoltage = 0;
+      pidOutput = 0;
+    }
+
+    @Override
+    public String toString() {
+      return feedForwardVoltage + "," + pidOutput;
+      // return "hellothere";
+    }
   }
 
 }
