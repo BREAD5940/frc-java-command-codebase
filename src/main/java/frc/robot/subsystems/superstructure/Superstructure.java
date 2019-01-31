@@ -3,20 +3,18 @@ package frc.robot.subsystems.superstructure;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.ghrobotics.lib.mathematics.units.Rotation2d;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.RobotConfig.wrist;
 import frc.robot.commands.auto.AutoMotion;
-import frc.robot.lib.Logger;
-import frc.robot.lib.LoopingSubsystem;
+import frc.robot.lib.PIDSettings;
 import frc.robot.lib.SuperstructurePlanner;
-import frc.robot.lib.AbstractRotatingArm.RotatingArmPeriodicIO;
+import frc.robot.lib.PIDSettings.FeedbackMode;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperstructureState;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmPeriodicIO;
 
 /**
  * First level of control for the superstructure of the robot. Contains all the
@@ -24,28 +22,27 @@ import frc.robot.subsystems.Intake;
  * 
  * @author Jocelyn McHugo
  */
-public class Superstructure extends LoopingSubsystem {
+public class Superstructure extends Subsystem {
 
-  private Superstructure instance_;
+  private static Superstructure instance_;
   private SuperstructureState mReqState = new SuperstructureState();
   private CommandGroup mCurrentCommandGroup;
   public static Elevator elevator = new Elevator();
-  public static Wrist wrist = new Wrist();
   public static Intake intake = new Intake();
-  public static Elbow elbow = new Elbow();
   private SuperstructurePlanner planner = new SuperstructurePlanner();
   public SuperStructurePeriodicIO mPeriodicIO = new SuperStructurePeriodicIO();
+  private RotatingJoint mWrist, mElbow;
   
-  public synchronized Superstructure getInstance() {
+  public static synchronized Superstructure getInstance() {
     if ( instance_ == null ) {
       instance_ = new Superstructure();
     }
     return instance_;
   }
 
-  public Superstructure(){
-    super(1);
-    startLooper();
+  private Superstructure(){
+    super("Superstructure");
+    mWrist = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 37, FeedbackDevice.CTRE_MagEncoder_Relative);
   }
 
 
@@ -117,7 +114,6 @@ public class Superstructure extends LoopingSubsystem {
     return this.moveSuperstructureCombo(mCurrentState.getElevatorHeight(), angle, piece);
   }
 
-
   @Override
   protected void initDefaultCommand() {
     // pretty sure it doesn't need a default command, so leaving this empty
@@ -143,47 +139,24 @@ public class Superstructure extends LoopingSubsystem {
   
   TODO we also need to do the encoders and stuff
   */
-
-  public void initilize() {
-    if(mPeriodicIO == null) mPeriodicIO = new SuperStructurePeriodicIO();
-    if(mPeriodicIO.elbow == null) mPeriodicIO.elbow = new RotatingArmPeriodicIO();
-    if(mPeriodicIO.wrist == null) mPeriodicIO.wrist = new RotatingArmPeriodicIO();
-    // TODO move the superstructure to a known good starting position
-    // This should be called on auto init, coz that's when the motors init
-    System.out.println("Superstructure looper init-ed");
-  }
-
-  int i=0;
-
-  public void execute() {
-    i++;
-    // TODO calculate feedforward voltages and shit
-    // if(mPeriodicIO == null) mPeriodicIO = new SuperStructurePeriodicIO();
-    // if(mPeriodicIO.elbow == null) mPeriodicIO.elbow = new RotatingArmPeriodicIO();
-    // if(mPeriodicIO.wrist == null) mPeriodicIO.wrist = new RotatingArmPeriodicIO();
-
-    elbow.setSetpoint(Rotation2dKt.getDegree(i));
-    wrist.setSetpoint(Rotation2dKt.getDegree(20));
-
-
-
-    System.out.println(elbow.mPeriodicIO.toString() + ", " + wrist.mPeriodicIO.toString());
-  }
-
-  public void end() {}
-
   
+  public RotatingJoint getWrist() {
+    return mWrist;
+  }
+
+  public RotatingJoint getElbow() {
+    return mElbow;
+  }
+
+  @Override
+  public void periodic() {
+    System.out.println("hullo there");
+  }
+  
+
+
   public class SuperStructurePeriodicIO {
     public RotatingArmPeriodicIO elbow, wrist;
-    // public RotatingArmPeriodicIO wrist = new RotatingArmPeriodicIO();
-    public SuperStructurePeriodicIO() {
-      elbow = new RotatingArmPeriodicIO();
-      wrist = new RotatingArmPeriodicIO();
-    }
-    @Override
-    public String toString() {
-      return elbow.toString() + ", " + wrist.toString();
-    }
   }
 
 }

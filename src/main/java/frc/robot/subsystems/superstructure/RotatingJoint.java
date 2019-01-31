@@ -1,7 +1,8 @@
-package frc.robot.lib;
+package frc.robot.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.lib.PIDSettings;
+import frc.robot.lib.TerriblePID;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +17,7 @@ import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
-public abstract class RotatingJoint extends Subsystem {
+public class RotatingJoint /*extends Subsystem*/ {
 
   private ArrayList<FalconSRX<Rotation2d>> motors = new ArrayList<FalconSRX<Rotation2d>>();
   
@@ -40,8 +41,8 @@ public abstract class RotatingJoint extends Subsystem {
    * @param motorPort on the CAN Bus (for single talon arms)
    * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
    */
-  public RotatingJoint(String name, PIDSettings settings, int motorPort, FeedbackDevice sensor) {
-    this(name, settings, Arrays.asList(motorPort), sensor);
+  public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor) {
+    this(settings, Arrays.asList(motorPort), sensor);
   }
 
   /**
@@ -52,9 +53,7 @@ public abstract class RotatingJoint extends Subsystem {
    * @param ports of talon CAN ports as a List
    * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
    */
-  public RotatingJoint(String name, PIDSettings settings, List<Integer> ports, FeedbackDevice sensor) {
-    super(name);
-    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
+  public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
     mPid = new TerriblePID(settings.kp, settings.ki, settings.kd, 0, settings.minOutput, settings.maxOutput, settings.iZone, settings.maxIAccum, 10000, null, null);
 
     NativeUnit unitsPerRotation = NativeUnitKt.getSTU(0);
@@ -145,13 +144,4 @@ public abstract class RotatingJoint extends Subsystem {
   public double getDegrees() {
     return Math.toDegrees(getMaster().getSensorPosition().getValue());
   }
-
-  public void initilize() {}
-  public void execute() {
-    mPeriodicIO.pidOutput = mPid.update(getDegrees());
-  }
-  public void end() {}
-
-  
-
 }

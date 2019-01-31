@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
   public static Intake intake = new Intake();
   // public static Elevator elevator = new Elevator();
   public static DriveTrain drivetrain = new DriveTrain();
-  public static Superstructure superstructure = new Superstructure();  
+  public static Superstructure superstructure = Superstructure.getInstance();
   // public static Wrist wrist = new Wrist();
   public static AHRS gyro = new AHRS(SPI.Port.kMXP);
   public static LimeLight limelight = new LimeLight();

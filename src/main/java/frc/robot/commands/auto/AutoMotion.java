@@ -13,7 +13,6 @@ import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.subsystems.superstructure.Elevator.ElevatorPresets;
-import frc.robot.subsystems.superstructure.Wrist;
 import frc.robot.subsystems.superstructure.Superstructure.iPosition;
 
 /**

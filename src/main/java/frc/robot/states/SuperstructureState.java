@@ -5,7 +5,6 @@ import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 import frc.robot.subsystems.superstructure.Superstructure;
 import frc.robot.subsystems.superstructure.Superstructure.iPosition;
-import frc.robot.subsystems.superstructure.Wrist;
 
 /**
  * A state the robot superstructure (elevator, wrist, intake, etc.) can be in. Used mainly by the SuperstructurePlanner
@@ -83,8 +82,8 @@ public class SuperstructureState{
    */
   public void updateToCurrent(){
     this.elevatorHeight = Superstructure.elevator.getHeight();
-    this.angle = new IntakeAngle( Math.toDegrees(Superstructure.elbow.getPosition().getValue()), 
-            Math.toDegrees(Superstructure.wrist.getPosition().getValue()));
+    this.angle = new IntakeAngle( Math.toDegrees(Superstructure.getElbow().getPosition().getValue()), 
+            Math.toDegrees(Superstructure.getWrist().getPosition().getValue()));
     
     // can't automatically set what piece is held w/o a bunch of sensors
     // put them on the week 4 order sheet 
