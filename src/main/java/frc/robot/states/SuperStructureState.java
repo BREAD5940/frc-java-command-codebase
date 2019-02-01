@@ -9,7 +9,7 @@ public class SuperStructureState {
   public RotatingArmState elbow; // TODO add elevator accleration
   public RotatingArmState wrist;
   public ElevatorState elevator;
-  public mHeldPiece piece = mHeldPiece.NONE; // FIXME because a lowercase first letter breaks syntax highlighting
+  private mHeldPiece piece = mHeldPiece.NONE; // FIXME because a lowercase first letter breaks syntax highlighting
 
   public SuperStructureState() {
     this(new RotatingArmState(), new RotatingArmState(), new ElevatorState(), mHeldPiece.NONE);
@@ -31,6 +31,14 @@ public class SuperStructureState {
 
   public static SuperStructureState fromOther(SuperStructureState other) {
     return new SuperStructureState( other.elbow, other.wrist, other.elevator, other.piece );
+  }
+
+  public mHeldPiece getHeldPiece() {
+    return piece;
+  }
+
+  public void setHeldPiece(mHeldPiece new_) {
+    piece = new_;
   }
 }
  

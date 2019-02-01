@@ -92,7 +92,7 @@ public class SuperstructurePlanner{
       }
 
       //checks if the intake will tilt/is tilted below the bottom of the elevator
-      if((goalState.getAngle()==iPosition.CARGO_DOWN) ||(currentState.getAngle()==iPosition.CARGO_DOWN)){
+      if((goalState.getAngle()==iPosition.CARGO_DOWN) ||(currentState.getAngle()==iPosition.CARGO_DOWN)){ // FIXME so this will only check for exact equivilency, not for a "less than" condition. Same with all the currentStates I think
         intakeCrashable=true;
       }
     }
