@@ -21,16 +21,38 @@ public class Twist2d {
     public final double dy;
     public final double dtheta; // Radians!
 
+    /**
+     * Instantiate a new Twist2d using dx, dy and dtheta components.
+     * This is the only constructor, so have fun using something else.
+     * 
+     * @param dx (forward/back)
+     * @param dy (left/right)
+     * @param dtheta (in radians!)
+     */
     public Twist2d(double dx, double dy, double dtheta) {
         this.dx = dx;
         this.dy = dy;
         this.dtheta = dtheta;
     }
 
+    /**
+     * Scale this' Twist2d by a scaler (hah, see? Vocab words :D)
+     * 
+     * @param scale
+     * @return A new Twist2d scaled by scale
+     */
     public Twist2d scaled(double scale) {
         return new Twist2d(dx * scale, dy * scale, dtheta * scale);
     }
 
+    /**
+     * return the Norm (i.e. distance forumula) of x and y displacement.
+     * If we don't turn much (drive straight lol), dy will be zero so we
+     * be lazy. otherwise, we just return the distance forumula straight
+     * line distance between the two points.
+     * 
+     * @return norm (distance) of the Twist2d
+     */
     public double norm() {
         // Common case of dy == 0
         if (dy == 0.0)
@@ -38,6 +60,12 @@ public class Twist2d {
         return Math.hypot(dx, dy);
     }
 
+    /**
+     * Get the curvature of this' twist2d. This method takes no arguments
+     * and will return zero if (1) the angle is absurdly small and (2) the
+     * {@link norm} of this twist is absurdly small.
+     * @return the curvature of the twist2d
+     */
     public double curvature() {
         if (Math.abs(dtheta) < Util.kEpsilon && norm() < Util.kEpsilon)
             return 0.0;

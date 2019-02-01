@@ -5,6 +5,7 @@ import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 import frc.robot.lib.TerriblePID;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.subsystems.intake.AutoIntake;
 
 
 /**
@@ -99,7 +100,7 @@ public class FollowVisionTarget extends Command {
       rightSpeedRaw = EncoderLib.distanceToRaw(forwardSpeed - turnSpeed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, 
       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
 
-      // System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeftDistance() + 
+      // System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeft().getFeet() + 
         // " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());
       // System.out.println("TURN PID: Setpoint: " + turnPID.getSetpoint()+ 
         // " Error: " + turnPID.getError() + " OUTPUT VELOCITY (ft/s): " + turnPID.getOutput());

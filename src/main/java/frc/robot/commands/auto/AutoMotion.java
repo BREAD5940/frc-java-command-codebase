@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.commands.auto.actions.AutoIntake;
 import frc.robot.commands.auto.actions.DriveDistance;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.GrabCargo;
@@ -19,7 +18,7 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
  * Creates a command group for a specific automatic motion. Input a type of goal
  * and a height then start the mBigCommandGroup externally In the future, this
  * could change to more inputs depending on the button setup
- * 
+ *
  * @author Jocelyn McHugo
  */
 public class AutoMotion {
@@ -27,7 +26,7 @@ public class AutoMotion {
   public enum mHeldPiece {
     HATCH, CARGO, NONE
   }
-  
+
   /**
    * different heights of goals.
    * LOW: the lowest level of the rocket and through the hatch of the CARGO ship;
@@ -62,7 +61,7 @@ public class AutoMotion {
    * @param gHeight
    *    the height of the goal the robot should aim for (LOW, MIDDLE, HIGH, OVER)
    * @param gType
-   *    the type of goal 
+   *    the type of goal
    */
 
   public AutoMotion (mGoalHeight gHeight, mGoalType gType){
@@ -103,7 +102,7 @@ public class AutoMotion {
     }
     return toReturn;
   }
-  
+
   /**
    * Generates commands to place a piece based on the parameters of the current AutoMotion
    * @return
@@ -137,7 +136,7 @@ public class AutoMotion {
     }
 
     if(this.piece==mHeldPiece.CARGO){
-      toReturn.add(new AutoIntake(-1, 5));
+      // toReturn.add(new AutoIntake(-1, 5));
     }else if (this.piece==mHeldPiece.HATCH){
       toReturn.add(new PlaceHatch());
     }
@@ -147,7 +146,7 @@ public class AutoMotion {
   }
 
   /**
-   * selects the correct ElevatorPreset from the Elevator subsystems enum based on 
+   * selects the correct ElevatorPreset from the Elevator subsystems enum based on
    * the mGoalHeight, the mGoalType, and the mHeldPiece
    */
   private ElevatorPresets getElevatorPreset(){
@@ -184,7 +183,7 @@ public class AutoMotion {
   // id functions
 
   /**
-   * 
+   *
    * @return
    *  the mGoalHeight of the AutoMotion
    */
@@ -218,5 +217,5 @@ public class AutoMotion {
   public AutoCommandGroup getBigCommandGroup(){
     return this.mBigCommandGroup;
   }
-  
+
 }

@@ -5,7 +5,6 @@ import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.actions.DriveDistance;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
-import frc.robot.commands.subsystems.intake.OpenClamp;
 import frc.robot.subsystems.superstructure.Elevator.ElevatorPresets;
 
 /**
@@ -24,7 +23,7 @@ public class GrabHatch extends CommandGroup{
         // rams into the loading station (hopefully)
         addSequential(new FollowVisionTarget(0.6, 100, 20)); //TODO percent frame check
         // grabs the hatch by opening the clamp
-        addSequential(new OpenClamp());
+        // addSequential(new OpenClamp());
         // lifts the hatch out of the brushes
         addSequential(Robot.superstructure.moveSuperstructureElevator(RobotConfig.auto.fieldPositions.cargo_ship_hatch+10));
         // moves the robot back slightly

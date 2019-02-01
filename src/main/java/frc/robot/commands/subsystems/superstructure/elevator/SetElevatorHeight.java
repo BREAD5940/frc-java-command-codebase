@@ -1,6 +1,8 @@
 package frc.robot.commands.subsystems.superstructure.elevator;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
+import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.subsystems.superstructure.Elevator.ElevatorPresets;
 
 /**
@@ -82,7 +84,7 @@ public class SetElevatorHeight extends Command {
     case INCHES:
       break;
     case PRESET:
-      // demand = Robot.elevator.getHeightEnumValue(heightEnum);
+      demand = Elevator.getHeightEnumValue(heightEnum);
     default:
       break;
     }

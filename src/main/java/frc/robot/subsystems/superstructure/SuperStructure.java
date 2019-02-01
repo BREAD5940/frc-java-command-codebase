@@ -15,6 +15,7 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.math.Rotation2d;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.SuperstructurePlanner;
@@ -83,13 +84,11 @@ public class SuperStructure extends Subsystem {
    * @return
    *    the command group necessary to safely move the superstructure
    */
-  public CommandGroup moveSuperstructureCombo(double height, IntakeAngle angle, AutoMotion.mHeldPiece piece){
-    mCurrentState.updateToCurrent();
-    mReqState.setElevatorHeight(height);
-    mReqState.setAngle(angle);
-    mReqState.setHeldPiece(piece);
+  public CommandGroup moveSuperstructureCombo(Length height, Rotation2d angle, AutoMotion.mHeldPiece piece){
+    mCurrentState = updateState();
 
-    mCurrentState.updateToCurrent();   
+    // TODO the wrist angle is mega broken
+    mReqState = new SuperStructureState(elbowState, wristState, elevatorState); // FIXME by making me an instance of superstructure state based on called params, the wrist is bork
     
     if(!(mReqState==mCurrentState)){
       this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
@@ -150,12 +149,13 @@ public class SuperStructure extends Subsystem {
   TODO we also need to do the encoders and stuff
   */
 
-  public void updateState() {
+  public SuperStructureState updateState() {
     mCurrentState = new SuperStructureState(
       mWrist.getCurrentState(),
       mElbow.getCurrentState(),
       elevator.getCurrentState()
     );
+    return mCurrentState;
   }
   
   public RotatingJoint getWrist() {

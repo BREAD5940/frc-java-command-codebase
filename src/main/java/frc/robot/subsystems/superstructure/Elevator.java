@@ -10,6 +10,11 @@ import frc.robot.states.ElevatorState;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
+import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
+
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
 
@@ -24,7 +29,7 @@ public class Elevator extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private ElevatorState lastState = new ElevatorState();
+  public ElevatorState lastState = new ElevatorState();
 
   public TalonSRX elevator_talon = new TalonSRX(RobotConfig.elevator.elevatorTalon.elevator_talon_port);
 
@@ -149,7 +154,15 @@ public class Elevator extends Subsystem {
   }
 
   public ElevatorState getCurrentState() {
-    return 
+    // Acceleration<Length> accel = AccelerationKt.getAcceleration( LengthKt.getMeter( 
+        // TODO make this actually work by re-writing elevator
+        // because right now it's mega bad
+
+    //  ) )
+
+
+    // lastState = newState;
+    return lastState; // FIXME this is broken
   }
 
   @Override

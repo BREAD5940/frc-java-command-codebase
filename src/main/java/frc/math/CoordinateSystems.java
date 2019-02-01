@@ -44,13 +44,13 @@ public class CoordinateSystems {
    * @return a double[] in format (x,y) that represents delta in said axis
    */
   public static double[] calculaeDisplacement(double deltaLeft, double deltaRight, double oldAngle, double currentAngle) {
-    System.out.println("----------------------------------------");
-    System.out.println(String.format("Input: deltaLeft (deltaRight) oldAngle (currentAngle): %s (%s) %s (%s)", deltaLeft, deltaRight, oldAngle, currentAngle));
+    // System.out.println("----------------------------------------");
+    // System.out.println(String.format("Input: deltaLeft (deltaRight) oldAngle (currentAngle): %s (%s) %s (%s)", deltaLeft, deltaRight, oldAngle, currentAngle));
 
     double deltaTheta = currentAngle - oldAngle;//+ 90; 
     double chordLen;
     if (deltaLeft == deltaRight) {
-      System.out.println("Left and right distances are the same, assuming straight line movement");
+      // System.out.println("Left and right distances are the same, assuming straight line movement");
       chordLen = deltaLeft;
     } else {
       double Rl = deltaLeft/ (pi * (deltaTheta/360) * 2);
@@ -58,23 +58,23 @@ public class CoordinateSystems {
       double Rc = (Rl + Rr) / 2;
       chordLen = CoordinateSystems.calculateChordLen(Rc, deltaTheta);
 
-      System.out.println(String.format("Rl (Rr) Rc (Chordlen): %s (%s) %s (%s)", Rl, Rr, Rc, chordLen));
+      // System.out.println(String.format("Rl (Rr) Rc (Chordlen): %s (%s) %s (%s)", Rl, Rr, Rc, chordLen));
 
     }
 
     double theta = 180-((180-(oldAngle - currentAngle))/2) - oldAngle;
 
-    System.out.println("Theta should be: " + theta);
+    // System.out.println("Theta should be: " + theta);
 
     double[] polarCoordinates = new double[2];
     polarCoordinates[0] = theta;
     polarCoordinates[1] = chordLen;
 
-    System.out.println(String.format("polar theta (magnitude): %s (%s)", polarCoordinates[0], polarCoordinates[1]));
+    // System.out.println(String.format("polar theta (magnitude): %s (%s)", polarCoordinates[0], polarCoordinates[1]));
 
     double[] cartesianCoordinates = CoordinateSystems.polarToCartesian(polarCoordinates);
 
-    System.out.println(String.format("deltaX (deltaY): %s (%s)", cartesianCoordinates[0], cartesianCoordinates[1] ));
+    // System.out.println(String.format("deltaX (deltaY): %s (%s)", cartesianCoordinates[0], cartesianCoordinates[1] ));
     
     return cartesianCoordinates;
   }

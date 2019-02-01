@@ -1,10 +1,9 @@
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import frc.math.CoordinateSystems;
-
 import org.junit.jupiter.api.Test;
 
+import frc.math.CoordinateSystems;
 
 /**
  * Test some math stuff I used to use for odometry.
@@ -26,7 +25,7 @@ public class MathTests {
         double[] polarQuadrent4positiveMagnitude = {320, 2};
         double[] polarQuadrent4negativeMagnitude = {320, -3};
         double[] expectedQ1p = {1.414, 1.414};
-        double[] expectedQ1n = {-1.414, -1.414}; 
+        double[] expectedQ1n = {-1.414, -1.414};
         double[] expectedQ2p = {-1.414,1.414};
         double[] expectedQ2n = {1.414, -1.414};
         double[] expectedQ3p = {-1.879, -0.684};
@@ -52,7 +51,7 @@ public class MathTests {
         assertEquals( expectedQ2p[1], calcQ2p[1], 0.01 );
         assertEquals( expectedQ2n[0], calcQ2n[0], 0.01 );
         assertEquals( expectedQ2n[1], calcQ2n[1], 0.01 );
-        
+
         assertEquals( expectedQ3p[0], calcQ3p[0], 0.01 );
         assertEquals( expectedQ3p[1], calcQ3p[1], 0.01 );
         assertEquals( expectedQ3n[0], calcQ3n[0], 0.01 );
@@ -62,7 +61,7 @@ public class MathTests {
         assertEquals( expectedQ4p[1], calcQ4p[1], 0.01 );
         assertEquals( expectedQ4n[0], calcQ4n[0], 0.01 );
         assertEquals( expectedQ4n[1], calcQ4n[1], 0.01 );
-        
+
     }
 
     @Test
@@ -87,14 +86,14 @@ public class MathTests {
 
     @Test
     public void testDisplacement() {
-        // calculaeDisplacement(double deltaLeft, double deltaRight, double oldAngle, double currentAngle) 
+        // calculaeDisplacement(double deltaLeft, double deltaRight, double oldAngle, double currentAngle)
 
         int tests = 6;
 
         double[][] inputs = new double[tests][3];
         double[][] expecteds = new double[tests][3];
         double[][] calculateds = new double[tests][3];
-        
+
         inputs[0] = new double[]{1, 1, 0, 0};
         inputs[1] = new double[]{1, 2, 0, -28};
         inputs[2] = new double[]{1.5, 2.5, 5, 28};
@@ -111,10 +110,11 @@ public class MathTests {
 
         for ( int i=0; i < tests; i++) {
             calculateds[i] = CoordinateSystems.calculaeDisplacement(inputs[i][0], inputs[i][1], inputs[i][2], inputs[i][3]);
-            System.out.println("Calcualteds: " + calculateds[i][0] + ", " + calculateds[i][1]);
-            System.out.println("Expecteds: " + expecteds[i][0] + ", " + expecteds[i][1]);
+            // System.out.println("Calcualteds: " + calculateds[i][0] + ", " + calculateds[i][1]);
+            // System.out.println("Expecteds: " + expecteds[i][0] + ", " + expecteds[i][1]);
 
             assertArrayEquals(expecteds[i], calculateds[i], 0.02);
+            // System.out.println("hi");
         }
 
     }

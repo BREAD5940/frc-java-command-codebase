@@ -84,7 +84,7 @@ public class DriveDistance extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
-    forward_speed = forwardPID.update(Robot.drivetrain.getLeftDistance());
+    forward_speed = forwardPID.update(Robot.drivetrain.getLeft().getFeet());
 
     double left_speed_raw = EncoderLib.distanceToRaw(forward_speed, 
       RobotConfig.driveTrain.left_wheel_effective_diameter / 12, 
@@ -92,12 +92,12 @@ public class DriveDistance extends Command {
     double right_speed_raw = EncoderLib.distanceToRaw(forward_speed, 
       RobotConfig.driveTrain.right_wheel_effective_diameter / 12, 
       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
-    Robot.drivetrain.setSpeeds(left_speed_raw, right_speed_raw);
+    Robot.drivetrain.setRawSpeeds(left_speed_raw, right_speed_raw);
 
     SmartDashboard.putNumber("Forward speed pid output", forward_speed);
     SmartDashboard.putNumber("Raw left speed auto meme", left_speed_raw);
     SmartDashboard.putNumber("distance setpoint is currently set to",  startingDistanceLeft + targetDistance);
-    SmartDashboard.putNumber("Current distance setpoint for auto is: ", Robot.drivetrain.getLeftDistance());
+    SmartDashboard.putNumber("Current distance setpoint for auto is: ", Robot.drivetrain.getLeft().getFeet());
 
     System.out.println("target forward speed: " + forward_speed);
     System.out.println("Left speed raw/right speed raw: " + left_speed_raw + "/" + right_speed_raw);
@@ -106,10 +106,10 @@ public class DriveDistance extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence) 
-        && (Math.abs(Robot.drivetrain.getLeftDistance() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence) 
-        && (Math.abs(Robot.drivetrain.getLeftVelocity()) < RobotConfig.auto.tolerences.velocity_tolerence) 
-        && (Math.abs(Robot.drivetrain.getRightVelocity()) < RobotConfig.auto.tolerences.velocity_tolerence))
+    if ( ((Math.abs(Robot.drivetrain.getRight().getFeet() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence) 
+        && (Math.abs(Robot.drivetrain.getLeft().getFeet() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence) 
+        && (Math.abs(Robot.drivetrain.getLeft().getFeetPerSecond()) < RobotConfig.auto.tolerences.velocity_tolerence) 
+        && (Math.abs(Robot.drivetrain.getRight().getFeetPerSecond()) < RobotConfig.auto.tolerences.velocity_tolerence))
         || (isTimedOut()) ){
       return true;}
     else { return false; }
@@ -118,15 +118,13 @@ public class DriveDistance extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.drivetrain.setLeftSpeedRaw(0);
-    Robot.drivetrain.setRightSpeedRaw(0);
+    Robot.drivetrain.stop();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.drivetrain.setLeftSpeedRaw(0);
-    Robot.drivetrain.setRightSpeedRaw(0);
+    Robot.drivetrain.stop();
   }
 }
