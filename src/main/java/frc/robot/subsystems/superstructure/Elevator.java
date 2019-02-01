@@ -6,6 +6,8 @@ import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.subsystems.superstructure.elevator.ElevatorTelop;
 import frc.robot.lib.EncoderLib;
+import frc.robot.states.ElevatorState;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -21,6 +23,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 public class Elevator extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
+
+  private ElevatorState lastState = new ElevatorState();
 
   public TalonSRX elevator_talon = new TalonSRX(RobotConfig.elevator.elevatorTalon.elevator_talon_port);
 
@@ -142,6 +146,10 @@ public class Elevator extends Subsystem {
 
   public boolean isWithinTolerence(double target) {
     return ( Math.abs(target - getHeight()) < RobotConfig.elevator.elevatorTolerences.position_tolerence );
+  }
+
+  public ElevatorState getCurrentState() {
+    return 
   }
 
   @Override

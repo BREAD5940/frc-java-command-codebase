@@ -20,9 +20,8 @@ import frc.robot.lib.PIDSettings;
 import frc.robot.lib.SuperstructurePlanner;
 import frc.robot.lib.PIDSettings.FeedbackMode;
 import frc.robot.states.IntakeAngle;
-import frc.robot.states.SuperstructureState;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmPeriodicIO;
+import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 /**
  * First level of control for the superstructure of the robot. Contains all the
@@ -30,26 +29,26 @@ import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmPeriodicIO;
  * 
  * @author Jocelyn McHugo
  */
-public class SuperStructureIO extends Subsystem {
+public class SuperStructure extends Subsystem {
 
-  private static Superstructure instance_;
-  private SuperstructureState mReqState = new SuperstructureState();
+  private static SuperStructure instance_;
+  private SuperStructureState mReqState = new SuperStructureState();
   private CommandGroup mCurrentCommandGroup;
   public static Elevator elevator = new Elevator();
   public static Intake intake = new Intake();
   private SuperstructurePlanner planner = new SuperstructurePlanner();
-  public SuperStructureIO mPeriodicIO = new SuperStructureIO();
+  public SuperStructureState mPeriodicIO = new SuperStructureState();
   private RotatingJoint mWrist, mElbow;
   
-  public static synchronized Superstructure getInstance() {
+  public static synchronized SuperStructure getInstance() {
     if ( instance_ == null ) {
-      instance_ = new Superstructure();
+      instance_ = new SuperStructure();
     }
     return instance_;
   }
 
-  private Superstructure(){
-    super("Superstructure");
+  private SuperStructure(){
+    super("SuperStructure");
     mWrist = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 37, FeedbackDevice.CTRE_MagEncoder_Relative, 
         LengthKt.getInch(6), MassKt.getLb(15), 4.9474);
     mElbow = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 40, FeedbackDevice.CTRE_MagEncoder_Relative, 
@@ -57,7 +56,7 @@ public class SuperStructureIO extends Subsystem {
   }
 
 
-  private SuperstructureState mCurrentState = new SuperstructureState();
+  private SuperStructureState mCurrentState = new SuperStructureState();
 
   public static class iPosition{
     public static final IntakeAngle CARGO_GRAB = new IntakeAngle(0,0);
@@ -107,7 +106,7 @@ public class SuperStructureIO extends Subsystem {
    *    the command group necessary to safely move the superstructure
    */
   public CommandGroup moveSuperstructureElevator(double height){
-    mCurrentState.updateToCurrent();  
+    updateState();
     return this.moveSuperstructureCombo(height, mCurrentState.getAngle(), mCurrentState.getHeldPiece());
   }
 
@@ -150,6 +149,14 @@ public class SuperStructureIO extends Subsystem {
   
   TODO we also need to do the encoders and stuff
   */
+
+  public void updateState() {
+    mCurrentState = new SuperStructureState(
+      mWrist.getCurrentState(),
+      mElbow.getCurrentState(),
+      elevator.getCurrentState()
+    );
+  }
   
   public RotatingJoint getWrist() {
     return mWrist;
@@ -164,7 +171,7 @@ public class SuperStructureIO extends Subsystem {
     System.out.println("hullo there");
   }
   
-  public double calculateWristTorque(SuperStructureIO state) {
+  public double calculateWristTorque(SuperStructureState state) {
     double x1= (getWrist().kArmLength.getValue()) * state.wrist.angle.getCos();
     double torqueGravity = (getWrist().kArmMass.getValue() * 9.8 * x1);
     double torqueAccel = getWrist().kArmMass.getValue() * state.elevator.acceleration.getValue() * x1;
@@ -172,7 +179,7 @@ public class SuperStructureIO extends Subsystem {
     return totalTorque;
   }
 
-  public double calculateElbowTorques(SuperStructureIO state, double wristTorque) {
+  public double calculateElbowTorques(SuperStructureState state, double wristTorque) {
     double x2= (getElbow().kArmLength.getValue()) * state.wrist.angle.getCos();
     double torqueGravity = (getElbow().kArmMass.getValue() * 9.8 * x2);
     double torqueAccel = getElbow().kArmMass.getValue() * state.elevator.acceleration.getValue() * x2;
@@ -184,9 +191,19 @@ public class SuperStructureIO extends Subsystem {
 
 
   public class SuperStructureState {
-    public RotatingArmPeriodicIO elbow = new RotatingArmPeriodicIO(); // TODO add elevator accleration
-    public RotatingArmPeriodicIO wrist = new RotatingArmPeriodicIO();
-    public ElevatorState elevator = new ElevatorState();
+    public RotatingArmState elbow; // TODO add elevator accleration
+    public RotatingArmState wrist;
+    public ElevatorState elevator;
+
+    public SuperStructureState() {
+      this(new RotatingArmState(), new RotatingArmState(), new ElevatorState());
+    }
+
+    public SuperStructureState(RotatingArmState elbowState, RotatingArmState wristState, ElevatorState elevatorState) {
+      elbow = elbowState;
+      wrist = wristState;
+      elevator = elevatorState;
+    }
   }
 
 
@@ -196,14 +213,14 @@ public class SuperStructureIO extends Subsystem {
     public Acceleration<Length> acceleration;
     public double feedForwardVoltage;
 
-    ElevatorState(Length height_, Velocity<Length> velocity_, Acceleration<Length> accel_, double feedForwardVoltage_) {
+    public ElevatorState(Length height_, Velocity<Length> velocity_, Acceleration<Length> accel_, double feedForwardVoltage_) {
       height = height_;
       velocity = velocity_;
       acceleration = accel_;
       feedForwardVoltage = feedForwardVoltage_;
     }
 
-    ElevatorState() {
+    public ElevatorState() {
       this(LengthKt.getFeet(0), VelocityKt.getVelocity(LengthKt.getFeet(0)), AccelerationKt.getAcceleration(LengthKt.getFeet(0)), 0f);
     }
   }

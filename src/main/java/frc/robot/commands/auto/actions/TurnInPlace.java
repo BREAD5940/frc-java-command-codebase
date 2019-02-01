@@ -12,8 +12,6 @@ import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 import frc.robot.lib.TerriblePID;
-import frc.robot.lib.TerriblePID.FeedForwardMode;
-import frc.robot.lib.TerriblePID.FeedForwardBehavior;
 
 /**
  * Literally just pivot in place by a desired amount

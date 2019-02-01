@@ -9,7 +9,7 @@ import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 import frc.robot.lib.SuperstructurePlanner;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperstructureState;
-import frc.robot.subsystems.superstructure.Superstructure.iPosition;
+import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 public class SuperstructureTests {
   

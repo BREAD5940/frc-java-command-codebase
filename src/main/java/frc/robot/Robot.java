@@ -17,7 +17,7 @@ import frc.robot.subsystems.Intake;
 // import frc.robot.subsystems.LIDARSubsystem;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.superstructure.Elevator;
-import frc.robot.subsystems.superstructure.Superstructure;
+import frc.robot.subsystems.superstructure.SuperStructure;
 
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly init
@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
   public static Intake intake = new Intake();
   // public static Elevator elevator = new Elevator();
   public static DriveTrain drivetrain = new DriveTrain();
-  public static Superstructure superstructure = Superstructure.getInstance();
+  public static SuperStructure superstructure = SuperStructure.getInstance();
   // public static Wrist wrist = new Wrist();
   public static AHRS gyro = new AHRS(SPI.Port.kMXP);
   public static LimeLight limelight = new LimeLight();

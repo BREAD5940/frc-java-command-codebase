@@ -13,7 +13,7 @@ import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.subsystems.superstructure.Elevator.ElevatorPresets;
-import frc.robot.subsystems.superstructure.Superstructure.iPosition;
+import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
  * Creates a command group for a specific automatic motion. Input a type of goal

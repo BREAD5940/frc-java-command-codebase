@@ -15,6 +15,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
@@ -25,8 +26,6 @@ import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 public class RotatingJoint /*extends Subsystem*/ {
 
   private ArrayList<FalconSRX<Rotation2d>> motors = new ArrayList<FalconSRX<Rotation2d>>();
-  
-  private TerriblePID mPid;
 
   public Length kArmLength; // distance to COM of the arm
 
@@ -36,7 +35,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 
   public double kMotorResistance = 0.0896;
 
-  private RotatingArmPeriodicIO mPeriodicIO = new RotatingArmPeriodicIO();
+  private RotatingArmState mPeriodicIO = new RotatingArmState();
 
   // private PIDSettings pidSettings;
 
@@ -67,7 +66,6 @@ public class RotatingJoint /*extends Subsystem*/ {
    * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
    */
   public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, Length armLength, Mass mass, double kTorque_) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
-    mPid = new TerriblePID(settings.kp, settings.ki, settings.kd, 0, settings.minOutput, settings.maxOutput, settings.iZone, settings.maxIAccum, 10000, null, null);
 
     kArmLength = armLength;
 
@@ -90,15 +88,7 @@ public class RotatingJoint /*extends Subsystem*/ {
     }
   }
 
-  /**
-   * Get the terriblePID instance
-   */
-  public TerriblePID getPid(){
-    return mPid;
-  }
-
   public void setSetpoint(double setpoint_) {
-    mPid.setSetpoint(setpoint_);
   }
 
   public void setSetpoint(Rotation2d _setpoint) {
@@ -115,10 +105,6 @@ public class RotatingJoint /*extends Subsystem*/ {
   public void setPositionArbitraryFeedForward(Rotation2d setpoint, double feedForwardPercent) {
     double rawUnits = mRotationModel.fromModel(setpoint).getValue();
     getMaster().set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
-  }
-
-  public double getSetpoint() {
-    return mPid.getSetpoint();
   }
 
   public double calculateVoltage(double torque, Velocity<Rotation2d> anglularVelocity) {
@@ -158,20 +144,26 @@ public class RotatingJoint /*extends Subsystem*/ {
     getMaster().setSensorPosition(pos_);
   }
 
-  public static class RotatingArmPeriodicIO {
-    public Rotation2d angle = 0;
-    public double feedForwardVoltage = 0;
+  public static class RotatingArmState {
+    public Rotation2d angle = Rotation2dKt.getDegree(0);
+    // public double feedForwardVoltage = 0;
     // public double pidOutput = 0;
-    public RotatingArmPeriodicIO() {
-      feedForwardVoltage = 0;
-      // pidOutput = 0;
+    public RotatingArmState() {this(Rotation2dKt.getDegree(0)); }
+
+    public RotatingArmState(Rotation2d angle) {
+      this.angle = angle;
+      // this.feedForwardVoltage = feedForwardVoltage;
     }
 
     @Override
     public String toString() {
-      return setpoint.getDegree() + ", " + feedForwardVoltage;
+      return angle.getDegree() + "";
       // return "hellothere";
     }
+  }
+
+  public RotatingArmState getCurrentState() {
+    return new RotatingArmState(getRotation());
   }
 
   public double getDegrees() {

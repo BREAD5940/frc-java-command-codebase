@@ -1,15 +1,11 @@
 package frc.robot.lib;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 import frc.robot.commands.subsystems.superstructure.wrist.SetWrist;
 import frc.robot.states.SuperstructureState;
-import frc.robot.subsystems.superstructure.Superstructure;
-import frc.robot.subsystems.superstructure.Superstructure.iPosition;
+import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
  * Plans the best motion of the superstructure based on the inputted current
@@ -55,7 +51,7 @@ public class SuperstructurePlanner{
     errorCount=corrCount=0;
     boolean defAngle=false;
 
-    if(Superstructure.iPosition.presets.contains(goalState.getAngle())){
+    if(iPosition.presets.contains(goalState.getAngle())){
       defAngle=true;
     }
 
