@@ -2,7 +2,6 @@ package frc.robot.commands.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.auto.actions.FollowVisionTarget;
-import frc.robot.commands.subsystems.drivetrain.DriveDistance;
 
 public class visionTest extends CommandGroup {
   /**

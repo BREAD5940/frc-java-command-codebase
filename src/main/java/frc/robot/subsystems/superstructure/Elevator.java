@@ -53,12 +53,12 @@ public class Elevator /*extends Subsystem*/ {
   
     NativeUnitLengthModel lengthModel = RobotConfig.elevator.elevatorModel;
   
-    public Elevator(int masterPort, int slavePort, EncoderMode mode, InvertSettings settings) {
+    public Elevator(int masterPort, int slavePort1, int slavePort2, int slavePort3, EncoderMode mode, InvertSettings settings) {
   
       mMaster = new FalconSRX<Length>(masterPort, lengthModel, TimeUnitsKt.getMillisecond(10));
-      mSlave1 = new FalconSRX<Length>(slavePort, lengthModel, TimeUnitsKt.getMillisecond(10));
-      mSlave2 = new FalconSRX<Length>(slavePort, lengthModel, TimeUnitsKt.getMillisecond(10));
-      mSlave3 = new FalconSRX<Length>(slavePort, lengthModel, TimeUnitsKt.getMillisecond(10));
+      mSlave1 = new FalconSRX<Length>(slavePort1, lengthModel, TimeUnitsKt.getMillisecond(10));
+      mSlave2 = new FalconSRX<Length>(slavePort2, lengthModel, TimeUnitsKt.getMillisecond(10));
+      mSlave3 = new FalconSRX<Length>(slavePort3, lengthModel, TimeUnitsKt.getMillisecond(10));
       
       if(mode == EncoderMode.CTRE_MagEncoder_Relative) {
         mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);

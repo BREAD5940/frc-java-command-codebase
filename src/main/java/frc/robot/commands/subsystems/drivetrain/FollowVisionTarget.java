@@ -5,7 +5,6 @@ import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 import frc.robot.lib.TerriblePID;
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.subsystems.intake.AutoIntake;
 
 
 /**

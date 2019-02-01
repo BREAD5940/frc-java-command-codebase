@@ -3,7 +3,6 @@ package frc.robot.commands.subsystems.drivetrain;
 import java.util.function.Supplier;
 
 import org.ghrobotics.lib.debug.LiveDashboard;
-import org.ghrobotics.lib.localization.Localization;
 import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
@@ -24,7 +23,6 @@ public class TrajectoryTrackerCommand extends Command {
   private TrajectoryTracker trajectoryTracker;
   private Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource;
   private DriveTrain driveBase;
-  private Localization localization;
   private boolean reset;
   private TrajectoryTrackerOutput output;
   // private DifferentialDrive mModel;

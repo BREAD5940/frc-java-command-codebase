@@ -304,6 +304,11 @@ public class RobotConfig {
     public static final int elevator_minimum_height = 0;
     public static final Length elevator_maximum_height = LengthKt.getInch(70f); // changed to inches, TODO verify maximum height
 
+    private static final NativeUnit kSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
+    private static final Length left_radius = LengthKt.getInch(1);
+
+    public static final NativeUnitLengthModel elevatorModel = new NativeUnitLengthModel(kSensorUnitsPerRotation, left_radius);
+
     public class elevatorTalon {
       /**
       * Elevator configuration

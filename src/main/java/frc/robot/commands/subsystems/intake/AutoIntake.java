@@ -1,7 +1,6 @@
 package frc.robot.commands.subsystems.intake;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
 
   /**
    * auto_Intake is a basic auto action. It activates the intake based on an inputted

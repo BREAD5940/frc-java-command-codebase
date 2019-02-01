@@ -8,8 +8,6 @@
 package frc.robot.commands.subsystems.wrist;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
-import frc.robot.subsystems.Wrist;
 
 public class WaitForWrist extends Command {
 

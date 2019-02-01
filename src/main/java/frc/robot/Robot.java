@@ -10,6 +10,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -21,10 +22,8 @@ import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
-import frc.robot.subsystems.Intake;
 // import frc.robot.subsystems.LIDARSubsystem;
 import frc.robot.subsystems.LimeLight;
-import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 /**

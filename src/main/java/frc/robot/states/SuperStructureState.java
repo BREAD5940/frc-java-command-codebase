@@ -22,7 +22,7 @@ public class SuperStructureState {
     piece = heldPiece;
   }
 
-  public SuperStructureState(RotatingArmState elbowState, RotatingArmState wristState, ElevatorState elevatorState) {
+  public SuperStructureState(ElevatorState elevatorState, RotatingArmState elbowState, RotatingArmState wristState) {
     elbow = elbowState;
     wrist = wristState;
     elevator = elevatorState;
@@ -39,6 +39,10 @@ public class SuperStructureState {
 
   public void setHeldPiece(mHeldPiece new_) {
     piece = new_;
+  }
+
+  public Length getElevatorHeight() {
+    return elevator.height;
   }
 }
  

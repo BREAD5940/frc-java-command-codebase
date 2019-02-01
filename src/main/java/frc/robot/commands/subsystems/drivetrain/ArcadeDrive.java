@@ -4,7 +4,6 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.lib.Logger;
 
 /**
  * Default drivetrain command. This *should* be called as the default drivetrain
