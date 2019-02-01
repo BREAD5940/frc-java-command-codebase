@@ -115,9 +115,9 @@ public class DriveStraight extends Command {
     Robot.drivetrain.setClosedLoop( VelocityKt.getVelocity(LengthKt.getFeet(forward_speed + turn_speed)),
             VelocityKt.getVelocity(LengthKt.getFeet(forward_speed - turn_speed)) );
 
-    // System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeftDistance() + 
+    // System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeft().getFeet() + 
       // " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());
-    // System.out.println("TURN PID: Setpoint: " + turnPID.getSetpoint() + " Measured: " + Robot.gyro.getAngle() + 
+    // System.out.println("TURN PID: Setpoint: " + turnPID.getSetpoint() + " Measured: " + Robot.drivetrain.getGyro() + 
       // " Error: " + turnPID.getError() + " OUTPUT VELOCITY (ft/s): " + turnPID.getOutput());
     System.out.println(String.format("FORWARD PID: setpoint (error) output (iAccum) | %s (%s) %s (%s)", 
       forwardPID.getSetpoint(), forwardPID.getError(), forwardPID.getOutput(), forwardPID.getIntegralAccum()));
@@ -129,8 +129,8 @@ public class DriveStraight extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    // if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.distance) < RobotConfig.auto.tolerences.position_tolerence) 
-    //   // && (Math.abs(Robot.drivetrain.getLeftDistance() - this.distance) < RobotConfig.drive_auto_position_tolerence) 
+    // if ( ((Math.abs(Robot.drivetrain.getRight().getFeet() - this.distance) < RobotConfig.auto.tolerences.position_tolerence) 
+    //   // && (Math.abs(Robot.drivetrain.getLeft().getFeet() - this.distance) < RobotConfig.drive_auto_position_tolerence) 
     //   && (Math.abs(Robot.drivetrain.getLeftVelocity()) < RobotConfig.auto.tolerences.velocity_tolerence) 
     //   && (Math.abs(Robot.drivetrain.getRightVelocity()) < RobotConfig.auto.tolerences.position_tolerence)
     //   && (Math.abs(target_gyro_angle - current_angle) < RobotConfig.auto.tolerences.angle_tolerence ))

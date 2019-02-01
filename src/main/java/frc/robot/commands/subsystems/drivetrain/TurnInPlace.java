@@ -102,13 +102,13 @@ public class TurnInPlace extends Command {
   @Override
   protected boolean isFinished() {
     // if ( (Math.abs(Robot.gyro.getRate() ) < RobotConfig.turn_auto_angular_velocity_tolerence)
-    //   && (Math.abs(Robot.gyro.getAngle()) < RobotConfig.turn_auto_angle_tolerence)) {
+    //   && (Math.abs(Robot.drivetrain.getGyro()) < RobotConfig.turn_auto_angle_tolerence)) {
     //     return true;
     //   } else { return false; }
 
     // TODO so this is how a return works
     // return ( (Math.abs(Robot.gyro.getRate() ) < RobotConfig.auto.tolerences.angular_velocity_tolerence)
-    //   && (Math.abs(Robot.gyro.getAngle() - target_angle) < RobotConfig.auto.tolerences.angle_tolerence));
+    //   && (Math.abs(Robot.drivetrain.getGyro() - target_angle) < RobotConfig.auto.tolerences.angle_tolerence));
     return false;
   }
 

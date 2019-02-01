@@ -10,8 +10,7 @@ import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
 // import frc.robot.commands.subsystems.drivetrain.RamsetePathFollower;
 // import frc.robot.commands.subsystems.drivetrain.RunDriveMotionPlanner;
 import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
-import frc.robot.commands.subsystems.intake.CloseClamp;
-import frc.robot.commands.subsystems.intake.OpenClamp;
+
 
 
 /**
@@ -51,8 +50,8 @@ public class OI {
   public OI() {
     shift_up_button.whenPressed(new DriveShiftHigh());
     shift_down_button.whenPressed(new DriveShiftLow());
-    open_clamp_button.whenPressed(new OpenClamp());
-    close_clamp_button.whenPressed(new CloseClamp());
+    // open_clamp_button.whenPressed(new OpenClamp());
+    // close_clamp_button.whenPressed(new CloseClamp());
     auto_grab_cargo_button.whenPressed(new SetElevatorHeight(9.316859344380049 - 1.5 ) );
     auto_grab_hatch_button.whenPressed(new SetElevatorHeight(30));
     // auto_place_hatch_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_HATCH, AutoMotion.mGoalHeight.LOW));

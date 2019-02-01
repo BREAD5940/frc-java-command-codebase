@@ -304,22 +304,6 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
   //     );
   // }
 
-  public void setFeetPerSecond(double left, double right, double acceleration){
-    double ka;
-    switch(gear){
-      case LOW:
-        ka = 1.0 / 10;
-        break;
-      default:
-        ka = 1.0 / 17;
-    }
-    m_left_talon.set(ControlMode.Velocity, 
-      EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10,
-      DemandType.ArbitraryFeedForward, 0.1 + acceleration * ka);
-    m_right_talon.set(ControlMode.Velocity, 
-      EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10,
-      DemandType.ArbitraryFeedForward, 0.1 + acceleration * ka);
-}
 
   /**
    * An even more lazy version of setSpeeds This will literally set the
@@ -351,6 +335,16 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
   public void setClosedLoop(Velocity<Length> left, Velocity<Length> right) {
     setCLosedLoop(left, right, 0, 0, false);
+  }
+
+  /**
+   * Set the raw speeds of the talons. Use setClosedLoop() instead.
+   * @deprecated
+   */
+  @Deprecated
+  public void setRawSpeeds(double leftRaw, double rightRaw) {
+    getLeftMotor().set(ControlMode.Velocity, leftRaw);
+    getRightMotor().set(ControlMode.Velocity, rightRaw);
   }
 
   /**

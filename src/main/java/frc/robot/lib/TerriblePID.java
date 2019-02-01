@@ -67,6 +67,10 @@ public class TerriblePID {
     this(kp, 0.0, 0.0, 0.0, -maxOutput, maxOutput, 0.0, 0.0, 0.0, null, null);
   }
 
+  public TerriblePID(double kp, double minOutput, double maxOutput) {
+    this(kp, 0.0, 0.0, 0.0, minOutput, maxOutput, 0.0, 0.0, 0.0, null, null);
+  }
+
   /**
    * Set the setpoint for this instance of the PID loop. Should be preserved.
    * @param setpoint

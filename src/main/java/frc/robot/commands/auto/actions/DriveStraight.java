@@ -22,7 +22,7 @@ public class DriveStraight extends Command {
   double actionMaxSpeed;
   double timeout = 15;
   double start_left_distance;
-  double start_right_distance = Robot.drivetrain.getRightDistance();
+  double start_right_distance = Robot.drivetrain.getRight().getFeet();
   double end_distance;
   double start_gyro_angle;
   double target_gyro_angle;
@@ -40,11 +40,8 @@ public class DriveStraight extends Command {
 
   private TerriblePID turnPID = new TerriblePID(
     RobotConfig.auto.driveStraight.turn_kp, 
-    RobotConfig.auto.driveStraight.turn_ki, 
     RobotConfig.auto.driveStraight.minimum_turn_speed, 
-    RobotConfig.auto.driveStraight.maximum_turn_speed, 
-    RobotConfig.auto.driveStraight.turn_izone, 
-    RobotConfig.auto.driveStraight.turn_integral_max
+    RobotConfig.auto.driveStraight.maximum_turn_speed
   );
   
 
@@ -58,7 +55,7 @@ public class DriveStraight extends Command {
   public DriveStraight(double distance, double speed, double timeout) {
     this.distance = distance;
     this.actionMaxSpeed = speed;
-    this.target_gyro_angle = Robot.gyro.getAngle(); // TODO make sure that the angle is set correctly.
+    this.target_gyro_angle = Robot.drivetrain.getGyro(); // TODO make sure that the angle is set correctly.
     requires(Robot.drivetrain);
   }
 
@@ -70,7 +67,7 @@ public class DriveStraight extends Command {
   public DriveStraight(double distance) {
     this.distance = distance;
     this.actionMaxSpeed = RobotConfig.auto.drive_auto_forward_velocity_max;
-    this.target_gyro_angle = Robot.gyro.getAngle(); // TODO make sure that the angle is set correctly on constructor call.
+    this.target_gyro_angle = Robot.drivetrain.getGyro(); // TODO make sure that the angle is set correctly on constructor call.
     requires(Robot.drivetrain);
   }
 
@@ -92,9 +89,9 @@ public class DriveStraight extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    start_left_distance = Robot.drivetrain.getLeftDistance();
-    start_right_distance = Robot.drivetrain.getRightDistance();
-    current_angle = Robot.gyro.getAngle();
+    start_left_distance = Robot.drivetrain.getLeft().getFeet();
+    start_right_distance = Robot.drivetrain.getRight().getFeet();
+    current_angle = Robot.drivetrain.getGyro();
     end_distance = start_left_distance + distance;
     setTimeout(timeout); // set the timeout
     forwardPID.setSetpoint(end_distance);
@@ -106,20 +103,20 @@ public class DriveStraight extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    forward_speed = forwardPID.update(Robot.drivetrain.getLeftDistance());
-    turn_speed = turnPID.update(Robot.gyro.getAngle());
-    SmartDashboard.putNumber("TurnPID output",  turnPID.update(Robot.gyro.getAngle()));
+    forward_speed = forwardPID.update(Robot.drivetrain.getLeft().getFeet());
+    turn_speed = turnPID.update(Robot.drivetrain.getGyro());
+    SmartDashboard.putNumber("TurnPID output",  turnPID.update(Robot.drivetrain.getGyro()));
 
     left_speed_raw = EncoderLib.distanceToRaw(forward_speed + turn_speed, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, 
       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
     right_speed_raw = EncoderLib.distanceToRaw(forward_speed - turn_speed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, 
       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
 
-    Robot.drivetrain.setSpeeds(left_speed_raw, right_speed_raw);
+    Robot.drivetrain.setRawSpeeds(left_speed_raw, right_speed_raw);
 
-    // System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeftDistance() + 
+    // System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeft().getFeet() + 
       // " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());
-    // System.out.println("TURN PID: Setpoint: " + turnPID.getSetpoint() + " Measured: " + Robot.gyro.getAngle() + 
+    // System.out.println("TURN PID: Setpoint: " + turnPID.getSetpoint() + " Measured: " + Robot.drivetrain.getGyro() + 
       // " Error: " + turnPID.getError() + " OUTPUT VELOCITY (ft/s): " + turnPID.getOutput());
     System.out.println(String.format("FORWARD PID: setpoint (error) output (iAccum) | %s (%s) %s (%s)", 
       forwardPID.getSetpoint(), forwardPID.getError(), forwardPID.getOutput(), forwardPID.getIntegralAccum()));
@@ -131,8 +128,8 @@ public class DriveStraight extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    // if ( ((Math.abs(Robot.drivetrain.getRightDistance() - this.distance) < RobotConfig.auto.tolerences.position_tolerence) 
-    //   // && (Math.abs(Robot.drivetrain.getLeftDistance() - this.distance) < RobotConfig.drive_auto_position_tolerence) 
+    // if ( ((Math.abs(Robot.drivetrain.getRight().getFeet() - this.distance) < RobotConfig.auto.tolerences.position_tolerence) 
+    //   // && (Math.abs(Robot.drivetrain.getLeft().getFeet() - this.distance) < RobotConfig.drive_auto_position_tolerence) 
     //   && (Math.abs(Robot.drivetrain.getLeftVelocity()) < RobotConfig.auto.tolerences.velocity_tolerence) 
     //   && (Math.abs(Robot.drivetrain.getRightVelocity()) < RobotConfig.auto.tolerences.position_tolerence)
     //   && (Math.abs(target_gyro_angle - current_angle) < RobotConfig.auto.tolerences.angle_tolerence ))
