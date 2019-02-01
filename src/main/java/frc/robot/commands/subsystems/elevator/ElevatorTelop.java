@@ -6,7 +6,7 @@ import frc.robot.Robot;
 /**
  * Default command run by the elevator. Sets the elevator height to a fixed
  * setpoint throttle style. For use in teleop.
- * 
+ *
  * @author Matthew Morley
  */
 public class ElevatorTelop extends Command {

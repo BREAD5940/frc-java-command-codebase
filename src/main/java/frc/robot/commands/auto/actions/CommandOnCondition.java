@@ -1,35 +1,38 @@
-package frc.robot.commands.subsystems.intake;
+package frc.robot.commands.auto.actions;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
 
-/**
- * Shifter command to shift to high gear
- */
-public class CloseClamp extends Command {
-  public CloseClamp() {
-    // Use requires() here to declare subsystem dependencies
-    // requires(Robot.intake);
+public abstract class CommandOnCondition extends Command {
+
+  /**
+   * (Maybe) run a command on a cnodition
+   */
+  public CommandOnCondition() {
   }
-
-  // private static final intake intake = new intake();
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.intake_close();
-
   }
+
+  public boolean readyForExecute() {
+    return false;
+  }
+
+  public void executeOnCondition() {}
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  public void execute() {
+    if (readyForExecute()) {
+      executeOnCondition();
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true

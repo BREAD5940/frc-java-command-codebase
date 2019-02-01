@@ -38,6 +38,13 @@ deploy {
 // Set this to true to enable desktop support.
 def includeDesktopSupport = true
 
+apply plugin: 'java'
+// apply plugin: JavadocPlugin
+
+javadoc {
+    options.addBooleanOption('html5', true)
+}
+
 // Maven central needed for JUnit
 repositories {
   maven { url 'https://jitpack.io' }

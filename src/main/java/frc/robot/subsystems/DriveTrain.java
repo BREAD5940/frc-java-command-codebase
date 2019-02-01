@@ -286,6 +286,41 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
     getRight().stop();
   }
 
+  // /**
+  //  * Set the drivetrain speeds in feet per second
+  //  * @param mleftSpeed in feet per second
+  //  * @param mRightSpeed in feet per second
+  //  */
+  // public void setFeetPerSecond(double mleftSpeed, double mRightSpeed) {
+  //   setSpeeds(
+  //     EncoderLib.distanceToRaw(
+  //       mleftSpeed,
+  //       RobotConfig.driveTrain.left_wheel_effective_diameter / 12,
+  //       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10, 
+  //     EncoderLib.distanceToRaw(
+  //       mRightSpeed,
+  //       RobotConfig.driveTrain.left_wheel_effective_diameter / 12,
+  //       RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10
+  //     );
+  // }
+
+  public void setFeetPerSecond(double left, double right, double acceleration){
+    double ka;
+    switch(gear){
+      case LOW:
+        ka = 1.0 / 10;
+        break;
+      default:
+        ka = 1.0 / 17;
+    }
+    m_left_talon.set(ControlMode.Velocity, 
+      EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.left_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10,
+      DemandType.ArbitraryFeedForward, 0.1 + acceleration * ka);
+    m_right_talon.set(ControlMode.Velocity, 
+      EncoderLib.distanceToRaw(left, RobotConfig.driveTrain.right_wheel_effective_diameter / 12, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10,
+      DemandType.ArbitraryFeedForward, 0.1 + acceleration * ka);
+}
+
   /**
    * An even more lazy version of setSpeeds This will literally set the
    * voltage of the left and right talons (from -12 to 12 ofc per battery voltage)

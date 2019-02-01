@@ -24,7 +24,7 @@ public class RunAuto extends Command {
     // Use requires() here to declare subsystem dependencies
     this.goal = goal;
     this.height = height;
-    
+
 
   }
 

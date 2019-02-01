@@ -31,7 +31,7 @@ public class MotionProfileLib {
 
   /**
    * Initiate a new motion path. This should be called on auto init
-   * @param TalonSRX to configure
+   * @param talon to configure
    * @param path to the csv file
    * @param effective_diameter of the drivetrain wheel
    * @param motionProfileStatus object

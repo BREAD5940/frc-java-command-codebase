@@ -39,14 +39,22 @@ public class $ {
     return res;
   }
   private String result;
-  /** Get the result */
+  /** Get the result
+   *  
+   * */
   public String result() {
     return this.result;
   }
-  /** Gets an environment variable. Probably not what you want to do */
+
+  /** 
+   *Gets an environment variable. Probably not what you want to do 
+   *@param s something
+   * 
+   */
   public $(String s) {
     this.result = $.replaceAll(s, System::getenv);
   }
+
   public $(String s, String[] ary) {
     this.result = $.replaceAll(s, (String match) -> {
       int i;
