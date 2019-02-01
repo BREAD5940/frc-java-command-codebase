@@ -9,6 +9,16 @@ import java.util.ArrayList;
  * @author Cole Gannon
  */
 public class Logger {
+  private static Logger mInstance;
+
+  public synchronized static Logger getInstance(){
+    if(mInstance == null){
+      mInstance = new Logger();
+    }
+
+    return mInstance;
+}
+
   /** Last index of groupNames */
   private static int i = -1;
   private static ArrayList<String> groupNames = new ArrayList<String>();
@@ -53,7 +63,22 @@ public class Logger {
     }
   }
 
-  public static void log(String s) { Logger.log(s); }
+  public static void log(String s, String t) {
+    Logger.log(s + " " + t);
+  }
+
+  public static void log(String s, double d) {
+    Logger.log(s + Double.toString(d));
+  }
+
+  public static void log(String s) { //Logger.log(s);
+    System.out.println(s);
+  
+  }
+
+  public static void log(String s, Object o) {
+    log(s + o.toString());
+  }
   
   public static void log(Object o) { }
   // TODO actually make this work. Maybe toPairs.java?

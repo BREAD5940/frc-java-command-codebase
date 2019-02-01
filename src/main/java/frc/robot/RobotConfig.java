@@ -1,5 +1,11 @@
 package frc.robot;
 
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
+
 import frc.robot.subsystems.DriveTrain.Gear;
 
 public class RobotConfig {
@@ -36,13 +42,17 @@ public class RobotConfig {
     public static final float minimum_wrist_angle = 0;
     public static final float maximum_wrist_angle = 90;
     public static final double wrist_position_tolerence = 5; // 5 degree tolerence, be sure to convert to raw!
-    public static final double wrist_velocity_tolerence = 2; // 2 degrees per second??
+    // public static final double wrist_velocity_tolerence = 2; // 2 degrees per second??
+    
+    public static final boolean talon_direction_inverted = false;
+    public static final boolean talon_encoder_inverted = false;
+    
     // public static final double kStaticCoefficient = 0.3;
     public class talonConfig {
       public static final double position_kp = 0.1;
       public static final double position_ki = 0;
       public static final double position_kd = 0;
-      public static final double position_kf = 0;
+      public static final double gravity_ff = 0.1; // the gain on the gravity feedforward
       public static final double software_position_kp = 0.1;
       public static final double software_position_ki = 0;
       public static final double software_position_kd = 0;
@@ -52,15 +62,20 @@ public class RobotConfig {
     }
   }
   
-  public class driveTrain {
+  public static class driveTrain {
     /**
     * Robot configuration
     */
     
     /** Drivetrain width in feet */
-    public static final double drivetrain_width = 2;
+    public static final double wheel_base = 2.5;
     public static final double left_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
     public static final double right_wheel_effective_diameter = 6; // units are in inches, TODO tune this!
+
+    public static final Length left_radius = LengthKt.getInch(2);
+    public static final Length right_radius = LengthKt.getInch(2);
+
+
     // Set speeds for teleop
     public static final double max_forward_speed_high = 7; // Feet per second forward velocity
     public static final double max_turn_speed_high = 7; // Max turn speed in degrees per second
@@ -71,9 +86,15 @@ public class RobotConfig {
     // public static final double VELOCITY_PULSES_PER_ROTATION = 409.6f;
     public static final double POSITION_PULSES_PER_ROTATION = 4096;
     
+    public static final NativeUnit kDriveSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
+
+    public static final NativeUnitLengthModel LEFT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, left_radius);
+    public static final NativeUnitLengthModel RIGHT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, right_radius);
+
+
     // Pathfinder shit
-    public static final double left_static_kv = 0; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
-    public static final double right_static_kv = 0; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
+    public static final double left_static_kv = 0.05; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
+    public static final double right_static_kv = 0.05; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
     
     public class leftTalons {
       /**
@@ -83,12 +104,12 @@ public class RobotConfig {
       public static final int s_left_talon_port = 1;
       public static final boolean m_left_inverted = false;
       // sets kp, ki, kd and kf terms for master left in velocity mode 
-      public static final double velocity_kp_low = 0.2;
-      public static final double velocity_ki_low = 0.35;
+      public static final double velocity_kp_low = 0.4;
+      public static final double velocity_ki_low = 0.0;
       public static final double velocity_kd_low = 0;
-      public static final double velocity_kf_low =  0;
+      public static final double velocity_kf_low =  1.4;
       public static final int velocity_izone_low = 800;
-      // public static final double velocity_max_integral_low = 500000;
+      public static final double velocity_max_integral_low = 500000;
       public static final double position_kp_low = 0.4;
       public static final double position_ki_low = 0;
       public static final double position_kd_low = 0;
@@ -100,7 +121,7 @@ public class RobotConfig {
       public static final double velocity_kd_high = 0;
       public static final double velocity_kf_high = 0.4;
       public static final int velocity_izone_high = 800;
-      // public static final double velocity_max_integral_high = 300;
+      public static final double velocity_max_integral_high = 300;
       public static final double position_kp_high = 2;
       public static final double position_ki_high = 0;
       public static final double position_kd_high = 20;
@@ -110,9 +131,9 @@ public class RobotConfig {
       
       // kv/ka settings for pathfinder
       public static final double velocity_kv_high = 0.63768115942028985507246376811594;
-      public static final double velocity_ka_high = 0;
+      public static final double velocity_ka_high = 1.0 / 30; // borrowed from robolancers, so idk if this is a good value
       public static final double velocity_kv_low = 0.63768115942028985507246376811594;
-      public static final double velocity_ka_low = 0;
+      public static final double velocity_ka_low = 1.0 / 30; // borrowed from robolancers, so idk if this is a good number
     }
     public class rightTalons {
       /**
@@ -159,7 +180,7 @@ public class RobotConfig {
     public static final double default_speed = 4;
     public static final double drive_auto_forward_velocity_max = 4; // feet per second target for driving auto
     public static final double drive_auto_forward_velocity_min = -2; // minimum speed for auto drive in ft per sec
-    public static Gear auto_gear = Gear.HIGH;
+    public static Gear auto_gear = Gear.LOW;
     
     public class fieldPositions {
       // Positions of objects on the field (ports, etc.) in inches. distances are to the center of the object
@@ -204,13 +225,20 @@ public class RobotConfig {
     }
     
     public class turnInPlace {
+
+      //  public TerriblePID(double kp, double ki, double kd, double kf, double minOutput, double maxOutput, 
+      // double integralZone, double maxIntegralAccum, double rampRate, FeedForwardMode forwardMode,
+      // FeedForwardBehavior feedforwardbehavior) {
+
       public static final double kp = 0.1;
       public static final double ki = 0.3;
-      public static final double max_integral = 0.5;
-      public static final double integral_zone = 10; // 10 degrees izone
+      public static final double kd = 0.0;
+      public static final double kf = 0.0;
       public static final double min_turn_speed = -4; // in ft/sec
       public static final double max_turn_speed = 4; // in ft/sec
-      public static final double kf = 0;
+      public static final double integral_zone = 10; // 10 degrees izone
+      public static final double max_integral = 0.5;
+      public static final double ramp_rate = 0.2;
     }
     
     public class followVisionTarget {
@@ -233,6 +261,18 @@ public class RobotConfig {
   public class limeLight {
     public static final double camera_height = 1; // units are in feet
     public static final double camera_angle = 0; // degrees from horizon - positive is up, negative is down
+  }
+
+  public static class ultrasonicSensors {
+    public static class sensor1 {
+      public static final int echoPort = 0;
+      public static final int triggerPort = 0;
+    }
+      public static class sensor2 {
+      public static final int echoPort = 1;
+      public static final int triggerPort = 1;
+    }
+    public static double sensorCenterDistance = 20; // inches
   }
   
   public class lidar {

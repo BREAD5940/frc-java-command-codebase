@@ -8,8 +8,6 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import frc.robot.Robot;
 import frc.robot.commands.auto.AutoMotion.mGoalHeight;
 import frc.robot.commands.auto.AutoMotion.mGoalType;
 
@@ -26,7 +24,7 @@ public class RunAuto extends Command {
     // Use requires() here to declare subsystem dependencies
     this.goal = goal;
     this.height = height;
-    
+
 
   }
 

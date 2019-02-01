@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import frc.robot.commands.LIDARCommand;
-
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalSource;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -12,7 +10,7 @@ public class LIDARSubsystem extends Subsystem {
   // here. Call these from Commands.
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new LIDARCommand());
+    // setDefaultCommand(new LIDARCommand());
   }
   
   private static final int CALIBRATION_OFFSET = -6;

@@ -1,18 +1,9 @@
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.List;
-
-import java.util.ArrayList;
-
-import frc.math.CoordinateSystems;
-import frc.math.Translation2d;
-
 import org.junit.jupiter.api.Test;
 
-// import frc.robot.lib.Odometry2;
-// import frc.robot.lib.Odometry3;
-import frc.robot.subsystems.DriveTrain;
+import frc.math.CoordinateSystems;
 
 /**
  * Test some math stuff I used to use for odometry.
@@ -119,10 +110,11 @@ public class MathTests {
 
         for ( int i=0; i < tests; i++) {
             calculateds[i] = CoordinateSystems.calculaeDisplacement(inputs[i][0], inputs[i][1], inputs[i][2], inputs[i][3]);
-            System.out.println("Calcualteds: " + calculateds[i][0] + ", " + calculateds[i][1]);
-            System.out.println("Expecteds: " + expecteds[i][0] + ", " + expecteds[i][1]);
+            // System.out.println("Calcualteds: " + calculateds[i][0] + ", " + calculateds[i][1]);
+            // System.out.println("Expecteds: " + expecteds[i][0] + ", " + expecteds[i][1]);
 
             assertArrayEquals(expecteds[i], calculateds[i], 0.02);
+            // System.out.println("hi");
         }
 
     }
