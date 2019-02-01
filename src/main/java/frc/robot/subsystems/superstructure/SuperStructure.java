@@ -17,10 +17,13 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.math.Rotation2d;
 import frc.robot.commands.auto.AutoMotion;
+import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.SuperstructurePlanner;
 import frc.robot.lib.PIDSettings.FeedbackMode;
+import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
+import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
@@ -75,20 +78,16 @@ public class SuperStructure extends Subsystem {
   /**
    * move a combination of the sub-subsystems of the superstructure
    * 
-   * @param height
-   *    the height to raise the elevator to
-   * @param angle
-   *    the preset angle to set the wrist to
-   * @param piece
-   *    the piece the robot is currently holding -- necessary for wrist movements
-   * @return
+   * @param mReqState_ the state that we want the superstructure to end up in
+   * 
+   * @returnW
    *    the command group necessary to safely move the superstructure
    */
-  public CommandGroup moveSuperstructureCombo(Length height, Rotation2d angle, AutoMotion.mHeldPiece piece){
+  public CommandGroup moveSuperstructureCombo(SuperStructureState mRequState_){
     mCurrentState = updateState();
 
     // TODO the wrist angle is mega broken
-    mReqState = new SuperStructureState(elbowState, wristState, elevatorState); // FIXME by making me an instance of superstructure state based on called params, the wrist is bork
+    mReqState = SuperStructureState.fromOther(mRequState_); // FIXME by making me an instance of superstructure state based on called params, the wrist is bork
     
     if(!(mReqState==mCurrentState)){
       this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
@@ -186,43 +185,4 @@ public class SuperStructure extends Subsystem {
     double Big = (getElbow().kArmMass.getValue() * getElbow().kArmLength.getValue() * 9.8) + wristTorque;
     return torqueGravity + torqueAccel + Big;
   }
-
-  
-
-
-  public class SuperStructureState {
-    public RotatingArmState elbow; // TODO add elevator accleration
-    public RotatingArmState wrist;
-    public ElevatorState elevator;
-
-    public SuperStructureState() {
-      this(new RotatingArmState(), new RotatingArmState(), new ElevatorState());
-    }
-
-    public SuperStructureState(RotatingArmState elbowState, RotatingArmState wristState, ElevatorState elevatorState) {
-      elbow = elbowState;
-      wrist = wristState;
-      elevator = elevatorState;
-    }
-  }
-
-
-  public class ElevatorState {
-    public Length height;
-    public Velocity<Length> velocity;
-    public Acceleration<Length> acceleration;
-    public double feedForwardVoltage;
-
-    public ElevatorState(Length height_, Velocity<Length> velocity_, Acceleration<Length> accel_, double feedForwardVoltage_) {
-      height = height_;
-      velocity = velocity_;
-      acceleration = accel_;
-      feedForwardVoltage = feedForwardVoltage_;
-    }
-
-    public ElevatorState() {
-      this(LengthKt.getFeet(0), VelocityKt.getVelocity(LengthKt.getFeet(0)), AccelerationKt.getAcceleration(LengthKt.getFeet(0)), 0f);
-    }
-  }
-
 }

@@ -299,10 +299,10 @@ public class RobotConfig {
   /**
   * Elevator configuration
   */
-  public class elevator {
+  public static class elevator {
     public static final double elevator_effective_diameter = 1.27 * 1.6; // TODO fix elevator_effective_diameter!!!! (units must be inches)
     public static final int elevator_minimum_height = 0;
-    public static final int elevator_maximum_height = 70; // changed to inches, TODO verify maximum height
+    public static final Length elevator_maximum_height = LengthKt.getInch(70f); // changed to inches, TODO verify maximum height
 
     public class elevatorTalon {
       /**

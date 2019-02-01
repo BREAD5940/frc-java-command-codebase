@@ -1,9 +1,7 @@
 package frc.robot.lib.motion;
 
-import java.io.File;
 import java.util.ArrayList;
 
-import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Trajectory.Segment;
 

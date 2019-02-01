@@ -11,6 +11,7 @@ import frc.robot.states.ElevatorState;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
 import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
@@ -107,8 +108,11 @@ public class Elevator extends Subsystem {
    * Set the elevator height, in inches
    * @param height in inches
    */
-  public void setHeight(double height) {
-    if (height>RobotConfig.elevator.elevator_maximum_height) {
+  public void setHeight(Length height) {
+
+    height = Util.limit
+
+    // if (height>RobotConfig.elevator.elevator_maximum_height ) {
       height = RobotConfig.elevator.elevator_maximum_height;//reset to maximum if too high
     } else if (height<RobotConfig.elevator.elevator_minimum_height) {
       height = RobotConfig.elevator.elevator_minimum_height;

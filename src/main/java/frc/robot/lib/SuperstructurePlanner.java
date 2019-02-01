@@ -1,10 +1,12 @@
 package frc.robot.lib;
 
+import org.ghrobotics.lib.mathematics.units.Length;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 import frc.robot.commands.subsystems.superstructure.wrist.SetWrist;
-import frc.robot.states.SuperstructureState;
+import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
@@ -28,13 +30,13 @@ public class SuperstructurePlanner{
 
   static final double crossbarHeight = 20;
 
-  static final double maxHeight = RobotConfig.elevator.elevator_maximum_height;
+  static final Length maxHeight = RobotConfig.elevator.elevator_maximum_height;
 
   boolean intakeCrashable = false; //intake capable of hitting the ground
   boolean intakeAtRisk = false; //intake at risk of hitting the crossbar
   int errorCount; //number of errors in motion
   int corrCount; //number of corrected items in motion
-  SuperstructureState currentPlannedState;
+  SuperStructureState currentPlannedState;
 
   /**
    * Creates a command group of superstructure motions that will prevent any damage to the intake/elevator
@@ -45,9 +47,9 @@ public class SuperstructurePlanner{
    * @return
    *    the ideal command group to get from the currentState to the goalState
    */
-  public CommandGroup plan(SuperstructureState goalStateIn, SuperstructureState currentState){
+  public CommandGroup plan(SuperStructureState goalStateIn, SuperStructureState currentState){
     CommandGroup toReturn = new CommandGroup();
-    SuperstructureState goalState = new SuperstructureState(goalStateIn);
+    SuperStructureState goalState = SuperStructureState.fromOther(goalStateIn);
     errorCount=corrCount=0;
     boolean defAngle=false;
 
@@ -134,7 +136,7 @@ public class SuperstructurePlanner{
     return toReturn;
   }
 
-  public SuperstructureState getPlannedState(SuperstructureState goalStateIn, SuperstructureState currentState){
+  public SuperStructureState getPlannedState(SuperStructureState goalStateIn, SuperStructureState currentState){
     this.plan(goalStateIn, currentState);
     return this.currentPlannedState;
   }

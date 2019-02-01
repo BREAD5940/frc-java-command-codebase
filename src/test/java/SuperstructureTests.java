@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 import frc.robot.lib.SuperstructurePlanner;
 import frc.robot.states.IntakeAngle;
+import frc.robot.states.SuperStructureState;
 import frc.robot.states.SuperstructureState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
@@ -73,16 +74,16 @@ public class SuperstructureTests {
   @Test
   public void bigScaryComboTests(){
     SuperstructurePlanner planner = new SuperstructurePlanner();
-    SuperstructureState currentState = new SuperstructureState(0,iPosition.CARGO_GRAB,mHeldPiece.NONE);
-    ArrayList<SuperstructureState> goalStates = new ArrayList<SuperstructureState>(Arrays.asList(
-              new SuperstructureState(10,iPosition.HATCH,mHeldPiece.NONE),
-              new SuperstructureState(30,iPosition.HATCH,mHeldPiece.NONE),
-              new SuperstructureState(30,new IntakeAngle(10, 10),mHeldPiece.NONE)));
-    ArrayList<SuperstructureState> correctEndStates = new ArrayList<SuperstructureState>(Arrays.asList(
-              new SuperstructureState(10,iPosition.HATCH,mHeldPiece.NONE),
-              new SuperstructureState(30,iPosition.HATCH,mHeldPiece.NONE),
-              new SuperstructureState(30,new IntakeAngle(10,10),mHeldPiece.NONE)));
-    ArrayList<SuperstructureState> resultingStates=new ArrayList<SuperstructureState>();
+    SuperStructureState currentState = new SuperStructureState(0,iPosition.CARGO_GRAB,mHeldPiece.NONE);
+    ArrayList<SuperStructureState> goalStates = new ArrayList<SuperStructureState>(Arrays.asList(
+              new SuperStructureState(10,iPosition.HATCH,mHeldPiece.NONE),
+              new SuperStructureState(30,iPosition.HATCH,mHeldPiece.NONE),
+              new SuperStructureState(30,new IntakeAngle(10, 10),mHeldPiece.NONE)));
+    ArrayList<SuperstructureState> correctEndStates = new ArrayList<SuperStructureState>(Arrays.asList(
+              new SuperStructureState(10,iPosition.HATCH,mHeldPiece.NONE),
+              new SuperStructureState(30,iPosition.HATCH,mHeldPiece.NONE),
+              new SuperStructureState(30,new IntakeAngle(10,10),mHeldPiece.NONE)));
+    ArrayList<SuperStructureState> resultingStates=new ArrayList<SuperStructureState>();
 
 
     for(int i=0; i<goalStates.size(); i++){

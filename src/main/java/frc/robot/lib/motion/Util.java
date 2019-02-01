@@ -1,8 +1,10 @@
-package frc.math;
+package frc.robot.lib.motion;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+
+import org.ghrobotics.lib.mathematics.units.Length;
 
 /**
  * Contains basic functions that are used often.
@@ -82,6 +84,18 @@ public class Util {
         BigDecimal bd = new BigDecimal(Double.toString(value));
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
+    }
+
+    public static Length limit(Length v, Length min, Length max) {
+        if(v.getValue() > max.getValue()) v = max;
+        if(v.getValue() < min.getValue()) v = min;
+        return v;
+    }
+
+    public static Rotation2d limit(Length v, Length min, Length max) {
+        if(v.getValue() > max.getValue()) v = max;
+        if(v.getValue() < min.getValue()) v = min;
+        return v;
     }
 
 }

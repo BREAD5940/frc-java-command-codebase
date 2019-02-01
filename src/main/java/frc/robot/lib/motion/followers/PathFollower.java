@@ -8,9 +8,9 @@ import java.util.List;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
-import frc.math.Util;
 import frc.robot.lib.ExecTimer;
 import frc.robot.lib.Logger;
+import frc.robot.lib.motion.Util;
 import frc.robot.lib.motion.purepursuit.Path;
 import frc.robot.lib.motion.purepursuit.Point;
 import frc.robot.lib.motion.purepursuit.Vector;

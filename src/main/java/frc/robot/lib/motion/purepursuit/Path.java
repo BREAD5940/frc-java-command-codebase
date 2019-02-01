@@ -1,11 +1,7 @@
 package frc.robot.lib.motion.purepursuit;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Trajectory;
 
 public class Path {
 	public List<WayPoint2> waypoints;
