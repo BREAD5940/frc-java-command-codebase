@@ -8,10 +8,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
@@ -22,6 +27,14 @@ public class RotatingJoint /*extends Subsystem*/ {
   private ArrayList<FalconSRX<Rotation2d>> motors = new ArrayList<FalconSRX<Rotation2d>>();
   
   private TerriblePID mPid;
+
+  public Length kArmLength; // distance to COM of the arm
+
+  public Mass kArmMass;
+
+  public double kTorque;
+
+  public double kMotorResistance = 0.0896;
 
   private RotatingArmPeriodicIO mPeriodicIO = new RotatingArmPeriodicIO();
 
@@ -41,8 +54,8 @@ public class RotatingJoint /*extends Subsystem*/ {
    * @param motorPort on the CAN Bus (for single talon arms)
    * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
    */
-  public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor) {
-    this(settings, Arrays.asList(motorPort), sensor);
+  public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor, Length armLength, Mass mass, double kTorque) {
+    this(settings, Arrays.asList(motorPort), sensor, armLength, mass, kTorque);
   }
 
   /**
@@ -53,8 +66,14 @@ public class RotatingJoint /*extends Subsystem*/ {
    * @param ports of talon CAN ports as a List
    * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
    */
-  public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
+  public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, Length armLength, Mass mass, double kTorque_) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
     mPid = new TerriblePID(settings.kp, settings.ki, settings.kd, 0, settings.minOutput, settings.maxOutput, settings.iZone, settings.maxIAccum, 10000, null, null);
+
+    kArmLength = armLength;
+
+    kArmMass = mass;
+
+    kTorque = kTorque_;
 
     NativeUnit unitsPerRotation = NativeUnitKt.getSTU(0);
 
@@ -90,8 +109,22 @@ public class RotatingJoint /*extends Subsystem*/ {
     return getMaster().getSensorPosition();
   }
 
+  /**
+   * Set the talon as a target angle and feedforward throttle percent
+   */
+  public void setPositionArbitraryFeedForward(Rotation2d setpoint, double feedForwardPercent) {
+    double rawUnits = mRotationModel.fromModel(setpoint).getValue();
+    getMaster().set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
+  }
+
   public double getSetpoint() {
     return mPid.getSetpoint();
+  }
+
+  public double calculateVoltage(double torque, Velocity<Rotation2d> anglularVelocity) {
+    double tStatic = torque * kMotorResistance / kTorque;
+    double tVelocity = kTorque * anglularVelocity.getValue(); // TODO make sure this is rad/s
+    return tStatic + tVelocity;
   }
 
   /**
@@ -126,17 +159,17 @@ public class RotatingJoint /*extends Subsystem*/ {
   }
 
   public static class RotatingArmPeriodicIO {
-    public double setpoint = 0;
+    public Rotation2d angle = 0;
     public double feedForwardVoltage = 0;
-    public double pidOutput = 0;
+    // public double pidOutput = 0;
     public RotatingArmPeriodicIO() {
       feedForwardVoltage = 0;
-      pidOutput = 0;
+      // pidOutput = 0;
     }
 
     @Override
     public String toString() {
-      return setpoint + ", " + feedForwardVoltage + ", " + pidOutput;
+      return setpoint.getDegree() + ", " + feedForwardVoltage;
       // return "hellothere";
     }
   }

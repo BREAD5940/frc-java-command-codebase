@@ -5,6 +5,14 @@ import java.util.Arrays;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.MassKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
+import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.auto.AutoMotion;
@@ -30,7 +38,7 @@ public class Superstructure extends Subsystem {
   public static Elevator elevator = new Elevator();
   public static Intake intake = new Intake();
   private SuperstructurePlanner planner = new SuperstructurePlanner();
-  public SuperStructurePeriodicIO mPeriodicIO = new SuperStructurePeriodicIO();
+  public SuperStructureIO mPeriodicIO = new SuperStructureIO();
   private RotatingJoint mWrist, mElbow;
   
   public static synchronized Superstructure getInstance() {
@@ -42,7 +50,10 @@ public class Superstructure extends Subsystem {
 
   private Superstructure(){
     super("Superstructure");
-    mWrist = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 37, FeedbackDevice.CTRE_MagEncoder_Relative);
+    mWrist = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 37, FeedbackDevice.CTRE_MagEncoder_Relative, 
+        LengthKt.getInch(6), MassKt.getLb(15), 4.9474);
+    mElbow = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 40, FeedbackDevice.CTRE_MagEncoder_Relative, 
+        LengthKt.getInch(6), MassKt.getLb(2), 9.8933);
   }
 
 
@@ -153,10 +164,48 @@ public class Superstructure extends Subsystem {
     System.out.println("hullo there");
   }
   
+  public double calculateWristTorque(SuperStructureIO state) {
+    double x1= (getWrist().kArmLength.getValue()) * state.wrist.angle.getCos();
+    double torqueGravity = (getWrist().kArmMass.getValue() * 9.8 * x1);
+    double torqueAccel = getWrist().kArmMass.getValue() * state.elevator.acceleration.getValue() * x1;
+    double totalTorque = torqueGravity + torqueAccel;
+    return totalTorque;
+  }
+
+  public double calculateElbowTorques(SuperStructureIO state, double wristTorque) {
+    double x2= (getElbow().kArmLength.getValue()) * state.wrist.angle.getCos();
+    double torqueGravity = (getElbow().kArmMass.getValue() * 9.8 * x2);
+    double torqueAccel = getElbow().kArmMass.getValue() * state.elevator.acceleration.getValue() * x2;
+    double Big = (getElbow().kArmMass.getValue() * getElbow().kArmLength.getValue() * 9.8) + wristTorque;
+    return torqueGravity + torqueAccel + Big;
+  }
+
+  
 
 
-  public class SuperStructurePeriodicIO {
-    public RotatingArmPeriodicIO elbow, wrist;
+  public class SuperStructureIO {
+    public RotatingArmPeriodicIO elbow = new RotatingArmPeriodicIO(); // TODO add elevator accleration
+    public RotatingArmPeriodicIO wrist = new RotatingArmPeriodicIO();
+    public ElevatorPeriodicIO elevator = new ElevatorPeriodicIO();
+  }
+
+
+  public class ElevatorPeriodicIO {
+    public Length height;
+    public Velocity<Length> velocity;
+    public Acceleration<Length> acceleration;
+    public double feedForwardVoltage;
+
+    ElevatorPeriodicIO(Length height_, Velocity<Length> velocity_, Acceleration<Length> accel_, double feedForwardVoltage_) {
+      height = height_;
+      velocity = velocity_;
+      acceleration = accel_;
+      feedForwardVoltage = feedForwardVoltage_;
+    }
+
+    ElevatorPeriodicIO() {
+      this(LengthKt.getFeet(0), VelocityKt.getVelocity(LengthKt.getFeet(0)), AccelerationKt.getAcceleration(LengthKt.getFeet(0)), 0f);
+    }
   }
 
 }
