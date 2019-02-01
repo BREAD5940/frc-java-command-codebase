@@ -30,7 +30,7 @@ import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmPeriodicIO;
  * 
  * @author Jocelyn McHugo
  */
-public class Superstructure extends Subsystem {
+public class SuperStructureIO extends Subsystem {
 
   private static Superstructure instance_;
   private SuperstructureState mReqState = new SuperstructureState();
@@ -183,27 +183,27 @@ public class Superstructure extends Subsystem {
   
 
 
-  public class SuperStructureIO {
+  public class SuperStructureState {
     public RotatingArmPeriodicIO elbow = new RotatingArmPeriodicIO(); // TODO add elevator accleration
     public RotatingArmPeriodicIO wrist = new RotatingArmPeriodicIO();
-    public ElevatorPeriodicIO elevator = new ElevatorPeriodicIO();
+    public ElevatorState elevator = new ElevatorState();
   }
 
 
-  public class ElevatorPeriodicIO {
+  public class ElevatorState {
     public Length height;
     public Velocity<Length> velocity;
     public Acceleration<Length> acceleration;
     public double feedForwardVoltage;
 
-    ElevatorPeriodicIO(Length height_, Velocity<Length> velocity_, Acceleration<Length> accel_, double feedForwardVoltage_) {
+    ElevatorState(Length height_, Velocity<Length> velocity_, Acceleration<Length> accel_, double feedForwardVoltage_) {
       height = height_;
       velocity = velocity_;
       acceleration = accel_;
       feedForwardVoltage = feedForwardVoltage_;
     }
 
-    ElevatorPeriodicIO() {
+    ElevatorState() {
       this(LengthKt.getFeet(0), VelocityKt.getVelocity(LengthKt.getFeet(0)), AccelerationKt.getAcceleration(LengthKt.getFeet(0)), 0f);
     }
   }
