@@ -5,23 +5,17 @@ import java.util.Arrays;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
-import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.MassKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
-import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.math.Rotation2d;
 import frc.robot.commands.auto.AutoMotion;
-import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 import frc.robot.lib.PIDSettings;
-import frc.robot.lib.SuperstructurePlanner;
 import frc.robot.lib.PIDSettings.FeedbackMode;
-import frc.robot.states.ElevatorState;
+import frc.robot.lib.SuperstructurePlanner;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.Intake;
@@ -63,12 +57,12 @@ public class SuperStructure extends Subsystem {
   private SuperStructureState mCurrentState = new SuperStructureState();
 
   public static class iPosition{
-    public static final IntakeAngle CARGO_GRAB = new IntakeAngle(0,0);
-    public static final IntakeAngle CARGO_DOWN = new IntakeAngle(0,0);
-    public static final IntakeAngle CARGO_DROP = new IntakeAngle(0,0);
-    public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(0,0);
-    public static final IntakeAngle HATCH = new IntakeAngle(0,0);
-    public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(0,0);
+    public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
+    public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
+    public static final IntakeAngle CARGO_DROP = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
+    public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
+    public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
+    public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
 
     public static final ArrayList<IntakeAngle> presets = new ArrayList<IntakeAngle>(Arrays.asList(CARGO_GRAB, CARGO_DOWN,
                             CARGO_DROP, CARGO_REVERSE, HATCH, HATCH_REVERSE));

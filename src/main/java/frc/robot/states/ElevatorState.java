@@ -44,4 +44,12 @@ public class ElevatorState {
             Acceleration<Length> accel = AccelerationKt.getAcceleration( LengthKt.getMeter(( velocity_.getValue() - lastState.velocity.getValue()) / ( Timer.getFPGATimestamp() - lastState.time.getValue())));
             return new ElevatorState(height_, velocity_, accel, feedForwardVoltage_); // TODO fixme
   }
+
+  public void setHeight(Length height_) {
+    height = height_;
+  }
+
+  public Length getHeight() {
+    return height;
+  }
 }

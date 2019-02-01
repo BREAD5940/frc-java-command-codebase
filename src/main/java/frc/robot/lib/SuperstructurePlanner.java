@@ -1,6 +1,7 @@
 package frc.robot.lib;
 
 import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig;
@@ -26,9 +27,9 @@ public class SuperstructurePlanner{
 
   //TODO get actual irl angles TODO make the names less horrible
   
-  static final double minUnCrashHeight=5; //min elevator height + how much intake is below the bottom of the elevator
+  static final Length minUnCrashHeight=LengthKt.getInch(5); //min elevator height + how much intake is below the bottom of the elevator
 
-  static final double crossbarHeight = 20;
+  static final Length crossbarHeight = LengthKt.getInch(20);
 
   static final Length maxHeight = RobotConfig.elevator.elevator_maximum_height;
 
@@ -97,7 +98,7 @@ public class SuperstructurePlanner{
     }
 
     //checks if the elevator will go to high
-    if(goalState.getElevatorHeight()>maxHeight){
+    if(goalState.elevator.height.getValue() > maxHeight.getValue()){
       System.out.println("MOTION IMPOSSIBLE -- Elevator will pass maximum height. Setting to maximum height.");
       errorCount++;
       corrCount++;
@@ -105,7 +106,7 @@ public class SuperstructurePlanner{
     }
 
     //checks if the elevator will move past the crossbar
-    if(intakeAtRisk&&(goalState.getElevatorHeight()>=crossbarHeight&&currentState.getElevatorHeight()<=crossbarHeight)
+    if(intakeAtRisk&&(goalState.getElevatorHeight().getValue() >= crossbarHeight.getValue() &&currentState.getElevatorHeight()<=crossbarHeight)
         || (goalState.getElevatorHeight()<=crossbarHeight&&currentState.getElevatorHeight()>=crossbarHeight)){
       System.out.println("MOTION UNSAFE -- Intake will hit crossbar. Setting to default intake position for movement.");
       errorCount++;
@@ -126,7 +127,7 @@ public class SuperstructurePlanner{
 
     //move to corrected state
     // toReturn.addSequential(new SetElevatorHeight(goalState.getElevatorHeight())); //FIXME so this makes the whole thing die
-    currentState.setElevatorHeight(goalState.getElevatorHeight());
+    currentState.elevator.setHeight(goalState.elevator.getHeight());
     toReturn.addSequential(new SetWrist(goalState.getAngle()));
     currentState.setAngle(goalState.getAngle());
 

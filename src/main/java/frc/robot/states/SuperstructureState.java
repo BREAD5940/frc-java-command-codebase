@@ -1,5 +1,7 @@
 package frc.robot.states;
 
+import org.ghrobotics.lib.mathematics.units.Length;
+
 import frc.robot.commands.auto.AutoMotion.mHeldPiece;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
@@ -28,6 +30,7 @@ public class SuperStructureState {
   }
 
   public static SuperStructureState fromOther(SuperStructureState other) {
-    return new SuperStructureState( other.elbow, other.wrist, other.elevator, other.piece )
+    return new SuperStructureState( other.elbow, other.wrist, other.elevator, other.piece );
   }
 }
+ 

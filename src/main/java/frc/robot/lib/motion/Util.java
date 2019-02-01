@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.util.List;
 
 import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
 /**
  * Contains basic functions that are used often.
@@ -92,7 +93,7 @@ public class Util {
         return v;
     }
 
-    public static Rotation2d limit(Length v, Length min, Length max) {
+    public static Rotation2d limit(Rotation2d v, Rotation2d min, Rotation2d max) {
         if(v.getValue() > max.getValue()) v = max;
         if(v.getValue() < min.getValue()) v = min;
         return v;
