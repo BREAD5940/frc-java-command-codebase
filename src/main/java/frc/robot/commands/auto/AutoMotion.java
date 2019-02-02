@@ -20,7 +20,7 @@ import frc.robot.subsystems.Elevator.ElevatorPresets;
  */
 public class AutoMotion {
 
-  public enum mHeldPiece{
+  public enum HeldPiece{
     HATCH, CARGO, NONE
   }
 
@@ -31,7 +31,7 @@ public class AutoMotion {
    * HIGH: the highest level of the rocket;
    * OVER: dropped into the cargo ship from above
    */
-  public enum mGoalHeight{
+  public enum GoalHeight{
     LOW, MIDDLE, HIGH, OVER
   }
 
@@ -44,13 +44,13 @@ public class AutoMotion {
    * RETRIEVE_HATCH: pick up a hatch from the loading station;
    * RETRIEVE_CARGO: pick up cargo from an unspecified location
    */
-  public enum mGoalType{
+  public enum GoalType{
     CARGO_CARGO, CARGO_HATCH, ROCKET_CARGO, ROCKET_HATCH, RETRIEVE_HATCH, RETRIEVE_CARGO
   }
 
-  private mGoalHeight gHeight;
-  private mGoalType gType;
-  private mHeldPiece piece;
+  private GoalHeight gHeight;
+  private GoalType gType;
+  private HeldPiece piece;
   private AutoCommandGroup mBigCommandGroup;
 
   /**
@@ -61,19 +61,19 @@ public class AutoMotion {
    *    the type of goal 
    */
 
-  public AutoMotion (mGoalHeight gHeight, mGoalType gType){
+  public AutoMotion (GoalHeight gHeight, GoalType gType){
     this.gHeight = gHeight;
     this.gType = gType;
     //select heldPiece
-    if (this.gType == mGoalType.CARGO_CARGO || this.gType == mGoalType.ROCKET_CARGO){
-      this.piece = mHeldPiece.CARGO;
-    }else if (this.gType == mGoalType.CARGO_HATCH || this.gType == mGoalType.ROCKET_HATCH){
-      this.piece = mHeldPiece.HATCH;
+    if (this.gType == GoalType.CARGO_CARGO || this.gType == GoalType.ROCKET_CARGO){
+      this.piece = HeldPiece.CARGO;
+    }else if (this.gType == GoalType.CARGO_HATCH || this.gType == GoalType.ROCKET_HATCH){
+      this.piece = HeldPiece.HATCH;
     }else{
-      this.piece=mHeldPiece.NONE;
+      this.piece=HeldPiece.NONE;
     }
 
-    if (this.piece!=mHeldPiece.NONE){
+    if (this.piece!=HeldPiece.NONE){
       this.mBigCommandGroup = genPlaceCommands();
     }else{
       this.mBigCommandGroup = genGrabCommands();
@@ -86,14 +86,14 @@ public class AutoMotion {
    */
   private AutoCommandGroup genGrabCommands(){
     AutoCommandGroup toReturn = new AutoCommandGroup();
-    if (this.gType==mGoalType.RETRIEVE_CARGO){
+    if (this.gType==GoalType.RETRIEVE_CARGO){
       // Set the intake to cargo mode
-      toReturn.addSequential(new SetIntakeMode(mHeldPiece.CARGO));
+      toReturn.addSequential(new SetIntakeMode(HeldPiece.CARGO));
       // Predefined grab command
       toReturn.addSequential(new GrabCargo());
-    }else if (this.gType==mGoalType.RETRIEVE_HATCH){
+    }else if (this.gType==GoalType.RETRIEVE_HATCH){
       // Set the intake to hatch mode
-      toReturn.addSequential(new SetIntakeMode(mHeldPiece.HATCH));
+      toReturn.addSequential(new SetIntakeMode(HeldPiece.HATCH));
       // Predefined grab command
       toReturn.addSequential(new PickUpHatch());
     }
@@ -109,7 +109,7 @@ public class AutoMotion {
     AutoCommandGroup toReturn = new AutoCommandGroup();
 
     // Set intake mode
-    if (this.gType==mGoalType.CARGO_CARGO){
+    if (this.gType==GoalType.CARGO_CARGO){
       toReturn.addSequential(new SetIntakeMode(this.piece, true));
     }else{
       toReturn.addSequential(new SetIntakeMode(this.piece));
@@ -121,7 +121,7 @@ public class AutoMotion {
     // Set the elevator to the correct height
     toReturn.addSequential(new SetElevatorHeight(getElevatorPreset(),false));
 
-    if(this.gType==mGoalType.CARGO_CARGO){
+    if(this.gType==GoalType.CARGO_CARGO){
       // Drive forward so the intake is over the bay and the bumpers are in the indent thingy
       toReturn.addSequential(new DriveDistance(2,20)); // FIXME check distances
     }else{
@@ -129,9 +129,9 @@ public class AutoMotion {
       toReturn.addSequential(new DriveDistance(1,20)); // FIXME check distances
     }
 
-    if(this.piece==mHeldPiece.CARGO){
+    if(this.piece==HeldPiece.CARGO){
       toReturn.addSequential(new AutoIntake(-1, 5));
-    }else if (this.piece==mHeldPiece.HATCH){
+    }else if (this.piece==HeldPiece.HATCH){
       toReturn.addSequential(new PlaceHatch());
     }
 
@@ -141,12 +141,12 @@ public class AutoMotion {
 
   /**
    * selects the correct ElevatorPreset from the Elevator subsystems enum based on
-   * the mGoalHeight, the mGoalType, and the mHeldPiece
+   * the GoalHeight, the GoalType, and the HeldPiece
    */
   private ElevatorPresets getElevatorPreset(){
     switch (this.gType){
       case CARGO_CARGO:
-        if (this.gHeight == mGoalHeight.LOW){
+        if (this.gHeight == GoalHeight.LOW){
           return ElevatorPresets.CARGO_SHIP_HATCH;
         }else{
           return ElevatorPresets.CARGO_SHIP_WALL;
@@ -154,17 +154,17 @@ public class AutoMotion {
       case CARGO_HATCH:
         return ElevatorPresets.CARGO_SHIP_HATCH;
       case ROCKET_CARGO:
-        if (this.gHeight == mGoalHeight.LOW){
+        if (this.gHeight == GoalHeight.LOW){
           return ElevatorPresets.LOW_ROCKET_PORT;
-        }else if (gHeight == mGoalHeight.MIDDLE){
+        }else if (gHeight == GoalHeight.MIDDLE){
           return ElevatorPresets.MIDDLE_ROCKET_PORT;
         }else{
           return ElevatorPresets.HIGH_ROCKET_PORT;
         }
       case ROCKET_HATCH:
-        if (this.gHeight == mGoalHeight.LOW){
+        if (this.gHeight == GoalHeight.LOW){
           return ElevatorPresets.LOW_ROCKET_HATCH;
-        }else if (this.gHeight == mGoalHeight.MIDDLE){
+        }else if (this.gHeight == GoalHeight.MIDDLE){
           return ElevatorPresets.MIDDLE_ROCKET_HATCH;
         }else{
           return ElevatorPresets.HIGH_ROCKET_HATCH;
@@ -179,27 +179,27 @@ public class AutoMotion {
   /**
    *
    * @return
-   *  the mGoalHeight of the AutoMotion
+   *  the GoalHeight of the AutoMotion
    */
-  public mGoalHeight getGoalHeight(){
+  public GoalHeight getGoalHeight(){
     return this.gHeight;
   }
 
   /**
    * identification function
    * @return
-   *  the mGoalType of the AutoMotion
+   *  the GoalType of the AutoMotion
    */
-  public mGoalType getmGoalType(){
+  public GoalType getGoalType(){
     return this.gType;
   }
 
   /**
    * identification function
    * @return
-   *  the mHeldPiece of the AutoMotion
+   *  the HeldPiece of the AutoMotion
    */
-  public mHeldPiece getmHeldPiece(){
+  public HeldPiece getmHeldPiece(){
     return this.piece;
   }
 

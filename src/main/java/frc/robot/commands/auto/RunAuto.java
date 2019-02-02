@@ -8,9 +8,10 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.auto.AutoCombo.mCurrentLocation;
-import frc.robot.commands.auto.AutoMotion.mGoalHeight;
-import frc.robot.commands.auto.AutoMotion.mGoalType;
+import frc.robot.commands.auto.AutoCombo.CurrentLocation;
+import frc.robot.commands.auto.AutoCombo.GoalLocation;
+import frc.robot.commands.auto.AutoMotion.GoalHeight;
+import frc.robot.commands.auto.AutoMotion.GoalType;
 
 
 /**
@@ -18,34 +19,36 @@ import frc.robot.commands.auto.AutoMotion.mGoalType;
  */
 public class RunAuto extends Command {
 
-  public mGoalType goal;
-  public mGoalHeight height;
+  public GoalType gt;
+  public GoalLocation goal;
+  public GoalHeight height;
   public AutoMotion motion;
   public AutoCombo cMotion;
-  public mCurrentLocation location;
+  public CurrentLocation location;
   public boolean isDrive;
 
 
-  public RunAuto(mGoalType goal, mGoalHeight height) {
+  public RunAuto(GoalType gt, GoalHeight height) {
     // Use requires() here to declare subsystem dependencies
-    this.goal = goal;
+    this.gt = gt;
     this.height = height;
     this.isDrive = false;
   }
 
-  public RunAuto(mGoalType goal, mGoalHeight height,mCurrentLocation location){
-    this(goal, height);
+  public RunAuto(GoalType gt, GoalHeight height,CurrentLocation location,GoalLocation goal){
+    this(gt, height);
     this.location = location;
+    this.goal = goal;
     this.isDrive = true;
   }
 
   @Override
   protected void initialize() {
     if(!isDrive){
-      motion = new AutoMotion(height, goal);
+      motion = new AutoMotion(height, gt);
       motion.getBigCommandGroup().start();
     }else{
-      cMotion = new AutoCombo(height, goal, location);
+      cMotion = new AutoCombo(height, gt, location,goal);
       cMotion.getBigCommandGroup().start();
     }
   }

@@ -1,23 +1,23 @@
 package frc.robot.commands.auto.actions;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.auto.AutoMotion.mHeldPiece;
+import frc.robot.commands.auto.AutoMotion.HeldPiece;
 
   /**
    * SetIntakeMode sets the wrist to either cargo or hatch 'mode', then either 
    * switches to pointing down to drop/grab cargo or... doesn't
    */
 public class SetIntakeMode extends Command {
-  mHeldPiece intakeType;
+  HeldPiece intakeType;
   boolean isDown=false;
 
-  public SetIntakeMode(mHeldPiece iType){
+  public SetIntakeMode(HeldPiece iType){
     this.intakeType=iType;
     this.isDown=false;
     // requires(Robot.wrist); //TODO this will be a thing that will be uncommented but right now it makes the whole program sad
   }
 
-  public SetIntakeMode(mHeldPiece iType, boolean isDown){
+  public SetIntakeMode(HeldPiece iType, boolean isDown){
     this.intakeType=iType;
     this.isDown=isDown;
     // requires(Robot.wrist); //TODO this will be a thing that will be uncommented but right now it makes the whole program sad
