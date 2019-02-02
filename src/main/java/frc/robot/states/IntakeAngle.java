@@ -29,4 +29,12 @@ public class IntakeAngle{
     }
     return min;
   }
+
+  public RotatingArmState getElbow() {
+    return elbowAngle;
+  }
+
+  public RotatingArmState getWrist() {
+    return wristAngle;
+  }
 }

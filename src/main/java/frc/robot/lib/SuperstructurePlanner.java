@@ -5,7 +5,7 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig;
-import frc.robot.commands.auto.AutoMotion.mHeldPiece;
+import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.subsystems.superstructure.wrist.SetWrist;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
@@ -75,7 +75,7 @@ public class SuperstructurePlanner{
     if(!defAngle){
       System.out.println("MOTION UNSAFE -- Wrist position is wildcard. Setting to default position for movement.");
       errorCount++;
-      if(currentState.getHeldPiece()==mHeldPiece.HATCH){
+      if(currentState.getHeldPiece()==HeldPiece.HATCH){
         //TODO change this so it only happens if the intake will ACTUALLY pass through the elevator
         System.out.println("MOTION UNSAFE -- Cannot move wrist to wildcard position while holding hatch. Aborting wrist movement.");
         errorCount++;

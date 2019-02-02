@@ -199,21 +199,21 @@ public class RobotConfig {
     public static final double drive_auto_forward_velocity_min = -2; // minimum speed for auto drive in ft per sec
     public static Gear auto_gear = Gear.LOW;
     
-    public class fieldPositions {
+    public static class fieldPositions {
       // Positions of objects on the field (ports, etc.) in inches. distances are to the center of the object
       // unless otherwise indicated
       // TODO check that these values are accurate (currently taken from the game manual)
       
-      public static final double low_rocket_port = 27.5;
-      public static final double middle_rocket_port = 55.5;
-      public static final double high_rocket_port = 83.5;
+      public static final Length low_rocket_port = LengthKt.getInch(27.5);
+      public static final Length middle_rocket_port = LengthKt.getInch(55.5);
+      public static final Length high_rocket_port = LengthKt.getInch(83.5);
       
-      public static final double low_rocket_hatch = 19;
-      public static final double middle_rocket_hatch = 47;
-      public static final double high_rocket_hatch = 75;
+      public static final Length low_rocket_hatch = LengthKt.getInch(19);
+      public static final Length middle_rocket_hatch = LengthKt.getInch(47);
+      public static final Length high_rocket_hatch = LengthKt.getInch(75);
       
-      public static final double cargo_ship_hatch = 19.75; // TODO this should be even with the low rocket hatch. According to the game manual, it isn't
-      public static final double cargo_ship_wall = 31.5; //top of wall
+      public static final Length cargo_ship_hatch = LengthKt.getInch(19.75); // TODO this should be even with the low rocket hatch. According to the game manual, it isn't
+      public static final Length cargo_ship_wall = LengthKt.getInch(31.5); //top of wall
     }
     
     

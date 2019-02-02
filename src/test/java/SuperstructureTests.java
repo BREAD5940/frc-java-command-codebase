@@ -5,7 +5,7 @@
 
 // import org.junit.jupiter.api.Test;
 
-// import frc.robot.commands.auto.AutoMotion.mHeldPiece;
+// import frc.robot.commands.auto.AutoMotion.HeldPiece;
 // import frc.robot.lib.SuperstructurePlanner;
 // import frc.robot.states.IntakeAngle;
 // import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
@@ -16,19 +16,19 @@
 //   @Test
 //   public void testWrists(){
 //     SuperstructurePlanner planner = new SuperstructurePlanner();
-//     SuperstructureState currentState = new SuperstructureState(0,iPosition.CARGO_GRAB,mHeldPiece.NONE);
+//     SuperstructureState currentState = new SuperstructureState(0,iPosition.CARGO_GRAB,HeldPiece.NONE);
 //     ArrayList<SuperstructureState> goalStates = new ArrayList<SuperstructureState>(Arrays.asList(
-//               new SuperstructureState(0,iPosition.CARGO_GRAB,mHeldPiece.NONE),
-//               new SuperstructureState(0,iPosition.HATCH,mHeldPiece.NONE),
-//               new SuperstructureState(0,iPosition.CARGO_DOWN,mHeldPiece.NONE),
-//               new SuperstructureState(0,new IntakeAngle(10,10),mHeldPiece.NONE),
-//               new SuperstructureState(0,iPosition.CARGO_GRAB,mHeldPiece.CARGO)));
+//               new SuperstructureState(0,iPosition.CARGO_GRAB,HeldPiece.NONE),
+//               new SuperstructureState(0,iPosition.HATCH,HeldPiece.NONE),
+//               new SuperstructureState(0,iPosition.CARGO_DOWN,HeldPiece.NONE),
+//               new SuperstructureState(0,new IntakeAngle(10,10),HeldPiece.NONE),
+//               new SuperstructureState(0,iPosition.CARGO_GRAB,HeldPiece.CARGO)));
 //     ArrayList<SuperstructureState> correctEndStates = new ArrayList<SuperstructureState>(Arrays.asList(
-//               new SuperstructureState(0,iPosition.CARGO_GRAB,mHeldPiece.NONE),
-//               new SuperstructureState(0,iPosition.HATCH,mHeldPiece.NONE),
-//               new SuperstructureState(0,iPosition.CARGO_GRAB,mHeldPiece.NONE),
-//               new SuperstructureState(0,new IntakeAngle(10,10),mHeldPiece.NONE),
-//               new SuperstructureState(0,iPosition.CARGO_GRAB,mHeldPiece.NONE)));
+//               new SuperstructureState(0,iPosition.CARGO_GRAB,HeldPiece.NONE),
+//               new SuperstructureState(0,iPosition.HATCH,HeldPiece.NONE),
+//               new SuperstructureState(0,iPosition.CARGO_GRAB,HeldPiece.NONE),
+//               new SuperstructureState(0,new IntakeAngle(10,10),HeldPiece.NONE),
+//               new SuperstructureState(0,iPosition.CARGO_GRAB,HeldPiece.NONE)));
 //     ArrayList<SuperstructureState> resultingStates=new ArrayList<SuperstructureState>();
 
 
@@ -46,15 +46,15 @@
 //   @Test
 //   public void testElevator(){
 //     SuperstructurePlanner planner = new SuperstructurePlanner();
-//     SuperstructureState currentState = new SuperstructureState(0,iPosition.CARGO_GRAB,mHeldPiece.NONE);
+//     SuperstructureState currentState = new SuperstructureState(0,iPosition.CARGO_GRAB,HeldPiece.NONE);
 //     ArrayList<SuperstructureState> goalStates = new ArrayList<SuperstructureState>(Arrays.asList(
-//               new SuperstructureState(10,iPosition.CARGO_GRAB,mHeldPiece.NONE),
-//               new SuperstructureState(30,iPosition.CARGO_GRAB,mHeldPiece.NONE),
-//               new SuperstructureState(80,iPosition.CARGO_GRAB,mHeldPiece.NONE)));
+//               new SuperstructureState(10,iPosition.CARGO_GRAB,HeldPiece.NONE),
+//               new SuperstructureState(30,iPosition.CARGO_GRAB,HeldPiece.NONE),
+//               new SuperstructureState(80,iPosition.CARGO_GRAB,HeldPiece.NONE)));
 //     ArrayList<SuperstructureState> correctEndStates = new ArrayList<SuperstructureState>(Arrays.asList(
-//               new SuperstructureState(10,iPosition.CARGO_GRAB,mHeldPiece.NONE),
-//               new SuperstructureState(30,iPosition.CARGO_GRAB,mHeldPiece.NONE),
-//               new SuperstructureState(70,iPosition.CARGO_GRAB,mHeldPiece.NONE)));
+//               new SuperstructureState(10,iPosition.CARGO_GRAB,HeldPiece.NONE),
+//               new SuperstructureState(30,iPosition.CARGO_GRAB,HeldPiece.NONE),
+//               new SuperstructureState(70,iPosition.CARGO_GRAB,HeldPiece.NONE)));
 //     ArrayList<SuperstructureState> resultingStates=new ArrayList<SuperstructureState>();
 
 
@@ -72,15 +72,15 @@
 //   @Test
 //   public void bigScaryComboTests(){
 //     SuperstructurePlanner planner = new SuperstructurePlanner();
-//     SuperStructureState currentState = new SuperStructureState(0,iPosition.CARGO_GRAB,mHeldPiece.NONE);
+//     SuperStructureState currentState = new SuperStructureState(0,iPosition.CARGO_GRAB,HeldPiece.NONE);
 //     ArrayList<SuperStructureState> goalStates = new ArrayList<SuperStructureState>(Arrays.asList(
-//               new SuperStructureState(10,iPosition.HATCH,mHeldPiece.NONE),
-//               new SuperStructureState(30,iPosition.HATCH,mHeldPiece.NONE),
-//               new SuperStructureState(30,new IntakeAngle(10, 10),mHeldPiece.NONE)));
+//               new SuperStructureState(10,iPosition.HATCH,HeldPiece.NONE),
+//               new SuperStructureState(30,iPosition.HATCH,HeldPiece.NONE),
+//               new SuperStructureState(30,new IntakeAngle(10, 10),HeldPiece.NONE)));
 //     ArrayList<SuperstructureState> correctEndStates = new ArrayList<SuperStructureState>(Arrays.asList(
-//               new SuperStructureState(10,iPosition.HATCH,mHeldPiece.NONE),
-//               new SuperStructureState(30,iPosition.HATCH,mHeldPiece.NONE),
-//               new SuperStructureState(30,new IntakeAngle(10,10),mHeldPiece.NONE)));
+//               new SuperStructureState(10,iPosition.HATCH,HeldPiece.NONE),
+//               new SuperStructureState(30,iPosition.HATCH,HeldPiece.NONE),
+//               new SuperStructureState(30,new IntakeAngle(10,10),HeldPiece.NONE)));
 //     ArrayList<SuperStructureState> resultingStates=new ArrayList<SuperStructureState>();
 
 

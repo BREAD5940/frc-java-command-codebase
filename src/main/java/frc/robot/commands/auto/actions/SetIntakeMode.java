@@ -1,17 +1,17 @@
 package frc.robot.commands.auto.actions;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.auto.AutoMotion.mHeldPiece;
+import frc.robot.commands.auto.AutoMotion.HeldPiece;
 
   /**
    * auto_Intake is a basic auto action. It activates the intake based on an inputted
    * demand and runtime
    */
 public class SetIntakeMode extends Command {
-  mHeldPiece intakeType;
+  HeldPiece intakeType;
   boolean isDrop=false;
 
-  public SetIntakeMode(mHeldPiece iType){
+  public SetIntakeMode(HeldPiece iType){
     this.intakeType=iType;
     this.isDrop=false;
   }

@@ -1,5 +1,6 @@
 package frc.robot.subsystems.superstructure;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import frc.robot.Robot;
@@ -16,6 +17,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Time;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
 import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
@@ -87,7 +89,7 @@ public class Elevator /*extends Subsystem*/ {
   
     public List<FalconSRX<Length>> getAll() {
       return Arrays.asList(
-        mMaster, mSlave1, mSlave2, mSlave3;
+        mMaster, mSlave1, mSlave2, mSlave3
       );
     }
   
@@ -95,7 +97,7 @@ public class Elevator /*extends Subsystem*/ {
       return lengthModel;
     }
   
-    public Length getDistance() {
+    public Length getHeight() {
       return mMaster.getSensorPosition();
     }
   
@@ -108,7 +110,7 @@ public class Elevator /*extends Subsystem*/ {
     }
   
     public double getFeet() {
-      return getDistance().getFeet();
+      return getHeight().getFeet();
     }
   
     public Length getClosedLoopError() {
@@ -144,16 +146,11 @@ public class Elevator /*extends Subsystem*/ {
     }
     
   
-
-  public class InvertSettings {
-    boolean masterInverted;
-    InvertType slave1FollowerMode, slave2FollowerMode, slave3FollowerMode;
-
-    public InvertSettings(boolean mInvert, InvertType s1FollowMode, InvertType s2FollowMode, InvertType s3FollowMode) {
-      masterInverted = mInvert;
-      slave1FollowerMode = s1FollowMode;
-      slave2FollowerMode = s2FollowMode;
-      slave3FollowerMode = s3FollowMode;
-    }
+  public ElevatorState getCurrentState(ElevatorState lastKnown) {
+    Time time = TimeUnitsKt.getSecond(Timer.getFPGATimestamp());
+    Acceleration<Length> accel = AccelerationKt.getAcceleration(LengthKt.getMeter(
+          (getVelocity().getValue() - lastKnown.velocity.getValue())/(time.getValue() - lastKnown.time.getValue())));
+    return new ElevatorState(getHeight(), getVelocity(), 
+      accel, time_)
   }
 }

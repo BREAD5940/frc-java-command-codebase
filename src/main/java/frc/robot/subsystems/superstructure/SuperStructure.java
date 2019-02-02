@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -21,6 +22,8 @@ import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.superstructure.Elevator.EncoderMode;
+import frc.robot.subsystems.superstructure.Elevator.InvertSettings;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 /**
@@ -34,7 +37,8 @@ public class SuperStructure extends Subsystem {
   private static SuperStructure instance_;
   private SuperStructureState mReqState = new SuperStructureState();
   private CommandGroup mCurrentCommandGroup;
-  public static Elevator elevator = new Elevator();
+  public static Elevator elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative, 
+      new InvertSettings(false, InvertType.FollowMaster, InvertType.OpposeMaster, InvertType.OpposeMaster));
   public static Intake intake = new Intake();
   private SuperstructurePlanner planner = new SuperstructurePlanner();
   public SuperStructureState mPeriodicIO = new SuperStructureState();
@@ -80,6 +84,14 @@ public class SuperStructure extends Subsystem {
     return moveSuperstructureCombo(new SuperStructureState(elevator, elbow, wrist));
   }
 
+    /**
+   * Move the superstructure based on a height, intake angle and wrist angle
+   * TODO how do we go from held game piece to target angle?
+   */
+  public CommandGroup moveSuperstructureCombo(ElevatorState elevator, IntakeAngle intakeState) {
+    return moveSuperstructureCombo(new SuperStructureState(elevator, intakeState));
+  }
+
   /**
    * move a combination of the sub-subsystems of the superstructure
    * 
@@ -108,9 +120,9 @@ public class SuperStructure extends Subsystem {
    * @return
    *    the command group necessary to safely move the superstructure
    */
-  public CommandGroup moveSuperstructureElevator(double height){
+  public CommandGroup moveSuperstructureElevator(Length height){
     updateState();
-    return this.moveSuperstructureCombo(height, mElbow.getCurrentState(), mWrist.getCurrentState());
+    return this.moveSuperstructureCombo(new ElevatorState(height), mElbow.getCurrentState(), mWrist.getCurrentState());
   }
 
   /**
@@ -122,9 +134,9 @@ public class SuperStructure extends Subsystem {
    * @return
    *    the command group necessary to safely move the superstructure
    */
-  public CommandGroup moveSuperstructureAngle(IntakeAngle angle, AutoMotion.mHeldPiece piece){
+  public CommandGroup moveSuperstructureAngle(IntakeAngle intakeState, AutoMotion.HeldPiece piece){
     updateState();
-    return this.moveSuperstructureCombo(mCurrentState.getElevatorHeight(), angle, piece);
+    return this.moveSuperstructureCombo( mCurrentState.elevator, intakeState );
   }
 
   @Override
@@ -154,10 +166,10 @@ public class SuperStructure extends Subsystem {
   */
 
   public SuperStructureState updateState() {
-    mCurrentState = new SuperStructureState(
+    this.mCurrentState = new SuperStructureState(
+      elevator.getCurrentState(mCurrentState.elevator),
       mWrist.getCurrentState(),
-      mElbow.getCurrentState(),
-      elevator.getCurrentState()
+      mElbow.getCurrentState()
     );
     return mCurrentState;
   }
@@ -174,18 +186,20 @@ public class SuperStructure extends Subsystem {
   public void periodic() {
     System.out.println("hullo there");
   }
-  
+
+  // TODO check this math coz you might be able to make it more efficient
   public double calculateWristTorque(SuperStructureState state) {
-    double x1= (getWrist().kArmLength.getValue()) * state.wrist.angle.getCos();
+    double x1= (getWrist().kArmLength.getValue()) * state.jointAngles.getWrist().angle.getCos();
     double torqueGravity = (getWrist().kArmMass.getValue() * 9.8 * x1);
     double torqueAccel = getWrist().kArmMass.getValue() * state.elevator.acceleration.getValue() * x1;
     double totalTorque = torqueGravity + torqueAccel;
     return totalTorque;
   }
 
+  // TODO check this math coz you might be able to make it more efficient
   public double calculateElbowTorques(SuperStructureState state, double wristTorque) {
-    double x2= (getElbow().kArmLength.getValue()) * state.wrist.angle.getCos();
-    double torqueGravity = (getElbow().kArmMass.getValue() * 9.8 * x2);
+    double x2= (getElbow().kArmLength.getValue()) * state.jointAngles.getWrist().angle.getCos();
+    double torqueGravity = (getElbow().kArmMass.getValue() * 9.8 * x2); 
     double torqueAccel = getElbow().kArmMass.getValue() * state.elevator.acceleration.getValue() * x2;
     double Big = (getElbow().kArmMass.getValue() * getElbow().kArmLength.getValue() * 9.8) + wristTorque;
     return torqueGravity + torqueAccel + Big;

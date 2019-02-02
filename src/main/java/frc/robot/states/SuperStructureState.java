@@ -1,48 +1,75 @@
 package frc.robot.states;
 
 import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
-import frc.robot.commands.auto.AutoMotion.mHeldPiece;
+import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.lib.obj.SuperStructureJoint;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 public class SuperStructureState {
-  public RotatingArmState elbow; // TODO add elevator accleration
-  public RotatingArmState wrist;
+  public IntakeAngle jointAngles;
   public ElevatorState elevator;
-  private mHeldPiece piece = mHeldPiece.NONE; // FIXME because a lowercase first letter breaks syntax highlighting
+  private HeldPiece piece = HeldPiece.NONE; // FIXME because a lowercase first letter breaks syntax highlighting
 
   public SuperStructureState() {
-    this(new RotatingArmState(), new RotatingArmState(), new ElevatorState(), mHeldPiece.NONE);
+    this(new ElevatorState(), new RotatingArmState(), new RotatingArmState(), HeldPiece.NONE);
   }
 
-  public SuperStructureState(RotatingArmState elbowState, RotatingArmState wristState, ElevatorState elevatorState, mHeldPiece heldPiece) {
-    elbow = elbowState;
-    wrist = wristState;
+  public SuperStructureState(ElevatorState elevatorState, RotatingArmState elbowState, RotatingArmState wristState, HeldPiece heldPiece) {
+    jointAngles = new IntakeAngle(elbowState, wristState);
     elevator = elevatorState;
     piece = heldPiece;
   }
 
+  // public SuperStructureState(ElevatorState elevatorState, IntakeAngle intakeState)
+
   public SuperStructureState(ElevatorState elevatorState, RotatingArmState elbowState, RotatingArmState wristState) {
-    elbow = elbowState;
-    wrist = wristState;
+    jointAngles = new IntakeAngle(elbowState, wristState);
     elevator = elevatorState;
-    piece = mHeldPiece.NONE;
+    piece = HeldPiece.NONE;
+  }
+
+  public SuperStructureState(ElevatorState elevatorState, IntakeAngle intakeState) {
+    this(intakeState, elevatorState, HeldPiece.NONE);
+  }
+
+  public SuperStructureState(IntakeAngle angles___, ElevatorState elevatorState, HeldPiece piece__) {
+    jointAngles = angles___;
+    elevator = elevatorState;
+    piece = piece__;
   }
 
   public static SuperStructureState fromOther(SuperStructureState other) {
-    return new SuperStructureState( other.elbow, other.wrist, other.elevator, other.piece );
+    return new SuperStructureState( other.jointAngles, other.elevator, other.piece );
   }
 
-  public mHeldPiece getHeldPiece() {
+  public HeldPiece getHeldPiece() {
     return piece;
   }
 
-  public void setHeldPiece(mHeldPiece new_) {
+  public void setHeldPiece(HeldPiece new_) {
     piece = new_;
+  }
+
+  public Rotation2d getElbowAngle() {
+    return jointAngles.getElbow().angle;
+  }
+
+  public void setElbowAngle(Rotation2d newAngle) {
+    jointAngles.getElbow().setAngle(newAngle);
   }
 
   public Length getElevatorHeight() {
     return elevator.height;
+  }
+
+  public SuperStructureState addElevator(Length delta) {
+    return new SuperStructureState( elevator.add(delta), jointAngles );
+  }
+
+  public IntakeAngle getAngle() {
+    return jointAngles;
   }
 }
  

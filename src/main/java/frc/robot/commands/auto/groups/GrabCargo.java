@@ -1,5 +1,7 @@
 package frc.robot.commands.auto.groups;
 
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
 
@@ -8,7 +10,7 @@ import frc.robot.Robot;
  */
 public class GrabCargo extends CommandGroup{
     public GrabCargo() {
-        addSequential(Robot.superstructure.moveSuperstructureElevator(0));
+        addSequential(Robot.superstructure.moveSuperstructureElevator(LengthKt.getInch(0)));
         // TODO intake cargo
     }
 
