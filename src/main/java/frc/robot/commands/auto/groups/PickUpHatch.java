@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.actions.DriveDistance;
 import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
-import frc.robot.commands.subsystems.intake.OpenClamp;
+import frc.robot.commands.subsystems.intake.GrabHatch;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 
@@ -12,8 +12,8 @@ import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
  * runs a series of commands to pick up a hatch from the loading station
  * FIXME test irl
  */
-public class GrabHatch extends CommandGroup{
-    public GrabHatch() {
+public class PickUpHatch extends CommandGroup{
+    public PickUpHatch() {
         /* The plan right now is to lower the elevator, drive to
          a distance from the loading station based on the Lidar, 
          move the elevator up while intaking and once up to a 
@@ -24,7 +24,7 @@ public class GrabHatch extends CommandGroup{
         // rams into the loading station (hopefully)
         addSequential(new FollowVisionTarget(0.6, 100, 20)); //FIXME percent frame check
         // grabs the hatch by opening the clamp
-        addSequential(new OpenClamp());
+        addSequential(new GrabHatch());
         // lifts the hatch out of the brushes //TODO is this necessary?
         addSequential(new SetElevatorHeight(RobotConfig.auto.fieldPositions.cargo_ship_hatch+10, false));
         // moves the robot back slightly

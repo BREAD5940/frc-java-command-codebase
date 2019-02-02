@@ -1,11 +1,11 @@
 package frc.robot.commands.auto;
 
-import frc.robot.commands.auto.actions.AutoIntake;
+import frc.robot.commands.subsystems.intake.AutoIntake;
 import frc.robot.commands.auto.actions.DriveDistance;
 import frc.robot.commands.auto.actions.SetIntakeMode;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.GrabCargo;
-import frc.robot.commands.auto.groups.GrabHatch;
+import frc.robot.commands.auto.groups.PickUpHatch;
 import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
@@ -95,7 +95,7 @@ public class AutoMotion {
       // Set the intake to hatch mode
       toReturn.addSequential(new SetIntakeMode(mHeldPiece.HATCH));
       // Predefined grab command
-      toReturn.addSequential(new GrabHatch());
+      toReturn.addSequential(new PickUpHatch());
     }
     return toReturn;
   }
