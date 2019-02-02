@@ -29,7 +29,8 @@ public class SuperstructurePlanner{
   
   static final Length minUnCrashHeight=LengthKt.getInch(5); //min elevator height + how much intake is below the bottom of the elevator
 
-  static final Length crossbarHeight = LengthKt.getInch(20);
+  static final Length crossbarMinHeight = LengthKt.getInch(20);
+  static final Length crossbarMaxHeight = LengthKt.getInch(24);
 
   static final Length maxHeight = RobotConfig.elevator.elevator_maximum_height;
 
@@ -55,7 +56,7 @@ public class SuperstructurePlanner{
     boolean defAngle=false;
 
     if(iPosition.presets.contains(goalState.getAngle())){
-      defAngle=true;
+      defAngle=true; // TODO como se dice "what is this" en jython?
     }
 
     if(goalState==currentState){

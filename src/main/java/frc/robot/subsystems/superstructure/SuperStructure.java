@@ -5,6 +5,7 @@ import java.util.Arrays;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 
+import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
@@ -16,6 +17,7 @@ import frc.robot.commands.auto.AutoMotion;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.PIDSettings.FeedbackMode;
 import frc.robot.lib.SuperstructurePlanner;
+import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.Intake;
@@ -70,6 +72,15 @@ public class SuperStructure extends Subsystem {
 
 
   /**
+   * Move the superstructure based on a height, intake angle and wrist angle
+   * TODO how do we go from held game piece to target angle?
+   */
+  public CommandGroup moveSuperstructureCombo(ElevatorState elevator, RotatingArmState elbow, 
+          RotatingArmState wrist) {
+    return moveSuperstructureCombo(new SuperStructureState(elevator, elbow, wrist));
+  }
+
+  /**
    * move a combination of the sub-subsystems of the superstructure
    * 
    * @param mReqState_ the state that we want the superstructure to end up in
@@ -80,8 +91,8 @@ public class SuperStructure extends Subsystem {
   public CommandGroup moveSuperstructureCombo(SuperStructureState mRequState_){
     mCurrentState = updateState();
 
-    // TODO the wrist angle is mega broken
-    mReqState = SuperStructureState.fromOther(mRequState_); // FIXME by making me an instance of superstructure state based on called params, the wrist is bork
+    // TODO the wrist angle is mega broken because it's solely based on the currently held game piece
+    mReqState = mRequState_; 
     
     if(!(mReqState==mCurrentState)){
       this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
@@ -99,7 +110,7 @@ public class SuperStructure extends Subsystem {
    */
   public CommandGroup moveSuperstructureElevator(double height){
     updateState();
-    return this.moveSuperstructureCombo(height, mCurrentState.getAngle(), mCurrentState.getHeldPiece());
+    return this.moveSuperstructureCombo(height, mElbow.getCurrentState(), mWrist.getCurrentState());
   }
 
   /**
@@ -112,7 +123,7 @@ public class SuperStructure extends Subsystem {
    *    the command group necessary to safely move the superstructure
    */
   public CommandGroup moveSuperstructureAngle(IntakeAngle angle, AutoMotion.mHeldPiece piece){
-    mCurrentState.updateToCurrent();  
+    updateState();
     return this.moveSuperstructureCombo(mCurrentState.getElevatorHeight(), angle, piece);
   }
 

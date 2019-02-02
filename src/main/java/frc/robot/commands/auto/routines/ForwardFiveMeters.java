@@ -25,10 +25,10 @@ public class ForwardFiveMeters extends CommandGroup {
     }
 
     TimedTrajectory<Pose2dWithCurvature> trajectory = Trajectories.forwardFiveMeters;
-
+    
     addSequential(new SetInitialOdometry(trajectory));
     
-    addSequential(Robot.drivetrain.followTrajectory(trajectory, TrajectoryTrackerMode.FEEDFORWARD, true) );
+    addSequential(Robot.drivetrain.followTrajectory(trajectory, TrajectoryTrackerMode.RAMSETE, true) );
 
     // Add Commands here:
     // e.g. addSequential(new Command1());

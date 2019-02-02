@@ -1,9 +1,5 @@
 package frc.robot.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.lib.PIDSettings;
-import frc.robot.lib.TerriblePID;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,6 +18,8 @@ import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
+
+import frc.robot.lib.PIDSettings;
 
 public class RotatingJoint /*extends Subsystem*/ {
 
@@ -103,7 +101,6 @@ public class RotatingJoint /*extends Subsystem*/ {
    * Set the talon as a target angle and feedforward throttle percent
    */
   public void setPositionArbitraryFeedForward(Rotation2d setpoint, double feedForwardPercent) {
-    double rawUnits = mRotationModel.fromModel(setpoint).getValue();
     getMaster().set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
   }
 
