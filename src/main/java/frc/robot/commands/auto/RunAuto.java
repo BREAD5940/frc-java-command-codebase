@@ -8,6 +8,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.commands.auto.AutoCombo.mCurrentLocation;
 import frc.robot.commands.auto.AutoMotion.mGoalHeight;
 import frc.robot.commands.auto.AutoMotion.mGoalType;
 
@@ -16,22 +17,37 @@ import frc.robot.commands.auto.AutoMotion.mGoalType;
  * Selects and runs an auto command group
  */
 public class RunAuto extends Command {
+
   public mGoalType goal;
   public mGoalHeight height;
   public AutoMotion motion;
+  public AutoCombo cMotion;
+  public mCurrentLocation location;
+  public boolean isDrive;
+
 
   public RunAuto(mGoalType goal, mGoalHeight height) {
     // Use requires() here to declare subsystem dependencies
     this.goal = goal;
     this.height = height;
-    
+    this.isDrive = false;
+  }
 
+  public RunAuto(mGoalType goal, mGoalHeight height,mCurrentLocation location){
+    this(goal, height);
+    this.location = location;
+    this.isDrive = true;
   }
 
   @Override
   protected void initialize() {
-    motion = new AutoMotion(height, goal);
-    motion.getBigCommandGroup().start();
+    if(!isDrive){
+      motion = new AutoMotion(height, goal);
+      motion.getBigCommandGroup().start();
+    }else{
+      cMotion = new AutoCombo(height, goal, location);
+      cMotion.getBigCommandGroup().start();
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
