@@ -1,8 +1,13 @@
 package frc.robot.commands.auto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import edu.wpi.first.wpilibj.command.Command;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import frc.robot.Robot;
 import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
@@ -19,9 +24,30 @@ public class AutoCombo {
   private CurrentLocation location;
   private GoalLocation goal;
   private AutoCommandGroup mBigCommandGroup;
-  private DrivePlan[] drivePlans ;
+  private ArrayList<DrivePlan> drivePlans;
 
-
+  public static HashMap<String,Pose2d> locations = new HashMap<String,Pose2d>();
+  public static void genLocations(){
+    locations.put("habR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("habM", new Pose2d(LengthKt.getFeet(5.181), LengthKt.getFeet(13.379),Rotation2dKt.getDegree(0.0)));
+    locations.put("habL", new Pose2d(LengthKt.getFeet(5.141), LengthKt.getFeet(9.508),Rotation2dKt.getDegree(0.0)));
+    locations.put("loadingL", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("loadingR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("cargoLL", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("cargoLM", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("cargoLR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("cargoML", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("cargoMR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("cargoRL", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("cargoRM", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("cargoRR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("rocketLL", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("rocketLM", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("rocketLR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("rocketRL", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("rocketRM", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("rocketRR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+  }
   public enum CurrentLocation{
     HAB_1R, HAB_1M, HAB_1L, HAB_2R, HAB_2L, HAB_3, LS_R, LS_L
   }
@@ -44,9 +70,11 @@ public class AutoCombo {
    */
 
   public AutoCombo (GoalHeight gHeight, GoalType gType, CurrentLocation loc, GoalLocation goal){
+
     this.motion = new AutoMotion(gHeight, gType);
     this.location = loc;
     this.goal = goal;
+    genDrivePlans();
     this.mBigCommandGroup.addSequential(selectDrivePlan());
     this.mBigCommandGroup.addSequential(this.motion.getBigCommandGroup());
   }
@@ -54,13 +82,17 @@ public class AutoCombo {
   private Command selectDrivePlan(){
     ArrayList<DrivePlan> selectedDPs = new ArrayList<DrivePlan>();
     DrivePlan selected;
-    for (int i=0; i<drivePlans.length; i++){
-      if (drivePlans[i].goal==this.goal && drivePlans[i].start==this.location){
-        selectedDPs.add(drivePlans[i]);
+    for (int i=0; i<drivePlans.size(); i++){
+      if (drivePlans.get(i).goal==this.goal && drivePlans.get(i).start==this.location){
+        selectedDPs.add(drivePlans.get(i));
       }
     }
     //this just uses the first dp in the array TODO do we want to do some sort of additional selection
     return Robot.drivetrain.followTrajectory(selectedDPs.get(0).trajectory, TrajectoryTrackerMode.FEEDFORWARD, true);
+  }
+
+  public void genDrivePlans(){
+    drivePlans.add(new DrivePlan(Trajectories.traject.get("frontRightCargo"),))
   }
 
   // id functions
