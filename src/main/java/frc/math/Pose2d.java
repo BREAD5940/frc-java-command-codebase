@@ -213,7 +213,7 @@ public class Pose2d {
     /**
      * Do twist interpolation of this pose assuming constant curvature.
      */
-    
+
     public Pose2d interpolate(final Pose2d other, double x) {
         if (x <= 0) {
             return new Pose2d(this);

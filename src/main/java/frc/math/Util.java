@@ -1,5 +1,7 @@
 package frc.math;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 /**
@@ -24,6 +26,10 @@ public class Util {
 
     public static double limit(double v, double min, double max) {
         return Math.min(max, Math.max(min, v));
+    }
+
+    public static double deadband(double v, double deadband) {
+        return (Math.abs(v) < deadband) ? 0 : v;
     }
 
     public static double interpolate(double a, double b, double x) {
@@ -61,4 +67,21 @@ public class Util {
         }
         return result;
     }
+
+    public static double toFeet(double meters) {
+        return meters * 3.28084;
+    }
+
+    public static double toMeters(double feet) {
+        return feet * 0.3048;
+    }
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+     
+        BigDecimal bd = new BigDecimal(Double.toString(value));
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
+
 }

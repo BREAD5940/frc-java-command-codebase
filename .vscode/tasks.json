@@ -20,6 +20,22 @@
       "problemMatcher": []
     },
     {
+      "label": "Run visualizer",
+      "type": "shell",
+      "command": "python ./src/main/PurePersuitVisualizer/visualizer.py",
+      "windows": {
+        "command": "python .\\src\\main\\PurePersuitVisualizer\\visualizer.py",
+      },
+      "linux": {
+        "command": "python src/main/PurePursuitVisualizer/visualizer.py",
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Build and deploy",
       "type": "shell",
       "command": "./buildDeploy.sh",

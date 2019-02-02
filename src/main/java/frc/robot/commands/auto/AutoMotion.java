@@ -23,7 +23,7 @@ public class AutoMotion {
   public enum mHeldPiece{
     HATCH, CARGO, NONE
   }
-  
+
   /**
    * different heights of goals.
    * LOW: the lowest level of the rocket and through the hatch of the cargo ship;
@@ -99,7 +99,7 @@ public class AutoMotion {
     }
     return toReturn;
   }
-  
+
   /**
    * Generates commands to place a piece based on the parameters of the current AutoMotion
    * @return
@@ -140,7 +140,7 @@ public class AutoMotion {
   }
 
   /**
-   * selects the correct ElevatorPreset from the Elevator subsystems enum based on 
+   * selects the correct ElevatorPreset from the Elevator subsystems enum based on
    * the mGoalHeight, the mGoalType, and the mHeldPiece
    */
   private ElevatorPresets getElevatorPreset(){
@@ -177,7 +177,7 @@ public class AutoMotion {
   // id functions
 
   /**
-   * 
+   *
    * @return
    *  the mGoalHeight of the AutoMotion
    */

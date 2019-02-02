@@ -65,7 +65,7 @@ public class DriveTrajectoryPathfinder extends Command {
 
     mModifier = new TankModifier(mSourceTrajectory);
 
-    mModifier.modify(RobotConfig.driveTrain.drivetrain_width);    
+    mModifier.modify(RobotConfig.driveTrain.wheel_base);    
     mLeftTrajectory = mModifier.getLeftTrajectory();
     mRightTrajectory = mModifier.getRightTrajectory();
     
@@ -122,8 +122,8 @@ public class DriveTrajectoryPathfinder extends Command {
     mRightKa = 0; //RobotConfig.driveTrain.left_talons.velocity_ka_high;
     // }
 
-    mLeftStartDistance = Robot.drivetrain.getLeftDistance();
-    mRightStartDistance = Robot.drivetrain.getRightDistance();
+    mLeftStartDistance = Robot.drivetrain.getLeft().getFeet();
+    mRightStartDistance = Robot.drivetrain.getRight().getFeet();
 
     mLeftFollower = new DistanceFollower(mLeftTrajectory);
     mRightFollower = new DistanceFollower(mRightTrajectory);
@@ -137,15 +137,15 @@ public class DriveTrajectoryPathfinder extends Command {
   @Override
   protected void execute() {
     try {
-      mLeftOutput = mLeftFollower.calculate(Robot.drivetrain.getLeftDistance() - mLeftStartDistance) + RobotConfig.driveTrain.left_static_kv;
-      mRightOutput = mRightFollower.calculate(Robot.drivetrain.getRightDistance() - mRightStartDistance) + RobotConfig.driveTrain.right_static_kv;
+      mLeftOutput = mLeftFollower.calculate(Robot.drivetrain.getLeft().getFeet() - mLeftStartDistance) + RobotConfig.driveTrain.left_static_kv;
+      mRightOutput = mRightFollower.calculate(Robot.drivetrain.getRight().getFeet() - mRightStartDistance) + RobotConfig.driveTrain.right_static_kv;
     } catch (ArrayIndexOutOfBoundsException e) {
       mLeftOutput = 0;
       mRightOutput = 0;
     }
     
     mDesiredHeading = Pathfinder.r2d(mLeftFollower.getHeading());
-    mAngularError = Pathfinder.boundHalfDegrees(mDesiredHeading - Robot.gyro.getAngle());
+    mAngularError = Pathfinder.boundHalfDegrees(mDesiredHeading - Robot.drivetrain.getGyro());
         
     // TODO make sure that the sign is the correct direction, it should be!
     mTurn = mAngularError * RobotConfig.auto.pathfinder.gyro_correct_kp;
@@ -157,13 +157,13 @@ public class DriveTrajectoryPathfinder extends Command {
       mLeftFollower.getSegment().velocity, 
       mLeftFollower.getSegment().position, 
       mLeftFollower.getSegment().heading,
-      Robot.drivetrain.getLeftDistance()));
+      Robot.drivetrain.getLeft().getFeet()));
     SmartDashboard.putString("Right target pathfinder data: ", 
       String.format("Velocity (position) heading (current): %s (%s) %s (%s)", 
       mRightFollower.getSegment().velocity, 
       mRightFollower.getSegment().position, 
       mRightFollower.getSegment().heading,
-      Robot.drivetrain.getRightDistance()));
+      Robot.drivetrain.getRight().getFeet()));
 
   }
 
@@ -177,7 +177,7 @@ public class DriveTrajectoryPathfinder extends Command {
   @Override
   protected void end() {
     // Robot.drive.setPowerZero();
-    Robot.drivetrain.setSpeeds(0, 0);
+    Robot.drivetrain.stop();
   }
 
   // Called when another command which requires one or more of the same

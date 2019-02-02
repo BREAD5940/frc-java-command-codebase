@@ -83,7 +83,7 @@ public class Elevator extends Subsystem {
     this.elevator_talon.config_kI(0, RobotConfig.elevator.elevatorTalon.elevator_position_ki, 30);
     this.elevator_talon.config_kD(0, RobotConfig.elevator.elevatorTalon.elevator_position_kd, 30);
     this.elevator_talon.config_kF(0, RobotConfig.elevator.elevatorTalon.elevator_position_kf, 30);
-    setHeight(Robot.elevator.getElevatorAxisInches());
+    // setHeight(Robot.elevator.getElevatorAxisInches());
   }
 
   /**
