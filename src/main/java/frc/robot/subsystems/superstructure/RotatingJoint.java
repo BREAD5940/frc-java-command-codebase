@@ -29,7 +29,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 
   public Mass kArmMass;
 
-  public double kTorque;
+  public double kTorque = 0;
 
   public double kMotorResistance = 0.0896;
 
@@ -51,8 +51,8 @@ public class RotatingJoint /*extends Subsystem*/ {
    * @param motorPort on the CAN Bus (for single talon arms)
    * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
    */
-  public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor, Length armLength, Mass mass, double kTorque) {
-    this(settings, Arrays.asList(motorPort), sensor, armLength, mass, kTorque);
+  public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor, Length armLength, Mass mass) {
+    this(settings, Arrays.asList(motorPort), sensor, armLength, mass);
   }
 
   /**
@@ -63,13 +63,12 @@ public class RotatingJoint /*extends Subsystem*/ {
    * @param ports of talon CAN ports as a List
    * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
    */
-  public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, Length armLength, Mass mass, double kTorque_) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
+  public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, Length armLength, Mass armMass) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
 
     kArmLength = armLength;
 
-    kArmMass = mass;
+    kArmMass = armMass;
 
-    kTorque = kTorque_;
 
     NativeUnit unitsPerRotation = NativeUnitKt.getSTU(0);
 
@@ -104,6 +103,14 @@ public class RotatingJoint /*extends Subsystem*/ {
     getMaster().set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
   }
 
+  /**
+   * Calculate the voltage based on a torque and velocity. Depreciated in favor of the 254 dcmotortransmission class
+   * @deprecated
+   * @param torque
+   * @param anglularVelocity
+   * @return
+   */
+  @Deprecated
   public double calculateVoltage(double torque, Velocity<Rotation2d> anglularVelocity) {
     double tStatic = torque * kMotorResistance / kTorque;
     double tVelocity = kTorque * anglularVelocity.getValue(); // TODO make sure this is rad/s
