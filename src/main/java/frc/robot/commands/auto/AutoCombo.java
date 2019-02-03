@@ -60,7 +60,11 @@ public class AutoCombo {
       }
     }
     //this just uses the first dp in the array TODO do we want to do some sort of additional selection
-    return Robot.drivetrain.followTrajectory(selectedDPs.get(0).trajectory, TrajectoryTrackerMode.FEEDFORWARD, true);
+
+    // Am I reading this wrong? or right now selectDrivePlan() only returns one command? and then getBigCommandGroup returns only the
+    // stuff necessary to place? Two hatch auto will have like a tone of stuff - drive -> place -> drive -> do a 180 while moving -> drive -> pickup hatch -> drive -> spin around while moving -> drive -> place
+    // just a note to myself 
+    return Robot.drivetrain.followTrajectory(selectedDPs.get(0).trajectory, TrajectoryTrackerMode.RAMSETE, true);
   }
 
   // id functions
