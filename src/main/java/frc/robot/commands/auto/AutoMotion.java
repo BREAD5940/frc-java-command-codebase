@@ -1,6 +1,7 @@
 package frc.robot.commands.auto;
 
 import frc.robot.commands.subsystems.intake.AutoIntake;
+import frc.robot.subsystems.superstructure.SuperStructure.ElevatorPresets;
 import frc.robot.commands.auto.actions.DriveDistance;
 import frc.robot.commands.auto.actions.SetIntakeMode;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
@@ -8,7 +9,6 @@ import frc.robot.commands.auto.groups.GrabCargo;
 import frc.robot.commands.auto.groups.PickUpHatch;
 import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
-import frc.robot.subsystems.Elevator.ElevatorPresets;
 
 /**
  * Creates a command group for a specific automatic motion. Input a type of goal

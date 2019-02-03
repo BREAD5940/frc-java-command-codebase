@@ -106,17 +106,19 @@ public class SuperstructurePlanner{
     }
 
     //checks if the elevator will move past the crossbar
-    if(intakeAtRisk&&(goalState.getElevatorHeight().getValue() >= crossbarHeight.getValue() &&currentState.getElevatorHeight()<=crossbarHeight)
-        || (goalState.getElevatorHeight()<=crossbarHeight&&currentState.getElevatorHeight()>=crossbarHeight)){
+    if(intakeAtRisk&&(goalState.getElevatorHeight().getValue() >= crossbarMaxHeight.getValue() &&currentState.getElevatorHeight().getValue()<=crossbarMinHeight.getValue())
+        || (goalState.getElevatorHeight().getValue()<=crossbarMinHeight.getValue()&&currentState.getElevatorHeight().getValue()>=crossbarMaxHeight.getValue())){
       System.out.println("MOTION UNSAFE -- Intake will hit crossbar. Setting to default intake position for movement.");
       errorCount++;
-      toReturn.addSequential(new SetWrist(iPosition.CARGO_GRAB)); //Keeps intake outside the elevator so it doesn't hit the crossbar
+      // toReturn.addSequential(new SetWrist(iPosition.CARGO_GRAB)); //Keeps intake outside the elevator so it doesn't hit the crossbar
+      // FIXME change SetWrist to something more reasonable like a superstructure command
+      // TODO even if the elevator now moves to just above the crossbar, a intake flip will whack the wrist. Would a commanded move such as that move the elevator up, flip, then back down?
     }else{
       intakeAtRisk=false;
     }
     
     //checks if the elevator will move low enough to crash the intake
-    if (goalState.getElevatorHeight()<=minUnCrashHeight&&intakeCrashable){
+    if (goalState.getElevatorHeight().getValue()<=minUnCrashHeight.getValue()&&intakeCrashable){
       System.out.println("MOTION UNSAFE -- Intake will hit ground. Setting to default intake position.");
       errorCount++;
       corrCount++;
@@ -128,7 +130,8 @@ public class SuperstructurePlanner{
     //move to corrected state
     // toReturn.addSequential(new SetElevatorHeight(goalState.getElevatorHeight())); //FIXME so this makes the whole thing die
     currentState.elevator.setHeight(goalState.elevator.getHeight());
-    toReturn.addSequential(new SetWrist(goalState.getAngle()));
+    // toReturn.addSequential(new SetWrist(goalState.getAngle()));
+    // FIXME change SetWrist to something more reasonable like a superstructure command
     currentState.setAngle(goalState.getAngle());
 
     System.out.println("MOTION COMPLETED -- "+Integer.valueOf(errorCount)+" error(s) and "
