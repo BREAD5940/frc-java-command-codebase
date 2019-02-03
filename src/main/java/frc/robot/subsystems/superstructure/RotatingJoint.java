@@ -14,6 +14,7 @@ import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
@@ -140,6 +141,10 @@ public class RotatingJoint /*extends Subsystem*/ {
     return getMaster().getSensorPosition();
   }
 
+  public Velocity<Rotation2d> getAngularVelocity() {
+    return getMaster().getSensorVelocity();
+  }
+
   /**
    * Set the position of the sensor to the given Rotation2d pos_
    * @param pos_ of the sensor as a Rotation2d
@@ -149,13 +154,17 @@ public class RotatingJoint /*extends Subsystem*/ {
   }
 
   public static class RotatingArmState {
-    public Rotation2d angle = Rotation2dKt.getDegree(0);
+    public Rotation2d angle;
+    public Velocity<Rotation2d> velocity;
     // public double feedForwardVoltage = 0;
     // public double pidOutput = 0;
-    public RotatingArmState() {this(Rotation2dKt.getDegree(0)); }
+    public RotatingArmState() {
+      this(Rotation2dKt.getDegree(0), VelocityKt.getVelocity(Rotation2dKt.getDegree(0)));
+    }
 
-    public RotatingArmState(Rotation2d angle) {
-      this.angle = angle;
+    public RotatingArmState(Rotation2d angle_, Velocity<Rotation2d> velocity_) {
+      this.angle = angle_;
+      this.velocity = velocity_;
       // this.feedForwardVoltage = feedForwardVoltage;
     }
 
@@ -171,7 +180,7 @@ public class RotatingJoint /*extends Subsystem*/ {
   }
 
   public RotatingArmState getCurrentState() {
-    return new RotatingArmState(getRotation());
+    return new RotatingArmState(getRotation(), getAngularVelocity());
   }
 
   public double getDegrees() {

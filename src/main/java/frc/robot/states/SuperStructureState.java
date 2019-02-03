@@ -68,6 +68,14 @@ public class SuperStructureState {
     return elevator;
   }
 
+  public RotatingArmState getWrist() {
+    return jointAngles.getWrist();
+  }
+
+  public RotatingArmState getElbow() {
+    return jointAngles.getElbow();
+  }
+
   public SuperStructureState addElevator(Length delta) {
     return new SuperStructureState( elevator.add(delta), jointAngles );
   }
