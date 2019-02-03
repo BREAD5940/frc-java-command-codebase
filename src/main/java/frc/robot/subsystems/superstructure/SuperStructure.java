@@ -5,20 +5,20 @@ import java.util.Arrays;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.team254.lib.physics.DCMotorTransmission;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.MassKt;
-import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Constants;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.PIDSettings.FeedbackMode;
-import frc.robot.lib.obj.InvertSettings;
 import frc.robot.lib.SuperstructurePlanner;
+import frc.robot.lib.obj.InvertSettings;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
@@ -129,7 +129,7 @@ public class SuperStructure extends Subsystem {
     // TODO the wrist angle is mega broken because it's solely based on the currently held game piece
     mReqState = mRequState_; 
     
-    if(!(mReqState==mCurrentState)){
+    if(!(mReqState==mCurrentState)){ // Redundent check?
       this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
     }
 
@@ -207,24 +207,45 @@ public class SuperStructure extends Subsystem {
 
   @Override
   public void periodic() {
-    System.out.println("hullo there");
+    // this calculates gravity feed forwards based off of the current state and requested state
+    // make sure to keep these up to date!!!
+    this.mCurrentState = updateState();
+    double mCurrentWristTorque = calculateWristTorque(this.mCurrentState);
+    double mCurrentElbowTorque = calculateElbowTorques(this.mCurrentState, mCurrentWristTorque);
   }
 
-  // TODO check this math coz you might be able to make it more efficient
+  /**
+   * Calculate the torque on the wrist due to gravity for a given state
+   * @param state the state of the superstructure 
+   * @return torque in newton meters on the wrist
+   */
   public double calculateWristTorque(SuperStructureState state) {
-    double x1= (getWrist().kArmLength.getValue()) * state.jointAngles.getWrist().angle.getCos();
+    /* The distance from the pivot of the wrist to the center of mass */
+    double x1 = (getWrist().kArmLength.getValue()) * state.jointAngles.getWrist().angle.getCos();
+    /* The torque due to gravity  */
     double torqueGravity = (getWrist().kArmMass.getValue() * 9.8 * x1);
+    /* The torque on the wrist due to acceleration of the elevator (assuming a rigid elbow) */
     double torqueAccel = getWrist().kArmMass.getValue() * state.elevator.acceleration.getValue() * x1;
-    double totalTorque = torqueGravity + torqueAccel;
-    return totalTorque;
+
+    return torqueGravity + torqueAccel;
   }
 
-  // TODO check this math coz you might be able to make it more efficient
+  /**
+   * Calculate the torque on the wrist due to gravity for a given state
+   * @param state the state of the superstructure 
+   * @param wristTorque the torque on the wrist
+   * @return torque in newton meters on the wrist
+   */
   public double calculateElbowTorques(SuperStructureState state, double wristTorque) {
+    /* The distance from the pivot to the center of mass of the elbow */
     double x2= (getElbow().kArmLength.getValue()) * state.jointAngles.getWrist().angle.getCos();
-    double torqueGravity = (getElbow().kArmMass.getValue() * 9.8 * x2); 
+    /* The torque due to gravity  */
+    double torqueGravity = (getElbow().kArmMass.getValue() * 9.8 * x2); // m_2 * g * x_2 
+    /* The torque doe to acceleration on the wrist */
     double torqueAccel = getElbow().kArmMass.getValue() * state.elevator.acceleration.getValue() * x2;
-    double Big = (getElbow().kArmMass.getValue() * getElbow().kArmLength.getValue() * 9.8) + wristTorque;
-    return torqueGravity + torqueAccel + Big;
+    // m_2 * g * x_2
+    double torqueWrstComponent = (getElbow().kArmMass.getValue() * getElbow().kArmLength.getValue() * 2 /* double the distance from the joint to COM*/ * 9.8);
+
+    return torqueGravity + torqueAccel + torqueWrstComponent + wristTorque;
   }
 }
