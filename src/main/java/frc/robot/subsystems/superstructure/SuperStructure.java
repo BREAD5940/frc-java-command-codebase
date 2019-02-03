@@ -130,10 +130,8 @@ public class SuperStructure extends Subsystem {
    *    the command group necessary to safely move the superstructure
    */
   public CommandGroup moveSuperstructureCombo(SuperStructureState mRequState_){
-    mCurrentState = updateState();
 
-    // TODO the wrist angle is mega broken because it's solely based on the currently held game piece
-    mReqState = mRequState_; 
+    // TODO the wrist angle is mega broken because it's solely based on the currently held game piece 
     
     if(!(mReqState==mCurrentState)){ // Redundent check?
       this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
