@@ -2,6 +2,8 @@ package frc.robot;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Mass;
+import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.Time;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 
@@ -28,5 +30,20 @@ public class Constants {
   public static final double kLat = 0.05f;
   public static final Time kLookaheadTime = TimeUnitsKt.getSecond(0.1);
   public static final Length kMinLookaheadDistance = LengthKt.getFeet(2);
+
+
+  /* Wrist stuff */
+  public static final Length kWristLength = LengthKt.getInch(6); //distance from joint to COM
+  public static final Mass kWristMass = MassKt.getLb(15); 
+  public static final double kWristSpeedPerVolt = 0.21d; // radians/sec/volt
+  public static final double kWristTorquePerVolt = 47.33; // Newton meters per volt, stall
+  public static final double kWristStaticFrictionVoltage = 0; // volts, TODO tune
+
+  /* Elbow stuff */
+  public static final Length kElbowLength = LengthKt.getInch(8); //distance from joint to COM
+  public static final Mass kElbowMass = MassKt.getLb(3); 
+  public static final double kElbowSpeedPerVolt = 0.17d; // radians/sec/volt
+  public static final double kElbowTorquePerVolt = 55; // Newton meters per volt, stall
+  public static final double kElbowStaticFrictionVoltage = 0; // volts, TODO tune
 
 }
