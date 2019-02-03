@@ -26,38 +26,6 @@ public class AutoCombo {
   private AutoCommandGroup mBigCommandGroup;
   private ArrayList<DrivePlan> drivePlans;
 
-  public static HashMap<String,Pose2d> locations = new HashMap<String,Pose2d>();
-  public static void genLocations(){
-    locations.put("habR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-    locations.put("habM", new Pose2d(LengthKt.getFeet(5.181), LengthKt.getFeet(13.379),Rotation2dKt.getDegree(0.0)));
-    locations.put("habL", new Pose2d(LengthKt.getFeet(5.141), LengthKt.getFeet(9.508),Rotation2dKt.getDegree(0.0)));
-    locations.put("loadingL", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-    locations.put("loadingR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-    locations.put("cargoLL", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-    locations.put("cargoLM", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-    locations.put("cargoLR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-    locations.put("cargoML", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-    locations.put("cargoMR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-    locations.put("cargoRL", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-    locations.put("cargoRM", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-    locations.put("cargoRR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-    locations.put("rocketLL", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-    locations.put("rocketLM", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-    locations.put("rocketLR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-    locations.put("rocketRL", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-    locations.put("rocketRM", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-    locations.put("rocketRR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
-  }
-  public enum CurrentLocation{
-    HAB_1R, HAB_1M, HAB_1L, HAB_2R, HAB_2L, HAB_3, LS_R, LS_L
-  }
-
-  //TODO this is a really awful way to do this
-  public enum GoalLocation{
-    CARGO_LL,CARGO_LM,CARGO_LR,CARGO_RL,CARGO_RM,CARGO_RR,CARGO_ML,CARGO_MR,
-    ROCKET_LL,ROCKET_LM,ROCKET_LR,ROCEKT_RL,ROCKET_RM,ROCKET_RR
-  }
-
 
   /**
    * generates the command groups based on the inputted goal height/type

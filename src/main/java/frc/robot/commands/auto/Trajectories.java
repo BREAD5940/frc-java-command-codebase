@@ -1,5 +1,6 @@
 package frc.robot.commands.auto;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,38 @@ import frc.robot.lib.Logger;
 
 @SuppressWarnings("WeakerAccess")
 public class Trajectories {
+
+  public static HashMap<String,Pose2d> locations = new HashMap<String,Pose2d>();
+  public static ArrayList<Pose2d[]> unnecessary = new ArrayList<Pose2d[]>();
+  public static HashMap<Pose2d[],Pose2d> thirdPt = new HashMap<Pose2d[],Pose2d>();
+  public Trajectories(){
+    locations.put("habR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
+    locations.put("habM", new Pose2d(LengthKt.getFeet(5.181), LengthKt.getFeet(13.379),Rotation2dKt.getDegree(0.0)));
+    locations.put("habL", new Pose2d(LengthKt.getFeet(5.141), LengthKt.getFeet(9.508),Rotation2dKt.getDegree(0.0)));
+    locations.put("loadingL", new Pose2d(LengthKt.getFeet(1.286), LengthKt.getFeet(25.021),Rotation2dKt.getDegree(180.0)));
+    locations.put("loadingR", new Pose2d(LengthKt.getFeet(1.325), LengthKt.getFeet(2.336),Rotation2dKt.getDegree(180.0)));
+    locations.put("cargoL1", new Pose2d(LengthKt.getFeet(21.565), LengthKt.getFeet(17.235),Rotation2dKt.getDegree(-90.0)));
+    locations.put("cargoL2", new Pose2d(LengthKt.getFeet(23.532), LengthKt.getFeet(17.235),Rotation2dKt.getDegree(-90.0)));
+    locations.put("cargoL3", new Pose2d(LengthKt.getFeet(25.277), LengthKt.getFeet(17.235),Rotation2dKt.getDegree(-90.0)));
+    locations.put("cargoML", new Pose2d(LengthKt.getFeet(17.101), LengthKt.getFeet(14.338),Rotation2dKt.getDegree(0.0)));
+    locations.put("cargoMR", new Pose2d(LengthKt.getFeet(17.066), LengthKt.getFeet(12.653),Rotation2dKt.getDegree(0.0)));
+    locations.put("cargoR1", new Pose2d(LengthKt.getFeet(21.565), LengthKt.getFeet(9.898),Rotation2dKt.getDegree(90.0)));
+    locations.put("cargoR2", new Pose2d(LengthKt.getFeet(23.532), LengthKt.getFeet(9.898),Rotation2dKt.getDegree(90.0)));
+    locations.put("cargoR3", new Pose2d(LengthKt.getFeet(25.277), LengthKt.getFeet(9.898),Rotation2dKt.getDegree(90.0)));
+    locations.put("rocketL1", new Pose2d(LengthKt.getFeet(16.745), LengthKt.getFeet(24.797),Rotation2dKt.getDegree(28.0)));
+    locations.put("rocketL2", new Pose2d(LengthKt.getFeet(18.962), LengthKt.getFeet(23.487),Rotation2dKt.getDegree(90.0)));
+    locations.put("rocketL3", new Pose2d(LengthKt.getFeet(21.386), LengthKt.getFeet(24.872),Rotation2dKt.getDegree(151.0)));
+    locations.put("rocketR1", new Pose2d(LengthKt.getFeet(16.745), LengthKt.getFeet(2.261),Rotation2dKt.getDegree(-28.0)));
+    locations.put("rocketR2", new Pose2d(LengthKt.getFeet(18.962), LengthKt.getFeet(3.721),Rotation2dKt.getDegree(-90.0)));
+    locations.put("rocketR3", new Pose2d(LengthKt.getFeet(21.386), LengthKt.getFeet(2.261),Rotation2dKt.getDegree(-151.0)));
+    locations.put("depotLF", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(20.517),Rotation2dKt.getDegree(180)));
+    locations.put("depotLB", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(20.517),Rotation2dKt.getDegree(-180)));
+    locations.put("depotRF", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(6.107),Rotation2dKt.getDegree(180)));
+    locations.put("depotLB", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(6.107),Rotation2dKt.getDegree(-180)));
+    
+
+    //put combos of locations.get()s and their 3rd points
+  }
 
   public static Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
   public static Velocity<Length> kDefaultEndVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
