@@ -215,9 +215,20 @@ public class SuperStructure extends Subsystem {
   public void periodic() {
     // this calculates gravity feed forwards based off of the current state and requested state
     // make sure to keep these up to date!!!
-    this.mCurrentState = updateState();
-    double mCurrentWristTorque = calculateWristTorque(this.mCurrentState);
-    double mCurrentElbowTorque = calculateElbowTorques(this.mCurrentState, mCurrentWristTorque);
+    updateState();
+
+    double mCurrentWristTorque = calculateWristTorque(this.mCurrentState); // torque due to gravity and elevator acceleration, newton meters
+    double mCurrentElbowTorque = calculateElbowTorques(this.mCurrentState, mCurrentWristTorque); // torque due to gravity and elevator acceleration, newton meters
+
+    double wristVoltageGravity = kWristTransmission.getVoltageForTorque(this.mCurrentState.getWrist().velocity.getValue(), mCurrentWristTorque); 
+    double elbowVoltageGravity = kWristTransmission.getVoltageForTorque(this.mCurrentState.getElbow().velocity.getValue(), mCurrentElbowTorque); 
+
+    // TODO velocity planning? or just let talon PID figure itself out
+
+    // TODO is mReqState up to date?
+    getWrist().setPositionArbitraryFeedForward(mReqState.getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
+    getElbow().setPositionArbitraryFeedForward(mReqState.getElbow().angle /* the elbow angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
+
   }
 
   /**
