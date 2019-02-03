@@ -32,23 +32,6 @@ public class RobotConfig {
     public static final double throttle_minimum_value = 0; // TODO fix elevator minimum height!
     public static final double throttle_maximum_value = 1; // TODO fix elevator maximum height
   }
-
-  /**
-   * Superstructure constants
-   */
-  public class Superstructure{
-    //TODO get accurate values
-    public static final double minElevatorHeight = 0;
-    public static final double minWrist1Angle = 0; //TODO degrees or radians?
-    public static final double minWrist2Angle = 0;
-
-    // TODO get accurate values
-    public static final double maxElevatorHeight = 70;
-    public static final double maxWrist1Angle = 90;
-    public static final double maxWrist2Angle = 90;
-
-    
-  }
   
   public class wrist {
     /**
@@ -202,7 +185,7 @@ public class RobotConfig {
     public static class fieldPositions {
       // Positions of objects on the field (ports, etc.) in inches. distances are to the center of the object
       // unless otherwise indicated
-      // TODO check that these values are accurate (currently taken from the game manual)
+      // FIXME change these values to be the distance the elevator has to go to have the intake be at the center of the object
       
       public static final Length low_rocket_port = LengthKt.getInch(27.5);
       public static final Length middle_rocket_port = LengthKt.getInch(55.5);

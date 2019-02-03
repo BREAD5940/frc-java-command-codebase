@@ -11,7 +11,7 @@ public class GrabHatch extends Command {
   double demand, runtime;
 
   public GrabHatch() {
-
+    //TODO do we perhaps want this to do something?
   }
 
   // Called just before this Command runs the first time

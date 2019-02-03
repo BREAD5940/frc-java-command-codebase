@@ -1,29 +1,26 @@
 package frc.robot.commands.auto;
 
-import java.util.ArrayList;
-
-import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
-import frc.robot.RobotConfig;
+import frc.robot.commands.subsystems.intake.AutoIntake;
 import frc.robot.commands.auto.actions.DriveDistance;
+import frc.robot.commands.auto.actions.SetIntakeMode;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.GrabCargo;
-import frc.robot.commands.auto.groups.GrabHatch;
+import frc.robot.commands.auto.groups.PickUpHatch;
 import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
-import frc.robot.subsystems.superstructure.Elevator;
-import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
+import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
+import frc.robot.subsystems.Elevator.ElevatorPresets;
 
 /**
  * Creates a command group for a specific automatic motion. Input a type of goal
  * and a height then start the mBigCommandGroup externally In the future, this
  * could change to more inputs depending on the button setup
- *
+ * 
  * @author Jocelyn McHugo
  */
 public class AutoMotion {
 
-  public enum HeldPiece {
+  public enum HeldPiece{
     HATCH, CARGO, NONE
   }
 
@@ -34,7 +31,7 @@ public class AutoMotion {
    * HIGH: the highest level of the rocket;
    * OVER: dropped into the CARGO ship from above
    */
-  public enum mGoalHeight{
+  public enum GoalHeight{
     LOW, MIDDLE, HIGH, OVER
   }
 
@@ -47,12 +44,12 @@ public class AutoMotion {
    * RETRIEVE_HATCH: pick up a hatch from the loading station;
    * RETRIEVE_CARGO: pick up CARGO from an unspecified location
    */
-  public enum mGoalType{
+  public enum GoalType{
     CARGO_CARGO, CARGO_HATCH, ROCKET_CARGO, ROCKET_HATCH, RETRIEVE_HATCH, RETRIEVE_CARGO
   }
 
-  private mGoalHeight gHeight;
-  private mGoalType gType;
+  private GoalHeight gHeight;
+  private GoalType gType;
   private HeldPiece piece;
   private AutoCommandGroup mBigCommandGroup;
 
@@ -64,22 +61,22 @@ public class AutoMotion {
    *    the type of goal
    */
 
-  public AutoMotion (mGoalHeight gHeight, mGoalType gType){
+  public AutoMotion (GoalHeight gHeight, GoalType gType){
     this.gHeight = gHeight;
     this.gType = gType;
     //select heldPiece
-    if (this.gType == mGoalType.CARGO_CARGO || this.gType == mGoalType.ROCKET_CARGO){
+    if (this.gType == GoalType.CARGO_CARGO || this.gType == GoalType.ROCKET_CARGO){
       this.piece = HeldPiece.CARGO;
-    }else if (this.gType == mGoalType.CARGO_HATCH || this.gType == mGoalType.ROCKET_HATCH){
+    }else if (this.gType == GoalType.CARGO_HATCH || this.gType == GoalType.ROCKET_HATCH){
       this.piece = HeldPiece.HATCH;
     }else{
       this.piece=HeldPiece.NONE;
     }
 
     if (this.piece!=HeldPiece.NONE){
-      this.mBigCommandGroup = new AutoCommandGroup(genPlaceCommands());
+      this.mBigCommandGroup = genPlaceCommands();
     }else{
-      this.mBigCommandGroup = new AutoCommandGroup(genGrabCommands());
+      this.mBigCommandGroup = genGrabCommands();
     }
   }
   /**
@@ -87,58 +84,51 @@ public class AutoMotion {
    * @return
    *  an ArrayList of commands
    */
-  private ArrayList<Command> genGrabCommands(){
-    ArrayList<Command> toReturn = new ArrayList<Command>();
-    if (this.gType==mGoalType.RETRIEVE_CARGO){
-      // Set the intake to CARGO mode
-      toReturn.add(Robot.superstructure.moveSuperstructureAngle(iPosition.CARGO_GRAB, this.piece));
+  private AutoCommandGroup genGrabCommands(){
+    AutoCommandGroup toReturn = new AutoCommandGroup();
+    if (this.gType==GoalType.RETRIEVE_CARGO){
+      // Set the intake to cargo mode
+      toReturn.addSequential(new SetIntakeMode(HeldPiece.CARGO));
       // Predefined grab command
-      toReturn.add(new GrabCargo());
-    }else if (this.gType==mGoalType.RETRIEVE_HATCH){
+      toReturn.addSequential(new GrabCargo());
+    }else if (this.gType==GoalType.RETRIEVE_HATCH){
       // Set the intake to hatch mode
-      toReturn.add(Robot.superstructure.moveSuperstructureAngle(iPosition.HATCH, this.piece));
+      toReturn.addSequential(new SetIntakeMode(HeldPiece.HATCH));
       // Predefined grab command
-      toReturn.add(new GrabHatch());
+      toReturn.addSequential(new PickUpHatch());
     }
-    return toReturn;
-  }
-
   /**
-   * Generates commands to place a piece based on the parameters of the current AutoMotion
    * @return
    *  an ArrayList of commands
    */
-  private ArrayList<Command> genPlaceCommands(){
-    ArrayList<Command> toReturn = new ArrayList<Command>();
+  private AutoCommandGroup genPlaceCommands(){
+    AutoCommandGroup toReturn = new AutoCommandGroup();
 
     // Set intake mode
-    if(this.piece==HeldPiece.HATCH){
-      toReturn.add(Robot.superstructure.moveSuperstructureAngle(iPosition.HATCH, this.piece));
+    if (this.gType==GoalType.CARGO_CARGO){
+      toReturn.addSequential(new SetIntakeMode(this.piece, true));
     }else{
-      toReturn.add(Robot.superstructure.moveSuperstructureAngle(iPosition.CARGO_GRAB, this.piece));
+      toReturn.addSequential(new SetIntakeMode(this.piece));
     }
 
     // Align with the vision targets, slightly back from the goal
-    toReturn.add(new FollowVisionTarget(0.7, 70, 20)); // TODO check % value TODO this assumes a perfect FollowVisionTarget command
+    toReturn.addSequential(new FollowVisionTarget(0.7, 70, 20)); // FIXME check % value TODO this assumes a perfect FollowVisionTarget command
 
     // Set the elevator to the correct height
-    toReturn.add(Robot.superstructure.moveSuperstructureElevator(RobotConfig.auto.fieldPositions.cargo_ship_hatch));
+    toReturn.addSequential(new SetElevatorHeight(getElevatorPreset(),false));
 
-    if(this.gType==mGoalType.CARGO_CARGO){
+    if(this.gType==GoalType.CARGO_CARGO){
       // Drive forward so the intake is over the bay and the bumpers are in the indent thingy
-      toReturn.add(new DriveDistance(2,20)); // TODO check distances
-
-      // Actuate intake so it points down into the bay
-      toReturn.add(Robot.superstructure.moveSuperstructureAngle(iPosition.CARGO_DOWN, this.piece));
+      toReturn.addSequential(new DriveDistance(2,20)); // FIXME check distances
     }else{
       // Drive forward so the intake is flush with the port/hatch
-      toReturn.add(new DriveDistance(1,20)); // TODO check distances
+      toReturn.addSequential(new DriveDistance(1,20)); // FIXME check distances
     }
 
     if(this.piece==HeldPiece.CARGO){
-      // toReturn.add(new AutoIntake(-1, 5));
+      toReturn.addSequential(new AutoIntake(-1, 5));
     }else if (this.piece==HeldPiece.HATCH){
-      toReturn.add(new PlaceHatch());
+      toReturn.addSequential(new PlaceHatch());
     }
 
     return toReturn;
@@ -147,12 +137,12 @@ public class AutoMotion {
 
   /**
    * selects the correct ElevatorPreset from the Elevator subsystems enum based on
-   * the mGoalHeight, the mGoalType, and the HeldPiece
+   * the GoalHeight, the GoalType, and the HeldPiece
    */
   private ElevatorPresets getElevatorPreset(){
     switch (this.gType){
       case CARGO_CARGO:
-        if (this.gHeight == mGoalHeight.LOW){
+        if (this.gHeight == GoalHeight.LOW){
           return ElevatorPresets.CARGO_SHIP_HATCH;
         }else{
           return ElevatorPresets.CARGO_SHIP_WALL;
@@ -160,17 +150,17 @@ public class AutoMotion {
       case CARGO_HATCH:
         return ElevatorPresets.CARGO_SHIP_HATCH;
       case ROCKET_CARGO:
-        if (this.gHeight == mGoalHeight.LOW){
+        if (this.gHeight == GoalHeight.LOW){
           return ElevatorPresets.LOW_ROCKET_PORT;
-        }else if (gHeight == mGoalHeight.MIDDLE){
+        }else if (gHeight == GoalHeight.MIDDLE){
           return ElevatorPresets.MIDDLE_ROCKET_PORT;
         }else{
           return ElevatorPresets.HIGH_ROCKET_PORT;
         }
       case ROCKET_HATCH:
-        if (this.gHeight == mGoalHeight.LOW){
+        if (this.gHeight == GoalHeight.LOW){
           return ElevatorPresets.LOW_ROCKET_HATCH;
-        }else if (this.gHeight == mGoalHeight.MIDDLE){
+        }else if (this.gHeight == GoalHeight.MIDDLE){
           return ElevatorPresets.MIDDLE_ROCKET_HATCH;
         }else{
           return ElevatorPresets.HIGH_ROCKET_HATCH;
@@ -185,18 +175,18 @@ public class AutoMotion {
   /**
    *
    * @return
-   *  the mGoalHeight of the AutoMotion
+   *  the GoalHeight of the AutoMotion
    */
-  public mGoalHeight getGoalHeight(){
+  public GoalHeight getGoalHeight(){
     return this.gHeight;
   }
 
   /**
    * identification function
    * @return
-   *  the mGoalType of the AutoMotion
+   *  the GoalType of the AutoMotion
    */
-  public mGoalType getmGoalType(){
+  public GoalType getGoalType(){
     return this.gType;
   }
 
@@ -205,7 +195,7 @@ public class AutoMotion {
    * @return
    *  the HeldPiece of the AutoMotion
    */
-  public HeldPiece getHeldPiece(){
+  public HeldPiece getmHeldPiece(){
     return this.piece;
   }
 
@@ -217,5 +207,5 @@ public class AutoMotion {
   public AutoCommandGroup getBigCommandGroup(){
     return this.mBigCommandGroup;
   }
-
+  
 }

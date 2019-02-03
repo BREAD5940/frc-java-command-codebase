@@ -33,7 +33,7 @@ import frc.robot.subsystems.superstructure.SuperStructure;
  * @author Matthew Morley
  */
 public class Robot extends TimedRobot {
-  public static SendableChooser<AutoMotion.mGoalHeight> mGh;
+  public static SendableChooser<AutoMotion.GoalHeight> mGh;
   public static OI m_oi;
   // public static Intake intake = new Intake();
   // public static Elevator elevator = new Elevator();
@@ -68,12 +68,10 @@ public class Robot extends TimedRobot {
 
   public static void intake_close() {
     intakeDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
-    intakeOpen = false;
   }
 
   public static void intake_open() {
     intakeDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
-    intakeOpen = true;
   }
 
 
@@ -90,11 +88,11 @@ public class Robot extends TimedRobot {
 
     // logger = Logger.getInstance();
     m_oi = new OI();
-    mGh = new SendableChooser<AutoMotion.mGoalHeight>();
-    mGh.setDefaultOption("Low", AutoMotion.mGoalHeight.LOW);
-    mGh.addOption("Middle", AutoMotion.mGoalHeight.MIDDLE);
-    mGh.addOption("High", AutoMotion.mGoalHeight.HIGH);
-    mGh.addOption("Dropped into the cargo ship", AutoMotion.mGoalHeight.OVER);
+    mGh = new SendableChooser<AutoMotion.GoalHeight>();
+    mGh.setDefaultOption("Low", AutoMotion.GoalHeight.LOW);
+    mGh.addOption("Middle", AutoMotion.GoalHeight.MIDDLE);
+    mGh.addOption("High", AutoMotion.GoalHeight.HIGH);
+    mGh.addOption("Dropped into the cargo ship", AutoMotion.GoalHeight.OVER);
     SmartDashboard.putData("Goal Height", mGh);
     SmartDashboard.putData("Backup Selector (Will not be used in most cases)", backupAutoSelect);
     SmartDashboard.putData(drivetrain);
