@@ -43,7 +43,8 @@ public class SuperStructure extends Subsystem {
   private SuperstructurePlanner planner = new SuperstructurePlanner();
   public SuperStructureState mPeriodicIO = new SuperStructureState();
   private RotatingJoint mWrist, mElbow;
-  
+  private DCMotorTransmission kElbowTransmission, kWristTransmission;
+
   public static synchronized SuperStructure getInstance() {
     if ( instance_ == null ) {
       instance_ = new SuperStructure();
@@ -76,10 +77,15 @@ public class SuperStructure extends Subsystem {
 
   private SuperStructure(){
     super("SuperStructure");
+    kElbowTransmission = new DCMotorTransmission(Constants.kElbowSpeedPerVolt, Constants.kElbowTorquePerVolt, Constants.kElbowStaticFrictionVoltage);
+
+    kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
+
     mWrist = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 37, FeedbackDevice.CTRE_MagEncoder_Relative, 
-        LengthKt.getInch(6), MassKt.getLb(15), 4.9474);
+        Constants.kWristLength, Constants.kWristMass);
+    
     mElbow = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 40, FeedbackDevice.CTRE_MagEncoder_Relative, 
-        LengthKt.getInch(6), MassKt.getLb(2), 9.8933);
+    Constants.kElbowLength, Constants.kElbowMass);
   }
 
 
