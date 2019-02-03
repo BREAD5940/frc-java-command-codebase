@@ -152,6 +152,10 @@ public class RotatingJoint /*extends Subsystem*/ {
       // this.feedForwardVoltage = feedForwardVoltage;
     }
 
+    public void setAngle(Rotation2d new__) {
+      this.angle = new__;
+    }
+
     @Override
     public String toString() {
       return angle.getDegree() + "";

@@ -8,7 +8,6 @@ import frc.robot.commands.auto.groups.GrabCargo;
 import frc.robot.commands.auto.groups.PickUpHatch;
 import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
-import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
 import frc.robot.subsystems.Elevator.ElevatorPresets;
 
 /**
@@ -97,6 +96,8 @@ public class AutoMotion {
       // Predefined grab command
       toReturn.addSequential(new PickUpHatch());
     }
+    return toReturn;
+  }
   /**
    * @return
    *  an ArrayList of commands
@@ -115,7 +116,7 @@ public class AutoMotion {
     toReturn.addSequential(new FollowVisionTarget(0.7, 70, 20)); // FIXME check % value TODO this assumes a perfect FollowVisionTarget command
 
     // Set the elevator to the correct height
-    toReturn.addSequential(new SetElevatorHeight(getElevatorPreset(),false));
+    // toReturn.addSequential(new SetElevatorHeight(getElevatorPreset(),false));
 
     if(this.gType==GoalType.CARGO_CARGO){
       // Drive forward so the intake is over the bay and the bumpers are in the indent thingy

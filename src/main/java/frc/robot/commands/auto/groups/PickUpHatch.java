@@ -7,9 +7,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.actions.DriveDistance;
-import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
 import frc.robot.commands.subsystems.intake.GrabHatch;
-import frc.robot.subsystems.Elevator.ElevatorPresets;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 
 /** 

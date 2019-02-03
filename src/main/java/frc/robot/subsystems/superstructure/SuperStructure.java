@@ -17,13 +17,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.PIDSettings.FeedbackMode;
+import frc.robot.lib.obj.InvertSettings;
 import frc.robot.lib.SuperstructurePlanner;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.superstructure.Elevator.EncoderMode;
-import frc.robot.subsystems.superstructure.Elevator.InvertSettings;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 /**
@@ -49,6 +49,29 @@ public class SuperStructure extends Subsystem {
       instance_ = new SuperStructure();
     }
     return instance_;
+  }
+
+  public enum ElevatorPresets {
+    LOW_ROCKET_PORT(27),
+    MIDDLE_ROCKET_PORT(55),
+    HIGH_ROCKET_PORT(84),
+    LOW_ROCKET_HATCH(19),
+    MIDDLE_ROCKET_HATCH(47),
+    HIGH_ROCKET_HATCH(75),
+
+    CARGO_SHIP_HATCH(20),
+    // TODO this should be even with the low rocket hatch. According to the game manual, it isn't
+    CARGO_SHIP_WALL(31);
+    //top of wall
+
+    private Length height;
+
+    ElevatorPresets(int height_){
+      this.height = LengthKt.getInch(height_);
+    }
+    public Length getValue(){
+      return height;
+    }
   }
 
   private SuperStructure(){

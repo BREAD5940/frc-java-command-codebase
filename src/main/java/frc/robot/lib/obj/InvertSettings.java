@@ -3,8 +3,8 @@ package frc.robot.lib.obj;
 import com.ctre.phoenix.motorcontrol.InvertType;
 
 public class InvertSettings {
-  boolean masterInverted;
-  InvertType slave1FollowerMode, slave2FollowerMode, slave3FollowerMode;
+  public boolean masterInverted;
+  public InvertType slave1FollowerMode, slave2FollowerMode, slave3FollowerMode;
 
   /**
    * Create an InvertSettings object. This can represent the state of a 4 motor transmission's motor inversion

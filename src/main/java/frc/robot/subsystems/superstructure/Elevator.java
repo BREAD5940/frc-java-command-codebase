@@ -1,19 +1,12 @@
 package frc.robot.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Subsystem;
-
-import frc.robot.Robot;
-import frc.robot.RobotConfig;
-import frc.robot.commands.subsystems.superstructure.elevator.ElevatorTelop;
-import frc.robot.lib.EncoderLib;
-import frc.robot.states.ElevatorState;
-
 import java.util.Arrays;
 import java.util.List;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SensorTerm;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -27,11 +20,10 @@ import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.FollowerType;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SensorTerm;
+import edu.wpi.first.wpilibj.Timer;
+import frc.robot.RobotConfig;
+import frc.robot.lib.obj.InvertSettings;
+import frc.robot.states.ElevatorState;
 
 
 /**
@@ -151,6 +143,6 @@ public class Elevator /*extends Subsystem*/ {
     Acceleration<Length> accel = AccelerationKt.getAcceleration(LengthKt.getMeter(
           (getVelocity().getValue() - lastKnown.velocity.getValue())/(time.getValue() - lastKnown.time.getValue())));
     return new ElevatorState(getHeight(), getVelocity(), 
-      accel, time_)
+      accel, time);
   }
 }

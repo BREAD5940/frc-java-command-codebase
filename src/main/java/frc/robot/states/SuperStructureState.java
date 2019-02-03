@@ -64,8 +64,16 @@ public class SuperStructureState {
     return elevator.height;
   }
 
+  public ElevatorState getElevator() {
+    return elevator;
+  }
+
   public SuperStructureState addElevator(Length delta) {
     return new SuperStructureState( elevator.add(delta), jointAngles );
+  }
+
+  public void setAngle(IntakeAngle angle_) {
+    this.jointAngles = angle_;
   }
 
   public IntakeAngle getAngle() {

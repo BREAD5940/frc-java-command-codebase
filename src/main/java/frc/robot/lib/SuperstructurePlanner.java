@@ -6,7 +6,6 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
-import frc.robot.commands.subsystems.superstructure.wrist.SetWrist;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
@@ -82,7 +81,7 @@ public class SuperstructurePlanner{
         corrCount++;
         goalState.setAngle(iPosition.CARGO_GRAB);
       }else{
-        toReturn.addSequential(new SetWrist(iPosition.CARGO_GRAB));
+        // toReturn.addSequential(new SetWrist(iPosition.CARGO_GRAB)); // FIXME replace with a movesuperstructurecombo thing?
         intakeAtRisk=false;
         intakeCrashable=false;
       }
@@ -103,7 +102,7 @@ public class SuperstructurePlanner{
       System.out.println("MOTION IMPOSSIBLE -- Elevator will pass maximum height. Setting to maximum height.");
       errorCount++;
       corrCount++;
-      goalState.setElevatorHeight(maxHeight);
+      goalState.getElevator().setHeight(maxHeight);
     }
 
     //checks if the elevator will move past the crossbar
