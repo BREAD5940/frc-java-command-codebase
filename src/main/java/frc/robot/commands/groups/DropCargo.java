@@ -1,7 +1,7 @@
 package frc.robot.commands.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.subsystems.intake.AutoIntake;
+import frc.robot.commands.subsystems.superstructure.RunIntake;
 
 
 public class DropCargo extends CommandGroup{
@@ -14,10 +14,10 @@ public class DropCargo extends CommandGroup{
   public DropCargo(boolean isDrop) {
     if (!isDrop){
       // addSequential(new SetWrist(0, false));
-      addSequential(new AutoIntake(-1, 5));
+      addSequential(new RunIntake(-1, 2));
     }else{
       // addSequential(new SetWrist(-90, false)); // TODO the entire SetWrist command is currently commented out
-      addSequential(new AutoIntake(-1, 5));
+      addSequential(new RunIntake(-1, 2));
     }
     
   }
