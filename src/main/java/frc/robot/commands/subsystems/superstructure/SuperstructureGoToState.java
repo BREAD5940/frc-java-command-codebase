@@ -1,24 +1,21 @@
-package frc.robot.commands.subsystems.drivetrain;
-
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
+package frc.robot.commands.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
+import frc.robot.states.SuperStructureState;
+import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class SetInitialOdometry extends Command {
+public class SuperstructureGoToState extends Command {
+  SuperStructureState mRequState;
 
-  Pose2dWithCurvature initialPose;
-
-  public SetInitialOdometry(TimedTrajectory<Pose2dWithCurvature> trajectory) {
-    requires(Robot.drivetrain);
-    initialPose = trajectory.getFirstState().getState();
+  public SuperstructureGoToState(SuperStructureState requState) {
+    requires(SuperStructure.getInstance());
+    mRequState = requState;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    // Robot.drivetrain.getLocalization().reset(initialPose.getPose());
+    SuperStructure.getInstance().setReqState(mRequState);
   }
 
   // Called repeatedly when this Command is scheduled to run

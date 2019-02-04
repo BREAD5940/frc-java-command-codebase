@@ -9,8 +9,6 @@ import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
 // import frc.robot.commands.subsystems.drivetrain.RamsetePathFollower;
 // import frc.robot.commands.subsystems.drivetrain.RunDriveMotionPlanner;
-import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
-
 
 
 /**
@@ -18,11 +16,11 @@ import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  * For use with commands and stuff.
- * 
+ *
  * @author Matthew Morley
  */
 public class OI {
-  
+
   private Joystick primaryJoystick = new Joystick(RobotConfig.controls.primary_joystick_port);
   // private Joystick secondaryJoystick = new Joystick(RobotConfig.controls.secondary_joystick_port);
 
@@ -52,8 +50,17 @@ public class OI {
     shift_down_button.whenPressed(new DriveShiftLow());
     // open_clamp_button.whenPressed(new OpenClamp());
     // close_clamp_button.whenPressed(new CloseClamp());
-    auto_grab_cargo_button.whenPressed(new SetElevatorHeight(9.316859344380049 - 1.5 ) );
-    auto_grab_hatch_button.whenPressed(new SetElevatorHeight(30));
+
+    // TODO why does this throw a null pointer
+    // auto_place_cargo_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_CARGO, Robot.mGh.getSelected()));
+    // auto_place_hatch_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_HATCH, Robot.mGh.getSelected()));
+    // auto_place_cargo_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_CARGO, Robot.mGh.getSelected()));
+    // auto_place_hatch_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_HATCH, Robot.mGh.getSelected()));
+    // auto_grab_hatch_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_HATCH, Robot.mGh.getSelected()));
+    // auto_grab_cargo_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_CARGO, Robot.mGh.getSelected()));
+
+    // auto_grab_cargo_button.whenPressed(new SetElevatorHeight(9.316859344380049 - 1.5 ) );
+    // auto_grab_hatch_button.whenPressed(new SetElevatorHeight(30));
     // auto_place_hatch_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_HATCH, AutoMotion.mGoalHeight.LOW));
     // auto_place_cargo_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_CARGO, AutoMotion.mGoalHeight.LOW));
     // auto_place_hatch_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_HATCH, AutoMotion.mGoalHeight.LOW));
@@ -92,8 +99,8 @@ public double getOuttakeAxis() { return 0;/* secondaryJoystick.getRawAxis(RobotC
    * Get intake speed is the difference between intake and outtake axis speeds
    */
   public double getIntakeSpeed(){ return getIntakeAxis() - getOuttakeAxis(); }
-public double getElevatorAxis(){ return 0;/*secondaryJoystick.getRawAxis(RobotConfig.controls.xbox_elevator_axis) * -1; */}
-public double getThrottleAxis() { return 0;/*secondaryJoystick.getRawAxis(RobotConfig.controls.throttle_elevator_axis); */}
+  public double getElevatorAxis(){ return 0;}//secondaryJoystick.getRawAxis(RobotConfig.controls.xbox_elevator_axis) * -1; }
+  public double getThrottleAxis() { return 0;}//secondaryJoystick.getRawAxis(RobotConfig.controls.throttle_elevator_axis); }
 
   // There are a few additional built in buttons you can use. Additionally,
   // by subclassing Button you can create custom triggers and bind those to

@@ -10,6 +10,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -19,14 +20,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.lib.motion.Odometer;
-// import frc.robot.subsystems.DifferentialUltrasonicSensor;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
-import frc.robot.subsystems.Elevator;
-// import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.LIDARSubsystem;
+// import frc.robot.subsystems.LIDARSubsystem;
 import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.superstructure.SuperStructure;
 
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly init
@@ -40,6 +38,7 @@ public class Robot extends TimedRobot {
   // public static Intake intake = new Intake();
   // public static Elevator elevator = new Elevator();
   public static DriveTrain drivetrain = DriveTrain.getInstance();
+  public static SuperStructure superstructure = SuperStructure.getInstance();
   public static LimeLight limelight = new LimeLight();
   // public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
   public static SendableChooser<AutoMotion> backupAutoSelect = new SendableChooser<AutoMotion>();
@@ -53,6 +52,10 @@ public class Robot extends TimedRobot {
   // private Logger logger;
 
   
+  public static boolean intakeOpen = false; // TODO I'm aware this shouldn't go here, I'll rewrite the intake subsystem
+                                            // later
+
+
 
   // Various pneumatic shifting methods
   public static void drivetrain_shift_high() {
@@ -78,7 +81,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    
+
     drivetrain.getLocalization().reset(new Pose2d(LengthKt.getFeet(5.5), LengthKt.getFeet(17), new Rotation2d(0f, 0f, false) ));
 
     Trajectories.generateAllTrajectories();
@@ -119,8 +122,8 @@ public class Robot extends TimedRobot {
     // odometry_ = Odometry.getInstance();
     // new Notifier(() -> {
     //     // odometry_.setCurrentEncoderPosition((DriveTrain.getInstance().getLeft().getEncoderCount() + DriveTrain.getInstance().getRight().getEncoderCount()) / 2.0);
-        
-    //     // Incrament the current encoder position by the average 
+
+    //     // Incrament the current encoder position by the average
     //     odometry_.setCurrentEncoderPosition((drivetrain.m_left_talon.getSelectedSensorPosition() + drivetrain.m_right_talon.getSelectedSensorPosition()) / 2.0);
 
     //     // odometry_.setDeltaPosition(RobotUtil.encoderTicksToFeets(odometry_.getCurrentEncoderPosition() - odometry_.getLastPosition()));
@@ -199,7 +202,7 @@ public class Robot extends TimedRobot {
       m_auto.getBigCommandGroup().cancel();
     }
     // TODO reset subsystems on teleop init?
-    
+
     // odometry_.setX(0);
     // odometry_.setY(0);
     drivetrain.zeroGyro();
@@ -242,7 +245,7 @@ public class Robot extends TimedRobot {
     LiveDashboard.INSTANCE.setRobotX(drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
     LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
     LiveDashboard.INSTANCE.setRobotHeading(drivetrain.getLocalization().getRobotPosition().getRotation().getRadian());
-    
+
     SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getFeetPerSecond() );
     SmartDashboard.putNumber("Left talon error", drivetrain.getLeft().getClosedLoopError().getFeet() );
     SmartDashboard.putNumber("Right talon speed", drivetrain.getRight().getFeetPerSecond() );
@@ -256,13 +259,13 @@ public class Robot extends TimedRobot {
       drivetrain.lastCommandedVoltages = Arrays.asList(0d, 0d);
     }
     List<Double> feetPerSecond = Arrays.asList(
-            VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()), 
+            VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()),
             VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity())
     );
     List<Double> feetPerSecondPerSecond = Arrays.asList(
-      (VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()) - drivetrain.lastFeetPerSecond.get(0))/0.02d, 
+      (VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()) - drivetrain.lastFeetPerSecond.get(0))/0.02d,
       (VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()) - drivetrain.lastFeetPerSecond.get(0))/0.02d
-    );  
+    );
     SmartDashboard.putNumber("Left drivetrain commanded voltage", drivetrain.lastCommandedVoltages.get(0));
     SmartDashboard.putNumber("Right drivetrain commanded voltage", drivetrain.lastCommandedVoltages.get(1));
     SmartDashboard.putNumber("Left drivetrian feet per second", feetPerSecond.get(0));

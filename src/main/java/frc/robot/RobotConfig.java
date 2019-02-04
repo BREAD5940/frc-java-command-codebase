@@ -182,21 +182,21 @@ public class RobotConfig {
     public static final double drive_auto_forward_velocity_min = -2; // minimum speed for auto drive in ft per sec
     public static Gear auto_gear = Gear.LOW;
     
-    public class fieldPositions {
+    public static class fieldPositions {
       // Positions of objects on the field (ports, etc.) in inches. distances are to the center of the object
       // unless otherwise indicated
       // FIXME change these values to be the distance the elevator has to go to have the intake be at the center of the object
       
-      public static final double low_rocket_port = 27.5;
-      public static final double middle_rocket_port = 55.5;
-      public static final double high_rocket_port = 83.5;
+      public static final Length low_rocket_port = LengthKt.getInch(27.5);
+      public static final Length middle_rocket_port = LengthKt.getInch(55.5);
+      public static final Length high_rocket_port = LengthKt.getInch(83.5);
       
-      public static final double low_rocket_hatch = 19;
-      public static final double middle_rocket_hatch = 47;
-      public static final double high_rocket_hatch = 75;
+      public static final Length low_rocket_hatch = LengthKt.getInch(19);
+      public static final Length middle_rocket_hatch = LengthKt.getInch(47);
+      public static final Length high_rocket_hatch = LengthKt.getInch(75);
       
-      public static final double cargo_ship_hatch = 19.75; // TODO this should be even with the low rocket hatch. According to the game manual, it isn't
-      public static final double cargo_ship_wall = 31.5+3; //top of wall (+3 is to get the intake OVER the wall)
+      public static final Length cargo_ship_hatch = LengthKt.getInch(19.75); // TODO this should be even with the low rocket hatch. According to the game manual, it isn't
+      public static final Length cargo_ship_wall = LengthKt.getInch(31.5); //top of wall
     }
     
     
@@ -282,10 +282,15 @@ public class RobotConfig {
   /**
   * Elevator configuration
   */
-  public class elevator {
+  public static class elevator {
     public static final double elevator_effective_diameter = 1.27 * 1.6; // TODO fix elevator_effective_diameter!!!! (units must be inches)
     public static final int elevator_minimum_height = 0;
-    public static final int elevator_maximum_height = 70; // changed to inches, TODO verify maximum height
+    public static final Length elevator_maximum_height = LengthKt.getInch(70f); // changed to inches, TODO verify maximum height
+
+    private static final NativeUnit kSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
+    private static final Length left_radius = LengthKt.getInch(1);
+
+    public static final NativeUnitLengthModel elevatorModel = new NativeUnitLengthModel(kSensorUnitsPerRotation, left_radius);
 
     public class elevatorTalon {
       /**
@@ -316,6 +321,10 @@ public class RobotConfig {
   public static class intake {
     public static final int left_intake_talon_port = 6;
     public static final int right_intake_talon_port = 7;
+
+    public class dimensions{
+      //TODO add different dimensions of the intake, preferably WITHOUT having 17000 of them
+    }
   }
   
   public static class pneumatics {

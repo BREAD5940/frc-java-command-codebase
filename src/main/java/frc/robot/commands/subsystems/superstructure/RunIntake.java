@@ -5,43 +5,47 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.subsystems.elevator;
+package frc.robot.commands.subsystems.superstructure;
 
+import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class WaitForElevator extends Command {
+public class RunIntake extends Command {
+  double demand, duratuion;
 
-  double demand;
-
-  public WaitForElevator(double demand) {
-    // Doesn't require anything, just waiting for elevator height
-    this.demand = demand;
+  /**
+   * Run the intake for a set amount of time
+   * @param demand
+   * @param duration
+   */
+  public RunIntake(double demand_, double duration_) {
+    requires(SuperStructure.intake); // TODO make sure this works
+    this.demand = demand_;
+    this.duratuion = duration_;
+    setTimeout(duration_);
   }
 
-  // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    SuperStructure.intake.setSpeed(demand);
   }
 
-  // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
   }
 
-  // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    // return Robot.elevator.isWithinTolerence(demand);
-    return true;
+    return this.isTimedOut();
   }
 
-  // Called once after isFinished returns true
   @Override
   protected void end() {
+    SuperStructure.intake.setSpeed(0d);
+    SuperStructure.intake.setSpeed(0d);
   }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
   @Override
   protected void interrupted() {
   }

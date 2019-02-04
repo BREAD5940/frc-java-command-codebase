@@ -1,6 +1,6 @@
 package frc.robot.commands.auto;
 
-import frc.robot.commands.subsystems.intake.AutoIntake;
+import frc.robot.subsystems.superstructure.SuperStructure.ElevatorPresets;
 import frc.robot.commands.auto.actions.DriveDistance;
 import frc.robot.commands.auto.actions.SetIntakeMode;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
@@ -8,8 +8,6 @@ import frc.robot.commands.auto.groups.GrabCargo;
 import frc.robot.commands.auto.groups.PickUpHatch;
 import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
-import frc.robot.commands.subsystems.elevator.SetElevatorHeight;
-import frc.robot.subsystems.Elevator.ElevatorPresets;
 
 /**
  * Creates a command group for a specific automatic motion. Input a type of goal
@@ -26,10 +24,10 @@ public class AutoMotion {
 
   /**
    * different heights of goals.
-   * LOW: the lowest level of the rocket and through the hatch of the cargo ship;
+   * LOW: the lowest level of the rocket and through the hatch of the CARGO ship;
    * MIDDLE: the middle level of the rocket;
    * HIGH: the highest level of the rocket;
-   * OVER: dropped into the cargo ship from above
+   * OVER: dropped into the CARGO ship from above
    */
   public enum GoalHeight{
     LOW, MIDDLE, HIGH, OVER
@@ -37,12 +35,12 @@ public class AutoMotion {
 
   /**
    * different types of goals on the field.
-   * CARGO_CARGO: put cargo in the cargo ship;
-   * ROCKET_CARGO: put cargo in the rocket;
-   * CARGO_HATCH: put a hatch on the cargo ship;
+   * CARGO_CARGO: put CARGO in the CARGO ship;
+   * ROCKET_CARGO: put CARGO in the rocket;
+   * CARGO_HATCH: put a hatch on the CARGO ship;
    * ROCKET_HATCH: put a hatch on the rocket;
    * RETRIEVE_HATCH: pick up a hatch from the loading station;
-   * RETRIEVE_CARGO: pick up cargo from an unspecified location
+   * RETRIEVE_CARGO: pick up CARGO from an unspecified location
    */
   public enum GoalType{
     CARGO_CARGO, CARGO_HATCH, ROCKET_CARGO, ROCKET_HATCH, RETRIEVE_HATCH, RETRIEVE_CARGO
@@ -58,7 +56,7 @@ public class AutoMotion {
    * @param gHeight
    *    the height of the goal the robot should aim for (LOW, MIDDLE, HIGH, OVER)
    * @param gType
-   *    the type of goal 
+   *    the type of goal
    */
 
   public AutoMotion (GoalHeight gHeight, GoalType gType){
@@ -99,9 +97,7 @@ public class AutoMotion {
     }
     return toReturn;
   }
-
   /**
-   * Generates commands to place a piece based on the parameters of the current AutoMotion
    * @return
    *  an ArrayList of commands
    */
@@ -119,7 +115,7 @@ public class AutoMotion {
     toReturn.addSequential(new FollowVisionTarget(0.7, 70, 20)); // FIXME check % value TODO this assumes a perfect FollowVisionTarget command
 
     // Set the elevator to the correct height
-    toReturn.addSequential(new SetElevatorHeight(getElevatorPreset(),false));
+    // toReturn.addSequential(new SetElevatorHeight(getElevatorPreset(),false));
 
     if(this.gType==GoalType.CARGO_CARGO){
       // Drive forward so the intake is over the bay and the bumpers are in the indent thingy
@@ -130,7 +126,7 @@ public class AutoMotion {
     }
 
     if(this.piece==HeldPiece.CARGO){
-      toReturn.addSequential(new AutoIntake(-1, 5));
+      // toReturn.addSequential(new AutoIntake(-1, 5)); // TODO change this to something hadled by superstructure??
     }else if (this.piece==HeldPiece.HATCH){
       toReturn.addSequential(new PlaceHatch());
     }
@@ -171,7 +167,7 @@ public class AutoMotion {
         }
       default:
         return ElevatorPresets.CARGO_SHIP_HATCH;
-    }
+    } 
   }
 
   // id functions

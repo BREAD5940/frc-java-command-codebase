@@ -19,6 +19,7 @@ public class TerriblePID {
   double kp, ki, kd, kf, pOutput, iOutput, fOutput, iAccum, dOutput, integralZone, 
     maxIntegralAccum, minOutput, maxOutput, setpoint, input, error, output;
   double lastOutput, lastMeasured;
+  double tolerence;
   double dt = 1.0 / 50; // Set delta time to 50 hz, this is likely good enough
   FeedForwardMode feedforwardmode;
   FeedForwardBehavior feedforwardbehavior;
@@ -82,6 +83,14 @@ public class TerriblePID {
   /** Set the kp gain of the controller */
   public void setKpGain(double kpGain) {
     kp = kpGain;
+  }
+
+  public void setTolerence(double tolerence_) {
+    tolerence = Math.abs(tolerence_);
+  }
+
+  public boolean isOnTarget() {
+    return Math.abs(setpoint - lastMeasured) < tolerence;
   }
 
   /**
@@ -223,10 +232,10 @@ public class TerriblePID {
      */
     if(ki != 0) {
       iAccum += error * ki * dt; // incrament the I term by error times integral gain times delta time (numerical integration yeet)
-      System.out.println(String.format("Error (%s) ki (%s) dt (%s) iAccum (%s)", error, ki, dt, iAccum));
+      // System.out.println(String.format("Error (%s) ki (%s) dt (%s) iAccum (%s)", error, ki, dt, iAccum));
       iAccum = clampIntegral(iAccum + iOutput); // clamp the term to the min/max   
     }
-    System.out.println("Ki: " + ki + " iAccum: " + iAccum);
+    // System.out.println("Ki: " + ki + " iAccum: " + iAccum);
 
     if ((kf != 0) && (feedforwardbehavior != null) && (feedforwardmode != null)) {
       fOutput = calculateFeedForward(measured);
