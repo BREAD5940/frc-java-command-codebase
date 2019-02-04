@@ -42,7 +42,7 @@ public class SuperStructure extends Subsystem {
       new InvertSettings(false, InvertType.FollowMaster, InvertType.OpposeMaster, InvertType.OpposeMaster));
   public static Intake intake = new Intake();
   private SuperstructurePlanner planner = new SuperstructurePlanner();
-  public SuperStructureState mPeriodicIO = new SuperStructureState();
+  // public SuperStructureState mPeriodicIO = new SuperStructureState();
   private RotatingJoint mWrist, mElbow;
   private DCMotorTransmission kElbowTransmission, kWristTransmission;
 
@@ -219,6 +219,10 @@ public class SuperStructure extends Subsystem {
     return mElbow;
   }
 
+  public Elevator getElevator() {
+    return elevator;
+  }
+
   @Override
   public void periodic() {
     // this calculates gravity feed forwards based off of the current state and requested state
@@ -230,12 +234,14 @@ public class SuperStructure extends Subsystem {
 
     double wristVoltageGravity = kWristTransmission.getVoltageForTorque(this.mCurrentState.getWrist().velocity.getValue(), mCurrentWristTorque); 
     double elbowVoltageGravity = kWristTransmission.getVoltageForTorque(this.mCurrentState.getElbow().velocity.getValue(), mCurrentElbowTorque); 
+    double elevatorVoltageGravity = elevator.getVoltage(this.mCurrentState);
 
     // TODO velocity planning? or just let talon PID figure itself out
 
     // TODO is mReqState up to date?
     getWrist().setPositionArbitraryFeedForward(mReqState.getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
     getElbow().setPositionArbitraryFeedForward(mReqState.getElbow().angle /* the elbow angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
+    getElevator().setPositionArbitraryFeedForward(mReqState.getElevator().height, elevatorVoltageGravity / 12d);
 
   }
 

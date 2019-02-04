@@ -14,6 +14,7 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -42,8 +43,9 @@ public class Robot extends TimedRobot {
   public static LimeLight limelight = new LimeLight();
   // public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
   public static SendableChooser<AutoMotion> backupAutoSelect = new SendableChooser<AutoMotion>();
-  private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 7, 3);
-  private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 0, 6);
+  private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
+  private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 2, 3);
+  private static DoubleSolenoid elevatorShifterDoubleSolenoid = new DoubleSolenoid(9, 4, 5);
   public static AutoMotion m_auto;
   SendableChooser<Command> m_chooser = new SendableChooser<Command>();
   public static Compressor compressor = new Compressor(9);
@@ -72,6 +74,10 @@ public class Robot extends TimedRobot {
 
   public static void intake_open() {
     intakeDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
+  }
+
+  public static void setElevatorShifter(boolean isKForward) {
+    elevatorShifterDoubleSolenoid.set( (isKForward) ? Value.kForward : Value.kReverse );
   }
 
 

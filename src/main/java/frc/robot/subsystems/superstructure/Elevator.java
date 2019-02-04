@@ -4,12 +4,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 
+import org.apache.commons.math3.filter.KalmanFilter;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Mass;
+import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.Time;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
@@ -21,9 +25,13 @@ import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.Robot;
 import frc.robot.RobotConfig;
+import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.lib.PIDSettings;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.states.ElevatorState;
+import frc.robot.states.SuperStructureState;
 
 
 /**
@@ -38,13 +46,31 @@ public class Elevator /*extends Subsystem*/ {
     public static enum EncoderMode {
       NONE, CTRE_MagEncoder_Relative;
     }
+
+    public static enum ElevatorGear {
+      LOW, HIGH;
+    }
+
+    // TODO check these quick maths, kTopOfInnerStage is used to switch gravity feedforward
+    public static final Mass kCarriageMass = MassKt.getLb(20);
+    public static final Mass kInnerStageMass = MassKt.getLb(7);
+    public static final Mass kHatchMass = MassKt.getLb(1); // FIXME check mass
+    public static final Mass kCargoMass = MassKt.getLb(1); // FIXME check mass
+    public static final Length kTopOfInnerStage = LengthKt.getInch(40);
   
+    public static final double KLowGearForcePerVolt = 512d/12d /* newtons */ ;
+    public static final double KHighGearForcePerVolt = 1500d/12d /* newtons */ ;
+
+    public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.05, 0, 0, 0);
+    public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.05, 0, 0, 0);
+
     private FalconSRX<Length> mMaster;
   
     private FalconSRX<Length> mSlave1, mSlave2, mSlave3;
   
-    // private TransmissionSide side;
-  
+    private ElevatorGear mCurrentGear;
+    private static final ElevatorGear kDefaultGear = ElevatorGear.LOW;
+
     NativeUnitLengthModel lengthModel = RobotConfig.elevator.elevatorModel;
   
     public Elevator(int masterPort, int slavePort1, int slavePort2, int slavePort3, EncoderMode mode, InvertSettings settings) {
@@ -63,7 +89,6 @@ public class Elevator /*extends Subsystem*/ {
       mSlave2.set(ControlMode.Follower, mMaster.getDeviceID());
       mSlave3.set(ControlMode.Follower, mMaster.getDeviceID());
 
-
       // Quadrature Encoder of current
       // Talon
       mMaster.configPeakOutputForward(+1.0, 30);
@@ -73,6 +98,9 @@ public class Elevator /*extends Subsystem*/ {
       mSlave1.setInverted(settings.slave1FollowerMode);
       mSlave2.setInverted(settings.slave1FollowerMode);
       mSlave3.setInverted(settings.slave1FollowerMode);
+
+      mCurrentGear = kDefaultGear;
+      setGear(kDefaultGear);
     }
   
     public FalconSRX<Length> getMaster() {
@@ -95,6 +123,18 @@ public class Elevator /*extends Subsystem*/ {
   
     public Velocity<Length> getVelocity() {
       return mMaster.getSensorVelocity();
+    }
+
+    public void setGear(ElevatorGear req) {
+      this.mCurrentGear = req;
+      if(req == ElevatorGear.LOW) {
+        Robot.setElevatorShifter(true);
+        setClosedLoopGains(LOW_GEAR_PID);
+      }
+      if(req == ElevatorGear.HIGH) {
+        Robot.setElevatorShifter(true);
+        setClosedLoopGains(HIGH_GEAR_PID);
+      }
     }
   
     public double getFeetPerSecond() {
@@ -128,15 +168,41 @@ public class Elevator /*extends Subsystem*/ {
       getMaster().set(ControlMode.PercentOutput, 0);
     }
   
-    public void setClosedLoopGains(double kp, double ki, double kd, double kf, double iZone, double maxIntegral) {
-      mMaster.config_kP(0, kp, 30);
-      mMaster.config_kI(0, ki, 30);
-      mMaster.config_kD(0, kd, 30);
-      mMaster.config_kF(0, kf, 30);
-      mMaster.config_IntegralZone(0, (int)Math.round(lengthModel.fromModel(LengthKt.getMeter(iZone)).getValue()), 30);
-      mMaster.configMaxIntegralAccumulator(0, maxIntegral, 0);
-    }
-    
+  public void setClosedLoopGains(double kp, double ki, double kd, double kf, Length iZone, double maxIntegral, double minOut, double maxOut) {
+    mMaster.config_kP(0, kp, 30);
+    mMaster.config_kI(0, ki, 30);
+    mMaster.config_kD(0, kd, 30);
+    mMaster.config_kF(0, kf, 30);
+    mMaster.config_IntegralZone(0, (int)Math.round(lengthModel.fromModel(iZone).getValue()), 30);
+    mMaster.configMaxIntegralAccumulator(0, maxIntegral, 0);
+    mMaster.configPeakOutputForward(maxOut);
+    mMaster.configPeakOutputReverse(minOut);
+  }
+
+  public void setClosedLoopGains(PIDSettings config) {
+    setClosedLoopGains(config.kp, config.ki, config.kd, config.kf, config.iZone, config.maxIAccum, config.minOutput, config.maxOutput);
+  }
+
+  /**
+   * Set the talon as a target angle and feedforward throttle percent
+   */
+  public void setPositionArbitraryFeedForward(Length setpoint, double feedForwardPercent) {
+    getMaster().set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
+  }
+  
+  /**
+   * Calculate the expected mass on the elevator given a state
+   * @param state current state, including game piece held
+   * @return mass accounting for game piece and inner stage
+   */
+  public double getVoltage(SuperStructureState state) {
+    Mass total = kCarriageMass;
+    if(state.getHeldPiece() == HeldPiece.HATCH) total.plus(kHatchMass);
+    if(state.getHeldPiece() == HeldPiece.CARGO) total.plus(kCargoMass);
+    if(state.elevator.height.getValue() > kTopOfInnerStage.getValue()) total.plus(kInnerStageMass);
+    double totalF = total.getKilogram() * 9.81 /* g */;
+    return (mCurrentGear == ElevatorGear.LOW) ? KLowGearForcePerVolt * totalF : KHighGearForcePerVolt * totalF;
+  }
   
   public ElevatorState getCurrentState(ElevatorState lastKnown) {
     Time time = TimeUnitsKt.getSecond(Timer.getFPGATimestamp());
