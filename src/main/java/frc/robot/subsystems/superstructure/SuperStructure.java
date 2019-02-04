@@ -17,14 +17,15 @@ import frc.robot.Constants;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.PIDSettings.FeedbackMode;
-import frc.robot.lib.SuperstructurePlanner;
 import frc.robot.lib.obj.InvertSettings;
+import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.superstructure.Elevator.EncoderMode;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
+import frc.robot.planners.SuperstructurePlanner;
 
 /**
  * First level of control for the superstructure of the robot. Contains all the
@@ -103,6 +104,10 @@ public class SuperStructure extends Subsystem {
                             CARGO_DROP, CARGO_REVERSE, HATCH, HATCH_REVERSE));
   }
 
+  public void setReqState(SuperStructureState reqState) {
+    if(!(planner.checkValidState(reqState))) return;
+    this.mReqState = reqState;
+  }
 
   /**
    * Move the superstructure based on a height, intake angle and wrist angle
@@ -134,7 +139,12 @@ public class SuperStructure extends Subsystem {
     // TODO the wrist angle is mega broken because it's solely based on the currently held game piece 
     
     if(!(mReqState==mCurrentState)){ // Redundent check?
-      this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
+      // this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
+      ArrayList<SuperStructureState> path = planner.plan(mReqState, mCurrentState);
+      this.mCurrentCommandGroup = new CommandGroup("Superstructure Path");
+      for(int i=0; i<path.size() - 1; i++) {
+        mCurrentCommandGroup.add(new SuperstructureGoToState(path.get(i)));
+      }
     }
 
     return this.mCurrentCommandGroup;

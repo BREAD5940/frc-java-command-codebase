@@ -16,6 +16,10 @@ public class SuperStructureState {
     this(new ElevatorState(), new RotatingArmState(), new RotatingArmState(), HeldPiece.NONE);
   }
 
+  public SuperStructureState(SuperStructureState other) {
+    this(other.elevator, other.jointAngles);
+  }
+
   public SuperStructureState(ElevatorState elevatorState, RotatingArmState elbowState, RotatingArmState wristState, HeldPiece heldPiece) {
     jointAngles = new IntakeAngle(elbowState, wristState);
     elevator = elevatorState;
