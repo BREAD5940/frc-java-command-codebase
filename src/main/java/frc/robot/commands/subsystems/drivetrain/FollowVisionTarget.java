@@ -106,8 +106,8 @@ public class FollowVisionTarget extends Command {
 
       System.out.println("Limelight data: " + limelightData + " Turn speed: " + turnSpeed);
 
-      double targetSizeSetpoint = 2;
-      double distanceRatio = targetSizeSetpoint - sizeData;
+      // double targetSizeSetpoint = 2;
+      double distanceRatio = targetPercentOfFrame - sizeData;
 
       double forwardSpeed = distanceRatio * 0.5;
 

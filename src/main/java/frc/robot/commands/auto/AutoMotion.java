@@ -112,7 +112,7 @@ public class AutoMotion {
     }
 
     // Align with the vision targets, slightly back from the goal
-    toReturn.addSequential(new FollowVisionTarget(0.7, 70, 20)); // FIXME check % value TODO this assumes a perfect FollowVisionTarget command
+    toReturn.addSequential(new FollowVisionTarget(0.7, 2, 20)); // FIXME check % value TODO this assumes a perfect FollowVisionTarget command
 
     // Set the elevator to the correct height
     // toReturn.addSequential(new SetElevatorHeight(getElevatorPreset(),false));
