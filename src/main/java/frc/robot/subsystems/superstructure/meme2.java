@@ -25,7 +25,6 @@ import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.superstructure.Elevator.EncoderMode;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
-import frc.robot.planners.SuperstructurePlanner;
 
 /**
  * First level of control for the superstructure of the robot. Contains all the
