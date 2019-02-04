@@ -25,10 +25,7 @@ import frc.robot.lib.Logger;
 @SuppressWarnings("WeakerAccess")
 public class Trajectories {
 
-  public static HashMap<String,Pose2d> locations = new HashMap<String,Pose2d>();
-  public static ArrayList<Pose2d[]> unnecessary = new ArrayList<Pose2d[]>();
-  public static HashMap<Pose2d[],Pose2d> thirdPt = new HashMap<Pose2d[],Pose2d>();
-  public Trajectories(){
+  public static HashMap<String,Pose2d> locations = new HashMap<String,Pose2d>();{
     locations.put("habR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
     locations.put("habM", new Pose2d(LengthKt.getFeet(5.181), LengthKt.getFeet(13.379),Rotation2dKt.getDegree(0.0)));
     locations.put("habL", new Pose2d(LengthKt.getFeet(5.141), LengthKt.getFeet(9.508),Rotation2dKt.getDegree(0.0)));
@@ -52,10 +49,29 @@ public class Trajectories {
     locations.put("depotLB", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(20.517),Rotation2dKt.getDegree(-180)));
     locations.put("depotRF", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(6.107),Rotation2dKt.getDegree(180)));
     locations.put("depotLB", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(6.107),Rotation2dKt.getDegree(-180)));
-    
-
-    //put combos of locations.get()s and their 3rd points
   }
+  public static ArrayList<Pose2d[]> unnecessary = new ArrayList<Pose2d[]>();{
+    //TODO put motion combos we dont need here
+  }
+  public static HashMap<Pose2d[],Pose2d> thirdPt = new HashMap<Pose2d[],Pose2d>();{
+    // thirdPt.put(new List<Pose2d>(Arrays.asList(locations.get("habL"), locations.get("rocketR2"))),
+        // new Pose2d(LengthKt.getFeet(14.913), LengthKt.getFeet(10.261), Rotation2dKt.getDegree(-54)));
+    // thirdPt.put({locations.get("habL"),locations.get("rocketR3")},
+    //     new Pose2d(LengthKt.getFeet(14.913), LengthKt.getFeet(10.261), Rotation2dKt.getDegree(-54)));
+    // thirdPt.put(new Pose2d[locations.get("habM"),locations.get("rocketL3")],
+    //     new Pose2d(LengthKt.getFeet(14.913), LengthKt.getFeet(10.261), Rotation2dKt.getDegree(-54)));
+    // thirdPt.put(new Pose2d[locations.get("habM"),locations.get("rocketR3")],
+    //     new Pose2d(LengthKt.getFeet(14.913), LengthKt.getFeet(10.261), Rotation2dKt.getDegree(-54)));
+    // thirdPt.put(new Pose2d[locations.get("habL"),locations.get("rocketR2")],
+    //     new Pose2d(LengthKt.getFeet(14.913), LengthKt.getFeet(10.261), Rotation2dKt.getDegree(-54)));
+    // thirdPt.put(new Pose2d[locations.get("habL"),locations.get("rocketR2")],
+    //     new Pose2d(LengthKt.getFeet(14.913), LengthKt.getFeet(10.261), Rotation2dKt.getDegree(-54)));
+    // thirdPt.put(new Pose2d[locations.get("habL"),locations.get("rocketR2")],
+    //     new Pose2d(LengthKt.getFeet(14.913), LengthKt.getFeet(10.261), Rotation2dKt.getDegree(-54)));
+    // thirdPt.put(new Pose2d[locations.get("habL"),locations.get("rocketR2")],
+    //     new Pose2d(LengthKt.getFeet(14.913), LengthKt.getFeet(10.261), Rotation2dKt.getDegree(-54)));
+  }
+  public static HashMap<Pose2d[], TimedTrajectory<Pose2dWithCurvature>> generatedTrajectories = new HashMap<Pose2d[], TimedTrajectory<Pose2dWithCurvature>>();
 
   public static Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
   public static Velocity<Length> kDefaultEndVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
@@ -71,31 +87,14 @@ public class Trajectories {
     // new VelocityLimitRegionConstraint(new Rectangle2d(7.0, 0.0, 8.0, 13.0), VelocityKt.getVelocity(LengthKt.getFeet(2.0)))*/
   );
 
-  public static HashMap<String, TimedTrajectory<Pose2dWithCurvature>> traject = new HashMap<String, TimedTrajectory<Pose2dWithCurvature>>();
-  public static HashMap<String, List<Pose2d>> wpLists = new HashMap<String, List<Pose2d>>();
-  
-  public static void genLists(){
-    wpLists.put("frontRightCargo",Arrays.asList(
-      new Pose2d(LengthKt.getFeet(2), LengthKt.getFeet(10), Rotation2dKt.getDegree(0)),
-      new Pose2d(LengthKt.getFeet(17), LengthKt.getFeet(12.5), Rotation2dKt.getDegree(0))
-    ));
-    wpLists.put("frontLeftCargo",null);
-    wpLists.put("leftLeftCargo",Arrays.asList(
-      new Pose2d(LengthKt.getFeet(21.747),LengthKt.getFeet(16.973),Rotation2dKt.getDegree(-91.0))
-    ));
-    wpLists.put("leftMiddleCargo",null);
-    wpLists.put("leftRightCargo",null);
-    wpLists.put("rightLeftCargo",null);
-    wpLists.put("rightMiddleCargo",null);
-    wpLists.put("rightRightCargo",null);
-  }
 
   public static void generateAllTrajectories(){
-    genLists();
     Logger.log("Generating ALL trajectories");
     double startTime = Timer.getFPGATimestamp();
-    for (String key : wpLists.keySet()){
-      traject.put(key,generateTrajectory(wpLists.get(key),false));
+    for (String key : locations.keySet()){
+      for (String eKey : locations.keySet()){
+        generatedTrajectories.put(key,generateTrajectory(locations.get(key),false));
+      }
     }
     Logger.log("Trajectories generated in " + (Timer.getFPGATimestamp() - startTime) + "seconds!");
   }

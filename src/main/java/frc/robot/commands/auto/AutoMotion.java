@@ -49,6 +49,7 @@ public class AutoMotion {
   private GoalHeight gHeight;
   private GoalType gType;
   private HeldPiece piece;
+  private HeldPiece endPiece;
   private AutoCommandGroup mBigCommandGroup;
 
   /**
@@ -77,6 +78,11 @@ public class AutoMotion {
       this.mBigCommandGroup = genGrabCommands();
     }
   }
+
+  public AutoMotion(boolean isNull){
+    //wheeee this does absolutely NOTING it jusst exists to make AutoCombo UnBork
+    
+  }
   /**
    * Generates commands to pick up a piece based on the parameters of the current AutoMotion
    * @return
@@ -89,11 +95,13 @@ public class AutoMotion {
       toReturn.addSequential(new SetIntakeMode(HeldPiece.CARGO));
       // Predefined grab command
       toReturn.addSequential(new GrabCargo());
+      this.endPiece=HeldPiece.CARGO;
     }else if (this.gType==GoalType.RETRIEVE_HATCH){
       // Set the intake to hatch mode
       toReturn.addSequential(new SetIntakeMode(HeldPiece.HATCH));
       // Predefined grab command
       toReturn.addSequential(new PickUpHatch());
+      this.endPiece=HeldPiece.HATCH;
     }
     return toReturn;
   }
@@ -130,7 +138,7 @@ public class AutoMotion {
     }else if (this.piece==HeldPiece.HATCH){
       toReturn.addSequential(new PlaceHatch());
     }
-
+    this.endPiece=HeldPiece.NONE;
     return toReturn;
 
   }
@@ -206,6 +214,15 @@ public class AutoMotion {
    */
   public AutoCommandGroup getBigCommandGroup(){
     return this.mBigCommandGroup;
+  }
+
+  /**
+   * identification function
+   * @return
+   *  the heldpiece at the end of the motion -- for AutoCombo
+   */
+  public HeldPiece getEndHeldPiece(){
+    return this.endPiece;
   }
   
 }

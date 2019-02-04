@@ -20,11 +20,10 @@ import frc.robot.commands.auto.AutoMotion.GoalType;
 public class RunAuto extends Command {
 
   public GoalType gt;
-  public Pose2d goal;
   public GoalHeight height;
   public AutoMotion motion;
   public AutoCombo cMotion;
-  public Pose2d location;
+  public String[] keys;
   public boolean isDrive;
 
 
@@ -35,10 +34,9 @@ public class RunAuto extends Command {
     this.isDrive = false;
   }
 
-  public RunAuto(GoalType gt, GoalHeight height,String startKey,String endKey){
+  public RunAuto(GoalType gt, GoalHeight height, String... keys){
     this(gt, height);
-    this.location = location;
-    this.goal = goal;
+    this.keys = keys;
     this.isDrive = true;
   }
 
@@ -48,7 +46,7 @@ public class RunAuto extends Command {
       motion = new AutoMotion(height, gt);
       motion.getBigCommandGroup().start();
     }else{
-      cMotion = new AutoCombo(height, gt, location,goal);
+      cMotion = new AutoCombo(height, gt, keys);
       cMotion.getBigCommandGroup().start();
     }
   }
