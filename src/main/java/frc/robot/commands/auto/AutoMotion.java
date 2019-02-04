@@ -1,6 +1,5 @@
 package frc.robot.commands.auto;
 
-import frc.robot.commands.subsystems.intake.AutoIntake;
 import frc.robot.subsystems.superstructure.SuperStructure.ElevatorPresets;
 import frc.robot.commands.auto.actions.DriveDistance;
 import frc.robot.commands.auto.actions.SetIntakeMode;
@@ -127,7 +126,7 @@ public class AutoMotion {
     }
 
     if(this.piece==HeldPiece.CARGO){
-      toReturn.addSequential(new AutoIntake(-1, 5));
+      // toReturn.addSequential(new AutoIntake(-1, 5)); // TODO change this to something hadled by superstructure??
     }else if (this.piece==HeldPiece.HATCH){
       toReturn.addSequential(new PlaceHatch());
     }
