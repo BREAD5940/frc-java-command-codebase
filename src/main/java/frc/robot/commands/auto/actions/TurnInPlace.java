@@ -29,20 +29,20 @@ public class TurnInPlace extends Command {
   double raw_left;
   double raw_right;
 
-  // TerriblePID turnPID = new TerriblePID(RobotConfig.auto.TurnInPlace.kp, RobotConfig.auto.TurnInPlace.ki, 
-  //   RobotConfig.auto.TurnInPlace.min_turn_speed, 
-  //   RobotConfig.auto.TurnInPlace.max_turn_speed, 
-  //   RobotConfig.auto.TurnInPlace.integral_zone, 
+  // TerriblePID turnPID = new TerriblePID(RobotConfig.auto.TurnInPlace.kp, RobotConfig.auto.TurnInPlace.ki,
+  //   RobotConfig.auto.TurnInPlace.min_turn_speed,
+  //   RobotConfig.auto.TurnInPlace.max_turn_speed,
+  //   RobotConfig.auto.TurnInPlace.integral_zone,
   //   RobotConfig.auto.TurnInPlace.max_integral);
-  
+
   // public TerriblePID(double kp, double ki, double minOutput, double maxOutput, double integralZone, double maxIntegralAccum, double kf, FeedForwardMode feedforwardmode, FeedForwardBehavior feedforwardbehavior, double unitsPerQuarterWave) {
   TerriblePID turnPID = new TerriblePID(RobotConfig.auto.turnInPlace.kp, RobotConfig.auto.turnInPlace.ki, 0d, RobotConfig.auto.turnInPlace.kf,
-    RobotConfig.auto.turnInPlace.min_turn_speed, 
-    RobotConfig.auto.turnInPlace.max_turn_speed, 
-    RobotConfig.auto.turnInPlace.integral_zone, 
+    RobotConfig.auto.turnInPlace.min_turn_speed,
+    RobotConfig.auto.turnInPlace.max_turn_speed,
+    RobotConfig.auto.turnInPlace.integral_zone,
     RobotConfig.auto.turnInPlace.max_integral,
     100000,
-    FeedForwardMode.LINEAR, 
+    FeedForwardMode.LINEAR,
     FeedForwardBehavior.NORMAL
   );
 
@@ -51,11 +51,11 @@ public class TurnInPlace extends Command {
   /**
    * Turn a specified number of degrees in the default auto gear.
    * This constructor will default to taking the angle relative to
-   * the robot's angle when the command is initialized, not the 
+   * the robot's angle when the command is initialized, not the
    * absolute angle. If you want to specify, use a bool as the second
-   * argument to specify if the angle should be interpreted as absolute 
+   * argument to specify if the angle should be interpreted as absolute
    * or not.
-   * @param target_angle angle the robot should turn to in degrees 
+   * @param target_angle angle the robot should turn to in degrees
    */
   public TurnInPlace(double target_angle) {
     // Use requires() here to declare subsystem dependencies
@@ -64,10 +64,10 @@ public class TurnInPlace extends Command {
   }
 
   /**
-   * Turn a specified number of degrees in the default auto gear. 
-   * The angle passed is an absolute angle relative to the 
+   * Turn a specified number of degrees in the default auto gear.
+   * The angle passed is an absolute angle relative to the
    * angle upon autonomous init.
-   * @param target_angle angle robot should turn to in degrees 
+   * @param target_angle angle robot should turn to in degrees
    * @param isAbsolute true if angle is absolute relative to auto init
    */
   public TurnInPlace(double target_angle, boolean isAbsolute) {

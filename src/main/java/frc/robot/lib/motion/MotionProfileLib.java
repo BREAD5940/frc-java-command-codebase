@@ -13,8 +13,6 @@ import com.ctre.phoenix.motion.TrajectoryPoint;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj.DriverStation;
-
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 

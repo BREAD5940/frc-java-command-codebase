@@ -8,9 +8,13 @@
     "**/.DS_Store": true,
     "bin/": true,
     ".classpath": true,
-    ".project": true
+    ".project": true,
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
   },
-  "workbench.colorTheme": "Monokai",
+  "workbench.colorTheme": "Default Dark+",
   "wpilib.online": true,
   "editor.tabSize": 2
 }
