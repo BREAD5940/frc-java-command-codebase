@@ -1,9 +1,10 @@
-package frc.robot.lib;
+package frc.robot.planners;
+
+import java.util.ArrayList;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.states.SuperStructureState;
@@ -11,7 +12,7 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
  * Plans the best motion of the superstructure based on the inputted current
- * SuperstructureState and a goal SuperstructureState. General idea is to get
+ * SuperStructureState and a goal SuperStructureState. General idea is to get
  * from point A to point B without breaking anything. TODO find the actual
  * values of the angles/heights. this will probably have to wait until the robot
  * is done
@@ -39,18 +40,22 @@ public class SuperstructurePlanner{
   int corrCount; //number of corrected items in motion
   SuperStructureState currentPlannedState;
 
+  public boolean checkValidState(SuperStructureState reqState) {
+    return true; // FIXME to check if it's valid. Maybe call planner.plan? idk
+  }
+
   /**
    * Creates a command group of superstructure motions that will prevent any damage to the intake/elevator
    * @param goalStateIn
-   *    the desired SuperstructureState
+   *    the desired SuperStructureState
    * @param currentState
-   *    the current SuperstructureState
+   *    the current SuperStructureState
    * @return
    *    the ideal command group to get from the currentState to the goalState
    */
-  public CommandGroup plan(SuperStructureState goalStateIn, SuperStructureState currentState){
-    CommandGroup toReturn = new CommandGroup();
-    SuperStructureState goalState = SuperStructureState.fromOther(goalStateIn);
+  public ArrayList<SuperStructureState> plan(SuperStructureState goalStateIn, SuperStructureState currentState){
+    ArrayList<SuperStructureState> toReturn = new ArrayList<SuperStructureState>();
+    SuperStructureState goalState = goalStateIn;
     errorCount=corrCount=0;
     boolean defAngle=false;
 
@@ -81,7 +86,7 @@ public class SuperstructurePlanner{
         corrCount++;
         goalState.setAngle(iPosition.CARGO_GRAB);
       }else{
-        // toReturn.addSequential(new SetWrist(iPosition.CARGO_GRAB)); // FIXME replace with a movesuperstructurecombo thing?
+        toReturn.add(new SuperStructureState(currentState.getElevatorHeight(), iPosition.CARGO_GRAB, currentState.getHeldPiece()));
         intakeAtRisk=false;
         intakeCrashable=false;
       }
@@ -110,9 +115,7 @@ public class SuperstructurePlanner{
         || (goalState.getElevatorHeight().getValue()<=crossbarMinHeight.getValue()&&currentState.getElevatorHeight().getValue()>=crossbarMaxHeight.getValue())){
       System.out.println("MOTION UNSAFE -- Intake will hit crossbar. Setting to default intake position for movement.");
       errorCount++;
-      // toReturn.addSequential(new SetWrist(iPosition.CARGO_GRAB)); //Keeps intake outside the elevator so it doesn't hit the crossbar
-      // FIXME change SetWrist to something more reasonable like a superstructure command
-      // TODO even if the elevator now moves to just above the crossbar, a intake flip will whack the wrist. Would a commanded move such as that move the elevator up, flip, then back down?
+      toReturn.add(new SuperStructureState(currentState.getElevatorHeight(), iPosition.CARGO_GRAB, currentState.getHeldPiece())); //Keeps intake outside the elevator so it doesn't hit the crossbar
     }else{
       intakeAtRisk=false;
     }
@@ -128,11 +131,8 @@ public class SuperstructurePlanner{
     }
 
     //move to corrected state
-    // toReturn.addSequential(new SetElevatorHeight(goalState.getElevatorHeight())); //FIXME so this makes the whole thing die
-    currentState.elevator.setHeight(goalState.elevator.getHeight());
-    // toReturn.addSequential(new SetWrist(goalState.getAngle()));
-    // FIXME change SetWrist to something more reasonable like a superstructure command
-    currentState.setAngle(goalState.getAngle());
+    toReturn.add(new SuperStructureState(goalState));
+    currentState=goalState;
 
     System.out.println("MOTION COMPLETED -- "+Integer.valueOf(errorCount)+" error(s) and "
       +Integer.valueOf(corrCount)+" final correction(s)");

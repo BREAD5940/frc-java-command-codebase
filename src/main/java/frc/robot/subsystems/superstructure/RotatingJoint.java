@@ -162,6 +162,10 @@ public class RotatingJoint /*extends Subsystem*/ {
       this(Rotation2dKt.getDegree(0), VelocityKt.getVelocity(Rotation2dKt.getDegree(0)));
     }
 
+    public RotatingArmState(Rotation2d angle_) {
+      this(angle_, VelocityKt.getVelocity(Rotation2dKt.getDegree(0)));
+    }
+
     public RotatingArmState(Rotation2d angle_, Velocity<Rotation2d> velocity_) {
       this.angle = angle_;
       this.velocity = velocity_;
