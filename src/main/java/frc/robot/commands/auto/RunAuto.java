@@ -7,9 +7,9 @@
 
 package frc.robot.commands.auto;
 
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.auto.AutoCombo.CurrentLocation;
-import frc.robot.commands.auto.AutoCombo.GoalLocation;
 import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
 
@@ -20,11 +20,11 @@ import frc.robot.commands.auto.AutoMotion.GoalType;
 public class RunAuto extends Command {
 
   public GoalType gt;
-  public GoalLocation goal;
+  public Pose2d goal;
   public GoalHeight height;
   public AutoMotion motion;
   public AutoCombo cMotion;
-  public CurrentLocation location;
+  public Pose2d location;
   public boolean isDrive;
 
 
@@ -35,7 +35,7 @@ public class RunAuto extends Command {
     this.isDrive = false;
   }
 
-  public RunAuto(GoalType gt, GoalHeight height,CurrentLocation location,GoalLocation goal){
+  public RunAuto(GoalType gt, GoalHeight height,String startKey,String endKey){
     this(gt, height);
     this.location = location;
     this.goal = goal;
