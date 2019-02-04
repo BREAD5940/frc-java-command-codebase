@@ -21,8 +21,8 @@ import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
  */
 public class AutoCombo {
   private AutoMotion motion;
-  private CurrentLocation location;
-  private GoalLocation goal;
+  private Pose2d location;
+  private Pose2d goal;
   private AutoCommandGroup mBigCommandGroup;
   private ArrayList<DrivePlan> drivePlans;
 
@@ -37,7 +37,7 @@ public class AutoCombo {
    *    the current location of the robot
    */
 
-  public AutoCombo (GoalHeight gHeight, GoalType gType, CurrentLocation loc, GoalLocation goal){
+  public AutoCombo (GoalHeight gHeight, GoalType gType, Pose2d loc, Pose2d goal){
 
     this.motion = new AutoMotion(gHeight, gType);
     this.location = loc;
