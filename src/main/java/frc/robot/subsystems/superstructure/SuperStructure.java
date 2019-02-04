@@ -237,6 +237,7 @@ public class SuperStructure extends Subsystem {
     double elevatorVoltageGravity = elevator.getVoltage(this.mCurrentState);
 
     // TODO velocity planning? or just let talon PID figure itself out
+    // How about maybe motion magic?
 
     // TODO is mReqState up to date?
     getWrist().setPositionArbitraryFeedForward(mReqState.getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
