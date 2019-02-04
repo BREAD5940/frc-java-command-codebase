@@ -1,6 +1,5 @@
 
 package frc.robot.lib;
-import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * Basic library to convert a bunch of different units around encoder
@@ -8,9 +7,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * 
  * @author Matthew Morley
  */
-public class EncoderLib extends Subsystem {
+public class EncoderLib {
     public EncoderLib() {
-        super("EncoderLib");
+        // super("EncoderLib");
     }
 
     /**
@@ -111,10 +110,4 @@ public class EncoderLib extends Subsystem {
         return raw;
     }
 
-
-    @Override
-    public void initDefaultCommand() {
-      // Set the default command for a subsystem here.
-      // setDefaultCommand(new MySpecialCommand());
-    }
 }

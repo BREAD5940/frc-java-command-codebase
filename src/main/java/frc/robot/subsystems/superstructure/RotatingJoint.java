@@ -1,9 +1,5 @@
 package frc.robot.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.lib.PIDSettings;
-import frc.robot.lib.TerriblePID;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,10 +14,13 @@ import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
+
+import frc.robot.lib.PIDSettings;
 
 public class RotatingJoint /*extends Subsystem*/ {
 
@@ -31,7 +30,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 
   public Mass kArmMass;
 
-  public double kTorque;
+  public double kTorque = 0;
 
   public double kMotorResistance = 0.0896;
 
@@ -53,8 +52,8 @@ public class RotatingJoint /*extends Subsystem*/ {
    * @param motorPort on the CAN Bus (for single talon arms)
    * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
    */
-  public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor, Length armLength, Mass mass, double kTorque) {
-    this(settings, Arrays.asList(motorPort), sensor, armLength, mass, kTorque);
+  public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor, Length armLength, Mass mass) {
+    this(settings, Arrays.asList(motorPort), sensor, armLength, mass);
   }
 
   /**
@@ -65,13 +64,12 @@ public class RotatingJoint /*extends Subsystem*/ {
    * @param ports of talon CAN ports as a List
    * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
    */
-  public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, Length armLength, Mass mass, double kTorque_) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
+  public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, Length armLength, Mass armMass) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
 
     kArmLength = armLength;
 
-    kArmMass = mass;
+    kArmMass = armMass;
 
-    kTorque = kTorque_;
 
     NativeUnit unitsPerRotation = NativeUnitKt.getSTU(0);
 
@@ -103,10 +101,17 @@ public class RotatingJoint /*extends Subsystem*/ {
    * Set the talon as a target angle and feedforward throttle percent
    */
   public void setPositionArbitraryFeedForward(Rotation2d setpoint, double feedForwardPercent) {
-    double rawUnits = mRotationModel.fromModel(setpoint).getValue();
     getMaster().set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
   }
 
+  /**
+   * Calculate the voltage based on a torque and velocity. Depreciated in favor of the 254 dcmotortransmission class
+   * @deprecated
+   * @param torque
+   * @param anglularVelocity
+   * @return
+   */
+  @Deprecated
   public double calculateVoltage(double torque, Velocity<Rotation2d> anglularVelocity) {
     double tStatic = torque * kMotorResistance / kTorque;
     double tVelocity = kTorque * anglularVelocity.getValue(); // TODO make sure this is rad/s
@@ -136,6 +141,10 @@ public class RotatingJoint /*extends Subsystem*/ {
     return getMaster().getSensorPosition();
   }
 
+  public Velocity<Rotation2d> getAngularVelocity() {
+    return getMaster().getSensorVelocity();
+  }
+
   /**
    * Set the position of the sensor to the given Rotation2d pos_
    * @param pos_ of the sensor as a Rotation2d
@@ -145,14 +154,26 @@ public class RotatingJoint /*extends Subsystem*/ {
   }
 
   public static class RotatingArmState {
-    public Rotation2d angle = Rotation2dKt.getDegree(0);
+    public Rotation2d angle;
+    public Velocity<Rotation2d> velocity;
     // public double feedForwardVoltage = 0;
     // public double pidOutput = 0;
-    public RotatingArmState() {this(Rotation2dKt.getDegree(0)); }
+    public RotatingArmState() {
+      this(Rotation2dKt.getDegree(0), VelocityKt.getVelocity(Rotation2dKt.getDegree(0)));
+    }
 
-    public RotatingArmState(Rotation2d angle) {
-      this.angle = angle;
+    public RotatingArmState(Rotation2d angle_) {
+      this(angle_, VelocityKt.getVelocity(Rotation2dKt.getDegree(0)));
+    }
+
+    public RotatingArmState(Rotation2d angle_, Velocity<Rotation2d> velocity_) {
+      this.angle = angle_;
+      this.velocity = velocity_;
       // this.feedForwardVoltage = feedForwardVoltage;
+    }
+
+    public void setAngle(Rotation2d new__) {
+      this.angle = new__;
     }
 
     @Override
@@ -163,7 +184,7 @@ public class RotatingJoint /*extends Subsystem*/ {
   }
 
   public RotatingArmState getCurrentState() {
-    return new RotatingArmState(getRotation());
+    return new RotatingArmState(getRotation(), getAngularVelocity());
   }
 
   public double getDegrees() {

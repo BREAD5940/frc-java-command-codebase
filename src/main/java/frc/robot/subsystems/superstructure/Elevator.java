@@ -1,16 +1,29 @@
 package frc.robot.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
-
-import frc.robot.Robot;
-import frc.robot.RobotConfig;
-import frc.robot.commands.subsystems.superstructure.elevator.ElevatorTelop;
-import frc.robot.lib.EncoderLib;
-import frc.robot.states.ElevatorState;
+import java.util.Arrays;
+import java.util.List;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.SensorTerm;
+
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Time;
+import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
+import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
+import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
+
+import edu.wpi.first.wpilibj.Timer;
+import frc.robot.RobotConfig;
+import frc.robot.lib.obj.InvertSettings;
+import frc.robot.states.ElevatorState;
 
 
 /**
@@ -20,141 +33,116 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
  * 
  * @author Matthew Morley
  */
-public class Elevator extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+public class Elevator /*extends Subsystem*/ {
 
-  private ElevatorState lastState = new ElevatorState();
-
-  public TalonSRX elevator_talon = new TalonSRX(RobotConfig.elevator.elevatorTalon.elevator_talon_port);
-
-  double raw_max_height = EncoderLib.distanceToRaw(
-    RobotConfig.elevator.elevator_maximum_height,
-    RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
-    RobotConfig.elevator.elevator_effective_diameter
-  );
-  float position_setpoint;
-  public enum ElevatorPresets {
-    LOW_ROCKET_PORT(27),
-    MIDDLE_ROCKET_PORT(55),
-    HIGH_ROCKET_PORT(84),
-    LOW_ROCKET_HATCH(19),
-    MIDDLE_ROCKET_HATCH(47),
-    HIGH_ROCKET_HATCH(75),
-
-    CARGO_SHIP_HATCH(20),
-    // TODO this should be even with the low rocket hatch. According to the game manual, it isn't
-    CARGO_SHIP_WALL(31);
-    //top of wall
-
-    private int height;
-
-    ElevatorPresets(int height){
-      this.height = height;
+    public static enum EncoderMode {
+      NONE, CTRE_MagEncoder_Relative;
     }
-    public int getValue(){
-      return height;
+  
+    private FalconSRX<Length> mMaster;
+  
+    private FalconSRX<Length> mSlave1, mSlave2, mSlave3;
+  
+    // private TransmissionSide side;
+  
+    NativeUnitLengthModel lengthModel = RobotConfig.elevator.elevatorModel;
+  
+    public Elevator(int masterPort, int slavePort1, int slavePort2, int slavePort3, EncoderMode mode, InvertSettings settings) {
+  
+      mMaster = new FalconSRX<Length>(masterPort, lengthModel, TimeUnitsKt.getMillisecond(10));
+      mSlave1 = new FalconSRX<Length>(slavePort1, lengthModel, TimeUnitsKt.getMillisecond(10));
+      mSlave2 = new FalconSRX<Length>(slavePort2, lengthModel, TimeUnitsKt.getMillisecond(10));
+      mSlave3 = new FalconSRX<Length>(slavePort3, lengthModel, TimeUnitsKt.getMillisecond(10));
+      
+      if(mode == EncoderMode.CTRE_MagEncoder_Relative) {
+        mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
+        mMaster.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30);
+      }
+      
+      mSlave1.set(ControlMode.Follower, mMaster.getDeviceID());
+      mSlave2.set(ControlMode.Follower, mMaster.getDeviceID());
+      mSlave3.set(ControlMode.Follower, mMaster.getDeviceID());
+
+
+      // Quadrature Encoder of current
+      // Talon
+      mMaster.configPeakOutputForward(+1.0, 30);
+      mMaster.configPeakOutputReverse(-1.0, 30);
+  
+      mMaster.setInverted(settings.masterInverted);
+      mSlave1.setInverted(settings.slave1FollowerMode);
+      mSlave2.setInverted(settings.slave1FollowerMode);
+      mSlave3.setInverted(settings.slave1FollowerMode);
     }
-  }
-  public static double getHeightEnumValue(ElevatorPresets height) {
-    switch (height) {
-      case LOW_ROCKET_PORT:
-        return RobotConfig.auto.fieldPositions.low_rocket_port;
-      case MIDDLE_ROCKET_PORT:
-        return RobotConfig.auto.fieldPositions.middle_rocket_port;
-      case HIGH_ROCKET_PORT:
-        return RobotConfig.auto.fieldPositions.high_rocket_port;
-      case LOW_ROCKET_HATCH:
-        return RobotConfig.auto.fieldPositions.low_rocket_hatch;
-      case MIDDLE_ROCKET_HATCH:
-        return RobotConfig.auto.fieldPositions.middle_rocket_hatch;
-      case HIGH_ROCKET_HATCH:
-        return RobotConfig.auto.fieldPositions.high_rocket_hatch;
-      case CARGO_SHIP_HATCH:
-        return RobotConfig.auto.fieldPositions.cargo_ship_hatch;
-      default:
-        return 0;
+  
+    public FalconSRX<Length> getMaster() {
+      return mMaster;
     }
-    // Reminder: Breaks aren't needed because of return
-  }
-  /** Set height to raise elevator to */
-  public void init() {
-    elevator_talon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,0,30);
-    elevator_talon.setSelectedSensorPosition(0, 0, 10); // zero the encoder
-    elevator_talon.setInverted(false);
-    elevator_talon.setSensorPhase(true);
-    this.elevator_talon.config_kP(0, RobotConfig.elevator.elevatorTalon.elevator_position_kp, 30);
-    this.elevator_talon.config_kI(0, RobotConfig.elevator.elevatorTalon.elevator_position_ki, 30);
-    this.elevator_talon.config_kD(0, RobotConfig.elevator.elevatorTalon.elevator_position_kd, 30);
-    this.elevator_talon.config_kF(0, RobotConfig.elevator.elevatorTalon.elevator_position_kf, 30);
-    // setHeight(Robot.elevator.getElevatorAxisInches());
-  }
-
-  /**
-   * Get the current elevator height from the throttle in inches. For passing into setHeight
-   * @return height in inches
-   */
-  public double getElevatorAxisInches() {
-    return (Robot.m_oi.getThrottleAxis() / (RobotConfig.controls.throttle_maximum_value - RobotConfig.controls.throttle_minimum_value)) 
-      * RobotConfig.elevator.elevator_maximum_height;
-  }
-  /**
-   * Set the elevator height, in inches
-   * @param height in inches
-   */
-  public void setHeight(double height) {
-    if (height>RobotConfig.elevator.elevator_maximum_height) {
-      height = RobotConfig.elevator.elevator_maximum_height;//reset to maximum if too high
-    } else if (height<RobotConfig.elevator.elevator_minimum_height) {
-      height = RobotConfig.elevator.elevator_minimum_height;
+  
+    public List<FalconSRX<Length>> getAll() {
+      return Arrays.asList(
+        mMaster, mSlave1, mSlave2, mSlave3
+      );
     }
-      //  however you may want to consider catching errors like elevator below minimum height, or elevator above maximum height, and allowing the elevator to move
-    elevator_talon.set(
-      ControlMode.Position, EncoderLib.distanceToRaw(
-        height, 
-        RobotConfig.elevator.elevator_effective_diameter, 
-        RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION
-      )
-    );
-  }
-
-  public void setPercent(double percent){
-    elevator_talon.set(ControlMode.PercentOutput,percent);
-  }
-
-  /**
-   * Return the height of the elevator from zero, in inches
-   * @return height in inches
-   */
-  public double getHeight() {
-    double inches = EncoderLib.rawToDistance(
-      elevator_talon.getSelectedSensorPosition(0), 
-      RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION, 
-      RobotConfig.elevator.elevator_effective_diameter);
-    return inches;
-    // return elevator_talon.getSelectedSensorPosition(0);
-  }
-
-  /**
-   * Iteratively control the height of the elevator
-   * a la an Xbox controller axis. Sets the height to current height
-   * plus a delta.
-   */
-  public double iterativeSetHeight(double delta) {
-    return delta + getHeight();
-  }
-
-  public boolean isWithinTolerence(double target) {
-    return ( Math.abs(target - getHeight()) < RobotConfig.elevator.elevatorTolerences.position_tolerence );
-  }
-
-  public ElevatorState getCurrentState() {
-    return 
-  }
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new ElevatorTelop());
+  
+    public NativeUnitLengthModel getModel() {
+      return lengthModel;
+    }
+  
+    public Length getHeight() {
+      return mMaster.getSensorPosition();
+    }
+  
+    public Velocity<Length> getVelocity() {
+      return mMaster.getSensorVelocity();
+    }
+  
+    public double getFeetPerSecond() {
+      return VelocityKt.getFeetPerSecond(getVelocity());
+    }
+  
+    public double getFeet() {
+      return getHeight().getFeet();
+    }
+  
+    public Length getClosedLoopError() {
+      if (getMaster().getControlMode() != ControlMode.PercentOutput) {
+        return lengthModel.toModel(NativeUnitKt.getSTU(mMaster.getClosedLoopError()));
+      }
+      else {
+        return LengthKt.getFeet(0);
+      }
+    }
+  
+    public void zeroEncoder() {
+      mMaster.setSensorPosition(LengthKt.getMeter(0));
+    }
+  
+    public void setNeutralMode(NeutralMode mode) {
+      for( FalconSRX<Length> motor : getAll() ) {
+        motor.setNeutralMode(mode);
+      }
+    }
+  
+    public void stop() {
+      getMaster().set(ControlMode.PercentOutput, 0);
+    }
+  
+    public void setClosedLoopGains(double kp, double ki, double kd, double kf, double iZone, double maxIntegral) {
+      mMaster.config_kP(0, kp, 30);
+      mMaster.config_kI(0, ki, 30);
+      mMaster.config_kD(0, kd, 30);
+      mMaster.config_kF(0, kf, 30);
+      mMaster.config_IntegralZone(0, (int)Math.round(lengthModel.fromModel(LengthKt.getMeter(iZone)).getValue()), 30);
+      mMaster.configMaxIntegralAccumulator(0, maxIntegral, 0);
+    }
+    
+  
+  public ElevatorState getCurrentState(ElevatorState lastKnown) {
+    Time time = TimeUnitsKt.getSecond(Timer.getFPGATimestamp());
+    Acceleration<Length> accel = AccelerationKt.getAcceleration(LengthKt.getMeter(
+          (getVelocity().getValue() - lastKnown.velocity.getValue())/(time.getValue() - lastKnown.time.getValue())));
+    return new ElevatorState(getHeight(), getVelocity(), 
+      accel, time);
   }
 }
