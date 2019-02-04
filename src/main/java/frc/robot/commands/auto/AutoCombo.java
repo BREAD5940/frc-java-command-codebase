@@ -64,7 +64,7 @@ public class AutoCombo {
   }
 
   public void genDrivePlans(){
-    drivePlans.add(new DrivePlan(Trajectories.traject.get("frontRightCargo"),))
+    // drivePlans.add(new DrivePlan(Trajectories.traject.get("frontRightCargo"),))
   }
 
   // id functions
@@ -74,7 +74,7 @@ public class AutoCombo {
    * @return
    *  the starting location of the combo
    */
-  public CurrentLocation getLocation(){
+  public Pose2d getLocation(){
     return this.location;
   }
 

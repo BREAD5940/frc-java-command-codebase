@@ -82,7 +82,6 @@ public class Trajectories {
     ));
     wpLists.put("frontLeftCargo",null);
     wpLists.put("leftLeftCargo",Arrays.asList(
-      ,
       new Pose2d(LengthKt.getFeet(21.747),LengthKt.getFeet(16.973),Rotation2dKt.getDegree(-91.0))
     ));
     wpLists.put("leftMiddleCargo",null);
