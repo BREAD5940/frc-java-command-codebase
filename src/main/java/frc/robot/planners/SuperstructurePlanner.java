@@ -86,7 +86,7 @@ public class SuperstructurePlanner{
         corrCount++;
         goalState.setAngle(iPosition.CARGO_GRAB);
       }else{
-        toReturn.add(new SuperStructureState(currentState.getElevatorHeight(), iPosition.CARGO_GRAB, currentState.getHeldPiece()));
+        toReturn.add(new SuperStructureState(currentState.elevator, iPosition.CARGO_GRAB, currentState.getHeldPiece()));
         intakeAtRisk=false;
         intakeCrashable=false;
       }
@@ -115,7 +115,7 @@ public class SuperstructurePlanner{
         || (goalState.getElevatorHeight().getValue()<=crossbarMinHeight.getValue()&&currentState.getElevatorHeight().getValue()>=crossbarMaxHeight.getValue())){
       System.out.println("MOTION UNSAFE -- Intake will hit crossbar. Setting to default intake position for movement.");
       errorCount++;
-      toReturn.add(new SuperStructureState(currentState.getElevatorHeight(), iPosition.CARGO_GRAB, currentState.getHeldPiece())); //Keeps intake outside the elevator so it doesn't hit the crossbar
+      toReturn.add(new SuperStructureState(currentState.elevator, iPosition.CARGO_GRAB, currentState.getHeldPiece())); //Keeps intake outside the elevator so it doesn't hit the crossbar
     }else{
       intakeAtRisk=false;
     }

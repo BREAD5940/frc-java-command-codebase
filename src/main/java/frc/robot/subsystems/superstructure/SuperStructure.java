@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.commands.auto.AutoMotion;
+import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.PIDSettings.FeedbackMode;
 import frc.robot.lib.obj.InvertSettings;
@@ -142,7 +143,7 @@ public class SuperStructure extends Subsystem {
       ArrayList<SuperStructureState> path = planner.plan(mReqState, mCurrentState);
       this.mCurrentCommandGroup = new CommandGroup("Superstructure Path");
       for(int i=0; i<path.size() - 1; i++) {
-        mCurrentCommandGroup.add(new SuperstructureGoToState(path.get(i)));
+        mCurrentCommandGroup.addSequential(new SuperstructureGoToState(path.get(i)));
       }
     }
 

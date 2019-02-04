@@ -35,17 +35,17 @@ public class SuperStructureState {
   }
 
   public SuperStructureState(ElevatorState elevatorState, IntakeAngle intakeState) {
-    this(intakeState, elevatorState, HeldPiece.NONE);
+    this(elevatorState, intakeState, HeldPiece.NONE);
   }
 
-  public SuperStructureState(IntakeAngle angles___, ElevatorState elevatorState, HeldPiece piece__) {
+  public SuperStructureState(ElevatorState elevatorState, IntakeAngle angles___, HeldPiece piece__) {
     jointAngles = angles___;
     elevator = elevatorState;
     piece = piece__;
   }
 
   public static SuperStructureState fromOther(SuperStructureState other) {
-    return new SuperStructureState( other.jointAngles, other.elevator, other.piece );
+    return new SuperStructureState( other.elevator, other.jointAngles, other.piece );
   }
 
   public HeldPiece getHeldPiece() {
