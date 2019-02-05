@@ -183,7 +183,7 @@ public class RobotConfig {
     public static Gear auto_gear = Gear.LOW;
 
 
-    public static final Length robotRadius = LengthKt.getFeet(2); //FIXME this should be the distance from the center of the robot (or the gyro?) to the point on the robot perim furthest from it
+    public static final Length robotRadius = LengthKt.getInch(30); //FIXME this should be the distance from the center of the robot (or the gyro?) to the point on the robot perim furthest from it
     
     public static class fieldPositions {
       // Positions of objects on the field (ports, etc.) in inches. distances are to the center of the object
