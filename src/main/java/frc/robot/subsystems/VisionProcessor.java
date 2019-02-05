@@ -68,7 +68,7 @@ public class VisionProcessor {
               pointFinder.getBottomRight(), 
               pointFinder.getBottomLeft(),
               pointFinder.getTopLeft(), 
-              pointFinder.getTopRight()
+              pointFinder.getTopRight() //FIXME where are the definitions of these functions? _are_ there definitions for these functions?
        );
 
       Mat rotationVector = new Mat();
