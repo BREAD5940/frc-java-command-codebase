@@ -42,7 +42,6 @@ public class Robot extends TimedRobot {
   public static SuperStructure superstructure = SuperStructure.getInstance();
   public static LimeLight limelight = new LimeLight();
   // public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
-  public static SendableChooser<AutoMotion> backupAutoSelect = new SendableChooser<AutoMotion>();
   private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
   private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 2, 3);
   private static DoubleSolenoid elevatorShifterDoubleSolenoid = new DoubleSolenoid(9, 4, 5);
@@ -100,7 +99,6 @@ public class Robot extends TimedRobot {
     mGh.addOption("High", AutoMotion.GoalHeight.HIGH);
     mGh.addOption("Dropped into the cargo ship", AutoMotion.GoalHeight.OVER);
     SmartDashboard.putData("Goal Height", mGh);
-    SmartDashboard.putData("Backup Selector (Will not be used in most cases)", backupAutoSelect);
     SmartDashboard.putData(drivetrain);
     // SmartDashboard.putData(elevator);
     // SmartDashboard.putData(intake);

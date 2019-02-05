@@ -48,24 +48,24 @@ public class AutoCombo {
 
   public AutoCombo (HeldPiece startingPiece, String... wpKeys){
     this.wpKeys = wpKeys;
-    genDrivePlans();
-    HeldPiece cPiece = startingPiece;
-    Pose2d cGoal =Trajectories.locations.get(wpKeys[0]);
-    Pose2d cStart=Trajectories.locations.get(wpKeys[0]);
-    TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedTrajectories.get(new Pose2d[] {cStart,cGoal});
-    for(int i=1; i<wpKeys.length; i++){
-      cGoal = Trajectories.locations.get(wpKeys[i]);
-      AutoMotion cMotion = switchMotion(cPiece,wpKeys[i]);
-      cPiece = cMotion.getmHeldPiece();
-      if(FieldConstraints.isSafe(traject)){
-        this.mBigCommandGroup.addSequential(Robot.drivetrain.followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, true));
-        this.mBigCommandGroup.addSequential(cMotion.getBigCommandGroup());
+    HeldPiece cPiece = startingPiece; //the current piece is the piece we're starting with
+    Pose2d cGoal =Trajectories.locations.get(wpKeys[0]); //goal init to unimportant value
+    Pose2d cStart=Trajectories.locations.get(wpKeys[0]); //start init to the first waypoint
+    
+    for(int i=1; i<wpKeys.length; i++){ //starts at 1 so we don't get the current start, might need to add a -1 to prevent npes
+      cGoal = Trajectories.locations.get(wpKeys[i]); //goal to the current waypoint
+      TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedTrajectories.get(new Pose2d[] {cStart,cGoal}); //current trajectory from hashmap in Trajectories
+      AutoMotion cMotion = switchMotion(cPiece,wpKeys[i]); //creates an automotion based on the heldpiece and the goal
+      cPiece = cMotion.getmHeldPiece(); //get the current heldpiece from the motion TODO do I actually need this?
+      if(FieldConstraints.isSafe(traject)){ //checks if it's safe (wont hit shit)
+        this.mBigCommandGroup.addSequential(Robot.drivetrain.followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, true)); //drive to goal
+        this.mBigCommandGroup.addSequential(cMotion.getBigCommandGroup()); //do a motion
       }else{
         //TODO so isSafe should really really REALLY just fix the dam path
       }
       //prep for next loop
-      cPiece = cMotion.getEndHeldPiece();
-      cStart = cGoal;
+      cPiece = cMotion.getEndHeldPiece(); //set the current piece to the heldpiece at the end of the motion
+      cStart = cGoal; //set the start to the current goal so it'll continue seamlessly
     }
     
   }
@@ -80,10 +80,10 @@ public class AutoCombo {
    *    an automotion
    */
   private AutoMotion switchMotion(HeldPiece piece, String goal){
-    switch (goal.charAt(0)){
+    switch (goal.charAt(0)){ //gets the first letter of the goal key. they're all unique right now
       case 'h': //means it the hab
-        System.out.println("Cannot have the hab platform as a goal");
-        return new AutoMotion(true);
+        System.out.println("Cannot have the hab platform as a goal"); //TODO do we _want_ to have the hab as a goal?
+        return new AutoMotion(true); //TIXME this probably isn't the best way to have this, it's just empty
       case 'l': //it the loading station
         if (piece==HeldPiece.NONE){
           return new AutoMotion(GoalHeight.LOW, GoalType.RETRIEVE_HATCH);
@@ -100,14 +100,14 @@ public class AutoCombo {
           System.out.println("Cannot deposit nonexistant cargo/hatches");
           return new AutoMotion(true);
         }
-      case 'r': //o shit it dat rocket
+      case 'r': //rocket
         if (piece==HeldPiece.CARGO){
           return new AutoMotion(GoalHeight.LOW, GoalType.ROCKET_CARGO);
         }else if (piece==HeldPiece.HATCH){
           return new AutoMotion(GoalHeight.LOW, GoalType.ROCKET_HATCH);
         }else{
           System.out.println("Cannot deposit nonexistant cargo/hatches");
-          return new AutoMotion(true);
+          return new AutoMotion(true); 
         }
       case 'd': //might not be home but it sur is a depot
         if (piece==HeldPiece.NONE){
@@ -118,10 +118,6 @@ public class AutoCombo {
         }
     }
     return new AutoMotion(true);
-  }
-
-  public void genDrivePlans(){
-    // drivePlans.add(new DrivePlan(Trajectories.traject.get("frontRightCargo"),))
   }
 
   // id functions
@@ -135,7 +131,7 @@ public class AutoCombo {
     return this.mBigCommandGroup;
   }
 
-
+  //not id functions
   private static class FieldConstraints{
     protected static double rad = RobotConfig.auto.robotRadius.getFeet();
     protected static final Length maxY = LengthKt.getFeet(27-rad);
