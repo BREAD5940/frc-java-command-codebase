@@ -82,15 +82,24 @@ public class FieldConstraints {
       if(point.getY().getFeet()>maxY.getFeet()){safeY=maxY;}
       if(point.getY().getFeet()<minY.getFeet()){safeY=minY;}
 
+      point = new Translation2d(safeX, safeY); //set the current point to the safepoint inside the field
+
       for(int j=0; j<constraints.size()-1; j++){
-        if(point.getX().getFeet()<constraints.get(j)[0].getX().getFeet()&&point.getX().getFeet()>constraints.get(j)[1].getX().getFeet()){
-          //TODO set safeX to the nearest x val on the border
+        if(!(point.getX().getFeet()>constraints.get(j)[0].getX().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet()
+              &&point.getY().getFeet()>constraints.get(j)[0].getY().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet())){
+          //theoretically picks the point on the border closest to the original point
+          Translation2d lastNearest = constraints.get(j)[0];
+          double lastShortest = distanceFormula(lastNearest, point);
+          for (double x=0; x<Math.abs(constraints.get(j)[0].getX().getFeet()-constraints.get(j)[1].getX().getFeet()); x+=0.01){
+            for (double y=0; y<Math.abs(constraints.get(j)[0].getY().getFeet()-constraints.get(j)[1].getY().getFeet()); y+=0.01){
+              if(distanceFormula(point, new Translation2d(x, y))<lastShortest){lastNearest=new Translation2d(x, y);}
+            }
+          }
+          safeX=lastNearest.getX();
+          safeY=lastNearest.getY();
         }
-        if(point.getY().getFeet()>constraints.get(j)[0].getY().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet()){
-          //TODO set safeY to the nearest y val on the border
-        }
-      
       }
+
 
       safePoints.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(safeX,safeY),points.get(i).getState().getPose().getRotation()),points.get(i).getState().getCurvature())),
                         points.get(i).getT(), points.get(i).getVelocity(), points.get(i).getAcceleration()));
@@ -157,5 +166,8 @@ public class FieldConstraints {
     }
 
     return toReturn;
+  }
+  public static double distanceFormula(Translation2d p1, Translation2d p2){
+    return Math.sqrt(Math.abs(Math.pow(p1.getX().getFeet()-p2.getX().getFeet(),2)+Math.pow(p1.getY().getFeet()-p2.getY().getFeet(),2)));
   }
 }
