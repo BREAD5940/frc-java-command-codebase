@@ -170,7 +170,7 @@ public class AutoCombo {
       return true;
     }
 
-    public static boolean isOutsideField(TimedTrajectory<Pose2dWithCurvature> traject){
+    protected static boolean isOutsideField(TimedTrajectory<Pose2dWithCurvature> traject){
       List<TimedEntry<Pose2dWithCurvature>> points = traject.getPoints();
       boolean bad = false;
 
@@ -218,8 +218,67 @@ public class AutoCombo {
                           points.get(i).getT(), points.get(i).getVelocity(), points.get(i).getAcceleration()));
       }
 
-      //TODO add some sort of smoother
-      return new TimedTrajectory<Pose2dWithCurvature>(safePoints, false);
+      //TODO test to see if this smoother actually works
+      return new TimedTrajectory<Pose2dWithCurvature>(doublesAsPoints(safePoints, smoother(pointsAsDoubles(safePoints),0.02, 0.98, 0.001)), false);
+    }
+
+    protected static double[][] smoother(double[][] path, double weight_data, double weight_smooth, double tolerance){
+      //copy array
+      double[][] newPath = doubleArrayCopy(path);
+
+      double change = tolerance;
+      while(change >= tolerance){
+        change = 0.0;
+        for(int i=1; i<path.length-1; i++)
+            for(int j=0; j<path[i].length; j++){
+              double aux = newPath[i][j];
+              newPath[i][j] += weight_data * (path[i][j] - newPath[i][j]) + weight_smooth * (newPath[i-1][j] + newPath[i+1][j] - (2.0 * newPath[i][j]));
+              change += Math.abs(aux - newPath[i][j]);	
+            }					
+      }
+
+      return newPath;
+    }
+
+    protected static double[][] doubleArrayCopy(double[][] arr){
+
+      //size first dimension of array
+      double[][] temp = new double[arr.length][arr[0].length];
+
+      for(int i=0; i<arr.length; i++){
+        //Resize second dimension of array
+        temp[i] = new double[arr[i].length];
+
+        //Copy Contents
+        for(int j=0; j<arr[i].length; j++)
+          temp[i][j] = arr[i][j];
+      }
+
+      return temp;
+
+    }
+
+
+    protected static double[][] pointsAsDoubles(List<TimedEntry<Pose2dWithCurvature>> points){
+      double[][] toreturn = new double[points.size()][2];
+
+      for (int i=0; i<points.size(); i++){
+          toreturn[i][0]=points.get(i).getState().getPose().getTranslation().getX().getFeet();
+          toreturn[i][1]=points.get(i).getState().getPose().getTranslation().getY().getFeet();
+      }
+
+      return toreturn;
+    }
+
+    protected static List<TimedEntry<Pose2dWithCurvature>> doublesAsPoints(List<TimedEntry<Pose2dWithCurvature>> original, double[][] newP){
+      List<TimedEntry<Pose2dWithCurvature>> toReturn = new ArrayList<TimedEntry<Pose2dWithCurvature>>();
+
+      for (int i=0; i<newP.length-1; i++){
+        toReturn.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(newP[i][0],newP[i][1]),original.get(i).getState().getPose().getRotation()),original.get(i).getState().getCurvature())),
+              original.get(i).getT(), original.get(i).getVelocity(), original.get(i).getAcceleration()));
+      }
+
+      return toReturn;
     }
   }
   
