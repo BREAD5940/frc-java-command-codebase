@@ -197,21 +197,29 @@ public class AutoCombo {
 
       for(int i=0; i<points.size()-1; i++){
         Translation2d point = points.get(i).getState().getPose().getTranslation();
-        Length safeX, safeY;
+        Length safeX = point.getX();
+        Length safeY = point.getY();
         if(point.getX().getFeet()>maxX.getFeet()){safeX=maxX;}
         if(point.getX().getFeet()<minX.getFeet()){safeX=minX;}
         if(point.getY().getFeet()>maxY.getFeet()){safeY=maxY;}
         if(point.getY().getFeet()<minY.getFeet()){safeY=minY;}
 
         for(int j=0; j<constraints.size()-1; j++){
-          if(point.getX().getFeet()>constraints.get(j)[0].getX().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet()){
-            
+          if(point.getX().getFeet()<constraints.get(j)[0].getX().getFeet()&&point.getX().getFeet()>constraints.get(j)[1].getX().getFeet()){
+            //TODO set safeX to the nearest x val on the border
+          }
+          if(point.getY().getFeet()>constraints.get(j)[0].getY().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet()){
+            //TODO set safeY to the nearest y val on the border
           }
         
         }
 
-        safePoints.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(safeX,safeY),),points.get(i).getState().getCurvature())),points.get(i).getT(), points.get(i).getVelocity(), points.get(i).getAcceleration()));
+        safePoints.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(safeX,safeY),points.get(i).getState().getPose().getRotation()),points.get(i).getState().getCurvature())),
+                          points.get(i).getT(), points.get(i).getVelocity(), points.get(i).getAcceleration()));
       }
+
+      //TODO add some sort of smoother
+      return new TimedTrajectory<Pose2dWithCurvature>(safePoints, false);
     }
   }
   
