@@ -52,7 +52,7 @@ public class AutoCombo {
     Pose2d cGoal =Trajectories.locations.get(wpKeys[0]); //goal init to unimportant value
     Pose2d cStart=Trajectories.locations.get(wpKeys[0]); //start init to the first waypoint
     
-    for(int i=1; i<wpKeys.length; i++){ //starts at 1 so we don't get the current start, might need to add a -1 to prevent npes
+    for(int i=1; i<wpKeys.length-1; i++){ //starts at 1 so we don't get the current start
       cGoal = Trajectories.locations.get(wpKeys[i]); //goal to the current waypoint
       TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedTrajectories.get(new Pose2d[] {cStart,cGoal}); //current trajectory from hashmap in Trajectories
       AutoMotion cMotion = switchMotion(cPiece,wpKeys[i]); //creates an automotion based on the heldpiece and the goal
@@ -147,16 +147,17 @@ public class AutoCombo {
                                                       new Translation2d(LengthKt.getFeet(20.422+rad), LengthKt.getFeet(0-rad))};
     protected static final Translation2d[] upperHabaDepot = {new Translation2d(LengthKt.getFeet(0-rad), LengthKt.getFeet(21+rad)),
                                                               new Translation2d(LengthKt.getFeet(4+rad), LengthKt.getFeet(6-rad))};
-    //TODO is it like an actual problem if the robot yeets itself over platform 1?
+    protected static final Translation2d[] habRamp = {new Translation2d(LengthKt.getFeet(4-rad), LengthKt.getFeet(20+rad)),
+                                                      new Translation2d(LengthKt.getFeet(8+rad), LengthKt.getFeet(7.15-rad))};
 
     public static boolean isSafe(TimedTrajectory<Pose2dWithCurvature> traject){
       List<TimedEntry<Pose2dWithCurvature>> points = traject.getPoints();
-      List<Translation2d[]> constraints = new ArrayList<Translation2d[]>(Arrays.asList(cargo,rocketL,rocketR,upperHabaDepot));
+      List<Translation2d[]> constraints = new ArrayList<Translation2d[]>(Arrays.asList(cargo,rocketL,rocketR,upperHabaDepot,habRamp));
       if(isOutsideField(traject)){
         return false; //see comment below
       }
-      for(int j=0; j<constraints.size(); j++){
-        for (int i=0; i<points.size(); i++){
+      for(int j=0; j<constraints.size()-1; j++){
+        for (int i=0; i<points.size()-1; i++){
           Translation2d point = points.get(i).getState().getPose().getTranslation();
           //translation array cycles topLeft->bottomRight
           if(!(point.getX().getFeet()>constraints.get(j)[0].getX().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet()
@@ -173,7 +174,7 @@ public class AutoCombo {
       List<TimedEntry<Pose2dWithCurvature>> points = traject.getPoints();
       boolean bad = false;
 
-      for(int i=0; i<points.size(); i++){
+      for(int i=0; i<points.size()-1; i++){
         Translation2d point = points.get(i).getState().getPose().getTranslation();
         bad=(point.getX().getFeet()>maxX.getFeet()
             || point.getX().getFeet()<minX.getFeet()
@@ -183,6 +184,34 @@ public class AutoCombo {
         //TODO would it be bad^TM if this just set the x/y of the point to the max/min x/y?
       }
       return bad;
+    }
+
+    public static TimedTrajectory<Pose2dWithCurvature> makeSafe(TimedTrajectory<Pose2dWithCurvature> traject){
+      List<TimedEntry<Pose2dWithCurvature>> points = traject.getPoints();
+      List<TimedEntry<Pose2dWithCurvature>> safePoints = new ArrayList<TimedEntry<Pose2dWithCurvature>>();
+      List<Translation2d[]> constraints = new ArrayList<Translation2d[]>(Arrays.asList(cargo,rocketL,rocketR,upperHabaDepot,habRamp));
+      if(isSafe(traject)){
+        System.out.println("Trajectory is already safe!");
+        return traject;
+      }
+
+      for(int i=0; i<points.size()-1; i++){
+        Translation2d point = points.get(i).getState().getPose().getTranslation();
+        Length safeX, safeY;
+        if(point.getX().getFeet()>maxX.getFeet()){safeX=maxX;}
+        if(point.getX().getFeet()<minX.getFeet()){safeX=minX;}
+        if(point.getY().getFeet()>maxY.getFeet()){safeY=maxY;}
+        if(point.getY().getFeet()<minY.getFeet()){safeY=minY;}
+
+        for(int j=0; j<constraints.size()-1; j++){
+          if(point.getX().getFeet()>constraints.get(j)[0].getX().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet()){
+            
+          }
+        
+        }
+
+        safePoints.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(safeX,safeY),),points.get(i).getState().getCurvature())),points.get(i).getT(), points.get(i).getVelocity(), points.get(i).getAcceleration()));
+      }
     }
   }
   
