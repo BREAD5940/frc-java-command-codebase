@@ -63,6 +63,7 @@ public class VisionProcessor {
       }
 
       PointFinder pointFinder = new PointFinder(cornX, cornY);
+      pointFinder.calculate();
 
       MatOfPoint2f imagePoints = new MatOfPoint2f(
               pointFinder.getBottomRight(), 
@@ -82,7 +83,7 @@ public class VisionProcessor {
   public class PointFinder {
 
     double[] xLoc, yLoc;
-    double[] topLeft, topRight, bottomLeft, bottomRight;
+    Translation2d topLeft, topRight, bottomLeft, bottomRight;
 
     public PointFinder(double[] xCoords, double[] yCoords) {
         xLoc = xCoords;
@@ -93,7 +94,6 @@ public class VisionProcessor {
         // first, find the two coordinates that are at the bottom and the top
         // point1, point2, point3, point4;
         ArrayList<Translation2d> points = new ArrayList<Translation2d>();
-        Translation2d topLeft, topRight, bottomLeft, bottomRight;
 
         points.add(new Translation2d(xLoc[0], yLoc[0]));
         points.add(new Translation2d(xLoc[1], yLoc[1]));
@@ -150,6 +150,22 @@ public class VisionProcessor {
         }
 
 
+    }
+
+    public double[] getTopLeft() {
+        return new double[]{topLeft.getX().getValue(), topLeft.getY().getValue(), };
+    }
+
+    public double[] getTopRight() {
+        return new double[]{topRight.getX().getValue(), topRight.getY().getValue(), };
+    }
+ 
+    public double[] getBottomLeft() {
+        return new double[]{bottomLeft.getX().getValue(), bottomLeft.getY().getValue(), };
+    }
+
+    public double[] getBottomRight() {
+        return new double[]{bottomRight.getX().getValue(), bottomRight.getY().getValue(), };
     }
 
   }

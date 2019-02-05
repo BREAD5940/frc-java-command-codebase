@@ -6,6 +6,7 @@ import java.util.List;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 
@@ -98,6 +99,8 @@ public class Elevator /*extends Subsystem*/ {
       mSlave1.setInverted(settings.slave1FollowerMode);
       mSlave2.setInverted(settings.slave1FollowerMode);
       mSlave3.setInverted(settings.slave1FollowerMode);
+
+      // mMaster.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, normalOpenOrClose);
 
       mCurrentGear = kDefaultGear;
       setGear(kDefaultGear);
