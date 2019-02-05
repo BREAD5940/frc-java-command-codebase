@@ -1,7 +1,8 @@
 package frc.robot.subsystems;
 
-import java.awt.Point;
-import java.awt.geom.Point2D;
+import org.opencv.core.Point;
+import org.opencv.core.Point3;
+
 import java.util.ArrayList;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
@@ -11,7 +12,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfDouble;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfPoint3f;
-import org.opencv.core.Point3;
+
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -152,20 +153,20 @@ public class VisionProcessor {
 
     }
 
-    public double[] getTopLeft() {
-        return new double[]{topLeft.getX().getValue(), topLeft.getY().getValue(), };
+    public Point getTopLeft() {
+        return new Point(topLeft.getX().getValue(), topLeft.getY().getValue());
     }
 
-    public double[] getTopRight() {
-        return new double[]{topRight.getX().getValue(), topRight.getY().getValue(), };
+    public Point getTopRight() {
+        return new Point(topRight.getX().getValue(), topRight.getY().getValue());
     }
  
-    public double[] getBottomLeft() {
-        return new double[]{bottomLeft.getX().getValue(), bottomLeft.getY().getValue(), };
+    public Point getBottomLeft() {
+        return new Point(bottomLeft.getX().getValue(), bottomLeft.getY().getValue());
     }
 
-    public double[] getBottomRight() {
-        return new double[]{bottomRight.getX().getValue(), bottomRight.getY().getValue(), };
+    public Point getBottomRight() {
+        return new Point(bottomRight.getX().getValue(), bottomRight.getY().getValue());
     }
 
   }
