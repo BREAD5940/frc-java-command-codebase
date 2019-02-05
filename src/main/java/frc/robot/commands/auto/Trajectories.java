@@ -74,7 +74,7 @@ public class Trajectories {
     double startTime = Timer.getFPGATimestamp();
     for (String key : locations.keySet()){
       for (String eKey : locations.keySet()){
-        generatedTrajectories.put(new Pose2d[] {locations.get(key), locations.get(eKey)}, generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get(key), locations.get(eKey))),false)); // FIXME generateTrajectory expects a List<Pose2d>, not a single pose2d. so this must include the start/end points
+        generatedTrajectories.put(new Pose2d[] {locations.get(key), locations.get(eKey)}, generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get(key), locations.get(eKey))),false));
       }
     }
     Logger.log("Trajectories generated in " + (Timer.getFPGATimestamp() - startTime) + "seconds!");

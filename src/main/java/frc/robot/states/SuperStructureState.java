@@ -10,7 +10,7 @@ import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 public class SuperStructureState {
   public IntakeAngle jointAngles;
   public ElevatorState elevator;
-  private HeldPiece piece = HeldPiece.NONE; // FIXME because a lowercase first letter breaks syntax highlighting
+  private HeldPiece piece = HeldPiece.NONE; 
 
   public SuperStructureState() {
     this(new ElevatorState(), new RotatingArmState(), new RotatingArmState(), HeldPiece.NONE);
