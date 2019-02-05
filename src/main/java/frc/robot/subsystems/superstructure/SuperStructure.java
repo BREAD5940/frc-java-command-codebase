@@ -229,11 +229,12 @@ public class SuperStructure extends Subsystem {
     // make sure to keep these up to date!!!
     updateState();
 
-    double mCurrentWristTorque = calculateWristTorque(this.mCurrentState); // torque due to gravity and elevator acceleration, newton meters
-    double mCurrentElbowTorque = calculateElbowTorques(this.mCurrentState, mCurrentWristTorque); // torque due to gravity and elevator acceleration, newton meters
+    // Make for sure for real real that the voltage is always positive
+    double mCurrentWristTorque = Math.abs(calculateWristTorque(this.mCurrentState)); // torque due to gravity and elevator acceleration, newton meters
+    double mCurrentElbowTorque = Math.abs(calculateElbowTorques(this.mCurrentState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
 
     double wristVoltageGravity = kWristTransmission.getVoltageForTorque(this.mCurrentState.getWrist().velocity.getValue(), mCurrentWristTorque); 
-    double elbowVoltageGravity = kWristTransmission.getVoltageForTorque(this.mCurrentState.getElbow().velocity.getValue(), mCurrentElbowTorque); 
+    double elbowVoltageGravity = kElbowTransmission.getVoltageForTorque(this.mCurrentState.getElbow().velocity.getValue(), mCurrentElbowTorque); 
     double elevatorVoltageGravity = elevator.getVoltage(this.mCurrentState);
 
     // TODO velocity planning? or just let talon PID figure itself out
@@ -241,7 +242,7 @@ public class SuperStructure extends Subsystem {
 
     // TODO is mReqState up to date?
     getWrist().setPositionArbitraryFeedForward(mReqState.getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
-    getElbow().setPositionArbitraryFeedForward(mReqState.getElbow().angle /* the elbow angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
+    getElbow().setPositionArbitraryFeedForward(mReqState.getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
     getElevator().setPositionArbitraryFeedForward(mReqState.getElevator().height, elevatorVoltageGravity / 12d);
 
   }
@@ -253,7 +254,7 @@ public class SuperStructure extends Subsystem {
    */
   public double calculateWristTorque(SuperStructureState state) {
     /* The distance from the pivot of the wrist to the center of mass */
-    double x1 = (getWrist().kArmLength.getValue()) * state.jointAngles.getWrist().angle.getCos();
+    double x1 = (getWrist().kArmLength.getValue()) * Math.abs(state.jointAngles.getWrist().angle.getCos()); // absolute value so cosine is always positive
     /* The torque due to gravity  */
     double torqueGravity = (getWrist().kArmMass.getValue() * 9.8 * x1);
     /* The torque on the wrist due to acceleration of the elevator (assuming a rigid elbow) */
@@ -263,14 +264,14 @@ public class SuperStructure extends Subsystem {
   }
 
   /**
-   * Calculate the torque on the wrist due to gravity for a given state
+   * Calculate the elbow on the wrist due to gravity for a given state and wrist torque
    * @param state the state of the superstructure 
    * @param wristTorque the torque on the wrist
    * @return torque in newton meters on the wrist
    */
   public double calculateElbowTorques(SuperStructureState state, double wristTorque) {
     /* The distance from the pivot to the center of mass of the elbow */
-    double x2= (getElbow().kArmLength.getValue()) * state.jointAngles.getWrist().angle.getCos();
+    double x2= (getElbow().kArmLength.getValue()) * Math.abs(state.jointAngles.getWrist().angle.getCos());// absolute value so cosine is always positive
     /* The torque due to gravity  */
     double torqueGravity = (getElbow().kArmMass.getValue() * 9.8 * x2); // m_2 * g * x_2 
     /* The torque doe to acceleration on the wrist */

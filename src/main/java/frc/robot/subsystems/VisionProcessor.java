@@ -10,6 +10,7 @@ import org.opencv.core.Point3;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.lib.PointFinder;
 
 public class VisionProcessor {
@@ -60,6 +61,9 @@ public class VisionProcessor {
 
       PointFinder pointFinder = new PointFinder(cornX, cornY);
       pointFinder.calculate();
+
+      SmartDashboard.putString("Corners of the contour", String.format("Top left (%s) top right (%s) bottom left (%s) bottom right (%s)", 
+            pointFinder.getTopLeft(), pointFinder.getTopRight(), pointFinder.getBottomLeft(), pointFinder.getBottomRight()));
 
       MatOfPoint2f imagePoints = new MatOfPoint2f(
               pointFinder.getBottomRight(), 
