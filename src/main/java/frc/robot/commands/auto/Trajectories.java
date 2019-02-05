@@ -52,27 +52,6 @@ public class Trajectories {
     locations.put("depotRF", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(6.107),Rotation2dKt.getDegree(180)));
     locations.put("depotLB", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(6.107),Rotation2dKt.getDegree(-180)));
   }
-  public static ArrayList<Pose2d[]> unnecessary = new ArrayList<Pose2d[]>();{
-    //TODO put motion combos we dont need here
-  }
-  public static HashMap<Pose2d[],Pose2d> thirdPt = new HashMap<Pose2d[],Pose2d>();{
-    // thirdPt.put(new List<Pose2d>(Arrays.asList(locations.get("habL"), locations.get("rocketR2"))),
-        // new Pose2d(LengthKt.getFeet(14.913), LengthKt.getFeet(10.261), Rotation2dKt.getDegree(-54)));
-    // thirdPt.put({locations.get("habL"),locations.get("rocketR3")},
-    //     new Pose2d(LengthKt.getFeet(14.913), LengthKt.getFeet(10.261), Rotation2dKt.getDegree(-54)));
-    // thirdPt.put(new Pose2d[locations.get("habM"),locations.get("rocketL3")],
-    //     new Pose2d(LengthKt.getFeet(14.913), LengthKt.getFeet(10.261), Rotation2dKt.getDegree(-54)));
-    // thirdPt.put(new Pose2d[locations.get("habM"),locations.get("rocketR3")],
-    //     new Pose2d(LengthKt.getFeet(14.913), LengthKt.getFeet(10.261), Rotation2dKt.getDegree(-54)));
-    // thirdPt.put(new Pose2d[locations.get("habL"),locations.get("rocketR2")],
-    //     new Pose2d(LengthKt.getFeet(14.913), LengthKt.getFeet(10.261), Rotation2dKt.getDegree(-54)));
-    // thirdPt.put(new Pose2d[locations.get("habL"),locations.get("rocketR2")],
-    //     new Pose2d(LengthKt.getFeet(14.913), LengthKt.getFeet(10.261), Rotation2dKt.getDegree(-54)));
-    // thirdPt.put(new Pose2d[locations.get("habL"),locations.get("rocketR2")],
-    //     new Pose2d(LengthKt.getFeet(14.913), LengthKt.getFeet(10.261), Rotation2dKt.getDegree(-54)));
-    // thirdPt.put(new Pose2d[locations.get("habL"),locations.get("rocketR2")],
-    //     new Pose2d(LengthKt.getFeet(14.913), LengthKt.getFeet(10.261), Rotation2dKt.getDegree(-54)));
-  }
   public static HashMap<Pose2d[], TimedTrajectory<Pose2dWithCurvature>> generatedTrajectories = new HashMap<Pose2d[], TimedTrajectory<Pose2dWithCurvature>>();
 
   public static Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));

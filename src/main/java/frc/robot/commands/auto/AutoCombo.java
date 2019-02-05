@@ -33,7 +33,7 @@ public class AutoCombo {
   private AutoMotion motion;
   private String[] wpKeys;
   private AutoCommandGroup mBigCommandGroup;
-  private ArrayList<DrivePlan> drivePlans;
+  private ArrayList<TimedTrajectory<Pose2dWithCurvature>> drivePlans;
 
 
   /**
@@ -50,37 +50,35 @@ public class AutoCombo {
     this.wpKeys = wpKeys;
     genDrivePlans();
     HeldPiece cPiece = startingPiece;
-    Pose2d cGoal;
-    Pose2d cStart=Trajectories.locations.get(wpKeys[0]);;
+    Pose2d cGoal =Trajectories.locations.get(wpKeys[0]);
+    Pose2d cStart=Trajectories.locations.get(wpKeys[0]);
+    TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedTrajectories.get(new Pose2d[] {cStart,cGoal});
     for(int i=1; i<wpKeys.length; i++){
       cGoal = Trajectories.locations.get(wpKeys[i]);
-      AutoMotion cMotion = switchMotion(startingPiece,wpKeys[i]);
+      AutoMotion cMotion = switchMotion(cPiece,wpKeys[i]);
       cPiece = cMotion.getmHeldPiece();
-      this.mBigCommandGroup.addSequential(selectDrivePlan(cStart, cGoal));
-      this.mBigCommandGroup.addSequential(cMotion.getBigCommandGroup());
+      if(FieldConstraints.isSafe(traject)){
+        this.mBigCommandGroup.addSequential(Robot.drivetrain.followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, true));
+        this.mBigCommandGroup.addSequential(cMotion.getBigCommandGroup());
+      }else{
+        //TODO so isSafe should really really REALLY just fix the dam path
+      }
       //prep for next loop
       cPiece = cMotion.getEndHeldPiece();
       cStart = cGoal;
     }
     
   }
-
-  private Command selectDrivePlan(Pose2d start, Pose2d goal){
-    ArrayList<DrivePlan> selectedDPs = new ArrayList<DrivePlan>();
-    DrivePlan selected;
-    for (int i=0; i<drivePlans.size(); i++){
-      if (drivePlans.get(i).goal==goal && drivePlans.get(i).start==start){
-        selectedDPs.add(drivePlans.get(i));
-      }
-    }
-    //this just uses the first dp in the array TODO do we want to do some sort of additional selection
-
-    // Am I reading this wrong? or right now selectDrivePlan() only returns one command? and then getBigCommandGroup returns only the
-    // stuff necessary to place? Two hatch auto will have like a tone of stuff - drive -> place -> drive -> do a 180 while moving -> drive -> pickup hatch -> drive -> spin around while moving -> drive -> place
-    // just a note to myself 
-    return Robot.drivetrain.followTrajectory(selectedDPs.get(0).trajectory, TrajectoryTrackerMode.RAMSETE, true);
-  }
   
+  /**
+   * behold, one of the most terrible things i've ever created. it makes the automotion for the combo
+   * @param piece
+   *    the piece the robot is holding
+   * @param goal
+   *    the key for the goal location
+   * @return
+   *    an automotion
+   */
   private AutoMotion switchMotion(HeldPiece piece, String goal){
     switch (goal.charAt(0)){
       case 'h': //means it the hab
@@ -155,7 +153,7 @@ public class AutoCombo {
                                                               new Translation2d(LengthKt.getFeet(4+rad), LengthKt.getFeet(6-rad))};
     //TODO is it like an actual problem if the robot yeets itself over platform 1?
 
-    public boolean isSafe(TimedTrajectory<Pose2dWithCurvature> traject){
+    public static boolean isSafe(TimedTrajectory<Pose2dWithCurvature> traject){
       List<TimedEntry<Pose2dWithCurvature>> points = traject.getPoints();
       List<Translation2d[]> constraints = new ArrayList<Translation2d[]>(Arrays.asList(cargo,rocketL,rocketR,upperHabaDepot));
       if(isOutsideField(traject)){
@@ -168,13 +166,14 @@ public class AutoCombo {
           if(!(point.getX().getFeet()>constraints.get(j)[0].getX().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet()
                 &&point.getY().getFeet()>constraints.get(j)[0].getY().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet())){
             return false; //this is an if statement bc it loops again if it's not false. it's this or a while loop
+            //TODO instead of returning a boolean, this should just straight-up fix the path
           }
         }
       }
       return true;
     }
 
-    public boolean isOutsideField(TimedTrajectory<Pose2dWithCurvature> traject){
+    public static boolean isOutsideField(TimedTrajectory<Pose2dWithCurvature> traject){
       List<TimedEntry<Pose2dWithCurvature>> points = traject.getPoints();
       boolean bad = false;
 
