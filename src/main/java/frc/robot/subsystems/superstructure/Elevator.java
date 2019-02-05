@@ -204,7 +204,8 @@ public class Elevator /*extends Subsystem*/ {
     if(state.getHeldPiece() == HeldPiece.CARGO) total.plus(kCargoMass);
     if(state.elevator.height.getValue() > kTopOfInnerStage.getValue()) total.plus(kInnerStageMass);
     double totalF = total.getKilogram() * 9.81 /* g */;
-    return (mCurrentGear == ElevatorGear.LOW) ? KLowGearForcePerVolt * totalF : KHighGearForcePerVolt * totalF;
+    // ah shit we have force * force / volt, we want force * volt/force right? FIXME check my math with units
+    return (mCurrentGear == ElevatorGear.LOW) ? KLowGearForcePerVolt / totalF : KHighGearForcePerVolt / totalF;
   }
   
   public ElevatorState getCurrentState(ElevatorState lastKnown) {
