@@ -12,6 +12,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
+import frc.robot.commands.auto.AutoMotion.HeldPiece;
 
 
 /**
@@ -25,6 +26,7 @@ public class RunAuto extends Command {
   public AutoCombo cMotion;
   public String[] keys;
   public boolean isDrive;
+  public HeldPiece piece;
 
 
   public RunAuto(GoalType gt, GoalHeight height) {
@@ -34,10 +36,10 @@ public class RunAuto extends Command {
     this.isDrive = false;
   }
 
-  public RunAuto(GoalType gt, GoalHeight height, String... keys){
-    this(gt, height);
+  public RunAuto(HeldPiece piece, String... keys){
     this.keys = keys;
     this.isDrive = true;
+    this.piece = piece;
   }
 
   @Override
@@ -46,7 +48,7 @@ public class RunAuto extends Command {
       motion = new AutoMotion(height, gt);
       motion.getBigCommandGroup().start();
     }else{
-      cMotion = new AutoCombo(height, gt, keys);
+      cMotion = new AutoCombo(piece, keys);
       cMotion.getBigCommandGroup().start();
     }
   }

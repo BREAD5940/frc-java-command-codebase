@@ -48,7 +48,7 @@ public class AutoCombo {
       cGoal = Trajectories.locations.get(wpKeys[i]);
       AutoMotion cMotion = switchMotion(startingPiece,wpKeys[i]);
       cPiece = cMotion.getmHeldPiece();
-      this.mBigCommandGroup.addSequential(selectDrivePlan());
+      this.mBigCommandGroup.addSequential(selectDrivePlan(cStart, cGoal));
       this.mBigCommandGroup.addSequential(cMotion.getBigCommandGroup());
       //prep for next loop
       cPiece = cMotion.getEndHeldPiece();
@@ -61,7 +61,7 @@ public class AutoCombo {
     ArrayList<DrivePlan> selectedDPs = new ArrayList<DrivePlan>();
     DrivePlan selected;
     for (int i=0; i<drivePlans.size(); i++){
-      if (drivePlans.get(i).goal==this.goal && drivePlans.get(i).start==this.location){
+      if (drivePlans.get(i).goal==goal && drivePlans.get(i).start==start){
         selectedDPs.add(drivePlans.get(i));
       }
     }
@@ -119,15 +119,6 @@ public class AutoCombo {
   }
 
   // id functions
-
-  /**
-   * identification function
-   * @return
-   *  the starting location of the combo
-   */
-  public Pose2d getLocation(){
-    return this.location;
-  }
 
   /**
    * identification function

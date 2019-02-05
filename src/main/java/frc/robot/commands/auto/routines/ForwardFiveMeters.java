@@ -20,11 +20,11 @@ public class ForwardFiveMeters extends CommandGroup {
    */
   public ForwardFiveMeters() {
     
-    if(Trajectories.traject.get("forwardFiveMeters") == null) {
+    if(Trajectories.generatedTrajectories.get("forwardFiveMeters") == null) {
       Trajectories.generateAllTrajectories();
     }
 
-    TimedTrajectory<Pose2dWithCurvature> trajectory = Trajectories.traject.get("forwardFiveMeters");
+    TimedTrajectory<Pose2dWithCurvature> trajectory = Trajectories.generatedTrajectories.get("forwardFiveMeters");
 
     addSequential(new SetInitialOdometry(trajectory));
     
