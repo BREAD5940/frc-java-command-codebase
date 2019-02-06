@@ -30,6 +30,8 @@ public class VisionProcessor {
               new Point3(1.377, 5.325, 0.0) // top-right
       );
 
+      // Thank you to xForceDee on CD! https://www.chiefdelphi.com/t/limelight-real-world-camera-positioning/343941/18
+      // units are in inches (gah)!
       mCameraMatrix = Mat.eye(3, 3, CvType.CV_64F);
       mCameraMatrix.put(0, 0, 2.5751292067328632e+02);
       mCameraMatrix.put(0, 2, 1.5971077914723165e+02);
