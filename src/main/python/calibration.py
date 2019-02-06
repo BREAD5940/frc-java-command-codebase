@@ -17,13 +17,14 @@ for fname in images:
     ret, corners = cv.findChessboardCorners(gray, (7,6), None)
     # If found, add object points, image points (after refining them)
     if ret == True:
+        print("got a rect")
         objpoints.append(objp)
         corners2 = cv.cornerSubPix(gray,corners, (11,11), (-1,-1), criteria)
         imgpoints.append(corners)
         # Draw and display the corners
         cv.drawChessboardCorners(img, (7,6), corners2, ret)
         cv.imshow('img', img)
-        cv.waitKey(500)
+        cv.waitKey(10000)
 cv.destroyAllWindows()
 
 ret, mtx, dist, rvecs, tvecs = cv.calibrateCamera(objpoints, imgpoints, gray.shape[::-1], None, None)
@@ -48,8 +49,8 @@ dst = dst[y:y+h, x:x+w]
 cv.imwrite('calibresult.png', dst)
 
 mean_error = 0
-for i in xrange(len(objpoints)):
-    imgpoints2, _ = cv.projectPoints(objpoints[i], rvecs[i], tvecs[i], mtx, dist)
-    error = cv.norm(imgpoints[i], imgpoints2, cv.NORM_L2)/len(imgpoints2)
-    mean_error += error
+# for i in xrange(len(objpoints)):
+imgpoints2, _ = cv.projectPoints(objpoints[0], rvecs[0], tvecs[0], mtx, dist)
+error = cv.norm(imgpoints[0], imgpoints2, cv.NORM_L2)/len(imgpoints2)
+mean_error += error
 print( "total error: {}".format(mean_error/len(objpoints)) )
