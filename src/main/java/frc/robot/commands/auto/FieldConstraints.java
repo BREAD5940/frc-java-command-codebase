@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dCurvature;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
@@ -166,13 +167,33 @@ public class FieldConstraints {
   protected static List<TimedEntry<Pose2dWithCurvature>> doublesAsPoints(List<TimedEntry<Pose2dWithCurvature>> original, double[][] newP){
     List<TimedEntry<Pose2dWithCurvature>> toReturn = new ArrayList<TimedEntry<Pose2dWithCurvature>>();
 
-    for (int i=0; i<newP.length-1; i++){
-      toReturn.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(newP[i][0],newP[i][1]),original.get(i).getState().getPose().getRotation()),
-            original.get(i).getState().getCurvature())),
-            original.get(i).getT(), original.get(i).getVelocity(), original.get(i).getAcceleration()));
+    for (int i=0; i<newP.length; i++){
+      double curve;
+      if(i==0||i==newP.length-1){
+        curve=0;
+      }else{
+        if(newP[i-1][0]==newP[i][0]){
+          newP[i-1][0]+=0.001;
+        }
+        double k1=0.5*(Math.pow(newP[i-1][0],2)+Math.pow(newP[i-1][1],2)-Math.pow(newP[i][0],2)-Math.pow(newP[i][1],2))/(newP[i-1][0]-newP[i][0]);
+        double k2=(newP[i-1][1]-newP[i][1])/(newP[i-1][0]-newP[i][0]);
+        double b=0.5*(Math.pow(newP[i][0],2)-2*newP[i][0]*k1+Math.pow(newP[i][1],2)-Math.pow(newP[i+1][0],2)+2*newP[i+1][0]*k1-Math.pow(newP[i+1][1],2))
+            /(newP[i+1][0]*k2-newP[i+1][1]+newP[i][1]-newP[i][1]*k2);
+        double a=k1-k2*b;
+        double r=Math.sqrt(Math.pow((newP[i-1][1]-a),2)+Math.pow((newP[i-1][1]-b),2));
+        curve = 1/r;
+      }
+      //FIXME i don't know what the deriv of the curvature is, so im leaving it the same
+      Pose2dCurvature newCurve = new Pose2dCurvature(curve, original.get(i).getState().getCurvature().getDkds());
+      Rotation2d newRot;
+      if(i==0){
+        newRot=original.get(i).getState().getPose().getRotation(); //just set it to the original
+      }else{
+        newRot= new Rotation2d((newP[i-1][1]-newP[i][1])/(newP[i-1][0]-newP[i][0])); //this is just the secant between the current pt and before
+      }
+      toReturn.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(newP[i][0],newP[i][1]),newRot),
+            newCurve)), original.get(i).getT(), original.get(i).getVelocity(), original.get(i).getAcceleration()));
     }
-    //FIXME I have none idea how this works
-    new Pose2dWithCurvature(new Pose2d(new Translation2d(), new Rotation2d(0)), new Pose2dCurvature(_curvature, dkds));
 
     return toReturn;
   }
