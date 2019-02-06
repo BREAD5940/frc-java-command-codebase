@@ -54,9 +54,8 @@ public class Elevator /*extends Subsystem*/ {
 
     // TODO check these quick maths, kTopOfInnerStage is used to switch gravity feedforward
     public static final Mass kCarriageMass = MassKt.getLb(20);
-    public static final Mass kInnerStageMass = MassKt.getLb(7);
-    public static final Mass kHatchMass = MassKt.getLb(1); // FIXME check mass
-    public static final Mass kCargoMass = MassKt.getLb(1); // FIXME check mass
+    public static final Mass kInnerStageMass = MassKt.getLb(6.5);
+
     public static final Length kTopOfInnerStage = LengthKt.getInch(40);
   
     public static final double KLowGearForcePerVolt = 512d/12d /* newtons */ ;
@@ -200,8 +199,8 @@ public class Elevator /*extends Subsystem*/ {
    */
   public double getVoltage(SuperStructureState state) {
     Mass total = kCarriageMass;
-    if(state.getHeldPiece() == HeldPiece.HATCH) total.plus(kHatchMass);
-    if(state.getHeldPiece() == HeldPiece.CARGO) total.plus(kCargoMass);
+    if(state.getHeldPiece() == HeldPiece.HATCH) total.plus(SuperStructure.kHatchMass);
+    if(state.getHeldPiece() == HeldPiece.CARGO) total.plus(SuperStructure.kCargoMass);
     if(state.elevator.height.getValue() > kTopOfInnerStage.getValue()) total.plus(kInnerStageMass);
     double totalF = total.getKilogram() * 9.81 /* g */;
     // ah shit we have force * force / volt, we want force * volt/force right? FIXME check my math with units
