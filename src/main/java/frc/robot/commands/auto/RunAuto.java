@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.commands.auto;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
@@ -30,7 +23,6 @@ public class RunAuto extends Command {
 
 
   public RunAuto(GoalType gt, GoalHeight height) {
-    // Use requires() here to declare subsystem dependencies
     this.gt = gt;
     this.height = height;
     this.isDrive = false;
@@ -44,6 +36,8 @@ public class RunAuto extends Command {
 
   @Override
   protected void initialize() {
+    // Kinda a stupid question but what's the difference between AutoMotion and AutoCombo?
+    // is it just that AutoMotion drives straight to a goal, whereas AutoCombo
     if(!isDrive){
       motion = new AutoMotion(height, gt);
       motion.getBigCommandGroup().start();

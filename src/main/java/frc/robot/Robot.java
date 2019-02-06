@@ -86,7 +86,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-
+    // FIXME Jocelyn this might mess with auto stuff, will it? (I think no?)
     drivetrain.getLocalization().reset(new Pose2d(LengthKt.getFeet(5.5), LengthKt.getFeet(17), new Rotation2d(0f, 0f, false) ));
 
     Trajectories.generateAllTrajectories();

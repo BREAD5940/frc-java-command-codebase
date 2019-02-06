@@ -22,12 +22,8 @@ public class AutoCombo {
 
   /**
    * generates the command groups based on the inputted goal height/type
-   * @param gHeight
-   *    the height of the goal the robot should aim for (LOW, MIDDLE, HIGH, OVER)
-   * @param gType
-   *    the type of goal 
-   * @param loc
-   *    the current location of the robot
+   * @param startingPiece the game piece that the robot starts with (for example, a hatch)
+   * @param wpKeys the keys for the waypoints (defined in Trajectories) for toe robot to go to.
    */
 
   public AutoCombo (HeldPiece startingPiece, String... wpKeys){
@@ -41,7 +37,10 @@ public class AutoCombo {
       AutoMotion cMotion = switchMotion(cPiece,wpKeys[i]); //creates an automotion based on the heldpiece and the goal
       cPiece = cMotion.getmHeldPiece(); //get the current heldpiece from the motion (at least for testing)
       traject=FieldConstraints.makeSafe(traject);//moves the trajectory so it doesn't hit stuff
+
       this.mBigCommandGroup.addSequential(Robot.drivetrain.followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, true)); //drive to goal
+      // FIXME right now this resets the robot localization (including gyro) to the expected start position. Is this intennded behavior?
+      
       this.mBigCommandGroup.addSequential(cMotion.getBigCommandGroup()); //do a motion
       
       //prep for next loop

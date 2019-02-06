@@ -74,7 +74,9 @@ public class Trajectories {
     double startTime = Timer.getFPGATimestamp();
     for (String key : locations.keySet()){
       for (String eKey : locations.keySet()){
-        generatedTrajectories.put(new Pose2d[] {locations.get(key), locations.get(eKey)}, generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get(key), locations.get(eKey))),false));
+        generatedTrajectories.put(new Pose2d[] {locations.get(key), locations.get(eKey)}, 
+            generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get(key), 
+                    locations.get(eKey))),false));
       }
     }
     Logger.log("Trajectories generated in " + (Timer.getFPGATimestamp() - startTime) + "seconds!");

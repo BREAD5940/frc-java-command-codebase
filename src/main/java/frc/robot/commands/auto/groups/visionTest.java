@@ -1,4 +1,4 @@
-package frc.robot.commands.groups;
+package frc.robot.commands.auto.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.auto.actions.FollowVisionTarget;

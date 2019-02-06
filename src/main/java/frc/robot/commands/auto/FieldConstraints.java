@@ -109,6 +109,10 @@ public class FieldConstraints {
     return new TimedTrajectory<Pose2dWithCurvature>(doublesAsPoints(safePoints, smoother(pointsAsDoubles(safePoints),0.02, 0.98, 0.001)), false);
   }
 
+  // TODO make me use Translation2ds instead of doubles[][]
+  // furthermore Falconlib should do this somehow, right?
+  // FIXME because I"ll probubly break the rotation2d component of the pose. Solution is to approximate tangent line slopes
+  // or just only run known good paths /shrug
   protected static double[][] smoother(double[][] path, double weight_data, double weight_smooth, double tolerance){
     //copy array
     double[][] newPath = doubleArrayCopy(path);

@@ -1,13 +1,14 @@
-package frc.robot.commands.auto.actions;
+package frc.robot.commands.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj.command.Command;
 
-public abstract class CommandOnCondition extends Command {
+public class WaitForElevator extends Command {
 
-  /**
-   * (Maybe) run a command on a condition
-   */
-  public CommandOnCondition() {
+  double demand;
+
+  public WaitForElevator(double demand) {
+    // Doesn't require anything, just waiting for elevator height
+    this.demand = demand;
   }
 
   // Called just before this Command runs the first time
@@ -15,24 +16,16 @@ public abstract class CommandOnCondition extends Command {
   protected void initialize() {
   }
 
-  public boolean readyForExecute() {
-    return false;
-  }
-
-  public void executeOnCondition() {}
-
   // Called repeatedly when this Command is scheduled to run
   @Override
-  public void execute() {
-    if (readyForExecute()) {
-      executeOnCondition();
-    }
+  protected void execute() {
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    // return Robot.elevator.isWithinTolerence(demand);
+    return true;
   }
 
   // Called once after isFinished returns true
