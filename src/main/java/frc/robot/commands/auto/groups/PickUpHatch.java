@@ -21,13 +21,13 @@ public class PickUpHatch extends CommandGroup{
         set height start slowly backing up.
         */
         // lifts to center height
-        addSequential(Robot.superstructure.moveSuperstructureElevator(RobotConfig.auto.fieldPositions.cargo_ship_hatch)); //cs hatch is same as loading station
+        // addSequential(Robot.superstructure.moveSuperstructureElevator(RobotConfig.auto.fieldPositions.cargo_ship_hatch)); //cs hatch is same as loading station
         // rams into the loading station (hopefully)
         addSequential(new FollowVisionTarget(0.6, 100, 20)); //FIXME percent frame check
         // grabs the hatch by opening the clamp
         // addSequential(new OpenClamp());
         // lifts the hatch out of the brushes
-        addSequential(Robot.superstructure.moveSuperstructureElevator( LengthKt.getMeter(RobotConfig.auto.fieldPositions.cargo_ship_hatch.getValue() + 10)));
+        // addSequential(Robot.superstructure.moveSuperstructureElevator( LengthKt.getMeter(RobotConfig.auto.fieldPositions.cargo_ship_hatch.getValue() + 10)));
         // moves the robot back slightly
         addSequential(new DriveDistance(-1, 20)); // FIXME check values
         //robot returns to operator control

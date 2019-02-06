@@ -100,8 +100,8 @@ public class RobotConfig {
       /**
       * Left side of drivetrain PID constants and setup
       */
-      public static final int m_left_talon_port = 2;
-      public static final int s_left_talon_port = 1;
+      public static final int m_left_talon_port = 1;
+      public static final int s_left_talon_port = 2;
       public static final boolean m_left_inverted = false;
       // sets kp, ki, kd and kf terms for master left in velocity mode 
       public static final double velocity_kp_low = 0.4;
@@ -139,8 +139,8 @@ public class RobotConfig {
       /**
       * Right side of drivetrain PID constants and setup
       */
-      public static final int m_right_talon_port = 4;
-      public static final int s_right_talon_port = 3;
+      public static final int m_right_talon_port = 3;
+      public static final int s_right_talon_port = 4;
       public static final double velocity_kp_low = leftTalons.velocity_kp_low;
       public static final double velocity_ki_low = leftTalons.velocity_ki_low;
       public static final double velocity_kd_low = leftTalons.velocity_kd_low;

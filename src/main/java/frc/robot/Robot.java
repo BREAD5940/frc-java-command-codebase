@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
   // public static Intake intake = new Intake();
   // public static Elevator elevator = new Elevator();
   public static DriveTrain drivetrain = DriveTrain.getInstance();
-  public static SuperStructure superstructure = SuperStructure.getInstance();
+  // public static SuperStructure superstructure = SuperStructure.getInstance();
   public static LimeLight limelight = new LimeLight();
   // public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
   private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);

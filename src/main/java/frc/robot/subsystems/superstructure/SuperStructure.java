@@ -287,7 +287,7 @@ public class SuperStructure extends Subsystem {
     /* The torque due to gravity  */
     double torqueGravity = (getElbow().kArmMass.getKilogram() * 9.8 * x_2); // m_2 * g * x_2 
     /* The torque doe to acceleration on the wrist */
-    double torqueAccel = getElbow().kArmMass.getKilogram() * state.elevator.acceleration.getValue() * x2;
+    double torqueAccel = getElbow().kArmMass.getKilogram() * state.elevator.acceleration.getValue() * x_2;
     // m_2 * g * x_2
     double torqueWrstComponent = (wristTotalMass.getKilogram() * getElbow().kArmLength.getMeter() * 2 /* double the distance from the joint to COM*/ * 9.8);
 
