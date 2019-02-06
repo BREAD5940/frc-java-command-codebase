@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dCurvature;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
 import frc.robot.RobotConfig;
 
@@ -109,10 +111,9 @@ public class FieldConstraints {
     return new TimedTrajectory<Pose2dWithCurvature>(doublesAsPoints(safePoints, smoother(pointsAsDoubles(safePoints),0.02, 0.98, 0.001)), false);
   }
 
-  // TODO make me use Translation2ds instead of doubles[][]
+  // TODO make me use Translation2ds instead of doubles[][] // yeah we tried that and it died
   // furthermore Falconlib should do this somehow, right?
-  // FIXME because I"ll probubly break the rotation2d component of the pose. Solution is to approximate tangent line slopes
-  // or just only run known good paths /shrug
+  
   protected static double[][] smoother(double[][] path, double weight_data, double weight_smooth, double tolerance){
     //copy array
     double[][] newPath = doubleArrayCopy(path);
@@ -160,14 +161,18 @@ public class FieldConstraints {
 
     return toreturn;
   }
-
+  // FIXME because I"ll probubly break the rotation2d component of the pose. Solution is to approximate tangent line slopes
+  // or just only run known good paths /shrug
   protected static List<TimedEntry<Pose2dWithCurvature>> doublesAsPoints(List<TimedEntry<Pose2dWithCurvature>> original, double[][] newP){
     List<TimedEntry<Pose2dWithCurvature>> toReturn = new ArrayList<TimedEntry<Pose2dWithCurvature>>();
 
     for (int i=0; i<newP.length-1; i++){
-      toReturn.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(newP[i][0],newP[i][1]),original.get(i).getState().getPose().getRotation()),original.get(i).getState().getCurvature())),
+      toReturn.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(newP[i][0],newP[i][1]),original.get(i).getState().getPose().getRotation()),
+            original.get(i).getState().getCurvature())),
             original.get(i).getT(), original.get(i).getVelocity(), original.get(i).getAcceleration()));
     }
+    //FIXME I have none idea how this works
+    new Pose2dWithCurvature(new Pose2d(new Translation2d(), new Rotation2d(0)), new Pose2dCurvature(_curvature, dkds));
 
     return toReturn;
   }

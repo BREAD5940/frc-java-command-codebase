@@ -38,8 +38,7 @@ public class AutoCombo {
       cPiece = cMotion.getmHeldPiece(); //get the current heldpiece from the motion (at least for testing)
       traject=FieldConstraints.makeSafe(traject);//moves the trajectory so it doesn't hit stuff
 
-      this.mBigCommandGroup.addSequential(Robot.drivetrain.followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, true)); //drive to goal
-      // FIXME right now this resets the robot localization (including gyro) to the expected start position. Is this intennded behavior?
+      this.mBigCommandGroup.addSequential(Robot.drivetrain.followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
       
       this.mBigCommandGroup.addSequential(cMotion.getBigCommandGroup()); //do a motion
       
