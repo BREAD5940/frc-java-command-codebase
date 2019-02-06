@@ -9,12 +9,15 @@ import com.team254.lib.physics.DCMotorTransmission;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Mass;
+import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.commands.auto.AutoMotion;
+import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.PIDSettings.FeedbackMode;
@@ -45,6 +48,8 @@ public class SuperStructure extends Subsystem {
   // public SuperStructureState mPeriodicIO = new SuperStructureState();
   private RotatingJoint mWrist, mElbow;
   private DCMotorTransmission kElbowTransmission, kWristTransmission;
+  public static final Mass kHatchMass = MassKt.getLb(2.4); // FIXME check mass
+  public static final Mass kCargoMass = MassKt.getLb(1); // FIXME check mass
 
   public static synchronized SuperStructure getInstance() {
     if ( instance_ == null ) {
@@ -253,12 +258,15 @@ public class SuperStructure extends Subsystem {
    * @return torque in newton meters on the wrist
    */
   public double calculateWristTorque(SuperStructureState state) {
+    Mass totalMass = getWrist().kArmMass;
+    if(state.getHeldPiece() == HeldPiece.HATCH) totalMass.plus(kHatchMass);
+    if(state.getHeldPiece() == HeldPiece.CARGO) totalMass.plus(kCargoMass);
     /* The distance from the pivot of the wrist to the center of mass */
     double x1 = (getWrist().kArmLength.getValue()) * Math.abs(state.jointAngles.getWrist().angle.getCos()); // absolute value so cosine is always positive
     /* The torque due to gravity  */
-    double torqueGravity = (getWrist().kArmMass.getValue() * 9.8 * x1);
+    double torqueGravity = (totalMass.getValue() * 9.8 * x1);
     /* The torque on the wrist due to acceleration of the elevator (assuming a rigid elbow) */
-    double torqueAccel = getWrist().kArmMass.getValue() * state.elevator.acceleration.getValue() * x1;
+    double torqueAccel = totalMass.getValue() * state.elevator.acceleration.getValue() * x1;
 
     return torqueGravity + torqueAccel;
   }
@@ -270,14 +278,18 @@ public class SuperStructure extends Subsystem {
    * @return torque in newton meters on the wrist
    */
   public double calculateElbowTorques(SuperStructureState state, double wristTorque) {
+    Mass wristTotalMass = getWrist().kArmMass;
+    if(state.getHeldPiece() == HeldPiece.HATCH) wristTotalMass.plus(kHatchMass);
+    if(state.getHeldPiece() == HeldPiece.CARGO) wristTotalMass.plus(kCargoMass);
+
     /* The distance from the pivot to the center of mass of the elbow */
-    double x2= (getElbow().kArmLength.getValue()) * Math.abs(state.jointAngles.getWrist().angle.getCos());// absolute value so cosine is always positive
+    double x_2 = (getElbow().kArmLength.getMeter()) * Math.abs(state.jointAngles.getWrist().angle.getCos());// absolute value so cosine is always positive
     /* The torque due to gravity  */
-    double torqueGravity = (getElbow().kArmMass.getValue() * 9.8 * x2); // m_2 * g * x_2 
+    double torqueGravity = (getElbow().kArmMass.getKilogram() * 9.8 * x_2); // m_2 * g * x_2 
     /* The torque doe to acceleration on the wrist */
-    double torqueAccel = getElbow().kArmMass.getValue() * state.elevator.acceleration.getValue() * x2;
+    double torqueAccel = getElbow().kArmMass.getKilogram() * state.elevator.acceleration.getValue() * x2;
     // m_2 * g * x_2
-    double torqueWrstComponent = (getElbow().kArmMass.getValue() * getElbow().kArmLength.getValue() * 2 /* double the distance from the joint to COM*/ * 9.8);
+    double torqueWrstComponent = (wristTotalMass.getKilogram() * getElbow().kArmLength.getMeter() * 2 /* double the distance from the joint to COM*/ * 9.8);
 
     return torqueGravity + torqueAccel + torqueWrstComponent + wristTorque;
   }
