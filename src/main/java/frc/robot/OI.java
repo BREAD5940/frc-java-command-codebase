@@ -3,14 +3,11 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-<<<<<<< HEAD
 import frc.robot.commands.auto.Trajectories;
 // import frc.robot.commands.auto.routines.ForwardFiveMeters;
-=======
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
-import frc.robot.commands.auto.routines.ForwardFiveMeters;
->>>>>>> 506a5be3eb23e8e5c10a64772bbff48ba12184c3
+// import frc.robot.commands.auto.routines.ForwardFiveMeters;
 import frc.robot.commands.auto.routines.YeetInACircleMaybe;
 // import frc.robot.commands.groups.visionTest;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
