@@ -35,7 +35,7 @@ public class FieldConstraints {
                                                     new Translation2d(LengthKt.getFeet(8+rad), LengthKt.getFeet(7.15-rad))};
 
 
-  public static TimedTrajectory<Pose2dWithCurvature> makeSafe(TimedTrajectory<Pose2dWithCurvature> traject){
+  public static TimedTrajectory<Pose2dWithCurvature> makeSafe(TimedTrajectory<Pose2dWithCurvature> traject, boolean bigSpeed){
     List<TimedEntry<Pose2dWithCurvature>> points = traject.getPoints();
     List<TimedEntry<Pose2dWithCurvature>> safePoints = new ArrayList<TimedEntry<Pose2dWithCurvature>>();
     List<Translation2d[]> constraints = new ArrayList<Translation2d[]>(Arrays.asList(cargo,rocketL,rocketR,upperHabaDepot,habRamp));
@@ -57,8 +57,14 @@ public class FieldConstraints {
           //theoretically picks the point on the border closest to the original point
           Translation2d lastNearest = constraints.get(j)[0];
           double lastShortest = distanceFormula(lastNearest, point);
-          for (double x=0; x<Math.abs(constraints.get(j)[0].getX().getFeet()-constraints.get(j)[1].getX().getFeet()); x+=0.1){ //IMPORTANT this currently makes the whole thing take about
-            for (double y=0; y<Math.abs(constraints.get(j)[0].getY().getFeet()-constraints.get(j)[1].getY().getFeet()); y+=0.1){//20sec longer to execute. we change it to 1, it's less precise, but faster
+          double precision;
+          if(bigSpeed){
+            precision=1;
+          }else{
+            precision=0.1;
+          }
+          for (double x=0; x<Math.abs(constraints.get(j)[0].getX().getFeet()-constraints.get(j)[1].getX().getFeet()); x+=precision){ //IMPORTANT this currently makes the whole thing take about
+            for (double y=0; y<Math.abs(constraints.get(j)[0].getY().getFeet()-constraints.get(j)[1].getY().getFeet()); y+=precision){//20sec longer to execute. we change it to 1, it's less precise, but faster
               if(distanceFormula(point, new Translation2d(x, y))<lastShortest){lastNearest=new Translation2d(x, y);}
             }
           }
