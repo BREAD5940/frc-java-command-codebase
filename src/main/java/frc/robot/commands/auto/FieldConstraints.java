@@ -44,35 +44,36 @@ public class FieldConstraints {
       Translation2d point = points.get(i).getState().getPose().getTranslation();
       Length safeX = point.getX();
       Length safeY = point.getY();
+      
+
+      point = new Translation2d(safeX, safeY); //set the current point to the safepoint inside the field
+
+      // for(int j=0; j<constraints.size()-1; j++){
+      //   if(!(point.getX().getFeet()>constraints.get(j)[0].getX().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet()
+      //         &&point.getY().getFeet()>constraints.get(j)[0].getY().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet())){
+      //     //theoretically picks the point on the border closest to the original point
+      //     Translation2d lastNearest = constraints.get(j)[0];
+      //     double lastShortest = distanceFormula(lastNearest, point);
+      //     double precision;
+      //     if(bigSpeed){
+      //       precision=1;
+      //     }else{
+      //       precision=0.1;
+      //     }
+      //     for (double x=0; x<Math.abs(constraints.get(j)[0].getX().getFeet()-constraints.get(j)[1].getX().getFeet()); x+=precision){ //IMPORTANT this currently makes the whole thing take about
+      //       for (double y=0; y<Math.abs(constraints.get(j)[0].getY().getFeet()-constraints.get(j)[1].getY().getFeet()); y+=precision){//20sec longer to execute. we change it to 1, it's less precise, but faster
+      //         if(distanceFormula(point, new Translation2d(x, y))<lastShortest){lastNearest=new Translation2d(x, y);}
+      //       }
+      //     }
+      //     safeX=lastNearest.getX();
+      //     safeY=lastNearest.getY();
+      //   }
+      // }
+
       if(point.getX().getFeet()>maxX.getFeet()){safeX=maxX;}
       if(point.getX().getFeet()<minX.getFeet()){safeX=minX;}
       if(point.getY().getFeet()>maxY.getFeet()){safeY=maxY;}
       if(point.getY().getFeet()<minY.getFeet()){safeY=minY;}
-
-      point = new Translation2d(safeX, safeY); //set the current point to the safepoint inside the field
-
-      for(int j=0; j<constraints.size()-1; j++){
-        if(!(point.getX().getFeet()>constraints.get(j)[0].getX().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet()
-              &&point.getY().getFeet()>constraints.get(j)[0].getY().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet())){
-          //theoretically picks the point on the border closest to the original point
-          Translation2d lastNearest = constraints.get(j)[0];
-          double lastShortest = distanceFormula(lastNearest, point);
-          double precision;
-          if(bigSpeed){
-            precision=1;
-          }else{
-            precision=0.1;
-          }
-          for (double x=0; x<Math.abs(constraints.get(j)[0].getX().getFeet()-constraints.get(j)[1].getX().getFeet()); x+=precision){ //IMPORTANT this currently makes the whole thing take about
-            for (double y=0; y<Math.abs(constraints.get(j)[0].getY().getFeet()-constraints.get(j)[1].getY().getFeet()); y+=precision){//20sec longer to execute. we change it to 1, it's less precise, but faster
-              if(distanceFormula(point, new Translation2d(x, y))<lastShortest){lastNearest=new Translation2d(x, y);}
-            }
-          }
-          safeX=lastNearest.getX();
-          safeY=lastNearest.getY();
-        }
-      }
-
 
       safePoints.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(safeX,safeY),points.get(i).getState().getPose().getRotation()),points.get(i).getState().getCurvature())),
                         points.get(i).getT(), points.get(i).getVelocity(), points.get(i).getAcceleration()));

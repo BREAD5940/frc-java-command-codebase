@@ -93,11 +93,11 @@ public class Trajectories {
     int numTrajects = generatedTrajectories.size();
     System.out.println("numTrajects done");
     int count=1;
-    for(String key : generatedTrajectories.keySet()){
-      System.out.printf("In safing loop, on trajectory %d of %d\n",count,numTrajects);
-      generatedTrajectories.put(key, FieldConstraints.makeSafe(generatedTrajectories.get(key),true)); //safes a l l of the trajectories
-      count++;
-    }
+    // for(String key : generatedTrajectories.keySet()){
+    //   System.out.printf("In safing loop, on trajectory %d of %d\n",count,numTrajects);
+    //   generatedTrajectories.put(key, FieldConstraints.makeSafe(generatedTrajectories.get(key),true)); //safes a l l of the trajectories
+    //   count++;
+    // }
     System.out.println("Out of safing");
     Logger.log("Trajectories generated in " + (Timer.getFPGATimestamp() - startTime) + " seconds!");
   }
