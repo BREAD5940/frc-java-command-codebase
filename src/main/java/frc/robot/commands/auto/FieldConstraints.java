@@ -107,8 +107,17 @@ public class FieldConstraints {
 
     System.out.println(safePoints.get(0).getState().getPose().getTranslation().getX().getFeet());
     System.out.println(safePoints.get(0).getState().getPose().getTranslation().getY().getFeet());
+    double[][] uno = pointsAsDoubles(safePoints);
+    System.out.println(uno[0][0]);
+    System.out.println(uno[0][1]);
+    double[][] dos = smoother(uno,0.02, 0.98, 0.001);
+    System.out.println(dos[0][0]);
+    System.out.println(dos[0][1]);
+    List<TimedEntry<Pose2dWithCurvature>> tres = doublesAsPoints(safePoints, dos);
+    System.out.println(tres.get(0).getState().getPose().getTranslation().getX().getFeet());
+    System.out.println(tres.get(0).getState().getPose().getTranslation().getY().getFeet());
     //TODO test to see if this smoother actually works
-    TimedTrajectory<Pose2dWithCurvature> toReturn = new TimedTrajectory<Pose2dWithCurvature>(doublesAsPoints(safePoints, smoother(pointsAsDoubles(safePoints),0.02, 0.98, 0.001)), false);
+    TimedTrajectory<Pose2dWithCurvature> toReturn = new TimedTrajectory<Pose2dWithCurvature>(tres, false);
     System.out.println(toReturn.getPoints().get(0).getState().getPose().getTranslation().getX().getFeet());
     System.out.println(toReturn.getPoints().get(0).getState().getPose().getTranslation().getY().getFeet());
     return toReturn;
@@ -167,6 +176,8 @@ public class FieldConstraints {
   }
   // FIXME because I"ll probubly break the rotation2d component of the pose. Solution is to approximate tangent line slopes
   // or just only run known good paths /shrug
+
+  //FIXME something in here makes the points Excessively Wrong
   protected static List<TimedEntry<Pose2dWithCurvature>> doublesAsPoints(List<TimedEntry<Pose2dWithCurvature>> original, double[][] newP){
     List<TimedEntry<Pose2dWithCurvature>> toReturn = new ArrayList<TimedEntry<Pose2dWithCurvature>>();
 
