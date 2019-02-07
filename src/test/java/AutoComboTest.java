@@ -16,16 +16,21 @@ public class AutoComboTest{
   @Test
   public void testUnModCurve(){
     
-
-    // Trajectories.genLocs();
     Trajectories.generateAllTrajectories();
     System.out.println("Out of generateAllTrajectories");
-    Pose2d[] wps = new Pose2d[] {Trajectories.locations.get("habM"),Trajectories.locations.get("cargoML")};
+    Double[] wps = new Double[] {Trajectories.locations.get("habM").getTranslation().getX().getFeet(),Trajectories.locations.get("cargoML").getTranslation().getX().getFeet()};
+    System.out.println(wps[0]);
+    System.out.println(wps[1]);
 
-    TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generateTrajectory(Arrays.asList(wps), false);
-    // TimedTrajectory<Pose2dWithCurvature> smTraject = Trajectories.generatedTrajectories.get(wps);
+    // TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generateTrajectory(Arrays.asList(wps), false);
+    TimedTrajectory<Pose2dWithCurvature> smTraject = Trajectories.generatedTrajectories.get("habM to cargoML");
+    System.out.println(wps);
+    System.out.println(Trajectories.generatedTrajectories.get("habM to cargoML"));
+    System.out.println(smTraject);
 
-    // assertEquals(traject, smTraject);
+    
+    // assertEquals("test", traject.getPoints().get(1).getState().getPose().getTranslation().getX().getFeet(),
+        // smTraject.getPoints().get(1).getState().getPose().getTranslation().getX().getFeet(), 0.01);
     assertEquals(1, 1);
 
   }

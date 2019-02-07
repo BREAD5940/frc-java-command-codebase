@@ -33,7 +33,7 @@ public class AutoCombo {
     
     for(int i=1; i<wpKeys.length-1; i++){ //starts at 1 so we don't get the current start
       cGoal = Trajectories.locations.get(wpKeys[i]); //goal to the current waypoint
-      TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedTrajectories.get(new Pose2d[] {cStart,cGoal}); //current trajectory from hashmap in Trajectories
+      TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedTrajectories.get(wpKeys[i-1]+" to "+wpKeys[i]); //current trajectory from hashmap in Trajectories
       AutoMotion cMotion = switchMotion(cPiece,wpKeys[i]); //creates an automotion based on the heldpiece and the goal
       cPiece = cMotion.getmHeldPiece(); //get the current heldpiece from the motion (at least for testing)
 
