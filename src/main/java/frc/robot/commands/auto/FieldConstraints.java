@@ -129,7 +129,7 @@ public class FieldConstraints {
     System.out.println(tres.get(0).getState().getPose().getTranslation().getX().getFeet());
     System.out.println(tres.get(0).getState().getPose().getTranslation().getY().getFeet());
     //TODO test to see if this smoother actually works
-    TimedTrajectory<Pose2dWithCurvature> toReturn = new TimedTrajectory<Pose2dWithCurvature>(safePoints, false);
+    TimedTrajectory<Pose2dWithCurvature> toReturn = new TimedTrajectory<Pose2dWithCurvature>(tres, false);
     System.out.println(toReturn.getPoints().get(0).getState().getPose().getTranslation().getX().getFeet());
     System.out.println(toReturn.getPoints().get(0).getState().getPose().getTranslation().getY().getFeet());
     return toReturn;
@@ -194,9 +194,6 @@ public class FieldConstraints {
     List<TimedEntry<Pose2dWithCurvature>> toReturn = new ArrayList<TimedEntry<Pose2dWithCurvature>>();
 
     for (int i=0; i<newP.length; i++){
-      if(i==0||i==newP.length-1){
-        toReturn.add(original.get(i));
-      }else{
         double curve=original.get(i).getState().getCurvature().get_curvature$FalconLibrary();
         // if(i==0||i==newP.length-1){
         //   curve=0;
@@ -220,9 +217,10 @@ public class FieldConstraints {
         // }else{
         //   newRot= new Rotation2d((newP[i-1][1]-newP[i][1])/(newP[i-1][0]-newP[i][0])); //this is just the secant between the current pt and before
         // }
-        toReturn.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(newP[i][0],newP[i][1]),newRot),
-              newCurve)), original.get(i).getT(), original.get(i).getVelocity(), original.get(i).getAcceleration()));
-      }
+        toReturn.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(LengthKt.getFeet(newP[i][0]),LengthKt.getFeet(newP[i][1])),newRot),
+              original.get(i).getState().getCurvature())), original.get(i).getT(), original.get(i).getVelocity(), original.get(i).getAcceleration()));
+      
+
     }
 
     return toReturn;
