@@ -92,16 +92,16 @@ public class Trajectories {
     Logger.log("Generating ALL trajectories");
     genLocs();
     double startTime = Timer.getFPGATimestamp();
-    // for (String key : locations.keySet()){
-    //   for (String eKey : locations.keySet()){
-    //     if(key.charAt(0)!=eKey.charAt(0)){
-    //       System.out.printf("Current start key: %s Current end key: %s\n",key,eKey);
-    //       generatedTrajectories.put(key+" to "+eKey, //FIXME this is a terrible way to mark unique paths, but it works
-    //           generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get(key), 
-    //                   locations.get(eKey))),false));
-    //     }
-    //   }
-    // }
+    for (String key : locations.keySet()){
+      for (String eKey : locations.keySet()){
+        if(key.charAt(0)!=eKey.charAt(0)){
+          System.out.printf("Current start key: %s Current end key: %s\n",key,eKey);
+          generatedTrajectories.put(key+" to "+eKey, //FIXME this is a terrible way to mark unique paths, but it works
+              generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get(key), 
+                      locations.get(eKey))),false));
+        }
+      }
+    }
     generatedTrajectories.put("habM"+" to "+"cargoML", //FIXME this is a terrible way to mark unique paths, but it works
               generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("habM"), 
                       locations.get("cargoML"))),false));
