@@ -27,7 +27,9 @@ import frc.robot.lib.Logger;
 @SuppressWarnings("WeakerAccess")
 public class Trajectories {
 
-  public static HashMap<String,Pose2d> locations = new HashMap<String,Pose2d>();{
+  public static HashMap<String,Pose2d> locations = new HashMap<String,Pose2d>();
+  
+  public static void genLocs(){
     locations.put("habR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684),Rotation2dKt.getDegree(0.0)));
     locations.put("habM", new Pose2d(LengthKt.getFeet(5.181), LengthKt.getFeet(13.379),Rotation2dKt.getDegree(0.0)));
     locations.put("habL", new Pose2d(LengthKt.getFeet(5.141), LengthKt.getFeet(9.508),Rotation2dKt.getDegree(0.0)));
@@ -71,17 +73,29 @@ public class Trajectories {
 
   public static void generateAllTrajectories(){
     Logger.log("Generating ALL trajectories");
+    genLocs();
     double startTime = Timer.getFPGATimestamp();
     for (String key : locations.keySet()){
       for (String eKey : locations.keySet()){
-        generatedTrajectories.put(new Pose2d[] {locations.get(key), locations.get(eKey)}, 
-            generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get(key), 
-                    locations.get(eKey))),false));
+        if(key.charAt(0)!=eKey.charAt(0)){
+          System.out.printf("Current start key: %s Current end key: %s\n",key,eKey);
+          generatedTrajectories.put(new Pose2d[] {locations.get(key), locations.get(eKey)}, 
+              generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get(key), 
+                      locations.get(eKey))),false));
+        }
       }
     }
+    System.out.println("Out of first round of generation");
+    int numTrajects = generatedTrajectories.size();
+    System.out.println("numTrajects done");
+    int count=1;
     for(Pose2d[] key : generatedTrajectories.keySet()){
+      System.out.println("in loop");
+      System.out.printf("In safing loop, on trajectory %d of %d",count,numTrajects);
       generatedTrajectories.put(key, FieldConstraints.makeSafe(generatedTrajectories.get(key))); //safes a l l of the trajectories
+      count++;
     }
+    System.out.println("Out of safing");
     Logger.log("Trajectories generated in " + (Timer.getFPGATimestamp() - startTime) + "seconds!");
   }
   
@@ -108,7 +122,7 @@ public class Trajectories {
    * @param reversed for if the path should be reversed (flipped)
    */
   public static TimedTrajectory<Pose2dWithCurvature> generateTrajectory(List<Pose2d> waypoints, 
-                                List<TimingConstraint<Pose2dWithCurvature>> constraints_, Velocity<Length> startVelocity, Velocity<Length> endVelocity, Velocity<Length> maxVelocity, Acceleration<Length> maxAcceleration, boolean reversed){
+                                List<? extends TimingConstraint<Pose2dWithCurvature>> constraints_, Velocity<Length> startVelocity, Velocity<Length> endVelocity, Velocity<Length> maxVelocity, Acceleration<Length> maxAcceleration, boolean reversed){
     return TrajectoryGeneratorKt.getDefaultTrajectoryGenerator().generateTrajectory(
           waypoints,
           constraints_,

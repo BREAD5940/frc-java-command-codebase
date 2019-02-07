@@ -25,7 +25,7 @@ public class AutoCombo {
    * @param startingPiece the game piece that the robot starts with (for example, a hatch)
    * @param wpKeys the keys for the waypoints (defined in Trajectories) for toe robot to go to.
    */
-
+  //TODO add support for 'yeet in a circle while moving'
   public AutoCombo (HeldPiece startingPiece, String... wpKeys){
     HeldPiece cPiece = startingPiece; //the current piece is the piece we're starting with
     Pose2d cGoal =Trajectories.locations.get(wpKeys[0]); //goal init to unimportant value
