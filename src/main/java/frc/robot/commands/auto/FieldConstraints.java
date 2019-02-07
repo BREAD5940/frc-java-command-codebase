@@ -34,46 +34,11 @@ public class FieldConstraints {
   protected static final Translation2d[] habRamp = {new Translation2d(LengthKt.getFeet(4-rad), LengthKt.getFeet(20+rad)),
                                                     new Translation2d(LengthKt.getFeet(8+rad), LengthKt.getFeet(7.15-rad))};
 
-  protected static boolean isSafe(TimedTrajectory<Pose2dWithCurvature> traject){
-    List<TimedEntry<Pose2dWithCurvature>> points = traject.getPoints();
-    List<Translation2d[]> constraints = new ArrayList<Translation2d[]>(Arrays.asList(cargo,rocketL,rocketR,upperHabaDepot,habRamp));
-    if(isOutsideField(traject)){
-      return false; //see comment below
-    }
-    for(int j=0; j<constraints.size()-1; j++){
-      for (int i=0; i<points.size()-1; i++){
-        Translation2d point = points.get(i).getState().getPose().getTranslation();
-        //translation array cycles topLeft->bottomRight
-        if(!(point.getX().getFeet()>constraints.get(j)[0].getX().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet()
-              &&point.getY().getFeet()>constraints.get(j)[0].getY().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet())){
-          return false; //this is an if statement bc it loops again if it's not false. it's this or a while loop
-        }
-      }
-    }
-    return true;
-  }
-
-  protected static boolean isOutsideField(TimedTrajectory<Pose2dWithCurvature> traject){
-    List<TimedEntry<Pose2dWithCurvature>> points = traject.getPoints();
-
-    for(int i=0; i<points.size()-1; i++){
-      Translation2d point = points.get(i).getState().getPose().getTranslation();
-      if(point.getX().getFeet()>maxX.getFeet()
-          || point.getX().getFeet()<minX.getFeet()
-          || point.getY().getFeet()>maxY.getFeet()
-          || point.getY().getFeet()<minY.getFeet()){return true;}
-    }
-    return false;
-  }
 
   public static TimedTrajectory<Pose2dWithCurvature> makeSafe(TimedTrajectory<Pose2dWithCurvature> traject){
     List<TimedEntry<Pose2dWithCurvature>> points = traject.getPoints();
     List<TimedEntry<Pose2dWithCurvature>> safePoints = new ArrayList<TimedEntry<Pose2dWithCurvature>>();
     List<Translation2d[]> constraints = new ArrayList<Translation2d[]>(Arrays.asList(cargo,rocketL,rocketR,upperHabaDepot,habRamp));
-    if(isSafe(traject)){
-      System.out.println("Trajectory is already safe!");
-      return traject;
-    }
 
     for(int i=0; i<points.size()-1; i++){
       Translation2d point = points.get(i).getState().getPose().getTranslation();
@@ -92,8 +57,8 @@ public class FieldConstraints {
           //theoretically picks the point on the border closest to the original point
           Translation2d lastNearest = constraints.get(j)[0];
           double lastShortest = distanceFormula(lastNearest, point);
-          for (double x=0; x<Math.abs(constraints.get(j)[0].getX().getFeet()-constraints.get(j)[1].getX().getFeet()); x+=0.01){
-            for (double y=0; y<Math.abs(constraints.get(j)[0].getY().getFeet()-constraints.get(j)[1].getY().getFeet()); y+=0.01){
+          for (double x=0; x<Math.abs(constraints.get(j)[0].getX().getFeet()-constraints.get(j)[1].getX().getFeet()); x+=0.1){ //IMPORTANT this currently makes the whole thing take about
+            for (double y=0; y<Math.abs(constraints.get(j)[0].getY().getFeet()-constraints.get(j)[1].getY().getFeet()); y+=0.1){//20sec longer to execute. we change it to 1, it's less precise, but faster
               if(distanceFormula(point, new Translation2d(x, y))<lastShortest){lastNearest=new Translation2d(x, y);}
             }
           }
