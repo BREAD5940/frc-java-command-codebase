@@ -5,114 +5,128 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dCurvature;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
 import frc.robot.RobotConfig;
 
 public class FieldConstraints {
-  protected static double rad = RobotConfig.auto.robotRadius.getFeet();
-  protected static final Length maxY = LengthKt.getFeet(27-rad);
-  protected static final Length minY = LengthKt.getFeet(0+rad);
-  protected static final Length maxX = LengthKt.getFeet(54-rad);
-  protected static final Length minX = LengthKt.getFeet(0+rad);
+  protected static final int numDec = 1000;
+  protected static double rad = Math.round(RobotConfig.auto.robotRadius.getFeet()*numDec);
+  protected static final Length maxY = LengthKt.getFeet((27*numDec-rad)/numDec);
+  protected static final Length minY = LengthKt.getFeet((0+rad)/numDec);
+  protected static final Length maxX = LengthKt.getFeet((54*numDec-rad)/numDec);
+  protected static final Length minX = LengthKt.getFeet((0+rad)/numDec);
 
-  protected static final Translation2d[] cargo = {new Translation2d(LengthKt.getFeet(18.208-rad), LengthKt.getFeet(15.386+rad)),
-                                                  new Translation2d(LengthKt.getFeet(36.738+rad), LengthKt.getFeet(11.717-rad))};
-  protected static final Translation2d[] rocketL = {new Translation2d(LengthKt.getFeet(17.602-rad), LengthKt.getFeet(27+rad)),
-                                                    new Translation2d(LengthKt.getFeet(20.422+rad), LengthKt.getFeet(24.745-rad))};
-  protected static final Translation2d[] rocketR = {new Translation2d(LengthKt.getFeet(17.602-rad), LengthKt.getFeet(2.134+rad)),
-                                                    new Translation2d(LengthKt.getFeet(20.422+rad), LengthKt.getFeet(0-rad))};
-  protected static final Translation2d[] upperHabaDepot = {new Translation2d(LengthKt.getFeet(0-rad), LengthKt.getFeet(21+rad)),
-                                                            new Translation2d(LengthKt.getFeet(4+rad), LengthKt.getFeet(6-rad))};
-  protected static final Translation2d[] habRamp = {new Translation2d(LengthKt.getFeet(4-rad), LengthKt.getFeet(20+rad)),
-                                                    new Translation2d(LengthKt.getFeet(8+rad), LengthKt.getFeet(7.15-rad))};
+  protected static final Translation2d[] cargo = {new Translation2d(LengthKt.getFeet((18.208*numDec-rad)/numDec), LengthKt.getFeet((15.386*numDec+rad)/numDec)),
+                                                  new Translation2d(LengthKt.getFeet((36.738*numDec+rad)/numDec), LengthKt.getFeet((11.717*numDec-rad)/numDec))};
+  protected static final Translation2d[] rocketL = {new Translation2d(LengthKt.getFeet((17.602*numDec-rad)/numDec), LengthKt.getFeet((27*numDec+rad)/numDec)),
+                                                    new Translation2d(LengthKt.getFeet((20.422*numDec+rad)/numDec), LengthKt.getFeet((24.745*numDec-rad)/numDec))};
+  protected static final Translation2d[] rocketR = {new Translation2d(LengthKt.getFeet((17.602*numDec-rad)/numDec), LengthKt.getFeet((2.134*numDec+rad)/numDec)),
+                                                    new Translation2d(LengthKt.getFeet((20.422*numDec+rad)/numDec), LengthKt.getFeet((0-rad)/numDec))};
+  protected static final Translation2d[] upperHabaDepot = {new Translation2d(LengthKt.getFeet((0-rad)/numDec), LengthKt.getFeet((21*numDec+rad)/numDec)),
+                                                            new Translation2d(LengthKt.getFeet((4*numDec+rad)/numDec), LengthKt.getFeet((6*numDec-rad)/numDec))};
+  protected static final Translation2d[] habRamp = {new Translation2d(LengthKt.getFeet((4*numDec-rad)/numDec), LengthKt.getFeet((20*numDec+rad)/numDec)),
+                                                    new Translation2d(LengthKt.getFeet((8*numDec+rad)/numDec), LengthKt.getFeet((7.15*numDec-rad)/numDec))};
 
-  protected static boolean isSafe(TimedTrajectory<Pose2dWithCurvature> traject){
-    List<TimedEntry<Pose2dWithCurvature>> points = traject.getPoints();
-    List<Translation2d[]> constraints = new ArrayList<Translation2d[]>(Arrays.asList(cargo,rocketL,rocketR,upperHabaDepot,habRamp));
-    if(isOutsideField(traject)){
-      return false; //see comment below
-    }
-    for(int j=0; j<constraints.size()-1; j++){
-      for (int i=0; i<points.size()-1; i++){
-        Translation2d point = points.get(i).getState().getPose().getTranslation();
-        //translation array cycles topLeft->bottomRight
-        if(!(point.getX().getFeet()>constraints.get(j)[0].getX().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet()
-              &&point.getY().getFeet()>constraints.get(j)[0].getY().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet())){
-          return false; //this is an if statement bc it loops again if it's not false. it's this or a while loop
-        }
-      }
-    }
-    return true;
-  }
 
-  protected static boolean isOutsideField(TimedTrajectory<Pose2dWithCurvature> traject){
-    List<TimedEntry<Pose2dWithCurvature>> points = traject.getPoints();
-
-    for(int i=0; i<points.size()-1; i++){
-      Translation2d point = points.get(i).getState().getPose().getTranslation();
-      if(point.getX().getFeet()>maxX.getFeet()
-          || point.getX().getFeet()<minX.getFeet()
-          || point.getY().getFeet()>maxY.getFeet()
-          || point.getY().getFeet()<minY.getFeet()){return true;}
-    }
-    return false;
-  }
-
-  public static TimedTrajectory<Pose2dWithCurvature> makeSafe(TimedTrajectory<Pose2dWithCurvature> traject){
+  public static TimedTrajectory<Pose2dWithCurvature> makeSafe(TimedTrajectory<Pose2dWithCurvature> traject, boolean bigSpeed){
     List<TimedEntry<Pose2dWithCurvature>> points = traject.getPoints();
     List<TimedEntry<Pose2dWithCurvature>> safePoints = new ArrayList<TimedEntry<Pose2dWithCurvature>>();
     List<Translation2d[]> constraints = new ArrayList<Translation2d[]>(Arrays.asList(cargo,rocketL,rocketR,upperHabaDepot,habRamp));
-    if(isSafe(traject)){
-      System.out.println("Trajectory is already safe!");
-      return traject;
-    }
+
+    System.out.print("Maximum x: ");
+    System.out.println(maxX.getFeet());
+    System.out.print("Minimum x: ");
+    System.out.println(minX.getFeet());
+    System.out.print("Maximum y: ");
+    System.out.println(maxY.getFeet());
+    System.out.print("Minimum y: ");
+    System.out.println(minY.getFeet());
 
     for(int i=0; i<points.size()-1; i++){
       Translation2d point = points.get(i).getState().getPose().getTranslation();
       Length safeX = point.getX();
       Length safeY = point.getY();
-      if(point.getX().getFeet()>maxX.getFeet()){safeX=maxX;}
-      if(point.getX().getFeet()<minX.getFeet()){safeX=minX;}
-      if(point.getY().getFeet()>maxY.getFeet()){safeY=maxY;}
-      if(point.getY().getFeet()<minY.getFeet()){safeY=minY;}
+      
 
-      point = new Translation2d(safeX, safeY); //set the current point to the safepoint inside the field
+      // point = new Translation2d(safeX, safeY); //set the current point to the safepoint inside the field
 
-      for(int j=0; j<constraints.size()-1; j++){
-        if(!(point.getX().getFeet()>constraints.get(j)[0].getX().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet()
-              &&point.getY().getFeet()>constraints.get(j)[0].getY().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet())){
-          //theoretically picks the point on the border closest to the original point
-          Translation2d lastNearest = constraints.get(j)[0];
-          double lastShortest = distanceFormula(lastNearest, point);
-          for (double x=0; x<Math.abs(constraints.get(j)[0].getX().getFeet()-constraints.get(j)[1].getX().getFeet()); x+=0.01){
-            for (double y=0; y<Math.abs(constraints.get(j)[0].getY().getFeet()-constraints.get(j)[1].getY().getFeet()); y+=0.01){
-              if(distanceFormula(point, new Translation2d(x, y))<lastShortest){lastNearest=new Translation2d(x, y);}
-            }
-          }
-          safeX=lastNearest.getX();
-          safeY=lastNearest.getY();
-        }
+      // for(int j=0; j<constraints.size()-1; j++){
+      //   if(!(point.getX().getFeet()>constraints.get(j)[0].getX().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet()
+      //         &&point.getY().getFeet()>constraints.get(j)[0].getY().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet())){
+      //     //theoretically picks the point on the border closest to the original point
+      //     Translation2d lastNearest = constraints.get(j)[0];
+      //     double lastShortest = distanceFormula(lastNearest, point);
+      //     double precision;
+      //     if(bigSpeed){
+      //       precision=1;
+      //     }else{
+      //       precision=0.1;
+      //     }
+      //     for (double x=0; x<Math.abs(constraints.get(j)[0].getX().getFeet()-constraints.get(j)[1].getX().getFeet()); x+=precision){ //IMPORTANT this currently makes the whole thing take about
+      //       for (double y=0; y<Math.abs(constraints.get(j)[0].getY().getFeet()-constraints.get(j)[1].getY().getFeet()); y+=precision){//20sec longer to execute. we change it to 1, it's less precise, but faster
+      //         if(distanceFormula(point, new Translation2d(x, y))<lastShortest){lastNearest=new Translation2d(x, y);}
+      //       }
+      //     }
+      //     safeX=lastNearest.getX();
+      //     safeY=lastNearest.getY();
+      //   }
+      // }
+
+      if(point.getX().getFeet()>maxX.getFeet()){
+        safeX=maxX;
+        System.out.print("safed to max x. safeX: ");
+        System.out.println(safeX);
       }
-
+      if(point.getX().getFeet()<minX.getFeet()){
+        safeX=minX;
+        System.out.print("safed to min x. safeX: ");
+        System.out.println(safeX);
+      }
+      if(point.getY().getFeet()>maxY.getFeet()){
+        safeY=maxY;
+        System.out.print("safed to max y. safeY: ");
+        System.out.println(safeY);
+      }
+      if(point.getY().getFeet()<minY.getFeet()){
+        safeY=minY;
+        System.out.print("safed to min Y. safeY: ");
+        System.out.println(safeY);
+      }
 
       safePoints.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(safeX,safeY),points.get(i).getState().getPose().getRotation()),points.get(i).getState().getCurvature())),
                         points.get(i).getT(), points.get(i).getVelocity(), points.get(i).getAcceleration()));
     }
 
+    System.out.println(safePoints.get(0).getState().getPose().getTranslation().getX().getFeet());
+    System.out.println(safePoints.get(0).getState().getPose().getTranslation().getY().getFeet());
+    double[][] uno = pointsAsDoubles(safePoints);
+    System.out.println(uno[0][0]);
+    System.out.println(uno[0][1]);
+    double[][] dos = smoother(uno,0.02, 0.98, 0.001);
+    System.out.println(dos[0][0]);
+    System.out.println(dos[0][1]);
+    List<TimedEntry<Pose2dWithCurvature>> tres = doublesAsPoints(safePoints, dos);
+    System.out.println(tres.get(0).getState().getPose().getTranslation().getX().getFeet());
+    System.out.println(tres.get(0).getState().getPose().getTranslation().getY().getFeet());
     //TODO test to see if this smoother actually works
-    return new TimedTrajectory<Pose2dWithCurvature>(doublesAsPoints(safePoints, smoother(pointsAsDoubles(safePoints),0.02, 0.98, 0.001)), false);
+    TimedTrajectory<Pose2dWithCurvature> toReturn = new TimedTrajectory<Pose2dWithCurvature>(tres, false);
+    System.out.println(toReturn.getPoints().get(0).getState().getPose().getTranslation().getX().getFeet());
+    System.out.println(toReturn.getPoints().get(0).getState().getPose().getTranslation().getY().getFeet());
+    return toReturn;
+
   }
 
-  // TODO make me use Translation2ds instead of doubles[][]
+  // TODO make me use Translation2ds instead of doubles[][] // yeah we tried that and it died
   // furthermore Falconlib should do this somehow, right?
-  // FIXME because I"ll probubly break the rotation2d component of the pose. Solution is to approximate tangent line slopes
-  // or just only run known good paths /shrug
+  
   protected static double[][] smoother(double[][] path, double weight_data, double weight_smooth, double tolerance){
     //copy array
     double[][] newPath = doubleArrayCopy(path);
@@ -160,13 +174,39 @@ public class FieldConstraints {
 
     return toreturn;
   }
+  // FIXME because I"ll probubly break the rotation2d component of the pose. Solution is to approximate tangent line slopes
+  // or just only run known good paths /shrug
 
+  //FIXME something in here makes the points Excessively Wrong
   protected static List<TimedEntry<Pose2dWithCurvature>> doublesAsPoints(List<TimedEntry<Pose2dWithCurvature>> original, double[][] newP){
     List<TimedEntry<Pose2dWithCurvature>> toReturn = new ArrayList<TimedEntry<Pose2dWithCurvature>>();
 
-    for (int i=0; i<newP.length-1; i++){
-      toReturn.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(newP[i][0],newP[i][1]),original.get(i).getState().getPose().getRotation()),original.get(i).getState().getCurvature())),
-            original.get(i).getT(), original.get(i).getVelocity(), original.get(i).getAcceleration()));
+    for (int i=0; i<newP.length; i++){
+      double curve=0;
+      // if(i==0||i==newP.length-1){
+      //   curve=0;
+      // }else{
+      //   if(newP[i-1][0]==newP[i][0]){
+      //     newP[i-1][0]+=0.001;
+      //   }
+      //   double k1=0.5*(Math.pow(newP[i-1][0],2)+Math.pow(newP[i-1][1],2)-Math.pow(newP[i][0],2)-Math.pow(newP[i][1],2))/(newP[i-1][0]-newP[i][0]);
+      //   double k2=(newP[i-1][1]-newP[i][1])/(newP[i-1][0]-newP[i][0]);
+      //   double b=0.5*(Math.pow(newP[i][0],2)-2*newP[i][0]*k1+Math.pow(newP[i][1],2)-Math.pow(newP[i+1][0],2)+2*newP[i+1][0]*k1-Math.pow(newP[i+1][1],2))
+      //       /(newP[i+1][0]*k2-newP[i+1][1]+newP[i][1]-newP[i][1]*k2);
+      //   double a=k1-k2*b;
+      //   double r=Math.sqrt(Math.pow((newP[i-1][1]-a),2)+Math.pow((newP[i-1][1]-b),2));
+      //   curve = 1/r;
+      // }
+      //FIXME i don't know what the deriv of the curvature is, so im leaving it the same
+      Pose2dCurvature newCurve = new Pose2dCurvature(curve, original.get(i).getState().getCurvature().getDkds());
+      Rotation2d newRot=new Rotation2d(0);
+      // if(i==0){
+      //   newRot=original.get(i).getState().getPose().getRotation(); //just set it to the original
+      // }else{
+      //   newRot= new Rotation2d((newP[i-1][1]-newP[i][1])/(newP[i-1][0]-newP[i][0])); //this is just the secant between the current pt and before
+      // }
+      toReturn.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(newP[i][0],newP[i][1]),newRot),
+            newCurve)), original.get(i).getT(), original.get(i).getVelocity(), original.get(i).getAcceleration()));
     }
 
     return toReturn;

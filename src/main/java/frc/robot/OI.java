@@ -3,8 +3,14 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+<<<<<<< HEAD
 import frc.robot.commands.auto.Trajectories;
 // import frc.robot.commands.auto.routines.ForwardFiveMeters;
+=======
+import frc.robot.commands.auto.RunAuto;
+import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.commands.auto.routines.ForwardFiveMeters;
+>>>>>>> 506a5be3eb23e8e5c10a64772bbff48ba12184c3
 import frc.robot.commands.auto.routines.YeetInACircleMaybe;
 // import frc.robot.commands.groups.visionTest;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
@@ -41,6 +47,7 @@ public class OI {
   Button auto_place_cargo_rocket_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
   Button auto_place_hatch_rocket_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
   Button yeetInACircleButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
+  Button testBasicallyALineButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
   Button auto_grab_hatch_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
   Button auto_grab_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
 
@@ -54,10 +61,8 @@ public class OI {
     // open_clamp_button.whenPressed(new OpenClamp());
     // close_clamp_button.whenPressed(new CloseClamp());
 
-    // yeetInACircleButton.whenPressed(new YeetInACircleMaybe());
-
-    yeetInACircleButton.whenPressed(Robot.drivetrain.followTrajectory(Trajectories.forward20Feet, true));
-
+    yeetInACircleButton.whenPressed(new YeetInACircleMaybe());
+    testBasicallyALineButton.whenPressed(new RunAuto(HeldPiece.NONE, "habM", "cargoML"));
 
     // TODO why does this throw a null pointer
     // auto_place_cargo_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_CARGO, Robot.mGh.getSelected()));

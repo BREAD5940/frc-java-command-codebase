@@ -3,9 +3,12 @@ package frc.robot.commands.auto;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.superstructure.SuperStructure;
 
 
 /**
@@ -13,25 +16,29 @@ import frc.robot.commands.auto.AutoMotion.HeldPiece;
  */
 public class RunAuto extends Command {
 
-  public GoalType gt;
-  public GoalHeight height;
-  public AutoMotion motion;
+  public GoalType mGt;
+  public GoalHeight mHeight;
+  public AutoMotion mMotion;
   public AutoCombo cMotion;
-  public String[] keys;
+  public String[] cKeys;
   public boolean isDrive;
-  public HeldPiece piece;
+  public HeldPiece cPiece;
 
 
-  public RunAuto(GoalType gt, GoalHeight height) {
-    this.gt = gt;
-    this.height = height;
+  public RunAuto(GoalType mGt, GoalHeight mHeight) {
+    this.mGt = mGt;
+    this.mHeight= mHeight;
     this.isDrive = false;
+    requires(SuperStructure.getInstance());
+    requires(DriveTrain.getInstance());
   }
 
-  public RunAuto(HeldPiece piece, String... keys){
-    this.keys = keys;
+  public RunAuto(HeldPiece cPiece, String... cKeys){
+    this.cKeys = cKeys;
     this.isDrive = true;
-    this.piece = piece;
+    this.cPiece = cPiece;
+    requires(SuperStructure.getInstance());
+    requires(DriveTrain.getInstance());
   }
 
   @Override
@@ -39,10 +46,10 @@ public class RunAuto extends Command {
     // Kinda a stupid question but what's the difference between AutoMotion and AutoCombo?
     // is it just that AutoMotion drives straight to a goal, whereas AutoCombo
     if(!isDrive){
-      motion = new AutoMotion(height, gt);
-      motion.getBigCommandGroup().start();
+      mMotion = new AutoMotion(mHeight, mGt);
+      mMotion.getBigCommandGroup().start();
     }else{
-      cMotion = new AutoCombo(piece, keys);
+      cMotion = new AutoCombo(cPiece, cKeys);
       cMotion.getBigCommandGroup().start();
     }
   }
@@ -56,7 +63,11 @@ public class RunAuto extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return motion.getBigCommandGroup().done();
+    if(!isDrive){
+      return mMotion.getBigCommandGroup().done();
+    }else{
+      return cMotion.getBigCommandGroup().done();
+    }
   }
 
   // Called once after isFinished returns true
