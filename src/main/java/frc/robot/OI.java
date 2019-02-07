@@ -3,7 +3,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.auto.routines.ForwardFiveMeters;
+import frc.robot.commands.auto.Trajectories;
+// import frc.robot.commands.auto.routines.ForwardFiveMeters;
 import frc.robot.commands.auto.routines.YeetInACircleMaybe;
 // import frc.robot.commands.groups.visionTest;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
@@ -53,7 +54,10 @@ public class OI {
     // open_clamp_button.whenPressed(new OpenClamp());
     // close_clamp_button.whenPressed(new CloseClamp());
 
-    yeetInACircleButton.whenPressed(new YeetInACircleMaybe());
+    // yeetInACircleButton.whenPressed(new YeetInACircleMaybe());
+
+    yeetInACircleButton.whenPressed(Robot.drivetrain.followTrajectory(Trajectories.forward20Feet, true));
+
 
     // TODO why does this throw a null pointer
     // auto_place_cargo_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_CARGO, Robot.mGh.getSelected()));
@@ -89,7 +93,7 @@ public class OI {
     // auto_grab_cargo_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_CARGO, AutoMotion.mGoalHeight.LOW));
     // turnAutoButton.whenPressed(new PurePursuitPathCommand());
     // autobutton2.whenPressed(new RamsetePathFollower("filePath"));
-    autobutton3.whenPressed(new ForwardFiveMeters()  );
+    // autobutton3.whenPressed(new ForwardFiveMeters()  );
     // open_clamp_button.whenPressed(new OpenClamp());
     // close_clamp_button.whenPressed(new CloseClamp());
     // open_clamp_button.whenPressed(new PurePursuit());

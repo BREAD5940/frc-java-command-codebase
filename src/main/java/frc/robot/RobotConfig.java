@@ -104,13 +104,13 @@ public class RobotConfig {
       public static final int s_left_talon_port = 2;
       public static final boolean m_left_inverted = false;
       // sets kp, ki, kd and kf terms for master left in velocity mode 
-      public static final double velocity_kp_low = 0.4;
+      public static final double velocity_kp_low = 0.0;
       public static final double velocity_ki_low = 0.0;
       public static final double velocity_kd_low = 0;
-      public static final double velocity_kf_low =  1.4;
+      public static final double velocity_kf_low =  0.4;
       public static final int velocity_izone_low = 800;
       public static final double velocity_max_integral_low = 500000;
-      public static final double position_kp_low = 0.4;
+      public static final double position_kp_low = 0.0;
       public static final double position_ki_low = 0;
       public static final double position_kd_low = 0;
       public static final double position_kf_low = 0.4;
@@ -180,7 +180,7 @@ public class RobotConfig {
     public static final double default_speed = 4;
     public static final double drive_auto_forward_velocity_max = 4; // feet per second target for driving auto
     public static final double drive_auto_forward_velocity_min = -2; // minimum speed for auto drive in ft per sec
-    public static Gear auto_gear = Gear.LOW;
+    public static Gear auto_gear = Gear.HIGH;
 
 
     public static final Length robotRadius = LengthKt.getInch(30); //FIXME this should be the distance from the center of the robot (or the gyro?) to the point on the robot perim furthest from it

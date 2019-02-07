@@ -1,7 +1,7 @@
 package frc.robot.commands.subsystems.drivetrain;
 
 import frc.robot.Robot;
-
+import frc.robot.lib.Logger;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -17,6 +17,7 @@ public class DriveShiftHigh extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Logger.log("setting high gear");
     Robot.drivetrain.setHighGear();
   }
 

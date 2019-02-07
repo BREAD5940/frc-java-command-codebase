@@ -2,6 +2,7 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.lib.Logger;
 
 /**
  * Shifter command to shift to low gear
@@ -17,6 +18,7 @@ public class DriveShiftLow extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Logger.log("setting low gear");
     Robot.drivetrain.setLowGear();
   }
 

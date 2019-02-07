@@ -57,8 +57,20 @@ public class Trajectories {
   public static Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
   public static Velocity<Length> kDefaultEndVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
 
-  public static Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(2));
-  public static final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(4));
+  public static Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(3));
+  public static final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(6));
+
+
+  // public static final TimedTrajectory<Pose2dWithCurvature> forward20Feet = generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(
+  //   new Pose2d(LengthKt.getFeet(0), LengthKt.getFeet(0),Rotation2dKt.getDegree(0)),
+  //   new Pose2d(LengthKt.getFeet(20), LengthKt.getFeet(0),Rotation2dKt.getDegree(0)))),
+  //   false);
+
+  private static final ArrayList<Pose2d> forward20ftSrc = new ArrayList<Pose2d>(Arrays.asList(
+      new Pose2d(LengthKt.getFeet(0), LengthKt.getFeet(15),Rotation2dKt.getDegree(0)),
+      new Pose2d(LengthKt.getFeet(25), LengthKt.getFeet(15),Rotation2dKt.getDegree(0)))
+  );
+  public static TimedTrajectory<Pose2dWithCurvature> forward20Feet;
 
 
   private static List<TimingConstraint<Pose2dWithCurvature>> kDefaultConstraints = Arrays.asList(
@@ -70,6 +82,7 @@ public class Trajectories {
 
 
   public static void generateAllTrajectories(){
+    forward20Feet = generateTrajectory(forward20ftSrc, false);
     Logger.log("Generating ALL trajectories");
     double startTime = Timer.getFPGATimestamp();
     for (String key : locations.keySet()){
@@ -90,7 +103,7 @@ public class Trajectories {
    * @return
    */
   public static TimedTrajectory<Pose2dWithCurvature> generateTrajectory(List<Pose2d> waypoints, boolean reversed){
-    return generateTrajectory(waypoints, kDefaultConstraints, kDefaultStartVelocity, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, false);
+    return generateTrajectory(waypoints, kDefaultConstraints, kDefaultStartVelocity, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, reversed);
   }
 
   /**

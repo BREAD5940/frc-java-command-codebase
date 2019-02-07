@@ -10,7 +10,7 @@ public class YeetInACircleMaybe extends CommandGroup {
    */
   public YeetInACircleMaybe() {
 
-    addSequential(new YeetInACircleWhileMoving(Robot.drivetrain.getGyro() + 180f));
+    addSequential(new YeetInACircleWhileMoving(true));
 
   }
 }
