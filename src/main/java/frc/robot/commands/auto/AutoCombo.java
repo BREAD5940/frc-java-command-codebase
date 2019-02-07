@@ -36,7 +36,6 @@ public class AutoCombo {
       TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedTrajectories.get(new Pose2d[] {cStart,cGoal}); //current trajectory from hashmap in Trajectories
       AutoMotion cMotion = switchMotion(cPiece,wpKeys[i]); //creates an automotion based on the heldpiece and the goal
       cPiece = cMotion.getmHeldPiece(); //get the current heldpiece from the motion (at least for testing)
-      traject=FieldConstraints.makeSafe(traject);//moves the trajectory so it doesn't hit stuff
 
       this.mBigCommandGroup.addSequential(Robot.drivetrain.followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
       

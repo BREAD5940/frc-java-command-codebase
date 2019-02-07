@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.apache.commons.math3.geometry.euclidean.threed.Rotation;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dCurvature;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;

@@ -79,6 +79,9 @@ public class Trajectories {
                     locations.get(eKey))),false));
       }
     }
+    for(Pose2d[] key : generatedTrajectories.keySet()){
+      generatedTrajectories.put(key, FieldConstraints.makeSafe(generatedTrajectories.get(key))); //safes a l l of the trajectories
+    }
     Logger.log("Trajectories generated in " + (Timer.getFPGATimestamp() - startTime) + "seconds!");
   }
   
