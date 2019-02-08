@@ -93,7 +93,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
     trackerMode = mode;
   }
 
-  private DCMotorTransmission mTransmission;
+  private DCMotorTransmission mLeftTransmissionModel, mRightTransmissionModel;
   private DifferentialDrive differentialDrive;
   private Transmission leftTransmission, rightTransmission;
 
@@ -119,13 +119,12 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
     // localization.update();
     // });
     // localizationNotifier.startPeriodic(0.01);
-
-    // mTransmission = new DCMotorTransmission(1 / Constants.kVDrive,
-    //     Constants.kWheelRadius * Constants.kWheelRadius * Constants.kRobotMass / (2.0 * Constants.kADrive),
-    //     Constants.kStaticFrictionVoltage);
+    
+    mLeftTransmissionModel = Constants.kLeftTransmissionModel;
+    mRightTransmissionModel = Constants.kRightTransmissionModel;
 
     differentialDrive = new DifferentialDrive(Constants.kRobotMass, Constants.kRobotMomentOfInertia,
-        Constants.kRobotAngularDrag, Constants.kWheelRadius, Constants.kTrackWidth / 2.0, mTransmission, mTransmission);
+        Constants.kRobotAngularDrag, Constants.kWheelRadius, Constants.kTrackWidth / 2.0, mLeftTransmissionModel, mRightTransmissionModel);
 
     ramseteTracker = new RamseteTracker(Constants.kDriveBeta, Constants.kDriveZeta);
     purePursuitTracker = new PurePursuitTracker(Constants.kLat, Constants.kLookaheadTime,
@@ -137,9 +136,9 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
     return differentialDrive;
   }
 
-  public DCMotorTransmission getTransmissionModel() {
-    return mTransmission;
-  }
+  // public DCMotorTransmission getTransmissionModel() {
+  //   return mTransmissionModel;
+  // }
 
   public FalconSRX<Length> getLeftMotor() {
     return getLeft().getMaster();
@@ -161,7 +160,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
   public RamseteTracker getRamseteTracker() {
     return ramseteTracker;
-  }
+  }   
 
   public TrajectoryTracker getTrajectoryTracker() {
     return getTrajectoryTracker(kDefaulTrajectoryTrackerMode);
