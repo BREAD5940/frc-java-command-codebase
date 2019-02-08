@@ -92,8 +92,11 @@ public class Trajectories {
     // new VelocityLimitRegionConstraint(new Rectangle2d(7.0, 0.0, 8.0, 13.0), VelocityKt.getVelocity(LengthKt.getFeet(2.0)))
   );
 
+  public static void generateAllTrajectories() {
+    generateAllTrajectories(true);
+  }
 
-  public static void generateAllTrajectories(){
+  public static void generateAllTrajectories(boolean isReal){
     forward20Feet = generateTrajectory(forward20ftSrc, false);
     Logger.log("Generating ALL trajectories");
     genLocs();
@@ -121,7 +124,9 @@ public class Trajectories {
       count++;
     }
     System.out.println("Out of safing");
-    Logger.log("Trajectories generated in " + (Timer.getFPGATimestamp() - startTime) + " seconds!");
+    double now = 0;
+    if(isReal) now = Timer.getFPGATimestamp();
+    Logger.log("Trajectories generated in " + (now - startTime) + " seconds!");
   }
   
 
