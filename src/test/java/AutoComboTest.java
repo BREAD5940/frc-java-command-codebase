@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.junit.jupiter.api.Test;
 
@@ -31,10 +32,23 @@ public class AutoComboTest{
     System.out.println(traject.getPoints().get(0).getState().getPose().getTranslation().getY().getFeet());
     System.out.println(smTraject.getPoints().get(0).getState().getPose().getTranslation().getX().getFeet());
     System.out.println(smTraject.getPoints().get(0).getState().getPose().getTranslation().getY().getFeet());
-    
-    assertEquals("test", traject.getPoints().get(0).getState().getPose().getTranslation().getX().getFeet(),
-        smTraject.getPoints().get(0).getState().getPose().getTranslation().getX().getFeet(), 0.01);
-    assertEquals(1, 1);
 
+    checkTrajectsEqual(traject, smTraject);
+
+  }
+
+
+  private void checkTrajectsEqual(TimedTrajectory<Pose2dWithCurvature> expected, TimedTrajectory<Pose2dWithCurvature> actual){
+    assertEquals(expected.getReversed(), actual.getReversed());
+    List<TimedEntry<Pose2dWithCurvature>> ePoints = expected.getPoints();
+    List<TimedEntry<Pose2dWithCurvature>> aPoints = actual.getPoints();
+
+    for(int i=0; i<ePoints.size(); i++){
+      // assertEquals(ePoints.get(i).getT().getSecond(), aPoints.get(i).getT().getSecond(),0.01);
+      // assertEquals(ePoints.get(i).getAcceleration().getValue(), aPoints.get(i).getAcceleration().getValue(),0.01);
+      assertEquals(ePoints.get(i).getState().getPose().getTranslation().getX().getFeet(), aPoints.get(i).getState().getPose().getTranslation().getX().getFeet(), 1);
+      assertEquals(ePoints.get(i).getState().getPose().getTranslation().getY().getFeet(), aPoints.get(i).getState().getPose().getTranslation().getY().getFeet(), 1);
+    }
+    
   }
 }

@@ -50,89 +50,93 @@ public class FieldConstraints {
     System.out.print("Minimum y: ");
     System.out.println(minY.getFeet());
 
-    for(int i=0; i<points.size(); i++){
+    for(int i=0; i<points.size(); i+=5){
       if(i==0||i==points.size()-1){
         System.out.println("No correction required!");
         safePoints.add(points.get(i));
       }else{
         Translation2d point = points.get(i).getState().getPose().getTranslation();
-        Length safeX = point.getX();
-        Length safeY = point.getY();
-        
 
-        point = new Translation2d(safeX, safeY); //set the current point to the safepoint inside the field
+        Translation2d nPoint = safe(point, constraints, bigSpeed);
 
-        for(int j=0; j<constraints.size()-1; j++){
-          if(!(point.getX().getFeet()>constraints.get(j)[0].getX().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet()
-                &&point.getY().getFeet()>constraints.get(j)[0].getY().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet())){
-            //theoretically picks the point on the border closest to the original point
-            Translation2d lastNearest = constraints.get(j)[0];
-            double lastShortest = distanceFormula(lastNearest, point);
-            double precision;
-            if(bigSpeed){
-              precision=1;
-            }else{
-              precision=0.1;
-            }
-            for (double x=0; x<Math.abs(constraints.get(j)[0].getX().getFeet()-constraints.get(j)[1].getX().getFeet()); x+=precision){ //IMPORTANT this currently makes the whole thing take about
-              for (double y=0; y<Math.abs(constraints.get(j)[0].getY().getFeet()-constraints.get(j)[1].getY().getFeet()); y+=precision){//20sec longer to execute. we change it to 1, it's less precise, but faster
-                if(distanceFormula(point, new Translation2d(x, y))<lastShortest){lastNearest=new Translation2d(x, y);}
-              }
-            }
-            safeX=lastNearest.getX();
-            safeY=lastNearest.getY();
-            System.out.println(safeX.getFeet());
-            System.out.println(safeY.getFeet());
+        if(point.getX().getFeet()!=nPoint.getX().getFeet()||point.getY().getFeet()!=nPoint.getY().getFeet()){
+          for(int k=i-5; k<i; k++){
+            Translation2d sPoint = points.get(k).getState().getPose().getTranslation();
+            Translation2d snPoint = safe(sPoint, constraints, bigSpeed);
+            safePoints.add(k,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(snPoint,points.get(k).getState().getPose().getRotation()),points.get(k).getState().getCurvature())),
+                          points.get(k).getT(), points.get(k).getVelocity(), points.get(k).getAcceleration()));
+          }
+        }else{
+          for(int l=i-5; l<i; l++){
+            safePoints.add(l,points.get(l));
           }
         }
-
-        point = new Translation2d(safeX, safeY); //set the current point to the safepoint inside the field
-
-
-        if(point.getX().getFeet()>maxX.getFeet()){
-          safeX=maxX;
-          System.out.print("safed to max x. safeX: ");
-          System.out.println(safeX);
-        }
-        if(point.getX().getFeet()<minX.getFeet()){
-          safeX=minX;
-          System.out.print("safed to min x. safeX: ");
-          System.out.println(safeX);
-        }
-        if(point.getY().getFeet()>maxY.getFeet()){
-          safeY=maxY;
-          System.out.print("safed to max y. safeY: ");
-          System.out.println(safeY);
-        }
-        if(point.getY().getFeet()<minY.getFeet()){
-          safeY=minY;
-          System.out.print("safed to min Y. safeY: ");
-          System.out.println(safeY);
-        }
-
-        safePoints.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(safeX,safeY),points.get(i).getState().getPose().getRotation()),points.get(i).getState().getCurvature())),
+        
+        safePoints.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(nPoint,points.get(i).getState().getPose().getRotation()),points.get(i).getState().getCurvature())),
                           points.get(i).getT(), points.get(i).getVelocity(), points.get(i).getAcceleration()));
       }
     }
 
-    System.out.println(safePoints.get(0).getState().getPose().getTranslation().getX().getFeet());
-    System.out.println(safePoints.get(0).getState().getPose().getTranslation().getY().getFeet());
     double[][] uno = pointsAsDoubles(safePoints);
-    System.out.println(uno[0][0]);
-    System.out.println(uno[0][1]);
-    double[][] dos = smoother(uno,0.02, 0.98, 0.001);
-    System.out.println(dos[0][0]);
-    System.out.println(dos[0][1]);
+    double[][] dos = smoother(uno,0.02, 0.98, 0.001);//TODO test to see if this smoother actually works
     List<TimedEntry<Pose2dWithCurvature>> tres = doublesAsPoints(safePoints, dos);
-
-    System.out.println(tres.get(0).getState().getPose().getTranslation().getX().getFeet());
-    System.out.println(tres.get(0).getState().getPose().getTranslation().getY().getFeet());
-    //TODO test to see if this smoother actually works
     TimedTrajectory<Pose2dWithCurvature> toReturn = new TimedTrajectory<Pose2dWithCurvature>(tres, false);
-    System.out.println(toReturn.getPoints().get(0).getState().getPose().getTranslation().getX().getFeet());
-    System.out.println(toReturn.getPoints().get(0).getState().getPose().getTranslation().getY().getFeet());
     return toReturn;
 
+  }
+
+  protected static Translation2d safe(Translation2d point, List<Translation2d[]> constraints, boolean bigSpeed){
+    Length safeX = point.getX();
+    Length safeY = point.getY();
+    for(int j=0; j<constraints.size()-1; j++){
+      if(!(point.getX().getFeet()>constraints.get(j)[0].getX().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet()
+            &&point.getY().getFeet()>constraints.get(j)[0].getY().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet())){
+        //theoretically picks the point on the border closest to the original point
+        Translation2d lastNearest = constraints.get(j)[0];
+        double lastShortest = distanceFormula(lastNearest, point);
+        double precision;
+        if(bigSpeed){
+          precision=1;
+        }else{
+          precision=0.1;
+        }
+        for (double x=0; x<Math.abs(constraints.get(j)[0].getX().getFeet()-constraints.get(j)[1].getX().getFeet()); x+=precision){ //IMPORTANT this currently makes the whole thing take about
+          for (double y=0; y<Math.abs(constraints.get(j)[0].getY().getFeet()-constraints.get(j)[1].getY().getFeet()); y+=precision){//20sec longer to execute. we change it to 1, it's less precise, but faster
+            if(distanceFormula(point, new Translation2d(x, y))<lastShortest){lastNearest=new Translation2d(x, y);}
+          }
+        }
+        safeX=lastNearest.getX();
+        safeY=lastNearest.getY();
+        // System.out.println(safeX.getFeet());
+        // System.out.println(safeY.getFeet());
+      }
+    }
+
+    point = new Translation2d(safeX, safeY); //set the current point to the safepoint inside the field
+
+
+    if(point.getX().getFeet()>maxX.getFeet()){
+      safeX=maxX;
+      // System.out.print("safed to max x. safeX: ");
+      // System.out.println(safeX.getFeet());
+    }
+    if(point.getX().getFeet()<minX.getFeet()){
+      safeX=minX;
+      // System.out.print("safed to min x. safeX: ");
+      // System.out.println(safeX.getFeet());
+    }
+    if(point.getY().getFeet()>maxY.getFeet()){
+      safeY=maxY;
+      // System.out.print("safed to max y. safeY: ");
+      // System.out.println(safeY.getFeet());
+    }
+    if(point.getY().getFeet()<minY.getFeet()){
+      safeY=minY;
+      // System.out.print("safed to min Y. safeY: ");
+      // System.out.println(safeY.getFeet());
+    }
+
+    return new Translation2d(safeX, safeY);
   }
 
   // TODO make me use Translation2ds instead of doubles[][] // yeah we tried that and it died

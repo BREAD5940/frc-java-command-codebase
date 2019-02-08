@@ -56,9 +56,12 @@ public class Trajectories {
     locations.put("depotLF", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(20.517),Rotation2dKt.getDegree(180)));
     locations.put("depotLB", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(20.517),Rotation2dKt.getDegree(-180)));
     locations.put("depotRF", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(6.107),Rotation2dKt.getDegree(180)));
-    locations.put("depotLB", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(6.107),Rotation2dKt.getDegree(-180)));
+    locations.put("depotRB", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(6.107),Rotation2dKt.getDegree(-180)));
   }
   public static HashMap<String, TimedTrajectory<Pose2dWithCurvature>> generatedTrajectories = new HashMap<String, TimedTrajectory<Pose2dWithCurvature>>();
+  public static List<String> grabs = new ArrayList<String>(Arrays.asList("habR", "habM", "habL", "loadingL", "loadingR", "depotLF", "depotLB", "depotRF", "depotRB"));
+  public static List<String> puts = new ArrayList<String>(Arrays.asList("cargoL1", "cargoL2", "cargoL3", "cargoML", "cargoMR", "cargoR1", "cargoR2", "cargoR3",
+           "rocketL1", "rocketL2", "rocketL3", "rocketR1", "rocketR2", "rocketR3"));
 
   public static Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
   public static Velocity<Length> kDefaultEndVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
@@ -95,31 +98,25 @@ public class Trajectories {
     Logger.log("Generating ALL trajectories");
     genLocs();
     double startTime = Timer.getFPGATimestamp();
-    // for (String key : locations.keySet()){
-    //   for (String eKey : locations.keySet()){
-    //     if(key.charAt(0)!=eKey.charAt(0)){
-    //       System.out.printf("Current start key: %s Current end key: %s\n",key,eKey);
-    //       generatedTrajectories.put(key+" to "+eKey, //FIXME this is a terrible way to mark unique paths, but it works
-    //           generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get(key), 
-    //                   locations.get(eKey))),false));
-    //     }
-    //   }
-    // }
-    // generatedTrajectories.put("habM"+" to "+"cargoML", //FIXME this is a terrible way to mark unique paths, but it works
-    //           generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("habM"), 
-    //                   locations.get("cargoML"))),false));
-    // System.out.println(generatedTrajectories.get("habM to cargoML").getPoints().get(0).getState().getPose().getTranslation().getX().getFeet());
-    // System.out.println(generatedTrajectories.get("habM to cargoML").getPoints().get(0).getState().getPose().getTranslation().getY().getFeet());
-    // System.out.println("Out of first round of generation");
-    // int numTrajects = generatedTrajectories.size();
-    // System.out.println("numTrajects done");
-    // int count=1;
-    // for(String key : generatedTrajectories.keySet()){
-    //   System.out.printf("In safing loop, on trajectory %d of %d\n",count,numTrajects);
-    //   generatedTrajectories.put(key, FieldConstraints.makeSafe(generatedTrajectories.get(key),true)); //safes a l l of the trajectories
-    //   count++;
-    // }
-    // System.out.println("Out of safing");
+    for (String key : locations.keySet()){
+      for (String eKey : locations.keySet()){
+        if(!((grabs.contains(key)&&grabs.contains(eKey))||(puts.contains(key)&&puts.contains(eKey)))){
+          System.out.printf("Current start key: %s Current end key: %s\n",key,eKey);
+          generatedTrajectories.put(key+" to "+eKey, //FIXME this is a terrible way to mark unique paths, but it works
+              generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get(key), 
+                      locations.get(eKey))),false));
+        }
+      }
+    }
+    System.out.println("Out of first round of generation");
+    int numTrajects = generatedTrajectories.size();
+    int count=1;
+    for(String key : generatedTrajectories.keySet()){
+      System.out.printf("In safing loop, on trajectory %d of %d\n",count,numTrajects);
+      generatedTrajectories.put(key, FieldConstraints.makeSafe(generatedTrajectories.get(key),true)); //safes a l l of the trajectories
+      count++;
+    }
+    System.out.println("Out of safing");
     Logger.log("Trajectories generated in " + (Timer.getFPGATimestamp() - startTime) + " seconds!");
   }
   

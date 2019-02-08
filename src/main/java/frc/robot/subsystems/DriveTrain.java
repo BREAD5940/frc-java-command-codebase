@@ -120,9 +120,9 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
     // });
     // localizationNotifier.startPeriodic(0.01);
 
-    mTransmission = new DCMotorTransmission(1 / Constants.kVDrive,
-        Constants.kWheelRadius * Constants.kWheelRadius * Constants.kRobotMass / (2.0 * Constants.kADrive),
-        Constants.kStaticFrictionVoltage);
+    // mTransmission = new DCMotorTransmission(1 / Constants.kVDrive,
+    //     Constants.kWheelRadius * Constants.kWheelRadius * Constants.kRobotMass / (2.0 * Constants.kADrive),
+    //     Constants.kStaticFrictionVoltage);
 
     differentialDrive = new DifferentialDrive(Constants.kRobotMass, Constants.kRobotMomentOfInertia,
         Constants.kRobotAngularDrag, Constants.kWheelRadius, Constants.kTrackWidth / 2.0, mTransmission, mTransmission);
