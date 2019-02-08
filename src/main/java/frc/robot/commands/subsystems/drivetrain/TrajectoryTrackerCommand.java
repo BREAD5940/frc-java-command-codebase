@@ -69,7 +69,7 @@ public class TrajectoryTrackerCommand extends Command {
   @Override
   protected void execute(){
 
-    long now = System.currentTimeMillis();
+    // long now = System.currentTimeMillis();
 
     output = trajectoryTracker.nextState(driveBase.getRobotPosition(), TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
 
@@ -84,8 +84,8 @@ public class TrajectoryTrackerCommand extends Command {
     // Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
     driveBase.setOutput(output);
 
-    long elapsed = System.currentTimeMillis() - now;
-    System.out.println("Took " + elapsed + "ms");
+    // long elapsed = System.currentTimeMillis() - now;
+    // System.out.println("Took " + elapsed + "ms");
   }
 
   @Override

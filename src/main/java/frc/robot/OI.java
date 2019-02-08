@@ -14,6 +14,7 @@ import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
 import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
 // import frc.robot.commands.subsystems.drivetrain.RamsetePathFollower;
 // import frc.robot.commands.subsystems.drivetrain.RunDriveMotionPlanner;
+import frc.robot.subsystems.DriveTrain;
 
 
 /**
@@ -57,8 +58,8 @@ public class OI {
     shift_down_button.whenPressed(new DriveShiftLow());
     // open_clamp_button.whenPressed(new OpenClamp());
     // close_clamp_button.whenPressed(new CloseClamp());
-
-    yeetInACircleButton.whenPressed(new YeetInACircleMaybe());
+    if(Trajectories.forward20Feet == null) Trajectories.generateAllTrajectories();
+    yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true) );
     testBasicallyALineButton.whenPressed(new RunAuto(HeldPiece.NONE, "habM", "cargoML"));
 
     // TODO why does this throw a null pointer
