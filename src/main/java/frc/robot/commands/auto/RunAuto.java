@@ -29,7 +29,7 @@ public class RunAuto extends Command {
     this.mGt = mGt;
     this.mHeight= mHeight;
     this.isDrive = false;
-    requires(SuperStructure.getInstance());
+    // requires(SuperStructure.getInstance());
     requires(DriveTrain.getInstance());
   }
 
@@ -37,7 +37,7 @@ public class RunAuto extends Command {
     this.cKeys = cKeys;
     this.isDrive = true;
     this.cPiece = cPiece;
-    requires(SuperStructure.getInstance());
+    // requires(SuperStructure.getInstance());
     requires(DriveTrain.getInstance());
   }
 

@@ -56,15 +56,18 @@ public class Trajectories {
     locations.put("depotLF", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(20.517),Rotation2dKt.getDegree(180)));
     locations.put("depotLB", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(20.517),Rotation2dKt.getDegree(-180)));
     locations.put("depotRF", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(6.107),Rotation2dKt.getDegree(180)));
-    locations.put("depotLB", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(6.107),Rotation2dKt.getDegree(-180)));
+    locations.put("depotRB", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(6.107),Rotation2dKt.getDegree(-180)));
   }
   public static HashMap<String, TimedTrajectory<Pose2dWithCurvature>> generatedTrajectories = new HashMap<String, TimedTrajectory<Pose2dWithCurvature>>();
+  public static List<String> grabs = new ArrayList<String>(Arrays.asList("habR", "habM", "habL", "loadingL", "loadingR", "depotLF", "depotLB", "depotRF", "depotRB"));
+  public static List<String> puts = new ArrayList<String>(Arrays.asList("cargoL1", "cargoL2", "cargoL3", "cargoML", "cargoMR", "cargoR1", "cargoR2", "cargoR3",
+           "rocketL1", "rocketL2", "rocketL3", "rocketR1", "rocketR2", "rocketR3"));
 
   public static Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
   public static Velocity<Length> kDefaultEndVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
 
-  public static Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(3));
-  public static final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(6));
+  public static Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(5));
+  public static final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(8));
 
 
   // public static final TimedTrajectory<Pose2dWithCurvature> forward20Feet = generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(
@@ -73,17 +76,20 @@ public class Trajectories {
   //   false);
 
   private static final ArrayList<Pose2d> forward20ftSrc = new ArrayList<Pose2d>(Arrays.asList(
-      new Pose2d(LengthKt.getFeet(0), LengthKt.getFeet(15),Rotation2dKt.getDegree(0)),
-      new Pose2d(LengthKt.getFeet(25), LengthKt.getFeet(15),Rotation2dKt.getDegree(0)))
+      new Pose2d(LengthKt.getFeet(20), LengthKt.getFeet(5),Rotation2dKt.getDegree(45)),
+      new Pose2d(LengthKt.getFeet(30), LengthKt.getFeet(5),Rotation2dKt.getDegree(-90)),
+      new Pose2d(LengthKt.getFeet(20), LengthKt.getFeet(5),Rotation2dKt.getDegree(135)),
+      new Pose2d(LengthKt.getFeet(10), LengthKt.getFeet(5),Rotation2dKt.getDegree(-90)),
+      new Pose2d(LengthKt.getFeet(20), LengthKt.getFeet(5),Rotation2dKt.getDegree(45)))
   );
   public static TimedTrajectory<Pose2dWithCurvature> forward20Feet;
 
 
   private static List<TimingConstraint<Pose2dWithCurvature>> kDefaultConstraints = Arrays.asList(
     // This limits our centripetal acceleration to 3 feet per second per second
-    new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getFeet(8))),
+    new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getFeet(10)))//,
     // This limits our velocity while within the given Rectangle2d to 2 feet per second (read: the hab)
-    new VelocityLimitRegionConstraint(new Rectangle2d(7.0, 0.0, 8.0, 13.0), VelocityKt.getVelocity(LengthKt.getFeet(2.0)))
+    // new VelocityLimitRegionConstraint(new Rectangle2d(7.0, 0.0, 8.0, 13.0), VelocityKt.getVelocity(LengthKt.getFeet(2.0)))
   );
 
   public static void generateAllTrajectories() {
@@ -96,24 +102,18 @@ public class Trajectories {
     genLocs();
     double startTime = 0;
     if(isReal) startTime = Timer.getFPGATimestamp();
-    // for (String key : locations.keySet()){
-    //   for (String eKey : locations.keySet()){
-    //     if(key.charAt(0)!=eKey.charAt(0)){
-    //       System.out.printf("Current start key: %s Current end key: %s\n",key,eKey);
-    //       generatedTrajectories.put(key+" to "+eKey, //FIXME this is a terrible way to mark unique paths, but it works
-    //           generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get(key), 
-    //                   locations.get(eKey))),false));
-    //     }
-    //   }
-    // }
-    generatedTrajectories.put("habM"+" to "+"cargoML", //FIXME this is a terrible way to mark unique paths, but it works
-              generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("habM"), 
-                      locations.get("cargoML"))),false));
-    System.out.println(generatedTrajectories.get("habM to cargoML").getPoints().get(0).getState().getPose().getTranslation().getX().getFeet());
-    System.out.println(generatedTrajectories.get("habM to cargoML").getPoints().get(0).getState().getPose().getTranslation().getY().getFeet());
+    for (String key : locations.keySet()){
+      for (String eKey : locations.keySet()){
+        if(!((grabs.contains(key)&&grabs.contains(eKey))||(puts.contains(key)&&puts.contains(eKey)))){
+          System.out.printf("Current start key: %s Current end key: %s\n",key,eKey);
+          generatedTrajectories.put(key+" to "+eKey, //FIXME this is a terrible way to mark unique paths, but it works
+              generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get(key), 
+                      locations.get(eKey))),false));
+        }
+      }
+    }
     System.out.println("Out of first round of generation");
     int numTrajects = generatedTrajectories.size();
-    System.out.println("numTrajects done");
     int count=1;
     for(String key : generatedTrajectories.keySet()){
       System.out.printf("In safing loop, on trajectory %d of %d\n",count,numTrajects);

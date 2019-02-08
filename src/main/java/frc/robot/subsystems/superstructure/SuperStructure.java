@@ -87,11 +87,11 @@ public class SuperStructure extends Subsystem {
 
     kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
 
-    mWrist = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 37, FeedbackDevice.CTRE_MagEncoder_Relative, 
-        Constants.kWristLength, Constants.kWristMass);
+    mWrist = null;//new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 37, FeedbackDevice.CTRE_MagEncoder_Relative, 
+        // Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong
     
-    mElbow = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 40, FeedbackDevice.CTRE_MagEncoder_Relative, 
-    Constants.kElbowLength, Constants.kElbowMass);
+    mElbow = null;//new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 40, FeedbackDevice.CTRE_MagEncoder_Relative, 
+    // Constants.kElbowLength, Constants.kElbowMass);
   }
 
 

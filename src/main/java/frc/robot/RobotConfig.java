@@ -104,22 +104,22 @@ public class RobotConfig {
       public static final int s_left_talon_port = 2;
       public static final boolean m_left_inverted = false;
       // sets kp, ki, kd and kf terms for master left in velocity mode 
-      public static final double velocity_kp_low = 0.0;
+      public static final double velocity_kp_low = 0.2;
       public static final double velocity_ki_low = 0.0;
       public static final double velocity_kd_low = 0;
-      public static final double velocity_kf_low =  0.4;
+      public static final double velocity_kf_low =  0.37364403374849337083165930092407;
       public static final int velocity_izone_low = 800;
       public static final double velocity_max_integral_low = 500000;
       public static final double position_kp_low = 0.0;
       public static final double position_ki_low = 0;
       public static final double position_kd_low = 0;
-      public static final double position_kf_low = 0.4;
+      public static final double position_kf_low = 0.0d;
       public static final int position_izone_low = 800;
       // public static final double position_max_integral_low = 1;
-      public static final double velocity_kp_high = 0.4;
+      public static final double velocity_kp_high = 0.2;
       public static final double velocity_ki_high = 0;
       public static final double velocity_kd_high = 0;
-      public static final double velocity_kf_high = 0.4;
+      public static final double velocity_kf_high = 0.69391034839005911725879584457327;
       public static final int velocity_izone_high = 800;
       public static final double velocity_max_integral_high = 300;
       public static final double position_kp_high = 2;
@@ -180,7 +180,7 @@ public class RobotConfig {
     public static final double default_speed = 4;
     public static final double drive_auto_forward_velocity_max = 4; // feet per second target for driving auto
     public static final double drive_auto_forward_velocity_min = -2; // minimum speed for auto drive in ft per sec
-    public static Gear auto_gear = Gear.HIGH;
+    public static Gear auto_gear = Gear.LOW;
 
 
     public static final Length robotRadius = LengthKt.getInch(30); //FIXME this should be the distance from the center of the robot (or the gyro?) to the point on the robot perim furthest from it
