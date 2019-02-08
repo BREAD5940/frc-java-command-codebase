@@ -4,7 +4,6 @@ FRC Command based codebase
 This is Team 5940 BREAD's 2019 codebase for the 2019 FRC game Deep Space
 
 ## TODO for MCC
- * Shift gears on both drivetrain and elevator (mildly bork rn)
  * Driverstation buttons? (thanks Andymark)
 
 ## TODO by SFR

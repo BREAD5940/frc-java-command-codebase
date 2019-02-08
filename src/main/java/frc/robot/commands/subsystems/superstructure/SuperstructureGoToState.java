@@ -8,14 +8,14 @@ public class SuperstructureGoToState extends Command {
   SuperStructureState mRequState;
 
   public SuperstructureGoToState(SuperStructureState requState) {
-    requires(SuperStructure.getInstance());
+    // requires(SuperStructure.getInstance());
     mRequState = requState;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    SuperStructure.getInstance().setReqState(mRequState);
+    // SuperStructure.getInstance().setReqState(mRequState);
   }
 
   // Called repeatedly when this Command is scheduled to run

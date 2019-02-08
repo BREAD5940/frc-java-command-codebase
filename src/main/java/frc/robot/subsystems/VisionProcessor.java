@@ -10,19 +10,25 @@ import org.opencv.core.Point3;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.lib.Logger;
 import frc.robot.lib.PointFinder;
 
-public class VisionProcessor {
+public class VisionProcessor extends Subsystem {
+  @Override
+  public void initDefaultCommand() {}
 
   private MatOfPoint3f mObjectPoints;
   private Mat mCameraMatrix;
   private MatOfDouble mDistortionCoefficients;
+  private Notifier updateNotifier;
 
   private NetworkTable mLimelightTable;
 
   public VisionProcessor() {
+      updateNotifier = new Notifier(() -> this.update() );
       // Define bottom right corner of left vision target as origin
       mObjectPoints = new MatOfPoint3f(
               new Point3(0.0, 0.0, 0.0), // bottom right
@@ -45,6 +51,8 @@ public class VisionProcessor {
       mLimelightTable.getEntry("pipeline").setNumber(0); // use pipeline 0
       mLimelightTable.getEntry("camMode").setNumber(0); // vision mode
       mLimelightTable.getEntry("ledMode").setNumber(3); // force LED on
+
+      updateNotifier.startPeriodic(1);
   }
 
   public void update() {
@@ -119,9 +127,8 @@ public class VisionProcessor {
       System.out.println("pitchInDegrees" + pitchInDegrees);
       System.out.println("yawInDegrees" + yawInDegrees);
 
-
-
-
-
   }
+
+
+
 }
