@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.team254.lib.physics.DCMotorTransmission;
+
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Mass;
@@ -17,13 +19,27 @@ public class Constants {
 
   public static final double kWheelRadius = Util.toMeters(2f/12f);// meters. TODO tune
   public static final double kTrackWidth = Util.toMeters(26f/12f);// meters
-  
-  public static final double kStaticFrictionVoltage = 1; // Volts - tuned!
 
   // high gear: 7.5 rad/s
   // low gear: 4.3 rad/s
-  public static final double kVDrive = 0.25745; // Volts per radians per second - Calculated emperically
-  public static final double kADrive = 0.0206; // Volts per radians per second per second TODO tune
+  public static final double kVDriveLeft = 0.25745 * 1d; // Volts per radians per second - Calculated emperically
+  public static final double kADriveLeft = 0.0206 * 1d; // Volts per radians per second per second TODO tune
+  public static final double kVInterceptLeft = 1; // Volts - tuned!
+
+  public static final double kVDriveRight = 0.25745 * 1d; // Volts per radians per second - Calculated emperically
+  public static final double kADriveRight = 0.0206 * 1d; // Volts per radians per second per second TODO tune
+  public static final double kVInterceptRight = 1; // Volts - tuned!
+
+  public static final DCMotorTransmission kLeftTransmissionModel = new DCMotorTransmission(1 / kVDriveLeft,
+    kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveLeft),
+    kVInterceptLeft
+  );
+
+  public static final DCMotorTransmission kRightTransmissionModel = new DCMotorTransmission(1 / kVDriveRight,
+    kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveRight),
+    kVInterceptRight
+  );
+
 
   /* Ramsete constants */
   public static final double kDriveBeta = 1.5; // Inverse meters squared
