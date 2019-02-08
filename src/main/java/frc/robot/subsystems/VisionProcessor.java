@@ -28,7 +28,13 @@ public class VisionProcessor extends Subsystem {
   private NetworkTable mLimelightTable;
 
   public VisionProcessor() {
-      updateNotifier = new Notifier(() -> this.update() );
+      updateNotifier = new Notifier( () -> {
+          try {
+            update();
+          } catch (NullPointerException e) {
+              //TODO: handle exception
+          }
+      } );
       // Define bottom right corner of left vision target as origin
       mObjectPoints = new MatOfPoint3f(
               new Point3(0.0, 0.0, 0.0), // bottom right
@@ -52,7 +58,8 @@ public class VisionProcessor extends Subsystem {
       mLimelightTable.getEntry("camMode").setNumber(0); // vision mode
       mLimelightTable.getEntry("ledMode").setNumber(3); // force LED on
 
-      updateNotifier.startPeriodic(1);
+    //   updateNotifier.startPeriodic(0.2);
+
   }
 
   public void update() {
@@ -63,7 +70,7 @@ public class VisionProcessor extends Subsystem {
       for(int i=0; i<cornX.length; i++) {
           logData = logData + " (" + cornX[i] + ", " + cornY[i] + ") ----";
       }
-      System.out.println(logData);
+      SmartDashboard.putString("Corner coordinates", logData);
 
       if (cornX.length != 4 || cornY.length != 4) {
           System.out.println("[ERROR] Could not find 4 points from image");
@@ -98,8 +105,8 @@ public class VisionProcessor extends Subsystem {
       Mat rotationMatrix = new Mat();
       Calib3d.Rodrigues(rotationVector, rotationMatrix);
 
-      Logger.log("RotatrotationMatrixion mat:" + rotationMatrix.toString());
-      Logger.log("translationVector mat:" + translationVector.toString());
+      SmartDashboard.putString("RotatrotationMatrixion mat:", rotationMatrix.toString());
+      SmartDashboard.putString("translationVector mat:", translationVector.toString());
       // SmartDashboard.putString("OpenCV Rotation matrix", rotationMatrix.toString());
 
       Mat projectionMatrix = new Mat(3, 4, CvType.CV_64F);
@@ -119,13 +126,17 @@ public class VisionProcessor extends Subsystem {
       Calib3d.decomposeProjectionMatrix(projectionMatrix, cameraMatrix, rotMatrix, 
           transVect, rotMatrixX, rotMatrixY, rotMatrixZ, eulerAngles);
 
+      SmartDashboard.putNumber("trans vect x", translationVector.get(0, 0)[0]);
+      SmartDashboard.putNumber("trans vect y", translationVector.get(1, 0)[0]);
+      SmartDashboard.putNumber("trans vect z", translationVector.get(2, 0)[0]);
+
       double rollInDegrees = eulerAngles.get(2, 0)[0];
       double pitchInDegrees = eulerAngles.get(0, 0)[0];
       double yawInDegrees = eulerAngles.get(1, 0)[0];
 
-      System.out.println("rollInDegrees" + rollInDegrees);
-      System.out.println("pitchInDegrees" + pitchInDegrees);
-      System.out.println("yawInDegrees" + yawInDegrees);
+    //   System.out.println("rollInDegrees" + rollInDegrees);
+    //   System.out.println("pitchInDegrees" + pitchInDegrees);
+    //   System.out.println("yawInDegrees" + yawInDegrees);
 
   }
 

@@ -22,9 +22,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.DriveTrain.Gear;
 // import frc.robot.subsystems.LIDARSubsystem;
 import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.VisionProcessor;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 /**
@@ -40,6 +42,8 @@ public class Robot extends TimedRobot {
   // public static Elevator elevator = new Elevator();
   public static DriveTrain drivetrain = DriveTrain.getInstance();
   // public static SuperStructure superstructure = SuperStructure.getInstance();
+  public static VisionProcessor visionProcessor = new VisionProcessor();
+  public static Intake intake = new Intake();
   public static LimeLight limelight = new LimeLight();
   // public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
   private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);

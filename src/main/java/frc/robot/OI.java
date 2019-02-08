@@ -103,8 +103,9 @@ public class OI {
 
   public double getForwardAxis() { return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis); }
   public double getTurnAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.turn_axis); }
-public double getIntakeAxis() { return 0;/*secondaryJoystick.getRawAxis(RobotConfig.controls.intakeAxis);*/ }
-public double getOuttakeAxis() { return 0;/* secondaryJoystick.getRawAxis(RobotConfig.controls.outtakeAxis);*/ }
+  public double getIntakeAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.intakeAxis); }
+  public double getOuttakeAxis() { return primaryJoystick.getRawAxis(RobotConfig.controls.outtakeAxis); }
+  
   /**
    * Get intake speed is the difference between intake and outtake axis speeds
    */
