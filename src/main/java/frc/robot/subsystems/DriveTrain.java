@@ -102,26 +102,21 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
   private DriveTrain() {
     leftTransmission = new Transmission(RobotConfig.driveTrain.leftTalons.m_left_talon_port,
         RobotConfig.driveTrain.leftTalons.s_left_talon_port, Transmission.EncoderMode.CTRE_MagEncoder_Relative,
-        TransmissionSide.LEFT, true);
+        TransmissionSide.LEFT, true
+    );
     rightTransmission = new Transmission(RobotConfig.driveTrain.rightTalons.m_right_talon_port,
         RobotConfig.driveTrain.rightTalons.s_right_talon_port, Transmission.EncoderMode.CTRE_MagEncoder_Relative,
-        TransmissionSide.RIGHT, false);
-    getLeft().getMaster().configClosedloopRamp(0.2, 20);
-    getRight().getMaster().configClosedloopRamp(0.2, 20);
+        TransmissionSide.RIGHT, false
+    );
+    mLeftTransmissionModel = Constants.kLeftTransmissionModel;
+    mRightTransmissionModel = Constants.kRightTransmissionModel;
 
     /* Create a localization object because lamda expressions are fun */
     localization = new TankEncoderLocalization(() -> Rotation2dKt.getDegree(getGyro(true)),
         () -> getLeft().getDistance(), () -> getRight().getDistance());
     /* set the robot pose to 0,0,0 */
     localization.reset(new Pose2d());
-    // create a notifier to update localization and start it every 10ms
-    // localizationNotifier = new Notifier(() ->{
-    // localization.update();
-    // });
-    // localizationNotifier.startPeriodic(0.01);
     
-    mLeftTransmissionModel = Constants.kLeftTransmissionModel;
-    mRightTransmissionModel = Constants.kRightTransmissionModel;
 
     differentialDrive = new DifferentialDrive(Constants.kRobotMass, Constants.kRobotMomentOfInertia,
         Constants.kRobotAngularDrag, Constants.kWheelRadius, Constants.kTrackWidth / 2.0, mLeftTransmissionModel, mRightTransmissionModel);
