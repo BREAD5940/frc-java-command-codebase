@@ -104,10 +104,10 @@ public class RobotConfig {
       public static final int s_left_talon_port = 2;
       public static final boolean m_left_inverted = false;
       // sets kp, ki, kd and kf terms for master left in velocity mode 
-      public static final double velocity_kp_low = 0.0;
+      public static final double velocity_kp_low = 0.2;
       public static final double velocity_ki_low = 0.0;
       public static final double velocity_kd_low = 0;
-      public static final double velocity_kf_low =  0.4;
+      public static final double velocity_kf_low =  0.04;
       public static final int velocity_izone_low = 800;
       public static final double velocity_max_integral_low = 500000;
       public static final double position_kp_low = 0.0;
@@ -116,10 +116,10 @@ public class RobotConfig {
       public static final double position_kf_low = 0.4;
       public static final int position_izone_low = 800;
       // public static final double position_max_integral_low = 1;
-      public static final double velocity_kp_high = 0.4;
+      public static final double velocity_kp_high = 0.2;
       public static final double velocity_ki_high = 0;
       public static final double velocity_kd_high = 0;
-      public static final double velocity_kf_high = 0.4;
+      public static final double velocity_kf_high = 0.04;
       public static final int velocity_izone_high = 800;
       public static final double velocity_max_integral_high = 300;
       public static final double position_kp_high = 2;
