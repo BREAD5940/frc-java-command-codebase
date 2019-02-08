@@ -22,13 +22,13 @@ public class Constants {
 
   // high gear: 7.5 rad/s
   // low gear: 4.3 rad/s
-  public static final double kVDriveLeft = 0.25745 * 1d; // Volts per radians per second - Calculated emperically
-  public static final double kADriveLeft = 0.0206 * 1d; // Volts per radians per second per second TODO tune
-  public static final double kVInterceptLeft = 1; // Volts - tuned!
+  public static final double kVDriveLeft = 0.2518 * 1d; // Volts per radians per second - Calculated emperically
+  public static final double kADriveLeft = 0.03 * 1d; // Volts per radians per second per second TODO tune
+  public static final double kVInterceptLeft = 0.8537; // Volts - tuned!
 
-  public static final double kVDriveRight = 0.25745 * 1d; // Volts per radians per second - Calculated emperically
-  public static final double kADriveRight = 0.0206 * 1d; // Volts per radians per second per second TODO tune
-  public static final double kVInterceptRight = 1; // Volts - tuned!
+  public static final double kVDriveRight = 0.2631 * 1d; // Volts per radians per second - Calculated emperically
+  public static final double kADriveRight = 0.0286 * 1d; // Volts per radians per second per second TODO tune
+  public static final double kVInterceptRight = 0.893; // Volts - tuned!
 
   public static final DCMotorTransmission kLeftTransmissionModel = new DCMotorTransmission(1 / kVDriveLeft,
     kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveLeft),
