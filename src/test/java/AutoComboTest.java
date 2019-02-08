@@ -16,7 +16,7 @@ public class AutoComboTest{
   @Test
   public void testUnModCurve(){
     
-    Trajectories.generateAllTrajectories();
+    Trajectories.generateAllTrajectories(false); // so we aren't real
     System.out.println("Out of generateAllTrajectories");
     Pose2d[] wps = new Pose2d[] {Trajectories.locations.get("habM"),Trajectories.locations.get("cargoML")}; //this should require None Correction
     System.out.println(wps[0]);

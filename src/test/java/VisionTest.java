@@ -1,5 +1,7 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import static org.opencv.core.Core.NATIVE_LIBRARY_NAME;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -16,7 +18,12 @@ import frc.robot.lib.PointFinder;
 
 
 
+
 public class VisionTest {
+
+  public VisionTest() {
+    // System.loadLibrary(org.opencv.core.Core.NATIVE_LIBRARY_NAME);
+  }
 
   @Test
   public void testSolvePNP() {
