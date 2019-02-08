@@ -18,8 +18,11 @@ public class Constants {
   public static final double kWheelRadius = Util.toMeters(2f/12f);// meters. TODO tune
   public static final double kTrackWidth = Util.toMeters(26f/12f);// meters
   
-  public static final double kStaticFrictionVoltage = 1.8; // Volts TODO tune
-  public static final double kVDrive = 0.16; // Volts per radians per second - Calculated with https://docs.google.com/spreadsheets/d/1I2WgbKy0QJsedhJbi41485n7QCGcKez666ui2kPl23I/edit#gid=0 for 15ft/sec (high gear)
+  public static final double kStaticFrictionVoltage = 1; // Volts - tuned!
+
+  // high gear: 7.5 rad/s
+  // low gear: 4.3 rad/s
+  public static final double kVDrive = 12d /* volts rms */ / 4.3d /* radians/s low gear */ ; // Volts per radians per second - Calculated with https://docs.google.com/spreadsheets/d/1I2WgbKy0QJsedhJbi41485n7QCGcKez666ui2kPl23I/edit#gid=0 for 15ft/sec (high gear)
   public static final double kADrive = 0.0716; // Volts per radians per second per second TODO tune
 
   /* Ramsete constants */
