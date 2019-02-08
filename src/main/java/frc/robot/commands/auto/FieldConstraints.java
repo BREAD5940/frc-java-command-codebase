@@ -53,7 +53,7 @@ public class FieldConstraints {
     for(int i=0; i<points.size(); i+=5){
       if(i==0||i==points.size()-1){
         System.out.println("No correction required!");
-        safePoints.add(points.get(i));
+        safePoints.add(i,points.get(i));
       }else{
         Translation2d point = points.get(i).getState().getPose().getTranslation();
 
@@ -74,13 +74,15 @@ public class FieldConstraints {
         
         safePoints.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(nPoint,points.get(i).getState().getPose().getRotation()),points.get(i).getState().getCurvature())),
                           points.get(i).getT(), points.get(i).getVelocity(), points.get(i).getAcceleration()));
+        
       }
+      System.out.println(safePoints.get(i).getState().getPose().getTranslation().getX().getFeet());
     }
 
     double[][] uno = pointsAsDoubles(safePoints);
     double[][] dos = smoother(uno,0.02, 0.98, 0.001);//TODO test to see if this smoother actually works
     List<TimedEntry<Pose2dWithCurvature>> tres = doublesAsPoints(safePoints, dos);
-    TimedTrajectory<Pose2dWithCurvature> toReturn = new TimedTrajectory<Pose2dWithCurvature>(tres, false);
+    TimedTrajectory<Pose2dWithCurvature> toReturn = new TimedTrajectory<Pose2dWithCurvature>(safePoints, false);
     return toReturn;
 
   }
@@ -90,7 +92,7 @@ public class FieldConstraints {
     Length safeY = point.getY();
     for(int j=0; j<constraints.size()-1; j++){
       if(!(point.getX().getFeet()>constraints.get(j)[0].getX().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet()
-            &&point.getY().getFeet()>constraints.get(j)[0].getY().getFeet()&&point.getX().getFeet()<constraints.get(j)[1].getX().getFeet())){
+            &&point.getY().getFeet()>constraints.get(j)[0].getY().getFeet()&&point.getY().getFeet()<constraints.get(j)[1].getY().getFeet())){
         //theoretically picks the point on the border closest to the original point
         Translation2d lastNearest = constraints.get(j)[0];
         double lastShortest = distanceFormula(lastNearest, point);
@@ -221,7 +223,7 @@ public class FieldConstraints {
           newRot= new Rotation2d((newP[i-1][1]-newP[i][1])/(newP[i-1][0]-newP[i][0])); //this is just the secant between the current pt and before
         }
         toReturn.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(LengthKt.getFeet(newP[i][0]),LengthKt.getFeet(newP[i][1])),newRot),
-              original.get(i).getState().getCurvature())), original.get(i).getT(), original.get(i).getVelocity(), original.get(i).getAcceleration()));
+              newCurve)), original.get(i).getT(), original.get(i).getVelocity(), original.get(i).getAcceleration()));
       
 
     }
