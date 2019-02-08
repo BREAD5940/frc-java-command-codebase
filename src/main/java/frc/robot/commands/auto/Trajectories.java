@@ -63,8 +63,8 @@ public class Trajectories {
   public static Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
   public static Velocity<Length> kDefaultEndVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
 
-  public static Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(3));
-  public static final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(6));
+  public static Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(5));
+  public static final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(8));
 
 
   // public static final TimedTrajectory<Pose2dWithCurvature> forward20Feet = generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(
@@ -73,17 +73,20 @@ public class Trajectories {
   //   false);
 
   private static final ArrayList<Pose2d> forward20ftSrc = new ArrayList<Pose2d>(Arrays.asList(
-      new Pose2d(LengthKt.getFeet(0), LengthKt.getFeet(15),Rotation2dKt.getDegree(0)),
-      new Pose2d(LengthKt.getFeet(5), LengthKt.getFeet(15),Rotation2dKt.getDegree(0)))
+      new Pose2d(LengthKt.getFeet(20), LengthKt.getFeet(5),Rotation2dKt.getDegree(45)),
+      new Pose2d(LengthKt.getFeet(30), LengthKt.getFeet(5),Rotation2dKt.getDegree(-90)),
+      new Pose2d(LengthKt.getFeet(20), LengthKt.getFeet(5),Rotation2dKt.getDegree(135)),
+      new Pose2d(LengthKt.getFeet(10), LengthKt.getFeet(5),Rotation2dKt.getDegree(-90)),
+      new Pose2d(LengthKt.getFeet(20), LengthKt.getFeet(5),Rotation2dKt.getDegree(45)))
   );
   public static TimedTrajectory<Pose2dWithCurvature> forward20Feet;
 
 
   private static List<TimingConstraint<Pose2dWithCurvature>> kDefaultConstraints = Arrays.asList(
     // This limits our centripetal acceleration to 3 feet per second per second
-    new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getFeet(8))),
+    new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getFeet(10)))//,
     // This limits our velocity while within the given Rectangle2d to 2 feet per second (read: the hab)
-    new VelocityLimitRegionConstraint(new Rectangle2d(7.0, 0.0, 8.0, 13.0), VelocityKt.getVelocity(LengthKt.getFeet(2.0)))
+    // new VelocityLimitRegionConstraint(new Rectangle2d(7.0, 0.0, 8.0, 13.0), VelocityKt.getVelocity(LengthKt.getFeet(2.0)))
   );
 
 
