@@ -104,8 +104,9 @@ public class Robot extends TimedRobot {
     mGh.addOption("Dropped into the cargo ship", AutoMotion.GoalHeight.OVER);
     SmartDashboard.putData("Goal Height", mGh);
     SmartDashboard.putData(drivetrain);
-    // SmartDashboard.putData(elevator);
-    // SmartDashboard.putData(intake);
+    // SmartDashboard.putData();
+    SmartDashboard.putData(intake);
+    SmartDashboard.putData(shifterDoubleSolenoid);
 
     compressor.setClosedLoopControl(true);
 
@@ -259,13 +260,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Right talon speed", drivetrain.getRight().getFeetPerSecond() );
     SmartDashboard.putNumber("Right talon error", drivetrain.getRight().getClosedLoopError().getFeet() );
 
-    // Do a bunch of charicterization stuff
-    if (drivetrain.lastFeetPerSecond == null) {
-      drivetrain.lastFeetPerSecond = Arrays.asList(VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()), VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()));
-    }
-    if (drivetrain.lastCommandedVoltages == null) {
-      drivetrain.lastCommandedVoltages = Arrays.asList(0d, 0d);
-    }
+
     List<Double> feetPerSecond = Arrays.asList(
             VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()),
             VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity())
@@ -274,13 +269,10 @@ public class Robot extends TimedRobot {
       (VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()) - drivetrain.lastFeetPerSecond.get(0))/0.02d,
       (VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()) - drivetrain.lastFeetPerSecond.get(0))/0.02d
     );
-    SmartDashboard.putNumber("Left drivetrain commanded voltage", drivetrain.lastCommandedVoltages.get(0));
-    SmartDashboard.putNumber("Right drivetrain commanded voltage", drivetrain.lastCommandedVoltages.get(1));
     SmartDashboard.putNumber("Left drivetrian feet per second", feetPerSecond.get(0));
     SmartDashboard.putNumber("Right drivetrian feet per second", feetPerSecond.get(1));
-    SmartDashboard.putNumber("Left drivetrian acceleration, feet per second", feetPerSecondPerSecond.get(0));
-    SmartDashboard.putNumber("Right drivetrian acceleration, feet per second", feetPerSecondPerSecond.get(1));
-    drivetrain.lastFeetPerSecond = feetPerSecond;
+
+    SmartDashboard.putNumber("7 feet per second is", drivetrain.getLeft().getModel().fromModel(LengthKt.getFeet(7)).getValue() );
 
     SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
 
