@@ -122,7 +122,7 @@ public class Trajectories {
 
 
     generatedTrajectories.put("test",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingL"),
-        new Pose2d(LengthKt.getFeet(11.71), LengthKt.getFeet(21.119), Rotation2dKt.getDegree(145)),
+        new Pose2d(LengthKt.getFeet(11), LengthKt.getFeet(21), Rotation2dKt.getDegree(145)),
           new Pose2d(LengthKt.getFeet(11.71), LengthKt.getFeet(21.119), Rotation2dKt.getDegree(-35)), 
             locations.get("cargoR1"))), false));
     
