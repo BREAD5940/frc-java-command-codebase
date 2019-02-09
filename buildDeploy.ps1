@@ -1,4 +1,4 @@
-./gradlew build -x test spotlessJava
+./gradlew build -x check
 
 $name = (Get-NetConnectionProfile -InterfaceAlias "Wi-Fi").name
 if ( $name -match "5940" ) {

@@ -42,6 +42,8 @@ public class OI {
 	Button testAutoButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
 	Button auto_grab_hatch_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
 	Button auto_grab_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
+	Button test2button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
+
 
 	// File file = new File("/home/lvuser/deploy/paths/test.pf1.csv");
 	// Trajectory trajectory = Pathfinder.readFromCSV(file);
@@ -54,6 +56,10 @@ public class OI {
 		// close_clamp_button.whenPressed(new CloseClamp());
 		if (Trajectories.forward20Feet == null)
 			Trajectories.generateAllTrajectories();
+		// testAutoButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.generatedTrajectories.get("test"), true));
+
+		test2button.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet));
+
 		testAutoButton.whenPressed(new MultiPathTest());
 		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
 		yeetInACircleButton.whenPressed(new TurnInPlace(180, false));
