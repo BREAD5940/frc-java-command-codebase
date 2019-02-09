@@ -56,8 +56,8 @@ public class Constants {
 
 
 	/* Ramsete constants */
-	public static final double kDriveBeta = 1.5 * 1d; // Inverse meters squared
-	public static final double kDriveZeta = 0.9 * 1d; // Unitless dampening co-efficient
+	public static final double kDriveBeta = 2 * 1d; // Inverse meters squared
+	public static final double kDriveZeta = 0.7 * 1d; // Unitless dampening co-efficient
 
 	/* Pure Pursuit constants */
 	public static final double kLat = 0.05f;
