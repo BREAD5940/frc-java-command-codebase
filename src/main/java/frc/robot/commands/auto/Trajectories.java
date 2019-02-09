@@ -125,7 +125,7 @@ public class Trajectories {
 
     generatedTrajectories.put("test",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingL"),
         new Pose2d(LengthKt.getFeet(10.5), LengthKt.getFeet(20.5), Rotation2dKt.getDegree(145)),
-          new Pose2d(LengthKt.getFeet(21.8), LengthKt.getFeet(17.165), Rotation2dKt.getDegree(90)))), 
+          new Pose2d(LengthKt.getFeet(21.8), LengthKt.getFeet(17.165), Rotation2dKt.getDegree(180)))), 
             kDefaultConstraints, kDefaultStartVelocity, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, true));
     // generatedTrajectories.put("test1",generateTrajectory(Arrays.asList(new Pose2d(LengthKt.getFeet(11.71), LengthKt.getFeet(21.119), Rotation2dKt.getDegree(-35)), 
     //     locations.get("cargoL1")), false));
