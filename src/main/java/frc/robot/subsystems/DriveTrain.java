@@ -481,7 +481,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	 * @param reset      if we should reset robot odometry to the initial pose or
 	 *                   not
 	 */
-	public Command followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean reset) {
+	public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean reset) {
 		return new TrajectoryTrackerCommand(this, () -> trajectory, reset);
 	}
 

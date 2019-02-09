@@ -8,6 +8,7 @@ import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 
 /**
@@ -35,7 +36,7 @@ public class AutoCombo {
 			AutoMotion cMotion = switchMotion(cPiece, cGoal); //creates an automotion based on the heldpiece and the goal
 			cPiece = cMotion.getmHeldPiece(); //get the current heldpiece from the motion (at least for testing)
 
-			this.mBigCommandGroup.addSequential(Robot.drivetrain.followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
+			this.mBigCommandGroup.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 
 			this.mBigCommandGroup.addSequential(cMotion.getBigCommandGroup()); //do a motion
 
