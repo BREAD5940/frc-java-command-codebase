@@ -15,58 +15,58 @@ import frc.robot.Robot;
  */
 public class ArcadeDrive extends Command {
 
-  // System.out.println("im an arcade drive command!");
-  /**
-   * This command runs arcade drive as the default command for the drivetrain.
-   * This command will reserve the drivetrain.
-   */
-  public ArcadeDrive() {
-    requires(Robot.drivetrain);
-  }
+	// System.out.println("im an arcade drive command!");
+	/**
+	 * This command runs arcade drive as the default command for the drivetrain.
+	 * This command will reserve the drivetrain.
+	 */
+	public ArcadeDrive() {
+		requires(Robot.drivetrain);
+	}
 
-  // drivetrain drivetrain = new drivetrain();
+	// drivetrain drivetrain = new drivetrain();
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-    Robot.drivetrain.arcadeDrive(0, 0);
-    System.out.println("arcade drive command init");
-  }
+	// Called just before this Command runs the first time
+	@Override
+	protected void initialize() {
+		Robot.drivetrain.arcadeDrive(0, 0);
+		System.out.println("arcade drive command init");
+	}
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    // Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis(),
-    //   Robot.m_oi.getTurnAxis());
+	// Called repeatedly when this Command is scheduled to run
+	@Override
+	protected void execute() {
+		// Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis(),
+		//   Robot.m_oi.getTurnAxis());
 
-    boolean isQuickTurn = (Robot.m_oi.getForwardAxis() < 0.08);
+		boolean isQuickTurn = (Robot.m_oi.getForwardAxis() < 0.08);
 
-    Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis(),
-      Robot.m_oi.getTurnAxis(), true);
-    
-    // Logger.log("forward command: " + Robot.m_oi.getForwardAxis());
+		Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis(),
+				Robot.m_oi.getTurnAxis(), true);
 
-  }
+		// Logger.log("forward command: " + Robot.m_oi.getForwardAxis());
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    // System.out.println("we aint done chief");
-    return false;
+	}
 
-  }
+	// Make this return true when this Command no longer needs to run execute()
+	@Override
+	protected boolean isFinished() {
+		// System.out.println("we aint done chief");
+		return false;
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-    Robot.drivetrain.arcadeDrive(0, 0);
-    System.out.println("arcade end called");
-  }
+	}
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-    Robot.drivetrain.arcadeDrive(0, 0);
-  }
+	// Called once after isFinished returns true
+	@Override
+	protected void end() {
+		Robot.drivetrain.arcadeDrive(0, 0);
+		System.out.println("arcade end called");
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	@Override
+	protected void interrupted() {
+		Robot.drivetrain.arcadeDrive(0, 0);
+	}
 }

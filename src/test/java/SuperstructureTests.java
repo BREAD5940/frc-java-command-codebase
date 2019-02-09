@@ -5,10 +5,7 @@
 
 // import org.junit.jupiter.api.Test;
 
-
-
 // public class SuperstructureTests {
-  
 
 //   @Test
 //   public void testWrists(){
@@ -27,7 +24,6 @@
 //               new SuperstructureState(0,new IntakeAngle(10,10),HeldPiece.NONE),
 //               new SuperstructureState(0,iPosition.CARGO_GRAB,HeldPiece.NONE)));
 //     ArrayList<SuperstructureState> resultingStates=new ArrayList<SuperstructureState>();
-
 
 //     for(int i=0; i<goalStates.size(); i++){
 //       resultingStates.add(i,planner.getPlannedState(goalStates.get(i),currentState));
@@ -54,7 +50,6 @@
 //               new SuperstructureState(70,iPosition.CARGO_GRAB,HeldPiece.NONE)));
 //     ArrayList<SuperstructureState> resultingStates=new ArrayList<SuperstructureState>();
 
-
 //     for(int i=0; i<goalStates.size(); i++){
 //       resultingStates.add(i,planner.getPlannedState(goalStates.get(i),currentState));
 //       System.out.print(Integer.valueOf(i)+": ");
@@ -79,7 +74,6 @@
 //               new SuperStructureState(30,iPosition.HATCH,HeldPiece.NONE),
 //               new SuperStructureState(30,new IntakeAngle(10,10),HeldPiece.NONE)));
 //     ArrayList<SuperStructureState> resultingStates=new ArrayList<SuperStructureState>();
-
 
 //     for(int i=0; i<goalStates.size(); i++){
 //       resultingStates.add(i,planner.getPlannedState(goalStates.get(i),currentState));

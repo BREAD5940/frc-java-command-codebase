@@ -7,11 +7,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class AutoCommandGroup extends CommandGroup {
 
-  public AutoCommandGroup() {
-  }
+	public AutoCommandGroup() {}
 
-  public boolean done(){
-    return this.isFinished();
-  }
+	public boolean done() {
+		return this.isFinished();
+	}
 
 }

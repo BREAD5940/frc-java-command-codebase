@@ -14,8 +14,6 @@
 
 // import frc.robot.lib.PointFinder;
 
-
-
 // public class VisionTest {
 
 //   @Test
@@ -137,10 +135,6 @@
 //         System.out.println("pitchInDegrees" + pitchInDegrees);
 //         System.out.println("yawInDegrees" + yawInDegrees);
 
-
-
-
-
 //     }
 
 //     public void print(String message) {
@@ -148,6 +142,4 @@
 //     }
 //     }
 
-
-  
 // }

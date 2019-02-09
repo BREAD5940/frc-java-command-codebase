@@ -8,32 +8,29 @@ import java.util.ArrayList;
  */
 public class ContourFiltering {
 
-  NetworkTableInterface table;
-  
-  ArrayList<String> keys = new ArrayList<String>() {
-    { 
-      add("centerX"); 
-      add("centerY"); 
-      add("area"); 
-      add("area"); 
-      add("area"); 
-    } 
-  };
+	NetworkTableInterface table;
 
+	ArrayList<String> keys = new ArrayList<String>() {
+		{
+			add("centerX");
+			add("centerY");
+			add("area");
+			add("area");
+			add("area");
+		}
+	};
 
+	public ContourFiltering() {
+		table = new NetworkTableInterface("GRIP/contourReport");
+	}
 
+	public ArrayList<Double> getData() {
+		return updateTableEntries();
+	}
 
-  public ContourFiltering() {
-    table = new NetworkTableInterface("GRIP/contourReport");
-  }
-
-  public ArrayList<Double> getData() {
-    return updateTableEntries();
-  }
-
-  private ArrayList<Double> updateTableEntries() {
-    ArrayList<Double> entries;
-    return null;
-  }
+	private ArrayList<Double> updateTableEntries() {
+		ArrayList<Double> entries;
+		return null;
+	}
 
 }

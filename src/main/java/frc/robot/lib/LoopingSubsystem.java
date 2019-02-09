@@ -12,36 +12,36 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * @author Matthew Morley
  */
 public abstract class LoopingSubsystem extends Subsystem {
-  private final double loopTime;
-  private Notifier notifier_;
+	private final double loopTime;
+	private Notifier notifier_;
 
-  public LoopingSubsystem() {
-    this(0.02);
-  }
+	public LoopingSubsystem() {
+		this(0.02);
+	}
 
-  public LoopingSubsystem(double loopTime){
-    this.loopTime = loopTime;
-    notifier_ = new Notifier(() -> execute());
-    initilize();
-  }
+	public LoopingSubsystem(double loopTime) {
+		this.loopTime = loopTime;
+		notifier_ = new Notifier(() -> execute());
+		initilize();
+	}
 
-  public Notifier getNotifier() {
-    return notifier_;
-  }
+	public Notifier getNotifier() {
+		return notifier_;
+	}
 
-  public void startLooper() {
-    notifier_.startPeriodic(loopTime);
-  }
+	public void startLooper() {
+		notifier_.startPeriodic(loopTime);
+	}
 
-  public abstract void initilize();
+	public abstract void initilize();
 
-  public abstract void execute();
+	public abstract void execute();
 
-  public abstract void end();
+	public abstract void end();
 
-  public void stop() {
-    end();
-    notifier_.stop();
-  }
+	public void stop() {
+		end();
+		notifier_.stop();
+	}
 
 }
