@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
-import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
+import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
 import frc.robot.subsystems.DriveTrain.Gear;
 
 /**
@@ -52,7 +52,8 @@ public class OI {
 		// close_clamp_button.whenPressed(new CloseClamp());
 		if (Trajectories.forward20Feet == null)
 			Trajectories.generateAllTrajectories();
-		yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
+		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
+		yeetInACircleButton.whenPressed(new TurnInPlace(180, false));
 		testBasicallyALineButton.whenPressed(new RunAuto(HeldPiece.NONE, "habM", "cargoML"));
 
 		// TODO why does this throw a null pointer
