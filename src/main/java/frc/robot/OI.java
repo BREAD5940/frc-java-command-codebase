@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
-import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
+import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
 import frc.robot.subsystems.DriveTrain.Gear;
 
 /**
@@ -54,6 +54,8 @@ public class OI {
 			Trajectories.generateAllTrajectories();
 		yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
 		testAutoButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.generatedTrajectories.get("test"), true));
+		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
+		yeetInACircleButton.whenPressed(new TurnInPlace(180, false));
 
 		// TODO why does this throw a null pointer
 		// auto_place_cargo_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_CARGO, Robot.mGh.getSelected()));

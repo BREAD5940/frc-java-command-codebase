@@ -43,7 +43,7 @@ public class RunAuto extends Command {
 			mMotion = new AutoMotion(mHeight, mGt, false);
 			mMotion.getBigCommandGroup().start();
 		} else {
-			cMotion = new AutoCombo(cKeys[0],'L');
+			cMotion = new AutoCombo(cKeys[0], 'L');
 			cMotion.getBigCommandGroup().start();
 		}
 	}

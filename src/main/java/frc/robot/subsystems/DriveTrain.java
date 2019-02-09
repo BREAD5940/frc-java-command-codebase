@@ -500,10 +500,10 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	 */
 	public Command followTrajectoryWithGear(TimedTrajectory<Pose2dWithCurvature> trajectory,
 			TrajectoryTrackerMode mode, Gear gear, boolean resetPose) {
-				CommandGroup mCommandGroup = new CommandGroup();
-				mCommandGroup.addParallel(new SetGearCommand(gear));
-				mCommandGroup.addSequential(followTrajectory(trajectory, mode, resetPose));
-				return mCommandGroup;
+		CommandGroup mCommandGroup = new CommandGroup();
+		mCommandGroup.addParallel(new SetGearCommand(gear));
+		mCommandGroup.addSequential(followTrajectory(trajectory, mode, resetPose));
+		return mCommandGroup;
 	}
 
 	/**
