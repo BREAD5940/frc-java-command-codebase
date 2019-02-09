@@ -27,11 +27,14 @@ import com.team254.lib.physics.DifferentialDrive;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.subsystems.drivetrain.ArcadeDrive;
+import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.drivetrain.TrajectoryTrackerCommand;
 import frc.robot.lib.enums.TransmissionSide;
 import frc.robot.lib.motion.Util;
@@ -478,14 +481,29 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	 * @param reset      if we should reset robot odometry to the initial pose or
 	 *                   not
 	 */
-	public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean reset) {
+	public Command followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean reset) {
 		return new TrajectoryTrackerCommand(this, () -> trajectory, reset);
 	}
 
-	public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory,
+	public Command followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory,
 			TrajectoryTrackerMode mode, boolean reset) {
 		kDefaulTrajectoryTrackerMode = mode;
 		return new TrajectoryTrackerCommand(this, getTrajectoryTracker(mode), () -> trajectory, reset);
+	}
+
+	/**
+	 * Get a CommandGroup that will follow a supplied trajectory with a given traker mode, Gear and if we should reset robot pose or not
+	 * @param trajectory that the robot should follow
+	 * @param mode of the tracker (e.g. Ramsete)
+	 * @param gear that the action should be in
+	 * @param resetPose if we should reset the robot pose or not
+	 */
+	public Command followTrajectoryWithGear(TimedTrajectory<Pose2dWithCurvature> trajectory,
+			TrajectoryTrackerMode mode, Gear gear, boolean resetPose) {
+				CommandGroup mCommandGroup = new CommandGroup();
+				mCommandGroup.addParallel(new SetGearCommand(gear));
+				mCommandGroup.addSequential(followTrajectory(trajectory, mode, resetPose));
+				return mCommandGroup;
 	}
 
 	/**
