@@ -22,8 +22,8 @@
       "type": "java",
       "name": "CodeLens (Launch)",
       "request": "launch",
-      "mainClass": "frc.robot.Robot",
-      "projectName": "command-codebase"
+      "mainClass": "frc.robot.Main",
+      "projectName": "frc-java-command-codebase"
     },
     {
       "type": "wpilib",

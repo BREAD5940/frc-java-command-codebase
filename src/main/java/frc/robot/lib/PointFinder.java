@@ -9,10 +9,19 @@ public class PointFinder {
 
 double[] xLoc, yLoc;
 Translation2d topLeft, topRight, bottomLeft, bottomRight;
+boolean isLegal;
 
 public PointFinder(double[] xCoords, double[] yCoords) {
+    if(xCoords.length != 4 || yCoords.length != 4) {
+        System.out.println("PointFinder takes exactly 4 arguments! Too many/not enough given!");
+        isLegal = false;
+        return;
+    } else {
     xLoc = xCoords;
     yLoc = yCoords;
+    isLegal = true;
+    calculate();
+    }
     }
 
     public void calculate() {
@@ -84,19 +93,38 @@ public PointFinder(double[] xCoords, double[] yCoords) {
 }
 
 public Point getTopLeft() {
-    return new Point(topLeft.getX().getValue(), topLeft.getY().getValue());
+    if(topLeft == null && isLegal){ 
+        calculate();
+        return new Point(topLeft.getX().getValue(), topLeft.getY().getValue());}
+    else {
+        return new Point(0, 0);
+    }
 }
 
 public Point getTopRight() {
-    return new Point(topRight.getX().getValue(), topRight.getY().getValue());
+    if(topRight == null && isLegal){ 
+        calculate();
+        return new Point(topRight.getX().getValue(), topRight.getY().getValue());
+    } else {
+        return new Point(0, 0);
+    }
 }
 
 public Point getBottomLeft() {
-    return new Point(bottomLeft.getX().getValue(), bottomLeft.getY().getValue());
+    if(bottomLeft == null && isLegal) { 
+        calculate();
+        return new Point(bottomLeft.getX().getValue(), bottomLeft.getY().getValue());
+    } else {
+        return new Point(0, 0);
+    }
 }
 
 public Point getBottomRight() {
-    return new Point(bottomRight.getX().getValue(), bottomRight.getY().getValue());
+    if(bottomRight == null && isLegal){ calculate();
+        return new Point(bottomRight.getX().getValue(), bottomRight.getY().getValue());
+    } else {
+        return new Point(0, 0);
+    }
 }
 
 }
