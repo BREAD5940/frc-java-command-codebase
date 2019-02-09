@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.commands.auto.MultiPathTest;
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
@@ -53,7 +54,7 @@ public class OI {
 		// close_clamp_button.whenPressed(new CloseClamp());
 		if (Trajectories.forward20Feet == null)
 			Trajectories.generateAllTrajectories();
-		testAutoButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.generatedTrajectories.get("test"), true));
+		testAutoButton.whenPressed(new MultiPathTest());
 		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
 		yeetInACircleButton.whenPressed(new TurnInPlace(180, false));
 
