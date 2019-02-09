@@ -15,21 +15,22 @@ import frc.robot.subsystems.DriveTrain.Gear;
  * Add your docs here.
  */
 public class SetGearCommand extends InstantCommand {
-  Gear gear;
-  /**
-   * Add your docs here.
-   */
-  public SetGearCommand(Gear gear) {
-    super("Set gear to " + gear.name());
-    this.gear = gear;
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-  }
+	Gear gear;
 
-  // Called once when the command executes
-  @Override
-  protected void initialize() {
-    Robot.drivetrain.setGear(gear);
-  }
+	/**
+	 * Add your docs here.
+	 */
+	public SetGearCommand(Gear gear) {
+		super("Set gear to " + gear.name());
+		this.gear = gear;
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+	}
+
+	// Called once when the command executes
+	@Override
+	protected void initialize() {
+		Robot.drivetrain.setGear(gear);
+	}
 
 }

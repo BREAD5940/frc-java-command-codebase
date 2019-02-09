@@ -25,8 +25,8 @@ import frc.robot.lib.Logger;
 @SuppressWarnings("WeakerAccess")
 public class Trajectories {
 
-  public static HashMap<String, Pose2d> locations = new HashMap<String, Pose2d>();
-  public static Velocity<Length> yeetSpeed = VelocityKt.getVelocity(LengthKt.getFeet(12.5)); //FIXME what is the speed for the spin?
+	public static HashMap<String, Pose2d> locations = new HashMap<String, Pose2d>();
+	public static Velocity<Length> yeetSpeed = VelocityKt.getVelocity(LengthKt.getFeet(12.5)); //FIXME what is the speed for the spin?
 
 	/**
 	 * WARNING: do NOT call this more than once. it gets VERY sad
@@ -47,13 +47,13 @@ public class Trajectories {
 		locations.put("cargoR2", new Pose2d(LengthKt.getFeet(23.532), LengthKt.getFeet(9.898), Rotation2dKt.getDegree(90.0)));
 		locations.put("cargoR3", new Pose2d(LengthKt.getFeet(25.277), LengthKt.getFeet(9.898), Rotation2dKt.getDegree(90.0)));
 		locations.put("depotL", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(20.517), Rotation2dKt.getDegree(0)));
-    locations.put("depotR", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(6.107), Rotation2dKt.getDegree(0))); //FIXME can w actually pick up cargo like this?
-    locations.put("yeetL", new Pose2d(LengthKt.getFeet(13.606), LengthKt.getFeet(21.315), Rotation2dKt.getDegree(145))); //basically arb. rn
-    locations.put("yeetR", new Pose2d(LengthKt.getFeet(13.606), LengthKt.getFeet(5.685), Rotation2dKt.getDegree(-145))); //basically arb. rn
-    locations.put("pyeetL", new Pose2d(LengthKt.getFeet(13.606), LengthKt.getFeet(21.315), Rotation2dKt.getDegree(325))); //basically arb. rn
-    locations.put("pyeetR", new Pose2d(LengthKt.getFeet(13.606), LengthKt.getFeet(5.685), Rotation2dKt.getDegree(35))); //basically arb. rn
-	
-  }
+		locations.put("depotR", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(6.107), Rotation2dKt.getDegree(0))); //FIXME can w actually pick up cargo like this?
+		locations.put("yeetL", new Pose2d(LengthKt.getFeet(13.606), LengthKt.getFeet(21.315), Rotation2dKt.getDegree(145))); //basically arb. rn
+		locations.put("yeetR", new Pose2d(LengthKt.getFeet(13.606), LengthKt.getFeet(5.685), Rotation2dKt.getDegree(-145))); //basically arb. rn
+		locations.put("pyeetL", new Pose2d(LengthKt.getFeet(13.606), LengthKt.getFeet(21.315), Rotation2dKt.getDegree(325))); //basically arb. rn
+		locations.put("pyeetR", new Pose2d(LengthKt.getFeet(13.606), LengthKt.getFeet(5.685), Rotation2dKt.getDegree(35))); //basically arb. rn
+
+	}
 
 	public static HashMap<String, TimedTrajectory<Pose2dWithCurvature>> generatedTrajectories = new HashMap<String, TimedTrajectory<Pose2dWithCurvature>>();
 	public static List<String> grabs = new ArrayList<String>(Arrays.asList("habR", "habM", "habL", "loadingL", "loadingR", "depotLF", "depotLB", "depotRF", "depotRB"));
@@ -95,32 +95,30 @@ public class Trajectories {
 		Logger.log("Generating ALL trajectories");
 		genLocs();
 		double startTime = Timer.getFPGATimestamp();
-    
-    generatedTrajectories.put("habL to cargoML",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("habL"),locations.get("cargoML"))), true));
-    generatedTrajectories.put("habM to cargoMR",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("habM"),locations.get("cargoMR"))), true));
-    generatedTrajectories.put("habM to cargoML",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("habM"),locations.get("cargoML"))), true));
-    generatedTrajectories.put("habR to cargoMR",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("habR"),locations.get("cargoMR"))), true));
 
-    generatedTrajectories.put("cargoML to loadingL",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoML"),locations.get("loadingL"))), false));
-    generatedTrajectories.put("cargoMR to loadingR",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoMR"),locations.get("loadingR"))), false));
-    
-    generatedTrajectories.put("loadingL to yeetL",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingL"),locations.get("yeetL"))),
-          kDefaultConstraints, kDefaultStartVelocity, yeetSpeed, kDefaultVelocity, kDefaultAcceleration, true));
-    generatedTrajectories.put("loadingR to yeetR",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingR"),locations.get("yeetR"))), 
-          kDefaultConstraints, kDefaultStartVelocity, yeetSpeed, kDefaultVelocity, kDefaultAcceleration, true));
+		generatedTrajectories.put("habL to cargoML", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("habL"), locations.get("cargoML"))), true));
+		generatedTrajectories.put("habM to cargoMR", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("habM"), locations.get("cargoMR"))), true));
+		generatedTrajectories.put("habM to cargoML", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("habM"), locations.get("cargoML"))), true));
+		generatedTrajectories.put("habR to cargoMR", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("habR"), locations.get("cargoMR"))), true));
 
-    generatedTrajectories.put("pyeetL to cargoL1",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("yeetL"),locations.get("cargoL1"))), 
-          kDefaultConstraints, yeetSpeed, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, false));
-    generatedTrajectories.put("pyeetR to cargoR1",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("yeetR"),locations.get("cargoR1"))), 
-          kDefaultConstraints, yeetSpeed, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, false));
-    
-    generatedTrajectories.put("cargoL1 to depotL",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoL1"),locations.get("depotL"))), true));
-    generatedTrajectories.put("cargoR1 to depotR",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoR1"),locations.get("depotR"))), true));
+		generatedTrajectories.put("cargoML to loadingL", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoML"), locations.get("loadingL"))), false));
+		generatedTrajectories.put("cargoMR to loadingR", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoMR"), locations.get("loadingR"))), false));
 
-    generatedTrajectories.put("depotL to cargoL1",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotL"),locations.get("cargoL1"))), false));
-    generatedTrajectories.put("depotR to cargoR1",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotR"),locations.get("cargoR1"))), false));
-    
-    
+		generatedTrajectories.put("loadingL to yeetL", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingL"), locations.get("yeetL"))),
+				kDefaultConstraints, kDefaultStartVelocity, yeetSpeed, kDefaultVelocity, kDefaultAcceleration, true));
+		generatedTrajectories.put("loadingR to yeetR", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingR"), locations.get("yeetR"))),
+				kDefaultConstraints, kDefaultStartVelocity, yeetSpeed, kDefaultVelocity, kDefaultAcceleration, true));
+
+		generatedTrajectories.put("pyeetL to cargoL1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("yeetL"), locations.get("cargoL1"))),
+				kDefaultConstraints, yeetSpeed, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, false));
+		generatedTrajectories.put("pyeetR to cargoR1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("yeetR"), locations.get("cargoR1"))),
+				kDefaultConstraints, yeetSpeed, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, false));
+
+		generatedTrajectories.put("cargoL1 to depotL", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoL1"), locations.get("depotL"))), true));
+		generatedTrajectories.put("cargoR1 to depotR", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoR1"), locations.get("depotR"))), true));
+
+		generatedTrajectories.put("depotL to cargoL1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotL"), locations.get("cargoL1"))), false));
+		generatedTrajectories.put("depotR to cargoR1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotR"), locations.get("cargoR1"))), false));
 
 		System.out.println("Out of first round of generation");
 		double now = 0;
