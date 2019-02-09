@@ -88,7 +88,7 @@ public class TurnInPlace extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		output = turnPID.update(Robot.drivetrain.getGyro());
+		output = turnPID.update(Robot.drivetrain.getGyro() % 360 );
 		raw_left = EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.left_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
 		raw_right = (-1) * EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.right_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
 		Robot.drivetrain.setPowers(output, -output);
@@ -106,7 +106,7 @@ public class TurnInPlace extends Command {
 		// TODO so this is how a return works
 		// return ( (Math.abs(Robot.gyro.getRate() ) < RobotConfig.auto.tolerences.angular_velocity_tolerence)
 		//   && (Math.abs(Robot.drivetrain.getGyro() - target_angle) < RobotConfig.auto.tolerences.angle_tolerence));
-		return false;
+		return (turnPID.getError() < 10);
 	}
 
 	// Called once after isFinished returns true
