@@ -120,6 +120,12 @@ public class Trajectories {
 		generatedTrajectories.put("depotL to cargoL1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotL"), locations.get("cargoL1"))), false));
 		generatedTrajectories.put("depotR to cargoR1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotR"), locations.get("cargoR1"))), false));
 
+
+    generatedTrajectories.put("test",generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingL"),
+        new Pose2d(LengthKt.getFeet(11.71), LengthKt.getFeet(21.119), Rotation2dKt.getDegree(145)),
+          new Pose2d(LengthKt.getFeet(11.71), LengthKt.getFeet(21.119), Rotation2dKt.getDegree(-35)), 
+            locations.get("cargoR1"))), false));
+    
 		System.out.println("Out of first round of generation");
 		double now = 0;
 		if (isReal)

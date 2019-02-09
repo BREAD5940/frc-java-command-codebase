@@ -8,6 +8,7 @@ import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 
 /**
@@ -37,7 +38,7 @@ public class OI {
 	Button auto_place_cargo_rocket_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
 	Button auto_place_hatch_rocket_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
 	Button yeetInACircleButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
-	Button testBasicallyALineButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
+	Button testAutoButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
 	Button auto_grab_hatch_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
 	Button auto_grab_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
 
@@ -52,9 +53,9 @@ public class OI {
 		// close_clamp_button.whenPressed(new CloseClamp());
 		if (Trajectories.forward20Feet == null)
 			Trajectories.generateAllTrajectories();
+		testAutoButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.generatedTrajectories.get("test"), true));
 		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
 		yeetInACircleButton.whenPressed(new TurnInPlace(180, false));
-		testBasicallyALineButton.whenPressed(new RunAuto(HeldPiece.NONE, "habM", "cargoML"));
 
 		// TODO why does this throw a null pointer
 		// auto_place_cargo_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_CARGO, Robot.mGh.getSelected()));
