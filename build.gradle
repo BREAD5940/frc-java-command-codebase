@@ -2,6 +2,7 @@ plugins {
   id "java"
   id "edu.wpi.first.GradleRIO" version "2019.1.1"
   id 'checkstyle'
+  id "com.diffplug.gradle.spotless" version "3.17.0"
 }
 
 def JAVA_HOME = "C:\\Program Files\\Java\\jdk-11.0.2"
@@ -97,6 +98,26 @@ dependencies {
 
 test {
   useJUnitPlatform()
+}
+
+spotless {
+  java {
+    // licenseHeader '/* Licensed under Apache-2.0 */'	// License header
+    // Obviously, you can't specify both licenseHeader and licenseHeaderFile at the same time
+
+    // importOrder 'java', 'javax', 'org', 'com', 'com.diffplug', ''	// A sequence of package names
+    importOrderFile 'config\\spotless\\importorder'				// An import ordering file, exported from Eclipse
+    // As before, you can't specify both importOrder and importOrderFile at the same time
+    // You probably want an empty string at the end - all of the imports you didn't specify
+    // explicitly will go there.
+
+    removeUnusedImports() // removes any unused imports
+
+    eclipse().configFile 'config\\spotless\\eclipseformat.xml'	// XML file dumped out by the Eclipse formatter
+    // If you have Eclipse preference or property files, you can use them too.
+    // eclipse('4.7.1') to specify a specific version of eclipse,
+    // available versions are: https://github.com/diffplug/spotless/tree/master/lib-extra/src/main/resources/com/diffplug/spotless/extra/config/eclipse_jdt_formatter
+  }
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')

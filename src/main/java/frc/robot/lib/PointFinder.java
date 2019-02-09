@@ -7,49 +7,45 @@ import org.opencv.core.Point;
 
 public class PointFinder {
 
-double[] xLoc, yLoc;
-Translation2d topLeft, topRight, bottomLeft, bottomRight;
-boolean isLegal;
+    // double[] xLoc, yLoc;
+    Point topLeft, topRight, bottomLeft, bottomRight;
+    boolean kYAxisFlipped = false; // make this true if you're using a limelight boi
+    private static final int kReallyBig = 100000000;
 
-public PointFinder(double[] xCoords, double[] yCoords) {
-    if(xCoords.length != 4 || yCoords.length != 4) {
-        System.out.println("PointFinder takes exactly 4 arguments! Too many/not enough given!");
-        isLegal = false;
-        return;
-    } else {
-    xLoc = xCoords;
-    yLoc = yCoords;
-    isLegal = true;
-    calculate();
-    }
+    public PointFinder() {
+        this(false);
     }
 
-    public void calculate() {
+    public PointFinder(boolean flipped) {
+        kYAxisFlipped = flipped;
+    }
+
+    public void calculate(double[] xLoc, double[] yLoc) {
         // first, find the two coordinates that are at the bottom and the top
         // point1, point2, point3, point4;
-        ArrayList<Translation2d> points = new ArrayList<Translation2d>();
+        ArrayList<Point> points = new ArrayList<Point>();
 
-        points.add(new Translation2d(xLoc[0], yLoc[0]));
-        points.add(new Translation2d(xLoc[1], yLoc[1]));
-        points.add(new Translation2d(xLoc[2], yLoc[2]));
-        points.add(new Translation2d(xLoc[3], yLoc[3]));
+        points.add(new Point(xLoc[0], yLoc[0]));
+        points.add(new Point(xLoc[1], yLoc[1]));
+        points.add(new Point(xLoc[2], yLoc[2]));
+        points.add(new Point(xLoc[3], yLoc[3]));
 
-        ArrayList<Translation2d> bottomPoints = new ArrayList<Translation2d>();
-        ArrayList<Translation2d> topPoints = new ArrayList<Translation2d>();
-        Translation2d tempPoint = new Translation2d(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+        ArrayList<Point> bottomPoints = new ArrayList<Point>();
+        ArrayList<Point> topPoints = new ArrayList<Point>();
+        Point tempPoint = new Point(-kReallyBig, -kReallyBig);
 
         // Loop through all the y coordinates, find the topmost one
         for(int i=0; i<points.size(); i++) {
-            if(points.get(i).getY().getValue() > tempPoint.getY().getValue() ) tempPoint = points.get(i) ;
+            if(points.get(i).y > tempPoint.y ) tempPoint = points.get(i) ;
         }
         // System.out.println("found a topmost point! it's " + tempPoint.toString());
         topPoints.add(tempPoint);
         points.remove(tempPoint); // this should remove the current max from the list
-        tempPoint = new Translation2d(Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY);
+        tempPoint = new Point(-kReallyBig, -kReallyBig);
 
         // Loop through all the y coordinates, find the topmost one
         for(int i=0; i<points.size(); i++) {
-            if(points.get(i).getY().getValue() > tempPoint.getY().getValue() ) tempPoint = points.get(i) ;
+            if(points.get(i).y > tempPoint.y ) tempPoint = points.get(i) ;
         }
         // System.out.println("found a second topmost point! it's " + tempPoint.toString());
         topPoints.add(tempPoint);
@@ -62,7 +58,7 @@ public PointFinder(double[] xCoords, double[] yCoords) {
         // System.out.println("---------");
 
         /* Now we have them ordered by Y coordinate, we should check what order they should be in in terms of X axis */
-        if(topPoints.get(0).getX().getValue() < topPoints.get(1).getX().getValue()) /* if the first index is more leftward than the second */ {
+        if(topPoints.get(0).x < topPoints.get(1).x) /* if the first index is more leftward than the second */ {
             // we set the top left coordinate to index zero and to right to index one
             topLeft = topPoints.get(0);
             topRight = topPoints.get(1);
@@ -76,7 +72,7 @@ public PointFinder(double[] xCoords, double[] yCoords) {
         }
 
         // We do the same thing for bottom points
-        if(bottomPoints.get(0).getX().getValue() < bottomPoints.get(1).getX().getValue()) /* if the first index is more leftward than the second */ {
+        if(bottomPoints.get(0).x < bottomPoints.get(1).x) /* if the first index is more leftward than the second */ {
             // we set the top left coordinate to index zero and to right to index one
             bottomLeft = bottomPoints.get(0);
             bottomRight = bottomPoints.get(1);
@@ -92,39 +88,20 @@ public PointFinder(double[] xCoords, double[] yCoords) {
 
 }
 
-public Point getTopLeft() {
-    if(topLeft == null && isLegal){ 
-        calculate();
-        return new Point(topLeft.getX().getValue(), topLeft.getY().getValue());}
-    else {
-        return new Point(0, 0);
+    public Point getTopLeft() {
+        return new Point(topLeft.x, topLeft.y);
     }
-}
 
-public Point getTopRight() {
-    if(topRight == null && isLegal){ 
-        calculate();
-        return new Point(topRight.getX().getValue(), topRight.getY().getValue());
-    } else {
-        return new Point(0, 0);
+    public Point getTopRight() {
+        return new Point(topRight.x, topRight.y);
     }
-}
 
-public Point getBottomLeft() {
-    if(bottomLeft == null && isLegal) { 
-        calculate();
-        return new Point(bottomLeft.getX().getValue(), bottomLeft.getY().getValue());
-    } else {
-        return new Point(0, 0);
+    public Point getBottomLeft() {
+        return new Point(bottomLeft.x, bottomLeft.y);
     }
-}
 
-public Point getBottomRight() {
-    if(bottomRight == null && isLegal){ calculate();
-        return new Point(bottomRight.getX().getValue(), bottomRight.getY().getValue());
-    } else {
-        return new Point(0, 0);
+    public Point getBottomRight() {
+        return new Point(bottomRight.x, bottomRight.y);
     }
-}
 
 }
