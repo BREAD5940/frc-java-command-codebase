@@ -51,6 +51,7 @@ public class AutoMotion {
 	private HeldPiece piece;
 	private HeldPiece endPiece;
 	private AutoCommandGroup mBigCommandGroup;
+	private boolean rev;
 
 	/**
 	 * generates the command groups based on the inputted goal height/type
@@ -60,9 +61,10 @@ public class AutoMotion {
 	 *    the type of goal
 	 */
 
-	public AutoMotion(GoalHeight gHeight, GoalType gType) {
+	public AutoMotion(GoalHeight gHeight, GoalType gType, boolean rev) {
 		this.gHeight = gHeight;
 		this.gType = gType;
+		this.rev = rev;
 		//select heldPiece
 		if (this.gType == GoalType.CARGO_CARGO || this.gType == GoalType.ROCKET_CARGO) {
 			this.piece = HeldPiece.CARGO;
@@ -93,13 +95,13 @@ public class AutoMotion {
 		AutoCommandGroup toReturn = new AutoCommandGroup();
 		if (this.gType == GoalType.RETRIEVE_CARGO) {
 			// Set the intake to cargo mode
-			toReturn.addSequential(new SetIntakeMode(HeldPiece.CARGO));
+			toReturn.addSequential(new SetIntakeMode(HeldPiece.CARGO,rev));
 			// Predefined grab command
 			toReturn.addSequential(new GrabCargo());
 			this.endPiece = HeldPiece.CARGO;
 		} else if (this.gType == GoalType.RETRIEVE_HATCH) {
 			// Set the intake to hatch mode
-			toReturn.addSequential(new SetIntakeMode(HeldPiece.HATCH));
+			toReturn.addSequential(new SetIntakeMode(HeldPiece.HATCH,rev));
 			// Predefined grab command
 			toReturn.addSequential(new PickUpHatch());
 			this.endPiece = HeldPiece.HATCH;
@@ -116,9 +118,9 @@ public class AutoMotion {
 
 		// Set intake mode
 		if (this.gType == GoalType.CARGO_CARGO) {
-			toReturn.addSequential(new SetIntakeMode(this.piece, true));
+			toReturn.addSequential(new SetIntakeMode(this.piece, true,rev));
 		} else {
-			toReturn.addSequential(new SetIntakeMode(this.piece));
+			toReturn.addSequential(new SetIntakeMode(this.piece,rev));
 		}
 
 		// Align with the vision targets, slightly back from the goal

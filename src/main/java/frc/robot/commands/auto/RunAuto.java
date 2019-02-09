@@ -40,10 +40,10 @@ public class RunAuto extends Command {
 		// Kinda a stupid question but what's the difference between AutoMotion and AutoCombo?
 		// is it just that AutoMotion drives straight to a goal, whereas AutoCombo
 		if (!isDrive) {
-			mMotion = new AutoMotion(mHeight, mGt);
+			mMotion = new AutoMotion(mHeight, mGt, false);
 			mMotion.getBigCommandGroup().start();
 		} else {
-			cMotion = new AutoCombo(cPiece, cKeys);
+			cMotion = new AutoCombo(cKeys[0],'L');
 			cMotion.getBigCommandGroup().start();
 		}
 	}

@@ -10,35 +10,41 @@ import frc.robot.commands.auto.AutoMotion.HeldPiece;
 public class SetIntakeMode extends Command {
 	HeldPiece intakeType;
 	boolean isDown = false;
+	boolean rev = false;
 
-	public SetIntakeMode(HeldPiece iType) {
+	public SetIntakeMode(HeldPiece iType, boolean rev) {
 		this.intakeType = iType;
 		this.isDown = false;
+		this.rev=rev;
 		// requires(Robot.wrist); //TODO this will be a thing that will be uncommented but right now it makes the whole program sad
 	}
 
-	public SetIntakeMode(HeldPiece iType, boolean isDown) {
+	public SetIntakeMode(HeldPiece iType, boolean isDown, boolean rev) {
 		this.intakeType = iType;
 		this.isDown = isDown;
+		this.rev=rev;
 		// requires(Robot.wrist); //TODO this will be a thing that will be uncommented but right now it makes the whole program sad
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		if(rev){
+			//TODO set the intake to be flipped through the elevator
+		}
 		switch (intakeType) {
-		case CARGO:
-			// TODO set angle to the cargo side
-			if (isDown) {
-				// TODO change angle to pointing down
-			} // doesn't need an else
-			break;
-		case HATCH:
-			// TODO set angle to the hatch side
-			break;
-		case NONE:
-			// This should actually never happen, but if it does it just doesn't do anything
-			break;
+			case CARGO:
+				// TODO set angle to the cargo side
+				if (isDown) {
+					// TODO change angle to pointing down
+				} // doesn't need an else
+				break;
+			case HATCH:
+				// TODO set angle to the hatch side
+				break;
+			case NONE:
+				// This should actually never happen, but if it does it just doesn't do anything
+				break;
 		}
 	}
 
