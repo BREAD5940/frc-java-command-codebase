@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.subsystems.drivetrain.DriveShiftHigh;
-import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrain.Gear;
 
 /**
  * Operator Input not Out-In
@@ -46,8 +46,8 @@ public class OI {
 	// PathfinderTrajectory pftraj = /*new PathfinderTrajectory(trajectory);*/ PathfinderTrajectory.readFromTrajectory(trajectory);
 
 	public OI() {
-		shift_up_button.whenPressed(new DriveShiftHigh());
-		shift_down_button.whenPressed(new DriveShiftLow());
+		shift_up_button.whenPressed(new SetGearCommand(Gear.HIGH));
+		shift_down_button.whenPressed(new SetGearCommand(Gear.LOW));
 		// open_clamp_button.whenPressed(new OpenClamp());
 		// close_clamp_button.whenPressed(new CloseClamp());
 		if (Trajectories.forward20Feet == null)
