@@ -40,6 +40,29 @@ public class FieldConstraints {
 		List<TimedEntry<Pose2dWithCurvature>> safePoints = new ArrayList<TimedEntry<Pose2dWithCurvature>>();
 		List<Translation2d[]> constraints = new ArrayList<Translation2d[]>(Arrays.asList(cargo, rocketL, rocketR, upperHabaDepot, habRamp));
 
+		Translation2d tempPoint = points.get(0).getState().getPose().getTranslation();
+		List<Translation2d[]> torm = new ArrayList<>();
+		for (int i = 0; i < constraints.size(); i++) {
+			if (!(tempPoint.getX().getFeet() > constraints.get(i)[0].getX().getFeet()
+					&& tempPoint.getX().getFeet() < constraints.get(i)[1].getX().getFeet()
+					&& tempPoint.getY().getFeet() > constraints.get(i)[0].getY().getFeet()
+					&& tempPoint.getY().getFeet() < constraints.get(i)[1].getY().getFeet())) {
+				torm.add(constraints.get(i));
+			}
+		}
+		tempPoint = points.get(points.size() - 1).getState().getPose().getTranslation();
+		for (int i = 0; i < constraints.size(); i++) {
+			if (!(tempPoint.getX().getFeet() > constraints.get(i)[0].getX().getFeet()
+					&& tempPoint.getX().getFeet() < constraints.get(i)[1].getX().getFeet()
+					&& tempPoint.getY().getFeet() > constraints.get(i)[0].getY().getFeet()
+					&& tempPoint.getY().getFeet() < constraints.get(i)[1].getY().getFeet())) {
+				torm.add(constraints.get(i));
+			}
+		}
+		for (int i = 0; i < torm.size(); i++) {
+			constraints.remove(torm.get(i));
+		}
+
 		System.out.print("Maximum x: ");
 		System.out.println(maxX.getFeet());
 		System.out.print("Minimum x: ");
@@ -49,24 +72,26 @@ public class FieldConstraints {
 		System.out.print("Minimum y: ");
 		System.out.println(minY.getFeet());
 
-		for (int i = 0; i < points.size(); i += 5) {
+		for (int i = 0; i < points.size() - 5; i += 5) {
 			if (i == 0 || i == points.size() - 1) {
 				System.out.println("No correction required!");
 				safePoints.add(i, points.get(i));
+				System.out.printf("First/last point. Current x value: %f\n", safePoints.get(i).getState().getPose().getTranslation().getX().getFeet());
 			} else {
 				Translation2d point = points.get(i).getState().getPose().getTranslation();
+				System.out.printf("Current point (in else): %d", i);
 
 				Translation2d nPoint = safe(point, constraints, bigSpeed);
 
 				if (point.getX().getFeet() != nPoint.getX().getFeet() || point.getY().getFeet() != nPoint.getY().getFeet()) {
-					for (int k = i - 5; k < i; k++) {
+					for (int k = i - 4; k < i; k++) {
 						Translation2d sPoint = points.get(k).getState().getPose().getTranslation();
 						Translation2d snPoint = safe(sPoint, constraints, bigSpeed);
 						safePoints.add(k, new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(snPoint, points.get(k).getState().getPose().getRotation()), points.get(k).getState().getCurvature())),
 								points.get(k).getT(), points.get(k).getVelocity(), points.get(k).getAcceleration()));
 					}
 				} else {
-					for (int l = i - 5; l < i; l++) {
+					for (int l = i - 4; l < i; l++) {
 						safePoints.add(l, points.get(l));
 					}
 				}
@@ -75,10 +100,11 @@ public class FieldConstraints {
 						points.get(i).getT(), points.get(i).getVelocity(), points.get(i).getAcceleration()));
 
 			}
-			System.out.println(safePoints.get(i).getState().getPose().getTranslation().getX().getFeet());
+			// System.out.println(safePoints.get(i).getState().getPose().getTranslation().getX().getFeet());
 		}
-
+		System.out.printf("Before points as doubles: %f, %f", safePoints.get(0).getState().getPose().getTranslation().getX().getFeet(), safePoints.get(0).getState().getPose().getTranslation().getY().getFeet());
 		double[][] uno = pointsAsDoubles(safePoints);
+		System.out.printf("After points as doubles: %f, %f\n", uno[0][0], uno[0][1]);
 		double[][] dos = smoother(uno, 0.02, 0.98, 0.001);//TODO test to see if this smoother actually works
 		List<TimedEntry<Pose2dWithCurvature>> tres = doublesAsPoints(safePoints, dos);
 		TimedTrajectory<Pose2dWithCurvature> toReturn = new TimedTrajectory<Pose2dWithCurvature>(tres, false);
@@ -91,8 +117,10 @@ public class FieldConstraints {
 		Length safeX = point.getX();
 		Length safeY = point.getY();
 		for (int j = 0; j < constraints.size() - 1; j++) {
-			if (!(point.getX().getFeet() > constraints.get(j)[0].getX().getFeet() && point.getX().getFeet() < constraints.get(j)[1].getX().getFeet()
-					&& point.getY().getFeet() > constraints.get(j)[0].getY().getFeet() && point.getY().getFeet() < constraints.get(j)[1].getY().getFeet())) {
+			if (!(point.getX().getFeet() > constraints.get(j)[0].getX().getFeet()
+					&& point.getX().getFeet() < constraints.get(j)[1].getX().getFeet()
+					&& point.getY().getFeet() > constraints.get(j)[0].getY().getFeet()
+					&& point.getY().getFeet() < constraints.get(j)[1].getY().getFeet())) {
 				//theoretically picks the point on the border closest to the original point
 				Translation2d lastNearest = constraints.get(j)[0];
 				double lastShortest = distanceFormula(lastNearest, point);
@@ -117,7 +145,7 @@ public class FieldConstraints {
 		}
 
 		point = new Translation2d(safeX, safeY); //set the current point to the safepoint inside the field
-		System.out.printf("End of first round of safing. Current x: %f Current y: %f\n", point.getX().getFeet(), point.getY().getFeet());
+		// System.out.printf("End of first round of safing. Current x: %f Current y: %f\n", point.getX().getFeet(), point.getY().getFeet());
 
 		if (point.getX().getFeet() > maxX.getFeet()) {
 			safeX = maxX;
@@ -139,7 +167,7 @@ public class FieldConstraints {
 			// System.out.print("safed to min Y. safeY: ");
 			// System.out.println(safeY.getFeet());
 		}
-		System.out.printf("End of safing. Current x: %f Current y: %f\n", safeX.getFeet(), safeY.getFeet());
+		// System.out.printf("End of safing. Current x: %f Current y: %f\n", safeX.getFeet(), safeY.getFeet());
 
 		return new Translation2d(safeX, safeY);
 	}
@@ -150,6 +178,7 @@ public class FieldConstraints {
 	protected static double[][] smoother(double[][] path, double weight_data, double weight_smooth, double tolerance) {
 		//copy array
 		double[][] newPath = doubleArrayCopy(path);
+		System.out.printf("Current first point x: %f y: %f\n", newPath[0][0], newPath[0][1]);
 
 		double change = tolerance;
 		while (change >= tolerance) {

@@ -30,7 +30,7 @@ public class AutoComboTest {
 		System.out.println(smTraject.getPoints().get(0).getState().getPose().getTranslation().getX().getFeet());
 		System.out.println(smTraject.getPoints().get(0).getState().getPose().getTranslation().getY().getFeet());
 
-		// checkTrajectsEqual(traject, smTraject);
+		checkTrajectsEqual(traject, smTraject);
 
 		assertEquals(traject.getPoints().get(0).getState().getPose().getTranslation().getX().getFeet(), smTraject.getPoints().get(0).getState().getPose().getTranslation().getX().getFeet(), 1);
 		assertEquals(traject.getPoints().get(0).getState().getPose().getTranslation().getY().getFeet(), smTraject.getPoints().get(0).getState().getPose().getTranslation().getY().getFeet(), 1);
@@ -42,7 +42,7 @@ public class AutoComboTest {
 		List<TimedEntry<Pose2dWithCurvature>> ePoints = expected.getPoints();
 		List<TimedEntry<Pose2dWithCurvature>> aPoints = actual.getPoints();
 
-		for (int i = 0; i < ePoints.size(); i++) {
+		for (int i = 0; i < aPoints.size(); i++) {
 			// assertEquals(ePoints.get(i).getT().getSecond(), aPoints.get(i).getT().getSecond(),0.01);
 			// assertEquals(ePoints.get(i).getAcceleration().getValue(), aPoints.get(i).getAcceleration().getValue(),0.01);
 			assertEquals(ePoints.get(i).getState().getPose().getTranslation().getX().getFeet(), aPoints.get(i).getState().getPose().getTranslation().getX().getFeet(), 1);
