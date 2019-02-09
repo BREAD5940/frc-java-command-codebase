@@ -81,7 +81,8 @@ public class FieldConstraints {
 		double[][] uno = pointsAsDoubles(safePoints);
 		double[][] dos = smoother(uno, 0.02, 0.98, 0.001);//TODO test to see if this smoother actually works
 		List<TimedEntry<Pose2dWithCurvature>> tres = doublesAsPoints(safePoints, dos);
-		TimedTrajectory<Pose2dWithCurvature> toReturn = new TimedTrajectory<Pose2dWithCurvature>(safePoints, false);
+		TimedTrajectory<Pose2dWithCurvature> toReturn = new TimedTrajectory<Pose2dWithCurvature>(tres, false);
+		System.out.printf("End of makeSafe. Current x: %f Current y: %f\n", toReturn.getPoint(0).getState().getState().getPose().getTranslation().getX().getFeet(), toReturn.getPoint(0).getState().getState().getPose().getTranslation().getY().getFeet());
 		return toReturn;
 
 	}
@@ -116,6 +117,7 @@ public class FieldConstraints {
 		}
 
 		point = new Translation2d(safeX, safeY); //set the current point to the safepoint inside the field
+		System.out.printf("End of first round of safing. Current x: %f Current y: %f\n", point.getX().getFeet(), point.getY().getFeet());
 
 		if (point.getX().getFeet() > maxX.getFeet()) {
 			safeX = maxX;
@@ -137,6 +139,7 @@ public class FieldConstraints {
 			// System.out.print("safed to min Y. safeY: ");
 			// System.out.println(safeY.getFeet());
 		}
+		System.out.printf("End of safing. Current x: %f Current y: %f\n", safeX.getFeet(), safeY.getFeet());
 
 		return new Translation2d(safeX, safeY);
 	}
@@ -225,7 +228,7 @@ public class FieldConstraints {
 					newCurve)), original.get(i).getT(), original.get(i).getVelocity(), original.get(i).getAcceleration()));
 
 		}
-
+		System.out.printf("End of doublesAsPoints. Current x: %f Current y: %f\n", toReturn.get(0).getState().getPose().getTranslation().getX().getFeet(), toReturn.get(0).getState().getPose().getTranslation().getY().getFeet());
 		return toReturn;
 	}
 

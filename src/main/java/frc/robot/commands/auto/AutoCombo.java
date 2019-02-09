@@ -3,7 +3,6 @@ package frc.robot.commands.auto;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 
-import frc.robot.Robot;
 import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
