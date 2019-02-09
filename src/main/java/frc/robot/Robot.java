@@ -61,6 +61,14 @@ public class Robot extends TimedRobot {
 		shifterDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
 	}
 
+	public static Gear getDrivetrainGear() {
+		return (shifterDoubleSolenoid.get() == Value.kForward) ? Gear.HIGH : Gear.LOW;
+	}
+
+	public static Value getIntakeSolenoid() {
+		return intakeDoubleSolenoid.get();
+	}
+
 	public static void drivetrain_shift_low() {
 		shifterDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
 	}
