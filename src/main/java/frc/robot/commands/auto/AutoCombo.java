@@ -39,7 +39,7 @@ public class AutoCombo {
 
 
     TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedTrajectories.get(cStart + " to "+"cargoM"+side); //current trajectory from hashmap in Trajectorie
-    this.mBigCommandGroup.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
+    this.mBigCommandGroup.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, true)); //drive to goal
     this.mBigCommandGroup.addSequential(new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH,true).getBigCommandGroup()); //do a motion
     cStart = "cargoM"+side; 
     cPiece = HeldPiece.NONE;
