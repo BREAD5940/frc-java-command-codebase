@@ -236,10 +236,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
-		drivetrain.getLocalization().update();
+		drivetrain.getLocalization().update(); // TODO put me on a notifier?
 		// long now = System.currentTimeMillis();
-
-		// DriveTrain.getInstance().getLocalization().update(); // depreciated because it should be running in a notifier now
 
 		SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
 		SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());

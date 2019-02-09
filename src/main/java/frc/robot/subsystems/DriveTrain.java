@@ -79,7 +79,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 	Gear gear;
 
-	Notifier localizationNotifier;
+	Notifier localizationNotifier; // TODO maybe make me do stuff?
 
 	public static enum TrajectoryTrackerMode {
 		RAMSETE, PUREPURSUIT, FEEDFORWARD, PID
