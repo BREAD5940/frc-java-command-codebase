@@ -24,11 +24,11 @@ public class Constants {
 	// low gear: 4.3 rad/s
 	public static final double kVDriveLeftLow = 0.265 * 1d; // Volts per radians per second - Calculated emperically
 	public static final double kADriveLeftLow = 0.027 * 1d; // Volts per radians per second per second TODO tune
-	public static final double kVInterceptLeftLow = 0.93; // Volts - tuned!
+	public static final double kVInterceptLeftLow = 3.5 * 1d; // Volts - tuned!
 
 	public static final double kVDriveRightLow = 0.275 * 1d; // Volts per radians per second - Calculated emperically
 	public static final double kADriveRightLow = 0.0286 * 1d; // Volts per radians per second per second TODO tune
-	public static final double kVInterceptRightLow = 0.88 * 1d; // Volts - tuned!
+	public static final double kVInterceptRightLow = 3.5 * 1d; // Volts - tuned!
 
 	public static final DCMotorTransmission kLeftTransmissionModelLowGear = new DCMotorTransmission(1 / kVDriveLeftLow,
 			kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveLeftLow),
@@ -40,11 +40,11 @@ public class Constants {
 
 	public static final double kVDriveLeftHigh = 0.139 * 1d; // Volts per radians per second - Calculated emperically
 	public static final double kADriveLeftHigh = 0.035 * 1d; // Volts per radians per second per second 
-	public static final double kVInterceptLeftHigh = 1.229; // Volts - tuned!
+	public static final double kVInterceptLeftHigh = 4; // Volts - tuned!
 
 	public static final double kVDriveRightHigh = 0.1375 * 1d; // Volts per radians per second - Calculated emperically
 	public static final double kADriveRightHigh = 0.03675 * 1d; // Volts per radians per second per second 
-	public static final double kVInterceptRightHigh = 1.2088; // Volts - tuned!
+	public static final double kVInterceptRightHigh = 4; // Volts - tuned!
 
 	public static final DCMotorTransmission kLeftTransmissionModelHighGear = new DCMotorTransmission(1 / kVDriveLeftHigh,
 			kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveLeftHigh),
@@ -56,8 +56,8 @@ public class Constants {
 
 
 	/* Ramsete constants */
-	public static final double kDriveBeta = 1.5; // Inverse meters squared
-	public static final double kDriveZeta = 0.9; // Unitless dampening co-efficient
+	public static final double kDriveBeta = 1.5 * 1d; // Inverse meters squared
+	public static final double kDriveZeta = 0.9 * 1d; // Unitless dampening co-efficient
 
 	/* Pure Pursuit constants */
 	public static final double kLat = 0.05f;
