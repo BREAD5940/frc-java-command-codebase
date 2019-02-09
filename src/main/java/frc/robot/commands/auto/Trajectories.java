@@ -60,10 +60,10 @@ public class Trajectories {
 	public static List<String> puts = new ArrayList<String>(Arrays.asList("cargoL1", "cargoL2", "cargoL3", "cargoML", "cargoMR", "cargoR1", "cargoR2", "cargoR3",
 			"rocketL1", "rocketL2", "rocketL3", "rocketR1", "rocketR2", "rocketR3"));
 
-	public static Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
-	public static Velocity<Length> kDefaultEndVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
+	public static final Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
+	public static final Velocity<Length> kDefaultEndVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
 
-	public static Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(5));
+	public static final Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(5));
 	public static final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(8));
 
 	// public static final TimedTrajectory<Pose2dWithCurvature> forward20Feet = generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(

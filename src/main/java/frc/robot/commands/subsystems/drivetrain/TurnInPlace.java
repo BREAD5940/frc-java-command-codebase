@@ -27,7 +27,7 @@ public class TurnInPlace extends Command {
 	//   RobotConfig.auto.TurnInPlace.integral_zone, 
 	//   RobotConfig.auto.TurnInPlace.max_integral);
 
-	double kp = 0.015 * 4f;
+	double kp = 0.015 * 2f;
 	double ki = 0.0;
 	double kd = 0.1 * 2f;
 	double integralZone = 1000;
