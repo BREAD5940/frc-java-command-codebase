@@ -59,7 +59,7 @@ public class OI {
 			Trajectories.generateAllTrajectories();
 		// testAutoButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.generatedTrajectories.get("test"), true));
 
-		test2button.whenPressed(DriveTrain.getInstance().followTrajectoryWithGear(Trajectories.forward20Feet, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true));
+		test2button.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, TrajectoryTrackerMode.RAMSETE, true));
 
 		testAutoButton.whenPressed(new MultiPathTest());
 		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
