@@ -54,35 +54,38 @@ public class FieldConstraints {
       if(i==0||i==points.size()-1){
         System.out.println("No correction required!");
         safePoints.add(i,points.get(i));
-      }else{
-        Translation2d point = points.get(i).getState().getPose().getTranslation();
+      }//else{
+      //   Translation2d point = points.get(i).getState().getPose().getTranslation();
 
-        Translation2d nPoint = safe(point, constraints, bigSpeed);
+      //   Translation2d nPoint = safe(point, constraints, bigSpeed);
 
-        if(point.getX().getFeet()!=nPoint.getX().getFeet()||point.getY().getFeet()!=nPoint.getY().getFeet()){
-          for(int k=i-5; k<i; k++){
-            Translation2d sPoint = points.get(k).getState().getPose().getTranslation();
-            Translation2d snPoint = safe(sPoint, constraints, bigSpeed);
-            safePoints.add(k,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(snPoint,points.get(k).getState().getPose().getRotation()),points.get(k).getState().getCurvature())),
-                          points.get(k).getT(), points.get(k).getVelocity(), points.get(k).getAcceleration()));
-          }
-        }else{
-          for(int l=i-5; l<i; l++){
-            safePoints.add(l,points.get(l));
-          }
-        }
+      //   if(point.getX().getFeet()!=nPoint.getX().getFeet()||point.getY().getFeet()!=nPoint.getY().getFeet()){
+      //     for(int k=i-5; k<i; k++){
+      //       Translation2d sPoint = points.get(k).getState().getPose().getTranslation();
+      //       Translation2d snPoint = safe(sPoint, constraints, bigSpeed);
+      //       safePoints.add(k,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(snPoint,points.get(k).getState().getPose().getRotation()),points.get(k).getState().getCurvature())),
+      //                     points.get(k).getT(), points.get(k).getVelocity(), points.get(k).getAcceleration()));
+      //     }
+      //   }else{
+      //     for(int l=i-5; l<i; l++){
+      //       safePoints.add(l,points.get(l));
+      //     }
+      //   }
         
-        safePoints.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(nPoint,points.get(i).getState().getPose().getRotation()),points.get(i).getState().getCurvature())),
-                          points.get(i).getT(), points.get(i).getVelocity(), points.get(i).getAcceleration()));
+      //   safePoints.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(nPoint,points.get(i).getState().getPose().getRotation()),points.get(i).getState().getCurvature())),
+      //                     points.get(i).getT(), points.get(i).getVelocity(), points.get(i).getAcceleration()));
         
-      }
-      System.out.println(safePoints.get(i).getState().getPose().getTranslation().getX().getFeet());
+      // }
+      // System.out.printf("End of indiv makeSafe. Current x: %f Current y: %f\n",safePoints.get(i).getState().getPose().getTranslation().getX().getFeet(),safePoints.get(i).getState().getPose().getTranslation().getY().getFeet());
     }
 
     double[][] uno = pointsAsDoubles(safePoints);
     double[][] dos = smoother(uno,0.02, 0.98, 0.001);//TODO test to see if this smoother actually works
     List<TimedEntry<Pose2dWithCurvature>> tres = doublesAsPoints(safePoints, dos);
     TimedTrajectory<Pose2dWithCurvature> toReturn = new TimedTrajectory<Pose2dWithCurvature>(safePoints, false);
+    System.out.printf("End of doublesAsPoints. Current x: %f Current y: %f\n",toReturn.getPoint(0).getState().getState().getPose().getTranslation().getX().getFeet(),toReturn.getPoint(0).getState().getState().getPose().getTranslation().getY().getFeet());
+
+
     return toReturn;
 
   }
@@ -115,6 +118,8 @@ public class FieldConstraints {
     }
 
     point = new Translation2d(safeX, safeY); //set the current point to the safepoint inside the field
+    System.out.printf("End of first round of safing. Current x: %f Current y: %f\n",point.getX().getFeet(),point.getY().getFeet());
+
 
 
     if(point.getX().getFeet()>maxX.getFeet()){
@@ -199,34 +204,36 @@ public class FieldConstraints {
     List<TimedEntry<Pose2dWithCurvature>> toReturn = new ArrayList<TimedEntry<Pose2dWithCurvature>>();
 
     for (int i=0; i<newP.length; i++){
-        double curve=original.get(i).getState().getCurvature().get_curvature$FalconLibrary();
-        if(i==0||i==newP.length-1){
-          curve=0;
-        }else{
-          if(newP[i-1][0]==newP[i][0]){
-            newP[i-1][0]+=0.001;
-          }
-          double k1=0.5*(Math.pow(newP[i-1][0],2)+Math.pow(newP[i-1][1],2)-Math.pow(newP[i][0],2)-Math.pow(newP[i][1],2))/(newP[i-1][0]-newP[i][0]);
-          double k2=(newP[i-1][1]-newP[i][1])/(newP[i-1][0]-newP[i][0]);
-          double b=0.5*(Math.pow(newP[i][0],2)-2*newP[i][0]*k1+Math.pow(newP[i][1],2)-Math.pow(newP[i+1][0],2)+2*newP[i+1][0]*k1-Math.pow(newP[i+1][1],2))
-              /(newP[i+1][0]*k2-newP[i+1][1]+newP[i][1]-newP[i][1]*k2);
-          double a=k1-k2*b;
-          double r=Math.sqrt(Math.pow((newP[i-1][1]-a),2)+Math.pow((newP[i-1][1]-b),2));
-          curve = 1/r;
-        }
-        //FIXME i don't know what the deriv of the curvature is, so im leaving it the same
-        Pose2dCurvature newCurve = new Pose2dCurvature(curve, original.get(i).getState().getCurvature().getDkds());
-        Rotation2d newRot=new Rotation2d(0);
-        if(i==0){
-          newRot=original.get(i).getState().getPose().getRotation(); //just set it to the original
-        }else{
-          newRot= new Rotation2d((newP[i-1][1]-newP[i][1])/(newP[i-1][0]-newP[i][0])); //this is just the secant between the current pt and before
-        }
-        toReturn.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(LengthKt.getFeet(newP[i][0]),LengthKt.getFeet(newP[i][1])),newRot),
-              newCurve)), original.get(i).getT(), original.get(i).getVelocity(), original.get(i).getAcceleration()));
+        // double curve=original.get(i).getState().getCurvature().get_curvature$FalconLibrary();
+        // if(i==0||i==newP.length-1){
+        //   curve=0;
+        // }else{
+        //   if(newP[i-1][0]==newP[i][0]){
+        //     newP[i-1][0]+=0.001;
+        //   }
+        //   double k1=0.5*(Math.pow(newP[i-1][0],2)+Math.pow(newP[i-1][1],2)-Math.pow(newP[i][0],2)-Math.pow(newP[i][1],2))/(newP[i-1][0]-newP[i][0]);
+        //   double k2=(newP[i-1][1]-newP[i][1])/(newP[i-1][0]-newP[i][0]);
+        //   double b=0.5*(Math.pow(newP[i][0],2)-2*newP[i][0]*k1+Math.pow(newP[i][1],2)-Math.pow(newP[i+1][0],2)+2*newP[i+1][0]*k1-Math.pow(newP[i+1][1],2))
+        //       /(newP[i+1][0]*k2-newP[i+1][1]+newP[i][1]-newP[i][1]*k2);
+        //   double a=k1-k2*b;
+        //   double r=Math.sqrt(Math.pow((newP[i-1][1]-a),2)+Math.pow((newP[i-1][1]-b),2));
+        //   curve = 1/r;
+        // }
+        // //FIXME i don't know what the deriv of the curvature is, so im leaving it the same
+        // Pose2dCurvature newCurve = new Pose2dCurvature(curve, original.get(i).getState().getCurvature().getDkds());
+        // Rotation2d newRot=new Rotation2d(0);
+        // if(i==0){
+        //   newRot=original.get(i).getState().getPose().getRotation(); //just set it to the original
+        // }else{
+        //   newRot= new Rotation2d((newP[i-1][1]-newP[i][1])/(newP[i-1][0]-newP[i][0])); //this is just the secant between the current pt and before
+        // }
+        // toReturn.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(new Translation2d(LengthKt.getFeet(newP[i][0]),LengthKt.getFeet(newP[i][1])),newRot),
+        //       newCurve)), original.get(i).getT(), original.get(i).getVelocity(), original.get(i).getAcceleration()));
+        toReturn.add(i,new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(original.get(i).getState().getPose().getTranslation(),original.get(i).getState().getPose().getRotation()),
+              original.get(i).getState().getCurvature())), original.get(i).getT(), original.get(i).getVelocity(), original.get(i).getAcceleration()));
       
-
     }
+    System.out.printf("End of doublesAsPoints. Current x: %f Current y: %f\n",toReturn.get(0).getState().getPose().getTranslation().getX().getFeet(),toReturn.get(0).getState().getPose().getTranslation().getY().getFeet());
 
     return toReturn;
   }
