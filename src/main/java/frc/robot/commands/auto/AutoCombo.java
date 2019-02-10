@@ -22,7 +22,7 @@ public class AutoCombo {
 	private AutoCommandGroup mBigCommandGroup;
 
 	/**
-	 * 2-hatch 1-cargo hard-coded auto
+	 * 2-hatch 1-cargo hard-coded auto. ow.
 	 * @param startingPiece the game piece that the robot starts with (for example, a hatch)
 	 * @param wpKeys the keys for the waypoints (defined in Trajectories) for toe robot to go to.
 	 */

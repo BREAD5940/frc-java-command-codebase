@@ -37,8 +37,6 @@ public class RunAuto extends Command {
 
 	@Override
 	protected void initialize() {
-		// Kinda a stupid question but what's the difference between AutoMotion and AutoCombo?
-		// is it just that AutoMotion drives straight to a goal, whereas AutoCombo
 		if (!isDrive) {
 			mMotion = new AutoMotion(mHeight, mGt, false);
 			mMotion.getBigCommandGroup().start();
