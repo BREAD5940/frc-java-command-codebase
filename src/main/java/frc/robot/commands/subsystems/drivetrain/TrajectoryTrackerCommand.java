@@ -10,6 +10,7 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TrajectorySamplePoint;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -63,6 +64,8 @@ public class TrajectoryTrackerCommand extends Command {
 			Robot.drivetrain.getLocalization().reset(trajectorySource.get().getFirstState().getState().getPose());
 		}
 
+		Logger.log("desired linear, real linear");
+
 		LiveDashboard.INSTANCE.setFollowingPath(true);
 	}
 
@@ -83,6 +86,8 @@ public class TrajectoryTrackerCommand extends Command {
 		}
 		// Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
 		driveBase.setOutput(output);
+
+		Logger.log( VelocityKt.getFeetPerSecond(trajectoryTracker.getReferencePoint().getState().getVelocity()) , (DriveTrain.getInstance().getLeft().getFeetPerSecond() + DriveTrain.getInstance().getRight().getFeetPerSecond())/2d );
 
 		// long elapsed = System.currentTimeMillis() - now;
 		// System.out.println("Took " + elapsed + "ms");
