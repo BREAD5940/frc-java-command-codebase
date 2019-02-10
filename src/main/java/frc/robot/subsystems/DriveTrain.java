@@ -117,12 +117,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		/* set the robot pose to 0,0,0 */
 		localization.reset(new Pose2d());
 
-		lowGearDifferentialDrive = new DifferentialDrive(Constants.kRobotMass, Constants.kRobotMomentOfInertia,
-				Constants.kRobotAngularDrag, Constants.kWheelRadius, Constants.kTrackWidth / 2.0, Constants.kLeftTransmissionModelLowGear, Constants.kRightTransmissionModelLowGear);
-
-		highGearDifferentialDrive = new DifferentialDrive(Constants.kRobotMass, Constants.kRobotMomentOfInertia,
-				Constants.kRobotAngularDrag, Constants.kWheelRadius, Constants.kTrackWidth / 2.0, Constants.kLeftTransmissionModelHighGear, Constants.kRightTransmissionModelHighGear);
-
+		lowGearDifferentialDrive = Constants.kHighGearDifferentialDrive;
+		highGearDifferentialDrive = Constants.kLowGearDifferentialDrive;
 
 		ramseteTracker = new RamseteTracker(Constants.kDriveBeta, Constants.kDriveZeta);
 		purePursuitTracker = new PurePursuitTracker(Constants.kLat, Constants.kLookaheadTime,
