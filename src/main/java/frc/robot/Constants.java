@@ -28,7 +28,7 @@ public class Constants {
 
 	public static final double kVDriveRightLow = 0.275 * 1d; // Volts per radians per second - Calculated emperically
 	public static final double kADriveRightLow = 0.0286 * 1d; // Volts per radians per second per second TODO tune
-	public static final double kVInterceptRightLow = 30.88 * 1d; // Volts - tuned!
+	public static final double kVInterceptRightLow = 0.96 * 1d; // Volts - tuned!
 
 	public static final DCMotorTransmission kLeftTransmissionModelLowGear = new DCMotorTransmission(1 / kVDriveLeftLow,
 			kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveLeftLow),
