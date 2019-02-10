@@ -72,14 +72,21 @@ public class FieldConstraints {
 		System.out.print("Minimum y: ");
 		System.out.println(minY.getFeet());
 
-		for (int i = 0; i < points.size() - 5; i += 5) {
-			if (i == 0 || i == points.size() - 1) {
+		System.out.printf("There are %d original points\n", points.size());
+
+		for (int i = 0; i < points.size(); i += 5) {
+			if (i == 0) {
 				System.out.println("No correction required!");
-				safePoints.add(i, points.get(i));
-				System.out.printf("First/last point. Current x value: %f\n", safePoints.get(i).getState().getPose().getTranslation().getX().getFeet());
+				try {
+					safePoints.add(i, points.get(i));
+				} catch (Exception e) {
+					System.out.println(e);
+				}
+				// System.out.printf("First/last point. Current x value: %f\n", safePoints.get(i).getState().getPose().getTranslation().getX().getFeet());
 			} else {
+				System.out.printf("Index of point in: %d  ", i);
 				Translation2d point = points.get(i).getState().getPose().getTranslation();
-				System.out.printf("Current point (in else): %d", i);
+				// System.out.printf("Current point (in else): %d\n", i);
 
 				Translation2d nPoint = safe(point, constraints, bigSpeed);
 
@@ -99,16 +106,39 @@ public class FieldConstraints {
 				safePoints.add(i, new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(nPoint, points.get(i).getState().getPose().getRotation()), points.get(i).getState().getCurvature())),
 						points.get(i).getT(), points.get(i).getVelocity(), points.get(i).getAcceleration()));
 
+				System.out.printf("Index of added point: %d\n", safePoints.size() - 1);
+
 			}
 			// System.out.println(safePoints.get(i).getState().getPose().getTranslation().getX().getFeet());
 		}
-		System.out.printf("Before points as doubles: %f, %f", safePoints.get(0).getState().getPose().getTranslation().getX().getFeet(), safePoints.get(0).getState().getPose().getTranslation().getY().getFeet());
+		if (points.size() != safePoints.size()) {
+			for (int i = safePoints.size(); i < points.size(); i++) {
+				System.out.printf("Index of point in: %d  ", i);
+				Translation2d point = points.get(i).getState().getPose().getTranslation();
+				Translation2d nPoint;
+				if (i == points.size()) {
+					safePoints.add(i, points.get(i));
+				} else {
+					nPoint = safe(point, constraints, bigSpeed);
+
+					safePoints.add(i, new TimedEntry<Pose2dWithCurvature>((new Pose2dWithCurvature(new Pose2d(nPoint, points.get(i).getState().getPose().getRotation()), points.get(i).getState().getCurvature())),
+							points.get(i).getT(), points.get(i).getVelocity(), points.get(i).getAcceleration()));
+				}
+
+				System.out.printf("Index of added point: %d\n", safePoints.size() - 1);
+			}
+		}
+		System.out.printf("There are %d safe points\n", safePoints.size());
+		// System.out.printf("Before points as doubles: %f, %f", safePoints.get(0).getState().getPose().getTranslation().getX().getFeet(), safePoints.get(0).getState().getPose().getTranslation().getY().getFeet());
 		double[][] uno = pointsAsDoubles(safePoints);
+		System.out.printf("There are %d double points\n", uno.length);
 		System.out.printf("After points as doubles: %f, %f\n", uno[0][0], uno[0][1]);
 		double[][] dos = smoother(uno, 0.02, 0.98, 0.001);//TODO test to see if this smoother actually works
+		System.out.printf("There are %d smooth points\n", dos.length);
 		List<TimedEntry<Pose2dWithCurvature>> tres = doublesAsPoints(safePoints, dos);
+		System.out.printf("There are %d final points\n", tres.size());
 		TimedTrajectory<Pose2dWithCurvature> toReturn = new TimedTrajectory<Pose2dWithCurvature>(tres, false);
-		System.out.printf("End of makeSafe. Current x: %f Current y: %f\n", toReturn.getPoint(0).getState().getState().getPose().getTranslation().getX().getFeet(), toReturn.getPoint(0).getState().getState().getPose().getTranslation().getY().getFeet());
+		// System.out.printf("End of makeSafe. Current x: %f Current y: %f\n", toReturn.getPoint(0).getState().getState().getPose().getTranslation().getX().getFeet(), toReturn.getPoint(0).getState().getState().getPose().getTranslation().getY().getFeet());
 		return toReturn;
 
 	}
@@ -212,7 +242,7 @@ public class FieldConstraints {
 
 	}
 
-	protected static double[][] pointsAsDoubles(List<TimedEntry<Pose2dWithCurvature>> points) {
+	public static double[][] pointsAsDoubles(List<TimedEntry<Pose2dWithCurvature>> points) {
 		double[][] toreturn = new double[points.size()][2];
 
 		for (int i = 0; i < points.size(); i++) {
