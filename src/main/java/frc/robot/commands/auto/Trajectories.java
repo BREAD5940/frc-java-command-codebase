@@ -7,9 +7,12 @@ import java.util.List;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Rectangle2d;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.TrajectoryGeneratorKt;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.CentripetalAccelerationConstraint;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.DifferentialDriveDynamicsConstraint;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.TimingConstraint;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.VelocityLimitRegionConstraint;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -20,6 +23,7 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import edu.wpi.first.wpilibj.Timer;
+import frc.robot.Constants;
 import frc.robot.lib.Logger;
 
 @SuppressWarnings("WeakerAccess")
@@ -81,11 +85,18 @@ public class Trajectories {
 			// new Pose2d(LengthKt.getFeet(20), LengthKt.getFeet(5), Rotation2dKt.getDegree(45))));
 	public static TimedTrajectory<Pose2dWithCurvature> forward20Feet;
 
-	private static List<TimingConstraint<Pose2dWithCurvature>> kDefaultConstraints = Arrays.asList(
-			// This limits our centripetal acceleration to 3 feet per second per second
-			new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getFeet(10)))//,
+	private static List<TimingConstraint<Pose2dWithCurvature>> kLowGearConstrants = Arrays.asList(
+			new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getFeet(10))),
+			new DifferentialDriveDynamicsConstraint(Constants.kLowGearDifferentialDrive, 12 /* volts */),
 	// This limits our velocity while within the given Rectangle2d to 2 feet per second (read: the hab)
-	// new VelocityLimitRegionConstraint(new Rectangle2d(7.0, 0.0, 8.0, 13.0), VelocityKt.getVelocity(LengthKt.getFeet(2.0)))
+			new VelocityLimitRegionConstraint(new Rectangle2d(7.0, 0.0, 8.0, 13.0), VelocityKt.getVelocity(LengthKt.getFeet(2.0)))
+	);
+
+	private static List<TimingConstraint<Pose2dWithCurvature>> kHighGearConstrants = Arrays.asList(
+		new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getFeet(10))),
+		new DifferentialDriveDynamicsConstraint(Constants.kHighGearDifferentialDrive, 12 /* volts */),
+// This limits our velocity while within the given Rectangle2d to 2 feet per second (read: the hab)
+		new VelocityLimitRegionConstraint(new Rectangle2d(7.0, 0.0, 8.0, 13.0), VelocityKt.getVelocity(LengthKt.getFeet(2.0)))
 	);
 
 	public static void generateAllTrajectories() {
