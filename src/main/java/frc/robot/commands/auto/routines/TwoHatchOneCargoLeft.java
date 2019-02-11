@@ -34,7 +34,7 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 		String cStart = "hab" + startPos;
 
 		/* Get a trajectory to move to the cargo ship */
-		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedTrajectories.get(cStart + " to " + "cargoM" + side); //current trajectory from hashmap in Trajectorie
+		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargoM" + side); //current trajectory from hashmap in Trajectorie
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, true)); //drive to goal
 		// this.addSequential(new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH,true).getBigCommandGroup()); //do a motion
 		this.addSequential(new DelayCommand(TimeUnitsKt.getSecond(0.5)).getWrappedValue());
@@ -43,7 +43,7 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 		cStart = "cargoM" + side;
 		cPiece = HeldPiece.NONE;
 
-		traject = Trajectories.generatedTrajectories.get(cStart + " to " + "loading" + side); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "loading" + side); //current trajectory from hashmap in Trajectorie
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 		// this.addSequential(new AutoMotion(GoalHeight.LOW, GoalType.RETRIEVE_HATCH,false).getBigCommandGroup()); //do a motion
 		this.addSequential(new DelayCommand(TimeUnitsKt.getSecond(0.5)).getWrappedValue());
@@ -52,7 +52,7 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 		cStart = "loading" + side;
 		cPiece = HeldPiece.HATCH;
 
-		traject = Trajectories.generatedTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 
 		// turn 90 degrees to face the goal
@@ -63,7 +63,7 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 		cStart = "cargo" + side + '1';
 		cPiece = HeldPiece.NONE;
 
-		traject = Trajectories.generatedTrajectories.get(cStart + " to " + "depot" + side); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "depot" + side); //current trajectory from hashmap in Trajectorie
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 		this.addSequential(new DelayCommand(TimeUnitsKt.getSecond(0.5)).getWrappedValue()); // TODO run a pickup script
 
@@ -71,7 +71,7 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 		cStart = "depot" + side;
 		cPiece = HeldPiece.CARGO;
 
-		traject = Trajectories.generatedTrajectories.get(cStart + " to " + "cargo" + side + '2'); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '2'); //current trajectory from hashmap in Trajectorie
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 		this.addSequential(new TurnInPlace(90f, true)); // TODO check the angle
 
