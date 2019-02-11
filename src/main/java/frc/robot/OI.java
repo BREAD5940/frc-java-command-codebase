@@ -3,9 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.auto.MultiPathTest;
-import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
@@ -44,7 +42,6 @@ public class OI {
 	Button auto_grab_hatch_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
 	Button auto_grab_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
 	Button test2button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
-
 
 	// File file = new File("/home/lvuser/deploy/paths/test.pf1.csv");
 	// Trajectory trajectory = Pathfinder.readFromCSV(file);

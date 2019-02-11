@@ -22,12 +22,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
-import com.team254.lib.physics.DCMotorTransmission;
 import com.team254.lib.physics.DifferentialDrive;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -38,7 +36,6 @@ import frc.robot.RobotConfig;
 import frc.robot.commands.subsystems.drivetrain.ArcadeDrive;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.drivetrain.TrajectoryTrackerCommand;
-import frc.robot.lib.Logger;
 import frc.robot.lib.enums.TransmissionSide;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.DriveSignal;
@@ -129,7 +126,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	public DifferentialDrive getDifferentialDrive() {
 		// String mes = (mCurrentGear == Gear.LOW) ? "lowGearDifferentialDrive" : "highGearDifferentialDrive"; 
 		SmartDashboard.putString("current drive model", (mCurrentGear == Gear.LOW) ? "lowGearDifferentialDrive" : "highGearDifferentialDrive");
-		return (mCurrentGear == Gear.LOW) ? lowGearDifferentialDrive : highGearDifferentialDrive; 
+		return (mCurrentGear == Gear.LOW) ? lowGearDifferentialDrive : highGearDifferentialDrive;
 	}
 
 	// public double mCurrentSolenoidValue = Robot.shifterso

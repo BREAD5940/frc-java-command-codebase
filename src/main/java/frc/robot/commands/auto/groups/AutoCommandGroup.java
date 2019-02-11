@@ -19,7 +19,7 @@ public class AutoCommandGroup extends CommandGroup {
 
 	@Override
 	protected void end() {
-    Logger.log("Path ran in " + (Timer.getFPGATimestamp() - start) + " seconds!");
+		Logger.log("Path ran in " + (Timer.getFPGATimestamp() - start) + " seconds!");
 	}
 
 	public AutoCommandGroup() {}

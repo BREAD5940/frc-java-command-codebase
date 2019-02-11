@@ -87,7 +87,7 @@ public class TrajectoryTrackerCommand extends Command {
 		// Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
 		driveBase.setOutput(output);
 
-		Logger.log( VelocityKt.getFeetPerSecond(trajectoryTracker.getReferencePoint().getState().getVelocity()) , (DriveTrain.getInstance().getLeft().getFeetPerSecond() + DriveTrain.getInstance().getRight().getFeetPerSecond())/2d );
+		Logger.log(VelocityKt.getFeetPerSecond(trajectoryTracker.getReferencePoint().getState().getVelocity()), (DriveTrain.getInstance().getLeft().getFeetPerSecond() + DriveTrain.getInstance().getRight().getFeetPerSecond()) / 2d);
 
 		// long elapsed = System.currentTimeMillis() - now;
 		// System.out.println("Took " + elapsed + "ms");

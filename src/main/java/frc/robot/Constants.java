@@ -41,7 +41,7 @@ public class Constants {
 			kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveRightLow),
 			kVInterceptRightLow);
 
-			private static final double kVDriveLeftHigh = 0.139 * 1d; // Volts per radians per second - Calculated emperically
+	private static final double kVDriveLeftHigh = 0.139 * 1d; // Volts per radians per second - Calculated emperically
 	private static final double kADriveLeftHigh = 0.035 * 1d; // Volts per radians per second per second 
 	private static final double kVInterceptLeftHigh = 1.23 * 1d;//4 * 0.4d; // Volts - tuned!
 
@@ -62,8 +62,6 @@ public class Constants {
 
 	public static final DifferentialDrive kHighGearDifferentialDrive = new DifferentialDrive(kRobotMass, kRobotMomentOfInertia,
 			kRobotAngularDrag, kWheelRadius, kTrackWidth / 2.0, kLeftTransmissionModelHighGear, kRightTransmissionModelHighGear);
-
-
 
 	/* Ramsete constants */
 	public static final double kDriveBeta = 2 * 1d; // Inverse meters squared
