@@ -19,6 +19,7 @@ import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.SensorTerm;
 
 import frc.robot.lib.PIDSettings;
 
@@ -64,7 +65,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 	 * @param ports of talon CAN ports as a List
 	 * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
 	 */
-	public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, Length armLength, Mass armMass) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
+	public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, boolean masterInvert, Length armLength, Mass armMass) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
 
 		kArmLength = armLength;
 
@@ -74,7 +75,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 
 		// TODO add support for more sensors
 		if (sensor == FeedbackDevice.CTRE_MagEncoder_Relative) {
-			unitsPerRotation = NativeUnitKt.getSTU(4096);
+			unitsPerRotation = NativeUnitKt.getSTU(4096);	
 		}
 
 		mRotationModel = new NativeUnitRotationModel(unitsPerRotation);
@@ -83,6 +84,10 @@ public class RotatingJoint /*extends Subsystem*/ {
 		for (Integer i : ports) {
 			motors.add(new FalconSRX<Rotation2d>(i.intValue(), mRotationModel, TimeUnitsKt.getMillisecond(10)));
 		}
+
+		getMaster().configSelectedFeedbackSensor(sensor);
+		getMaster().configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30);
+
 	}
 
 	public void setSetpoint(double setpoint_) {}
