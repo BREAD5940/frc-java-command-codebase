@@ -38,7 +38,7 @@ public class AutoCombo {
 		}
 		cStart = "hab";
 
-		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedTrajectories.get(cStart + " to " + "cargoM" + side); //current trajectory from hashmap in Trajectorie
+		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargoM" + side); //current trajectory from hashmap in Trajectorie
 		this.mBigCommandGroup.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, true)); //drive to goal
 		// this.mBigCommandGroup.addSequential(new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH,true).getBigCommandGroup()); //do a motion
 		this.mBigCommandGroup.addSequential(new DelayCommand(TimeUnitsKt.getSecond(0.5)).getWrappedValue());
@@ -46,7 +46,7 @@ public class AutoCombo {
 		cStart = "cargoM" + side;
 		cPiece = HeldPiece.NONE;
 
-		traject = Trajectories.generatedTrajectories.get(cStart + " to " + "loading" + side); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "loading" + side); //current trajectory from hashmap in Trajectorie
 		this.mBigCommandGroup.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 		// this.mBigCommandGroup.addSequential(new AutoMotion(GoalHeight.LOW, GoalType.RETRIEVE_HATCH,false).getBigCommandGroup()); //do a motion
 		this.mBigCommandGroup.addSequential(new DelayCommand(TimeUnitsKt.getSecond(0.5)).getWrappedValue());
@@ -54,7 +54,7 @@ public class AutoCombo {
 		cStart = "loading" + side;
 		cPiece = HeldPiece.HATCH;
 
-		traject = Trajectories.generatedTrajectories.get(cStart + " to " + "yeet" + side); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "yeet" + side); //current trajectory from hashmap in Trajectorie
 		this.mBigCommandGroup.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 		this.mBigCommandGroup.addSequential(new DelayCommand(TimeUnitsKt.getSecond(0.5)).getWrappedValue());
 
@@ -64,7 +64,7 @@ public class AutoCombo {
 		cStart = "pyeet" + side;
 		cPiece = HeldPiece.HATCH;
 
-		traject = Trajectories.generatedTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
 		this.mBigCommandGroup.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 		this.mBigCommandGroup.addSequential(new DelayCommand(TimeUnitsKt.getSecond(0.5)).getWrappedValue());
 
@@ -72,7 +72,7 @@ public class AutoCombo {
 		cStart = "cargo" + side + '1';
 		cPiece = HeldPiece.NONE;
 
-		traject = Trajectories.generatedTrajectories.get(cStart + " to " + "depot" + side); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "depot" + side); //current trajectory from hashmap in Trajectorie
 		this.mBigCommandGroup.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 		this.mBigCommandGroup.addSequential(new DelayCommand(TimeUnitsKt.getSecond(0.5)).getWrappedValue());
 
@@ -80,7 +80,7 @@ public class AutoCombo {
 		cStart = "depot" + side;
 		cPiece = HeldPiece.CARGO;
 
-		traject = Trajectories.generatedTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
 		this.mBigCommandGroup.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 		this.mBigCommandGroup.addSequential(new DelayCommand(TimeUnitsKt.getSecond(0.5)).getWrappedValue());
 
