@@ -7,8 +7,13 @@ import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
+import frc.robot.commands.auto.MultiPathTest;
+import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
+import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
+import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 
 /**
  * Operator Input not Out-In
@@ -37,9 +42,10 @@ public class OI {
 	Button auto_place_cargo_rocket_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
 	Button auto_place_hatch_rocket_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
 	Button yeetInACircleButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
-	Button testBasicallyALineButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
+	Button testAutoButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
 	Button auto_grab_hatch_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
 	Button auto_grab_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
+	Button test2button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
 
 	// File file = new File("/home/lvuser/deploy/paths/test.pf1.csv");
 	// Trajectory trajectory = Pathfinder.readFromCSV(file);
@@ -52,8 +58,13 @@ public class OI {
 		// close_clamp_button.whenPressed(new CloseClamp());
 		if (Trajectories.forward20Feet == null)
 			Trajectories.generateAllTrajectories();
-		yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
-		testBasicallyALineButton.whenPressed(new RunAuto(HeldPiece.NONE, "habM", "cargoML"));
+		// testAutoButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.generatedTrajectories.get("test"), true));
+
+		test2button.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, TrajectoryTrackerMode.RAMSETE, true));
+
+		testAutoButton.whenPressed(new MultiPathTest());
+		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
+		yeetInACircleButton.whenPressed(new TurnInPlace(180, false));
 
 		// TODO why does this throw a null pointer
 		// auto_place_cargo_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_CARGO, Robot.mGh.getSelected()));

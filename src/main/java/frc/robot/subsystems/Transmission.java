@@ -118,10 +118,10 @@ public class Transmission {
 	}
 
 	public void setClosedLoopGains(double kp, double ki, double kd, double kf, double iZone, double maxIntegral) {
-		mMaster.config_kP(0, kp, 30);
-		mMaster.config_kI(0, ki, 30);
-		mMaster.config_kD(0, kd, 30);
-		mMaster.config_kF(0, kf, 30);
+		mMaster.config_kP(0, kp, 0);
+		mMaster.config_kI(0, ki, 0);
+		mMaster.config_kD(0, kd, 0);
+		mMaster.config_kF(0, kf, 0);
 		mMaster.config_IntegralZone(0, (int) Math.round(lengthModel.fromModel(LengthKt.getMeter(iZone)).getValue()), 30);
 		mMaster.configMaxIntegralAccumulator(0, maxIntegral, 0);
 	}

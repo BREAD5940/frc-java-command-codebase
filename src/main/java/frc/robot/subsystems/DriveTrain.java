@@ -22,7 +22,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
-import com.team254.lib.physics.DCMotorTransmission;
 import com.team254.lib.physics.DifferentialDrive;
 
 import edu.wpi.first.wpilibj.Notifier;
@@ -30,6 +29,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
@@ -80,7 +80,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		LOW, HIGH;
 	}
 
-	Gear gear;
+	Gear mCurrentGear;
 
 	Notifier localizationNotifier; // TODO maybe make me do stuff?
 
@@ -94,8 +94,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		trackerMode = mode;
 	}
 
-	private DCMotorTransmission mLeftTransmissionModel, mRightTransmissionModel;
-	private DifferentialDrive differentialDrive;
+	// private DCMotorTransmission mLeftTransmissionModel, mRightTransmissionModel;
+	private DifferentialDrive lowGearDifferentialDrive, highGearDifferentialDrive;
 	private Transmission leftTransmission, rightTransmission;
 
 	private TrajectoryTrackerMode kDefaulTrajectoryTrackerMode = TrajectoryTrackerMode.RAMSETE;
@@ -107,8 +107,6 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		rightTransmission = new Transmission(RobotConfig.driveTrain.rightTalons.m_right_talon_port,
 				RobotConfig.driveTrain.rightTalons.s_right_talon_port, Transmission.EncoderMode.CTRE_MagEncoder_Relative,
 				TransmissionSide.RIGHT, false);
-		mLeftTransmissionModel = Constants.kLeftTransmissionModel;
-		mRightTransmissionModel = Constants.kRightTransmissionModel;
 
 		/* Create a localization object because lamda expressions are fun */
 		localization = new TankEncoderLocalization(() -> Rotation2dKt.getDegree(getGyro(true)),
@@ -116,8 +114,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		/* set the robot pose to 0,0,0 */
 		localization.reset(new Pose2d());
 
-		differentialDrive = new DifferentialDrive(Constants.kRobotMass, Constants.kRobotMomentOfInertia,
-				Constants.kRobotAngularDrag, Constants.kWheelRadius, Constants.kTrackWidth / 2.0, mLeftTransmissionModel, mRightTransmissionModel);
+		lowGearDifferentialDrive = Constants.kHighGearDifferentialDrive;
+		highGearDifferentialDrive = Constants.kLowGearDifferentialDrive;
 
 		ramseteTracker = new RamseteTracker(Constants.kDriveBeta, Constants.kDriveZeta);
 		purePursuitTracker = new PurePursuitTracker(Constants.kLat, Constants.kLookaheadTime,
@@ -126,8 +124,12 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	}
 
 	public DifferentialDrive getDifferentialDrive() {
-		return differentialDrive;
+		// String mes = (mCurrentGear == Gear.LOW) ? "lowGearDifferentialDrive" : "highGearDifferentialDrive"; 
+		SmartDashboard.putString("current drive model", (mCurrentGear == Gear.LOW) ? "lowGearDifferentialDrive" : "highGearDifferentialDrive");
+		return (mCurrentGear == Gear.LOW) ? lowGearDifferentialDrive : highGearDifferentialDrive;
 	}
+
+	// public double mCurrentSolenoidValue = Robot.shifterso
 
 	// public DCMotorTransmission getTransmissionModel() {
 	//   return mTransmissionModel;
@@ -190,7 +192,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 				RobotConfig.driveTrain.rightTalons.velocity_max_integral_high);
 		// Trigger solenoids
 		Robot.drivetrain_shift_high();
-		gear = Gear.HIGH;
+		mCurrentGear = Gear.HIGH;
 	}
 
 	public void setLowGear() {
@@ -204,7 +206,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 				RobotConfig.driveTrain.rightTalons.velocity_max_integral_low);
 		// Trigger solenoids
 		Robot.drivetrain_shift_low();
-		gear = Gear.LOW;
+		mCurrentGear = Gear.LOW;
 	}
 
 	public void setGear(Gear gear) {
@@ -481,13 +483,19 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	 * @param reset      if we should reset robot odometry to the initial pose or
 	 *                   not
 	 */
-	public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean reset) {
+	public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, Gear gear, boolean reset) {
+		mCurrentGear = Robot.getDrivetrainGear();
 		return new TrajectoryTrackerCommand(this, () -> trajectory, reset);
+	}
+
+	public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean reset) {
+		return followTrajectory(trajectory, Robot.getDrivetrainGear(), reset);
 	}
 
 	public Command followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory,
 			TrajectoryTrackerMode mode, boolean reset) {
-		kDefaulTrajectoryTrackerMode = mode;
+		// kDefaulTrajectoryTrackerMode = mode;
+		mCurrentGear = Robot.getDrivetrainGear();
 		return new TrajectoryTrackerCommand(this, getTrajectoryTracker(mode), () -> trajectory, reset);
 	}
 
@@ -500,6 +508,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	 */
 	public Command followTrajectoryWithGear(TimedTrajectory<Pose2dWithCurvature> trajectory,
 			TrajectoryTrackerMode mode, Gear gear, boolean resetPose) {
+		mCurrentGear = gear;
 		CommandGroup mCommandGroup = new CommandGroup();
 		mCommandGroup.addParallel(new SetGearCommand(gear));
 		mCommandGroup.addSequential(followTrajectory(trajectory, mode, resetPose));
