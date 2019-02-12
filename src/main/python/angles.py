@@ -15,7 +15,7 @@ def parseCsv(cesv):
             else:
                 plott(float(row[0]), float(row[1]), float(row[2]), colors[c])
                 line_count += 1
-                if(c==colors.len()):
+                if(c==len(colors)-1):
                     c=0
                 else:
                     c=c+1

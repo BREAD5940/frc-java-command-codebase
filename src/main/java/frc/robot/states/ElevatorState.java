@@ -69,4 +69,9 @@ public class ElevatorState {
 		return new ElevatorState(height);
 	}
 
+	public boolean isEqualTo(ElevatorState other){
+		return (this.acceleration.equals(other.acceleration)&&this.height.equals(other.height)&&this.time.equals(other.time)
+				&&this.velocity.equals(other.velocity));
+	}
+
 }

@@ -36,4 +36,8 @@ public class IntakeAngle {
 	public RotatingArmState getWrist() {
 		return wristAngle;
 	}
+
+	public boolean isEqualTo(IntakeAngle other){
+		return (this.elbowAngle.angle.equals(other.elbowAngle.angle)&&this.wristAngle.angle.equals(other.wristAngle.angle));
+	}
 }

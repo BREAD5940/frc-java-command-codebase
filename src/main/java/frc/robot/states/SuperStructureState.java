@@ -90,4 +90,10 @@ public class SuperStructureState {
 	public IntakeAngle getAngle() {
 		return jointAngles;
 	}
+
+	public boolean isEqualTo(SuperStructureState other){
+		return (this.jointAngles.isEqualTo(other.jointAngles)
+				&&this.elevator.isEqualTo(other.elevator)
+						&&this.piece==other.piece);
+	}
 }

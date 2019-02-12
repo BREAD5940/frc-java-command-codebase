@@ -41,8 +41,13 @@ public class SuperstructurePlanner {
 	SuperStructureState currentPlannedState;
 
 	public boolean checkValidState(SuperStructureState reqState) { //what is this supposed to do? does it just check if the path is possible w/o correction?
-		return true; // FIXME to check if it's valid. Maybe call planner.plan? idk
+		// TODO is this what we actuall want this to looke like?
+		ArrayList<SuperStructureState> kdsjfl = this.plan(reqState,this.currentPlannedState);
+		return (kdsjfl.get(kdsjfl.size()-1).isEqualTo(reqState) && kdsjfl.size()==1); 
+		//so now it just checks to see if it can move from the current planned state to the reqstate w/ no correction
 	}
+
+
 
 	/**
 	 * Creates a command group of superstructure motions that will prevent any damage to the intake/elevator
@@ -58,6 +63,10 @@ public class SuperstructurePlanner {
 		SuperStructureState goalState = goalStateIn;
 		errorCount = corrCount = 0;
 		boolean defAngle = iPosition.presets.contains(goalState.getAngle());
+		boolean throughBelow = ((currentState.getAngle().getElbow().angle.getDegree()>225 && currentState.getAngle().getElbow().angle.getDegree()<315));
+		boolean throughAbove = ((currentState.getAngle().getElbow().angle.getDegree()>45 && currentState.getAngle().getElbow().angle.getDegree()<135));
+		
+
 
 		if (goalState == currentState) {
 			System.out.println("MOTION UNNECESSARY -- Goal and current states are same. Exiting planner.");
@@ -75,8 +84,7 @@ public class SuperstructurePlanner {
 		if (!defAngle) {
 			System.out.println("MOTION UNSAFE -- Wrist position is wildcard. Setting to default position for movement.");
 			errorCount++;
-			if (currentState.getHeldPiece() == HeldPiece.HATCH) {
-				//TODO change this so it only happens if the intake will ACTUALLY pass through the elevator
+			if ((currentState.getHeldPiece() == HeldPiece.HATCH)&&(throughAbove||throughBelow)) {
 				System.out.println("MOTION UNSAFE -- Cannot move wrist to wildcard position while holding hatch. Aborting wrist movement.");
 				errorCount++;
 				corrCount++;
@@ -88,7 +96,7 @@ public class SuperstructurePlanner {
 			}
 		} else {
 			// Checks if the intake will ever be inside the elevator
-			if ((currentState.getAngle() == iPosition.HATCH) || (goalState.getAngle() == iPosition.HATCH)) {
+			if (throughAbove || throughBelow) {
 				intakeAtRisk = true;
 			}
 
@@ -118,7 +126,7 @@ public class SuperstructurePlanner {
 
 		//checks if the elevator will move low enough to crash the intake
 		if (goalState.getElevatorHeight().getValue() <= minUnCrashHeight.getValue() && intakeCrashable) {
-			System.out.println("MOTION UNSAFE -- Intake will hit ground. Setting to default intake position.");
+			System.out.println("MOTION UNSAFE -- Intake will crash. Setting to default intake position.");
 			errorCount++;
 			corrCount++;
 			goalState.setAngle(iPosition.CARGO_GRAB);
