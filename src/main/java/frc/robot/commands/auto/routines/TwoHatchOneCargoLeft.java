@@ -16,10 +16,9 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 
 /**
- * Creates an AutoMotion and drive plan based on the inputted params. Will
- * probably be used only in sandstorm. (and yes, this is basically 2018's auto
- * selector, but slightly different)
+ * 2-hatch 1-cargo auto
  */
+//FIXME why is this specified as left if it also takes an input for side?
 public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 	// private AutoCommandGroup mBigCommandGroup;
 
@@ -28,7 +27,6 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 	 * @param side to target (L or R)
 	 * @param startPos L M or R on the hab
 	 */
-	//TODO add support for 'yeet in a circle while moving'
 	public TwoHatchOneCargoLeft(char startPos, char side) {
 		HeldPiece cPiece = HeldPiece.HATCH; // we start with a hatch
 		String cStart = "hab" + startPos;
@@ -52,7 +50,7 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 		cStart = "loading" + side;
 		cPiece = HeldPiece.HATCH;
 
-		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '1'); /*FIXME this path doesn't exist*/ //current trajectory from hashmap in Trajectorie
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 
 		// turn 90 degrees to face the goal
@@ -70,12 +68,14 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 		/* Go from depot to cargo ship 2 */
 		cStart = "depot" + side;
 		cPiece = HeldPiece.CARGO;
-
+		//correct me if im wrong, but why would we go to the second cargo? it doesn't have a hatch. 
+		//the cargo'd fall out at the end of auto unless we used a null hatch, which has been argued against
+		//The only reason I can think of is so the elevator doesn't have to go up, but that doesn't help us if we don't get the pts anyway
 		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '2'); //current trajectory from hashmap in Trajectorie
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 		this.addSequential(new TurnInPlace(90f, true)); // TODO check the angle
-
-		// TODO Deposit cargo here
+		//FIXME this would have to raise the elevator
+		this.addSequential(new AutoMotion(GoalHeight.OVER, GoalType.CARGO_CARGO, false).getBigCommandGroup()); //deposit cargo
 
 	}
 
