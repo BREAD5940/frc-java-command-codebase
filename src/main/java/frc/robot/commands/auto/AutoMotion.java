@@ -6,7 +6,6 @@ import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.GrabCargo;
 import frc.robot.commands.auto.groups.PickUpHatch;
 import frc.robot.commands.auto.groups.PlaceHatch;
-import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.subsystems.superstructure.SuperStructure.ElevatorPresets;
 
 /**
@@ -131,7 +130,7 @@ public class AutoMotion {
 
 		if (this.gType == GoalType.CARGO_CARGO) {
 			// Drive forward so the intake is over the bay and the bumpers are in the indent thingy
-			toReturn.addSequential(new DriveDistance(1+0.2, 20)); // the 0.2 is the bumpers FIXME check distances
+			toReturn.addSequential(new DriveDistance(1 + 0.2, 20)); // the 0.2 is the bumpers FIXME check distances
 		} else {
 			// Drive forward so the intake is flush with the port/hatch
 			toReturn.addSequential(new DriveDistance(1, 20)); // FIXME check distances

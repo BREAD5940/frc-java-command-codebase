@@ -2,8 +2,6 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import java.util.function.Supplier;
 
-import com.team254.lib.physics.DifferentialDrive.WheelState;
-
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
@@ -14,8 +12,9 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TrajectorySamplePo
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
+
+import com.team254.lib.physics.DifferentialDrive.DriveDynamics;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -92,16 +91,14 @@ public class TrajectoryTrackerCommand extends Command {
 		// Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
 		driveBase.setOutput(output);
 
-		var desired_vel = driveBase.getDifferentialDrive().solveInverseDynamics(output.getDifferentialDriveVelocity(), output.getDifferentialDriveAcceleration());
+		DriveDynamics desired_vel = driveBase.getDifferentialDrive().solveInverseDynamics(output.getDifferentialDriveVelocity(), output.getDifferentialDriveAcceleration());
 		// WheelState desired_accel = driveBase.getDifferentialDrive().solveInverseKinematics(output.getDifferentialDriveAcceleration());
 
 		Length mDesiredLeft = LengthKt.getFeet(desired_vel.getVoltage().getLeft() * driveBase.getDifferentialDrive().getWheelRadius());
 
 		Length mDesiredRight = LengthKt.getFeet(desired_vel.getVoltage().getRight() * driveBase.getDifferentialDrive().getWheelRadius());
 
-
-		SmartDashboard.putNumberArray("trackerInfo", new double[]{ mDesiredLeft.getFeet(), mDesiredRight.getFeet(), driveBase.getLeft().getFeetPerSecond(), driveBase.getRight().getFeetPerSecond() });
-
+		SmartDashboard.putNumberArray("trackerInfo", new double[]{mDesiredLeft.getFeet(), mDesiredRight.getFeet(), driveBase.getLeft().getFeetPerSecond(), driveBase.getRight().getFeetPerSecond()});
 
 		// Logger.log(VelocityKt.getFeetPerSecond(trajectoryTracker.getReferencePoint().getState().getVelocity()), (DriveTrain.getInstance().getLeft().getFeetPerSecond() + DriveTrain.getInstance().getRight().getFeetPerSecond()) / 2d);
 

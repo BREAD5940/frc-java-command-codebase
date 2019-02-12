@@ -1,5 +1,7 @@
 package frc.robot.commands.subsystems.drivetrain;
 
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
@@ -49,10 +51,10 @@ public class TurnInPlace extends Command {
 	 * or not.
 	 * @param target_angle
 	 */
-	public TurnInPlace(double target_angle) {
+	public TurnInPlace(Rotation2d target_angle) {
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.drivetrain);
-		this.target_angle = target_angle;
+		this.target_angle = target_angle.getDegree();
 	}
 
 	/**
@@ -62,11 +64,11 @@ public class TurnInPlace extends Command {
 	 * @param target_angle
 	 * @param isAbsolute
 	 */
-	public TurnInPlace(double target_angle, boolean isAbsolute) {
+	public TurnInPlace(Rotation2d target_angle, boolean isAbsolute) {
 		this.isAbsolute = isAbsolute;
 		// Use requires() here to declare subsystem dependencies
 		requires(Robot.drivetrain);
-		this.target_angle = target_angle;
+		this.target_angle = target_angle.getDegree();
 	}
 
 	// Called just before this Command runs the first time

@@ -3,6 +3,7 @@ package frc.robot.commands.auto;
 import org.ghrobotics.lib.commands.DelayCommand;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 
 import frc.robot.commands.auto.AutoMotion.GoalHeight;
@@ -60,7 +61,7 @@ public class AutoCombo {
 		this.mBigCommandGroup.addSequential(new DelayCommand(TimeUnitsKt.getSecond(0.5)).getWrappedValue());
 
 		// this.mBigCommandGroup.addSequential(new YeetInACircleWhileMoving(true));
-		this.mBigCommandGroup.addSequential(new TurnInPlace(180, false));
+		this.mBigCommandGroup.addSequential(new TurnInPlace( Rotation2dKt.getDegree(180), false));
 
 		cStart = "pyeet" + side;
 		cPiece = HeldPiece.HATCH;

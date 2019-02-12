@@ -34,6 +34,7 @@ public class Intake extends Subsystem {
 	@Override
 	public void periodic() {
 		setSpeed(Robot.m_oi.getIntakeSpeed());
+		System.out.println("speed " + Robot.m_oi.getIntakeSpeed());
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.lib.Logger;
 
 /**
- * basically just a CommandGroup but with the done() method
+ * basically just a CommandGroup but with the done() method and time tracking.
  */
 public class AutoCommandGroup extends CommandGroup {
 

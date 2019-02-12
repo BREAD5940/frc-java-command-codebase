@@ -1,5 +1,7 @@
 package frc.robot;
 
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -60,7 +62,7 @@ public class OI {
 
 		testAutoButton.whenPressed(new MultiPathTest());
 		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
-		yeetInACircleButton.whenPressed(new TurnInPlace(180, false));
+		yeetInACircleButton.whenPressed(new TurnInPlace(Rotation2dKt.getDegree(180), false));
 
 		// TODO why does this throw a null pointer
 		// auto_place_cargo_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_CARGO, Robot.mGh.getSelected()));

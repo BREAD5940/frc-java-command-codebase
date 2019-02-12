@@ -53,8 +53,8 @@ public class RotatingJoint /*extends Subsystem*/ {
 	 * @param motorPort on the CAN Bus (for single talon arms)
 	 * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
 	 */
-	public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor, Length armLength, Mass mass) {
-		this(settings, Arrays.asList(motorPort), sensor, false, armLength, mass); //FIXME what should the default masterInvert ACTUALLY be?
+	public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor, boolean invert, Length armLength, Mass mass) {
+		this(settings, Arrays.asList(motorPort), sensor, invert, armLength, mass); //FIXME what should the default masterInvert ACTUALLY be?
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 
 		// TODO add support for more sensors
 		if (sensor == FeedbackDevice.CTRE_MagEncoder_Relative) {
-			unitsPerRotation = NativeUnitKt.getSTU(4096);	
+			unitsPerRotation = NativeUnitKt.getSTU(4096);
 		}
 
 		mRotationModel = new NativeUnitRotationModel(unitsPerRotation);

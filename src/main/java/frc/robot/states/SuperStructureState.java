@@ -91,9 +91,9 @@ public class SuperStructureState {
 		return jointAngles;
 	}
 
-	public boolean isEqualTo(SuperStructureState other){
+	public boolean isEqualTo(SuperStructureState other) {
 		return (this.jointAngles.isEqualTo(other.jointAngles)
-				&&this.elevator.isEqualTo(other.elevator)
-						&&this.piece==other.piece);
+				&& this.elevator.isEqualTo(other.elevator)
+				&& this.piece == other.piece);
 	}
 }

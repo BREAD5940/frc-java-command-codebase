@@ -3,6 +3,7 @@ package frc.robot.commands.auto.routines;
 import org.ghrobotics.lib.commands.DelayCommand;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 
 import frc.robot.commands.auto.AutoMotion;
@@ -37,7 +38,7 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 		// this.addSequential(new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH,true).getBigCommandGroup()); //do a motion
 		this.addSequential(new DelayCommand(TimeUnitsKt.getSecond(0.5)).getWrappedValue());
 
-		/* Move from cargo ship to loading station on the same side */
+		/* Move from middle of cargo ship to loading station on the same side to pick up a hatch */
 		cStart = "cargoM" + side;
 		cPiece = HeldPiece.NONE;
 
@@ -50,14 +51,14 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 		cStart = "loading" + side;
 		cPiece = HeldPiece.HATCH;
 
-		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '1'); /*FIXME this path doesn't exist*/ //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 
 		// turn 90 degrees to face the goal
-		this.addSequential(new TurnInPlace(90f, true)); // TODO check the angle
+		this.addSequential(new TurnInPlace( Trajectories.locations.get("cargo" + side + '1').component2(), true )); // TODO check the angle math here! 
 		this.addSequential(new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH, false).getBigCommandGroup()); //move the intake for hatch placement
 
-		/* Get a cargo from the depot */
+		/* Go from cargo side 1 to the depot */
 		cStart = "cargo" + side + '1';
 		cPiece = HeldPiece.NONE;
 
@@ -65,15 +66,12 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 		this.addSequential(new DelayCommand(TimeUnitsKt.getSecond(0.5)).getWrappedValue()); // TODO run a pickup script
 
-		/* Go from depot to cargo ship 2 */
+		/* Go from depot to cargo ship ~~2~~ 1 darnit you're right. Thanks 10pm me */
 		cStart = "depot" + side;
 		cPiece = HeldPiece.CARGO;
-		//correct me if im wrong, but why would we go to the second cargo? it doesn't have a hatch. 
-		//the cargo'd fall out at the end of auto unless we used a null hatch, which has been argued against
-		//The only reason I can think of is so the elevator doesn't have to go up, but that doesn't help us if we don't get the pts anyway
-		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '2'); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
-		this.addSequential(new TurnInPlace(90f, true)); // TODO check the angle
+		this.addSequential(new TurnInPlace(Rotation2dKt.getDegree(90), true)); // TODO check the angle
 		//FIXME this would have to raise the elevator
 		this.addSequential(new AutoMotion(GoalHeight.OVER, GoalType.CARGO_CARGO, false).getBigCommandGroup()); //deposit cargo
 

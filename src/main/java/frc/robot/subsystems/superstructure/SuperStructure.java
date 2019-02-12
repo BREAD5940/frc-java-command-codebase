@@ -9,6 +9,7 @@ import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.team254.lib.physics.DCMotorTransmission;
 
@@ -18,6 +19,8 @@ import frc.robot.Constants;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
+import frc.robot.lib.PIDSettings;
+import frc.robot.lib.PIDSettings.FeedbackMode;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.ElevatorState;
@@ -80,11 +83,11 @@ public class SuperStructure extends Subsystem {
 
 		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
 
-		mWrist = null;//new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 37, FeedbackDevice.CTRE_MagEncoder_Relative, 
-		// Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong
+		mWrist = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 37, FeedbackDevice.CTRE_MagEncoder_Relative, false /* FIXME check inverting! */,
+				Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
-		mElbow = null;//new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 40, FeedbackDevice.CTRE_MagEncoder_Relative, 
-		// Constants.kElbowLength, Constants.kElbowMass);
+		mElbow = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(38, 39), FeedbackDevice.CTRE_MagEncoder_Relative,
+				false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 	}
 
 	private SuperStructureState mCurrentState = new SuperStructureState();
@@ -101,10 +104,11 @@ public class SuperStructure extends Subsystem {
 				CARGO_DROP, CARGO_REVERSE, HATCH, HATCH_REVERSE));
 	}
 
-	public void setReqState(SuperStructureState reqState) {
+	public boolean setReqState(SuperStructureState reqState) {
 		if (!(planner.checkValidState(reqState)))
-			return;
+			return false;
 		this.mReqState = reqState;
+		return true;
 	}
 
 	/**
@@ -154,7 +158,7 @@ public class SuperStructure extends Subsystem {
 	 */
 	public CommandGroup moveSuperstructureElevator(Length height) {
 		updateState();
-		return this.moveSuperstructureCombo(new ElevatorState(height), mElbow.getCurrentState(), mWrist.getCurrentState());
+		return this.moveSuperstructureCombo(new ElevatorState(height), mReqState.getElbow(), mReqState.getWrist());
 	}
 
 	/**
@@ -168,7 +172,7 @@ public class SuperStructure extends Subsystem {
 	 */
 	public CommandGroup moveSuperstructureAngle(IntakeAngle intakeState, AutoMotion.HeldPiece piece) {
 		updateState();
-		return this.moveSuperstructureCombo(mCurrentState.elevator, intakeState);
+		return this.moveSuperstructureCombo(mReqState.getElevator(), intakeState);
 	}
 
 	@Override
