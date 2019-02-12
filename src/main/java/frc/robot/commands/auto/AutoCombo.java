@@ -31,7 +31,7 @@ public class AutoCombo {
 
 		for (int i = 1; i < wpKeys.length - 1; i++) { //starts at 1 so we don't get the current start
 			cGoal = wpKeys[i]; //goal to the current waypoint
-			TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedTrajectories.get(cStart + " to " + cGoal); //current trajectory from hashmap in Trajectories
+			TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + cGoal); //current trajectory from hashmap in Trajectories
 			AutoMotion cMotion = switchMotion(cPiece, cGoal); //creates an automotion based on the heldpiece and the goal
 			cPiece = cMotion.getmHeldPiece(); //get the current heldpiece from the motion (at least for testing)
 
@@ -62,32 +62,32 @@ public class AutoCombo {
 			return new AutoMotion(true); //TIXME this probably isn't the best way to have this, it's just empty
 		case 'l': //it the loading station
 			if (piece == HeldPiece.NONE) {
-				return new AutoMotion(GoalHeight.LOW, GoalType.RETRIEVE_HATCH);
+				return new AutoMotion(GoalHeight.LOW, GoalType.RETRIEVE_HATCH, false);
 			} else {
 				System.out.println("Cannot load while carrying cargo/hatches");
 				return new AutoMotion(true);
 			}
 		case 'c': //cargo ship
 			if (piece == HeldPiece.CARGO) {
-				return new AutoMotion(GoalHeight.LOW, GoalType.CARGO_CARGO);
+				return new AutoMotion(GoalHeight.LOW, GoalType.CARGO_CARGO, false);
 			} else if (piece == HeldPiece.HATCH) {
-				return new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH);
+				return new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH, false);
 			} else {
 				System.out.println("Cannot deposit nonexistant cargo/hatches");
 				return new AutoMotion(true);
 			}
 		case 'r': //rocket
 			if (piece == HeldPiece.CARGO) {
-				return new AutoMotion(GoalHeight.LOW, GoalType.ROCKET_CARGO);
+				return new AutoMotion(GoalHeight.LOW, GoalType.ROCKET_CARGO, false);
 			} else if (piece == HeldPiece.HATCH) {
-				return new AutoMotion(GoalHeight.LOW, GoalType.ROCKET_HATCH);
+				return new AutoMotion(GoalHeight.LOW, GoalType.ROCKET_HATCH, false);
 			} else {
 				System.out.println("Cannot deposit nonexistant cargo/hatches");
 				return new AutoMotion(true);
 			}
 		case 'd': //might not be home but it sur is a depot
 			if (piece == HeldPiece.NONE) {
-				return new AutoMotion(GoalHeight.LOW, GoalType.RETRIEVE_CARGO);
+				return new AutoMotion(GoalHeight.LOW, GoalType.RETRIEVE_CARGO, true);
 			} else {
 				System.out.println("Cannot collect from depot while holidn hatch/cargo");
 				return new AutoMotion(true);

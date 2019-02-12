@@ -118,8 +118,8 @@ public class Trajectories {
 			for (String eKey : locations.keySet()) {
 				if (!((grabs.contains(key) && grabs.contains(eKey)) || (puts.contains(key) && puts.contains(eKey)))) {
 					System.out.printf("Current start key: %s Current end key: %s\n", key, eKey);
-					generatedTrajectories.put(key + " to " + eKey, //FIXME this is a terrible way to mark unique paths, but it works
-							generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get(key),
+					generatedHGTrajectories.put(key + " to " + eKey, //FIXME this is a terrible way to mark unique paths, but it works
+							generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(locations.get(key),
 									locations.get(eKey))), false));
 				}
 			}

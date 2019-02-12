@@ -24,8 +24,8 @@ public class AutoComboTest {
 		System.out.println("Out of generateAllTrajectories");
 		Pose2d[] wps = new Pose2d[]{Trajectories.locations.get("habM"), Trajectories.locations.get("cargoML")}; //this should require None Correction
 
-		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generateTrajectory(Arrays.asList(wps), false);
-		TimedTrajectory<Pose2dWithCurvature> smTraject = Trajectories.generatedTrajectories.get("habM to cargoML");
+		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generateTrajectoryHighGear(Arrays.asList(wps), false);
+		TimedTrajectory<Pose2dWithCurvature> smTraject = Trajectories.generatedHGTrajectories.get("habM to cargoML");
 		// System.out.println(Trajectories.generatedTrajectories.get("habM to cargoML"));
 		// System.out.println(smTraject);
 
@@ -52,7 +52,7 @@ public class AutoComboTest {
 		for (String sKey : Trajectories.locations.keySet()) {
 			for (String eKey : Trajectories.locations.keySet()) {
 				if (!((Trajectories.grabs.contains(sKey) && Trajectories.grabs.contains(eKey)) || (Trajectories.puts.contains(sKey) && Trajectories.puts.contains(eKey)))) {
-					TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedTrajectories.get(sKey + " to " + eKey);
+					TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories.get(sKey + " to " + eKey);
 					System.out.println("Current traject: " + sKey + " to " + eKey);
 
 					double exX = Trajectories.locations.get(sKey).getTranslation().getX().getFeet();
