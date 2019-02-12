@@ -135,14 +135,11 @@ public class SuperStructure extends Subsystem {
 	public CommandGroup moveSuperstructureCombo(SuperStructureState mRequState_) {
 
 		// TODO the wrist angle is mega broken because it's solely based on the currently held game piece 
-
-		if (!(mReqState == mCurrentState)) { // Redundent check?
-			// this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
-			ArrayList<SuperStructureState> path = planner.plan(mReqState, mCurrentState);
-			this.mCurrentCommandGroup = new CommandGroup("Superstructure Path");
-			for (int i = 0; i < path.size() - 1; i++) {
-				mCurrentCommandGroup.addSequential(new SuperstructureGoToState(path.get(i)));
-			}
+		// this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
+		ArrayList<SuperStructureState> path = planner.plan(mReqState, mCurrentState);
+		this.mCurrentCommandGroup = new CommandGroup("Superstructure Path");
+		for (int i = 0; i < path.size() - 1; i++) {
+			mCurrentCommandGroup.addSequential(new SuperstructureGoToState(path.get(i)));
 		}
 
 		return this.mCurrentCommandGroup;

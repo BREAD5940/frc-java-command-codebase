@@ -40,7 +40,7 @@ public class SuperstructurePlanner {
 	int corrCount; //number of corrected items in motion
 	SuperStructureState currentPlannedState;
 
-	public boolean checkValidState(SuperStructureState reqState) {
+	public boolean checkValidState(SuperStructureState reqState) { //what is this supposed to do? does it just check if the path is possible w/o correction?
 		return true; // FIXME to check if it's valid. Maybe call planner.plan? idk
 	}
 
@@ -57,11 +57,7 @@ public class SuperstructurePlanner {
 		ArrayList<SuperStructureState> toReturn = new ArrayList<SuperStructureState>();
 		SuperStructureState goalState = goalStateIn;
 		errorCount = corrCount = 0;
-		boolean defAngle = false;
-
-		if (iPosition.presets.contains(goalState.getAngle())) {
-			defAngle = true; // TODO como se dice "what is this" en jython?
-		}
+		boolean defAngle = iPosition.presets.contains(goalState.getAngle());
 
 		if (goalState == currentState) {
 			System.out.println("MOTION UNNECESSARY -- Goal and current states are same. Exiting planner.");

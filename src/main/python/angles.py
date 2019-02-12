@@ -15,8 +15,11 @@ def parseCsv(cesv):
             else:
                 plott(float(row[0]), float(row[1]), float(row[2]), colors[c])
                 line_count += 1
-                c=c+1
-        print(f'Processed {line_count} lines.')
+                if(c==colors.len()):
+                    c=0
+                else:
+                    c=c+1
+        # print(f"Processed {line_count} lines.")
 
 def plott(h,e,w,color):
     ne=1
@@ -72,9 +75,6 @@ def plott(h,e,w,color):
     plt.plot([p1x,p2x],[p1y,p2y],c=color)
 
 
-
-    
-
 eAngles = [0, np.pi/2, -np.pi/2, np.pi/4, -np.pi/4]
 wAngles = [0, np.pi/2, -np.pi/2, np.pi/4, -np.pi/4]
 
@@ -82,5 +82,5 @@ fSize=plt.rcParams['figure.figsize']
 fSize[0]=6
 fSize[1]=12  #todo fix this so the sizing is less deceptive
 plt.rcParams['figure.figsize']=fSize
-parseCsv('superstructure/test.csv')
+parseCsv('src/main/python/test.csv')
 plt.show()
