@@ -27,15 +27,15 @@ public class AutoPathingCSVGenerator {
 
 	public void writeToCSV(ArrayList<Translation2d> path) {
 
-		String file = "twoHatchLLtest.csv";
+		String file = "src\\main\\python\\twoHatchLLtest.csv";
 
 		try {
 			FileWriter fw = new FileWriter(file);
 			PrintWriter pw = new PrintWriter(fw, true);
 
-			pw.println("x, y");
-			for(Translation2d t : path) {
-				pw.println(t.getX().getFeet() + ", " + t.getY().getFeet());
+			pw.println("x,y");
+			for (Translation2d t : path) {
+				pw.println(t.getX().getFeet() + "," + t.getY().getFeet());
 			}
 
 			// pw.print("adsffdsaadsfdsfaadsffads1");
@@ -100,7 +100,7 @@ public class AutoPathingCSVGenerator {
 		cStart = "depot" + side;
 		cPiece = HeldPiece.CARGO;
 		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
-		points.addAll(trajectToArrayList(traject));
+		// points.addAll(trajectToArrayList(traject));
 
 		return points;
 
