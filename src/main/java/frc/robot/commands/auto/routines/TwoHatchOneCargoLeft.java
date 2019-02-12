@@ -55,7 +55,7 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 
 		// turn 90 degrees to face the goal
-		this.addSequential(new TurnInPlace( Trajectories.locations.get("cargo" + side + '1').component2(), true )); // TODO check the angle math here! 
+		this.addSequential(new TurnInPlace(Trajectories.locations.get("cargo" + side + '1').component2(), true)); // TODO check the angle math here! 
 		this.addSequential(new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH, false).getBigCommandGroup()); //move the intake for hatch placement
 
 		/* Go from cargo side 1 to the depot */

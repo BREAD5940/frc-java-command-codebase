@@ -61,7 +61,7 @@ public class AutoCombo {
 		this.mBigCommandGroup.addSequential(new DelayCommand(TimeUnitsKt.getSecond(0.5)).getWrappedValue());
 
 		// this.mBigCommandGroup.addSequential(new YeetInACircleWhileMoving(true));
-		this.mBigCommandGroup.addSequential(new TurnInPlace( Rotation2dKt.getDegree(180), false));
+		this.mBigCommandGroup.addSequential(new TurnInPlace(Rotation2dKt.getDegree(180), false));
 
 		cStart = "pyeet" + side;
 		cPiece = HeldPiece.HATCH;
