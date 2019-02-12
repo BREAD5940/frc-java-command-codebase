@@ -125,15 +125,11 @@ public class Trajectories {
 		generatedHGTrajectories.put("cargoML to loadingL", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoML"), locations.get("loadingL"))), false));
 		generatedHGTrajectories.put("cargoMR to loadingR", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoMR"), locations.get("loadingR"))), false));
 
-		generatedHGTrajectories.put("loadingL to yeetL", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingL"), locations.get("yeetL"))),
-				kHighGearConstraints, kDefaultStartVelocity, yeetSpeed, kDefaultVelocity, kDefaultAcceleration, true));
-		generatedHGTrajectories.put("loadingR to yeetR", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingR"), locations.get("yeetR"))),
+		generatedHGTrajectories.put("loadingL to cargoL1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingL"), locations.get("cargoL1"))),
 				kHighGearConstraints, kDefaultStartVelocity, yeetSpeed, kDefaultVelocity, kDefaultAcceleration, true));
 
-		generatedHGTrajectories.put("pyeetL to cargoL1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("yeetL"), locations.get("cargoL1"))),
-				kHighGearConstraints, yeetSpeed, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, false));
-		generatedHGTrajectories.put("pyeetR to cargoR1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("yeetR"), locations.get("cargoR1"))),
-				kHighGearConstraints, yeetSpeed, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, false));
+		generatedHGTrajectories.put("loadingR to cargoR1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingR"), locations.get("cargoR1"))),
+				kHighGearConstraints, kDefaultStartVelocity, yeetSpeed, kDefaultVelocity, kDefaultAcceleration, true));
 
 		generatedHGTrajectories.put("cargoL1 to depotL", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoL1"), locations.get("depotL"))), true));
 		generatedHGTrajectories.put("cargoR1 to depotR", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoR1"), locations.get("depotR"))), true));
@@ -172,15 +168,11 @@ public class Trajectories {
 		generatedLGTrajectories.put("cargoML to loadingL", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoML"), locations.get("loadingL"))), false));
 		generatedLGTrajectories.put("cargoMR to loadingR", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoMR"), locations.get("loadingR"))), false));
 
-		generatedLGTrajectories.put("loadingL to yeetL", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingL"), locations.get("yeetL"))),
-				kLowGearConstraints, kDefaultStartVelocity, yeetSpeed, kDefaultVelocity, kDefaultAcceleration, true));
-		generatedLGTrajectories.put("loadingR to yeetR", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingR"), locations.get("yeetR"))),
-				kLowGearConstraints, kDefaultStartVelocity, yeetSpeed, kDefaultVelocity, kDefaultAcceleration, true));
+		generatedLGTrajectories.put("loadingL to cargoL1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingL"), locations.get("cargoL1"))),
+				kHighGearConstraints, kDefaultStartVelocity, yeetSpeed, kDefaultVelocity, kDefaultAcceleration, true));
 
-		generatedLGTrajectories.put("pyeetL to cargoL1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("yeetL"), locations.get("cargoL1"))),
-				kLowGearConstraints, yeetSpeed, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, false));
-		generatedLGTrajectories.put("pyeetR to cargoR1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("yeetR"), locations.get("cargoR1"))),
-				kLowGearConstraints, yeetSpeed, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, false));
+		generatedLGTrajectories.put("loadingR to cargoR1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingR"), locations.get("cargoR1"))),
+				kHighGearConstraints, kDefaultStartVelocity, yeetSpeed, kDefaultVelocity, kDefaultAcceleration, true));
 
 		generatedLGTrajectories.put("cargoL1 to depotL", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoL1"), locations.get("depotL"))), true));
 		generatedLGTrajectories.put("cargoR1 to depotR", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoR1"), locations.get("depotR"))), true));

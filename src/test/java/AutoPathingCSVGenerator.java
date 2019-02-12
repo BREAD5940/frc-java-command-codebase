@@ -1,3 +1,6 @@
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +16,35 @@ import frc.robot.commands.auto.Trajectories;
 public class AutoPathingCSVGenerator {
 
 	@Test
-	public void generateCSVs() {
+	public void twoHatchLLtest() {
+		Trajectories.generateAllTrajectories(false);
 		ArrayList<Translation2d> path = TwoHatchOneCargoLeft('L', 'L');
+		// Logger.log("path: " + path.toString());
+
+		writeToCSV(path);
+
+	}
+
+	public void writeToCSV(ArrayList<Translation2d> path) {
+
+		String file = "twoHatchLLtest.csv";
+
+		try {
+			FileWriter fw = new FileWriter(file);
+			PrintWriter pw = new PrintWriter(fw, true);
+
+			pw.println("x, y");
+			for(Translation2d t : path) {
+				pw.println(t.getX().getFeet() + ", " + t.getY().getFeet());
+			}
+
+			// pw.print("adsffdsaadsfdsfaadsffads1");
+
+			pw.close();
+		} catch (IOException ioe) {
+			System.out.println(ioe);
+		}
+
 	}
 
 	public ArrayList<Translation2d> trajectToArrayList(TimedTrajectory<Pose2dWithCurvature> traject) {
@@ -39,6 +69,7 @@ public class AutoPathingCSVGenerator {
 
 		/* Get a trajectory to move to the cargo ship */
 		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargoM" + side); //current trajectory from hashmap in Trajectorie
+		// Logger.log("first trajectory to cargo: " + traject.toString());
 		points.addAll(trajectToArrayList(traject));
 
 		/* Move from middle of cargo ship to loading station on the same side to pick up a hatch */
