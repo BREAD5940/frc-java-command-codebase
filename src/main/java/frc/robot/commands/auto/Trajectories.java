@@ -42,15 +42,15 @@ public class Trajectories {
 		locations.put("habL", new Pose2d(LengthKt.getFeet(5.141), LengthKt.getFeet(9.508), Rotation2dKt.getDegree(180)));
 		locations.put("loadingL", new Pose2d(LengthKt.getFeet(1.286), LengthKt.getFeet(25.021), Rotation2dKt.getDegree(180.0)));
 		locations.put("loadingR", new Pose2d(LengthKt.getFeet(1.325), LengthKt.getFeet(2.336), Rotation2dKt.getDegree(180.0)));
-		locations.put("cargoL1", new Pose2d(LengthKt.getFeet(21.565), LengthKt.getFeet(17.235), Rotation2dKt.getDegree(0d))); // I changed this! -Matt
+		locations.put("cargoL1", new Pose2d(LengthKt.getFeet(21.565), LengthKt.getFeet(17.235), Rotation2dKt.getDegree(-90d))); // I unchanged this! -Matt
 		// locations.put("cargoL1Rotated", new Pose2d(LengthKt.getFeet(21.565), LengthKt.getFeet(17.235), Rotation2dKt.getDegree(-90.0)));
-		locations.put("cargoL2", new Pose2d(LengthKt.getFeet(23.532), LengthKt.getFeet(17.235), Rotation2dKt.getDegree(0d))); // I changed this! -Matt
-		locations.put("cargoL3", new Pose2d(LengthKt.getFeet(25.277), LengthKt.getFeet(17.235), Rotation2dKt.getDegree(0d))); // I changed this! -Matt
+		locations.put("cargoL2", new Pose2d(LengthKt.getFeet(23.532), LengthKt.getFeet(17.235), Rotation2dKt.getDegree(-90d))); // I unchanged this! -Matt
+		locations.put("cargoL3", new Pose2d(LengthKt.getFeet(25.277), LengthKt.getFeet(17.235), Rotation2dKt.getDegree(-90d))); // I unchanged this! -Matt
 		locations.put("cargoML", new Pose2d(LengthKt.getFeet(17.101), LengthKt.getFeet(14.338), Rotation2dKt.getDegree(180)));
 		locations.put("cargoMR", new Pose2d(LengthKt.getFeet(17.066), LengthKt.getFeet(12.653), Rotation2dKt.getDegree(180)));
-		locations.put("cargoR1", new Pose2d(LengthKt.getFeet(21.565), LengthKt.getFeet(9.898), Rotation2dKt.getDegree(0d))); // I changed this! -Matt
-		locations.put("cargoR2", new Pose2d(LengthKt.getFeet(23.532), LengthKt.getFeet(9.898), Rotation2dKt.getDegree(0d))); // I changed this! -Matt
-		locations.put("cargoR3", new Pose2d(LengthKt.getFeet(25.277), LengthKt.getFeet(9.898), Rotation2dKt.getDegree(0d))); // I changed this! -Matt
+		locations.put("cargoR1", new Pose2d(LengthKt.getFeet(21.565), LengthKt.getFeet(9.898), Rotation2dKt.getDegree(90d))); // I unchanged this! -Matt
+		locations.put("cargoR2", new Pose2d(LengthKt.getFeet(23.532), LengthKt.getFeet(9.898), Rotation2dKt.getDegree(90d))); // I unchanged this! -Matt
+		locations.put("cargoR3", new Pose2d(LengthKt.getFeet(25.277), LengthKt.getFeet(9.898), Rotation2dKt.getDegree(90d))); // I unchanged this! -Matt
 		locations.put("depotL", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(20.517), Rotation2dKt.getDegree(0)));
 		locations.put("depotR", new Pose2d(LengthKt.getFeet(5.203), LengthKt.getFeet(6.107), Rotation2dKt.getDegree(0))); //FIXME can w actually pick up cargo like this?
 		locations.put("yeetL", new Pose2d(LengthKt.getFeet(13.606), LengthKt.getFeet(21.315), Rotation2dKt.getDegree(145))); //basically arb. rn
@@ -62,7 +62,7 @@ public class Trajectories {
 
 	public static HashMap<String, TimedTrajectory<Pose2dWithCurvature>> generatedHGTrajectories = new HashMap<String, TimedTrajectory<Pose2dWithCurvature>>();
 	public static HashMap<String, TimedTrajectory<Pose2dWithCurvature>> generatedLGTrajectories = new HashMap<String, TimedTrajectory<Pose2dWithCurvature>>();
-  public static List<String> grabs = new ArrayList<String>(Arrays.asList("habR", "habM", "habL", "loadingL", "loadingR", "depotLF", "depotLB", "depotRF", "depotRB"));
+	public static List<String> grabs = new ArrayList<String>(Arrays.asList("habR", "habM", "habL", "loadingL", "loadingR", "depotLF", "depotLB", "depotRF", "depotRB"));
 	public static List<String> puts = new ArrayList<String>(Arrays.asList("cargoL1", "cargoL2", "cargoL3", "cargoML", "cargoMR", "cargoR1", "cargoR2", "cargoR3",
 			"rocketL1", "rocketL2", "rocketL3", "rocketR1", "rocketR2", "rocketR3"));
 
@@ -139,6 +139,22 @@ public class Trajectories {
 		generatedHGTrajectories.put("depotL to cargoL1", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotL"), locations.get("cargoL1"))), false));
 		generatedHGTrajectories.put("depotR to cargoR1", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotR"), locations.get("cargoR1"))), false));
 
+		generatedHGTrajectories.put("loadingL to  cargoL1", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(
+				locations.get("loadingL"), locations.get("cargoL1").plus(
+						new Pose2d(
+								LengthKt.getFeet(2),
+								LengthKt.getFeet(0),
+								Rotation2dKt.getDegree(90))))),
+				false));
+
+		generatedHGTrajectories.put("loadingR to  cargoR1", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(
+				locations.get("loadingR"), locations.get("cargoR1").plus(
+						new Pose2d(
+								LengthKt.getFeet(-2),
+								LengthKt.getFeet(0),
+								Rotation2dKt.getDegree(-90))))),
+				false));
+
 		generatedHGTrajectories.put("test", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingL"),
 				new Pose2d(LengthKt.getFeet(15.9), LengthKt.getFeet(22.011), Rotation2dKt.getDegree(165)),
 				new Pose2d(LengthKt.getFeet(21.646), LengthKt.getFeet(19.223), Rotation2dKt.getDegree(-90)))),
@@ -146,39 +162,53 @@ public class Trajectories {
 		generatedHGTrajectories.put("test1", generateTrajectoryHighGear(Arrays.asList(new Pose2d(LengthKt.getFeet(21.646), LengthKt.getFeet(19.223), Rotation2dKt.getDegree(-90)),
 				locations.get("cargoL1")), false));
 
+		generatedLGTrajectories.put("habL to cargoML", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("habL"), locations.get("cargoML"))), true));
+		generatedLGTrajectories.put("habM to cargoMR", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("habM"), locations.get("cargoMR"))), true));
+		generatedLGTrajectories.put("habM to cargoML", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("habM"), locations.get("cargoML"))), true));
+		generatedLGTrajectories.put("habR to cargoMR", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("habR"), locations.get("cargoMR"))), true));
 
+		generatedLGTrajectories.put("cargoML to loadingL", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoML"), locations.get("loadingL"))), false));
+		generatedLGTrajectories.put("cargoMR to loadingR", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoMR"), locations.get("loadingR"))), false));
 
-        generatedLGTrajectories.put("habL to cargoML", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("habL"), locations.get("cargoML"))), true));
-        generatedLGTrajectories.put("habM to cargoMR", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("habM"), locations.get("cargoMR"))), true));
-        generatedLGTrajectories.put("habM to cargoML", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("habM"), locations.get("cargoML"))), true));
-        generatedLGTrajectories.put("habR to cargoMR", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("habR"), locations.get("cargoMR"))), true));
-    
-        generatedLGTrajectories.put("cargoML to loadingL", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoML"), locations.get("loadingL"))), false));
-        generatedLGTrajectories.put("cargoMR to loadingR", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoMR"), locations.get("loadingR"))), false));
-    
-        generatedLGTrajectories.put("loadingL to yeetL", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingL"), locations.get("yeetL"))),
-            kLowGearConstraints, kDefaultStartVelocity, yeetSpeed, kDefaultVelocity, kDefaultAcceleration, true));
-        generatedLGTrajectories.put("loadingR to yeetR", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingR"), locations.get("yeetR"))),
-            kLowGearConstraints, kDefaultStartVelocity, yeetSpeed, kDefaultVelocity, kDefaultAcceleration, true));
-    
-        generatedLGTrajectories.put("pyeetL to cargoL1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("yeetL"), locations.get("cargoL1"))),
-            kLowGearConstraints, yeetSpeed, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, false));
-        generatedLGTrajectories.put("pyeetR to cargoR1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("yeetR"), locations.get("cargoR1"))),
-            kLowGearConstraints, yeetSpeed, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, false));
-    
-        generatedLGTrajectories.put("cargoL1 to depotL", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoL1"), locations.get("depotL"))), true));
-        generatedLGTrajectories.put("cargoR1 to depotR", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoR1"), locations.get("depotR"))), true));
-    
-        generatedLGTrajectories.put("depotL to cargoL1", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotL"), locations.get("cargoL1"))), false));
-        generatedLGTrajectories.put("depotR to cargoR1", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotR"), locations.get("cargoR1"))), false));
-    
-        generatedLGTrajectories.put("test", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingL"),
-            new Pose2d(LengthKt.getFeet(15.9), LengthKt.getFeet(22.011), Rotation2dKt.getDegree(165)),
-            new Pose2d(LengthKt.getFeet(21.646), LengthKt.getFeet(19.223), Rotation2dKt.getDegree(-90)))),
-            kLowGearConstraints, kDefaultStartVelocity, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, true));
-        generatedLGTrajectories.put("test1", generateTrajectoryLowGear(Arrays.asList(new Pose2d(LengthKt.getFeet(21.646), LengthKt.getFeet(19.223), Rotation2dKt.getDegree(-90)),
-            locations.get("cargoL1")), false));
-    
+		generatedLGTrajectories.put("loadingL to yeetL", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingL"), locations.get("yeetL"))),
+				kLowGearConstraints, kDefaultStartVelocity, yeetSpeed, kDefaultVelocity, kDefaultAcceleration, true));
+		generatedLGTrajectories.put("loadingR to yeetR", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingR"), locations.get("yeetR"))),
+				kLowGearConstraints, kDefaultStartVelocity, yeetSpeed, kDefaultVelocity, kDefaultAcceleration, true));
+
+		generatedLGTrajectories.put("pyeetL to cargoL1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("yeetL"), locations.get("cargoL1"))),
+				kLowGearConstraints, yeetSpeed, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, false));
+		generatedLGTrajectories.put("pyeetR to cargoR1", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("yeetR"), locations.get("cargoR1"))),
+				kLowGearConstraints, yeetSpeed, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, false));
+
+		generatedLGTrajectories.put("cargoL1 to depotL", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoL1"), locations.get("depotL"))), true));
+		generatedLGTrajectories.put("cargoR1 to depotR", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoR1"), locations.get("depotR"))), true));
+
+		generatedLGTrajectories.put("depotL to cargoL1", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotL"), locations.get("cargoL1"))), false));
+		generatedLGTrajectories.put("depotR to cargoR1", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotR"), locations.get("cargoR1"))), false));
+
+		generatedLGTrajectories.put("loadingL to  cargoL1", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(
+				locations.get("loadingL"), locations.get("cargoL1").plus(
+						new Pose2d(
+								LengthKt.getFeet(2),
+								LengthKt.getFeet(0),
+								Rotation2dKt.getDegree(90))))),
+				false));
+
+		generatedLGTrajectories.put("loadingR to  cargoR1", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(
+				locations.get("loadingR"), locations.get("cargoR1").plus(
+						new Pose2d(
+								LengthKt.getFeet(-2),
+								LengthKt.getFeet(0),
+								Rotation2dKt.getDegree(-90))))),
+				false));
+
+		generatedLGTrajectories.put("test", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingL"),
+				new Pose2d(LengthKt.getFeet(15.9), LengthKt.getFeet(22.011), Rotation2dKt.getDegree(165)),
+				new Pose2d(LengthKt.getFeet(21.646), LengthKt.getFeet(19.223), Rotation2dKt.getDegree(-90)))),
+				kLowGearConstraints, kDefaultStartVelocity, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, true));
+		generatedLGTrajectories.put("test1", generateTrajectoryLowGear(Arrays.asList(new Pose2d(LengthKt.getFeet(21.646), LengthKt.getFeet(19.223), Rotation2dKt.getDegree(-90)),
+				locations.get("cargoL1")), false));
+
 		System.out.println("Out of first round of generation");
 		double now = 0;
 		if (isReal)
