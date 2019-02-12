@@ -124,21 +124,21 @@ public class AutoMotion {
 		}
 
 		// Align with the vision targets, slightly back from the goal
-		toReturn.addSequential(new FollowVisionTarget(0.7, 2, 20)); // FIXME check % value TODO this assumes a perfect FollowVisionTarget command
+		//TODO get the robot/limelight 1ft away from the goal
 
 		// Set the elevator to the correct height
-		// toReturn.addSequential(new SetElevatorHeight(getElevatorPreset(),false));
+		// toReturn.addSequential(new SetElevatorHeight(getElevatorPreset(),false)); //FIXME is there a reason this is commented out?
 
 		if (this.gType == GoalType.CARGO_CARGO) {
 			// Drive forward so the intake is over the bay and the bumpers are in the indent thingy
-			toReturn.addSequential(new DriveDistance(2, 20)); // FIXME check distances
+			toReturn.addSequential(new DriveDistance(1+0.2, 20)); // the 0.2 is the bumpers FIXME check distances
 		} else {
 			// Drive forward so the intake is flush with the port/hatch
 			toReturn.addSequential(new DriveDistance(1, 20)); // FIXME check distances
 		}
 
 		if (this.piece == HeldPiece.CARGO) {
-			// toReturn.addSequential(new AutoIntake(-1, 5)); // TODO change this to something hadled by superstructure??
+			// toReturn.addSequential(new AutoIntake(-1, 5)); // TODO change this to something hadled by superstructure?? // do we want the intake on the ss?
 		} else if (this.piece == HeldPiece.HATCH) {
 			toReturn.addSequential(new PlaceHatch());
 		}

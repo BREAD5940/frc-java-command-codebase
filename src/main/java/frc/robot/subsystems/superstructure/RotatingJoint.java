@@ -54,7 +54,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 	 * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
 	 */
 	public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor, Length armLength, Mass mass) {
-		this(settings, Arrays.asList(motorPort), sensor, armLength, mass);
+		this(settings, Arrays.asList(motorPort), sensor, false, armLength, mass); //FIXME what should the default masterInvert ACTUALLY be?
 	}
 
 	/**

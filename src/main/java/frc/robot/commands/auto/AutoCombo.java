@@ -15,8 +15,9 @@ import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 
 /**
  * Creates an AutoMotion and drive plan based on the inputted params. Will
- * probably be used only in sandstorm. (and yes, this is basically 2018's auto
- * selector, but slightly different)
+ * probably be used only in sandstorm. 
+ * 
+ * @author Jocelyn McHugo
  */
 public class AutoCombo {
 	private AutoCommandGroup mBigCommandGroup;

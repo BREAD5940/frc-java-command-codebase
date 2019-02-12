@@ -10,7 +10,7 @@ import frc.robot.commands.auto.actions.DriveDistance;
 public class PlaceHatch extends CommandGroup {
 	public PlaceHatch() {
 		// Move forward constantly until timed out while outtaking
-		addParallel(new DriveDistance(30, 10, 5)); // This should just keep going forward for like 5secs TODO test
+		addParallel(new DriveDistance(30, 10, 0.5)); // This should just keep going forward for like .5secs TODO test
 		// Outtake hatch
 		// addParallel(new CloseClamp()); //TODO make a CloseClamp command
 	}
