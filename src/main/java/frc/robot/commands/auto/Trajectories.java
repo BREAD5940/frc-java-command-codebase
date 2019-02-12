@@ -113,7 +113,9 @@ public class Trajectories {
 
 		Logger.log("Generating ALL trajectories");
 		genLocs();
-		double startTime = Timer.getFPGATimestamp();
+		double startTime = 0;
+		if (isReal)
+			startTime = Timer.getFPGATimestamp();
 
 		generatedHGTrajectories.put("habL to cargoML", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("habL"), locations.get("cargoML"))), true));
 		generatedHGTrajectories.put("habM to cargoMR", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("habM"), locations.get("cargoMR"))), true));
@@ -211,9 +213,10 @@ public class Trajectories {
 
 		System.out.println("Out of first round of generation");
 		double now = 0;
-		if (isReal)
+		if (isReal) {
 			now = Timer.getFPGATimestamp();
-		Logger.log("Trajectories generated in " + (now - startTime) + " seconds!");
+			Logger.log("Trajectories generated in " + (now - startTime) + " seconds!");
+		}
 	}
 
 	/**
