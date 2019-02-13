@@ -37,9 +37,9 @@ public class Trajectories {
 	 * TODO actually figure out why that breaks it
 	 */
 	private static void genLocs() {
-		locations.put("habR", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684), Rotation2dKt.getDegree(180)));
+		locations.put("habL", new Pose2d(LengthKt.getFeet(5.106), LengthKt.getFeet(17.684), Rotation2dKt.getDegree(180)));
 		locations.put("habM", new Pose2d(LengthKt.getFeet(5.181), LengthKt.getFeet(13.379), Rotation2dKt.getDegree(180)));
-		locations.put("habL", new Pose2d(LengthKt.getFeet(5.141), LengthKt.getFeet(9.508), Rotation2dKt.getDegree(180)));
+		locations.put("habR", new Pose2d(LengthKt.getFeet(5.141), LengthKt.getFeet(9.508), Rotation2dKt.getDegree(180)));
 		locations.put("loadingL", new Pose2d(LengthKt.getFeet(1.286), LengthKt.getFeet(25.021), Rotation2dKt.getDegree(180.0)));
 		locations.put("loadingR", new Pose2d(LengthKt.getFeet(1.325), LengthKt.getFeet(2.336), Rotation2dKt.getDegree(180.0)));
 		locations.put("cargoL1", new Pose2d(LengthKt.getFeet(21.565), LengthKt.getFeet(17.235), Rotation2dKt.getDegree(-90d))); // I unchanged this! -Matt
@@ -134,7 +134,7 @@ public class Trajectories {
 		generatedHGTrajectories.put("loadingL to cargoL1", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(
 				locations.get("loadingL"), locations.get("cargoL1").plus(
 						new Pose2d(
-								LengthKt.getFeet(2),
+								LengthKt.getFeet(0),
 								LengthKt.getFeet(0),
 								Rotation2dKt.getDegree(-90))))),
 				true));
@@ -142,7 +142,7 @@ public class Trajectories {
 		generatedHGTrajectories.put("loadingR to cargoR1", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(
 				locations.get("loadingR"), locations.get("cargoR1").plus(
 						new Pose2d(
-								LengthKt.getFeet(-2),
+								LengthKt.getFeet(0),
 								LengthKt.getFeet(0),
 								Rotation2dKt.getDegree(90))))),
 				true));
@@ -171,7 +171,7 @@ public class Trajectories {
 		generatedLGTrajectories.put("loadingL to cargoL1", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(
 				locations.get("loadingL"), locations.get("cargoL1").plus(
 						new Pose2d(
-								LengthKt.getFeet(2),
+								LengthKt.getFeet(0),
 								LengthKt.getFeet(0),
 								Rotation2dKt.getDegree(-90))))),
 				true));
@@ -179,7 +179,7 @@ public class Trajectories {
 		generatedLGTrajectories.put("loadingR to cargoR1", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(
 				locations.get("loadingR"), locations.get("cargoR1").plus(
 						new Pose2d(
-								LengthKt.getFeet(-2),
+								LengthKt.getFeet(0),
 								LengthKt.getFeet(0),
 								Rotation2dKt.getDegree(90))))),
 				true));

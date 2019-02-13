@@ -1,0 +1,1 @@
+./gradlew test ; python3.5 ./src/main/python/VisualizePath.py
