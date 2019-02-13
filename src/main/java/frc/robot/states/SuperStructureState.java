@@ -4,9 +4,10 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.lib.Loggable;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
-public class SuperStructureState {
+public class SuperStructureState implements Loggable {
 	public IntakeAngle jointAngles;
 	public ElevatorState elevator;
 	private HeldPiece piece = HeldPiece.NONE;
@@ -96,4 +97,16 @@ public class SuperStructureState {
 				&& this.elevator.isEqualTo(other.elevator)
 				&& this.piece == other.piece);
 	}
+
+	@Override
+	public String getCSVHeader() {
+		return "Elevator,Elbow,Wrist,Piece";
+	}
+
+	@Override
+	public String toCSV() {
+		return elevator.getHeight().getInch() + "," + jointAngles.getElbow().angle.getDegree() + ","
+				+ jointAngles.getWrist().angle.getDegree() + "," + piece.name();
+	}
+
 }

@@ -10,8 +10,6 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import edu.wpi.first.wpilibj.Timer;
-import frc.robot.subsystems.superstructure.Elevator;
-import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class ElevatorState {
 	public Length height;
@@ -19,7 +17,7 @@ public class ElevatorState {
 	public Velocity<Length> velocity;
 	public Acceleration<Length> acceleration;
 	// public double feedForwardVoltage;
-	private Elevator elevator = SuperStructure.elevator;
+	// private Elevator elevator = SuperStructure.elevator;
 
 	private Length kDefaultHeight = LengthKt.getFeet(0);
 	private Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
