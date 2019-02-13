@@ -11,6 +11,7 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.junit.jupiter.api.Test;
 
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.lib.Logger;
 import frc.robot.commands.auto.Trajectories;
 
 public class AutoPathingCSVGenerator {
@@ -64,6 +65,7 @@ public class AutoPathingCSVGenerator {
 
 		HeldPiece cPiece = HeldPiece.HATCH; // we start with a hatch
 		String cStart = "hab" + startPos;
+		String mLoadingStation = "loading" + side;
 
 		/* Get a trajectory to move to the cargo ship */
 		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargoM" + side); //current trajectory from hashmap in Trajectorie
@@ -74,11 +76,11 @@ public class AutoPathingCSVGenerator {
 		cStart = "cargoM" + side;
 		cPiece = HeldPiece.NONE;
 
-		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "loading" + side); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
 		points.addAll(trajectToArrayList(traject));
 
 		/* Go right up to the cargo ship from the loading station */
-		cStart = "loading" + side;
+		cStart = mLoadingStation;
 		cPiece = HeldPiece.HATCH;
 
 		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
@@ -101,6 +103,85 @@ public class AutoPathingCSVGenerator {
 		// points.addAll(trajectToArrayList(traject));
 
 		return points;
+
+	}
+
+	public ArrayList<Translation2d> FullRocket(char startPos, char side) {
+
+		ArrayList<Translation2d> points = new ArrayList<Translation2d>();
+
+		String mLoadingStation = "loading" + side;
+		String mCloseRocket = "rocket" + side + '1';
+		String mFarRocket = "rocket" + side + '3';
+		String mCargoPort = "rocket" + side + '2';
+
+		HeldPiece cPiece = HeldPiece.HATCH; // we start with a hatch
+		String cStart = "hab" + startPos;
+
+		/* Get a trajectory to move to the rocket ship close side (THIS IS BACKWARDS/REVERSED!) */
+		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + mCloseRocket); //current trajectory from hashmap in Trajectorie
+		if(traject == null) return null;
+		points.addAll(trajectToArrayList(traject));
+				
+		cPiece = HeldPiece.NONE; 
+
+		/* Get a trajectory to move from close side cargo ship to loading station*/
+		traject = Trajectories.generatedHGTrajectories.get(mCloseRocket + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
+		if(traject == null) return null;
+		points.addAll(trajectToArrayList(traject));
+
+		cPiece = HeldPiece.HATCH; 
+
+		/* Get a trajectory to move from loading station to far side rocket (this is 2 hatches) */
+		traject = Trajectories.generatedHGTrajectories.get(mLoadingStation + " to " + mFarRocket); //current trajectory from hashmap in Trajectorie
+		if(traject == null) Logger.log("Trajectory doesn't exist! ur bad.");
+		points.addAll(trajectToArrayList(traject));
+
+		cPiece = HeldPiece.NONE;
+
+		/* Get a trajectory to move back from far rocket to loading station */
+		traject = Trajectories.generatedHGTrajectories.get(mFarRocket + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
+		if(traject == null) Logger.log("Trajectory doesn't exist! ur bad.");
+		points.addAll(trajectToArrayList(traject));
+
+		/* Get a trajectory to move from loading station to far side rocket (this is 3 hatches) */
+		traject = Trajectories.generatedHGTrajectories.get(mLoadingStation + " to " + mFarRocket); //current trajectory from hashmap in Trajectorie
+		if(traject == null) Logger.log("Trajectory doesn't exist! ur bad.");
+		points.addAll(trajectToArrayList(traject));
+
+		cPiece = HeldPiece.NONE;
+
+		/* Get a trajectory to move back from far rocket to loading station */
+		traject = Trajectories.generatedHGTrajectories.get(mFarRocket + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
+		if(traject == null) Logger.log("Trajectory doesn't exist! ur bad.");
+		points.addAll(trajectToArrayList(traject));
+
+		cPiece = HeldPiece.HATCH;
+
+		/* Get a trajectory to move from loading station to far side rocket (this is 4 hatches) */
+		traject = Trajectories.generatedHGTrajectories.get(mLoadingStation + " to " + mFarRocket); //current trajectory from hashmap in Trajectorie
+		if(traject == null) Logger.log("Trajectory doesn't exist! ur bad.");
+		points.addAll(trajectToArrayList(traject));
+
+		cPiece = HeldPiece.NONE;
+
+		/* Get a trajectory to move back from far rocket to loading station */
+		traject = Trajectories.generatedHGTrajectories.get(mFarRocket + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
+		if(traject == null) Logger.log("Trajectory doesn't exist! ur bad.");
+		points.addAll(trajectToArrayList(traject));
+
+		/* Get a trajectory to move to the rocket ship close side (THIS IS BACKWARDS/REVERSED!) */
+		traject = Trajectories.generatedHGTrajectories.get(mLoadingStation + " to " + mCloseRocket); //current trajectory from hashmap in Trajectorie
+		if(traject == null) return null;
+		points.addAll(trajectToArrayList(traject));
+				
+		cPiece = HeldPiece.NONE; 
+
+		/* Get a trajectory to move from close side cargo ship to loading station*/
+		traject = Trajectories.generatedHGTrajectories.get(mCloseRocket + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
+		if(traject == null) return null;
+		points.addAll(trajectToArrayList(traject));
+
 
 	}
 
