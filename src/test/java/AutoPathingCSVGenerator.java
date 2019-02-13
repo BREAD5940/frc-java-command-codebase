@@ -163,6 +163,8 @@ public class AutoPathingCSVGenerator {
 		if(traject == null) Logger.log("Trajectory doesn't exist! ur bad.");
 		points.addAll(trajectToArrayList(traject));
 
+		/* ------------------------------------------------------------------ This is all the far placed ------------------------------------------------------------------ */
+
 		cPiece = HeldPiece.NONE;
 
 		/* Get a trajectory to move back from far rocket to loading station */
@@ -181,6 +183,14 @@ public class AutoPathingCSVGenerator {
 		traject = Trajectories.generatedHGTrajectories.get(mCloseRocket + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
 		if(traject == null) return null;
 		points.addAll(trajectToArrayList(traject));
+
+		/* Get a trajectory to move from loading station to the rocket ship close side for the last bloody time*/
+		traject = Trajectories.generatedHGTrajectories.get(mLoadingStation + " to " + mCloseRocket); //current trajectory from hashmap in Trajectorie
+		if(traject == null) return null;
+		points.addAll(trajectToArrayList(traject));
+
+				/* ------------------------------------------------------------------ The rocket is now full ------------------------------------------------------------------ */
+
 
 
 	}
