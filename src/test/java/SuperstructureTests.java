@@ -53,15 +53,15 @@ public class SuperstructureTests {
   @Test
   public void testElevator(){
     SuperstructurePlanner planner = new SuperstructurePlanner();
-    SuperStructureState currentState = new SuperStructureState(new ElevatorState(),iPosition.CARGO_GRAB,HeldPiece.NONE);
+    SuperStructureState currentState = new SuperStructureState(new ElevatorState(true),iPosition.CARGO_GRAB,HeldPiece.NONE);
     ArrayList<SuperStructureState> goalStates = new ArrayList<SuperStructureState>(Arrays.asList(
-              new SuperStructureState(new ElevatorState(LengthKt.getFeet(10)),iPosition.CARGO_GRAB,HeldPiece.NONE),
-              new SuperStructureState(new ElevatorState(LengthKt.getFeet(30)),iPosition.CARGO_GRAB,HeldPiece.NONE),
-              new SuperStructureState(new ElevatorState(LengthKt.getFeet(80)),iPosition.CARGO_GRAB,HeldPiece.NONE)));
+              new SuperStructureState(new ElevatorState(LengthKt.getFeet(10), true),iPosition.CARGO_GRAB,HeldPiece.NONE),
+              new SuperStructureState(new ElevatorState(LengthKt.getFeet(30), true),iPosition.CARGO_GRAB,HeldPiece.NONE),
+              new SuperStructureState(new ElevatorState(LengthKt.getFeet(80), true),iPosition.CARGO_GRAB,HeldPiece.NONE)));
     ArrayList<SuperStructureState> correctEndStates = new ArrayList<SuperStructureState>(Arrays.asList(
-              new SuperStructureState(new ElevatorState(LengthKt.getFeet(10)),iPosition.CARGO_GRAB,HeldPiece.NONE),
-              new SuperStructureState(new ElevatorState(LengthKt.getFeet(30)),iPosition.CARGO_GRAB,HeldPiece.NONE),
-              new SuperStructureState(new ElevatorState(LengthKt.getFeet(70)),iPosition.CARGO_GRAB,HeldPiece.NONE)));
+              new SuperStructureState(new ElevatorState(LengthKt.getFeet(10), true),iPosition.CARGO_GRAB,HeldPiece.NONE),
+              new SuperStructureState(new ElevatorState(LengthKt.getFeet(30), true),iPosition.CARGO_GRAB,HeldPiece.NONE),
+              new SuperStructureState(new ElevatorState(LengthKt.getFeet(70), true),iPosition.CARGO_GRAB,HeldPiece.NONE)));
     ArrayList<SuperStructureState> resultingStates=new ArrayList<SuperStructureState>();
 
     for(int i=0; i<goalStates.size(); i++){

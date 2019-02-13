@@ -35,17 +35,27 @@ public class ElevatorState {
 		height = height_;
 		velocity = velocity_;
 		acceleration = accel_;
-		time = TimeUnitsKt.getSecond(Timer.getFPGATimestamp());
+		time = TimeUnitsKt.getMillisecond(System.currentTimeMillis());
 	}
 
 	public ElevatorState() {
 		this(LengthKt.getFeet(0), VelocityKt.getVelocity(LengthKt.getFeet(0)), AccelerationKt.getAcceleration(LengthKt.getFeet(0)),
-				TimeUnitsKt.getSecond(Timer.getFPGATimestamp()));
+				TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
+	}
+
+	public ElevatorState(boolean simulate) {
+		this(LengthKt.getFeet(0), VelocityKt.getVelocity(LengthKt.getFeet(0)), AccelerationKt.getAcceleration(LengthKt.getFeet(0)),
+				TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
 	}
 
 	public ElevatorState(Length height) {
 		this(height, VelocityKt.getVelocity(LengthKt.getFeet(0)), AccelerationKt.getAcceleration(LengthKt.getFeet(0)),
-				TimeUnitsKt.getSecond(Timer.getFPGATimestamp()));
+				TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
+	}
+
+	public ElevatorState(Length height, boolean simulate) {
+		this(height, VelocityKt.getVelocity(LengthKt.getFeet(0)), AccelerationKt.getAcceleration(LengthKt.getFeet(0)),
+				TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
 	}
 
 	public ElevatorState getNewState(ElevatorState lastState, Length height_, Velocity<Length> velocity_) {
