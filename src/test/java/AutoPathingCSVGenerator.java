@@ -19,15 +19,13 @@ public class AutoPathingCSVGenerator {
 	public void twoHatchLLtest() {
 		Trajectories.generateAllTrajectories(false);
 		ArrayList<Translation2d> path = TwoHatchOneCargoLeft('L', 'L');
-		// Logger.log("path: " + path.toString());
+		writeToCSV("twoHatchLLtest", path);
 
-		writeToCSV(path);
-
+		// path = TwoHatchOneCargoLeft('R', 'R');
+		// writeToCSV("twoHatchRRest", path);
 	}
 
-	public void writeToCSV(ArrayList<Translation2d> path) {
-
-		String file = "src\\main\\python\\twoHatchLLtest.csv";
+	public void writeToCSV(String file, ArrayList<Translation2d> path) {
 
 		try {
 			FileWriter fw = new FileWriter(file);
