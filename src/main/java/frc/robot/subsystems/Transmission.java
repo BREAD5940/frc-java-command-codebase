@@ -54,6 +54,7 @@ public class Transmission {
     mMaster.configPeakOutputReverse(-1.0, 30);
 
     SmartDashboard.putBoolean("Is the " + side.toString() + " transmission inverted", isInverted);
+    SmartDashboard.putNumber("Robot Velocity", getFeetPerSecond());
 
     // if(isInverted == true) {
       // Logger.log("Making this inverted");

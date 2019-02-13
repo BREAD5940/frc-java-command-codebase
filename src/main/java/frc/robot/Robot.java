@@ -10,6 +10,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -20,11 +21,12 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
-import frc.robot.commands.auto.Trajectories;
+//import frc.robot.commands.auto.Trajectories;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 // import frc.robot.subsystems.LIDARSubsystem;
 import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.Transmission;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 /**
@@ -49,6 +51,7 @@ public class Robot extends TimedRobot {
   public static AutoMotion m_auto;
   SendableChooser<Command> m_chooser = new SendableChooser<Command>();
   public static Compressor compressor = new Compressor(9);
+
   // public static Odometer odometry_;
   // public static DifferentialUltrasonicSensor differentialUltrasonicSensor = DifferentialUltrasonicSensor.getInstance();
   // private Logger logger;
@@ -90,7 +93,7 @@ public class Robot extends TimedRobot {
 
     drivetrain.getLocalization().reset(new Pose2d(LengthKt.getFeet(5.5), LengthKt.getFeet(17), new Rotation2d(0f, 0f, false) ));
 
-    Trajectories.generateAllTrajectories();
+    //Trajectories.generateAllTrajectories();
 
     // logger = Logger.getInstance();
     m_oi = new OI();
@@ -244,9 +247,7 @@ public class Robot extends TimedRobot {
     // long now = System.currentTimeMillis();
 
     // DriveTrain.getInstance().getLocalization().update(); // depreciated because it should be running in a notifier now
-
-    SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
-    SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
+    
 
     LiveDashboard.INSTANCE.setRobotX(drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
     LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
@@ -281,6 +282,8 @@ public class Robot extends TimedRobot {
     drivetrain.lastFeetPerSecond = feetPerSecond;
 
     SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
+    SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
+    SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
 
     // Limelight stuff
     // double[] limelightdata = limelight.getData();

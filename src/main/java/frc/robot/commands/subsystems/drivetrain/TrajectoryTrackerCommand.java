@@ -14,7 +14,7 @@ import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.commands.auto.Trajectories;
+//import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.Logger;
 import frc.robot.subsystems.DriveTrain;
 
@@ -53,7 +53,7 @@ public class TrajectoryTrackerCommand extends Command {
 
     if(trajectorySource == null) {
       Logger.log("Sadly the trajectories are not generated. the person responsible for the trajectories has been sacked.");
-      Trajectories.generateAllTrajectories();
+      //Trajectories.generateAllTrajectories();
     }
 
     Logger.log("get: " + trajectorySource.get().getFirstState().getState().getCurvature().toString());
