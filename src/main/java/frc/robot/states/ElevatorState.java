@@ -19,7 +19,7 @@ public class ElevatorState {
 	public Velocity<Length> velocity;
 	public Acceleration<Length> acceleration;
 	// public double feedForwardVoltage;
-	private Elevator elevator = SuperStructure.elevator;
+	// private Elevator elevator = SuperStructure.elevator;
 
 	private Length kDefaultHeight = LengthKt.getFeet(0);
 	private Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
@@ -70,8 +70,10 @@ public class ElevatorState {
 	}
 
 	public boolean isEqualTo(ElevatorState other) {
-		return (this.acceleration.equals(other.acceleration) && this.height.equals(other.height) && this.time.equals(other.time)
-				&& this.velocity.equals(other.velocity));
+		System.out.printf("Acceleration: %b   Height: %b   Velocity: %b\n",
+				acceleration.getValue()==other.acceleration.getValue(), height.getFeet()==other.height.getFeet(), velocity.getValue()==other.velocity.getValue());
+		return (this.acceleration.getValue() == other.acceleration.getValue() && this.height.getFeet() == other.height.getFeet() 
+				&& this.velocity.getValue() == other.velocity.getValue());
 	}
 
 }

@@ -40,9 +40,10 @@ public class SuperstructureTests {
     for(int i=0; i<goalStates.size(); i++){
       resultingStates.add(i,planner.getPlannedState(goalStates.get(i),currentState));
       System.out.print(Integer.valueOf(i)+": ");
-      System.out.print(correctEndStates.get(i).getAngle());
+      System.out.print(correctEndStates.get(i).toString());
       System.out.print(", ");
-      System.out.println(resultingStates.get(i).getAngle());
+      System.out.println(resultingStates.get(i).toString());
+      System.out.println("Correct state and resulting state are equal: "+correctEndStates.get(i).isEqualTo(resultingStates.get(i)));
       if(!correctEndStates.get(i).isEqualTo(resultingStates.get(i))){
         throw new AssertionError("Expected "+correctEndStates.get(i).toString()+", got "+resultingStates.get(i).toString());
       }
@@ -67,9 +68,9 @@ public class SuperstructureTests {
     for(int i=0; i<goalStates.size(); i++){
       resultingStates.add(i,planner.getPlannedState(goalStates.get(i),currentState));
       System.out.print(Integer.valueOf(i)+": ");
-      System.out.print(correctEndStates.get(i).getElevatorHeight());
+      System.out.print(correctEndStates.get(i).toString());
       System.out.print(", "); 
-      System.out.println(resultingStates.get(i).getElevatorHeight());
+      System.out.println(resultingStates.get(i).toString());
       if(!correctEndStates.get(i).isEqualTo(resultingStates.get(i))){
         throw new AssertionError("Expected "+correctEndStates.get(i).toString()+", got "+resultingStates.get(i).toString());
       }
@@ -102,5 +103,12 @@ public class SuperstructureTests {
       }
     }
     System.out.println();
+  }
+
+
+  @Test
+  public void testEqual(){
+    SuperStructureState sp = new SuperStructureState();
+    assertTrue(sp.isEqualTo(sp));
   }
 }
