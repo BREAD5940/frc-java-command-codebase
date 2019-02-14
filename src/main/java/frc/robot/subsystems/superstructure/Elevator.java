@@ -77,7 +77,6 @@ public class Elevator /*extends Subsystem*/ implements iLinearWaitable {
 		this.kPositionTolerence = tol;
 	}
 
-
 	public Elevator(int masterPort, int slavePort1, int slavePort2, int slavePort3, EncoderMode mode, InvertSettings settings) {
 
 		mMaster = new FalconSRX<Length>(masterPort, lengthModel, TimeUnitsKt.getMillisecond(10));

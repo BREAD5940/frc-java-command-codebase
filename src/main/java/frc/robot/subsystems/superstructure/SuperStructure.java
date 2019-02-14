@@ -2,6 +2,7 @@ package frc.robot.subsystems.superstructure;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -19,7 +20,6 @@ import frc.robot.Constants;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.subsystems.superstructure.SuperStructureTelop;
-import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.ElevatorState;
@@ -40,7 +40,7 @@ public class SuperStructure extends Subsystem {
 	private static SuperStructure instance_;
 	private SuperStructureState mReqState = new SuperStructureState();
 	private CommandGroup mCurrentCommandGroup;
-	private ArrayList<SuperStructureState> mReqPath;
+	private List<SuperStructureState> mReqPath;
 	private int cPathIndex = 0;
 	private boolean currentPathComplete = false;
 	public static Elevator elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
@@ -201,8 +201,9 @@ public class SuperStructure extends Subsystem {
 	}
 
 	public Elevator getElevator() {
-		if(elevator == null) elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
-			new InvertSettings(false, InvertType.FollowMaster, InvertType.OpposeMaster, InvertType.OpposeMaster));
+		if (elevator == null)
+			elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
+					new InvertSettings(false, InvertType.FollowMaster, InvertType.OpposeMaster, InvertType.OpposeMaster));
 		return elevator;
 	}
 
@@ -224,14 +225,11 @@ public class SuperStructure extends Subsystem {
 		// How about maybe motion magic?
 
 		// TODO is mReqState up to date?
-		mReqPath = planner.plan(mReqState,mCurrentState);
+		mReqPath = planner.plan(mReqState, mCurrentState);
 
 		getWrist().setPositionArbitraryFeedForward(mReqPath.get(0).getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
 		getElbow().setPositionArbitraryFeedForward(mReqPath.get(0).getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
 		getElevator().setPositionArbitraryFeedForward(mReqPath.get(0).getElevator().height, elevatorVoltageGravity / 12d);
-
-	
-
 
 		SmartDashboard.putNumber("elevator height in inches", getElevator().getHeight().getInch());
 	}
