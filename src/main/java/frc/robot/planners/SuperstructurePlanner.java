@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import frc.robot.RobotConfig;
-import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
@@ -22,22 +23,29 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 public class SuperstructurePlanner {
 
 	public SuperstructurePlanner() {}
-
-	//TODO add values for certain elevator positions (ex. the wrist can be <0 if the elevator is >10)
-
 	//TODO get actual irl angles amd heights
 
-	static final Length minUnCrashHeight = LengthKt.getInch(5); //min elevator height + how much intake is below the bottom of the elevator
+	static final Length bottom = LengthKt.getInch(RobotConfig.elevator.elevator_minimum_height);
+	static final Length top = RobotConfig.elevator.elevator_maximum_height;
+	static final Length crossbar = LengthKt.getInch(35); //FIXME verify
+	static final Length carriageToIntake = LengthKt.getInch(12); //FIXME verify
+	static final Length intakeDiameter = LengthKt.getInch(6);
 
-	static final Length gIntakeDi = LengthKt.getInch(12); //FIXME this is definately not the actual diameter
-	/** the  */
-	static Length crossbarMinHeight = LengthKt.getInch(20);
-	static Length crossbarMaxHeight = LengthKt.getInch(24);
+	static final Rotation2d minAboveAngle = Rotation2dKt.getDegree(55); //FIXME verify
+	static final Rotation2d maxAboveAngle = Rotation2dKt.getDegree(125);//FIXME verify
+	static final Rotation2d minBelowAngle = Rotation2dKt.getDegree(235); //FIXME verify
+	static final Rotation2d maxBelowAngle = Rotation2dKt.getDegree(305); //FIXME verify
 
-	static final Length maxHeight = RobotConfig.elevator.elevator_maximum_height;
+	Length minSafeHeight = bottom;
+	Length maxSafeHeight = top;
+	Length disInside = LengthKt.getInch(carriageToIntake.getFeet() + intakeDiameter.getFeet());
 
-	boolean intakeCrashable = false; //intake capable of hitting the ground
-	boolean intakeAtRisk = false; //intake at risk of hitting the crossbar
+	Length gHeight = bottom;
+
+	boolean throughBelow = false;
+	boolean throughAbove = false;
+	boolean goingToCrash = false;
+
 	int errorCount; //number of errors in motion
 	int corrCount; //number of corrected items in motion
 	SuperStructureState currentPlannedState;
@@ -60,18 +68,21 @@ public class SuperstructurePlanner {
 	 */
 	public ArrayList<SuperStructureState> plan(SuperStructureState goalStateIn, SuperStructureState currentState) {
 		ArrayList<SuperStructureState> toReturn = new ArrayList<SuperStructureState>();
-		SuperStructureState goalState = goalStateIn;
+		SuperStructureState goalState = new SuperStructureState(goalStateIn);
 		errorCount = corrCount = 0;
-		boolean defAngle = iPosition.presets.contains(goalState.getAngle());
-		boolean throughBelow = ((currentState.getAngle().getElbow().angle.getDegree() > 225 && currentState.getAngle().getElbow().angle.getDegree() < 315));
-		boolean throughAbove = ((currentState.getAngle().getElbow().angle.getDegree() > 45 && currentState.getAngle().getElbow().angle.getDegree() < 135));
 
-		if (!throughAbove) {
-			crossbarMinHeight.plus(gIntakeDi); //adds the diameter of the intake to the min height bc it won't be above the carrige
-		}
-		if (!throughBelow) {
-			crossbarMaxHeight.minus(gIntakeDi); //subtracts the diameter from the max height bc it won't be below
-		}
+		//heights
+		gHeight = LengthKt.getInch((goalState.getElevatorHeight().getInch() + Math.sin(goalState.getAngle().getElbow().angle.getRadian()) / carriageToIntake.getInch())
+				+ Math.sin(goalState.getAngle().getWrist().angle.getRadian()) / intakeDiameter.getInch());
+		disInside = LengthKt.getInch(Math.abs(gHeight.getInch() - goalState.getElevatorHeight().getInch()));
+
+		//le booleans
+		throughBelow = ((currentState.getAngle().getElbow().angle.getRadian() > minBelowAngle.getRadian()
+				&& currentState.getAngle().getElbow().angle.getRadian() < maxBelowAngle.getRadian()));
+		throughAbove = ((currentState.getAngle().getElbow().angle.getRadian() > minAboveAngle.getRadian()
+				&& currentState.getAngle().getElbow().angle.getRadian() < maxAboveAngle.getRadian()));
+		goingToCrash = (throughBelow && goalState.getElevator().getHeight().getFeet() < disInside.getFeet())
+				|| (throughAbove && goalState.getElevator().getHeight().getFeet() + disInside.getFeet() > top.getFeet());
 
 		if (goalState == currentState) {
 			System.out.println("MOTION UNNECESSARY -- Goal and current states are same. Exiting planner.");
@@ -86,59 +97,55 @@ public class SuperstructurePlanner {
 			goalState.setHeldPiece(currentState.getHeldPiece());
 		}
 
-		if (!defAngle) {
-			System.out.println("MOTION UNSAFE -- Wrist position is wildcard. Setting to default position for movement.");
+		if (gHeight.getFeet() < bottom.getFeet() + disInside.getFeet()) {
+			System.out.println("MOTION IMPOSSIBLE -- Intake will hit literally all of the electronics. Safing elbow angle.");
 			errorCount++;
-			if ((currentState.getHeldPiece() == HeldPiece.HATCH) && (throughAbove || throughBelow)) {
-				System.out.println("MOTION UNSAFE -- Cannot move wrist to wildcard position while holding hatch. Aborting wrist movement.");
-				errorCount++;
-				corrCount++;
-				goalState.setAngle(iPosition.CARGO_GRAB);
+			//finds the necessary angle of the elbow to safe the intake
+			double cTheta = Math.asin(carriageToIntake.getInch() * ((bottom.getInch() + disInside.getInch()) - goalState.getElevatorHeight().getInch() -
+					Math.sin(goalState.getAngle().getWrist().angle.getRadian())));
+			//checks if the adjustment is too big
+			if (cTheta < goalState.getAngle().getElbow().angle.getRadian() && cTheta != 0) {
+				System.out.println("MOTION UNSAFE -- Angle cannot be safed with only elbow. Safing wrist.");
+				//sets the elbow to the max allowed adjustment
+				goalState.setElbowAngle(Rotation2dKt.getRadian(0));
+				//finds the necessary wrist angle to finish safing the intake
+				cTheta = Math.asin(intakeDiameter.getInch() * ((bottom.getInch() + disInside.getInch()) - goalState.getElevatorHeight().getInch() -
+						Math.sin(goalState.getAngle().getElbow().angle.getRadian())));
+				//sets the wrist to that angle
+				goalState.getAngle().getWrist().setAngle(Rotation2dKt.getRadian(cTheta));
+				corrCount += 2;
 			} else {
-				toReturn.add(new SuperStructureState(currentState.elevator, iPosition.CARGO_GRAB, currentState.getHeldPiece()));
-				intakeAtRisk = false;
-				intakeCrashable = false;
+				goalState.setElbowAngle(Rotation2dKt.getRadian(cTheta));
+				corrCount++;
 			}
-		} else {
-			// Checks if the intake will ever be inside the elevator
-			if (throughAbove || throughBelow) {
-				intakeAtRisk = true;
-			}
+		}
 
-			//checks if the intake will tilt/is tilted below the bottom of the elevator
-			if ((goalState.getAngle() == iPosition.CARGO_DOWN) || (currentState.getAngle() == iPosition.CARGO_DOWN)) { // FIXME so this will only check for exact equivilency, not for a "less than" condition. Same with all the currentStates I think
-				intakeCrashable = true;
+		if (throughAbove && gHeight.getFeet() > top.getFeet() - disInside.getFeet()) {
+			System.out.println("MOTION UNSAFE -- Intake will hit the top of the elevator. Safing elbow angle.");
+			errorCount++;
+			if (Math.abs(minAboveAngle.getRadian() - goalState.getElbowAngle().getRadian()) <= Math.abs(maxAboveAngle.getRadian() - goalState.getElbowAngle().getRadian())) {
+				goalState.setElbowAngle(minAboveAngle);
+				corrCount++;
+			} else {
+				goalState.setElbowAngle(maxAboveAngle);
+				corrCount++;
 			}
 		}
 
 		//checks if the elevator will go to high
-		if (goalState.elevator.height.getFeet() > maxHeight.getFeet()) {
+		if (goalState.elevator.height.getFeet() > top.getFeet()) {
 			System.out.println("MOTION IMPOSSIBLE -- Elevator will pass maximum height. Setting to maximum height.");
 			errorCount++;
 			corrCount++;
-			goalState.getElevator().setHeight(maxHeight);
+			goalState.getElevator().setHeight(top);
 		}
 
-		//checks if the elevator will move past the crossbar
-		if (intakeAtRisk && (goalState.getElevatorHeight().getFeet() >= crossbarMaxHeight.getFeet()
-				&& currentState.getElevatorHeight().getFeet() <= crossbarMinHeight.getFeet())
-				|| (goalState.getElevatorHeight().getFeet() <= crossbarMinHeight.getFeet()
-						&& currentState.getElevatorHeight().getFeet() >= crossbarMaxHeight.getFeet())) {
+		//checks if intake will hit crossbar
+		if ((throughAbove && gHeight.getFeet() > crossbar.getFeet() - disInside.getFeet() && gHeight.getFeet() < crossbar.getFeet())
+				|| throughBelow && gHeight.getFeet() > crossbar.getFeet() && gHeight.getFeet() < crossbar.getFeet() + disInside.getFeet()) {
 			System.out.println("MOTION UNSAFE -- Intake will hit crossbar. Setting to default intake position for movement.");
 			errorCount++;
-			toReturn.add(new SuperStructureState(currentState.elevator, iPosition.CARGO_GRAB, currentState.getHeldPiece())); //Keeps intake outside the elevator so it doesn't hit the crossbar
-		} else {
-			intakeAtRisk = false;
-		}
-
-		//checks if the elevator will move low enough to crash the intake
-		if (goalState.getElevatorHeight().getFeet() <= minUnCrashHeight.getFeet() && intakeCrashable) {
-			System.out.println("MOTION UNSAFE -- Intake will crash. Setting to default intake position.");
-			errorCount++;
-			corrCount++;
-			goalState.setAngle(iPosition.CARGO_GRAB);
-		} else {
-			intakeCrashable = false;
+			toReturn.add(new SuperStructureState(currentState.elevator, iPosition.CARGO_GRAB, currentState.getHeldPiece()));
 		}
 
 		//move to corrected state
