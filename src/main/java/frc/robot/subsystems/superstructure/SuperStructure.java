@@ -147,7 +147,7 @@ public class SuperStructure extends Subsystem {
 		// TODO the wrist angle is mega broken because it's solely based on the currently held game piece 
 		// this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
 		this.mReqPath = planner.plan(mRequState_, mCurrentState);
-		mReqState = mRequState_; // TODO I still don't truse mReqState
+		mReqState = mRequState_; // TODO I still don't trust mReqState
 		// return this.mCurrentCommandGroup;
 	}
 
@@ -160,7 +160,7 @@ public class SuperStructure extends Subsystem {
 	 */
 	public void moveSuperstructureElevator(Length height) {
 		// updateState();
-		this.moveSuperstructureCombo(new ElevatorState(height), mReqState.getElbow(), mReqState.getWrist());
+		this.moveSuperstructureCombo(new ElevatorState(height), getCurrentState().getElbow(), getCurrentState().getWrist());
 	}
 
 	/**
@@ -236,6 +236,7 @@ public class SuperStructure extends Subsystem {
 		getElevator().setPositionArbitraryFeedForward(mReqPath.get(0).getElevator().height, elevatorVoltageGravity / 12d);
 
 		SmartDashboard.putNumber("elevator height in inches", mCurrentState.elevator.getHeight().getInch());
+		SmartDashboard.putNumber("target elevator height", mReqPath.get(0).getElevator().height.getInch());
 	}
 
 	/**
