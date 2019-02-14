@@ -73,7 +73,7 @@ public class Elevator /*extends Subsystem*/ implements iLinearWaitable {
 
 	NativeUnitLengthModel lengthModel = RobotConfig.elevator.elevatorModel;
 
-	public void setTolerence(<T> tol) {
+	public void setTolerence(Length tol) {
 		this.kPositionTolerence = tol;
 	}
 
