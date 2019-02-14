@@ -32,7 +32,7 @@ public class SuperStructureTelop extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Length delta = LengthKt.getInch(Util.deadband(Robot.m_oi.getElevatorAxis() * 6, 0.08));
+    Length delta = LengthKt.getInch(Util.deadband(Robot.m_oi.getElevatorAxis() * 10 * Math.abs(Robot.m_oi.getElevatorAxis()), 0.08) );
 		// Elevator elev = superStructure.getElevator(); // THIS LINE THROWS A HEKKING NULL PIONTER
 		// FalconSRX<Length> talon = elev.getMaster();
     // Length current = talon.getSensorPosition();
