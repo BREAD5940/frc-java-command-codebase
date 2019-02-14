@@ -72,15 +72,15 @@ def main():
 
   # plt.plot(data[0:i,0], data[0:i,1])
     implot = plt.imshow(img, extent=[ toFeet(-217), toFeet(1592-216), toFeet(-40), toFeet(656-40) ])
-    fig.title('Scatter plot of robot pos X vs Y')
-    fig.xlabel('robot X')
-    fig.ylabel('robot Y')
+    plt.title('Scatter plot of robot pos X vs Y')
+    plt.xlabel('robot X')
+    plt.ylabel('robot Y')
 
-    scat = plt.scatter(x, y, c= 'm', s=100)
+    scat = plt.scatter(x, y, c= 'm', s=4)
 
 
-    ani = animation.FuncAnimation(fig, update_plot, frames=range(len(x)),
-                                  fargs=(color_data, scat))
+    # ani = animation.FuncAnimation(fig, update_plot, frames=range(len(x)),
+    #                               fargs=(color_data, scat))
     plt.show()
 
 def update_plot(i, data, scat):
