@@ -51,15 +51,15 @@ public class Elevator /*extends Subsystem*/ {
 	}
 
 	// TODO check these quick maths, kTopOfInnerStage is used to switch gravity feedforward
-	public static final Mass kCarriageMass = MassKt.getLb(20);
+	public static final Mass kCarriageMass = MassKt.getLb(9.3); // TODO add in the intake and stuff
 	public static final Mass kInnerStageMass = MassKt.getLb(6.5);
 
 	public static final Length kTopOfInnerStage = LengthKt.getInch(40);
 
-	public static final double KLowGearForcePerVolt = 512d / 12d /* newtons */ ;
-	public static final double KHighGearForcePerVolt = 1500d / 12d /* newtons */ ;
+	public static final double KLowGearForcePerVolt = (512d / 12d /* newtons */) * 1.5;
+	public static final double KHighGearForcePerVolt = (1500d / 12d /* newtons */ );
 
-	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.05, 0, 0, 0);
+	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.5, 0, 0, 0);
 	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.05, 0, 0, 0);
 
 	private FalconSRX<Length> mMaster;
@@ -135,7 +135,7 @@ public class Elevator /*extends Subsystem*/ {
 			setClosedLoopGains(LOW_GEAR_PID);
 		}
 		if (req == ElevatorGear.HIGH) {
-			Robot.setElevatorShifter(true);
+			Robot.setElevatorShifter(false);
 			setClosedLoopGains(HIGH_GEAR_PID);
 		}
 	}
@@ -206,8 +206,7 @@ public class Elevator /*extends Subsystem*/ {
 		if (state.elevator.height.getValue() > kTopOfInnerStage.getValue())
 			total.plus(kInnerStageMass);
 		double totalF = total.getKilogram() * 9.81 /* g */;
-		// ah shit we have force * force / volt, we want force * volt/force right? FIXME check my math with units
-		return (mCurrentGear == ElevatorGear.LOW) ? KLowGearForcePerVolt / totalF : KHighGearForcePerVolt / totalF;
+		return (mCurrentGear == ElevatorGear.LOW) ? totalF / KLowGearForcePerVolt  : totalF / KHighGearForcePerVolt;
 	}
 
 	public ElevatorState getCurrentState(ElevatorState lastKnown) {

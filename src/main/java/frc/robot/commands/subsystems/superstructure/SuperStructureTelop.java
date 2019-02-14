@@ -8,6 +8,7 @@ import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
@@ -31,7 +32,7 @@ public class SuperStructureTelop extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Length delta = LengthKt.getInch(Robot.m_oi.getElevatorAxis() * 0.08);
+		Length delta = LengthKt.getInch(Util.deadband(Robot.m_oi.getElevatorAxis(), 0.04));
 		// Elevator elev = superStructure.getElevator(); // THIS LINE THROWS A HEKKING NULL PIONTER
 		// FalconSRX<Length> talon = elev.getMaster();
     // Length current = talon.getSensorPosition();

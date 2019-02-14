@@ -10,7 +10,9 @@ import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.can.MotControllerJNI;
 import com.team254.lib.physics.DCMotorTransmission;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -223,7 +225,9 @@ public class SuperStructure extends Subsystem {
 
 		// double wristVoltageGravity = kWristTransmission.getVoltageForTorque(this.mCurrentState.getWrist().velocity.getValue(), mCurrentWristTorque);
 		// double elbowVoltageGravity = kElbowTransmission.getVoltageForTorque(this.mCurrentState.getElbow().velocity.getValue(), mCurrentElbowTorque);
-		double elevatorVoltageGravity = 0;// = elevator.getVoltage(this.mCurrentState);
+		double elevatorVoltageGravity = elevator.getVoltage(this.mCurrentState);
+
+		// System.out.println("Calculated elevator voltage" + elevator.getVoltage(getCurrentState()));
 
 		// TODO velocity planning? or just let talon PID figure itself out
 		// How about maybe motion magic?
@@ -233,10 +237,12 @@ public class SuperStructure extends Subsystem {
 
 		// getWrist().setPositionArbitraryFeedForward(mReqPath.get(0).getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
 		// getElbow().setPositionArbitraryFeedForward(mReqPath.get(0).getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
-		getElevator().setPositionArbitraryFeedForward(mReqPath.get(0).getElevator().height, elevatorVoltageGravity / 12d);
+		// getElevator().setPositionArbitraryFeedForward(mReqPath.get(0).getElevator().height, elevatorVoltageGravity / 12d);
+		getElevator().getMaster().set(ControlMode.PercentOutput, elevatorVoltageGravity / getElevator().getMaster().getBusVoltage());
 
 		SmartDashboard.putNumber("elevator height in inches", mCurrentState.elevator.getHeight().getInch());
 		SmartDashboard.putNumber("target elevator height", mReqPath.get(0).getElevator().height.getInch());
+		SmartDashboard.putNumber("elevator output", getElevator().getMaster().getMotorOutputVoltage());
 	}
 
 	/**
