@@ -25,7 +25,7 @@ public class SuperstructurePlanner {
 	public SuperstructurePlanner() {}
 	//TODO get actual irl angles amd heights
 
-	static final Length bottom = LengthKt.getInch(RobotConfig.elevator.elevator_minimum_height);
+	static final Length bottom = RobotConfig.elevator.elevator_minimum_height;
 	static final Length top = RobotConfig.elevator.elevator_maximum_height;
 	static final Length crossbar = LengthKt.getInch(35); //FIXME verify
 	static final Length carriageToIntake = LengthKt.getInch(12); //FIXME verify

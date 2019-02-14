@@ -24,7 +24,7 @@ import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 public class OI {
 
 	private Joystick primaryJoystick = new Joystick(RobotConfig.controls.primary_joystick_port);
-	// private Joystick secondaryJoystick = new Joystick(RobotConfig.controls.secondary_joystick_port);
+	private Joystick secondaryJoystick = new Joystick(RobotConfig.controls.secondary_joystick_port);
 
 	private Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
 	private Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
@@ -127,8 +127,9 @@ public class OI {
 	}
 
 	public double getElevatorAxis() {
-		return 0;
-	}//secondaryJoystick.getRawAxis(RobotConfig.controls.xbox_elevator_axis) * -1; }
+		// return 0;
+		return secondaryJoystick.getRawAxis(RobotConfig.controls.xbox_elevator_axis) * -1;
+	}
 
 	public double getThrottleAxis() {
 		return 0;

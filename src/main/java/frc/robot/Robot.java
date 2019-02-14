@@ -23,9 +23,8 @@ import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
-import frc.robot.subsystems.superstructure.SuperStructure;
-import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.superstructure.SuperStructure;
 
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly init
@@ -83,8 +82,10 @@ public class Robot extends TimedRobot {
 
 	public static void setElevatorShifter(boolean isKForward) {
 		DoubleSolenoid.Value value = (isKForward) ? Value.kForward : Value.kReverse;
-		if(elevatorShifterDoubleSolenoid == null) elevatorShifterDoubleSolenoid = new DoubleSolenoid(9, 4, 5);
-		if(value == null) value = DoubleSolenoid.Value.kForward; // TODO hack
+		if (elevatorShifterDoubleSolenoid == null)
+			elevatorShifterDoubleSolenoid = new DoubleSolenoid(9, 4, 5);
+		if (value == null)
+			value = DoubleSolenoid.Value.kForward; // TODO hack
 		elevatorShifterDoubleSolenoid.set(value); // FIXME it's a hack
 	}
 
@@ -108,9 +109,9 @@ public class Robot extends TimedRobot {
 		mGh.addOption("Dropped into the cargo ship", AutoMotion.GoalHeight.OVER);
 		SmartDashboard.putData("Goal Height", mGh);
 		SmartDashboard.putData(drivetrain);
-		// SmartDashboard.putData();
-		SmartDashboard.putData(SuperStructure.intake);
-		SmartDashboard.putData(shifterDoubleSolenoid);
+		SmartDashboard.putData(superstructure);
+		// SmartDashboard.putData(SuperStructure.intake);
+		// SmartDashboard.putData(shifterDoubleSolenoid);
 
 		compressor.setClosedLoopControl(true);
 

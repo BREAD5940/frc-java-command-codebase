@@ -80,6 +80,7 @@ public class Elevator /*extends Subsystem*/ {
 		if (mode == EncoderMode.CTRE_MagEncoder_Relative) {
 			mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
 			mMaster.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30);
+			mMaster.setSensorPhase(true);
 		}
 
 		// mSlave1.set(ControlMode.Follower, mMaster.getDeviceID());

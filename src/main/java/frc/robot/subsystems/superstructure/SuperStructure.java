@@ -9,7 +9,6 @@ import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.team254.lib.physics.DCMotorTransmission;
 
@@ -19,9 +18,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.commands.subsystems.superstructure.SuperStructureTelop;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
-import frc.robot.lib.PIDSettings;
-import frc.robot.lib.PIDSettings.FeedbackMode;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.ElevatorState;
@@ -44,7 +42,7 @@ public class SuperStructure extends Subsystem {
 	private CommandGroup mCurrentCommandGroup;
 	public static Elevator elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
 			new InvertSettings(false, InvertType.FollowMaster, InvertType.OpposeMaster, InvertType.OpposeMaster));
-	public static Intake intake = new Intake();
+	public static Intake intake;// = new Intake();
 	private SuperstructurePlanner planner = new SuperstructurePlanner();
 	// public SuperStructureState mPeriodicIO = new SuperStructureState();
 	private RotatingJoint mWrist, mElbow;
@@ -141,7 +139,7 @@ public class SuperStructure extends Subsystem {
 
 		// TODO the wrist angle is mega broken because it's solely based on the currently held game piece 
 		// this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
-		ArrayList<SuperStructureState> path = planner.plan(mReqState, mCurrentState);
+		ArrayList<SuperStructureState> path = planner.plan(mRequState_, mCurrentState);
 		this.mCurrentCommandGroup = new CommandGroup("Superstructure Path");
 		for (int i = 0; i < path.size() - 1; i++) {
 			mCurrentCommandGroup.addSequential(new SuperstructureGoToState(path.get(i)));
@@ -182,25 +180,8 @@ public class SuperStructure extends Subsystem {
 		// Actually yeah all that you really need is the buttons
 		// well also jogging with joysticks but eehhhh
 		// actually that should be the default command, hot prank
+		setDefaultCommand(new SuperStructureTelop(this));
 	}
-
-	/* so the problem right now is that everything is abstracted
-	which is a great problem to have, except for the part where everything
-	connects together. We need a way to calculate feedforward voltages and velocities based on
-	current angles and desired angles respectively and feed it to the talons. I'm trying to
-	think of a good way to do this, and I think the best way to do it might be to put it on a notifier?? 
-	that would put everyhing on another thread. Otherwise maybe make a looper abstract class
-	and have those calculations happen every tick. Either way the motor states would need to be
-	calculated *as fast as possible*. I don't think that a command is the best way to do this either, 
-	because we need the sequential/paralell nature of command groups for safe superstructure movement
-	while preserving the "this happens every tick" part of the whole system.
-	Yeah, heck it. I'm making a looper abstract class which puts everything on a notifier so we 
-	preserve abstraction. That means that this needs an init() and execute() function, as well as an end() function.
-	Furthermore I think we should maybe get rid of the wrist subsystem and elevator subsystem - all their
-	suff is relaced with FalconSRX<Length> or FalconSRX<Rotation2d>
-	
-	TODO we also need to do the encoders and stuff
-	*/
 
 	public SuperStructureState updateState() {
 		this.mCurrentState = new SuperStructureState(
@@ -221,6 +202,8 @@ public class SuperStructure extends Subsystem {
 	}
 
 	public Elevator getElevator() {
+		if(elevator == null) elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
+			new InvertSettings(false, InvertType.FollowMaster, InvertType.OpposeMaster, InvertType.OpposeMaster));
 		return elevator;
 	}
 
@@ -244,7 +227,7 @@ public class SuperStructure extends Subsystem {
 		// TODO is mReqState up to date?
 		// getWrist().setPositionArbitraryFeedForward(mReqState.getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
 		// getElbow().setPositionArbitraryFeedForward(mReqState.getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
-		getElevator().setPositionArbitraryFeedForward(mReqState.getElevator().height, elevatorVoltageGravity / 12d);
+		// getElevator().setPositionArbitraryFeedForward(mReqState.getElevator().height, elevatorVoltageGravity / 12d);
 
 		SmartDashboard.putNumber("elevator height in inches", getElevator().getHeight().getInch());
 	}
