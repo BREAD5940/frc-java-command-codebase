@@ -15,6 +15,7 @@ import com.team254.lib.physics.DCMotorTransmission;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
@@ -83,11 +84,11 @@ public class SuperStructure extends Subsystem {
 
 		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
 
-		mWrist = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 37, FeedbackDevice.CTRE_MagEncoder_Relative, false /* FIXME check inverting! */,
-				Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
+		// mWrist = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 37, FeedbackDevice.CTRE_MagEncoder_Relative, false /* FIXME check inverting! */,
+		// 		Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
-		mElbow = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(38, 39), FeedbackDevice.CTRE_MagEncoder_Relative,
-				false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+		// mElbow = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(38, 39), FeedbackDevice.CTRE_MagEncoder_Relative,
+		// 		false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 	}
 
 	private SuperStructureState mCurrentState = new SuperStructureState();
@@ -204,8 +205,10 @@ public class SuperStructure extends Subsystem {
 	public SuperStructureState updateState() {
 		this.mCurrentState = new SuperStructureState(
 				elevator.getCurrentState(mCurrentState.elevator),
-				mWrist.getCurrentState(),
-				mElbow.getCurrentState());
+				// mWrist.getCurrentState(),
+				// mElbow.getCurrentState());
+				new RotatingArmState(),
+				new RotatingArmState());
 		return mCurrentState;
 	}
 

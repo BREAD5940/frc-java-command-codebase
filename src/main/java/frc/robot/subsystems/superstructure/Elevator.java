@@ -73,28 +73,30 @@ public class Elevator /*extends Subsystem*/ {
 	public Elevator(int masterPort, int slavePort1, int slavePort2, int slavePort3, EncoderMode mode, InvertSettings settings) {
 
 		mMaster = new FalconSRX<Length>(masterPort, lengthModel, TimeUnitsKt.getMillisecond(10));
-		mSlave1 = new FalconSRX<Length>(slavePort1, lengthModel, TimeUnitsKt.getMillisecond(10));
-		mSlave2 = new FalconSRX<Length>(slavePort2, lengthModel, TimeUnitsKt.getMillisecond(10));
-		mSlave3 = new FalconSRX<Length>(slavePort3, lengthModel, TimeUnitsKt.getMillisecond(10));
+		// mSlave1 = new FalconSRX<Length>(slavePort1, lengthModel, TimeUnitsKt.getMillisecond(10));
+		// mSlave2 = new FalconSRX<Length>(slavePort2, lengthModel, TimeUnitsKt.getMillisecond(10));
+		// mSlave3 = new FalconSRX<Length>(slavePort3, lengthModel, TimeUnitsKt.getMillisecond(10));
 
 		if (mode == EncoderMode.CTRE_MagEncoder_Relative) {
 			mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
 			mMaster.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30);
 		}
 
-		mSlave1.set(ControlMode.Follower, mMaster.getDeviceID());
-		mSlave2.set(ControlMode.Follower, mMaster.getDeviceID());
-		mSlave3.set(ControlMode.Follower, mMaster.getDeviceID());
+		// mSlave1.set(ControlMode.Follower, mMaster.getDeviceID());
+		// mSlave2.set(ControlMode.Follower, mMaster.getDeviceID());
+		// mSlave3.set(ControlMode.Follower, mMaster.getDeviceID());
 
 		// Quadrature Encoder of current
 		// Talon
 		mMaster.configPeakOutputForward(+1.0, 30);
 		mMaster.configPeakOutputReverse(-1.0, 30);
 
+		mMaster.setSelectedSensorPosition(0);
+
 		mMaster.setInverted(settings.masterInverted);
-		mSlave1.setInverted(settings.slave1FollowerMode);
-		mSlave2.setInverted(settings.slave1FollowerMode);
-		mSlave3.setInverted(settings.slave1FollowerMode);
+		// mSlave1.setInverted(settings.slave1FollowerMode);
+		// mSlave2.setInverted(settings.slave1FollowerMode);
+		// mSlave3.setInverted(settings.slave1FollowerMode);
 
 		// mMaster.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, normalOpenOrClose);
 
@@ -108,7 +110,8 @@ public class Elevator /*extends Subsystem*/ {
 
 	public List<FalconSRX<Length>> getAll() {
 		return Arrays.asList(
-				mMaster, mSlave1, mSlave2, mSlave3);
+				mMaster//, mSlave1, mSlave2, mSlave3);
+		);
 	}
 
 	public NativeUnitLengthModel getModel() {

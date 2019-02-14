@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
 	// public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
 	private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
 	private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 2, 3);
-	private static DoubleSolenoid elevatorShifterDoubleSolenoid = new DoubleSolenoid(9, 4, 5);
+	private static DoubleSolenoid elevatorShifterDoubleSolenoid;
 	public static AutoMotion m_auto;
 	SendableChooser<Command> m_chooser = new SendableChooser<Command>();
 	public static Compressor compressor = new Compressor(9);
@@ -82,7 +82,10 @@ public class Robot extends TimedRobot {
 	}
 
 	public static void setElevatorShifter(boolean isKForward) {
-		elevatorShifterDoubleSolenoid.set((isKForward) ? Value.kForward : Value.kReverse);
+		DoubleSolenoid.Value value = (isKForward) ? Value.kForward : Value.kReverse;
+		if(elevatorShifterDoubleSolenoid == null) elevatorShifterDoubleSolenoid = new DoubleSolenoid(9, 4, 5);
+		if(value == null) value = DoubleSolenoid.Value.kForward; // TODO hack
+		elevatorShifterDoubleSolenoid.set(value); // FIXME it's a hack
 	}
 
 	/**
