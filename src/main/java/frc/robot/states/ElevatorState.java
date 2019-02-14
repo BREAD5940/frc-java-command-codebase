@@ -78,8 +78,6 @@ public class ElevatorState {
 	}
 
 	public boolean isEqualTo(ElevatorState other) {
-		System.out.printf("Acceleration: %b   Height: %b   Velocity: %b\n",
-				acceleration.getValue()==other.acceleration.getValue(), height.getFeet()==other.height.getFeet(), velocity.getValue()==other.velocity.getValue());
 		return (this.acceleration.getValue() == other.acceleration.getValue() && this.height.getFeet() == other.height.getFeet() 
 				&& this.velocity.getValue() == other.velocity.getValue());
 	}

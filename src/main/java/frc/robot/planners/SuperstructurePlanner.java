@@ -25,12 +25,14 @@ public class SuperstructurePlanner {
 
 	//TODO add values for certain elevator positions (ex. the wrist can be <0 if the elevator is >10)
 
-	//TODO get actual irl angles TODO make the names less horrible
+	//TODO get actual irl angles amd heights
 
 	static final Length minUnCrashHeight = LengthKt.getInch(5); //min elevator height + how much intake is below the bottom of the elevator
 
-	static final Length crossbarMinHeight = LengthKt.getInch(20);
-	static final Length crossbarMaxHeight = LengthKt.getInch(24);
+	static final Length gIntakeDi = LengthKt.getInch(12); //FIXME this is definately not the actual diameter
+	/** the  */
+	static Length crossbarMinHeight = LengthKt.getInch(20); 
+	static Length crossbarMaxHeight = LengthKt.getInch(24);
 
 	static final Length maxHeight = RobotConfig.elevator.elevator_maximum_height;
 
@@ -63,6 +65,13 @@ public class SuperstructurePlanner {
 		boolean defAngle = iPosition.presets.contains(goalState.getAngle());
 		boolean throughBelow = ((currentState.getAngle().getElbow().angle.getDegree() > 225 && currentState.getAngle().getElbow().angle.getDegree() < 315));
 		boolean throughAbove = ((currentState.getAngle().getElbow().angle.getDegree() > 45 && currentState.getAngle().getElbow().angle.getDegree() < 135));
+
+		if(!throughAbove){
+			crossbarMinHeight.plus(gIntakeDi); //adds the diameter of the intake to the min height bc it won't be above the carrige
+		}
+		if(!throughBelow){
+			crossbarMaxHeight.minus(gIntakeDi); //subtracts the diameter from the max height bc it won't be below
+		}
 
 		if (goalState == currentState) {
 			System.out.println("MOTION UNNECESSARY -- Goal and current states are same. Exiting planner.");
@@ -103,7 +112,7 @@ public class SuperstructurePlanner {
 		}
 
 		//checks if the elevator will go to high
-		if (goalState.elevator.height.getValue() > maxHeight.getValue()) {
+		if (goalState.elevator.height.getFeet() > maxHeight.getFeet()) {
 			System.out.println("MOTION IMPOSSIBLE -- Elevator will pass maximum height. Setting to maximum height.");
 			errorCount++;
 			corrCount++;
@@ -111,8 +120,10 @@ public class SuperstructurePlanner {
 		}
 
 		//checks if the elevator will move past the crossbar
-		if (intakeAtRisk && (goalState.getElevatorHeight().getValue() >= crossbarMaxHeight.getValue() && currentState.getElevatorHeight().getValue() <= crossbarMinHeight.getValue())
-				|| (goalState.getElevatorHeight().getValue() <= crossbarMinHeight.getValue() && currentState.getElevatorHeight().getValue() >= crossbarMaxHeight.getValue())) {
+		if (intakeAtRisk && (goalState.getElevatorHeight().getFeet() >= crossbarMaxHeight.getFeet() 
+			&& currentState.getElevatorHeight().getFeet() <= crossbarMinHeight.getFeet())
+				|| (goalState.getElevatorHeight().getFeet() <= crossbarMinHeight.getFeet() 
+					&& currentState.getElevatorHeight().getFeet() >= crossbarMaxHeight.getFeet())) {
 			System.out.println("MOTION UNSAFE -- Intake will hit crossbar. Setting to default intake position for movement.");
 			errorCount++;
 			toReturn.add(new SuperStructureState(currentState.elevator, iPosition.CARGO_GRAB, currentState.getHeldPiece())); //Keeps intake outside the elevator so it doesn't hit the crossbar
@@ -121,7 +132,7 @@ public class SuperstructurePlanner {
 		}
 
 		//checks if the elevator will move low enough to crash the intake
-		if (goalState.getElevatorHeight().getValue() <= minUnCrashHeight.getValue() && intakeCrashable) {
+		if (goalState.getElevatorHeight().getFeet() <= minUnCrashHeight.getFeet() && intakeCrashable) {
 			System.out.println("MOTION UNSAFE -- Intake will crash. Setting to default intake position.");
 			errorCount++;
 			corrCount++;

@@ -56,13 +56,13 @@ public class SuperstructureTests {
 		SuperstructurePlanner planner = new SuperstructurePlanner();
 		SuperStructureState currentState = new SuperStructureState(new ElevatorState(true), iPosition.CARGO_GRAB, HeldPiece.NONE);
 		ArrayList<SuperStructureState> goalStates = new ArrayList<SuperStructureState>(Arrays.asList(
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(10), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(30), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(80), true), iPosition.CARGO_GRAB, HeldPiece.NONE)));
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(10), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(30), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(80), true), iPosition.CARGO_GRAB, HeldPiece.NONE)));
 		ArrayList<SuperStructureState> correctEndStates = new ArrayList<SuperStructureState>(Arrays.asList(
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(10), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(30), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(70), true), iPosition.CARGO_GRAB, HeldPiece.NONE)));
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(10), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(30), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(70), true), iPosition.CARGO_GRAB, HeldPiece.NONE)));
 		ArrayList<SuperStructureState> resultingStates = new ArrayList<SuperStructureState>();
 
     for(int i=0; i<goalStates.size(); i++){
@@ -74,7 +74,6 @@ public class SuperstructureTests {
       if(!correctEndStates.get(i).isEqualTo(resultingStates.get(i))){
         throw new AssertionError("Expected "+correctEndStates.get(i).toString()+", got "+resultingStates.get(i).toString());
       }
-      assertEquals(correctEndStates.get(i).getElevatorHeight(), resultingStates.get(i).getElevatorHeight()); 
     }
     System.out.println();
   }
@@ -84,14 +83,14 @@ public class SuperstructureTests {
 		SuperstructurePlanner planner = new SuperstructurePlanner();
 		SuperStructureState currentState = new SuperStructureState(new ElevatorState(), iPosition.CARGO_GRAB, HeldPiece.NONE);
 		ArrayList<SuperStructureState> goalStates = new ArrayList<SuperStructureState>(Arrays.asList(
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(10)), iPosition.HATCH, HeldPiece.NONE),
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(30)), iPosition.HATCH, HeldPiece.NONE),
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(30)),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH, HeldPiece.NONE),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(30)), iPosition.HATCH, HeldPiece.NONE),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(30)),
 						new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(10)), new RotatingArmState(Rotation2dKt.getDegree(10))), HeldPiece.NONE)));
 		ArrayList<SuperStructureState> correctEndStates = new ArrayList<SuperStructureState>(Arrays.asList(
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(10)), iPosition.HATCH, HeldPiece.NONE),
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(30)), iPosition.HATCH, HeldPiece.NONE),
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(30)),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH, HeldPiece.NONE),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(30)), iPosition.HATCH, HeldPiece.NONE),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(30)),
 						new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(10)), new RotatingArmState(Rotation2dKt.getDegree(10))), HeldPiece.NONE)));
 		ArrayList<SuperStructureState> resultingStates = new ArrayList<SuperStructureState>();
 
