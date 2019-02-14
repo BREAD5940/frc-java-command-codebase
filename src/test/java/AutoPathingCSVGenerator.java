@@ -20,7 +20,7 @@ public class AutoPathingCSVGenerator {
 	public void twoHatchLLtest() {
 		Trajectories.generateAllTrajectories(false);
 		ArrayList<Translation2d> path = TwoHatchOneCargoLeft('L', 'L');
-		writeToCSV("twoHatchLLtest", path);
+		writeToCSV("src/main/python/twoHatchLLtest.csv", path);
 
 		// path = TwoHatchOneCargoLeft('R', 'R');
 		// writeToCSV("twoHatchRRest", path);
@@ -63,7 +63,7 @@ public class AutoPathingCSVGenerator {
 
 		ArrayList<Translation2d> points = new ArrayList<Translation2d>();
 
-		HeldPiece cPiece = HeldPiece.HATCH; // we start with a hatch
+		HeldPiece cPiece = HeldPiece.HATCH; // we do start with a hatch
 		String cStart = "hab" + startPos;
 		String mLoadingStation = "loading" + side;
 
@@ -100,7 +100,7 @@ public class AutoPathingCSVGenerator {
 		cStart = "depot" + side;
 		cPiece = HeldPiece.CARGO;
 		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
-		// points.addAll(trajectToArrayList(traject));
+		points.addAll(trajectToArrayList(traject));
 
 		return points;
 
@@ -200,7 +200,7 @@ public class AutoPathingCSVGenerator {
 			return null;
 		points.addAll(trajectToArrayList(traject));
 
-		/* ------------------------------------------------------------------ The rocket is now full ------------------------------------------------------------------ */
+		/* ------------------------------------------------------------------ The rocket hass all 6 hatches on now ------------------------------------------------------------------ */
 
 		return points;
 
