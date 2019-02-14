@@ -40,7 +40,7 @@ public class SuperStructure extends Subsystem {
 	private static SuperStructure instance_;
 	private SuperStructureState mReqState = new SuperStructureState();
 	private CommandGroup mCurrentCommandGroup;
-	private List<SuperStructureState> mReqPath;
+	private ArrayList<SuperStructureState> mReqPath;
 	private int cPathIndex = 0;
 	private boolean currentPathComplete = false;
 	public static Elevator elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
