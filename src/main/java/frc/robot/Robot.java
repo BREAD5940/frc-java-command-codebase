@@ -23,6 +23,7 @@ import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
+import frc.robot.subsystems.superstructure.SuperStructure;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimeLight;
 
@@ -38,9 +39,8 @@ public class Robot extends TimedRobot {
 	// public static Intake intake = new Intake();
 	// public static Elevator elevator = new Elevator();
 	public static DriveTrain drivetrain = DriveTrain.getInstance();
-	// public static SuperStructure superstructure = SuperStructure.getInstance();
+	public static SuperStructure superstructure = SuperStructure.getInstance();
 	// public static VisionProcessor visionProcessor = new VisionProcessor();
-	public static Intake intake = new Intake();
 	public static LimeLight limelight = new LimeLight();
 	// public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
 	private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
@@ -106,7 +106,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Goal Height", mGh);
 		SmartDashboard.putData(drivetrain);
 		// SmartDashboard.putData();
-		SmartDashboard.putData(intake);
+		SmartDashboard.putData(SuperStructure.intake);
 		SmartDashboard.putData(shifterDoubleSolenoid);
 
 		compressor.setClosedLoopControl(true);
