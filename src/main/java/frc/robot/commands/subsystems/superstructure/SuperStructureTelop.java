@@ -19,7 +19,7 @@ public class SuperStructureTelop extends Command {
 	public SuperStructureTelop(SuperStructure struc) {
 		// Use requires() here to declare subsystem dependencies
 		requires(struc);
-		this.superStructure = struc
+		this.superStructure = struc;
 	}
 
 	// Called just before this Command runs the first time
