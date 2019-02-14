@@ -40,6 +40,9 @@ public class SuperStructure extends Subsystem {
 	private static SuperStructure instance_;
 	private SuperStructureState mReqState = new SuperStructureState();
 	private CommandGroup mCurrentCommandGroup;
+	private ArrayList<SuperStructureState> mReqPath;
+	private int cPathIndex = 0;
+	private boolean currentPathComplete = false;
 	public static Elevator elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
 			new InvertSettings(false, InvertType.FollowMaster, InvertType.OpposeMaster, InvertType.OpposeMaster));
 	public static Intake intake;// = new Intake();
@@ -135,17 +138,13 @@ public class SuperStructure extends Subsystem {
 	 * @returnW
 	 *    the command group necessary to safely move the superstructure
 	 */
-	public CommandGroup moveSuperstructureCombo(SuperStructureState mRequState_) {
+	public void moveSuperstructureCombo(SuperStructureState mRequState_) {
 
 		// TODO the wrist angle is mega broken because it's solely based on the currently held game piece 
 		// this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
-		ArrayList<SuperStructureState> path = planner.plan(mRequState_, mCurrentState);
-		this.mCurrentCommandGroup = new CommandGroup("Superstructure Path");
-		for (int i = 0; i < path.size() - 1; i++) {
-			mCurrentCommandGroup.addSequential(new SuperstructureGoToState(path.get(i)));
-		}
-
-		return this.mCurrentCommandGroup;
+		// this.mReqPath = planner.plan(mRequState_, mCurrentState);
+		mReqState = mRequState_;
+		// return this.mCurrentCommandGroup;
 	}
 
 	/**
@@ -214,20 +213,25 @@ public class SuperStructure extends Subsystem {
 		updateState();
 
 		// Make for sure for real real that the voltage is always positive
-		// double mCurrentWristTorque = Math.abs(calculateWristTorque(this.mCurrentState)); // torque due to gravity and elevator acceleration, newton meters
-		// double mCurrentElbowTorque = Math.abs(calculateElbowTorques(this.mCurrentState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
+		double mCurrentWristTorque = Math.abs(calculateWristTorque(this.mCurrentState)); // torque due to gravity and elevator acceleration, newton meters
+		double mCurrentElbowTorque = Math.abs(calculateElbowTorques(this.mCurrentState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
 
-		// double wristVoltageGravity = kWristTransmission.getVoltageForTorque(this.mCurrentState.getWrist().velocity.getValue(), mCurrentWristTorque);
-		// double elbowVoltageGravity = kElbowTransmission.getVoltageForTorque(this.mCurrentState.getElbow().velocity.getValue(), mCurrentElbowTorque);
+		double wristVoltageGravity = kWristTransmission.getVoltageForTorque(this.mCurrentState.getWrist().velocity.getValue(), mCurrentWristTorque);
+		double elbowVoltageGravity = kElbowTransmission.getVoltageForTorque(this.mCurrentState.getElbow().velocity.getValue(), mCurrentElbowTorque);
 		double elevatorVoltageGravity = 0;// = elevator.getVoltage(this.mCurrentState);
 
 		// TODO velocity planning? or just let talon PID figure itself out
 		// How about maybe motion magic?
 
 		// TODO is mReqState up to date?
-		// getWrist().setPositionArbitraryFeedForward(mReqState.getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
-		// getElbow().setPositionArbitraryFeedForward(mReqState.getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
-		// getElevator().setPositionArbitraryFeedForward(mReqState.getElevator().height, elevatorVoltageGravity / 12d);
+		mReqPath = planner.plan(mReqState,mCurrentState);
+
+		getWrist().setPositionArbitraryFeedForward(mReqPath.get(0).getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
+		getElbow().setPositionArbitraryFeedForward(mReqPath.get(0).getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
+		getElevator().setPositionArbitraryFeedForward(mReqPath.get(0).getElevator().height, elevatorVoltageGravity / 12d);
+
+	
+
 
 		SmartDashboard.putNumber("elevator height in inches", getElevator().getHeight().getInch());
 	}
