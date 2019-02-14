@@ -236,7 +236,7 @@ public class SuperStructure extends Subsystem {
 
 		// double wristVoltageGravity = kWristTransmission.getVoltageForTorque(this.mCurrentState.getWrist().velocity.getValue(), mCurrentWristTorque);
 		// double elbowVoltageGravity = kElbowTransmission.getVoltageForTorque(this.mCurrentState.getElbow().velocity.getValue(), mCurrentElbowTorque);
-		double elevatorVoltageGravity = elevator.getVoltage(this.mCurrentState);
+		double elevatorVoltageGravity = 0;// = elevator.getVoltage(this.mCurrentState);
 
 		// TODO velocity planning? or just let talon PID figure itself out
 		// How about maybe motion magic?
