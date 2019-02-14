@@ -77,6 +77,7 @@ public class Elevator /*extends Subsystem*/ implements iLinearWaitable {
 		this.kPositionTolerence = tol;
 	}
 
+	@Override
 	public boolean withinTolerence(ElevatorState current_, ElevatorState target_) {
 		return ( current_.height.minus(target_.height).getInch() < kPositionTolerence.getInch() );
 	}
@@ -228,4 +229,6 @@ public class Elevator /*extends Subsystem*/ implements iLinearWaitable {
 		return new ElevatorState(getHeight(), getVelocity(),
 				accel, time);
 	}
+
+
 }
