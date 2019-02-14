@@ -2,7 +2,7 @@ package frc.robot.lib;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 
-public interface iLinearWaitable extends iWaitable {
+public interface iLinearWaitable {
 
   abstract boolean withinTolerence();
 

@@ -2,7 +2,7 @@ package frc.robot.lib;
 
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
-public interface iRotatingWaitable extends iWaitable {
+public interface iRotatingWaitable {
 
   abstract boolean withinTolerence();
 
