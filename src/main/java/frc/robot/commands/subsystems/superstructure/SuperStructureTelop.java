@@ -12,9 +12,14 @@ import frc.robot.subsystems.superstructure.SuperStructure;
 public class SuperStructureTelop extends Command {
 	private SuperStructure superStructure;
 
+	/** Run the superstructure (elevator for now) during telop using an xbox
+	  * joystick. 
+	  * @param struc the superstructure object
+	  **/
 	public SuperStructureTelop(SuperStructure struc) {
 		// Use requires() here to declare subsystem dependencies
 		requires(struc);
+		this.superStructure = struc
 	}
 
 	// Called just before this Command runs the first time
