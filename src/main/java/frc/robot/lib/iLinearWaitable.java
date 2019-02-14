@@ -6,6 +6,6 @@ public interface iLinearWaitable {
 
 	abstract boolean withinTolerence();
 
-	void setTolerence(Length tolerence);
+	abstract void setTolerence(Length tolerence);
 
 }
