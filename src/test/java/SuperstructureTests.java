@@ -37,78 +37,76 @@ public class SuperstructureTests {
 				new SuperStructureState(new ElevatorState(), iPosition.CARGO_GRAB, HeldPiece.NONE)));
 		ArrayList<SuperStructureState> resultingStates = new ArrayList<SuperStructureState>();
 
-    for(int i=0; i<goalStates.size(); i++){
-      resultingStates.add(i,planner.getPlannedState(goalStates.get(i),currentState));
-      System.out.print(Integer.valueOf(i)+": ");
-      System.out.print(correctEndStates.get(i).toString());
-      System.out.print(", ");
-      System.out.println(resultingStates.get(i).toString());
-      System.out.println("Correct state and resulting state are equal: "+correctEndStates.get(i).isEqualTo(resultingStates.get(i)));
-      if(!correctEndStates.get(i).isEqualTo(resultingStates.get(i))){
-        throw new AssertionError("Expected "+correctEndStates.get(i).toString()+", got "+resultingStates.get(i).toString());
-      }
-    }
-    System.out.println();
-  }
+		for (int i = 0; i < goalStates.size(); i++) {
+			resultingStates.add(i, planner.getPlannedState(goalStates.get(i), currentState));
+			System.out.print(Integer.valueOf(i) + ": ");
+			System.out.print(correctEndStates.get(i).toString());
+			System.out.print(", ");
+			System.out.println(resultingStates.get(i).toString());
+			System.out.println("Correct state and resulting state are equal: " + correctEndStates.get(i).isEqualTo(resultingStates.get(i)));
+			if (!correctEndStates.get(i).isEqualTo(resultingStates.get(i))) {
+				throw new AssertionError("Expected " + correctEndStates.get(i).toString() + ", got " + resultingStates.get(i).toString());
+			}
+		}
+		System.out.println();
+	}
 
 	@Test
 	public void testElevator() {
 		SuperstructurePlanner planner = new SuperstructurePlanner();
 		SuperStructureState currentState = new SuperStructureState(new ElevatorState(true), iPosition.CARGO_GRAB, HeldPiece.NONE);
 		ArrayList<SuperStructureState> goalStates = new ArrayList<SuperStructureState>(Arrays.asList(
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(10), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(30), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(80), true), iPosition.CARGO_GRAB, HeldPiece.NONE)));
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(10), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(30), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(80), true), iPosition.CARGO_GRAB, HeldPiece.NONE)));
 		ArrayList<SuperStructureState> correctEndStates = new ArrayList<SuperStructureState>(Arrays.asList(
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(10), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(30), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(70), true), iPosition.CARGO_GRAB, HeldPiece.NONE)));
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(10), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(30), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(70), true), iPosition.CARGO_GRAB, HeldPiece.NONE)));
 		ArrayList<SuperStructureState> resultingStates = new ArrayList<SuperStructureState>();
 
-    for(int i=0; i<goalStates.size(); i++){
-      resultingStates.add(i,planner.getPlannedState(goalStates.get(i),currentState));
-      System.out.print(Integer.valueOf(i)+": ");
-      System.out.print(correctEndStates.get(i).toString());
-      System.out.print(", "); 
-      System.out.println(resultingStates.get(i).toString());
-      if(!correctEndStates.get(i).isEqualTo(resultingStates.get(i))){
-        throw new AssertionError("Expected "+correctEndStates.get(i).toString()+", got "+resultingStates.get(i).toString());
-      }
-      assertEquals(correctEndStates.get(i).getElevatorHeight(), resultingStates.get(i).getElevatorHeight()); 
-    }
-    System.out.println();
-  }
+		for (int i = 0; i < goalStates.size(); i++) {
+			resultingStates.add(i, planner.getPlannedState(goalStates.get(i), currentState));
+			System.out.print(Integer.valueOf(i) + ": ");
+			System.out.print(correctEndStates.get(i).toString());
+			System.out.print(", ");
+			System.out.println(resultingStates.get(i).toString());
+			if (!correctEndStates.get(i).isEqualTo(resultingStates.get(i))) {
+				throw new AssertionError("Expected " + correctEndStates.get(i).toString() + ", got " + resultingStates.get(i).toString());
+			}
+		}
+		System.out.println();
+	}
 
 	@Test
 	public void bigScaryComboTests() {
 		SuperstructurePlanner planner = new SuperstructurePlanner();
 		SuperStructureState currentState = new SuperStructureState(new ElevatorState(), iPosition.CARGO_GRAB, HeldPiece.NONE);
 		ArrayList<SuperStructureState> goalStates = new ArrayList<SuperStructureState>(Arrays.asList(
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(10)), iPosition.HATCH, HeldPiece.NONE),
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(30)), iPosition.HATCH, HeldPiece.NONE),
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(30)),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH, HeldPiece.NONE),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(30)), iPosition.HATCH, HeldPiece.NONE),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(30)),
 						new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(10)), new RotatingArmState(Rotation2dKt.getDegree(10))), HeldPiece.NONE)));
 		ArrayList<SuperStructureState> correctEndStates = new ArrayList<SuperStructureState>(Arrays.asList(
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(10)), iPosition.HATCH, HeldPiece.NONE),
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(30)), iPosition.HATCH, HeldPiece.NONE),
-				new SuperStructureState(new ElevatorState(LengthKt.getFeet(30)),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH, HeldPiece.NONE),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(30)), iPosition.HATCH, HeldPiece.NONE),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(30)),
 						new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(10)), new RotatingArmState(Rotation2dKt.getDegree(10))), HeldPiece.NONE)));
 		ArrayList<SuperStructureState> resultingStates = new ArrayList<SuperStructureState>();
 
 		for (int i = 0; i < goalStates.size(); i++) {
 			resultingStates.add(i, planner.getPlannedState(goalStates.get(i), currentState));
 
-      if(!correctEndStates.get(i).isEqualTo(resultingStates.get(i))){
-        throw new AssertionError("Expected "+correctEndStates.get(i).toString()+", got "+resultingStates.get(i).toString());
-      }
-    }
-    System.out.println();
-  }
+			if (!correctEndStates.get(i).isEqualTo(resultingStates.get(i))) {
+				throw new AssertionError("Expected " + correctEndStates.get(i).toString() + ", got " + resultingStates.get(i).toString());
+			}
+		}
+		System.out.println();
+	}
 
-
-  @Test
-  public void testEqual(){
-    SuperStructureState sp = new SuperStructureState();
-    assertTrue(sp.isEqualTo(sp));
-  }
+	@Test
+	public void testEqual() {
+		SuperStructureState sp = new SuperStructureState();
+		assertTrue(sp.isEqualTo(sp));
+	}
 }

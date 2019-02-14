@@ -93,17 +93,15 @@ public class SuperStructureState implements Loggable {
 	}
 
 	public boolean isEqualTo(SuperStructureState other) {
-		System.out.printf("Joint angles: %b   Elevator: %b   Piece: %b\n",jointAngles.isEqualTo(other.jointAngles),
-				elevator.isEqualTo(other.elevator),piece.toString().equals(other.piece.toString()));
 		return (this.jointAngles.isEqualTo(other.jointAngles)
 				&& this.elevator.isEqualTo(other.elevator)
 				&& this.piece.toString() == other.piece.toString());
 	}
 
 	@Override
-	public String toString(){
-		return "HeldPiece: "+this.piece.toString()+", Elbow Angle: "+this.jointAngles.getElbow().toString()+
-						", Wrist Angle: "+this.jointAngles.getWrist().toString()+", Elevator Height: "+this.elevator.getHeight().getFeet();
+	public String toString() {
+		return "HeldPiece: " + this.piece.toString() + ", Elbow Angle: " + this.jointAngles.getElbow().toString() +
+				", Wrist Angle: " + this.jointAngles.getWrist().toString() + ", Elevator Height: " + this.elevator.getHeight().getFeet();
 	}
 
 	@Override
