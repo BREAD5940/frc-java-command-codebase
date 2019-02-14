@@ -73,6 +73,19 @@ public class SuperstructurePlanner {
 		SuperStructureState goalState = new SuperStructureState(goalStateIn);
 		errorCount = corrCount = 0;
 
+		//checks if the elevator will go to high
+		if (goalState.elevator.height.getFeet() > top.getFeet()) {
+			System.out.println("MOTION IMPOSSIBLE -- Elevator will pass maximum height. Setting to maximum height.");
+			errorCount++;
+			corrCount++;
+			goalState.getElevator().setHeight(top);
+		}else if (goalState.elevator.height.getFeet()<bottom.getFeet()){
+			System.out.println("MOTION IMPOSSIBLE -- Elevator will attempt to smash directly through the bottom of the robot. Setting to minimum height.");
+			errorCount++;
+			corrCount++;
+			goalState.getElevator().setHeight(bottom);
+		}
+
 		//heights
 		gHeight = LengthKt.getInch((goalState.getElevatorHeight().getInch() + Math.sin(goalState.getAngle().getElbow().angle.getRadian()) / carriageToIntake.getInch())
 				+ Math.sin(goalState.getAngle().getWrist().angle.getRadian()) / intakeDiameter.getInch());
@@ -134,13 +147,7 @@ public class SuperstructurePlanner {
 			}
 		}
 
-		//checks if the elevator will go to high
-		if (goalState.elevator.height.getFeet() > top.getFeet()) {
-			System.out.println("MOTION IMPOSSIBLE -- Elevator will pass maximum height. Setting to maximum height.");
-			errorCount++;
-			corrCount++;
-			goalState.getElevator().setHeight(top);
-		}
+		
 
 		//checks if intake will hit crossbar
 		if ((throughAbove && gHeight.getFeet() > crossbar.getFeet() - disInside.getFeet() && gHeight.getFeet() < crossbar.getFeet())
