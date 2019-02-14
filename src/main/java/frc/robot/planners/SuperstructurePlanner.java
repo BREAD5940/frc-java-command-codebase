@@ -2,6 +2,7 @@ package frc.robot.planners;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -53,8 +54,8 @@ public class SuperstructurePlanner {
 
 	public boolean checkValidState(SuperStructureState reqState) { //what is this supposed to do? does it just check if the path is possible w/o correction?
 		// TODO is this what we actuall want this to looke like?
-		ArrayList<SuperStructureState> kdsjfl = this.plan(reqState, this.currentPlannedState);
-		return (kdsjfl.get(kdsjfl.size() - 1).isEqualTo(reqState) && kdsjfl.size() == 1);
+		List<SuperStructureState> plannedPath = this.plan(reqState, this.currentPlannedState);
+		return (plannedPath.get(plannedPath.size() - 1).isEqualTo(plannedPath.get(0)) && plannedPath.size() == 1);
 		//so now it just checks to see if it can move from the current planned state to the reqstate w/ no correction
 	}
 
@@ -67,8 +68,8 @@ public class SuperstructurePlanner {
 	 * @return
 	 *    the ideal command group to get from the currentState to the goalState
 	 */
-	public ArrayList<SuperStructureState> plan(SuperStructureState goalStateIn, SuperStructureState currentState) {
-		List<SuperStructureState> toReturn = new ArrayList<SuperStructureState>();
+	public List<SuperStructureState> plan(SuperStructureState goalStateIn, SuperStructureState currentState) {
+		List<SuperStructureState> toReturn;// = new List<SuperStructureState>();
 		SuperStructureState goalState = new SuperStructureState(goalStateIn);
 		errorCount = corrCount = 0;
 

@@ -28,6 +28,7 @@ import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.lib.PIDSettings;
+import frc.robot.lib.iLinearWaitable;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
@@ -39,7 +40,7 @@ import frc.robot.states.SuperStructureState;
  * 
  * @author Matthew Morley
  */
-public class Elevator /*extends Subsystem*/ {
+public class Elevator /*extends Subsystem*/ implements iLinearWaitable {
 
 	public static enum EncoderMode {
 		NONE, CTRE_MagEncoder_Relative;
@@ -53,7 +54,9 @@ public class Elevator /*extends Subsystem*/ {
 	public static final Mass kCarriageMass = MassKt.getLb(20);
 	public static final Mass kInnerStageMass = MassKt.getLb(6.5);
 
-	public static final Length kTopOfInnerStage = LengthKt.getInch(40);
+	public static final Length kTopOfInnerStage = LengthKt.getInch(40); // TODO tune me
+
+	private Length kPositionTolerence = LengthKt.getInch(2);
 
 	public static final double KLowGearForcePerVolt = 512d / 12d /* newtons */ ;
 	public static final double KHighGearForcePerVolt = 1500d / 12d /* newtons */ ;
@@ -69,6 +72,11 @@ public class Elevator /*extends Subsystem*/ {
 	private static final ElevatorGear kDefaultGear = ElevatorGear.LOW;
 
 	NativeUnitLengthModel lengthModel = RobotConfig.elevator.elevatorModel;
+
+	public void setTolerence(Length tol) {
+		this.kPositionTolerence = tol;
+	}
+
 
 	public Elevator(int masterPort, int slavePort1, int slavePort2, int slavePort3, EncoderMode mode, InvertSettings settings) {
 

@@ -4,6 +4,6 @@ public interface iWaitable {
 
   abstract boolean withinTolerence();
 
-  void setTolerence(Number tolerence);
+  <T> void setTolerence(T tolerence);
 
 }

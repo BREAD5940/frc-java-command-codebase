@@ -117,17 +117,17 @@ public class SuperStructure extends Subsystem {
 	 * Move the superstructure based on a height, intake angle and wrist angle
 	 * TODO how do we go from held game piece to target angle?
 	 */
-	public CommandGroup moveSuperstructureCombo(ElevatorState elevator, RotatingArmState elbow,
+	public void moveSuperstructureCombo(ElevatorState elevator, RotatingArmState elbow,
 			RotatingArmState wrist) {
-		return moveSuperstructureCombo(new SuperStructureState(elevator, elbow, wrist));
+		moveSuperstructureCombo(new SuperStructureState(elevator, elbow, wrist));
 	}
 
 	/**
 	* Move the superstructure based on a height, intake angle and wrist angle
 	* TODO how do we go from held game piece to target angle?
 	*/
-	public CommandGroup moveSuperstructureCombo(ElevatorState elevator, IntakeAngle intakeState) {
-		return moveSuperstructureCombo(new SuperStructureState(elevator, intakeState));
+	public void moveSuperstructureCombo(ElevatorState elevator, IntakeAngle intakeState) {
+		moveSuperstructureCombo(new SuperStructureState(elevator, intakeState));
 	}
 
 	/**
@@ -154,9 +154,9 @@ public class SuperStructure extends Subsystem {
 	 * @return
 	 *    the command group necessary to safely move the superstructure
 	 */
-	public CommandGroup moveSuperstructureElevator(Length height) {
+	public void moveSuperstructureElevator(Length height) {
 		updateState();
-		return this.moveSuperstructureCombo(new ElevatorState(height), mReqState.getElbow(), mReqState.getWrist());
+		this.moveSuperstructureCombo(new ElevatorState(height), mReqState.getElbow(), mReqState.getWrist());
 	}
 
 	/**
@@ -168,9 +168,9 @@ public class SuperStructure extends Subsystem {
 	 * @return
 	 *    the command group necessary to safely move the superstructure
 	 */
-	public CommandGroup moveSuperstructureAngle(IntakeAngle intakeState, AutoMotion.HeldPiece piece) {
+	public void moveSuperstructureAngle(IntakeAngle intakeState, AutoMotion.HeldPiece piece) {
 		updateState();
-		return this.moveSuperstructureCombo(mReqState.getElevator(), intakeState);
+		this.moveSuperstructureCombo(mReqState.getElevator(), intakeState);
 	}
 
 	@Override

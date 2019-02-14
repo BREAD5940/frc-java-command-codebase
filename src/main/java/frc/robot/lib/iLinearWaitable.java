@@ -1,11 +1,11 @@
 package frc.robot.lib;
 
-import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
+import org.ghrobotics.lib.mathematics.units.Length;
 
 public interface iLinearWaitable extends iWaitable {
 
   abstract boolean withinTolerence();
 
-  void setTolerence(Translation2d tolerence);
+  void setTolerence(Length tolerence);
 
 }
