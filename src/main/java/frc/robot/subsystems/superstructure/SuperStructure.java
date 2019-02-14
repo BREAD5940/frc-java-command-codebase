@@ -180,7 +180,7 @@ public class SuperStructure extends Subsystem {
 		// Actually yeah all that you really need is the buttons
 		// well also jogging with joysticks but eehhhh
 		// actually that should be the default command, hot prank
-		setDefaultCommand(new SuperStructureTelop(this));
+		setDefaultCommand(new SuperStructureTelop(getInstance()));
 	}
 
 	public SuperStructureState updateState() {
