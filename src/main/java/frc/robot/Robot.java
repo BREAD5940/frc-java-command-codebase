@@ -90,6 +90,13 @@ public class Robot extends TimedRobot {
 	}
 
 	/**
+	 * FIXME it's a hack, set the period to 25ms
+	 */
+	public Robot() {
+		super(0.025d);
+	}
+
+	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
 	 */

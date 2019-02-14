@@ -21,7 +21,7 @@ public class TerriblePID {
 			maxIntegralAccum, minOutput, maxOutput, setpoint, input, error, output;
 	double lastOutput, lastMeasured;
 	double tolerence;
-	double dt = 1.0 / 50; // Set delta time to 50 hz, this is likely good enough
+	double dt = 0.025d; // Set delta time to 50 hz, this is likely good enough
 	FeedForwardMode feedforwardmode;
 	FeedForwardBehavior feedforwardbehavior;
 	/** The number of input units per quarter sine/cosine wave */
