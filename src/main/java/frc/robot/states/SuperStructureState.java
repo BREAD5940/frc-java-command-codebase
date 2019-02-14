@@ -99,9 +99,9 @@ public class SuperStructureState implements Loggable {
 	}
 
 	@Override
-	public String toString(){
-		return "HeldPiece: "+this.piece.toString()+", Elbow Angle: "+this.jointAngles.getElbow().toString()+
-						", Wrist Angle: "+this.jointAngles.getWrist().toString()+", Elevator Height: "+this.elevator.getHeight().getFeet();
+	public String toString() {
+		return "HeldPiece: " + this.piece.toString() + ", Elbow Angle: " + this.jointAngles.getElbow().toString() +
+				", Wrist Angle: " + this.jointAngles.getWrist().toString() + ", Elevator Height: " + this.elevator.getHeight().getFeet();
 	}
 
 	@Override

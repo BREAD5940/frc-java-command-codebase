@@ -38,7 +38,7 @@ public class IntakeAngle {
 	}
 
 	public boolean isEqualTo(IntakeAngle other) {
-		return (this.elbowAngle.angle.getDegree()==other.elbowAngle.angle.getDegree()
+		return (this.elbowAngle.angle.getDegree() == other.elbowAngle.angle.getDegree()
 				&& this.wristAngle.angle.getDegree() == other.wristAngle.angle.getDegree());
 	}
 }

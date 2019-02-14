@@ -31,7 +31,7 @@ public class SuperstructurePlanner {
 
 	static final Length gIntakeDi = LengthKt.getInch(12); //FIXME this is definately not the actual diameter
 	/** the  */
-	static Length crossbarMinHeight = LengthKt.getInch(20); 
+	static Length crossbarMinHeight = LengthKt.getInch(20);
 	static Length crossbarMaxHeight = LengthKt.getInch(24);
 
 	static final Length maxHeight = RobotConfig.elevator.elevator_maximum_height;
@@ -66,10 +66,10 @@ public class SuperstructurePlanner {
 		boolean throughBelow = ((currentState.getAngle().getElbow().angle.getDegree() > 225 && currentState.getAngle().getElbow().angle.getDegree() < 315));
 		boolean throughAbove = ((currentState.getAngle().getElbow().angle.getDegree() > 45 && currentState.getAngle().getElbow().angle.getDegree() < 135));
 
-		if(!throughAbove){
+		if (!throughAbove) {
 			crossbarMinHeight.plus(gIntakeDi); //adds the diameter of the intake to the min height bc it won't be above the carrige
 		}
-		if(!throughBelow){
+		if (!throughBelow) {
 			crossbarMaxHeight.minus(gIntakeDi); //subtracts the diameter from the max height bc it won't be below
 		}
 
@@ -120,10 +120,10 @@ public class SuperstructurePlanner {
 		}
 
 		//checks if the elevator will move past the crossbar
-		if (intakeAtRisk && (goalState.getElevatorHeight().getFeet() >= crossbarMaxHeight.getFeet() 
-			&& currentState.getElevatorHeight().getFeet() <= crossbarMinHeight.getFeet())
-				|| (goalState.getElevatorHeight().getFeet() <= crossbarMinHeight.getFeet() 
-					&& currentState.getElevatorHeight().getFeet() >= crossbarMaxHeight.getFeet())) {
+		if (intakeAtRisk && (goalState.getElevatorHeight().getFeet() >= crossbarMaxHeight.getFeet()
+				&& currentState.getElevatorHeight().getFeet() <= crossbarMinHeight.getFeet())
+				|| (goalState.getElevatorHeight().getFeet() <= crossbarMinHeight.getFeet()
+						&& currentState.getElevatorHeight().getFeet() >= crossbarMaxHeight.getFeet())) {
 			System.out.println("MOTION UNSAFE -- Intake will hit crossbar. Setting to default intake position for movement.");
 			errorCount++;
 			toReturn.add(new SuperStructureState(currentState.elevator, iPosition.CARGO_GRAB, currentState.getHeldPiece())); //Keeps intake outside the elevator so it doesn't hit the crossbar
