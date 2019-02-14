@@ -1,6 +1,7 @@
 package frc.robot.planners;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -67,7 +68,7 @@ public class SuperstructurePlanner {
 	 *    the ideal command group to get from the currentState to the goalState
 	 */
 	public ArrayList<SuperStructureState> plan(SuperStructureState goalStateIn, SuperStructureState currentState) {
-		ArrayList<SuperStructureState> toReturn = new ArrayList<SuperStructureState>();
+		List<SuperStructureState> toReturn = new ArrayList<SuperStructureState>();
 		SuperStructureState goalState = new SuperStructureState(goalStateIn);
 		errorCount = corrCount = 0;
 
@@ -87,7 +88,7 @@ public class SuperstructurePlanner {
 		if (goalState == currentState) {
 			System.out.println("MOTION UNNECESSARY -- Goal and current states are same. Exiting planner.");
 			this.currentPlannedState = goalState;
-			return toReturn;
+			return Arrays.asList(goalState);
 		}
 
 		if (goalState.getHeldPiece() != currentState.getHeldPiece()) {
