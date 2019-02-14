@@ -1,6 +1,5 @@
 package frc.robot.planners;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -69,7 +68,7 @@ public class SuperstructurePlanner {
 	 *    the ideal command group to get from the currentState to the goalState
 	 */
 	public List<SuperStructureState> plan(SuperStructureState goalStateIn, SuperStructureState currentState) {
-		List<SuperStructureState> toReturn;// = new List<SuperStructureState>();
+		List<SuperStructureState> toReturn = Arrays.asList();// = new List<SuperStructureState>();
 		SuperStructureState goalState = new SuperStructureState(goalStateIn);
 		errorCount = corrCount = 0;
 
