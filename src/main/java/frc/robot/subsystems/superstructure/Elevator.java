@@ -81,7 +81,7 @@ public class Elevator /*extends Subsystem*/ {
 		if (mode == EncoderMode.CTRE_MagEncoder_Relative) {
 			mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
 			mMaster.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30);
-			mMaster.setSensorPhase(true);
+			mMaster.setSensorPhase(false);
 		}
 
 		mSlave1.set(ControlMode.Follower, mMaster.getDeviceID());
@@ -103,7 +103,7 @@ public class Elevator /*extends Subsystem*/ {
 		// mMaster.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, normalOpenOrClose);
 
 		mCurrentGear = kDefaultGear;
-		setGear(kDefaultGear);
+		setGear(kDefaultGear); // this sets gear and PID gains too
 	}
 
 	public FalconSRX<Length> getMaster() {

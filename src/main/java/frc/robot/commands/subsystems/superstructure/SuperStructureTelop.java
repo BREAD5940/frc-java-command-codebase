@@ -32,15 +32,16 @@ public class SuperStructureTelop extends Command {
 	@Override
 	protected void execute() {
 		Length delta = LengthKt.getInch(Robot.m_oi.getElevatorAxis() * 0.08);
-		Elevator elev = superStructure.getElevator(); // THIS LINE THROWS A HEKKING NULL PIONTER
-		FalconSRX<Length> talon = elev.getMaster();
-		Length current = talon.getSensorPosition();
+		// Elevator elev = superStructure.getElevator(); // THIS LINE THROWS A HEKKING NULL PIONTER
+		// FalconSRX<Length> talon = elev.getMaster();
+    // Length current = talon.getSensorPosition();
+    Length current = superStructure.getCurrentState().elevator.height;
 		Length new_s = current.plus(delta);
-		// superStructure.moveSuperstructureElevator(new_s);
+		superStructure.moveSuperstructureElevator(new_s);
     // System.out.println("target height: " + new_s);
     
-    double power = Robot.m_oi.getElevatorAxis() * 0.75;
-    talon.set(ControlMode.PercentOutput, power);
+    // double power = Robot.m_oi.getElevatorAxis() * 1;
+    // talon.set(ControlMode.PercentOutput, power);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

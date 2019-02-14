@@ -94,6 +94,10 @@ public class SuperStructure extends Subsystem {
 
 	private SuperStructureState mCurrentState = new SuperStructureState();
 
+	public SuperStructureState getCurrentState() {
+		return mCurrentState;
+	}
+
 	public static class iPosition {
 		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
 		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
@@ -142,8 +146,8 @@ public class SuperStructure extends Subsystem {
 
 		// TODO the wrist angle is mega broken because it's solely based on the currently held game piece 
 		// this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
-		// this.mReqPath = planner.plan(mRequState_, mCurrentState);
-		mReqState = mRequState_;
+		this.mReqPath = planner.plan(mRequState_, mCurrentState);
+		mReqState = mRequState_; // TODO I still don't truse mReqState
 		// return this.mCurrentCommandGroup;
 	}
 
@@ -155,7 +159,7 @@ public class SuperStructure extends Subsystem {
 	 *    the command group necessary to safely move the superstructure
 	 */
 	public void moveSuperstructureElevator(Length height) {
-		updateState();
+		// updateState();
 		this.moveSuperstructureCombo(new ElevatorState(height), mReqState.getElbow(), mReqState.getWrist());
 	}
 
@@ -169,7 +173,7 @@ public class SuperStructure extends Subsystem {
 	 *    the command group necessary to safely move the superstructure
 	 */
 	public void moveSuperstructureAngle(IntakeAngle intakeState, AutoMotion.HeldPiece piece) {
-		updateState();
+		// updateState();
 		this.moveSuperstructureCombo(mReqState.getElevator(), intakeState);
 	}
 
@@ -225,11 +229,11 @@ public class SuperStructure extends Subsystem {
 		// How about maybe motion magic?
 
 		// TODO is mReqState up to date?
-		// mReqPath = planner.plan(mReqState, mCurrentState);
+		mReqPath = planner.plan(mReqState, mCurrentState);
 
 		// getWrist().setPositionArbitraryFeedForward(mReqPath.get(0).getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
 		// getElbow().setPositionArbitraryFeedForward(mReqPath.get(0).getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
-		// getElevator().setPositionArbitraryFeedForward(mReqPath.get(0).getElevator().height, elevatorVoltageGravity / 12d);
+		getElevator().setPositionArbitraryFeedForward(mReqPath.get(0).getElevator().height, elevatorVoltageGravity / 12d);
 
 		SmartDashboard.putNumber("elevator height in inches", mCurrentState.elevator.getHeight().getInch());
 	}
