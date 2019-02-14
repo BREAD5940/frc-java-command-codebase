@@ -27,8 +27,8 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.lib.Logger;
 import frc.robot.lib.PIDSettings;
-import frc.robot.lib.iLinearWaitable;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
@@ -40,7 +40,7 @@ import frc.robot.states.SuperStructureState;
  * 
  * @author Matthew Morley
  */
-public class Elevator /*extends Subsystem*/ implements iLinearWaitable {
+public class Elevator /*extends Subsystem*/ {
 
 	public static enum EncoderMode {
 		NONE, CTRE_MagEncoder_Relative;
@@ -54,9 +54,7 @@ public class Elevator /*extends Subsystem*/ implements iLinearWaitable {
 	public static final Mass kCarriageMass = MassKt.getLb(20);
 	public static final Mass kInnerStageMass = MassKt.getLb(6.5);
 
-	public static final Length kTopOfInnerStage = LengthKt.getInch(40); // TODO tune me
-
-	private Length kPositionTolerence = LengthKt.getInch(2);
+	public static final Length kTopOfInnerStage = LengthKt.getInch(40);
 
 	public static final double KLowGearForcePerVolt = 512d / 12d /* newtons */ ;
 	public static final double KHighGearForcePerVolt = 1500d / 12d /* newtons */ ;
@@ -73,49 +71,39 @@ public class Elevator /*extends Subsystem*/ implements iLinearWaitable {
 
 	NativeUnitLengthModel lengthModel = RobotConfig.elevator.elevatorModel;
 
-	public void setTolerence(Length tol) {
-		this.kPositionTolerence = tol;
-	}
-
-	@Override
-	public boolean withinTolerence(ElevatorState current_, ElevatorState target_) {
-		return ( current_.height.minus(target_.height).getInch() < kPositionTolerence.getInch() );
-	}
-
-
 	public Elevator(int masterPort, int slavePort1, int slavePort2, int slavePort3, EncoderMode mode, InvertSettings settings) {
 
 		mMaster = new FalconSRX<Length>(masterPort, lengthModel, TimeUnitsKt.getMillisecond(10));
-		// mSlave1 = new FalconSRX<Length>(slavePort1, lengthModel, TimeUnitsKt.getMillisecond(10));
-		// mSlave2 = new FalconSRX<Length>(slavePort2, lengthModel, TimeUnitsKt.getMillisecond(10));
-		// mSlave3 = new FalconSRX<Length>(slavePort3, lengthModel, TimeUnitsKt.getMillisecond(10));
+		mSlave1 = new FalconSRX<Length>(slavePort1, lengthModel, TimeUnitsKt.getMillisecond(10));
+		mSlave2 = new FalconSRX<Length>(slavePort2, lengthModel, TimeUnitsKt.getMillisecond(10));
+		mSlave3 = new FalconSRX<Length>(slavePort3, lengthModel, TimeUnitsKt.getMillisecond(10));
 
 		if (mode == EncoderMode.CTRE_MagEncoder_Relative) {
 			mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
 			mMaster.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30);
-			mMaster.setSensorPhase(true);
+			mMaster.setSensorPhase(false);
 		}
 
-		// mSlave1.set(ControlMode.Follower, mMaster.getDeviceID());
-		// mSlave2.set(ControlMode.Follower, mMaster.getDeviceID());
-		// mSlave3.set(ControlMode.Follower, mMaster.getDeviceID());
+		mSlave1.set(ControlMode.Follower, mMaster.getDeviceID());
+		mSlave2.set(ControlMode.Follower, mMaster.getDeviceID());
+		mSlave3.set(ControlMode.Follower, mMaster.getDeviceID());
 
 		// Quadrature Encoder of current
 		// Talon
-		mMaster.configPeakOutputForward(+1.0, 30);
-		mMaster.configPeakOutputReverse(-1.0, 30);
+		mMaster.configPeakOutputForward(+1.0, 0);
+		mMaster.configPeakOutputReverse(-1.0, 0);
 
 		mMaster.setSelectedSensorPosition(0);
 
 		mMaster.setInverted(settings.masterInverted);
-		// mSlave1.setInverted(settings.slave1FollowerMode);
-		// mSlave2.setInverted(settings.slave1FollowerMode);
-		// mSlave3.setInverted(settings.slave1FollowerMode);
+		mSlave1.setInverted(settings.slave1FollowerMode);
+		mSlave2.setInverted(settings.slave2FollowerMode);
+		mSlave3.setInverted(settings.slave3FollowerMode);
 
 		// mMaster.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, normalOpenOrClose);
 
 		mCurrentGear = kDefaultGear;
-		setGear(kDefaultGear);
+		setGear(kDefaultGear); // this sets gear and PID gains too
 	}
 
 	public FalconSRX<Length> getMaster() {
@@ -229,6 +217,4 @@ public class Elevator /*extends Subsystem*/ implements iLinearWaitable {
 		return new ElevatorState(getHeight(), getVelocity(),
 				accel, time);
 	}
-
-
 }

@@ -161,8 +161,8 @@ public class SuperstructurePlanner {
 		toReturn.add(new SuperStructureState(goalState));
 		currentState = goalState;
 
-		System.out.println("MOTION COMPLETED -- " + Integer.valueOf(errorCount) + " error(s) and "
-				+ Integer.valueOf(corrCount) + " final correction(s)");
+		// System.out.println("MOTION COMPLETED -- " + Integer.valueOf(errorCount) + " error(s) and "
+		// 		+ Integer.valueOf(corrCount) + " final correction(s)");
 		this.currentPlannedState = currentState;
 		return toReturn;
 	}
