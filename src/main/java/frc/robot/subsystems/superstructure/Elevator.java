@@ -61,6 +61,8 @@ public class Elevator /*extends Subsystem*/ {
 
 	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.2, 0, 2, 0);
 	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.05, 0, 0, 0);
+	private static final int kLowGearPIDSlot = 0;
+	private static final int kHighGearPIDSlot = 1;
 
 	private FalconSRX<Length> mMaster;
 
@@ -68,6 +70,9 @@ public class Elevator /*extends Subsystem*/ {
 
 	private ElevatorGear mCurrentGear;
 	private static final ElevatorGear kDefaultGear = ElevatorGear.LOW;
+
+
+	
 
 	NativeUnitLengthModel lengthModel = RobotConfig.elevator.elevatorModel;
 
@@ -102,8 +107,12 @@ public class Elevator /*extends Subsystem*/ {
 
 		// mMaster.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, normalOpenOrClose);
 
+		// setup PID gains
+		setClosedLoopGains(kLowGearPIDSlot, LOW_GEAR_PID);
+		setClosedLoopGains(kHighGearPIDSlot, HIGH_GEAR_PID);
+
 		mCurrentGear = kDefaultGear;
-		setGear(kDefaultGear); // this sets gear and PID gains too
+		setGear(kDefaultGear); // set shifter and closed loop slot
 	}
 
 	public FalconSRX<Length> getMaster() {
@@ -132,11 +141,11 @@ public class Elevator /*extends Subsystem*/ {
 		this.mCurrentGear = req;
 		if (req == ElevatorGear.LOW) {
 			Robot.setElevatorShifter(true);
-			setClosedLoopGains(LOW_GEAR_PID);
+			getMaster().selectProfileSlot(kLowGearPIDSlot, 0);
 		}
 		if (req == ElevatorGear.HIGH) {
 			Robot.setElevatorShifter(false);
-			setClosedLoopGains(HIGH_GEAR_PID);
+			getMaster().selectProfileSlot(kHighGearPIDSlot, 0);
 		}
 	}
 
@@ -170,7 +179,8 @@ public class Elevator /*extends Subsystem*/ {
 		getMaster().set(ControlMode.PercentOutput, 0);
 	}
 
-	public void setClosedLoopGains(double kp, double ki, double kd, double kf, Length iZone, double maxIntegral, double minOut, double maxOut) {
+	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, Length iZone, double maxIntegral, double minOut, double maxOut) {
+		mMaster.selectProfileSlot(slot, 0);
 		mMaster.config_kP(0, kp, 30);
 		mMaster.config_kI(0, ki, 30);
 		mMaster.config_kD(0, kd, 30);
@@ -181,8 +191,8 @@ public class Elevator /*extends Subsystem*/ {
 		mMaster.configPeakOutputReverse(minOut);
 	}
 
-	public void setClosedLoopGains(PIDSettings config) {
-		setClosedLoopGains(config.kp, config.ki, config.kd, config.kf, config.iZone, config.maxIAccum, config.minOutput, config.maxOutput);
+	public void setClosedLoopGains(int slot, PIDSettings config) {
+		setClosedLoopGains(slot, config.kp, config.ki, config.kd, config.kf, config.iZone, config.maxIAccum, config.minOutput, config.maxOutput);
 	}
 
 	/**
