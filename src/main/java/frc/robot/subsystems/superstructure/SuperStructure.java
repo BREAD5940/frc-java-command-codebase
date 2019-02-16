@@ -10,6 +10,7 @@ import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.team254.lib.physics.DCMotorTransmission;
 
@@ -21,6 +22,8 @@ import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.subsystems.superstructure.SuperStructureTelop;
+import frc.robot.lib.PIDSettings;
+import frc.robot.lib.PIDSettings.FeedbackMode;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.ElevatorState;
@@ -47,7 +50,7 @@ public class SuperStructure extends Subsystem {
 	private boolean currentPathComplete = false;
 	public static Elevator elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
 			new InvertSettings(true, InvertType.FollowMaster, InvertType.FollowMaster, InvertType.OpposeMaster));
-	public static Intake intake;// = new Intake();
+	public static Intake intake = new Intake(34);
 	private SuperstructurePlanner planner = new SuperstructurePlanner();
 	// public SuperStructureState mPeriodicIO = new SuperStructureState();
 	private RotatingJoint mWrist, mElbow;
@@ -87,11 +90,11 @@ public class SuperStructure extends Subsystem {
 
 		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
 
-		// mWrist = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), 37, FeedbackDevice.CTRE_MagEncoder_Relative, false /* FIXME check inverting! */,
-		// 		Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
+		mWrist = new RotatingJoint(new PIDSettings(0.1d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, false /* FIXME check inverting! */,
+				Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
-		// mElbow = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(38, 39), FeedbackDevice.CTRE_MagEncoder_Relative,
-		// 		false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+		mElbow = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative,
+				false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 	}
 
 	private SuperStructureState mCurrentState = new SuperStructureState();
