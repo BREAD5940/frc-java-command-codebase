@@ -204,19 +204,18 @@ public class Elevator /*extends Subsystem*/ {
 	 * @return mass accounting for game piece and inner stage
 	 */
 	public static double getVoltage(SuperStructureState state) {
-		Mass total = kCarriageMass;
+		Mass total = MassKt.getLb(kCarriageMass.getLb());
+
 		if (state.getHeldPiece() == HeldPiece.HATCH) {
-			total.plus(SuperStructure.kHatchMass);
+			total = total.plus(SuperStructure.kHatchMass);
 		}
 		if (state.getHeldPiece() == HeldPiece.CARGO) {
-			total.plus(SuperStructure.kCargoMass);
+			total = total.plus(SuperStructure.kCargoMass);
 		}
-		System.out.println(total.getKilogram());
-		if (state.elevator.height.getInch() >= kTopOfInnerStage.getInch()) {
-			total.plus(kInnerStageMass);
+		if (state.getElevatorHeight().getInch() >= kTopOfInnerStage.getInch()) {
+			total = total.plus(kInnerStageMass);
 		}
 		double totalF = total.getKilogram() * 9.81 /* g */;
-		System.out.println(totalF);
 		return (mCurrentGear == ElevatorGear.LOW) ? totalF / KLowGearForcePerVolt : totalF / KHighGearForcePerVolt;
 	}
 

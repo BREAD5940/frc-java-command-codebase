@@ -127,10 +127,10 @@ public class SuperstructureTests {
 		new SuperStructureState(new ElevatorState(LengthKt.getInch(70)), new RotatingArmState(), new RotatingArmState())
 		));
 		ArrayList<Double> correctVolts = new ArrayList<Double>(Arrays.asList(
-				((kCarriageMass.getKilogram()) * 9.81) / kHighGearForcePerVolt,
-				((kCarriageMass.getKilogram()) * 9.81) / kHighGearForcePerVolt,
-				((kCarriageMass.getKilogram() + kInnerStageMass.getKilogram()) * 9.81) / kHighGearForcePerVolt,
-				((kCarriageMass.getKilogram() + kInnerStageMass.getKilogram()) * 9.81) / kHighGearForcePerVolt
+				((Elevator.kCarriageMass.getKilogram()) * 9.81) / Elevator.KHighGearForcePerVolt,
+				((Elevator.kCarriageMass.getKilogram()) * 9.81) / Elevator.KHighGearForcePerVolt,
+				((Elevator.kCarriageMass.getKilogram() + Elevator.kInnerStageMass.getKilogram()) * 9.81) / Elevator.KHighGearForcePerVolt,
+				((Elevator.kCarriageMass.getKilogram() + Elevator.kInnerStageMass.getKilogram()) * 9.81) / Elevator.KHighGearForcePerVolt
 
 				));
 
