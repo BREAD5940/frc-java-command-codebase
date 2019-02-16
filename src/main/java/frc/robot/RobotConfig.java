@@ -188,16 +188,15 @@ public class RobotConfig {
 			// unless otherwise indicated
 			// FIXME change these values to be the distance the elevator has to go to have the intake be at the center of the object
 
-			public static final Length low_rocket_port = LengthKt.getInch(27.5);
-			public static final Length middle_rocket_port = LengthKt.getInch(55.5);
-			public static final Length high_rocket_port = LengthKt.getInch(83.5);
+			public static final Length cargoLowGoal = LengthKt.getInch(27.5);
+			public static final Length cargoMiddleGoal = LengthKt.getInch(55.5);
+			public static final Length cargoHighGoal = LengthKt.getInch(83.5);
 
-			public static final Length low_rocket_hatch = LengthKt.getInch(19);
-			public static final Length middle_rocket_hatch = LengthKt.getInch(47);
-			public static final Length high_rocket_hatch = LengthKt.getInch(75);
+			public static final Length hatchLowGoal = LengthKt.getInch(19);
+			public static final Length hatchMiddleGoal = LengthKt.getInch(47);
+			public static final Length hatchHighGoal = LengthKt.getInch(75);
 
-			public static final Length cargo_ship_hatch = LengthKt.getInch(19.75); // TODO this should be even with the low rocket hatch. According to the game manual, it isn't
-			public static final Length cargo_ship_wall = LengthKt.getInch(31.5); //top of wall
+			public static final Length shipWall = LengthKt.getInch(31.5); //top of wall
 		}
 
 		// String default_auto_gear = "low"; // Set the default gear for auto. If not otherwise specified, this will be used

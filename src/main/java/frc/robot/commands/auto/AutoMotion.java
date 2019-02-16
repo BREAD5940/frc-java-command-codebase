@@ -1,12 +1,22 @@
 package frc.robot.commands.auto;
 
+import org.ghrobotics.lib.mathematics.units.Length;
+
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
+import frc.robot.RobotConfig;
 import frc.robot.commands.auto.actions.DriveDistance;
 import frc.robot.commands.auto.actions.SetIntakeMode;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.GrabCargo;
 import frc.robot.commands.auto.groups.PickUpHatch;
 import frc.robot.commands.auto.groups.PlaceHatch;
+import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
+import frc.robot.states.ElevatorState;
+import frc.robot.states.IntakeAngle;
+import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure.ElevatorPresets;
+import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
  * Creates a command group for a specific automatic motion. Input a type of goal
@@ -50,6 +60,7 @@ public class AutoMotion {
 	private HeldPiece piece;
 	private HeldPiece endPiece;
 	private AutoCommandGroup mBigCommandGroup;
+	private Command mPrepCommand;
 	private boolean rev;
 
 	/**
@@ -73,6 +84,9 @@ public class AutoMotion {
 			this.piece = HeldPiece.NONE;
 		}
 
+		this.mPrepCommand = new SuperstructureGoToState(new SuperStructureState(
+			new ElevatorState(getElevatorPreset()), getIA()
+		));
 		if (this.piece != HeldPiece.NONE) {
 			this.mBigCommandGroup = genPlaceCommands();
 		} else {
@@ -81,8 +95,7 @@ public class AutoMotion {
 	}
 
 	public AutoMotion(boolean isNull) {
-		//wheeee this does absolutely NOTING it jusst exists to make AutoCombo UnBork
-
+		//This doesn't do anything, but we need it for autocombo
 	}
 
 	/**
@@ -150,35 +163,50 @@ public class AutoMotion {
 	 * selects the correct ElevatorPreset from the Elevator subsystems enum based on
 	 * the GoalHeight, the GoalType, and the HeldPiece
 	 */
-	private ElevatorPresets getElevatorPreset() {
-		switch (this.gType) {
-		case CARGO_CARGO:
-			if (this.gHeight == GoalHeight.LOW) {
-				return ElevatorPresets.CARGO_SHIP_HATCH;
-			} else {
-				return ElevatorPresets.CARGO_SHIP_WALL;
+	private Length getElevatorPreset() {
+		switch (this.gHeight) {
+		case LOW:
+			if (this.gType == GoalType.CARGO_CARGO) {
+				return RobotConfig.auto.fieldPositions.shipWall;
+			}else if (this.gType == GoalType.ROCKET_CARGO){
+				return RobotConfig.auto.fieldPositions.cargoLowGoal;
+		 	} else {
+				return RobotConfig.auto.fieldPositions.hatchLowGoal;
 			}
-		case CARGO_HATCH:
-			return ElevatorPresets.CARGO_SHIP_HATCH;
-		case ROCKET_CARGO:
-			if (this.gHeight == GoalHeight.LOW) {
-				return ElevatorPresets.LOW_ROCKET_PORT;
-			} else if (gHeight == GoalHeight.MIDDLE) {
-				return ElevatorPresets.MIDDLE_ROCKET_PORT;
-			} else {
-				return ElevatorPresets.HIGH_ROCKET_PORT;
+		case MIDDLE:
+			if(this.gType == GoalType.ROCKET_CARGO){
+				return RobotConfig.auto.fieldPositions.cargoMiddleGoal;
+			}else{
+				return RobotConfig.auto.fieldPositions.hatchMiddleGoal;
 			}
-		case ROCKET_HATCH:
-			if (this.gHeight == GoalHeight.LOW) {
-				return ElevatorPresets.LOW_ROCKET_HATCH;
-			} else if (this.gHeight == GoalHeight.MIDDLE) {
-				return ElevatorPresets.MIDDLE_ROCKET_HATCH;
-			} else {
-				return ElevatorPresets.HIGH_ROCKET_HATCH;
+		case HIGH:
+			if (this.gType == GoalType.ROCKET_CARGO) {
+				return RobotConfig.auto.fieldPositions.cargoHighGoal;
+			} else{
+				return RobotConfig.auto.fieldPositions.hatchHighGoal;
 			}
 		default:
-			return ElevatorPresets.CARGO_SHIP_HATCH;
+			return RobotConfig.auto.fieldPositions.hatchLowGoal;
 		}
+	}
+
+	private IntakeAngle getIA(){
+		if(this.gType==GoalType.RETRIEVE_CARGO){
+			return iPosition.CARGO_GRAB;
+		}else if(this.gType==GoalType.ROCKET_CARGO||this.gType==GoalType.CARGO_CARGO){
+			if(rev){
+				return iPosition.CARGO_REVERSE;
+			}else{
+				return iPosition.CARGO_PLACE;
+			}
+		}else if(this.gType==GoalType.CARGO_HATCH||this.gType==GoalType.ROCKET_HATCH||this.gType==GoalType.RETRIEVE_HATCH){
+			if(rev){
+				return iPosition.HATCH_REVERSE;
+			}else{
+				return iPosition.HATCH;
+			}
+		}
+		return iPosition.CARGO_GRAB;
 	}
 
 	// id functions
@@ -217,6 +245,15 @@ public class AutoMotion {
 	 */
 	public AutoCommandGroup getBigCommandGroup() {
 		return this.mBigCommandGroup;
+	}
+
+	/**
+	 * identification function
+	 * @return
+	 * 	the commands for the prep for the motion
+	 */
+	public Command getPrepCommand(){
+		return this.mPrepCommand;
 	}
 
 	/**

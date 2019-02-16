@@ -100,13 +100,13 @@ public class SuperStructure extends Subsystem {
 	public static class iPosition {
 		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
 		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
-		public static final IntakeAngle CARGO_DROP = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
+		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
 		public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
 		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
 		public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
 
 		public static final ArrayList<IntakeAngle> presets = new ArrayList<IntakeAngle>(Arrays.asList(CARGO_GRAB, CARGO_DOWN,
-				CARGO_DROP, CARGO_REVERSE, HATCH, HATCH_REVERSE));
+				CARGO_PLACE, CARGO_REVERSE, HATCH, HATCH_REVERSE));
 	}
 
 	public boolean setReqState(SuperStructureState reqState) {
