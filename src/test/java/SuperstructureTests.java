@@ -6,18 +6,13 @@ import java.util.Arrays;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.junit.jupiter.api.Test;
 
-import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.planners.*;
 import frc.robot.states.ElevatorState;
-import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
-import frc.robot.subsystems.superstructure.SuperStructure;
-import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 public class SuperstructureTests {
 
@@ -119,25 +114,22 @@ public class SuperstructureTests {
 		double kLowGearForcePerVolt = (512d / 12d) * 1.5;
 		double kHighGearForcePerVolt = (1500d / 12d);
 
-
 		ArrayList<SuperStructureState> states = new ArrayList<SuperStructureState>(Arrays.asList(
 				new SuperStructureState(new ElevatorState(LengthKt.getInch(5)), new RotatingArmState(), new RotatingArmState()),
-		new SuperStructureState(new ElevatorState(LengthKt.getInch(30)), new RotatingArmState(), new RotatingArmState()),
-		new SuperStructureState(new ElevatorState(LengthKt.getInch(50)), new RotatingArmState(), new RotatingArmState()),
-		new SuperStructureState(new ElevatorState(LengthKt.getInch(70)), new RotatingArmState(), new RotatingArmState())
-		));
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(30)), new RotatingArmState(), new RotatingArmState()),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(50)), new RotatingArmState(), new RotatingArmState()),
+				new SuperStructureState(new ElevatorState(LengthKt.getInch(70)), new RotatingArmState(), new RotatingArmState())));
 		ArrayList<Double> correctVolts = new ArrayList<Double>(Arrays.asList(
 				((Elevator.kCarriageMass.getKilogram()) * 9.81) / Elevator.KHighGearForcePerVolt,
 				((Elevator.kCarriageMass.getKilogram()) * 9.81) / Elevator.KHighGearForcePerVolt,
 				((Elevator.kCarriageMass.getKilogram() + Elevator.kInnerStageMass.getKilogram()) * 9.81) / Elevator.KHighGearForcePerVolt,
 				((Elevator.kCarriageMass.getKilogram() + Elevator.kInnerStageMass.getKilogram()) * 9.81) / Elevator.KHighGearForcePerVolt
 
-				));
-
+		));
 
 		for (int i = 0; i < states.size(); i++) {
-			System.out.printf("Index: %d   First: %f   Second: %f\n", i, 
-				Elevator.getVoltage(states.get(i)), correctVolts.get(i));
+			System.out.printf("Index: %d   First: %f   Second: %f\n", i,
+					Elevator.getVoltage(states.get(i)), correctVolts.get(i));
 			assertEquals(Elevator.getVoltage(states.get(i)), (double) correctVolts.get(i), 0.1);
 		}
 	}
