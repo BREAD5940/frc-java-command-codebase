@@ -2,7 +2,6 @@ package frc.robot.subsystems.superstructure;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -10,9 +9,7 @@ import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.can.MotControllerJNI;
 import com.team254.lib.physics.DCMotorTransmission;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;

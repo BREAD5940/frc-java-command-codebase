@@ -2,7 +2,6 @@ package frc.robot.planners;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -27,7 +26,7 @@ public class SuperstructurePlanner {
 	public SuperstructurePlanner() {}
 	//TODO get actual irl angles amd heights
 
-	static final Length bottom = RobotConfig.elevator.elevator_minimum_height;
+	static final Length bottom = LengthKt.getInch(RobotConfig.elevator.elevator_minimum_height.getInch() + 0.5);
 	static final Length top = RobotConfig.elevator.elevator_maximum_height;
 	static final Length crossbar = LengthKt.getInch(35); //FIXME verify
 	static final Length carriageToIntake = LengthKt.getInch(12); //FIXME verify
@@ -79,7 +78,7 @@ public class SuperstructurePlanner {
 			errorCount++;
 			corrCount++;
 			goalState.getElevator().setHeight(top);
-		}else if (goalState.elevator.height.getFeet()<bottom.getFeet()){
+		} else if (goalState.elevator.height.getFeet() < bottom.getFeet()) {
 			System.out.println("MOTION IMPOSSIBLE -- Elevator will attempt to smash directly through the bottom of the robot. Setting to minimum height.");
 			errorCount++;
 			corrCount++;
@@ -146,8 +145,6 @@ public class SuperstructurePlanner {
 				corrCount++;
 			}
 		}
-
-		
 
 		//checks if intake will hit crossbar
 		if ((throughAbove && gHeight.getFeet() > crossbar.getFeet() - disInside.getFeet() && gHeight.getFeet() < crossbar.getFeet())

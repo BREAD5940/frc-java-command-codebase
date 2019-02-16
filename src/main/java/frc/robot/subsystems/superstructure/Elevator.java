@@ -27,7 +27,6 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
-import frc.robot.lib.Logger;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.states.ElevatorState;
@@ -68,11 +67,8 @@ public class Elevator /*extends Subsystem*/ {
 
 	private FalconSRX<Length> mSlave1, mSlave2, mSlave3;
 
-	private ElevatorGear mCurrentGear;
+	private static ElevatorGear mCurrentGear;
 	private static final ElevatorGear kDefaultGear = ElevatorGear.LOW;
-
-
-	
 
 	NativeUnitLengthModel lengthModel = RobotConfig.elevator.elevatorModel;
 
@@ -207,16 +203,21 @@ public class Elevator /*extends Subsystem*/ {
 	 * @param state current state, including game piece held
 	 * @return mass accounting for game piece and inner stage
 	 */
-	public double getVoltage(SuperStructureState state) {
+	public static double getVoltage(SuperStructureState state) {
 		Mass total = kCarriageMass;
-		if (state.getHeldPiece() == HeldPiece.HATCH)
+		if (state.getHeldPiece() == HeldPiece.HATCH) {
 			total.plus(SuperStructure.kHatchMass);
-		if (state.getHeldPiece() == HeldPiece.CARGO)
+		}
+		if (state.getHeldPiece() == HeldPiece.CARGO) {
 			total.plus(SuperStructure.kCargoMass);
-		if (state.elevator.height.getValue() > kTopOfInnerStage.getValue())
+		}
+		System.out.println(total.getKilogram());
+		if (state.elevator.height.getInch() >= kTopOfInnerStage.getInch()) {
 			total.plus(kInnerStageMass);
+		}
 		double totalF = total.getKilogram() * 9.81 /* g */;
-		return (mCurrentGear == ElevatorGear.LOW) ? totalF / KLowGearForcePerVolt  : totalF / KHighGearForcePerVolt;
+		System.out.println(totalF);
+		return (mCurrentGear == ElevatorGear.LOW) ? totalF / KLowGearForcePerVolt : totalF / KHighGearForcePerVolt;
 	}
 
 	public ElevatorState getCurrentState(ElevatorState lastKnown) {
