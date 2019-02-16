@@ -3,7 +3,6 @@ package frc.robot.commands.auto;
 import org.ghrobotics.lib.mathematics.units.Length;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.actions.DriveDistance;
 import frc.robot.commands.auto.actions.SetIntakeMode;
@@ -15,7 +14,6 @@ import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
-import frc.robot.subsystems.superstructure.SuperStructure.ElevatorPresets;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
@@ -106,14 +104,10 @@ public class AutoMotion {
 	private AutoCommandGroup genGrabCommands() {
 		AutoCommandGroup toReturn = new AutoCommandGroup();
 		if (this.gType == GoalType.RETRIEVE_CARGO) {
-			// Set the intake to cargo mode
-			toReturn.addSequential(new SetIntakeMode(HeldPiece.CARGO, rev));
 			// Predefined grab command
 			toReturn.addSequential(new GrabCargo());
 			this.endPiece = HeldPiece.CARGO;
 		} else if (this.gType == GoalType.RETRIEVE_HATCH) {
-			// Set the intake to hatch mode
-			toReturn.addSequential(new SetIntakeMode(HeldPiece.HATCH, rev));
 			// Predefined grab command
 			toReturn.addSequential(new PickUpHatch());
 			this.endPiece = HeldPiece.HATCH;
@@ -128,18 +122,8 @@ public class AutoMotion {
 	private AutoCommandGroup genPlaceCommands() {
 		AutoCommandGroup toReturn = new AutoCommandGroup();
 
-		// Set intake mode
-		if (this.gType == GoalType.CARGO_CARGO) {
-			toReturn.addSequential(new SetIntakeMode(this.piece, true, rev));
-		} else {
-			toReturn.addSequential(new SetIntakeMode(this.piece, rev));
-		}
-
 		// Align with the vision targets, slightly back from the goal
 		//TODO get the robot/limelight 1ft away from the goal
-
-		// Set the elevator to the correct height
-		// toReturn.addSequential(new SetElevatorHeight(getElevatorPreset(),false)); //FIXME is there a reason this is commented out?
 
 		if (this.gType == GoalType.CARGO_CARGO) {
 			// Drive forward so the intake is over the bay and the bumpers are in the indent thingy

@@ -15,7 +15,7 @@ public class SuperstructureGoToState extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		SuperStructure.getInstance().setReqState(mRequState);
+		SuperStructure.getInstance().moveSuperstructureCombo(mRequState);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -27,7 +27,9 @@ public class SuperstructureGoToState extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return (mRequState.getElevatorHeight().getInch() - SuperStructure.getInstance().updateState().getElevatorHeight().getInch()) <= 2;
+		return (Math.abs(mRequState.getElevatorHeight().getInch() - SuperStructure.getInstance().updateState().getElevatorHeight().getInch()) <= 2)
+				&&(Math.abs(mRequState.getElbow().angle.getDegree() - SuperStructure.getInstance().updateState().getElbow().angle.getDegree())<=5) //FIXME check tolerences
+				&&(Math.abs(mRequState.getWrist().angle.getDegree() - SuperStructure.getInstance().updateState().getWrist().angle.getDegree())<=5);
 	}
 
 	// Called once after isFinished returns true
