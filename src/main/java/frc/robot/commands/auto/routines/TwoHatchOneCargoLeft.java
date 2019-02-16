@@ -1,10 +1,8 @@
 package frc.robot.commands.auto.routines;
 
-import org.ghrobotics.lib.commands.DelayCommand;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.GoalHeight;
@@ -34,7 +32,7 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 
 		/* Get a trajectory to move to the cargo ship */
 		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargoM" + side); //current trajectory from hashmap in Trajectorie
-		AutoMotion motion = new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH,true);
+		AutoMotion motion = new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH, true);
 		this.addParallel(motion.getPrepCommand());
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, true)); //drive to goal
 		this.addSequential(motion.getBigCommandGroup()); //do a motion
@@ -45,7 +43,7 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 		cPiece = HeldPiece.NONE;
 
 		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "loading" + side); //current trajectory from hashmap in Trajectorie
-		motion = new AutoMotion(GoalHeight.LOW, GoalType.RETRIEVE_HATCH,false);
+		motion = new AutoMotion(GoalHeight.LOW, GoalType.RETRIEVE_HATCH, false);
 		this.addParallel(motion.getPrepCommand());
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 		this.addSequential(motion.getBigCommandGroup()); //do a motion

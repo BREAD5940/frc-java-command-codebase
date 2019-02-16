@@ -1,19 +1,8 @@
 package frc.robot.commands.auto;
 
-import org.ghrobotics.lib.commands.DelayCommand;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
-import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
-
-import frc.robot.commands.auto.AutoMotion.GoalHeight;
-import frc.robot.commands.auto.AutoMotion.GoalType;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.routines.TwoHatchOneCargoLeft;
-import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 
 /**
  * Creates an AutoMotion and drive plan based on the inputted params. Will
@@ -41,7 +30,7 @@ public class AutoCombo {
 		}
 		cStart = "hab";
 
-		mBigCommandGroup=new TwoHatchOneCargoLeft(start.charAt(start.length()-1),side);
+		mBigCommandGroup = new TwoHatchOneCargoLeft(start.charAt(start.length() - 1), side);
 		// TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargoM" + side); //current trajectory from hashmap in Trajectorie
 		// AutoMotion motion = new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH, true);
 		// this.mBigCommandGroup.addParallel(motion.getPrepCommand());

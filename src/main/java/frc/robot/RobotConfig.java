@@ -80,6 +80,7 @@ public class RobotConfig {
 		public static final double max_turn_speed_high = 7; // Max turn speed in degrees per second
 		public static final double max_forward_speed_low = 3; // Feet per second forward velocity
 		public static final double max_turn_speed_low = 3; // Max turn speed in degrees per second
+		public static final double tipThreshold = 5; //max ft/sec the robot can go with the elevator at full speed w/o tipping FIXME find the actual num
 
 		// Encoder stuff, dunno where else to put this
 		// public static final double VELOCITY_PULSES_PER_ROTATION = 409.6f;

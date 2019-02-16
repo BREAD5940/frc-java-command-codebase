@@ -8,6 +8,7 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.team254.lib.physics.DCMotorTransmission;
@@ -16,6 +17,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.subsystems.superstructure.SuperStructureTelop;
@@ -24,6 +26,7 @@ import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.superstructure.Elevator.EncoderMode;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
@@ -229,8 +232,13 @@ public class SuperStructure extends Subsystem {
 		// TODO velocity planning? or just let talon PID figure itself out
 		// How about maybe motion magic?
 
-		// TODO is mReqState up to date?
 		mReqPath = planner.plan(mReqState, mCurrentState);
+
+		if (mReqPath.get(0).getElevatorHeight().getInch() >= Elevator.kTopOfInnerStage.getInch()
+				&& ((DriveTrain.getInstance().getLeft().getFeetPerSecond() + DriveTrain.getInstance().getRight().getFeetPerSecond()) / 2) > RobotConfig.driveTrain.tipThreshold) {
+			mReqPath.get(0).getElevator().velocity = VelocityKt.getVelocity(LengthKt.getFeet(
+					mReqPath.get(0).getElevator().velocity.getType$FalconLibrary().getFeet() / ((DriveTrain.getInstance().getLeft().getFeetPerSecond() + DriveTrain.getInstance().getRight().getFeetPerSecond()) / 2)));
+		}
 
 		// getWrist().setPositionArbitraryFeedForward(mReqPath.get(0).getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
 		// getElbow().setPositionArbitraryFeedForward(mReqPath.get(0).getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle

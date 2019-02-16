@@ -5,7 +5,6 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.actions.DriveDistance;
-import frc.robot.commands.auto.actions.SetIntakeMode;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.GrabCargo;
 import frc.robot.commands.auto.groups.PickUpHatch;
@@ -83,8 +82,7 @@ public class AutoMotion {
 		}
 
 		this.mPrepCommand = new SuperstructureGoToState(new SuperStructureState(
-			new ElevatorState(getElevatorPreset()), getIA()
-		));
+				new ElevatorState(getElevatorPreset()), getIA()));
 		if (this.piece != HeldPiece.NONE) {
 			this.mBigCommandGroup = genPlaceCommands();
 		} else {
@@ -152,21 +150,21 @@ public class AutoMotion {
 		case LOW:
 			if (this.gType == GoalType.CARGO_CARGO) {
 				return RobotConfig.auto.fieldPositions.shipWall;
-			}else if (this.gType == GoalType.ROCKET_CARGO){
+			} else if (this.gType == GoalType.ROCKET_CARGO) {
 				return RobotConfig.auto.fieldPositions.cargoLowGoal;
-		 	} else {
+			} else {
 				return RobotConfig.auto.fieldPositions.hatchLowGoal;
 			}
 		case MIDDLE:
-			if(this.gType == GoalType.ROCKET_CARGO){
+			if (this.gType == GoalType.ROCKET_CARGO) {
 				return RobotConfig.auto.fieldPositions.cargoMiddleGoal;
-			}else{
+			} else {
 				return RobotConfig.auto.fieldPositions.hatchMiddleGoal;
 			}
 		case HIGH:
 			if (this.gType == GoalType.ROCKET_CARGO) {
 				return RobotConfig.auto.fieldPositions.cargoHighGoal;
-			} else{
+			} else {
 				return RobotConfig.auto.fieldPositions.hatchHighGoal;
 			}
 		default:
@@ -174,19 +172,19 @@ public class AutoMotion {
 		}
 	}
 
-	private IntakeAngle getIA(){
-		if(this.gType==GoalType.RETRIEVE_CARGO){
+	private IntakeAngle getIA() {
+		if (this.gType == GoalType.RETRIEVE_CARGO) {
 			return iPosition.CARGO_GRAB;
-		}else if(this.gType==GoalType.ROCKET_CARGO||this.gType==GoalType.CARGO_CARGO){
-			if(rev){
+		} else if (this.gType == GoalType.ROCKET_CARGO || this.gType == GoalType.CARGO_CARGO) {
+			if (rev) {
 				return iPosition.CARGO_REVERSE;
-			}else{
+			} else {
 				return iPosition.CARGO_PLACE;
 			}
-		}else if(this.gType==GoalType.CARGO_HATCH||this.gType==GoalType.ROCKET_HATCH||this.gType==GoalType.RETRIEVE_HATCH){
-			if(rev){
+		} else if (this.gType == GoalType.CARGO_HATCH || this.gType == GoalType.ROCKET_HATCH || this.gType == GoalType.RETRIEVE_HATCH) {
+			if (rev) {
 				return iPosition.HATCH_REVERSE;
-			}else{
+			} else {
 				return iPosition.HATCH;
 			}
 		}
@@ -236,7 +234,7 @@ public class AutoMotion {
 	 * @return
 	 * 	the commands for the prep for the motion
 	 */
-	public Command getPrepCommand(){
+	public Command getPrepCommand() {
 		return this.mPrepCommand;
 	}
 

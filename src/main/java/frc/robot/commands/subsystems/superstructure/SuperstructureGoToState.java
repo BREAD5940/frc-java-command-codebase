@@ -28,8 +28,8 @@ public class SuperstructureGoToState extends Command {
 	@Override
 	protected boolean isFinished() {
 		return (Math.abs(mRequState.getElevatorHeight().getInch() - SuperStructure.getInstance().updateState().getElevatorHeight().getInch()) <= 2)
-				&&(Math.abs(mRequState.getElbow().angle.getDegree() - SuperStructure.getInstance().updateState().getElbow().angle.getDegree())<=5) //FIXME check tolerences
-				&&(Math.abs(mRequState.getWrist().angle.getDegree() - SuperStructure.getInstance().updateState().getWrist().angle.getDegree())<=5);
+				&& (Math.abs(mRequState.getElbow().angle.getDegree() - SuperStructure.getInstance().updateState().getElbow().angle.getDegree()) <= 5) //FIXME check tolerences
+				&& (Math.abs(mRequState.getWrist().angle.getDegree() - SuperStructure.getInstance().updateState().getWrist().angle.getDegree()) <= 5);
 	}
 
 	// Called once after isFinished returns true
