@@ -244,6 +244,13 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     drivetrain.getLocalization().update();
+
+    
+    double a = 17.1;
+    double b = 2.2;
+    double[] limelightdata = limelight.getData();
+    double y = limelightdata[3];
+    double distance = Math.round(Math.pow((a/y), (1/b)));
     // long now = System.currentTimeMillis();
 
     // DriveTrain.getInstance().getLocalization().update(); // depreciated because it should be running in a notifier now
@@ -280,6 +287,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Left drivetrian acceleration, feet per second", feetPerSecondPerSecond.get(0));
     SmartDashboard.putNumber("Right drivetrian acceleration, feet per second", feetPerSecondPerSecond.get(1));
     drivetrain.lastFeetPerSecond = feetPerSecond;
+
+    SmartDashboard.putNumber("Distance to target", distance);
 
     SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
     SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
