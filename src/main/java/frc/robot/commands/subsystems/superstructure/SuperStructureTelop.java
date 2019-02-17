@@ -1,5 +1,7 @@
 package frc.robot.commands.subsystems.superstructure;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
@@ -46,7 +48,10 @@ public class SuperStructureTelop extends Command {
 		RotatingArmState newReqW = new RotatingArmState(newW);
 
 		// move the whole darn thing
-		superStructure.moveSuperstructureCombo(newReqE, superStructure.getCurrentState().getElbow(), newReqW);
+		// superStructure.moveSuperstructureCombo(newReqE, superStructure.getCurrentState().getElbow(), newReqW);
+		superStructure.moveSuperstructureElevator(newE);
+
+		superStructure.getWrist().getMaster().set(ControlMode.PercentOutput, Robot.m_oi.getWristAxis());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
