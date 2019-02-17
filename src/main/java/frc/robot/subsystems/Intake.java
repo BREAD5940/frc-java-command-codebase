@@ -51,6 +51,7 @@ public class Intake extends Subsystem {
 
 	public Intake(int port) {
 		talon = new WPI_TalonSRX(port);
+		talon.configOpenloopRamp(1);
 	}
 
 	/**
