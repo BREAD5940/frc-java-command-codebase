@@ -8,6 +8,8 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.junit.jupiter.api.Test;
 
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
@@ -15,7 +17,9 @@ import frc.robot.commands.auto.routines.TwoHatchOneCargoLeft;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.Logger;
+import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
+import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 public class AutoPathingCSVGenerator {
 
@@ -31,7 +35,7 @@ public class AutoPathingCSVGenerator {
 		for(AutoMotion i : routine.motions){
 			temp.add(i.getSSState());
 		}
-		ArrayList<SuperStructureState> iteras = injectStates(temp,path,routine.trajects);
+		ArrayList<SuperStructureState> iteras = injectStates(temp,routine.trajects);
 		writeToCSV("src/main/python/twoHatchLLtest.csv", path);
 		writeToAngleCSV("src/main/python/twoHatchLLtestSuper.csv", iteras);
 
@@ -39,8 +43,33 @@ public class AutoPathingCSVGenerator {
 		// writeToCSV("twoHatchRRest", path);
 	}
 
-	public ArrayList<SuperStructureState> injectStates(ArrayList<SuperStructureState> wps, ArrayList<Translation2d> path, ArrayList<TimedTrajectory<Pose2dWithCurvature>> bigPath){
+	public ArrayList<SuperStructureState> injectStates(ArrayList<SuperStructureState> wps, ArrayList<TimedTrajectory<Pose2dWithCurvature>> bigPath){
+		double elevatorInchPerSecond = 12;
+		double elbowRadPerSecond = 3.14159;
+		double wristRadPerSecond = 3.14159;
 		ArrayList<SuperStructureState> toReturn = new ArrayList<SuperStructureState>();
+
+		toReturn.add(0,new SuperStructureState());
+		for(int i=0; i<bigPath.size(); i++){
+			for(int j=0; j<bigPath.get(i).getPoints().size()-1; j++){
+				if(j==0){
+					toReturn.add(toReturn.get(toReturn.size()-1));
+				}else{
+					TimedEntry<Pose2dWithCurvature> point = bigPath.get(i).getPoints().get(j);
+					double deltaT = (point.getT().getSecond()-bigPath.get(i).getPoints().get(j-1).getT().getSecond())/2;
+					SuperStructureState prevState = toReturn.get(toReturn.size()-1);
+
+					double nextHeight = 0; //FIXME this requires math and ifs to make it move the right distance in the right direction
+					double nextElbow = 0;
+					double nextWrist = 0;
+
+					toReturn.add(new SuperStructureState(new ElevatorState(LengthKt.getInch(nextHeight)), 
+												new RotatingArmState(Rotation2dKt.getRadian(nextElbow)),
+												new RotatingArmState(Rotation2dKt.getRadian(nextWrist))));
+				}
+			}
+		}
+
 		//TODO this should add in-between states to the list  so they match up with the trajects
 		//wps should be equal in length to bigPath
 		//toReturn should be equal in length to path
