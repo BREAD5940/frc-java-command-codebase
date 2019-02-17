@@ -20,6 +20,22 @@
       "problemMatcher": []
     },
     {
+      "label": "Simulate an auto path",
+      "type": "shell",
+      "command": "./genPath.ps1",
+      "windows": {
+        "command": "./genPath.ps1"
+      },
+      "linux": {
+        "command": "./genPath.ps1"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
       "label": "Run visualizer",
       "type": "shell",
       "command": "python ./src/main/PurePersuitVisualizer/visualizer.py",

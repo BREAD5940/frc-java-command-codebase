@@ -159,7 +159,9 @@ bin/
 .code-workspace
 
 # End of https://www.gitignore.io/api/c++,java,linux,macos,gradle,windows,visualstudiocode
-2019-workspace.code-workspace
-*.xml
-*.iml
+2019-workspace.code-workspacel
 .vscode/settings.json
+twoHatchLLtest.csv
+twoHatchLLtest
+twoHatchRRest
+*.gz

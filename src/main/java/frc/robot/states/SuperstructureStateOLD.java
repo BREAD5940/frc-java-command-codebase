@@ -50,7 +50,6 @@
 //     this.piece = piece;
 //   }
 
-
 //   /**
 //    * set the height of the elevator for the state
 //    * @param height
@@ -69,7 +68,6 @@
 //     this.angle = angle;
 //   }
 
-
 //   /**
 //    * set the status of the hatch intake for the state
 //    * @param piece
@@ -86,11 +84,10 @@
 //     this.elevatorHeight = SuperStructure.elevator.getHeight();
 //     // this.angle = new IntakeAngle( Math.toDegrees(SuperStructure.getInstance().getElbow().getPosition().getValue()), 
 //     //         Math.toDegrees(SuperStructure.getInstance().getWrist().getPosition().getValue()));
-    
+
 //     // can't automatically set what piece is held w/o a bunch of sensors
 //     // put them on the week 4 order sheet 
 //   }
-
 
 //   public double getElevatorHeight(){
 //     return this.elevatorHeight;

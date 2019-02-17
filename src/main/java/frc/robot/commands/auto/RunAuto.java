@@ -1,74 +1,73 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2018 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot.commands.auto;
-
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
-
+import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.subsystems.DriveTrain;
 
 /**
  * Selects and runs an auto command group
  */
 public class RunAuto extends Command {
 
-  public GoalType gt;
-  public GoalHeight height;
-  public AutoMotion motion;
-  public AutoCombo cMotion;
-  public String[] keys;
-  public boolean isDrive;
+	public GoalType mGt;
+	public GoalHeight mHeight;
+	public AutoMotion mMotion;
+	public AutoCombo cMotion;
+	public String[] cKeys;
+	public boolean isDrive;
+	public HeldPiece cPiece;
 
+	public RunAuto(GoalType mGt, GoalHeight mHeight) {
+		this.mGt = mGt;
+		this.mHeight = mHeight;
+		this.isDrive = false;
+		// requires(SuperStructure.getInstance());
+		requires(DriveTrain.getInstance());
+	}
 
-  public RunAuto(GoalType gt, GoalHeight height) {
-    // Use requires() here to declare subsystem dependencies
-    this.gt = gt;
-    this.height = height;
-    this.isDrive = false;
-  }
+	public RunAuto(HeldPiece cPiece, String... cKeys) {
+		this.cKeys = cKeys;
+		this.isDrive = true;
+		this.cPiece = cPiece;
+		// requires(SuperStructure.getInstance());
+		requires(DriveTrain.getInstance());
+	}
 
-  public RunAuto(GoalType gt, GoalHeight height, String... keys){
-    this(gt, height);
-    this.keys = keys;
-    this.isDrive = true;
-  }
+	@Override
+	protected void initialize() {
+		if (!isDrive) {
+			mMotion = new AutoMotion(mHeight, mGt, false);
+			mMotion.getBigCommandGroup().start();
+		} else {
+			cMotion = new AutoCombo(cKeys[0], 'L');
+			cMotion.getBigCommandGroup().start();
+		}
+	}
 
-  @Override
-  protected void initialize() {
-    if(!isDrive){
-      motion = new AutoMotion(height, gt);
-      motion.getBigCommandGroup().start();
-    }else{
-      cMotion = new AutoCombo(height, gt, keys);
-      cMotion.getBigCommandGroup().start();
-    }
-  }
+	// Called repeatedly when this Command is scheduled to run
+	@Override
+	protected void execute() {
+		// Don't need to do anything here
+	}
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    // Don't need to do anything here
-  }
+	// Make this return true when this Command no longer needs to run execute()
+	@Override
+	protected boolean isFinished() {
+		if (!isDrive) {
+			return mMotion.getBigCommandGroup().done();
+		} else {
+			return cMotion.getBigCommandGroup().done();
+		}
+	}
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return motion.getBigCommandGroup().done();
-  }
+	// Called once after isFinished returns true
+	@Override
+	protected void end() {}
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() { }
-
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() { }
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	@Override
+	protected void interrupted() {}
 }
