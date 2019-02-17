@@ -94,10 +94,10 @@ public class SuperStructure extends Subsystem {
 
 		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
 
-		mWrist = new RotatingJoint(new PIDSettings(2d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, false /* FIXME check inverting! */,
+		mWrist = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, false /* FIXME check inverting! */,
 				Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
-		mElbow = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative,
+		mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33,
 				false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 	}
 
