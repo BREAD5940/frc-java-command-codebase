@@ -1,12 +1,23 @@
 !!com.snobot.simulator.config.v1.SimulatorConfigV1
-mAccelerometers: []
+mAccelerometers:
+- mHandle: 253
+  mName: I2C NavX X Accel
+  mType: com.snobot.simulator.module_wrapper.BaseAccelerometerWrapper
+- mHandle: 254
+  mName: I2C NavX Y Accel
+  mType: com.snobot.simulator.module_wrapper.BaseAccelerometerWrapper
+- mHandle: 255
+  mName: I2C NavX Z Accel
+  mType: com.snobot.simulator.module_wrapper.BaseAccelerometerWrapper
 mAnalogIn:
 - mHandle: 0
   mName: Analog In 0
   mType: com.snobot.simulator.module_wrapper.wpi.WpiAnalogInWrapper
 mAnalogOut: []
-mDefaultI2CWrappers: {}
-mDefaultSpiWrappers: {}
+mDefaultI2CWrappers:
+  1: NavX
+mDefaultSpiWrappers:
+  0: ADXRS450
 mDigitalIO:
 - mHandle: 0
   mName: Digital IO 0
@@ -33,6 +44,18 @@ mGyros:
 - mHandle: 0
   mName: Analog Gyro
   mType: com.snobot.simulator.module_wrapper.wpi.WpiAnalogGyroWrapper
+- mHandle: 100
+  mName: ADXRS450 Gyro
+  mType: com.snobot.simulator.simulator_components.adx_family.ADXRS450GyroWrapper
+- mHandle: 253
+  mName: I2C NavX Yaw
+  mType: com.snobot.simulator.module_wrapper.BaseGyroWrapper
+- mHandle: 254
+  mName: I2C NavX Pitch
+  mType: com.snobot.simulator.module_wrapper.BaseGyroWrapper
+- mHandle: 255
+  mName: I2C NavX Roll
+  mType: com.snobot.simulator.module_wrapper.BaseGyroWrapper
 mPwm:
 - mHandle: 0
   mMotorModelConfig: null
