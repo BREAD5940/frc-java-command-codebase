@@ -3,6 +3,7 @@ plugins {
   id "edu.wpi.first.GradleRIO" version "2019.3.2"
   id 'checkstyle'
   id "com.diffplug.gradle.spotless" version "3.17.0"
+  id "com.snobot.simulator.plugin.SnobotSimulatorPlugin" version "2019-0.2.0" apply false // Should point to the latest version at https://login.gradle.org/plugin/com.snobot.simulator.plugin.SnobotSimulatorPlugin
 }
 
 def JAVA_HOME = "C:\\Program Files\\Java\\jdk-11.0.2"
@@ -48,6 +49,12 @@ javadoc {
     options.addBooleanOption('html5', true)
 }
 
+// ------------------- snobot sim plugin apply ------------------- 
+apply plugin: com.snobot.simulator.plugin.SnobotSimulatorPlugin
+configurations {
+    snobotSimCompile
+}
+
 // Maven central needed for JUnit
 repositories {
   mavenCentral()
@@ -75,13 +82,10 @@ dependencies {
   compile wpi.deps.wpilib()
   compile wpi.deps.vendor.java()
   nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
-  nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)  // testCompile 'junit:junit:4.12'
-  compile 'com.google.code.gson:gson:2.8.2'
-
+  nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
+  // compile 'com.google.code.gson:gson:2.8.2'
 	compile 'com.github.5190GreenHopeRobotics:FalconLibrary:2019.1.19'
-
   testCompile group: 'org.openpnp', name: 'opencv', version: '3.2.0-0'
-
   testCompileOnly(
     'junit:junit:4.12'
   )
@@ -92,7 +96,6 @@ dependencies {
     'org.junit.jupiter:junit-jupiter-engine:5.1.0',
     'org.junit.vintage:junit-vintage-engine:5.1.0'
   )
-
   if (wpi.platforms.desktop == 'windowsx86-64') {
     simulation rootProject.files('libs/halsim_ds_socketd.dll')
   } else if (wpi.platforms.desktop == 'osxx86-64') {
@@ -102,7 +105,8 @@ dependencies {
   } else {
     simulation "edu.wpi.first.halsim:halsim_ds_socket:${wpi.wpilibVersion}:${wpi.platforms.desktop}debug@zip"
   }
-
+  // SnobotSim
+  snobotSimCompile snobotSimJava()
 }
 
 test {
