@@ -36,7 +36,7 @@ public class SuperStructureTelop extends Command {
 	protected void execute() {
 		// elevator stuff
 		Length deltaE = LengthKt.getInch(Util.deadband(Robot.m_oi.getElevatorAxis() * 10 * Math.abs(Robot.m_oi.getElevatorAxis()), 0.08));
-		if (Math.abs(Robot.m_oi.getElevatorAxis()) > 0.08) {
+		if(Math.abs(Robot.m_oi.getElevatorAxis()) > 0.08) { // only move if asked
 
 			Length currentE = superStructure.getCurrentState().elevator.height;
 			Length newE = currentE.plus(deltaE);
@@ -54,6 +54,7 @@ public class SuperStructureTelop extends Command {
 
 		// move the whole darn thing
 		// superStructure.moveSuperstructureCombo(newReqE, superStructure .getCurrentState().getElbow(), newReqW);
+		
 
 		superStructure.getWrist().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getWristAxis(), 0.5));
 
