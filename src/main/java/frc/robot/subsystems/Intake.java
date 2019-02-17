@@ -17,10 +17,14 @@ public class Intake extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 
-	public WPI_TalonSRX talon = new WPI_TalonSRX(11);
+	public WPI_TalonSRX talon;
 	// public TalonSRX talon_right = new TalonSRX(RobotConfig.intake.right_intake_talon_port);
 
 	float position_setpoint;
+
+	public Intake(int port) {
+		talon = new WPI_TalonSRX(port);
+	}
 
 	/**
 	 * Set speed to raw percent output
