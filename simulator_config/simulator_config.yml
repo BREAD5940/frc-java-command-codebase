@@ -58,17 +58,42 @@ mGyros:
   mType: com.snobot.simulator.module_wrapper.BaseGyroWrapper
 mPwm:
 - mHandle: 0
-  mMotorModelConfig: null
-  mMotorSimConfig: null
-  mName: Speed Controller 0
+  mMotorModelConfig:
+    mGearReduction: 11.832
+    mGearboxEfficiency: 1.0
+    mHasBrake: true
+    mInverted: true
+    mMotorType: CIM
+    mNumMotors: 2
+  mMotorSimConfig: !!com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig
+    mArmCenterOfMass: 0.0
+    mArmMass: 0.0
+    mConstantAssistTorque: 0.0
+    mOverCenterAssistTorque: 0.0
+  mName: Left Drivetrain
   mType: com.snobot.simulator.module_wrapper.wpi.WpiPwmWrapper
 - mHandle: 1
-  mMotorModelConfig: null
-  mMotorSimConfig: null
-  mName: Speed Controller 1
+  mMotorModelConfig:
+    mGearReduction: 11.832
+    mGearboxEfficiency: 1.0
+    mHasBrake: true
+    mInverted: false
+    mMotorType: CIM
+    mNumMotors: 2
+  mMotorSimConfig: !!com.snobot.simulator.motor_sim.RotationalLoadMotorSimulationConfig
+    mArmCenterOfMass: 0.0
+    mArmMass: 0.0
+    mConstantAssistTorque: 0.0
+    mOverCenterAssistTorque: 0.0
+  mName: Right Drivetrain
   mType: com.snobot.simulator.module_wrapper.wpi.WpiPwmWrapper
 mRelays: []
-mSimulatorComponents: []
+mSimulatorComponents:
+- !!com.snobot.simulator.simulator_components.config.TankDriveConfig
+  mGyroHandle: 253
+  mLeftMotorHandle: 0
+  mRightMotorHandle: 1
+  mTurnKp: 1.0
 mSolenoids:
 - mHandle: 0
   mName: Solenoid 0
