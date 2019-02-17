@@ -32,7 +32,6 @@ public class SuperStructureTelop extends Command {
 	protected void initialize() {}
 
 	boolean firstRun = false;
-	
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
@@ -41,25 +40,24 @@ public class SuperStructureTelop extends Command {
 		Length newE = superStructure.getLastReqElevatorHeight();
 		boolean move = false;
 		Length deltaE = LengthKt.getInch(Util.deadband(Robot.m_oi.getElevatorAxis() * 10 * Math.abs(Robot.m_oi.getElevatorAxis()), 0.08));
-		if(Math.abs(Robot.m_oi.getElevatorAxis()) > 0.08) { // only move if asked
+		if (Math.abs(Robot.m_oi.getElevatorAxis()) > 0.08) { // only move if asked
 			firstRun = true;
-			Length currentE = superStructure.getCurrentState().elevator.height;
+			Length currentE = superStructure.getLastReqElevatorHeight();
 			newE = currentE.plus(deltaE);
 			ElevatorState newReqE = new ElevatorState(newE);
 			move = true;
 			// superStructure.moveSuperstructureElevator(new_s);
 
-		}
-		else {
-			if(firstRun == true) {
+		} else {
+			if (firstRun == true) {
 				newE = superStructure.getLastReqElevatorHeight();
 				firstRun = false;
 				move = true;
 			}
 		}
 
-		if(move) superStructure.moveSuperstructureElevator(newE);
-
+		if (move)
+			superStructure.moveSuperstructureElevator(newE);
 
 		// jog wrist
 		Rotation2d deltaW = Rotation2dKt.getDegree(Util.deadband(Robot.m_oi.getWristAxis() * 5 * Math.abs(Robot.m_oi.getWristAxis()), 0.08));
@@ -69,11 +67,10 @@ public class SuperStructureTelop extends Command {
 
 		// move the whole darn thing
 		// superStructure.moveSuperstructureCombo(newReqE, superStructure .getCurrentState().getElbow(), newReqW);
-		
 
-		superStructure.getWrist().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getWristAxis(), 0.5));
+		superStructure.getWrist().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getWristAxis(), 0.75));
 
-		superStructure.getElbow().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getElbowAxis(), 0.5));
+		superStructure.getElbow().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getElbowAxis(), 0.75));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
