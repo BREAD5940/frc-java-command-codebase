@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
@@ -177,7 +178,9 @@ public class Robot extends TimedRobot {
 
 		//     odometry_.setLastPosition(odometry_.getCurrentEncoderPosition());
 		// }).startPeriodic(0.02);
-
+		SmartDashboard.putData("Zero elevator height:", new ZeroSuperStructure("elevator"));
+		SmartDashboard.putData("Zero elbow angle:", new ZeroSuperStructure("elbow"));
+		SmartDashboard.putData("Zero wrist angle:", new ZeroSuperStructure("wrist"));
 		drivetrain.zeroEncoders();
 		System.out.println("Robot init'ed and encoders zeroed!");
 
