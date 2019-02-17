@@ -9,6 +9,7 @@ import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.GrabCargo;
 import frc.robot.commands.auto.groups.PickUpHatch;
 import frc.robot.commands.auto.groups.PlaceHatch;
+import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
@@ -58,6 +59,7 @@ public class AutoMotion {
 	private HeldPiece endPiece;
 	private AutoCommandGroup mBigCommandGroup;
 	private Command mPrepCommand;
+	private SuperStructureState mSSState;
 	private boolean rev;
 
 	/**
@@ -80,9 +82,8 @@ public class AutoMotion {
 		} else {
 			this.piece = HeldPiece.NONE;
 		}
-
-		this.mPrepCommand = new SuperstructureGoToState(new SuperStructureState(
-				new ElevatorState(getElevatorPreset()), getIA()));
+		this.mSSState = new SuperStructureState(new ElevatorState(getElevatorPreset()), getIA());
+		this.mPrepCommand = new SuperstructureGoToState(this.mSSState);
 		if (this.piece != HeldPiece.NONE) {
 			this.mBigCommandGroup = genPlaceCommands();
 		} else {
@@ -125,14 +126,14 @@ public class AutoMotion {
 
 		if (this.gType == GoalType.CARGO_CARGO) {
 			// Drive forward so the intake is over the bay and the bumpers are in the indent thingy
-			toReturn.addSequential(new DriveDistance(1 + 0.2, 20)); // the 0.2 is the bumpers FIXME check distances
+			toReturn.addSequential(new DriveDistance(1 + 0.43, 20)); // the 0.43 is the bumpers FIXME check distances
 		} else {
 			// Drive forward so the intake is flush with the port/hatch
 			toReturn.addSequential(new DriveDistance(1, 20)); // FIXME check distances
 		}
 
 		if (this.piece == HeldPiece.CARGO) {
-			// toReturn.addSequential(new AutoIntake(-1, 5)); // TODO change this to something hadled by superstructure?? // do we want the intake on the ss?
+			toReturn.addSequential(new RunIntake(-1, 0.5));
 		} else if (this.piece == HeldPiece.HATCH) {
 			toReturn.addSequential(new PlaceHatch());
 		}
@@ -245,6 +246,10 @@ public class AutoMotion {
 	 */
 	public HeldPiece getEndHeldPiece() {
 		return this.endPiece;
+	}
+
+	public SuperStructureState getSSState(){
+		return mSSState;
 	}
 
 }

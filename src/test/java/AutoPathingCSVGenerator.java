@@ -11,19 +11,40 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.junit.jupiter.api.Test;
 
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.commands.auto.routines.TwoHatchOneCargoLeft;
+import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.Logger;
+import frc.robot.states.SuperStructureState;
 
 public class AutoPathingCSVGenerator {
 
 	@Test
 	public void twoHatchLLtest() {
 		Trajectories.generateAllTrajectories(false);
-		ArrayList<Translation2d> path = TwoHatchOneCargoLeft('L', 'L');
+		TwoHatchOneCargoLeft routine = new TwoHatchOneCargoLeft('L', 'L');
+		ArrayList<Translation2d> path = new ArrayList<>();
+		for(TimedTrajectory<Pose2dWithCurvature> i : routine.trajects){
+			path.addAll(trajectToArrayList(i));
+		}
+		ArrayList<SuperStructureState> temp = new ArrayList<>();
+		for(AutoMotion i : routine.motions){
+			temp.add(i.getSSState());
+		}
+		ArrayList<SuperStructureState> iteras = injectStates(temp,path,routine.trajects);
 		writeToCSV("src/main/python/twoHatchLLtest.csv", path);
+		writeToAngleCSV("src/main/python/twoHatchLLtestSuper.csv", iteras);
 
 		// path = TwoHatchOneCargoLeft('R', 'R');
 		// writeToCSV("twoHatchRRest", path);
+	}
+
+	public ArrayList<SuperStructureState> injectStates(ArrayList<SuperStructureState> wps, ArrayList<Translation2d> path, ArrayList<TimedTrajectory<Pose2dWithCurvature>> bigPath){
+		ArrayList<SuperStructureState> toReturn = new ArrayList<SuperStructureState>();
+		//TODO this should add in-between states to the list  so they match up with the trajects
+		//wps should be equal in length to bigPath
+		//toReturn should be equal in length to path
+		return toReturn;
 	}
 
 	public void writeToCSV(String file, ArrayList<Translation2d> path) {
@@ -46,6 +67,25 @@ public class AutoPathingCSVGenerator {
 
 	}
 
+	public void writeToAngleCSV(String file, ArrayList<SuperStructureState> path) {
+
+		try {
+			FileWriter fw = new FileWriter(file);
+			PrintWriter pw = new PrintWriter(fw, true);
+
+			pw.println("height,elbowAngle,wristAngle");
+			for (SuperStructureState t : path) {
+				pw.println(t.getElevatorHeight().getFeet() + "," + t.getElbowAngle().getRadian() + "," + t.getWrist().angle.getRadian());
+			}
+
+			// pw.print("adsffdsaadsfdsfaadsffads1");
+
+			pw.close();
+		} catch (IOException ioe) {
+			System.out.println(ioe);
+		}
+
+	}
 	public ArrayList<Translation2d> trajectToArrayList(TimedTrajectory<Pose2dWithCurvature> traject) {
 		List<TimedEntry<Pose2dWithCurvature>> points = traject.getPoints();
 

@@ -1,5 +1,7 @@
 package frc.robot.commands.auto.routines;
 
+import java.util.ArrayList;
+
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
@@ -11,6 +13,7 @@ import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
+import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 
@@ -20,6 +23,8 @@ import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 //FIXME why is this specified as left if it also takes an input for side?
 public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 	// private AutoCommandGroup mBigCommandGroup;
+	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
+	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
 
 	/**
 	 * 2-hatch 1-cargo hard-coded auto. ow.
@@ -33,6 +38,8 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 		/* Get a trajectory to move to the cargo ship */
 		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargoM" + side); //current trajectory from hashmap in Trajectorie
 		AutoMotion motion = new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH, true);
+		trajects.add(traject);
+		motions.add(motion);
 		this.addParallel(motion.getPrepCommand());
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, true)); //drive to goal
 		this.addSequential(motion.getBigCommandGroup()); //do a motion
@@ -44,6 +51,8 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 
 		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "loading" + side); //current trajectory from hashmap in Trajectorie
 		motion = new AutoMotion(GoalHeight.LOW, GoalType.RETRIEVE_HATCH, false);
+		trajects.add(traject);
+		motions.add(motion);
 		this.addParallel(motion.getPrepCommand());
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 		this.addSequential(motion.getBigCommandGroup()); //do a motion
@@ -55,6 +64,8 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 
 		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
 		motion = new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH, false);
+		trajects.add(traject);
+		motions.add(motion);
 		this.addParallel(motion.getPrepCommand());
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 
@@ -68,6 +79,8 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 
 		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "depot" + side); //current trajectory from hashmap in Trajectorie
 		motion = new AutoMotion(GoalHeight.LOW, GoalType.RETRIEVE_CARGO, false);
+		trajects.add(traject);
+		motions.add(motion);
 		this.addParallel(motion.getPrepCommand());
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 		this.addSequential(motion.getBigCommandGroup());
@@ -78,6 +91,8 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 		cPiece = HeldPiece.CARGO;
 		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
 		motion = new AutoMotion(GoalHeight.OVER, GoalType.CARGO_CARGO, false);
+		trajects.add(traject);
+		motions.add(motion);
 		this.addParallel(motion.getPrepCommand());
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 		this.addSequential(new TurnInPlace(Rotation2dKt.getDegree(90), true)); // TODO check the angle
