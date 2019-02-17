@@ -199,13 +199,13 @@ public class Elevator /*extends Subsystem*/ {
 		getMaster().set(ControlMode.PercentOutput, 0);
 	}
 
-	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, Length iZone, double maxIntegral, double minOut, double maxOut) {
+	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, double iZone, double maxIntegral, double minOut, double maxOut) {
 		mMaster.selectProfileSlot(slot, 0);
 		mMaster.config_kP(0, kp, 30);
 		mMaster.config_kI(0, ki, 30);
 		mMaster.config_kD(0, kd, 30);
 		mMaster.config_kF(0, kf, 30);
-		mMaster.config_IntegralZone(0, (int) Math.round(lengthModel.fromModel(iZone).getValue()), 30);
+		mMaster.config_IntegralZone(0, (int) Math.round(lengthModel.fromModel(LengthKt.getInch(iZone)).getValue()), 30);
 		mMaster.configMaxIntegralAccumulator(0, maxIntegral, 0);
 		mMaster.configPeakOutputForward(maxOut);
 		mMaster.configPeakOutputReverse(minOut);
@@ -223,7 +223,7 @@ public class Elevator /*extends Subsystem*/ {
 	}
 
 	/**
-	 * Calculate the expected mass on the elevator given a state
+	 * Calculate the bexpected mass on the elevator given a state
 	 * @param state current state, including game piece held
 	 * @return mass accounting for game piece and inner stage
 	 */
