@@ -1,15 +1,15 @@
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.subsystems.DriveTrain;
 
 /**
  * Selects and runs an auto command group
  */
-public class RunAuto extends Command {
+public class RunAuto extends AutoCommandGroup {
 
 	public GoalType mGt;
 	public GoalHeight mHeight;
