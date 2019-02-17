@@ -266,7 +266,7 @@ public class SuperStructure extends Subsystem {
 
 		SmartDashboard.putNumber("elevator height in inches", mCurrentState.elevator.getHeight().getInch());
 		SmartDashboard.putNumber("target elevator height", mReqPath.get(0).getElevator().height.getInch());
-		// SmartDashboard.putNumber("elevator output", getElevator().getMaster().getMotorOutputVoltage());
+		SmartDashboard.putNumber("elevator output", getElevator().getMaster().getMotorOutputPercent());
 
 		SmartDashboard.putNumber("Wrist position", getWrist().getPosition().getDegree());
 	}
