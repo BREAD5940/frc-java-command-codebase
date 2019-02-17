@@ -2,11 +2,15 @@ package frc.robot.commands.subsystems.superstructure;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.lib.motion.Util;
+import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 public class SuperStructureTelop extends Command {
 	private SuperStructure superStructure;
@@ -28,17 +32,21 @@ public class SuperStructureTelop extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		Length delta = LengthKt.getInch(Util.deadband(Robot.m_oi.getElevatorAxis() * 10 * Math.abs(Robot.m_oi.getElevatorAxis()), 0.08));
-		// Elevator elev = superStructure.getElevator(); // THIS LINE THROWS A HEKKING NULL PIONTER
-		// FalconSRX<Length> talon = elev.getMaster();
-		// Length current = talon.getSensorPosition();
-		Length current = superStructure.getCurrentState().elevator.height;
-		Length new_s = current.plus(delta);
-		superStructure.moveSuperstructureElevator(new_s);
-		// System.out.println("target height: " + new_s);
+		// elevator stuff
+		Length deltaE = LengthKt.getInch(Util.deadband(Robot.m_oi.getElevatorAxis() * 10 * Math.abs(Robot.m_oi.getElevatorAxis()), 0.08));
+		Length currentE = superStructure.getCurrentState().elevator.height;
+		Length newE = currentE.plus(deltaE);
+		ElevatorState newReqE = new ElevatorState(newE);
+		// superStructure.moveSuperstructureElevator(new_s);
 
-		// double power = Robot.m_oi.getElevatorAxis() * 1;
-		// talon.set(ControlMode.PercentOutput, power);
+		// jog wrist
+		Rotation2d deltaW = Rotation2dKt.getDegree(Util.deadband(Robot.m_oi.getWristAxis() * 5 * Math.abs(Robot.m_oi.getWristAxis()), 0.08));
+		Rotation2d currentW = superStructure.getCurrentState().getWrist().angle;
+		Rotation2d newW = currentW.plus(deltaW);
+		RotatingArmState newReqW = new RotatingArmState(newW);
+
+		// move the whole darn thing
+		superStructure.moveSuperstructureCombo(newReqE, superStructure.getCurrentState().getElbow(), newReqW);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

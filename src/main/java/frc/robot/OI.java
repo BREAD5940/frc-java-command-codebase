@@ -119,6 +119,10 @@ public class OI {
 		return primaryJoystick.getRawAxis(RobotConfig.controls.outtakeAxis);
 	}
 
+	public double getWristAxis() {
+		return secondaryJoystick.getRawAxis(5);
+	}
+
 	/**
 	 * Get intake speed is the difference between intake and outtake axis speeds
 	 */
