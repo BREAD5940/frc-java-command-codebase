@@ -75,9 +75,7 @@ dependencies {
   compile wpi.deps.wpilib()
   compile wpi.deps.vendor.java()
   nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
-  nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
-  simulation "edu.wpi.first.halsim:halsim_lowfi:${wpi.wpilibVersion}:${wpi.platforms.desktop}@zip"
-  // testCompile 'junit:junit:4.12'
+  nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)  // testCompile 'junit:junit:4.12'
   compile 'com.google.code.gson:gson:2.8.2'
 
 	compile 'com.github.5190GreenHopeRobotics:FalconLibrary:2019.1.19'
@@ -94,6 +92,17 @@ dependencies {
     'org.junit.jupiter:junit-jupiter-engine:5.1.0',
     'org.junit.vintage:junit-vintage-engine:5.1.0'
   )
+
+  if (wpi.platforms.desktop == 'windowsx86-64') {
+    simulation rootProject.files('libs/halsim_ds_socketd.dll')
+  } else if (wpi.platforms.desktop == 'osxx86-64') {
+    simulation rootProject.files('libs/libhalsim_ds_socketd.dylib')
+  } else if (wpi.platforms.desktop == 'linuxx86-64') {
+    simulation rootProject.files('libs/libhalsim_ds_socketd.so')
+  } else {
+    simulation "edu.wpi.first.halsim:halsim_ds_socket:${wpi.wpilibVersion}:${wpi.platforms.desktop}debug@zip"
+  }
+
 }
 
 test {
