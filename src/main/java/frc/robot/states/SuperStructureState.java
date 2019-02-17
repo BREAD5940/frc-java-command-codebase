@@ -44,10 +44,6 @@ public class SuperStructureState implements Loggable {
 		piece = piece__;
 	}
 
-	public static SuperStructureState fromOther(SuperStructureState other) {
-		return new SuperStructureState(other.elevator, other.jointAngles, other.piece);
-	}
-
 	public HeldPiece getHeldPiece() {
 		return piece;
 	}

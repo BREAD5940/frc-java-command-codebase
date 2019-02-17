@@ -10,10 +10,13 @@ import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
+import frc.robot.states.ElevatorState;
+import frc.robot.states.IntakeAngle;
+import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.DriveTrain.Gear;
-import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 import frc.robot.subsystems.Intake.HatchMechState;
+import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 /**
  * Operator Input not Out-In
@@ -45,7 +48,7 @@ public class OI {
 	Button testAutoButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
 	Button auto_grab_hatch_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
 	Button auto_grab_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
-	Button test2button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
+	Button test2button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.Y_BUTTON);
 
 	// File file = new File("/home/lvuser/deploy/paths/test.pf1.csv");
 	// Trajectory trajectory = Pathfinder.readFromCSV(file);
@@ -60,7 +63,9 @@ public class OI {
 			Trajectories.generateAllTrajectories();
 		// testAutoButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.generatedTrajectories.get("test"), true));
 
-		test2button.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, TrajectoryTrackerMode.RAMSETE, true));
+		test2button.whenPressed(new SuperstructureGoToState(
+				new SuperStructureState(new ElevatorState(RobotConfig.auto.fieldPositions.hatchLowGoal),
+						new IntakeAngle(new RotatingArmState(), new RotatingArmState()))));
 
 		testAutoButton.whenPressed(new MultiPathTest());
 		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
