@@ -5,7 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
+import frc.robot.commands.subsystems.superstructure.IntakeTelop;
 
 /**
  * The intake subsystem. Contains method setSpeed, openClamp and closeClamp.
@@ -37,13 +37,13 @@ public class Intake extends Subsystem {
 
 	@Override
 	public void periodic() {
-		setSpeed(Robot.m_oi.getIntakeSpeed());
+		// setSpeed(Robot.m_oi.getIntakeSpeed());
 		// System.out.println("speed " + Robot.m_oi.getIntakeSpeed());
 	}
 
 	@Override
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
-		// setDefaultCommand(new IntakeTelop());
+		setDefaultCommand(new IntakeTelop());
 	}
 }
