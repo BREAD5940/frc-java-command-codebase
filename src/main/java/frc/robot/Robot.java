@@ -42,8 +42,8 @@ public class Robot extends TimedRobot {
 	// public static VisionProcessor visionProcessor = new VisionProcessor();
 	public static LimeLight limelight = new LimeLight();
 	// public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
-	public static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
-	public static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 2, 3);
+	public static DoubleSolenoid shifterDoubleSolenoid;
+	public static DoubleSolenoid intakeDoubleSolenoid;
 	public static DoubleSolenoid elevatorShifterDoubleSolenoid;
 	public static AutoMotion m_auto;
 	SendableChooser<Command> m_chooser = new SendableChooser<Command>();
@@ -60,16 +60,35 @@ public class Robot extends TimedRobot {
 		shifterDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
 	}
 
-	public static Gear getDrivetrainGear() {
-		return (shifterDoubleSolenoid.get() == Value.kForward) ? Gear.HIGH : Gear.LOW;
+	public static DoubleSolenoid getShifterSolenoid() {
+		if (shifterDoubleSolenoid == null)
+			shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
+		return shifterDoubleSolenoid;
 	}
 
-	public static Value getIntakeSolenoid() {
+	public static DoubleSolenoid getIntakeSolenoidInstance() {
+		if (intakeDoubleSolenoid == null)
+			intakeDoubleSolenoid = new DoubleSolenoid(9, 2, 3);
+		return intakeDoubleSolenoid;
+	}
+
+	public static DoubleSolenoid getElevatorShifter() {
+		if (elevatorShifterDoubleSolenoid == null) {
+			elevatorShifterDoubleSolenoid = new DoubleSolenoid(9, 4, 5);
+		}
+		return elevatorShifterDoubleSolenoid;
+	}
+
+	public static Gear getDrivetrainGear() {
+		return (getShifterSolenoid().get() == Value.kForward) ? Gear.HIGH : Gear.LOW;
+	}
+
+	public static Value getIntakeSolenoidState() {
 		return intakeDoubleSolenoid.get();
 	}
 
 	public static void drivetrain_shift_low() {
-		shifterDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
+		getShifterSolenoid().set(DoubleSolenoid.Value.kReverse);
 	}
 
 	public static void intake_close() {

@@ -248,7 +248,7 @@ public class AutoMotion {
 		return this.endPiece;
 	}
 
-	public SuperStructureState getSSState(){
+	public SuperStructureState getSSState() {
 		return mSSState;
 	}
 

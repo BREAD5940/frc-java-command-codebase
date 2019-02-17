@@ -36,10 +36,15 @@ public class SuperStructureTelop extends Command {
 	protected void execute() {
 		// elevator stuff
 		Length deltaE = LengthKt.getInch(Util.deadband(Robot.m_oi.getElevatorAxis() * 10 * Math.abs(Robot.m_oi.getElevatorAxis()), 0.08));
-		Length currentE = superStructure.getCurrentState().elevator.height;
-		Length newE = currentE.plus(deltaE);
-		ElevatorState newReqE = new ElevatorState(newE);
-		// superStructure.moveSuperstructureElevator(new_s);
+		if (Math.abs(Robot.m_oi.getElevatorAxis()) > 0.08) {
+
+			Length currentE = superStructure.getCurrentState().elevator.height;
+			Length newE = currentE.plus(deltaE);
+			ElevatorState newReqE = new ElevatorState(newE);
+			// superStructure.moveSuperstructureElevator(new_s);
+
+			superStructure.moveSuperstructureElevator(newE);
+		}
 
 		// jog wrist
 		Rotation2d deltaW = Rotation2dKt.getDegree(Util.deadband(Robot.m_oi.getWristAxis() * 5 * Math.abs(Robot.m_oi.getWristAxis()), 0.08));
@@ -48,8 +53,7 @@ public class SuperStructureTelop extends Command {
 		RotatingArmState newReqW = new RotatingArmState(newW);
 
 		// move the whole darn thing
-		// superStructure.moveSuperstructureCombo(newReqE, superStructure.getCurrentState().getElbow(), newReqW);
-		superStructure.moveSuperstructureElevator(newE);
+		// superStructure.moveSuperstructureCombo(newReqE, superStructure .getCurrentState().getElbow(), newReqW);
 
 		superStructure.getWrist().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getWristAxis(), 0.5));
 

@@ -43,7 +43,11 @@ import frc.robot.states.SuperStructureState;
  */
 public class Elevator /*extends Subsystem*/ {
 
-	DoubleSolenoid mSolenoid = Robot.elevatorShifterDoubleSolenoid;
+	private DoubleSolenoid mSolenoid = Robot.getElevatorShifter();
+
+	public DoubleSolenoid getSolenoid() {
+		return Robot.getElevatorShifter();
+	}
 
 	public static enum EncoderMode {
 		NONE, CTRE_MagEncoder_Relative;
@@ -61,15 +65,15 @@ public class Elevator /*extends Subsystem*/ {
 	private static final ElevatorGear kDefaultState = ElevatorGear.LOW; // default to nyooooommmmm mode
 
 	public ElevatorGear getHatchMechState() {
-		return (mSolenoid.get() == Value.kReverse) ? ElevatorGear.LOW : ElevatorGear.HIGH; // TODO check kforward state
+		return (getSolenoid().get() == Value.kReverse) ? ElevatorGear.LOW : ElevatorGear.HIGH; // TODO check kforward state
 	}
 
 	public void setPistonState(ElevatorGear mReq) {
-		mSolenoid.set(ElevatorGear.get(mReq));
+		getSolenoid().set(ElevatorGear.get(mReq));
 	}
 
 	// TODO check these quick maths, kTopOfInnerStage is used to switch gravity feedforward
-	public static final Mass kCarriageMass = MassKt.getLb(9.3); // TODO add in the intake and stuff
+	public static final Mass kCarriageMass = MassKt.getLb(30); // TODO add in the intake and stuff
 	public static final Mass kInnerStageMass = MassKt.getLb(6.5);
 
 	public static final Length kTopOfInnerStage = LengthKt.getInch(40);

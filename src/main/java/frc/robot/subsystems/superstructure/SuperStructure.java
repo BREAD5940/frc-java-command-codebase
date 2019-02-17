@@ -42,7 +42,7 @@ public class SuperStructure extends Subsystem {
 
 	private static SuperStructure instance_;
 	private static double currentDTVelocity; //in ft/sec
-	private static double currentSetHeight, lastSH = 70, lastLastSH = 70;
+	private static Length currentSetHeight, lastSH = LengthKt.getInch(70), lastLastSH = LengthKt.getInch(70);
 	private SuperStructureState mReqState = new SuperStructureState();
 	private CommandGroup mCurrentCommandGroup;
 	private ArrayList<SuperStructureState> mReqPath;
@@ -63,6 +63,10 @@ public class SuperStructure extends Subsystem {
 			instance_ = new SuperStructure();
 		}
 		return instance_;
+	}
+
+	public Length getLastReqElevatorHeight() {
+		return lastSH;
 	}
 
 	public enum ElevatorPresets {
@@ -228,7 +232,7 @@ public class SuperStructure extends Subsystem {
 
 		// double wristVoltageGravity = kWristTransmission.getVoltageForTorque(this.mCurrentState.getWrist().velocity.getValue(), mCurrentWristTorque);
 		// double elbowVoltageGravity = kElbowTransmission.getVoltageForTorque(this.mCurrentState.getElbow().velocity.getValue(), mCurrentElbowTorque);
-		double elevatorPercentVbusGravity = elevator.getVoltage(this.mCurrentState) / getElevator().getMaster().getBusVoltage();
+		double elevatorPercentVbusGravity = elevator.getVoltage(this.mCurrentState) / 12;//getElevator().getMaster().getBusVoltage();
 
 		// System.out.println("Calculated elevator voltage" + elevator.getVoltage(getCurrentState()));
 
@@ -237,20 +241,20 @@ public class SuperStructure extends Subsystem {
 
 		mReqPath = planner.plan(mReqState, mCurrentState);
 
-		double reqSetHeight = mReqPath.get(0).getElevatorHeight().getInch();
+		Length reqSetHeight = mReqPath.get(0).getElevatorHeight();
 
-		double currentSetHeight = reqSetHeight;
+		Length currentSetHeight = reqSetHeight;
 		currentDTVelocity = Math.abs((DriveTrain.getInstance().getLeft().getFeetPerSecond() + DriveTrain.getInstance().getRight().getFeetPerSecond()) / 2);
 		currentSetHeight = reqSetHeight;
 
 		if (currentDTVelocity > 5) {
-			currentSetHeight = 0.310544 * Math.pow(currentDTVelocity, 2) - 11.7656 * currentDTVelocity + 119.868; //FIXME this is a regression based on arb. values. update after testing
-			if (currentSetHeight > reqSetHeight) {
+			currentSetHeight = LengthKt.getInch(0.310544 * Math.pow(currentDTVelocity, 2) - 11.7656 * currentDTVelocity + 119.868); //FIXME this is a regression based on arb. values. update after testing
+			if (currentSetHeight.getInch() > reqSetHeight.getInch()) {
 				currentSetHeight = reqSetHeight;
 			}
 		}
 
-		currentSetHeight = (currentSetHeight + lastSH + lastLastSH) / 3;
+		currentSetHeight = (currentSetHeight.plus(lastSH.plus(lastLastSH))).div(3);
 
 		lastLastSH = lastSH;
 		lastSH = currentSetHeight;
@@ -262,7 +266,7 @@ public class SuperStructure extends Subsystem {
 
 		SmartDashboard.putNumber("elevator height in inches", mCurrentState.elevator.getHeight().getInch());
 		SmartDashboard.putNumber("target elevator height", mReqPath.get(0).getElevator().height.getInch());
-		SmartDashboard.putNumber("elevator output", getElevator().getMaster().getMotorOutputVoltage());
+		// SmartDashboard.putNumber("elevator output", getElevator().getMaster().getMotorOutputVoltage());
 
 		SmartDashboard.putNumber("Wrist position", getWrist().getPosition().getDegree());
 	}

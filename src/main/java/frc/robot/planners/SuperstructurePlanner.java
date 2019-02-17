@@ -73,12 +73,12 @@ public class SuperstructurePlanner {
 		errorCount = corrCount = 0;
 
 		//checks if the elevator will go to high
-		if (goalState.elevator.height.getFeet() > top.getFeet()) {
+		if (goalState.elevator.height.getInch() > top.getInch()) {
 			System.out.println("MOTION IMPOSSIBLE -- Elevator will pass maximum height. Setting to maximum height.");
 			errorCount++;
 			corrCount++;
 			goalState.getElevator().setHeight(top);
-		} else if (goalState.elevator.height.getFeet() < bottom.getFeet()) {
+		} else if (goalState.elevator.height.getInch() < bottom.getInch()) {
 			System.out.println("MOTION IMPOSSIBLE -- Elevator will attempt to smash directly through the bottom of the robot. Setting to minimum height.");
 			errorCount++;
 			corrCount++;

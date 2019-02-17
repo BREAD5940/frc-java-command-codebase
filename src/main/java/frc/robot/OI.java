@@ -9,9 +9,11 @@ import frc.robot.commands.auto.MultiPathTest;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
+import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
+import frc.robot.subsystems.Intake.HatchMechState;
 
 /**
  * Operator Input not Out-In
@@ -28,8 +30,8 @@ public class OI {
 
 	private Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
 	private Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
-	// private Button open_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.A_BUTTON);
-	// private Button close_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.Y_BUTTON);
+	private Button open_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.LB_BUTTON);
+	private Button close_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.RB_BUTTON);
 	// Button turnAutoButton = new JoystickButton(secondaryJoystick, xboxmap.Buttons.B_BUTTON);
 	// Button autobutton2 = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 	Button autobutton3 = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
@@ -52,8 +54,8 @@ public class OI {
 	public OI() {
 		shift_up_button.whenPressed(new SetGearCommand(Gear.HIGH));
 		shift_down_button.whenPressed(new SetGearCommand(Gear.LOW));
-		// open_clamp_button.whenPressed(new OpenClamp());
-		// close_clamp_button.whenPressed(new CloseClamp());
+		open_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kOpen));
+		close_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kClamped));
 		if (Trajectories.forward20Feet == null)
 			Trajectories.generateAllTrajectories();
 		// testAutoButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.generatedTrajectories.get("test"), true));
@@ -120,11 +122,11 @@ public class OI {
 	}
 
 	public double getWristAxis() {
-		return secondaryJoystick.getRawAxis(5);
+		return secondaryJoystick.getRawAxis(5) * -1;
 	}
 
 	public double getElbowAxis() {
-		return secondaryJoystick.getRawAxis(3) - secondaryJoystick.getRawAxis(2); // triggers
+		return secondaryJoystick.getRawAxis(2) - secondaryJoystick.getRawAxis(3); // triggers
 	}
 
 	/**

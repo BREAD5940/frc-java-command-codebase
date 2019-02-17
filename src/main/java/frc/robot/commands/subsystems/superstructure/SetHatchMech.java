@@ -8,6 +8,7 @@
 package frc.robot.commands.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.lib.Logger;
 import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
@@ -16,9 +17,11 @@ public class SetHatchMech extends Command {
 	private HatchMechState mReq;
 
 	public SetHatchMech(HatchMechState mReq_) {
+		super("Set hatch mech");
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		this.mReq = mReq_;
+		Logger.log("setting hatch mech to " + mReq_.name());
 	}
 
 	// Called just before this Command runs the first time

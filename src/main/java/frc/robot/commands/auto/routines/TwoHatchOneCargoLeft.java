@@ -13,7 +13,6 @@ import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
-import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 
