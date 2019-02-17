@@ -1,18 +1,12 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.Mass;
-import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.junit.jupiter.api.Test;
 
 import frc.robot.planners.*;
-import frc.robot.states.ElevatorState;
-import frc.robot.states.SuperStructureState;
-import frc.robot.subsystems.superstructure.Elevator;
-import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 public class SuperstructureTests {
 
@@ -104,33 +98,56 @@ public class SuperstructureTests {
 	// }
 
 	@Test
-	public void testElevatorVoltage() {
-		Mass kCarriageMass = MassKt.getLb(9.3);
-		Mass kInnerStageMass = MassKt.getLb(6.5);
+	public void safingTest() {
 
-		Mass kHatchMass = MassKt.getLb(2.4);
-		Mass kCargoMass = MassKt.getLb(1);
+		double currentDTVelocity, lastSP = 50, lastLastSP = 50;
+		double[] lVels = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 11, 12, 12.5, 12.5, 12.5, 12.5, 12.5, 12.5,
+				12.5, 12.5, 11, 11, 11, 12, 10, 9, 8, 7, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0};
 
-		double kLowGearForcePerVolt = (512d / 12d) * 1.5;
-		double kHighGearForcePerVolt = (1500d / 12d);
+		double[][] toPrint = new double[40][3];
+		double reqSetHeight = Math.abs(50);
+		double currentSetHeight;
 
-		ArrayList<SuperStructureState> states = new ArrayList<SuperStructureState>(Arrays.asList(
-				new SuperStructureState(new ElevatorState(LengthKt.getInch(5)), new RotatingArmState(), new RotatingArmState()),
-				new SuperStructureState(new ElevatorState(LengthKt.getInch(30)), new RotatingArmState(), new RotatingArmState()),
-				new SuperStructureState(new ElevatorState(LengthKt.getInch(50)), new RotatingArmState(), new RotatingArmState()),
-				new SuperStructureState(new ElevatorState(LengthKt.getInch(70)), new RotatingArmState(), new RotatingArmState())));
-		ArrayList<Double> correctVolts = new ArrayList<Double>(Arrays.asList(
-				((Elevator.kCarriageMass.getKilogram()) * 9.81) / Elevator.KHighGearForcePerVolt,
-				((Elevator.kCarriageMass.getKilogram()) * 9.81) / Elevator.KHighGearForcePerVolt,
-				((Elevator.kCarriageMass.getKilogram() + Elevator.kInnerStageMass.getKilogram()) * 9.81) / Elevator.KHighGearForcePerVolt,
-				((Elevator.kCarriageMass.getKilogram() + Elevator.kInnerStageMass.getKilogram()) * 9.81) / Elevator.KHighGearForcePerVolt
+		for (int count = 0; count < 39; count++) {
+			currentDTVelocity = Math.abs((lVels[count] + lVels[count]) / 2);
+			currentSetHeight = reqSetHeight;
 
-		));
+			if (currentDTVelocity > 5) {
+				currentSetHeight = 0.310544 * Math.pow(currentDTVelocity, 2) - 11.7656 * currentDTVelocity + 119.868;
+				if (currentSetHeight > reqSetHeight) {
+					currentSetHeight = reqSetHeight;
+				}
+			}
 
-		for (int i = 0; i < states.size(); i++) {
-			System.out.printf("Index: %d   First: %f   Second: %f\n", i,
-					Elevator.getVoltage(states.get(i)), correctVolts.get(i));
-			assertEquals(Elevator.getVoltage(states.get(i)), (double) correctVolts.get(i), 0.1);
+			toPrint[count][0] = count;
+			toPrint[count][1] = (currentSetHeight + lastSP + lastLastSP) / 3;
+			toPrint[count][2] = currentDTVelocity;
+
+			lastLastSP = lastSP;
+			lastSP = currentSetHeight;
 		}
+
+		writeToCSV("src/test/java/safingTestOut.csv", toPrint);
 	}
+
+	public void writeToCSV(String file, double[][] path) {
+
+		try {
+			FileWriter fw = new FileWriter(file);
+			PrintWriter pw = new PrintWriter(fw, true);
+
+			pw.println("time,elevatorHeight,drivetrainSpeed");
+			for (double[] t : path) {
+				pw.println(t[0] + "," + t[1] + "," + t[2]);
+			}
+
+			// pw.print("adsffdsaadsfdsfaadsffads1");
+
+			pw.close();
+		} catch (IOException ioe) {
+			System.out.println(ioe);
+		}
+
+	}
+
 }
