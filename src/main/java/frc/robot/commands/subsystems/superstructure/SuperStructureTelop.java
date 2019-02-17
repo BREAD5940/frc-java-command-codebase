@@ -31,20 +31,35 @@ public class SuperStructureTelop extends Command {
 	@Override
 	protected void initialize() {}
 
+	boolean firstRun = false;
+	
+
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
 		// elevator stuff
+		Length newE = superStructure.getLastReqElevatorHeight();
+		boolean move = false;
 		Length deltaE = LengthKt.getInch(Util.deadband(Robot.m_oi.getElevatorAxis() * 10 * Math.abs(Robot.m_oi.getElevatorAxis()), 0.08));
 		if(Math.abs(Robot.m_oi.getElevatorAxis()) > 0.08) { // only move if asked
-
+			firstRun = true;
 			Length currentE = superStructure.getCurrentState().elevator.height;
-			Length newE = currentE.plus(deltaE);
+			newE = currentE.plus(deltaE);
 			ElevatorState newReqE = new ElevatorState(newE);
+			move = true;
 			// superStructure.moveSuperstructureElevator(new_s);
 
-			superStructure.moveSuperstructureElevator(newE);
 		}
+		else {
+			if(firstRun == true) {
+				newE = superStructure.getLastReqElevatorHeight();
+				firstRun = false;
+				move = true;
+			}
+		}
+
+		if(move) superStructure.moveSuperstructureElevator(newE);
+
 
 		// jog wrist
 		Rotation2d deltaW = Rotation2dKt.getDegree(Util.deadband(Robot.m_oi.getWristAxis() * 5 * Math.abs(Robot.m_oi.getWristAxis()), 0.08));
