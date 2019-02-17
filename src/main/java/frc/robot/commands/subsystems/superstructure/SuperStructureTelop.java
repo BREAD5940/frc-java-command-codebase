@@ -9,6 +9,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.lib.Loggable;
+import frc.robot.lib.Logger;
 import frc.robot.lib.motion.Util;
 import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
@@ -68,9 +70,20 @@ public class SuperStructureTelop extends Command {
 		// move the whole darn thing
 		// superStructure.moveSuperstructureCombo(newReqE, superStructure .getCurrentState().getElbow(), newReqW);
 
-		superStructure.getWrist().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getWristAxis(), 0.75));
+		// superStructure.getWrist().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getWristAxis(), 0.75));
 
-		superStructure.getElbow().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getElbowAxis(), 0.75));
+		// superStructure.getElbow().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getElbowAxis(), 0.75));
+
+		double wristDelta = Robot.m_oi.getWristAxis();
+		Rotation2d newWrist = superStructure.mReqState.getWrist().angle.plus(Rotation2dKt.getDegree(wristDelta * 10));
+		superStructure.getWrist().getMaster().set(ControlMode.Position, newWrist);
+
+		double elbowDelta = Robot.m_oi.getElbowAxis();
+		Rotation2d newElbow = superStructure.mReqState.getWrist().angle.plus(Rotation2dKt.getDegree(elbowDelta * 10));
+		superStructure.getWrist().getMaster().set(ControlMode.Position, newElbow);
+		
+		Logger.log("wrist percent output " + superStructure.getWrist().getMaster().getMotorOutputPercent());
+
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

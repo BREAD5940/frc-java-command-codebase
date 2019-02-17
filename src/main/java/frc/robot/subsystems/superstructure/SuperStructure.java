@@ -43,7 +43,7 @@ public class SuperStructure extends Subsystem {
 	private static SuperStructure instance_;
 	private static double currentDTVelocity; //in ft/sec
 	private static Length currentSetHeight, lastSH = LengthKt.getInch(70), lastLastSH = LengthKt.getInch(70);
-	private SuperStructureState mReqState = new SuperStructureState();
+	public SuperStructureState mReqState = new SuperStructureState();
 	private CommandGroup mCurrentCommandGroup;
 	private ArrayList<SuperStructureState> mReqPath;
 	private int cPathIndex = 0;
@@ -94,7 +94,7 @@ public class SuperStructure extends Subsystem {
 
 		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
 
-		mWrist = new RotatingJoint(new PIDSettings(0.1d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, false /* FIXME check inverting! */,
+		mWrist = new RotatingJoint(new PIDSettings(2d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, false /* FIXME check inverting! */,
 				Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
 		mElbow = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative,

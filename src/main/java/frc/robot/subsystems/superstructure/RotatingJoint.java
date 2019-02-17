@@ -88,7 +88,25 @@ public class RotatingJoint /*extends Subsystem*/ {
 		getMaster().configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 		getMaster().configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 0);
 		getMaster().setSensorPosition(Rotation2dKt.getDegree(0));
+		setClosedLoopGains(0, settings);
 
+	}
+
+
+	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, double iZone, double maxIntegral, double minOut, double maxOut) {
+		getMaster().selectProfileSlot(slot, 0);
+		getMaster().config_kP(0, kp, 30);
+		getMaster().config_kI(0, ki, 30);
+		getMaster().config_kD(0, kd, 30);
+		getMaster().config_kF(0, kf, 30);
+		getMaster().config_IntegralZone(0, (int) Math.round(mRotationModel.fromModel(Rotation2dKt.getDegree(iZone)).getValue()), 0);
+		getMaster().configMaxIntegralAccumulator(0, maxIntegral, 0);
+		getMaster().configPeakOutputForward(maxOut);
+		getMaster().configPeakOutputReverse(minOut);
+	}
+
+	public void setClosedLoopGains(int slot, PIDSettings config) {
+		setClosedLoopGains(slot, config.kp, config.ki, config.kd, config.kf, config.iZone, config.maxIAccum, config.minOutput, config.maxOutput);
 	}
 
 	public void setSetpoint(double setpoint_) {}
