@@ -165,3 +165,4 @@ twoHatchLLtest.csv
 twoHatchLLtest
 twoHatchRRest
 src/test/java/safingTestOut.csv
+*.gz
