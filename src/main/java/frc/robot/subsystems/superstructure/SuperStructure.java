@@ -228,7 +228,9 @@ public class SuperStructure extends Subsystem {
 
 		// double wristVoltageGravity = kWristTransmission.getVoltageForTorque(this.mCurrentState.getWrist().velocity.getValue(), mCurrentWristTorque);
 		// double elbowVoltageGravity = kElbowTransmission.getVoltageForTorque(this.mCurrentState.getElbow().velocity.getValue(), mCurrentElbowTorque);
-		double elevatorPercentVbusGravity = elevator.getVoltage(this.mCurrentState) / getElevator().getMaster().getBusVoltage();
+		double vbus = 12;
+		// double vbus = getElevator().getMaster().getBusVoltage(); // Commented out because simulation is bad
+		double elevatorPercentVbusGravity = Elevator.getVoltage(this.mCurrentState) / (vbus);
 
 		// System.out.println("Calculated elevator voltage" + elevator.getVoltage(getCurrentState()));
 
