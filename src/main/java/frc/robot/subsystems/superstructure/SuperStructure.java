@@ -8,7 +8,6 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
@@ -18,7 +17,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
-import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.subsystems.superstructure.SuperStructureTelop;
@@ -43,6 +41,8 @@ import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 public class SuperStructure extends Subsystem {
 
 	private static SuperStructure instance_;
+	private static double currentDTVelocity; //in ft/sec
+	private static double currentSetHeight, lastSH = 70, lastLastSH = 70;
 	private SuperStructureState mReqState = new SuperStructureState();
 	private CommandGroup mCurrentCommandGroup;
 	private ArrayList<SuperStructureState> mReqPath;
@@ -237,11 +237,23 @@ public class SuperStructure extends Subsystem {
 
 		mReqPath = planner.plan(mReqState, mCurrentState);
 
-		if (mReqPath.get(0).getElevatorHeight().getInch() >= Elevator.kTopOfInnerStage.getInch()
-				&& ((DriveTrain.getInstance().getLeft().getFeetPerSecond() + DriveTrain.getInstance().getRight().getFeetPerSecond()) / 2) > RobotConfig.driveTrain.tipThreshold) {
-			mReqPath.get(0).getElevator().velocity = VelocityKt.getVelocity(LengthKt.getFeet(
-					mReqPath.get(0).getElevator().velocity.getType$FalconLibrary().getFeet() / ((DriveTrain.getInstance().getLeft().getFeetPerSecond() + DriveTrain.getInstance().getRight().getFeetPerSecond()) / 2)));
+		double reqSetHeight = mReqPath.get(0).getElevatorHeight().getInch();
+
+		double currentSetHeight = reqSetHeight;
+		currentDTVelocity = Math.abs((DriveTrain.getInstance().getLeft().getFeetPerSecond() + DriveTrain.getInstance().getRight().getFeetPerSecond()) / 2);
+		currentSetHeight = reqSetHeight;
+
+		if (currentDTVelocity > 5) {
+			currentSetHeight = 0.310544 * Math.pow(currentDTVelocity, 2) - 11.7656 * currentDTVelocity + 119.868; //FIXME this is a regression based on arb. values. update after testing
+			if (currentSetHeight > reqSetHeight) {
+				currentSetHeight = reqSetHeight;
+			}
 		}
+
+		currentSetHeight = (currentSetHeight + lastSH + lastLastSH) / 3;
+
+		lastLastSH = lastSH;
+		lastSH = currentSetHeight;
 
 		// getWrist().setPositionArbitraryFeedForward(mReqPath.get(0).getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
 		// getElbow().setPositionArbitraryFeedForward(mReqPath.get(0).getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
