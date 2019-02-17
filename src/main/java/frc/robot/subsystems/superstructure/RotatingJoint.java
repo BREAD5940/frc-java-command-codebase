@@ -74,9 +74,9 @@ public class RotatingJoint /*extends Subsystem*/ {
 		NativeUnit unitsPerRotation = NativeUnitKt.getSTU(0);
 
 		// TODO add support for more sensors
-		if (sensor == FeedbackDevice.CTRE_MagEncoder_Relative) {
-			unitsPerRotation = NativeUnitKt.getSTU(4096);
-		}
+		// if (sensor == FeedbackDevice.CTRE_MagEncoder_Relative) {
+		unitsPerRotation = NativeUnitKt.getSTU(4096);
+		// }
 
 		mRotationModel = new NativeUnitRotationModel(unitsPerRotation);
 
@@ -85,8 +85,9 @@ public class RotatingJoint /*extends Subsystem*/ {
 			motors.add(new FalconSRX<Rotation2d>(i.intValue(), mRotationModel, TimeUnitsKt.getMillisecond(10)));
 		}
 
-		getMaster().configSelectedFeedbackSensor(sensor);
-		getMaster().configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30);
+		getMaster().configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+		getMaster().configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 0);
+		getMaster().setSensorPosition(Rotation2dKt.getDegree(0));
 
 	}
 

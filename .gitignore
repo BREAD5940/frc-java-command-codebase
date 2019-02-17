@@ -164,3 +164,13 @@ bin/
 twoHatchLLtest.csv
 twoHatchLLtest
 twoHatchRRest
+<<<<<<< HEAD
+*.gz
+src/test/java/safingTestOut.csv
+=======
+src/main/python/twoHatchLLtest.csv
+src/main/python/twoHatchLLtest.csv
+src\main\python\twoHatchLLtest.csv
+src\main\python\twoHatchLLtest.csv
+*.gz
+>>>>>>> ca7ae8a... Update .gitignore

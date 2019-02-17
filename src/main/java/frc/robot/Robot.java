@@ -42,9 +42,9 @@ public class Robot extends TimedRobot {
 	// public static VisionProcessor visionProcessor = new VisionProcessor();
 	public static LimeLight limelight = new LimeLight();
 	// public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
-	private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
-	private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 2, 3);
-	private static DoubleSolenoid elevatorShifterDoubleSolenoid;
+	public static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
+	public static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 2, 3);
+	public static DoubleSolenoid elevatorShifterDoubleSolenoid;
 	public static AutoMotion m_auto;
 	SendableChooser<Command> m_chooser = new SendableChooser<Command>();
 	public static Compressor compressor = new Compressor(9);

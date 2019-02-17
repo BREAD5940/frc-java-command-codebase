@@ -48,8 +48,8 @@ public class Transmission {
 		this.side = side;
 
 		if (mode == EncoderMode.CTRE_MagEncoder_Relative) {
-			mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
-			mMaster.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30);
+			mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+			mMaster.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 0);
 		}
 		mSlave.set(ControlMode.Follower, mMaster.getDeviceID());
 		// Quadrature Encoder of current
