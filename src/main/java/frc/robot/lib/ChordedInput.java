@@ -4,22 +4,31 @@ import java.util.List;
 
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.dhdMap;
+import frc.robot.commands.auto.AutoMotion.GoalHeight;
+import frc.robot.commands.auto.AutoMotion.GoalType;
 
-public class ChordedInput extends Button {
+public class ChordedInput{
 
-	List<JoystickButton> buttons;
-
-	public ChordedInput(List<JoystickButton> buttons) {
-		this.buttons = buttons;
-	}
-
-	@Override
-	public boolean get() {
-		boolean ifAllPressed = true;
-		for (JoystickButton b : buttons) {
-			ifAllPressed = ifAllPressed && b.get();
+	public static GoalType getGT(){
+		if(dhdMap.Motion.GRAB_CARGO.get()){
+			return GoalType.RETRIEVE_CARGO;
+		}else if(dhdMap.Motion.GRAB_HATCH.get()){
+			return GoalType.RETRIEVE_HATCH;
+		}else if(dhdMap.Motion.PLACE_CARGO.get()){
+			
 		}
-		return ifAllPressed;
 	}
 
+	public static GoalHeight getGH(){
+		if(dhdMap.Motion.MID.get()){
+			return GoalHeight.MIDDLE;
+		}else if(dhdMap.Motion.HIGH.get()){
+			return GoalHeight.HIGH;
+		}else if(dhdMap.Motion.OVER.get()){
+			return GoalHeight.OVER;
+		}else{
+			return GoalHeight.LOW;
+		}
+	}
 }
