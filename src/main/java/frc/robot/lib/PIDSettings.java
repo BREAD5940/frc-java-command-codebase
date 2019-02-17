@@ -1,8 +1,5 @@
 package frc.robot.lib;
 
-import org.ghrobotics.lib.mathematics.units.Length;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-
 import frc.robot.lib.TerriblePID.FeedForwardBehavior;
 import frc.robot.lib.TerriblePID.FeedForwardMode;
 
@@ -15,6 +12,7 @@ public class PIDSettings {
 	public PIDSettings(double kp_, double ki_, double kd_, double kf_) {
 		this(kp_, ki_, kd_, kf_, -1, 1, 0, 0, FeedbackMode.LINEAR);
 	}
+
 	// TODO make this use rotation2d or length
 	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double minOutput_, double maxOutput_, double iZone_, double maxIAccum_, FeedbackMode mode_) {
 		kp = kp_;

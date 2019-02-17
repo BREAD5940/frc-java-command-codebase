@@ -9,7 +9,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.lib.Loggable;
 import frc.robot.lib.Logger;
 import frc.robot.lib.motion.Util;
 import frc.robot.states.ElevatorState;
@@ -81,7 +80,7 @@ public class SuperStructureTelop extends Command {
 		double elbowDelta = Robot.m_oi.getElbowAxis();
 		Rotation2d newElbow = superStructure.mReqState.getWrist().angle.plus(Rotation2dKt.getDegree(elbowDelta * 10));
 		superStructure.getWrist().getMaster().set(ControlMode.Position, newElbow);
-		
+
 		Logger.log("wrist percent output " + superStructure.getWrist().getMaster().getMotorOutputPercent());
 
 	}

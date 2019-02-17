@@ -10,12 +10,9 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import org.junit.jupiter.api.Test;
 
-import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.auto.routines.TwoHatchOneCargoLeft;
 import frc.robot.lib.Logger;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
@@ -23,27 +20,27 @@ import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 public class AutoPathingCSVGenerator {
 
-	@Test
-	public void twoHatchLLtest() {
-		Trajectories.generateAllTrajectories(false);
-		TwoHatchOneCargoLeft routine = new TwoHatchOneCargoLeft('L', 'L');
-		ArrayList<Translation2d> path = new ArrayList<>();
-		for (TimedTrajectory<Pose2dWithCurvature> i : routine.trajects) {
-			path.addAll(trajectToArrayList(i));
-		}
-		ArrayList<SuperStructureState> temp = new ArrayList<>();
-		for (AutoMotion i : routine.motions) {
-			temp.add(i.getSSState());
-		}
+	// @Test
+	// public void twoHatchLLtest() {
+	// 	Trajectories.generateAllTrajectories(false);
+	// 	TwoHatchOneCargoLeft routine = new TwoHatchOneCargoLeft('L', 'L');
+	// 	ArrayList<Translation2d> path = new ArrayList<>();
+	// 	for (TimedTrajectory<Pose2dWithCurvature> i : routine.trajects) {
+	// 		path.addAll(trajectToArrayList(i));
+	// 	}
+	// 	ArrayList<SuperStructureState> temp = new ArrayList<>();
+	// 	for (AutoMotion i : routine.motions) {
+	// 		temp.add(i.getSSState());
+	// 	}
 
-		routine.close();
-		ArrayList<SuperStructureState> iteras = injectStates(temp, routine.trajects);
-		writeToCSV("src/main/python/twoHatchLLtest.csv", path);
-		writeToAngleCSV("src/main/python/twoHatchLLtestSuper.csv", iteras);
+	// 	routine.close();
+	// 	ArrayList<SuperStructureState> iteras = injectStates(temp, routine.trajects);
+	// 	writeToCSV("src/main/python/twoHatchLLtest.csv", path);
+	// 	writeToAngleCSV("src/main/python/twoHatchLLtestSuper.csv", iteras);
 
-		// path = TwoHatchOneCargoLeft('R', 'R');
-		// writeToCSV("twoHatchRRest", path);
-	}
+	// 	// path = TwoHatchOneCargoLeft('R', 'R');
+	// 	// writeToCSV("twoHatchRRest", path);
+	// }
 
 	public ArrayList<SuperStructureState> injectStates(ArrayList<SuperStructureState> wps, ArrayList<TimedTrajectory<Pose2dWithCurvature>> bigPath) {
 		double elevatorInchPerSecond = 12;

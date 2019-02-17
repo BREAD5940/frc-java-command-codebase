@@ -92,7 +92,6 @@ public class RotatingJoint /*extends Subsystem*/ {
 
 	}
 
-
 	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, double iZone, double maxIntegral, double minOut, double maxOut) {
 		getMaster().selectProfileSlot(slot, 0);
 		getMaster().config_kP(0, kp, 30);
