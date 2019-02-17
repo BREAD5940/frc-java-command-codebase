@@ -35,6 +35,8 @@ public class AutoPathingCSVGenerator {
 		for (AutoMotion i : routine.motions) {
 			temp.add(i.getSSState());
 		}
+
+		routine.close();
 		ArrayList<SuperStructureState> iteras = injectStates(temp, routine.trajects);
 		writeToCSV("src/main/python/twoHatchLLtest.csv", path);
 		writeToAngleCSV("src/main/python/twoHatchLLtestSuper.csv", iteras);
@@ -49,8 +51,14 @@ public class AutoPathingCSVGenerator {
 		double wristRadPerSecond = 3.14159;
 		ArrayList<SuperStructureState> toReturn = new ArrayList<SuperStructureState>();
 
+		if (wps.size() != bigPath.size()) {
+			System.out.println("ur bad");
+			return toReturn;
+		}
+
 		toReturn.add(0, new SuperStructureState());
 		for (int i = 0; i < bigPath.size(); i++) {
+			SuperStructureState currentGoal = wps.get(i);
 			for (int j = 0; j < bigPath.get(i).getPoints().size() - 1; j++) {
 				if (j == 0) {
 					toReturn.add(toReturn.get(toReturn.size() - 1));
@@ -62,6 +70,24 @@ public class AutoPathingCSVGenerator {
 					double nextHeight = 0; //FIXME this requires math and ifs to make it move the right distance in the right direction
 					double nextElbow = 0;
 					double nextWrist = 0;
+
+					if (currentGoal.getElevatorHeight().getInch() - prevState.getElevatorHeight().getInch() > 0) {
+						nextHeight = prevState.getElevatorHeight().getInch() + elevatorInchPerSecond / deltaT;
+					} else {
+						nextHeight = prevState.getElevatorHeight().getInch() - elevatorInchPerSecond / deltaT;
+					}
+
+					if (currentGoal.getElbowAngle().getRadian() - prevState.getElbowAngle().getRadian() > 0) {
+						nextElbow = prevState.getElbowAngle().getRadian() + elbowRadPerSecond / deltaT;
+					} else {
+						nextElbow = prevState.getElbowAngle().getRadian() - elbowRadPerSecond / deltaT;
+					}
+
+					if (currentGoal.getWrist().angle.getRadian() - prevState.getWrist().angle.getRadian() > 0) {
+						nextElbow = prevState.getWrist().angle.getRadian() + wristRadPerSecond / deltaT;
+					} else {
+						nextElbow = prevState.getWrist().angle.getRadian() - wristRadPerSecond / deltaT;
+					}
 
 					toReturn.add(new SuperStructureState(new ElevatorState(LengthKt.getInch(nextHeight)),
 							new RotatingArmState(Rotation2dKt.getRadian(nextElbow)),

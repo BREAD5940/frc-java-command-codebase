@@ -70,7 +70,7 @@ public class AutoMotion {
 	 *    the type of goal
 	 */
 
-	public AutoMotion(GoalHeight gHeight, GoalType gType, boolean rev) {
+	public AutoMotion(GoalHeight gHeight, GoalType gType, boolean rev, boolean actuallyGen) {
 		this.gHeight = gHeight;
 		this.gType = gType;
 		this.rev = rev;
@@ -83,12 +83,21 @@ public class AutoMotion {
 			this.piece = HeldPiece.NONE;
 		}
 		this.mSSState = new SuperStructureState(new ElevatorState(getElevatorPreset()), getIA());
-		this.mPrepCommand = new SuperstructureGoToState(this.mSSState);
-		if (this.piece != HeldPiece.NONE) {
-			this.mBigCommandGroup = genPlaceCommands();
+		if (actuallyGen) {
+			this.mPrepCommand = new SuperstructureGoToState(this.mSSState);
+			if (this.piece != HeldPiece.NONE) {
+				this.mBigCommandGroup = genPlaceCommands();
+			} else {
+				this.mBigCommandGroup = genGrabCommands();
+			}
 		} else {
-			this.mBigCommandGroup = genGrabCommands();
+			this.mPrepCommand = new PlaceHatch();
+			this.mBigCommandGroup = new AutoCommandGroup();
 		}
+	}
+
+	public AutoMotion(GoalHeight gHeight, GoalType gType, boolean rev) {
+		this(gHeight, gType, rev, true);
 	}
 
 	public AutoMotion(boolean isNull) {
