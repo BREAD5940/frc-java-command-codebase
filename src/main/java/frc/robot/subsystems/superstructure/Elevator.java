@@ -23,6 +23,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
@@ -41,12 +43,29 @@ import frc.robot.states.SuperStructureState;
  */
 public class Elevator /*extends Subsystem*/ {
 
+	DoubleSolenoid mSolenoid = Robot.elevatorShifterDoubleSolenoid;
+
 	public static enum EncoderMode {
 		NONE, CTRE_MagEncoder_Relative;
 	}
 
 	public static enum ElevatorGear {
 		LOW, HIGH;
+
+		public static Value get(ElevatorGear state) {
+			return (state == LOW) ? Value.kReverse : Value.kForward; // TODO check kforward state
+		}
+	}
+
+	private ElevatorGear elevatorGear;
+	private static final ElevatorGear kDefaultState = ElevatorGear.LOW; // default to nyooooommmmm mode
+
+	public ElevatorGear getHatchMechState() {
+		return (mSolenoid.get() == Value.kReverse) ? ElevatorGear.LOW : ElevatorGear.HIGH; // TODO check kforward state
+	}
+
+	public void setPistonState(ElevatorGear mReq) {
+		mSolenoid.set(ElevatorGear.get(mReq));
 	}
 
 	// TODO check these quick maths, kTopOfInnerStage is used to switch gravity feedforward
@@ -135,6 +154,7 @@ public class Elevator /*extends Subsystem*/ {
 
 	public void setGear(ElevatorGear req) {
 		this.mCurrentGear = req;
+		this.setPistonState(req);
 		if (req == ElevatorGear.LOW) {
 			Robot.setElevatorShifter(true);
 			getMaster().selectProfileSlot(kLowGearPIDSlot, 0);
