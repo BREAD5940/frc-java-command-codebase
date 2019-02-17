@@ -52,6 +52,8 @@ public class SuperStructureTelop extends Command {
 		superStructure.moveSuperstructureElevator(newE);
 
 		superStructure.getWrist().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getWristAxis(), 0.5));
+
+		superStructure.getElbow().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getElbowAxis(), 0.5));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

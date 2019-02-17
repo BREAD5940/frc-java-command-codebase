@@ -123,6 +123,10 @@ public class OI {
 		return secondaryJoystick.getRawAxis(5);
 	}
 
+	public double getElbowAxis() {
+		return secondaryJoystick.getRawAxis(3) - secondaryJoystick.getRawAxis(2); // triggers
+	}
+
 	/**
 	 * Get intake speed is the difference between intake and outtake axis speeds
 	 */
