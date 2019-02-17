@@ -53,8 +53,8 @@ public class RotatingJoint /*extends Subsystem*/ {
 	 * @param motorPort on the CAN Bus (for single talon arms)
 	 * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
 	 */
-	public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor, boolean invert, Length armLength, Mass mass) {
-		this(settings, Arrays.asList(motorPort), sensor, invert, armLength, mass); //FIXME what should the default masterInvert ACTUALLY be?
+	public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor, double reduction, boolean invert, Length armLength, Mass mass) {
+		this(settings, Arrays.asList(motorPort), sensor, reduction, invert, armLength, mass); //FIXME what should the default masterInvert ACTUALLY be?
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 	 * @param ports of talon CAN ports as a List
 	 * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
 	 */
-	public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, boolean masterInvert, Length armLength, Mass armMass) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
+	public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, double reduction, boolean masterInvert, Length armLength, Mass armMass) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
 
 		kArmLength = armLength;
 
@@ -75,7 +75,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 
 		// TODO add support for more sensors
 		// if (sensor == FeedbackDevice.CTRE_MagEncoder_Relative) {
-		unitsPerRotation = NativeUnitKt.getSTU(4096);
+		unitsPerRotation = NativeUnitKt.getSTU(4096).times(reduction);
 		// }
 
 		mRotationModel = new NativeUnitRotationModel(unitsPerRotation);
@@ -91,7 +91,6 @@ public class RotatingJoint /*extends Subsystem*/ {
 		setClosedLoopGains(0, settings);
 
 	}
-
 
 	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, double iZone, double maxIntegral, double minOut, double maxOut) {
 		getMaster().selectProfileSlot(slot, 0);
