@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.lib.motion.Util;
+import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
@@ -33,7 +34,7 @@ public class SuperStructureTelop extends Command {
 	protected void initialize() {}
 
 	boolean firstRun = false;
-	Rotation2d mLastWrist = Rotation2dKt.getDegree(0), mLastElbow = Rotation2dKt.getDegree(0);
+	RoundRotation2d mLastWrist = RoundRotation2d.getDegree(0), mLastElbow = RoundRotation2d.getDegree(0);
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
@@ -69,14 +70,14 @@ public class SuperStructureTelop extends Command {
 			superStructure.getWrist().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getWristAxis(), 0.75));
 			mLastWrist = superStructure.getWrist().getPosition();
 		} else {
-			superStructure.getWrist().getMaster().set(ControlMode.Position, mLastWrist);
+			superStructure.getWrist().getMaster().set(ControlMode.Position, mLastWrist.getDegree());
 		}
 
 		if (Math.abs(mOI.getElbowAxis()) > 0.07) {
 			superStructure.getElbow().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getElbowAxis(), 0.75));
 			mLastElbow = superStructure.getElbow().getPosition();
 		} else {
-			superStructure.getElbow().getMaster().set(ControlMode.Position, mLastElbow);
+			superStructure.getElbow().getMaster().set(ControlMode.Position, mLastElbow.getDegree());
 		}
 
 		// double elbowDelta = Robot.m_oi.getElbowAxis();

@@ -3,6 +3,7 @@ package frc.robot.commands.subsystems.drivetrain;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class ZeroSuperStructure extends Command {
@@ -18,9 +19,9 @@ public class ZeroSuperStructure extends Command {
 		if (p.equals("elevator")) {
 			SuperStructure.getInstance().getElevator().zeroEncoder();
 		} else if (p.equals("elbow")) {
-			SuperStructure.getInstance().getElbow().getMaster().setSensorPosition(Rotation2dKt.getDegree(0));
+			SuperStructure.getInstance().getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(0));
 		} else if (p.equals("wrist")) {
-			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(Rotation2dKt.getDegree(0));
+			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(0));
 		}
 	}
 

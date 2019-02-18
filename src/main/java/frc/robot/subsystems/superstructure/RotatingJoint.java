@@ -22,10 +22,13 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 
 import frc.robot.lib.PIDSettings;
+import frc.robot.lib.obj.CompatVelocity;
+import frc.robot.lib.obj.HalfBakedRotatingSRX;
+import frc.robot.lib.obj.RoundRotation2d;
 
 public class RotatingJoint /*extends Subsystem*/ {
 
-	private ArrayList<FalconSRX<Rotation2d>> motors = new ArrayList<FalconSRX<Rotation2d>>();
+	private ArrayList<HalfBakedRotatingSRX> motors = new ArrayList<HalfBakedRotatingSRX>();
 
 	public Length kArmLength; // distance to COM of the arm
 
@@ -82,12 +85,12 @@ public class RotatingJoint /*extends Subsystem*/ {
 
 		// add all of our talons to the list
 		for (Integer i : ports) {
-			motors.add(new FalconSRX<Rotation2d>(i.intValue(), mRotationModel, TimeUnitsKt.getMillisecond(10)));
+			motors.add(new HalfBakedRotatingSRX(i.intValue(), 4096*reduction));
 		}
 
 		getMaster().configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 		getMaster().configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 0);
-		getMaster().setSensorPosition(Rotation2dKt.getDegree(0));
+		getMaster().setSensorPosition(RoundRotation2d.getDegree(0));
 		setClosedLoopGains(0, settings);
 
 	}
@@ -114,15 +117,15 @@ public class RotatingJoint /*extends Subsystem*/ {
 		setSetpoint(Math.toDegrees(_setpoint.getValue()));
 	}
 
-	public Rotation2d getPosition() {
-		return getMaster().getSensorPosition();
+	public RoundRotation2d getPosition() {
+		return getMaster().getRotation2d();
 	}
 
 	/**
 	 * Set the talon as a target angle and feedforward throttle percent
 	 */
 	public void setPositionArbitraryFeedForward(Rotation2d setpoint, double feedForwardPercent) {
-		getMaster().set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
+		getMaster().set(ControlMode.Position, setpoint.getDegree(), DemandType.ArbitraryFeedForward, feedForwardPercent);
 	}
 
 	/**
@@ -142,7 +145,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 	/**
 	 * Get the master talon of the rotating arm
 	 */
-	public FalconSRX<Rotation2d> getMaster() {
+	public HalfBakedRotatingSRX getMaster() {
 		return motors.get(0);
 	}
 
@@ -150,7 +153,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 	 * Return an ArrayList of all the falconSRXes
 	 * @return motors... all of the motors
 	 */
-	public ArrayList<FalconSRX<Rotation2d>> getAllMotors() {
+	public ArrayList<HalfBakedRotatingSRX> getAllMotors() {
 		return motors;
 	}
 
@@ -158,11 +161,11 @@ public class RotatingJoint /*extends Subsystem*/ {
 	 * Get the Rotation2d of the encoder of the master talon
 	 * @return sensorPosition as a Rotation2d
 	 */
-	public Rotation2d getRotation() {
-		return getMaster().getSensorPosition();
+	public RoundRotation2d getRotation() {
+		return getMaster().getRotation2d();
 	}
 
-	public Velocity<Rotation2d> getAngularVelocity() {
+	public Velocity<RoundRotation2d> getAngularVelocity() {
 		return getMaster().getSensorVelocity();
 	}
 
@@ -170,13 +173,13 @@ public class RotatingJoint /*extends Subsystem*/ {
 	 * Set the position of the sensor to the given Rotation2d pos_
 	 * @param pos_ of the sensor as a Rotation2d
 	 */
-	public void setRotation(Rotation2d pos_) {
+	public void setRotation(RoundRotation2d pos_) {
 		getMaster().setSensorPosition(pos_);
 	}
 
 	public static class RotatingArmState {
 		public Rotation2d angle;
-		public Velocity<Rotation2d> velocity;
+		public CompatVelocity velocity;
 
 		// public double feedForwardVoltage = 0;
 		// public double pidOutput = 0;
@@ -185,10 +188,10 @@ public class RotatingJoint /*extends Subsystem*/ {
 		}
 
 		public RotatingArmState(Rotation2d angle_) {
-			this(angle_, VelocityKt.getVelocity(Rotation2dKt.getDegree(0)));
+			this(angle_, CompatVelocity.getVelocity(RoundRotation2d.getDegree(0)));
 		}
 
-		public RotatingArmState(Rotation2d angle_, Velocity<Rotation2d> velocity_) {
+		public RotatingArmState(Rotation2d angle_, CompatVelocity velocity_) {
 			this.angle = angle_;
 			this.velocity = velocity_;
 			// this.feedForwardVoltage = feedForwardVoltage;
@@ -210,6 +213,6 @@ public class RotatingJoint /*extends Subsystem*/ {
 	}
 
 	public double getDegrees() {
-		return Math.toDegrees(getMaster().getSensorPosition().getValue());
+		return getMaster().getRotation2d().getDegree();
 	}
 }
