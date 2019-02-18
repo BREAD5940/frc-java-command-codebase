@@ -10,7 +10,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
-import frc.robot.lib.Logger;
 import frc.robot.lib.motion.Util;
 import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.superstructure.SuperStructure;
