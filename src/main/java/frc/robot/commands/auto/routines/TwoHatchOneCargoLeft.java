@@ -36,7 +36,7 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 
 		/* Get a trajectory to move to the cargo ship */
 		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargoM" + side); //current trajectory from hashmap in Trajectorie
-		AutoMotion motion = new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH, true, false);
+		AutoMotion motion = new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH, true);
 		trajects.add(traject);
 		motions.add(motion);
 		this.addParallel(motion.getPrepCommand());
