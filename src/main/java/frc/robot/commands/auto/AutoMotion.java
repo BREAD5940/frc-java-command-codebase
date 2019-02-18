@@ -112,8 +112,8 @@ public class AutoMotion {
 	private AutoCommandGroup genGrabCommands() {
 		AutoCommandGroup toReturn = new AutoCommandGroup();
 		if (this.gType == GoalType.RETRIEVE_CARGO) {
-			// Predefined grab command
-			toReturn.addSequential(new GrabCargo());
+			//TODO target cargo
+			toReturn.addSequential(new RunIntake(75,1));
 			this.endPiece = HeldPiece.CARGO;
 		} else if (this.gType == GoalType.RETRIEVE_HATCH) {
 			// Predefined grab command

@@ -11,6 +11,7 @@ public class ZeroSuperStructure extends Command {
 
 	public ZeroSuperStructure(String piece) {
 		this.p = piece;
+		requires(SuperStructure.getInstance());
 	}
 
 	@Override
