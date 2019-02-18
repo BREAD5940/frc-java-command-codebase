@@ -33,8 +33,8 @@ public class OI {
 
 	private Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
 	private Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
-	private Button open_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.LB_BUTTON);
-	private Button close_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.RB_BUTTON);
+	private Button open_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.Y_BUTTON);
+	private Button close_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.A_BUTTON);
 	// Button turnAutoButton = new JoystickButton(secondaryJoystick, xboxmap.Buttons.B_BUTTON);
 	// Button autobutton2 = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 	Button autobutton3 = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
@@ -119,15 +119,15 @@ public class OI {
 	}
 
 	public double getIntakeAxis() {
-		return primaryJoystick.getRawAxis(RobotConfig.controls.intakeAxis);
+		return (secondaryJoystick.getRawButton(xboxmap.Buttons.RB_BUTTON)) ? 1 * 0.7 : 0;
 	}
 
 	public double getOuttakeAxis() {
-		return primaryJoystick.getRawAxis(RobotConfig.controls.outtakeAxis);
+		return (secondaryJoystick.getRawButton(xboxmap.Buttons.LB_BUTTON)) ? 1 * 1 : 0;
 	}
 
 	public double getWristAxis() {
-		return secondaryJoystick.getRawAxis(5) * -1;
+		return secondaryJoystick.getRawAxis(5);
 	}
 
 	public double getElbowAxis() {
