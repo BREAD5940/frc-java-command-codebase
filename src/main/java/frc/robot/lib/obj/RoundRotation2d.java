@@ -39,5 +39,13 @@ public class RoundRotation2d {
 	public double getSin(){
 		return this.sine;
 	}
+
+	public RoundRotation2d plus(RoundRotation2d other){
+		return new RoundRotation2d(this.value+other.value);
+	}
+
+	public RoundRotation2d minus(RoundRotation2d other){
+		return new RoundRotation2d((this.value-other.value));
+	}
 	
 }
