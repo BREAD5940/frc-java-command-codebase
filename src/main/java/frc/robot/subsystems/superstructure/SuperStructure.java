@@ -261,7 +261,7 @@ public class SuperStructure extends Subsystem {
 
 		// getWrist().setPositionArbitraryFeedForward(mReqPath.get(0).getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
 		// getElbow().setPositionArbitraryFeedForward(mReqPath.get(0).getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
-		getElevator().setPositionArbitraryFeedForward(mReqPath.get(0).getElevator().height, elevatorPercentVbusGravity / 12d);
+		getElevator().setPositionArbitraryFeedForward(currentSetHeight, elevatorPercentVbusGravity / 12d);
 		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
 
 		SmartDashboard.putNumber("elevator height in inches", mCurrentState.elevator.getHeight().getInch());
