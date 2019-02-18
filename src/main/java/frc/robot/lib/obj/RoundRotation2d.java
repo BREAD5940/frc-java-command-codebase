@@ -43,6 +43,13 @@ public class RoundRotation2d {
 	public static RoundRotation2d fromRotations(double rotations) {
 		return new RoundRotation2d(rotations * 360d);
 	} 
+	public RoundRotation2d plus(RoundRotation2d other){
+		return new RoundRotation2d(this.value+other.value);
+	}
+
+	public RoundRotation2d minus(RoundRotation2d other){
+		return new RoundRotation2d((this.value-other.value));
+	}
 	
 	public double getRotations() {
 		return getDegree() / 360d;
