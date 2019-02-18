@@ -6,7 +6,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.auto.MultiPathTest;
+import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.auto.AutoMotion.GoalHeight;
+import frc.robot.commands.auto.AutoMotion.GoalType;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
@@ -67,7 +70,7 @@ public class OI {
 				new SuperStructureState(new ElevatorState(RobotConfig.auto.fieldPositions.hatchLowGoal),
 						new IntakeAngle(new RotatingArmState(), new RotatingArmState()))));
 
-		testAutoButton.whenPressed(new MultiPathTest());
+		testAutoButton.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW));
 		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
 		yeetInACircleButton.whenPressed(new TurnInPlace(Rotation2dKt.getDegree(180), false));
 
