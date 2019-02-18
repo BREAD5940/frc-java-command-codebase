@@ -1,7 +1,6 @@
 package frc.robot.states;
 
 import org.ghrobotics.lib.mathematics.units.Length;
-import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.lib.Loggable;

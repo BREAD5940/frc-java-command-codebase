@@ -339,10 +339,10 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 	public void arcadeDrive(double linearPercent, double rotationPercent, boolean squareInputs) {
 		linearPercent = Util.limit(linearPercent, 1);
-		linearPercent = Util.deadband(linearPercent, 0.05);
+		linearPercent = Util.deadband(linearPercent, 0.02);
 
 		rotationPercent = Util.limit(rotationPercent, 1);
-		rotationPercent = Util.deadband(rotationPercent, 0.05);
+		rotationPercent = Util.deadband(rotationPercent, 0.02);
 
 		// Square the inputs (while preserving the sign) to increase fine control
 		// while permitting full power.
@@ -379,6 +379,14 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		// rotationPercent);
 		// Logger.log("left motor output " + leftMotorOutput + " right motor output " +
 		// rightMotorOutput);
+
+		// ChassisState mTarget = new ChassisState(linearPercent * 6, -1 * rotationPercent * 6);
+
+		// WheelState mCalced = getDifferentialDrive().solveInverseKinematics(mTarget);
+
+		// mCalced.getLeft()
+
+		// tankDrive(mCalced.getLeft() / 12, mCalced.getRight() / 12);
 		tankDrive(leftMotorOutput, rightMotorOutput);
 		// tankDrive(0.2, 0.2);
 	}

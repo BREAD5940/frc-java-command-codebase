@@ -5,7 +5,6 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.actions.DriveDistance;
-import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.states.ElevatorState;
@@ -29,7 +28,7 @@ public class PickUpHatch extends CommandGroup {
 		// grabs the hatch by opening the clamp
 		addSequential(new SetHatchMech(HatchMechState.kClamped));
 		// lifts the hatch out of the brushes
-		addSequential(new SuperstructureGoToState(new SuperStructureState(new ElevatorState((LengthKt.getInch(RobotConfig.auto.fieldPositions.hatchLowGoal.getInch()+5))), SuperStructure.getInstance().getCurrentState().getElbow(), SuperStructure.getInstance().getCurrentState().getWrist()))); //cs hatch is same as loading station
+		addSequential(new SuperstructureGoToState(new SuperStructureState(new ElevatorState((LengthKt.getInch(RobotConfig.auto.fieldPositions.hatchLowGoal.getInch() + 5))), SuperStructure.getInstance().getCurrentState().getElbow(), SuperStructure.getInstance().getCurrentState().getWrist()))); //cs hatch is same as loading station
 		// moves the robot back slightly
 		addSequential(new DriveDistance(-1, 20)); // FIXME check values
 		//robot returns to operator control

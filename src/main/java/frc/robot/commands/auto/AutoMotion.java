@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.actions.DriveDistance;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
-import frc.robot.commands.auto.groups.GrabCargo;
 import frc.robot.commands.auto.groups.PickUpHatch;
 import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
@@ -113,7 +112,7 @@ public class AutoMotion {
 		AutoCommandGroup toReturn = new AutoCommandGroup();
 		if (this.gType == GoalType.RETRIEVE_CARGO) {
 			//TODO target cargo
-			toReturn.addSequential(new RunIntake(75,1));
+			toReturn.addSequential(new RunIntake(75, 1));
 			this.endPiece = HeldPiece.CARGO;
 		} else if (this.gType == GoalType.RETRIEVE_HATCH) {
 			// Predefined grab command

@@ -58,7 +58,7 @@ public class Robot extends TimedRobot {
 
 	// Various pneumatic shifting methods
 	public static void drivetrain_shift_high() {
-		shifterDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
+		getShifterSolenoid().set(DoubleSolenoid.Value.kForward);
 	}
 
 	public static DoubleSolenoid getShifterSolenoid() {
@@ -122,6 +122,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+		if (drivetrain == null)
+			drivetrain = DriveTrain.getInstance();
 		// FIXME Jocelyn this might mess with auto stuff, will it? (I think no?)
 		drivetrain.getLocalization().reset(new Pose2d(LengthKt.getFeet(5.5), LengthKt.getFeet(17), new Rotation2d(0f, 0f, false)));
 

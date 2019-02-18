@@ -7,13 +7,13 @@ public class RoundRotation2d {
 	protected double cosine;
 	protected double sine;
 
-	public RoundRotation2d(RoundRotation2d n){
+	public RoundRotation2d(RoundRotation2d n) {
 		this.value = n.value;
 		this.cosine = Math.cos(this.getRadian());
 		this.sine = Math.sin(this.getRadian());
 	}
 
-	private RoundRotation2d(double deg){
+	private RoundRotation2d(double deg) {
 		this.value = deg;
 	}
 
@@ -25,45 +25,46 @@ public class RoundRotation2d {
 		return new RoundRotation2d(meme_.getDegree());
 	}
 
-	public static RoundRotation2d getDegree(double reciever){
+	public static RoundRotation2d getDegree(double reciever) {
 		return new RoundRotation2d(reciever);
 	}
 
-	public static RoundRotation2d getRadian(double reciever){
-		return new RoundRotation2d(reciever*(180/Math.PI));
+	public static RoundRotation2d getRadian(double reciever) {
+		return new RoundRotation2d(reciever * (180 / Math.PI));
 	}
 
 	public RoundRotation2d times(double factor) {
 		return new RoundRotation2d(this.value * factor);
 	}
 
-	public double getDegree(){
+	public double getDegree() {
 		return this.value;
 	}
 
-	public double getRadian(){
-		return this.value*(Math.PI/180);
+	public double getRadian() {
+		return this.value * (Math.PI / 180);
 	}
 
-	public double getCos(){
+	public double getCos() {
 		return this.cosine;
 	}
 
-	public double getSin(){
+	public double getSin() {
 		return this.sine;
 	}
 
 	public static RoundRotation2d fromRotations(double rotations) {
 		return new RoundRotation2d(rotations * 360d);
-	} 
-	public RoundRotation2d plus(RoundRotation2d other){
-		return new RoundRotation2d(this.value+other.value);
 	}
 
-	public RoundRotation2d minus(RoundRotation2d other){
-		return new RoundRotation2d((this.value-other.value));
+	public RoundRotation2d plus(RoundRotation2d other) {
+		return new RoundRotation2d(this.value + other.value);
 	}
-	
+
+	public RoundRotation2d minus(RoundRotation2d other) {
+		return new RoundRotation2d((this.value - other.value));
+	}
+
 	public double getRotations() {
 		return getDegree() / 360d;
 	}
