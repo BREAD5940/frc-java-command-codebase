@@ -1,7 +1,5 @@
 package frc.robot.commands.subsystems.drivetrain;
 
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -12,6 +10,10 @@ public class ZeroSuperStructure extends Command {
 	public ZeroSuperStructure(String piece) {
 		this.p = piece;
 		requires(SuperStructure.getInstance());
+		setInterruptible(false);
+		SuperStructure struc = SuperStructure.getInstance();
+		Command comm = struc.getCurrentCommand();
+		if (comm != null) comm.cancel();
 	}
 
 	@Override
