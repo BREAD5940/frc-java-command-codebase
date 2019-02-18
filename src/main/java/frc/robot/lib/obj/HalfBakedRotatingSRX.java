@@ -2,24 +2,30 @@ package frc.robot.lib.obj;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
 
 public class HalfBakedRotatingSRX extends WPI_TalonSRX {
 
-  NativeUnitRotationModel mModel;
+  double mModel;
 
-  public HalfBakedRotatingSRX(int deviceNumber, NativeUnitRotationModel mModel_) {
+  public HalfBakedRotatingSRX(int deviceNumber, double unitsPerRotation) {
     super(deviceNumber);
-    this.mModel = mModel_;
+    this.mModel = unitsPerRotation;
   }
 
-  public Rotation2d getRotation2d() {
+  public RoundRotation2d getRotation2d() {
     NativeUnit rawPos = NativeUnitKt.getNativeUnits(super.getSelectedSensorPosition());
-    return mModel.fromNativeUnitPosition(rawPos);
+
+    // first divide by count to get rotations
+    double rotations = rawPos.div(mModel).getValue();
+
+    // now construct a rotation2d from rotations
+    return RoundRotation2d.fromRotations(rotations);
   }
 
+  public void setSensorPosition(RoundRotation2d pos_) {
+    int ticks = (int) Math.round(pos_.getRotations() * mModel);
+    super.setSelectedSensorPosition(ticks);
+  }
 }
