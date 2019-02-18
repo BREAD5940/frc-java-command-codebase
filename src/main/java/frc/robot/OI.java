@@ -5,11 +5,10 @@ import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.auto.MultiPathTest;
-import frc.robot.commands.auto.RunAuto;
-import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
+import frc.robot.commands.auto.RunAuto;
+import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
@@ -51,7 +50,7 @@ public class OI {
 	Button testAutoButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
 	Button auto_grab_hatch_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
 	Button auto_grab_cargo_button = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
-	Button test2button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.Y_BUTTON);
+	Button test2button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 
 	// File file = new File("/home/lvuser/deploy/paths/test.pf1.csv");
 	// Trajectory trajectory = Pathfinder.readFromCSV(file);
@@ -68,7 +67,7 @@ public class OI {
 
 		test2button.whenPressed(new SuperstructureGoToState(
 				new SuperStructureState(new ElevatorState(RobotConfig.auto.fieldPositions.hatchLowGoal),
-						new IntakeAngle(new RotatingArmState(), new RotatingArmState()))));
+						new IntakeAngle(new RotatingArmState(), new RotatingArmState(Rotation2dKt.getDegree(90)))), 5));
 
 		testAutoButton.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW));
 		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
@@ -111,6 +110,10 @@ public class OI {
 		// open_clamp_button.whenPressed(new OpenClamp());
 		// close_clamp_button.whenPressed(new CloseClamp());
 		// open_clamp_button.whenPressed(new PurePursuit());
+	}
+
+	public Joystick getPrimary() {
+		return primaryJoystick;
 	}
 
 	public double getForwardAxis() {
