@@ -27,11 +27,17 @@ public class SuperstructurePlanner {
 	public SuperstructurePlanner() {}
 	//TODO get actual irl angles amd heights
 
-	static final Length bottom = LengthKt.getInch(RobotConfig.elevator.elevator_minimum_height.getInch() + 0.5);
-	static final Length top = RobotConfig.elevator.elevator_maximum_height;
-	static final Length crossbar = LengthKt.getInch(35); //FIXME verify
+	public static final Length bottom = LengthKt.getInch(RobotConfig.elevator.elevator_minimum_height.getInch() + 0.5);
+	public static final Length top = RobotConfig.elevator.elevator_maximum_height;
+	static final Length crossbarBottom = LengthKt.getInch(35); //FIXME verify
+	static final Length crossbarWidth = LengthKt.getInch(4); //FIXME verify
 	static final Length carriageToIntake = LengthKt.getInch(12); //FIXME verify
-	static final Length intakeDiameter = LengthKt.getInch(6);
+	static final Length intakeDiameter = LengthKt.getInch(19);
+
+	public static final RoundRotation2d overallMaxElbow = RoundRotation2d.getDegree(30); //FIXME actual numbers might be nice
+	public static final RoundRotation2d overallMinElbow = RoundRotation2d.getDegree(-190); //FIXME ^^
+	public static final RoundRotation2d overallMaxWrist = RoundRotation2d.getDegree(180); //FIXME ^^
+	public static final RoundRotation2d overallMinWrist = RoundRotation2d.getDegree(-180); //FIXME ^^
 
 	static final Rotation2d minAboveAngle = Rotation2dKt.getDegree(55); //FIXME verify
 	static final Rotation2d maxAboveAngle = Rotation2dKt.getDegree(125);//FIXME verify
@@ -84,6 +90,27 @@ public class SuperstructurePlanner {
 			errorCount++;
 			corrCount++;
 			goalState.getElevator().setHeight(bottom);
+		}
+
+		if(goalState.getElbowAngle().getDegree()>overallMaxElbow.getDegree()){
+			System.out.println("MOTION IMPOSSIBLE -- Elbow passes hardstop. Setting to maximum.");
+			errorCount++; corrCount++;
+			goalState.getElbow().setAngle(overallMaxElbow);
+		} else if (goalState.getElbowAngle().getDegree()<overallMinElbow.getDegree()){
+			System.out.println("MOTION IMPOSSIBLE -- Elbow passes hardstop. Setting to minimum.");
+			errorCount++; corrCount++;
+			goalState.getElbow().setAngle(overallMinElbow);
+		}
+
+
+		if(goalState.getWrist().angle.getDegree()>overallMaxWrist.getDegree()){
+			System.out.println("MOTION IMPOSSIBLE -- Wrist passes hardstop. Setting to maximum.");
+			errorCount++; corrCount++;
+			goalState.getWrist().setAngle(overallMaxWrist);
+		}else if(goalState.getWrist().angle.getDegree()<overallMinWrist.getDegree()){
+			System.out.println("MOTION IMPOSSIBLE -- Wrist passes hardstop. Setting to minimum.");
+			errorCount++; corrCount++;
+			goalState.getWrist().setAngle(overallMinWrist);
 		}
 
 		//heights
@@ -147,10 +174,10 @@ public class SuperstructurePlanner {
 			}
 		}
 
-		//checks if intake will hit crossbar
-		if ((throughAbove && gHeight.getFeet() > crossbar.getFeet() - disInside.getFeet() && gHeight.getFeet() < crossbar.getFeet())
-				|| throughBelow && gHeight.getFeet() > crossbar.getFeet() && gHeight.getFeet() < crossbar.getFeet() + disInside.getFeet()) {
-			System.out.println("MOTION UNSAFE -- Intake will hit crossbar. Setting to default intake position for movement.");
+		//checks if intake will hit crossbarBottom
+		if ((throughAbove && gHeight.getFeet() > crossbarBottom.getFeet() - disInside.getFeet() && gHeight.getFeet() < crossbarBottom.getFeet())
+				|| throughBelow && gHeight.getFeet() > crossbarBottom.getFeet() && gHeight.getFeet() < crossbarBottom.getFeet() + disInside.getFeet()) {
+			System.out.println("MOTION UNSAFE -- Intake will hit crossbarBottom. Setting to default intake position for movement.");
 			errorCount++;
 			toReturn.add(new SuperStructureState(currentState.elevator, iPosition.CARGO_GRAB, currentState.getHeldPiece()));
 		}

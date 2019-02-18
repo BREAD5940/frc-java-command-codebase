@@ -183,6 +183,11 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Zero elevator height:", new ZeroSuperStructure("elevator"));
 		SmartDashboard.putData("Zero elbow angle:", new ZeroSuperStructure("elbow"));
 		SmartDashboard.putData("Zero wrist angle:", new ZeroSuperStructure("wrist"));
+		SmartDashboard.putData("Max elevator height:", new ZeroSuperStructure("maxElevator"));
+		SmartDashboard.putData("Max wrist angle:", new ZeroSuperStructure("maxWrist"));
+		SmartDashboard.putData("Min wrist angle:", new ZeroSuperStructure("minWrist"));
+		SmartDashboard.putData("Max elbow angle:", new ZeroSuperStructure("maxElbow"));
+		SmartDashboard.putData("Min elbow angle:", new ZeroSuperStructure("minElbow"));
 		drivetrain.zeroEncoders();
 		System.out.println("Robot init'ed and encoders zeroed!");
 
