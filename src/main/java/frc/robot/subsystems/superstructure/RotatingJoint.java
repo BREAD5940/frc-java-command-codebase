@@ -4,20 +4,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.SensorTerm;
-
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.SensorTerm;
 
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.obj.AngularVelocity;
@@ -85,6 +84,11 @@ public class RotatingJoint /*extends Subsystem*/ {
 		// add all of our talons to the list
 		for (Integer i : ports) {
 			motors.add(new HalfBakedRotatingSRX(i.intValue(), mTicksPerRotation));
+		}
+
+		if (ports.size() > 1) {
+			motors.get(1).set(ControlMode.Follower, ports.get(0));
+			motors.get(1).setInverted(InvertType.OpposeMaster);
 		}
 
 		getMaster().configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
