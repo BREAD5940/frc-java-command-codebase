@@ -1,12 +1,12 @@
 package frc.robot.commands.auto;
 
 import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.actions.DriveDistance;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
-import frc.robot.commands.auto.groups.PickUpHatch;
 import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
@@ -98,7 +98,8 @@ public class AutoMotion {
 			//grab
 			toReturn.addSequential(new SetHatchMech(HatchMechState.kClamped));
 			//pull the hatch out of the brushes
-			toReturn.addSequential(new DriveDistance(0.5));
+			toReturn.addSequential(new SuperstructureGoToState(new ElevatorState(getElevatorPreset().plus(LengthKt.getInch(6))))); // lift from brushes
+			toReturn.addSequential(new DriveDistance(0.5)); // back up
 			this.endPiece = HeldPiece.HATCH;
 		}
 		return toReturn;
