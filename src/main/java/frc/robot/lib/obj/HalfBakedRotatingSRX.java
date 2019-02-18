@@ -1,7 +1,9 @@
 package frc.robot.lib.obj;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
@@ -9,7 +11,7 @@ import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 
 public class HalfBakedRotatingSRX extends WPI_TalonSRX {
 
-  double mModel;
+  double mModel; // ticks per rotation
 
   public HalfBakedRotatingSRX(int deviceNumber, double unitsPerRotation) {
     super(deviceNumber);
@@ -35,6 +37,25 @@ public class HalfBakedRotatingSRX extends WPI_TalonSRX {
     int raw_ = super.getSelectedSensorVelocity();
     double rotPerSec = raw_ / mModel * 10;
     return new AngularVelocity(RoundRotation2d.fromRotations(rotPerSec), TimeUnitsKt.getSecond(0.1));
+  }
+
+  public int getTicks(RoundRotation2d pos) {
+    double rotation = pos.getRotations();
+    int ticks = (int) (rotation * mModel);
+    return ticks;
+  }
+
+  public int getTicks(Rotation2d pos) {
+    return getTicks(RoundRotation2d.fromRotation2d(pos));
+  }
+
+  public RoundRotation2d getRotationsFromRaw(int rawPos) {
+    double rotations = rawPos/mModel;
+    return RoundRotation2d.fromRotations(rotations);
+  }
+
+  public void set(ControlMode mode, RoundRotation2d setpoint) {
+    super.set(mode, getTicks(setpoint));
   }
 
   // public CompatVelocity<RoundRotation2d> getSensorVelocity(){

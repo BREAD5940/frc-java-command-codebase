@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
+import frc.robot.lib.Logger;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
@@ -65,19 +66,19 @@ public class SuperStructureTelop extends Command {
 
 		// move the whole darn thing
 		// superStructure.moveSuperstructureCombo(newReqE, superStructure .getCurrentState().getElbow(), newReqW);
-
+		Logger.log("last wrist" + mLastWrist.getDegree() + " | current pos: " + superStructure.getWrist().getDegrees());
 		if (Math.abs(mOI.getWristAxis()) > 0.07) {
 			superStructure.getWrist().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getWristAxis(), 0.75));
 			mLastWrist = superStructure.getWrist().getPosition();
 		} else {
-			superStructure.getWrist().getMaster().set(ControlMode.Position, mLastWrist.getDegree());
+			superStructure.getWrist().getMaster().set(ControlMode.Position, mLastWrist);
 		}
 
 		if (Math.abs(mOI.getElbowAxis()) > 0.07) {
 			superStructure.getElbow().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getElbowAxis(), 0.75));
 			mLastElbow = superStructure.getElbow().getPosition();
 		} else {
-			superStructure.getElbow().getMaster().set(ControlMode.Position, mLastElbow.getDegree());
+			superStructure.getElbow().getMaster().set(ControlMode.Position, mLastElbow);
 		}
 
 		// double elbowDelta = Robot.m_oi.getElbowAxis();

@@ -40,7 +40,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 
 	// private PIDSettings pidSettings;
 
-	private NativeUnitRotationModel mRotationModel;
+	private double mTicksPerRotation;
 
 	// public RotatingJoint(PIDSettings settings, int motorPort) {
 	//   this(settings, motorPort, null, 0);
@@ -76,14 +76,15 @@ public class RotatingJoint /*extends Subsystem*/ {
 
 		// TODO add support for more sensors
 		// if (sensor == FeedbackDevice.CTRE_MagEncoder_Relative) {
-		unitsPerRotation = NativeUnitKt.getSTU(4096).times(reduction);
+		// unitsPerRotation = NativeUnitKt.getSTU(4096).times(reduction);
 		// }
+		mTicksPerRotation = 4096 * reduction;
 
-		mRotationModel = new NativeUnitRotationModel(unitsPerRotation);
+		// mRotationModel = new NativeUnitRotationModel(unitsPerRotation);
 
 		// add all of our talons to the list
 		for (Integer i : ports) {
-			motors.add(new HalfBakedRotatingSRX(i.intValue(), 4096*reduction));
+			motors.add(new HalfBakedRotatingSRX(i.intValue(), mTicksPerRotation));
 		}
 
 		getMaster().configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
@@ -99,7 +100,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 		getMaster().config_kI(0, ki, 30);
 		getMaster().config_kD(0, kd, 30);
 		getMaster().config_kF(0, kf, 30);
-		getMaster().config_IntegralZone(0, (int) Math.round(mRotationModel.toNativeUnitPosition(Rotation2dKt.getDegree(iZone)).getValue()), 0);
+		getMaster().config_IntegralZone(0, (int) Math.round(getMaster().getTicks(Rotation2dKt.getDegree(iZone))), 0);
 		getMaster().configMaxIntegralAccumulator(0, maxIntegral, 0);
 		getMaster().configPeakOutputForward(maxOut);
 		getMaster().configPeakOutputReverse(minOut);

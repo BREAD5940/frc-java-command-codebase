@@ -99,7 +99,10 @@ public class SuperStructure extends Subsystem {
 
 		mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33,
 				false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+
+	
 	}
+
 
 	private SuperStructureState mCurrentState = new SuperStructureState();
 
@@ -269,6 +272,8 @@ public class SuperStructure extends Subsystem {
 		SmartDashboard.putNumber("elevator output", getElevator().getMaster().getMotorOutputPercent());
 
 		SmartDashboard.putNumber("Wrist position", getWrist().getPosition().getDegree());
+		SmartDashboard.putNumber("Elbow position", getElbow().getPosition().getDegree());
+
 	}
 
 	/**
