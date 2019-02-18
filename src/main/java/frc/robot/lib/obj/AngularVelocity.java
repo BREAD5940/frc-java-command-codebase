@@ -17,4 +17,8 @@ public class AngularVelocity {
 	public AngularVelocity(RoundRotation2d rot, Time t) {
 		this(rot.times(t.getSecond()));
 	}
+
+	public double getValue() {
+		return rotPerSec.getDegree(); // FIXME I'm pretty sure this doesn't do what I think it does
+	}
 }

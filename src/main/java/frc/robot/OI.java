@@ -67,7 +67,8 @@ public class OI {
 
 		test2button.whenPressed(new SuperstructureGoToState(
 				new SuperStructureState(new ElevatorState(RobotConfig.auto.fieldPositions.hatchLowGoal),
-						new IntakeAngle(new RotatingArmState(), new RotatingArmState(Rotation2dKt.getDegree(90)))), 5));
+						new IntakeAngle(new RotatingArmState(), new RotatingArmState(Rotation2dKt.getDegree(90)))),
+				5));
 
 		testAutoButton.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW));
 		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));

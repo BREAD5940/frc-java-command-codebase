@@ -127,7 +127,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 	/**
 	 * Set the talon as a target angle and feedforward throttle percent
 	 */
-	public void setPositionArbitraryFeedForward(Rotation2d setpoint, double feedForwardPercent) {
+	public void setPositionArbitraryFeedForward(RoundRotation2d setpoint, double feedForwardPercent) {
 		getMaster().set(ControlMode.Position, setpoint.getDegree(), DemandType.ArbitraryFeedForward, feedForwardPercent);
 	}
 

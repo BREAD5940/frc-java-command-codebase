@@ -1,8 +1,8 @@
 package frc.robot.commands.subsystems.superstructure;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.states.ElevatorState;
+import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
@@ -14,6 +14,14 @@ public class SuperstructureGoToState extends Command {
 		requires(SuperStructure.getInstance());
 		mRequState = requState;
 		setTimeout(kDefaultTimeout);
+	}
+
+	public SuperstructureGoToState(ElevatorState eState) {
+		this(new SuperStructureState(eState, SuperStructure.getInstance().updateState().getAngle()));
+	}
+
+	public SuperstructureGoToState(IntakeAngle aState) {
+		this(new SuperStructureState(SuperStructure.getInstance().updateState().getElevator(), aState));
 	}
 
 	public SuperstructureGoToState(SuperStructureState requState, double timeout) {
@@ -31,11 +39,26 @@ public class SuperstructureGoToState extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+
+		//former superstructure periodic
+		SuperStructure.getInstance().updateState();
+		double mCurrentWristTorque = Math.abs(SuperStructure.getInstance().calculateWristTorque(SuperStructure.getInstance().updateState())); // torque due to gravity and elevator acceleration, newton meters
+		double mCurrentElbowTorque = Math.abs(SuperStructure.getInstance().calculateElbowTorques(SuperStructure.getInstance().updateState(), mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
+
+		double wristVoltageGravity = SuperStructure.getInstance().getWTransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getWrist().velocity.getValue(), mCurrentWristTorque);
+		double elbowVoltageGravity = SuperStructure.getInstance().getETransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getElbow().velocity.getValue(), mCurrentElbowTorque);
+		double elevatorPercentVbusGravity = SuperStructure.getInstance().getElevator().getVoltage(SuperStructure.getInstance().updateState()) / 12;//getElevator().getMaster().getBusVoltage();		
+
 		// if (Math.abs(mOI.getWristAxis()) > 0.07) {
-			SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mRequState.getWrist().angle);
+		// SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mRequState.getWrist().angle);
 
-			SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
+		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
+		SuperStructureState stateSetpoint = SuperStructure.getInstance().plan(mRequState);
 
+		SuperStructure.getInstance().getWrist().setPositionArbitraryFeedForward(stateSetpoint.getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
+		SuperStructure.getInstance().getElbow().setPositionArbitraryFeedForward(stateSetpoint.getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
+		SuperStructure.getInstance().getElevator().setPositionArbitraryFeedForward(stateSetpoint.getElevator().height, elevatorPercentVbusGravity / 12d);
+		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

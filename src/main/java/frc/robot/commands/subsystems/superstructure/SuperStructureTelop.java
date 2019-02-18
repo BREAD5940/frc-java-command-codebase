@@ -38,7 +38,6 @@ public class SuperStructureTelop extends Command {
 
 	boolean firstRun = false;
 
-
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {

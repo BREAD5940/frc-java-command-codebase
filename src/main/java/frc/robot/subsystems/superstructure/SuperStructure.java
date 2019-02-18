@@ -214,6 +214,14 @@ public class SuperStructure extends Subsystem {
 		return mElbow;
 	}
 
+	public DCMotorTransmission getWTransmission() {
+		return kWristTransmission;
+	}
+
+	public DCMotorTransmission getETransmission() {
+		return kElbowTransmission;
+	}
+
 	public Elevator getElevator() {
 		if (elevator == null)
 			elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
@@ -240,6 +248,22 @@ public class SuperStructure extends Subsystem {
 		// TODO velocity planning? or just let talon PID figure itself out
 		// How about maybe motion magic?
 
+		// getWrist().setPositionArbitraryFeedForward(mReqPath.get(0).getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
+		// getElbow().setPositionArbitraryFeedForward(mReqPath.get(0).getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
+		getElevator().setPositionArbitraryFeedForward(mReqPath.get(0).getElevator().height, elevatorPercentVbusGravity / 12d);
+		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
+
+		SmartDashboard.putNumber("elevator height in inches", mCurrentState.elevator.getHeight().getInch());
+		SmartDashboard.putNumber("target elevator height", mReqPath.get(0).getElevator().height.getInch());
+		SmartDashboard.putNumber("elevator output", getElevator().getMaster().getMotorOutputPercent());
+
+		SmartDashboard.putNumber("Wrist position", getWrist().getPosition().getDegree());
+		SmartDashboard.putNumber("Elbow position", getElbow().getPosition().getDegree());
+
+	}
+
+	public SuperStructureState plan(SuperStructureState mReqState) {
+
 		mReqPath = planner.plan(mReqState, mCurrentState);
 
 		Length reqSetHeight = mReqPath.get(0).getElevatorHeight();
@@ -260,18 +284,7 @@ public class SuperStructure extends Subsystem {
 		lastLastSH = lastSH;
 		lastSH = currentSetHeight;
 
-		// getWrist().setPositionArbitraryFeedForward(mReqPath.get(0).getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
-		// getElbow().setPositionArbitraryFeedForward(mReqPath.get(0).getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
-		getElevator().setPositionArbitraryFeedForward(mReqPath.get(0).getElevator().height, elevatorPercentVbusGravity / 12d);
-		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
-
-		SmartDashboard.putNumber("elevator height in inches", mCurrentState.elevator.getHeight().getInch());
-		SmartDashboard.putNumber("target elevator height", mReqPath.get(0).getElevator().height.getInch());
-		SmartDashboard.putNumber("elevator output", getElevator().getMaster().getMotorOutputPercent());
-
-		SmartDashboard.putNumber("Wrist position", getWrist().getPosition().getDegree());
-		SmartDashboard.putNumber("Elbow position", getElbow().getPosition().getDegree());
-
+		return new SuperStructureState(new ElevatorState(currentSetHeight), mReqPath.get(0).getAngle());
 	}
 
 	/**

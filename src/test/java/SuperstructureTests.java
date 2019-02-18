@@ -4,9 +4,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.junit.jupiter.api.Test;
 
+import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.planners.*;
 
 public class SuperstructureTests {
@@ -153,7 +153,7 @@ public class SuperstructureTests {
 
 	@Test
 	public void rotation2dTest() {
-		assertEquals(360, Rotation2dKt.getDegree(360).getDegree(), 0.1);
+		assertEquals(360, RoundRotation2d.getDegree(360).getDegree(), 0.1);
 	}
 
 }
