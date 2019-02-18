@@ -1,92 +1,43 @@
 package frc.robot.lib.obj;
 
-import org.ghrobotics.lib.mathematics.units.Rotation2d;
-import org.ghrobotics.lib.mathematics.units.SIUnit;
-import org.ghrobotics.lib.mathematics.units.Time;
-import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 
-import kotlin.ranges.ClosedRange;
+public class RoundRotation2d {
+	protected double value;
+	protected double cosine;
+	protected double sine;
 
-public class RoundRotation2d implements SIUnit<Rotation2d> {
-
-	@Override
-	public int compareTo(Rotation2d arg0) {
-		return 0;
+	public RoundRotation2d(RoundRotation2d n){
+		this.value = n.value;
+		this.cosine = Math.cos(this.getRadian());
+		this.sine = Math.sin(this.getRadian());
 	}
 
-	@Override
-	public Rotation2d createNew(double arg0) {
-		return null;
+	private RoundRotation2d(double deg){
+		this.value = deg;
 	}
 
-	@Override
-	public double div(Rotation2d arg0) {
-		return 0;
+	public static RoundRotation2d getDegree(double reciever){
+		return new RoundRotation2d(reciever);
 	}
 
-	@Override
-	public Rotation2d div(Number arg0) {
-		return null;
+	public static RoundRotation2d getRadian(double reciever){
+		return new RoundRotation2d(reciever*(180/Math.PI));
 	}
 
-	@Override
-	public boolean epsilonEquals(Rotation2d arg0) {
-		return false;
+	public double getDegree(){
+		return this.value;
 	}
 
-	@Override
-	public Rotation2d getAbsoluteValue() {
-		return null;
+	public double getRadian(){
+		return this.value*(Math.PI/180);
 	}
 
-	@Override
-	public Rotation2d lerp(Rotation2d arg0, double arg1) {
-		return null;
+	public double getCos(){
+		return this.cosine;
 	}
 
-	@Override
-	public Rotation2d minus(Rotation2d arg0) {
-		return null;
+	public double getSin(){
+		return this.sine;
 	}
-
-	@Override
-	public Rotation2d plus(Rotation2d arg0) {
-		return null;
-	}
-
-	@Override
-	public double rem(Rotation2d arg0) {
-		return 0;
-	}
-
-	@Override
-	public Rotation2d rem(Number arg0) {
-		return null;
-	}
-
-	@Override
-	public ClosedRange<Rotation2d> safeRangeTo(Rotation2d arg0) {
-		return null;
-	}
-
-	@Override
-	public Rotation2d times(Number arg0) {
-		return null;
-	}
-
-	@Override
-	public Rotation2d unaryMinus() {
-		return null;
-	}
-
-	@Override
-	public Velocity<Rotation2d> div(Time arg0) {
-		return null;
-	}
-
-	@Override
-	public double getValue() {
-		return 0;
-	}
-
+	
 }
