@@ -98,7 +98,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 		getMaster().config_kI(0, ki, 30);
 		getMaster().config_kD(0, kd, 30);
 		getMaster().config_kF(0, kf, 30);
-		getMaster().config_IntegralZone(0, (int) Math.round(mRotationModel.fromModel(Rotation2dKt.getDegree(iZone)).getValue()), 0);
+		getMaster().config_IntegralZone(0, (int) Math.round(mRotationModel.toNativeUnitPosition(Rotation2dKt.getDegree(iZone)).getValue()), 0);
 		getMaster().configMaxIntegralAccumulator(0, maxIntegral, 0);
 		getMaster().configPeakOutputForward(maxOut);
 		getMaster().configPeakOutputReverse(minOut);

@@ -179,7 +179,7 @@ public class Elevator /*extends Subsystem*/ {
 
 	public Length getClosedLoopError() {
 		if (getMaster().getControlMode() != ControlMode.PercentOutput) {
-			return lengthModel.toModel(NativeUnitKt.getSTU(mMaster.getClosedLoopError()));
+			return lengthModel.fromNativeUnitPosition(NativeUnitKt.getNativeUnits(mMaster.getClosedLoopError()));
 		} else {
 			return LengthKt.getFeet(0);
 		}
@@ -205,7 +205,7 @@ public class Elevator /*extends Subsystem*/ {
 		mMaster.config_kI(0, ki, 30);
 		mMaster.config_kD(0, kd, 30);
 		mMaster.config_kF(0, kf, 30);
-		mMaster.config_IntegralZone(0, (int) Math.round(lengthModel.fromModel(LengthKt.getInch(iZone)).getValue()), 30);
+		mMaster.config_IntegralZone(0, (int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getInch(iZone)).getValue()), 30);
 		mMaster.configMaxIntegralAccumulator(0, maxIntegral, 0);
 		mMaster.configPeakOutputForward(maxOut);
 		mMaster.configPeakOutputReverse(minOut);
