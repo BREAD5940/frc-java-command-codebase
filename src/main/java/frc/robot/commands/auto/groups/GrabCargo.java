@@ -10,8 +10,6 @@ import frc.robot.commands.subsystems.superstructure.RunIntake;
  */
 public class GrabCargo extends CommandGroup {
 	public GrabCargo() {
-		// addSequential(new SetElevatorHeight(0, true));
-		addSequential(new SetIntakeMode(HeldPiece.CARGO, true));
 		addSequential(new RunIntake(50, 1)); // FIXME check runtime
 	}
 
