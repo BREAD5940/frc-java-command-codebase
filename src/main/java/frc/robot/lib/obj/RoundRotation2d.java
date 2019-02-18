@@ -39,5 +39,13 @@ public class RoundRotation2d {
 	public double getSin(){
 		return this.sine;
 	}
+
+	public static RoundRotation2d fromRotations(double rotations) {
+		return new RoundRotation2d(rotations * 360d);
+	} 
 	
+	public double getRotations() {
+		return getDegree() / 360d;
+	}
+
 }
