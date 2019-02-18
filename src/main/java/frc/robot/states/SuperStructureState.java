@@ -5,6 +5,7 @@ import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.lib.Loggable;
+import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 public class SuperStructureState implements Loggable {
@@ -52,11 +53,11 @@ public class SuperStructureState implements Loggable {
 		piece = new_;
 	}
 
-	public Rotation2d getElbowAngle() {
+	public RoundRotation2d getElbowAngle() {
 		return jointAngles.getElbow().angle;
 	}
 
-	public void setElbowAngle(Rotation2d newAngle) {
+	public void setElbowAngle(RoundRotation2d newAngle) {
 		jointAngles.getElbow().setAngle(newAngle);
 	}
 

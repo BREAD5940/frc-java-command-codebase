@@ -9,6 +9,7 @@ import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import frc.robot.RobotConfig;
+import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
@@ -121,15 +122,15 @@ public class SuperstructurePlanner {
 			if (cTheta < goalState.getAngle().getElbow().angle.getRadian() && cTheta != 0) {
 				System.out.println("MOTION UNSAFE -- Angle cannot be safed with only elbow. Safing wrist.");
 				//sets the elbow to the max allowed adjustment
-				goalState.setElbowAngle(Rotation2dKt.getRadian(0));
+				goalState.setElbowAngle(RoundRotation2d.getRadian(0));
 				//finds the necessary wrist angle to finish safing the intake
 				cTheta = Math.asin(intakeDiameter.getInch() * ((bottom.getInch() + disInside.getInch()) - goalState.getElevatorHeight().getInch() -
 						Math.sin(goalState.getAngle().getElbow().angle.getRadian())));
 				//sets the wrist to that angle
-				goalState.getAngle().getWrist().setAngle(Rotation2dKt.getRadian(cTheta));
+				goalState.getAngle().getWrist().setAngle(RoundRotation2d.getRadian(cTheta));
 				corrCount += 2;
 			} else {
-				goalState.setElbowAngle(Rotation2dKt.getRadian(cTheta));
+				goalState.setElbowAngle(RoundRotation2d.getRadian(cTheta));
 				corrCount++;
 			}
 		}
@@ -138,10 +139,10 @@ public class SuperstructurePlanner {
 			System.out.println("MOTION UNSAFE -- Intake will hit the top of the elevator. Safing elbow angle.");
 			errorCount++;
 			if (Math.abs(minAboveAngle.getRadian() - goalState.getElbowAngle().getRadian()) <= Math.abs(maxAboveAngle.getRadian() - goalState.getElbowAngle().getRadian())) {
-				goalState.setElbowAngle(minAboveAngle);
+				goalState.setElbowAngle(RoundRotation2d.fromRotation2d(minAboveAngle));
 				corrCount++;
 			} else {
-				goalState.setElbowAngle(maxAboveAngle);
+				goalState.setElbowAngle(RoundRotation2d.fromRotation2d(maxAboveAngle));
 				corrCount++;
 			}
 		}

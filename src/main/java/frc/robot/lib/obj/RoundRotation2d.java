@@ -1,7 +1,6 @@
 package frc.robot.lib.obj;
 
-import org.ghrobotics.lib.mathematics.units.*;
-
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
 public class RoundRotation2d {
 	protected double value;
@@ -18,12 +17,24 @@ public class RoundRotation2d {
 		this.value = deg;
 	}
 
+	public RoundRotation2d() {
+		this(0);
+	}
+
+	public static RoundRotation2d fromRotation2d(Rotation2d meme_) {
+		return new RoundRotation2d(meme_.getDegree());
+	}
+
 	public static RoundRotation2d getDegree(double reciever){
 		return new RoundRotation2d(reciever);
 	}
 
 	public static RoundRotation2d getRadian(double reciever){
 		return new RoundRotation2d(reciever*(180/Math.PI));
+	}
+
+	public RoundRotation2d times(double factor) {
+		return new RoundRotation2d(this.value * factor);
 	}
 
 	public double getDegree(){

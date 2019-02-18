@@ -4,25 +4,23 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.ghrobotics.lib.mathematics.units.Length;
-import org.ghrobotics.lib.mathematics.units.Mass;
-import org.ghrobotics.lib.mathematics.units.Rotation2d;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
-import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.Mass;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
+
 import frc.robot.lib.PIDSettings;
-import frc.robot.lib.obj.CompatVelocity;
+import frc.robot.lib.obj.AngularVelocity;
 import frc.robot.lib.obj.HalfBakedRotatingSRX;
 import frc.robot.lib.obj.RoundRotation2d;
 
@@ -165,7 +163,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 		return getMaster().getRotation2d();
 	}
 
-	public Velocity<RoundRotation2d> getAngularVelocity() {
+	public AngularVelocity getAngularVelocity() {
 		return getMaster().getSensorVelocity();
 	}
 
@@ -178,26 +176,30 @@ public class RotatingJoint /*extends Subsystem*/ {
 	}
 
 	public static class RotatingArmState {
-		public Rotation2d angle;
-		public CompatVelocity velocity;
+		public RoundRotation2d angle;
+		public AngularVelocity velocity;
 
 		// public double feedForwardVoltage = 0;
 		// public double pidOutput = 0;
 		public RotatingArmState() {
-			this(Rotation2dKt.getDegree(0), VelocityKt.getVelocity(Rotation2dKt.getDegree(0)));
+			this(new RoundRotation2d(), new AngularVelocity());
+		}
+
+		public RotatingArmState(RoundRotation2d angle_) {
+			this(angle_, new AngularVelocity());
 		}
 
 		public RotatingArmState(Rotation2d angle_) {
-			this(angle_, CompatVelocity.getVelocity(RoundRotation2d.getDegree(0)));
+			this(RoundRotation2d.fromRotation2d(angle_), new AngularVelocity());
 		}
 
-		public RotatingArmState(Rotation2d angle_, CompatVelocity velocity_) {
+		public RotatingArmState(RoundRotation2d angle_, AngularVelocity velocity_) {
 			this.angle = angle_;
 			this.velocity = velocity_;
 			// this.feedForwardVoltage = feedForwardVoltage;
 		}
 
-		public void setAngle(Rotation2d new__) {
+		public void setAngle(RoundRotation2d new__) {
 			this.angle = new__;
 		}
 
