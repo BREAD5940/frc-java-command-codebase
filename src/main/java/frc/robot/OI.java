@@ -56,8 +56,11 @@ public class OI {
 		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
 		yeetInACircleButton.whenPressed(new TurnInPlace(Rotation2dKt.getDegree(180), false));
 
-		runDHDInput.whenPressed(new RunAuto(ChordedTrajectory.getTraject(Gear.HIGH), ChordedInput.getGT(), ChordedInput.getGH()));
-
+		try{
+			runDHDInput.whenPressed(new RunAuto(ChordedTrajectory.getTraject(Gear.HIGH), ChordedInput.getGT(), ChordedInput.getGH()));
+		}catch(NullPointerException npe){
+			System.out.println("Run button pressed, but not all parameters were inputted.\n"+npe);
+		}
 	}
 
 	public double getForwardAxis() {

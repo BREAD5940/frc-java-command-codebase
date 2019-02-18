@@ -16,7 +16,19 @@ public class ChordedInput{
 		}else if(dhdMap.Motion.GRAB_HATCH.get()){
 			return GoalType.RETRIEVE_HATCH;
 		}else if(dhdMap.Motion.PLACE_CARGO.get()){
-			
+			if(getGH()==GoalHeight.OVER){
+				return GoalType.CARGO_CARGO;
+			}else{
+				return GoalType.ROCKET_CARGO;
+			}
+		}else if(dhdMap.Motion.PLACE_HATCH.get()){
+			if(getGH()==GoalHeight.LOW){
+				return GoalType.CARGO_HATCH;
+			}else{
+				return GoalType.ROCKET_HATCH;
+			}
+		}else{
+			return null;
 		}
 	}
 
