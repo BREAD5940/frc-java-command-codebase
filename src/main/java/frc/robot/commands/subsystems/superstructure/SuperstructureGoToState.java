@@ -6,10 +6,12 @@ import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class SuperstructureGoToState extends Command {
 	SuperStructureState mRequState;
+	private double kDefaultTimeout = 2;
 
 	public SuperstructureGoToState(SuperStructureState requState) {
 		requires(SuperStructure.getInstance());
 		mRequState = requState;
+		setTimeout(kDefaultTimeout);
 	}
 
 	// Called just before this Command runs the first time

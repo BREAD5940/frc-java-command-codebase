@@ -2,90 +2,98 @@ package frc.robot.commands.subsystems.superstructure;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.Rotation2d;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
-import frc.robot.lib.Logger;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class SuperStructureTelop extends Command {
-	private SuperStructure superStructure;
 	private OI mOI = Robot.m_oi;
 
-	/** Run the superstructure (elevator for now) during telop using an xbox
+	RoundRotation2d mLastWrist = SuperStructure.getInstance().getWrist().getRotation();
+	RoundRotation2d mLastElbow = SuperStructure.getInstance().getElbow().getRotation();
+
+	/** Run theSuperStructure.getInstance()(elevator for now) during telop using an xbox
 	  * joystick. 
-	  * @param struc the superstructure object
+	  * @param struc theSuperStructure.getInstance()object
 	  **/
-	public SuperStructureTelop(SuperStructure struc) {
+	public SuperStructureTelop() {
 		// Use requires() here to declare subsystem dependencies
-		requires(struc);
-		this.superStructure = struc;
+		requires(SuperStructure.getInstance());
 	}
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {}
+	protected void initialize() {
+		mLastWrist = SuperStructure.getInstance().getWrist().getRotation();
+		mLastElbow = SuperStructure.getInstance().getElbow().getRotation();
+	}
 
 	boolean firstRun = false;
-	RoundRotation2d mLastWrist = RoundRotation2d.getDegree(0), mLastElbow = RoundRotation2d.getDegree(0);
+
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
 		// elevator stuff
-		Length newE = superStructure.getLastReqElevatorHeight();
+		Length newE = SuperStructure.getInstance().getLastReqElevatorHeight();
 		boolean move = false;
 		Length deltaE = LengthKt.getInch(Util.deadband(Robot.m_oi.getElevatorAxis() * 10 * Math.abs(Robot.m_oi.getElevatorAxis()), 0.08));
 		if (Math.abs(Robot.m_oi.getElevatorAxis()) > 0.08) { // only move if asked
 			firstRun = true;
-			Length currentE = superStructure.getLastReqElevatorHeight();
+			Length currentE = SuperStructure.getInstance().getLastReqElevatorHeight();
 			newE = currentE.plus(deltaE);
 			ElevatorState newReqE = new ElevatorState(newE);
 			move = true;
-			// superStructure.moveSuperstructureElevator(new_s);
+			// SuperStructure.getInstance().moveSuperstructureElevator(new_s);
 
 		} else {
 			if (firstRun == true) {
-				newE = superStructure.getLastReqElevatorHeight();
+				newE = SuperStructure.getInstance().getLastReqElevatorHeight();
 				firstRun = false;
 				move = true;
 			}
 		}
 
 		if (move) {
-			superStructure.moveSuperstructureElevator(newE);
+			SuperStructure.getInstance().moveSuperstructureElevator(newE);
 		}
 
 		// move the whole darn thing
-		// superStructure.moveSuperstructureCombo(newReqE, superStructure .getCurrentState().getElbow(), newReqW);
-		Logger.log("last wrist" + mLastWrist.getDegree() + " | current pos: " + superStructure.getWrist().getDegrees());
+		// SuperStructure.getInstance().moveSuperstructureCombo(newReqE,SuperStructure.getInstance().getCurrentState().getElbow(), newReqW);
+		// Logger.log("last wrist" + mLastWrist.getDegree() + " | current pos: " + SuperStructure.getInstance().getWrist().getDegrees());
+		// Logger.log("last elbow" + mLastElbow.getDegree() + " | current pos: " + SuperStructure.getInstance().getElbow().getDegrees());
+
 		if (Math.abs(mOI.getWristAxis()) > 0.07) {
-			superStructure.getWrist().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getWristAxis(), 0.75));
-			mLastWrist = superStructure.getWrist().getPosition();
+			SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getWristAxis(), 0.75));
+			mLastWrist = SuperStructure.getInstance().getWrist().getPosition();
 		} else {
-			superStructure.getWrist().getMaster().set(ControlMode.Position, mLastWrist);
+			SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mLastWrist);
 		}
 
 		if (Math.abs(mOI.getElbowAxis()) > 0.07) {
-			superStructure.getElbow().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getElbowAxis(), 0.75));
-			mLastElbow = superStructure.getElbow().getPosition();
+			SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getElbowAxis() * 0.4, 0.75));
+			mLastElbow = SuperStructure.getInstance().getElbow().getPosition();
 		} else {
-			superStructure.getElbow().getMaster().set(ControlMode.Position, mLastElbow);
+			SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mLastElbow);
 		}
 
-		// double elbowDelta = Robot.m_oi.getElbowAxis();
-		// Rotation2d newElbow = superStructure.mReqState.getWrist().angle.plus(Rotation2dKt.getDegree(elbowDelta * 10));
-		// superStructure.getWrist().getMaster().set(ControlMode.Position, newElbow);
+		SmartDashboard.putNumber("Elbow current", SuperStructure.getInstance().getElbow().getMaster().getOutputCurrent());
+		SmartDashboard.putNumber("Wrist current", SuperStructure.getInstance().getWrist().getMaster().getOutputCurrent());
+		SmartDashboard.putNumber("Elevator current", SuperStructure.getInstance().getElevator().getMaster().getOutputCurrent());
 
-		// Logger.log("wrist percent output " + superStructure.getWrist().getMaster().getMotorOutputPercent() + "wrist error raw: " + superStructure.getWrist().getMaster().getClosedLoopError() + "new wrist setpoint: " + mLastWrist.getDegree());
+		// double elbowDelta = Robot.m_oi.getElbowAxis();
+		// Rotation2d newElbow = SuperStructure.getInstance().mReqState.getWrist().angle.plus(Rotation2dKt.getDegree(elbowDelta * 10));
+		// SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, newElbow);
+
+		// Logger.log("wrist percent output " + SuperStructure.getInstance().getWrist().getMaster().getMotorOutputPercent() + "wrist error raw: " + SuperStructure.getInstance().getWrist().getMaster().getClosedLoopError() + "new wrist setpoint: " + mLastWrist.getDegree());
 
 	}
 
