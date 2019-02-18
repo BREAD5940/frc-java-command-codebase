@@ -1,5 +1,7 @@
 package frc.robot.commands.subsystems.drivetrain;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 // import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -29,6 +31,9 @@ public class ArcadeDrive extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
+		Robot.drivetrain.getLeft().getMaster().configOpenloopRamp(0.1);
+		Robot.drivetrain.getRight().getMaster().configOpenloopRamp(0.1);
 		Robot.drivetrain.arcadeDrive(0, 0);
 		System.out.println("arcade drive command init");
 	}
@@ -42,7 +47,7 @@ public class ArcadeDrive extends Command {
 		boolean isQuickTurn = (Math.abs(Robot.m_oi.getForwardAxis()) < 0.08);
 
 		Robot.drivetrain.curvatureDrive(Robot.m_oi.getForwardAxis(),
-				Robot.m_oi.getTurnAxis(), isQuickTurn);
+				Robot.m_oi.getTurnAxis(), false);
 
 		// Logger.log("forward command: " + Robot.m_oi.getForwardAxis());
 

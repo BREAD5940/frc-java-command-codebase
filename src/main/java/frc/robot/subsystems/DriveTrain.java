@@ -440,8 +440,6 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 	public void tankDrive(double leftPercent, double rightPercent) {
 		lastCommandedVoltages = Arrays.asList(leftPercent * 12, rightPercent * 12);
-		getLeft().getMaster().set(ControlMode.PercentOutput, leftPercent); // because C O M P E N S A T I O N
-		getRight().getMaster().set(ControlMode.PercentOutput, rightPercent);
 
 		// Logger.log("Left error: " + getLeft().getClosedLoopError().getFeet());
 		// Logger.log("Right error: " + getRight().getClosedLoopError().getFeet());
@@ -455,6 +453,9 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 		if (rightPercent < 0.06 && rightPercent > -0.06)
 			rightPercent = 0.0;
+
+		getLeft().getMaster().set(ControlMode.PercentOutput, leftPercent); // because C O M P E N S A T I O N
+		getRight().getMaster().set(ControlMode.PercentOutput, rightPercent);
 
 		// 2.1 meters per second in low gear
 		//
