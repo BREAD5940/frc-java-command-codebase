@@ -137,8 +137,7 @@ public class Robot extends TimedRobot {
 		mGh.addOption("High", AutoMotion.GoalHeight.HIGH);
 		mGh.addOption("Dropped into the cargo ship", AutoMotion.GoalHeight.OVER);
 		SmartDashboard.putData("Goal Height", mGh);
-		SmartDashboard.putData(drivetrain);
-		SmartDashboard.putData(superstructure);
+
 		// SmartDashboard.putData(SuperStructure.intake);
 		// SmartDashboard.putData(shifterDoubleSolenoid);
 
@@ -312,6 +311,11 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("7 feet per second is", drivetrain.getLeft().getModel().toNativeUnitPosition(LengthKt.getFeet(7)).getValue());
 
 		SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
+
+		SmartDashboard.putData(drivetrain);
+		SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getCurrentState().angle.getDegree());
+		SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getCurrentState().angle.getDegree());
+		SmartDashboard.putData(superstructure);
 
 		// Limelight stuff
 		// double[] limelightdata = limelight.getData();

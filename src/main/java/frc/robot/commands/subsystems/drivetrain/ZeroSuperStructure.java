@@ -11,6 +11,7 @@ import frc.robot.subsystems.superstructure.SuperStructure;
 public class ZeroSuperStructure extends Command {
 	String p;
 	SuperStructure struc;
+	SuperStructureState old;
 
 	public ZeroSuperStructure(String piece) {
 		this.p = piece;
@@ -25,7 +26,7 @@ public class ZeroSuperStructure extends Command {
 	@Override
 	public void initialize() {
 
-		SuperStructureState old = struc.lastState;
+		old = struc.lastState;
 
 		System.out.println("Zeroing encoder to " + p);
 		if (p.equals("elevator")) {
@@ -72,6 +73,7 @@ public class ZeroSuperStructure extends Command {
 	public void end() {
 		struc.getDefaultCommand().cancel();
 		System.out.println("Restarting the default command");
+		struc.move(old);
 		struc.getDefaultCommand().start();
 	}
 
