@@ -6,6 +6,7 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.PlaceHatch;
+import frc.robot.commands.subsystems.drivetrain.DriveDistance;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
@@ -93,8 +94,7 @@ public class AutoMotion {
 			// Predefined grab command
 			//TODO align with vision targets
 			//yeet into loading station
-			// toReturn.addSequential(new DriveDistance(0.5));
-			// Timer.delay(0.5);
+			toReturn.addSequential(new DriveDistance(0.5));
 			//TODO maybe check the alignment with the center of the hatch with a sensor or some shit?
 			//grab
 			toReturn.addSequential(new SetHatchMech(HatchMechState.kClamped));
