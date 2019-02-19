@@ -62,7 +62,8 @@ public class SuperStructureTelop extends Command {
 		}
 
 		if (move) {
-			SuperStructure.getInstance().moveSuperstructureElevator(newE);
+			new SuperstructureGoToState(new ElevatorState(newE));
+			System.out.printf("Current elevator req height: %f\n", newE.getInch());
 		}
 
 		// move the whole darn thing

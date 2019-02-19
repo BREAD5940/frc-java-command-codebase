@@ -15,7 +15,6 @@ import com.team254.lib.physics.DCMotorTransmission;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
@@ -107,7 +106,7 @@ public class SuperStructure extends Subsystem {
 
 		elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
 				new InvertSettings(true, InvertType.FollowMaster, InvertType.FollowMaster, InvertType.OpposeMaster));
-				
+
 		mCurrentState = new SuperStructureState();
 
 	}
@@ -212,7 +211,6 @@ public class SuperStructure extends Subsystem {
 		getWrist().getCurrentState();
 		getElbow().getCurrentState();
 
-
 		this.mCurrentState = new SuperStructureState(
 				elevator.getCurrentState(),
 				// mWrist.getCurrentState(),
@@ -223,21 +221,23 @@ public class SuperStructure extends Subsystem {
 	}
 
 	public RotatingJoint getWrist() {
-		if(mWrist == null) mW rist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
-				Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
+		if (mWrist == null)
+			mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
+					Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
-// 		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
-// 		Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
+		// 		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
+		// 		Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
-// mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
-// 		false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+		// mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
+		// 		false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 
 		return mWrist;
 	}
 
 	public RotatingJoint getElbow() {
-		if(mElbow == null) mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
-				false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+		if (mElbow == null)
+			mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
+					false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 		return mElbow;
 	}
 

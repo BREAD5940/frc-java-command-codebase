@@ -7,10 +7,7 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
-import org.ghrobotics.lib.mathematics.units.Time;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
-import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
@@ -25,7 +22,6 @@ import com.ctre.phoenix.motorcontrol.SensorTerm;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
@@ -246,7 +242,7 @@ public class Elevator /*extends Subsystem*/ {
 	public ElevatorState getCurrentState() {
 		// Time time = TimeUnitsKt.getSecond(Timer.getFPGATimestamp());
 		// Acceleration<Length> accel = AccelerationKt.getAcceleration(LengthKt.getMeter(
-				// (getVelocity().getValue() - lastKnown.velocity.getValue()) / (time.getValue() - lastKnown.time.getValue())));
+		// (getVelocity().getValue() - lastKnown.velocity.getValue()) / (time.getValue() - lastKnown.time.getValue())));
 		return new ElevatorState(getHeight(), getVelocity());
 	}
 }

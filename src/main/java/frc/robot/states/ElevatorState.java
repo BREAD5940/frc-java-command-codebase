@@ -29,7 +29,6 @@ public class ElevatorState {
 		time = time_;
 	}
 
-
 	public ElevatorState(Length height_, Velocity<Length> velocity_) {
 		height = height_;
 		velocity = velocity_;

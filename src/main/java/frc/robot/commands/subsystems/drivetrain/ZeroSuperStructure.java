@@ -13,7 +13,7 @@ public class ZeroSuperStructure extends Command {
 		this.p = piece;
 		// requires(SuperStructure.getInstance());
 		setInterruptible(false);
-		 struc = SuperStructure.getInstance();
+		struc = SuperStructure.getInstance();
 		Command comm = struc.getCurrentCommand();
 		if (comm != null)
 			comm.cancel();
