@@ -70,7 +70,7 @@ public class OI {
 						new IntakeAngle(new RotatingArmState(), new RotatingArmState(Rotation2dKt.getDegree(90)))),
 				5));
 
-		testAutoButton.whenPressed(new RunAuto(GoalType.CARGO_CARGO, GoalHeight.LOW));
+		testAutoButton.whenPressed(new RunAuto(GoalType.CARGO_HATCH, GoalHeight.LOW));
 		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
 		yeetInACircleButton.whenPressed(new TurnInPlace(Rotation2dKt.getDegree(180), false));
 

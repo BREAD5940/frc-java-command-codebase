@@ -3,9 +3,7 @@ package frc.robot.commands.auto;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import edu.wpi.first.wpilibj.Timer;
 import frc.robot.RobotConfig;
-import frc.robot.commands.auto.actions.DriveDistance;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
@@ -96,13 +94,13 @@ public class AutoMotion {
 			//TODO align with vision targets
 			//yeet into loading station
 			// toReturn.addSequential(new DriveDistance(0.5));
-			Timer.delay(0.5);
+			// Timer.delay(0.5);
 			//TODO maybe check the alignment with the center of the hatch with a sensor or some shit?
 			//grab
 			toReturn.addSequential(new SetHatchMech(HatchMechState.kClamped));
 			//pull the hatch out of the brushes
 			toReturn.addSequential(new SuperstructureGoToState(new ElevatorState(getElevatorPreset().plus(LengthKt.getInch(6))))); // lift from brushes
-			toReturn.addSequential(new DriveDistance(-0.5)); // back up
+			// toReturn.addSequential(new DriveDistance(-0.5)); // back up
 			this.endPiece = HeldPiece.HATCH;
 		}
 		return toReturn;
@@ -120,10 +118,10 @@ public class AutoMotion {
 
 		if (this.gType == GoalType.CARGO_CARGO) {
 			// Drive forward so the intake is over the bay and the bumpers are in the indent thingy
-			toReturn.addSequential(new DriveDistance(1 + 0.43)); // the 0.43 is the bumpers FIXME check distances
+			// toReturn.addSequential(new DriveDistance(1 + 0.43)); // the 0.43 is the bumpers FIXME check distances
 		} else {
 			// Drive forward so the intake is flush with the port/hatch
-			toReturn.addSequential(new DriveDistance(1)); // FIXME check distances
+			// toReturn.addSequential(new DriveDistance(1)); // FIXME check distances
 		}
 
 		if (this.piece == HeldPiece.CARGO) {
