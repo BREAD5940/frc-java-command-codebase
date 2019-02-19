@@ -9,6 +9,7 @@ import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.subsystems.StopWithoutDisable;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
@@ -39,7 +40,7 @@ public class OI {
 	private Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
 	private Button open_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.Y_BUTTON);
 	private Button close_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.A_BUTTON);
-	private Button plzNoDieElevator = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
+	private Button plzNoDieSuperStructure = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
 	private Button plzNoDieDriveTrain = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
 	// Button turnAutoButton = new JoystickButton(secondaryJoystick, xboxmap.Buttons.B_BUTTON);
 	// Button autobutton2 = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
@@ -72,8 +73,8 @@ public class OI {
 		// 				new IntakeAngle(new RotatingArmState(), new RotatingArmState(Rotation2dKt.getDegree(90)))),
 		// 		5));
 
-		if(plzNoDieElevator.get()) SuperStructure.getInstance().getCurrentCommand().cancel();
-		if(plzNoDieDriveTrain.get()) DriveTrain.getInstance().getCurrentCommand().cancel();
+		plzNoDieDriveTrain.whenPressed(new StopWithoutDisable(true));
+		plzNoDieSuperStructure.whenPressed(new StopWithoutDisable(false));
 
 		test1Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.LOW));
 		test2Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.MIDDLE));
