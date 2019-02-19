@@ -1,6 +1,7 @@
 package frc.robot.commands.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.lib.Logger;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
@@ -44,11 +45,11 @@ public class SuperstructureGoToState extends Command {
 		SuperStructure.getInstance().updateState();
 
 		SuperStructureState prevState = SuperStructure.getInstance().lastState;
-		double mCurrentWristTorque = Math.abs(SuperStructure.getInstance().calculateWristTorque(prevState)); // torque due to gravity and elevator acceleration, newton meters
-		double mCurrentElbowTorque = Math.abs(SuperStructure.getInstance().calculateElbowTorques(prevState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
+		// double mCurrentWristTorque = Math.abs(SuperStructure.getInstance().calculateWristTorque(prevState)); // torque due to gravity and elevator acceleration, newton meters
+		// double mCurrentElbowTorque = Math.abs(SuperStructure.getInstance().calculateElbowTorques(prevState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
 
-		double wristVoltageGravity = SuperStructure.getInstance().getWTransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getWrist().velocity.getValue(), mCurrentWristTorque);
-		double elbowVoltageGravity = SuperStructure.getInstance().getETransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getElbow().velocity.getValue(), mCurrentElbowTorque);
+		// double wristVoltageGravity = SuperStructure.getInstance().getWTransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getWrist().velocity.getValue(), mCurrentWristTorque);
+		// double elbowVoltageGravity = SuperStructure.getInstance().getETransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getElbow().velocity.getValue(), mCurrentElbowTorque);
 		double elevatorPercentVbusGravity = SuperStructure.getInstance().getElevator().getVoltage(SuperStructure.getInstance().updateState()) / 12;//getElevator().getMaster().getBusVoltage();		
 
 		// if (Math.abs(mOI.getWristAxis()) > 0.07) {
@@ -57,8 +58,8 @@ public class SuperstructureGoToState extends Command {
 		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
 		SuperStructureState stateSetpoint = SuperStructure.getInstance().plan(mRequState);
 
-		SuperStructure.getInstance().getWrist().setPositionArbitraryFeedForward(stateSetpoint.getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
-		SuperStructure.getInstance().getElbow().setPositionArbitraryFeedForward(stateSetpoint.getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
+		SuperStructure.getInstance().getWrist().requestAngle(stateSetpoint.getWrist().angle); // div by 12 because it expects a throttle
+		SuperStructure.getInstance().getElbow().requestAngle(stateSetpoint.getElbow().angle); // div by 12 because it expects a throttle
 		SuperStructure.getInstance().getElevator().setPositionArbitraryFeedForward(stateSetpoint.getElevator().height, elevatorPercentVbusGravity / 12d);
 		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
 	}
@@ -66,6 +67,9 @@ public class SuperstructureGoToState extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
+		Logger.log("elevator within tolerence? " + ((Math.abs(mRequState.getElevatorHeight().getInch() - SuperStructure.getInstance().updateState().getElevatorHeight().getInch()) <= 0.5)));
+		Logger.log("elbow within tolerence? " + (Math.abs(mRequState.getElbow().angle.getDegree() - SuperStructure.getInstance().updateState().getElbow().angle.getDegree()) <= 5));
+		Logger.log("wrist within tolerence? " + (Math.abs(mRequState.getWrist().angle.getDegree() - SuperStructure.getInstance().updateState().getWrist().angle.getDegree()) <= 5));
 		return ((Math.abs(mRequState.getElevatorHeight().getInch() - SuperStructure.getInstance().updateState().getElevatorHeight().getInch()) <= 0.5)
 				&& (Math.abs(mRequState.getElbow().angle.getDegree() - SuperStructure.getInstance().updateState().getElbow().angle.getDegree()) <= 5) //FIXME check tolerences
 				&& (Math.abs(mRequState.getWrist().angle.getDegree() - SuperStructure.getInstance().updateState().getWrist().angle.getDegree()) <= 5)) || isTimedOut();

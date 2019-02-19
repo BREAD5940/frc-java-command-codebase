@@ -237,34 +237,34 @@ public class SuperStructure extends Subsystem {
 
 	@Override
 	public void periodic() {
-		// this calculates gravity feed forwards based off of the current state and requested state
-		// make sure to keep these up to date!!!
-		updateState();
+		// // this calculates gravity feed forwards based off of the current state and requested state
+		// // make sure to keep these up to date!!!
+		// updateState();
 
-		// Make for sure for real real that the voltage is always positive
-		// double mCurrentWristTorque = Math.abs(calculateWristTorque(this.mCurrentState)); // torque due to gravity and elevator acceleration, newton meters
-		// double mCurrentElbowTorque = Math.abs(calculateElbowTorques(this.mCurrentState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
+		// // Make for sure for real real that the voltage is always positive
+		// // double mCurrentWristTorque = Math.abs(calculateWristTorque(this.mCurrentState)); // torque due to gravity and elevator acceleration, newton meters
+		// // double mCurrentElbowTorque = Math.abs(calculateElbowTorques(this.mCurrentState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
 
-		// double wristVoltageGravity = kWristTransmission.getVoltageForTorque(this.mCurrentState.getWrist().velocity.getValue(), mCurrentWristTorque);
-		// double elbowVoltageGravity = kElbowTransmission.getVoltageForTorque(this.mCurrentState.getElbow().velocity.getValue(), mCurrentElbowTorque);
-		double elevatorPercentVbusGravity = elevator.getVoltage(this.mCurrentState) / 12;//getElevator().getMaster().getBusVoltage();
+		// // double wristVoltageGravity = kWristTransmission.getVoltageForTorque(this.mCurrentState.getWrist().velocity.getValue(), mCurrentWristTorque);
+		// // double elbowVoltageGravity = kElbowTransmission.getVoltageForTorque(this.mCurrentState.getElbow().velocity.getValue(), mCurrentElbowTorque);
+		// double elevatorPercentVbusGravity = elevator.getVoltage(this.mCurrentState) / 12;//getElevator().getMaster().getBusVoltage();
 
-		// System.out.println("Calculated elevator voltage" + elevator.getVoltage(getCurrentState()));
+		// // System.out.println("Calculated elevator voltage" + elevator.getVoltage(getCurrentState()));
 
-		// TODO velocity planning? or just let talon PID figure itself out
-		// How about maybe motion magic?
+		// // TODO velocity planning? or just let talon PID figure itself out
+		// // How about maybe motion magic?
 
-		// getWrist().setPositionArbitraryFeedForward(mReqPath.get(0).getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
-		// getElbow().setPositionArbitraryFeedForward(mReqPath.get(0).getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
-		getElevator().setPositionArbitraryFeedForward(mReqPath.get(0).getElevator().height, elevatorPercentVbusGravity / 12d);
-		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
+		// // getWrist().setPositionArbitraryFeedForward(mReqPath.get(0).getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
+		// // getElbow().setPositionArbitraryFeedForward(mReqPath.get(0).getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
+		// getElevator().setPositionArbitraryFeedForward(mReqPath.get(0).getElevator().height, elevatorPercentVbusGravity / 12d);
+		// // getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
 
-		SmartDashboard.putNumber("elevator height in inches", mCurrentState.elevator.getHeight().getInch());
-		SmartDashboard.putNumber("target elevator height", mReqPath.get(0).getElevator().height.getInch());
-		SmartDashboard.putNumber("elevator output", getElevator().getMaster().getMotorOutputPercent());
+		// SmartDashboard.putNumber("elevator height in inches", mCurrentState.elevator.getHeight().getInch());
+		// SmartDashboard.putNumber("target elevator height", mReqPath.get(0).getElevator().height.getInch());
+		// SmartDashboard.putNumber("elevator output", getElevator().getMaster().getMotorOutputPercent());
 
-		SmartDashboard.putNumber("Wrist position", getWrist().getPosition().getDegree());
-		SmartDashboard.putNumber("Elbow position", getElbow().getPosition().getDegree());
+		// SmartDashboard.putNumber("Wrist position", getWrist().getPosition().getDegree());
+		// SmartDashboard.putNumber("Elbow position", getElbow().getPosition().getDegree());
 
 	}
 
