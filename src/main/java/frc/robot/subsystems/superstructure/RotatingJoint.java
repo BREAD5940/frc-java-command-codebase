@@ -38,7 +38,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 
 	private RotatingArmState mPeriodicIO = new RotatingArmState();
 
-	private final RoundRotation2d kMinAngle, kMaxAngle;
+	public final RoundRotation2d kMinAngle, kMaxAngle;
 
 	// private PIDSettings pidSettings;
 
@@ -123,6 +123,16 @@ public class RotatingJoint /*extends Subsystem*/ {
 	public void requestAngle(RoundRotation2d reqAngle) {
 		reqAngle = Util.limit(reqAngle, kMinAngle, kMaxAngle);
 		getMaster().set(ControlMode.Position, reqAngle);
+	}
+
+	/**
+	 * Set the master talon to an anggle and arbitrary feed forward thorttle %
+	 * @param reqAngle to to to
+	 * @param feedForward extra throttle to apply
+	 */
+	public void requestAngleArbitraryFeedForward(RoundRotation2d reqAngle, double feedForward) {
+		reqAngle = Util.limit(reqAngle, kMinAngle, kMaxAngle);
+		getMaster().set(ControlMode.Position, reqAngle, DemandType.ArbitraryFeedForward, feedForward);
 	}
 
 	public void setSetpoint(double setpoint_) {}
