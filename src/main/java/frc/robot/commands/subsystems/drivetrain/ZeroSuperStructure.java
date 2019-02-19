@@ -7,12 +7,13 @@ import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class ZeroSuperStructure extends Command {
 	String p;
+	SuperStructure struc;
 
 	public ZeroSuperStructure(String piece) {
 		this.p = piece;
-		requires(SuperStructure.getInstance());
+		// requires(SuperStructure.getInstance());
 		setInterruptible(false);
-		SuperStructure struc = SuperStructure.getInstance();
+		 struc = SuperStructure.getInstance();
 		Command comm = struc.getCurrentCommand();
 		if (comm != null)
 			comm.cancel();
@@ -52,7 +53,8 @@ public class ZeroSuperStructure extends Command {
 
 	@Override
 	public void end() {
-
+		struc.getCurrentCommand().cancel();
+		struc.getDefaultCommand().start();
 	}
 
 	@Override
