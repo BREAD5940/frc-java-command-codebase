@@ -209,6 +209,7 @@ public class Robot extends TimedRobot {
 		}
 
 		drivetrain.setNeutralMode(NeutralMode.Coast);
+		SuperStructure.lastSH = LengthKt.getInch(0);
 
 	}
 

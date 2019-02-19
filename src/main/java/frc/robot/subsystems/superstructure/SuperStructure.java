@@ -43,7 +43,7 @@ public class SuperStructure extends Subsystem {
 
 	private static SuperStructure instance_;
 	private static double currentDTVelocity; //in ft/sec
-	private static Length currentSetHeight, lastSH = LengthKt.getInch(70), lastLastSH = LengthKt.getInch(70);
+	public static Length currentSetHeight, lastSH = LengthKt.getInch(70), lastLastSH = LengthKt.getInch(70);
 	public SuperStructureState mReqState = new SuperStructureState();
 	public SuperStructureState lastState = new SuperStructureState(updateState());
 	private CommandGroup mCurrentCommandGroup;
