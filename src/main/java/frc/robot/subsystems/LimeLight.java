@@ -66,6 +66,31 @@ public class LimeLight {
 		table.getEntry("ledMode").setNumber(1);
 	}
 
+	public enum PipelinePreset {
+		kDefault(0), kCargoFar(1), kCargoClose(2);
+
+		private int id;
+
+		private PipelinePreset(int id) {
+			this.id = id;
+		}
+
+		public int getId() {
+			return id;
+		}
+	}
+
+	/**
+	 * Set the pipeline of the limelight
+	 */
+	public void setPipeline(PipelinePreset req_) {
+		table.getEntry("pipeline").setNumber(req_.getId());
+	}
+
+	public int getPipeline() {
+		return table.getEntry("pipeline").getNumber(0).intValue();
+	}
+
 	/**
 	 * Get the area of the tracked target as a percentage from 0% to 100%
 	 * @return area as percentage of total area 
@@ -111,26 +136,6 @@ public class LimeLight {
 	 */
 	public double getTrackedTargets() {
 		return (table.getEntry("tv")).getDouble(0);
-	}
-
-	/**
-	 * Get the current delta x (left/right) angle from crosshair to vision target
-	 * @return delta x in degrees to target
-	 */
-	public double getDxAngle() {
-		return Math.toDegrees(
-				Math.atan(
-						getDx() / average_focal_length));
-	}
-
-	/**
-	 * Get the current elevation (delta y) angle from crosshair to vision target
-	 * @return degrees of elevation from crosshair to target 
-	 */
-	public double getDyAngle() {
-		return Math.toDegrees(
-				Math.atan(
-						getDy() / average_focal_length));
 	}
 
 	/**
