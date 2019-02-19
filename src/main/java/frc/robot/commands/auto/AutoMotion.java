@@ -3,7 +3,6 @@ package frc.robot.commands.auto;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.actions.DriveDistance;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
@@ -43,7 +42,7 @@ public class AutoMotion {
 	private HeldPiece piece;
 	private HeldPiece endPiece;
 	private AutoCommandGroup mBigCommandGroup;
-	private Command mPrepCommand;
+	private AutoCommandGroup mPrepCommand = new AutoCommandGroup();
 	private SuperStructureState mSSState;
 	private boolean rev;
 
@@ -68,7 +67,7 @@ public class AutoMotion {
 			this.piece = HeldPiece.NONE;
 		}
 		this.mSSState = new SuperStructureState(new ElevatorState(getElevatorPreset()), getIA());
-		this.mPrepCommand = new SuperstructureGoToState(this.mSSState);
+		this.mPrepCommand.addSequential(new SuperstructureGoToState(this.mSSState));
 		if (this.piece != HeldPiece.NONE) {
 			this.mBigCommandGroup = genPlaceCommands();
 		} else {
@@ -228,7 +227,7 @@ public class AutoMotion {
 	 * @return
 	 * 	the commands for the prep for the motion
 	 */
-	public Command getPrepCommand() {
+	public AutoCommandGroup getPrepCommand() {
 		return this.mPrepCommand;
 	}
 

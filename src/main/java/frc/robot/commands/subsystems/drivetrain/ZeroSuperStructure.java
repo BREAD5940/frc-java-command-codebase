@@ -1,7 +1,5 @@
 package frc.robot.commands.subsystems.drivetrain;
 
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
@@ -21,12 +19,12 @@ public class ZeroSuperStructure extends Command {
 		struc = SuperStructure.getInstance();
 		// Command comm = struc.getCurrentCommand();
 		// if (comm != null)
-			// comm.cancel();
+		// comm.cancel();
 	}
 
 	@Override
 	public void initialize() {
-	
+
 		SuperStructureState old = struc.lastState;
 
 		System.out.println("Zeroing encoder to " + p);

@@ -18,6 +18,8 @@ public class RunAuto extends AutoCommandGroup {
 	public String[] cKeys;
 	public boolean isDrive;
 	public HeldPiece cPiece;
+	private boolean begun = false;
+	private AutoCommandGroup running;
 
 	public RunAuto(GoalType mGt, GoalHeight mHeight) {
 		this.mGt = mGt;
@@ -39,10 +41,12 @@ public class RunAuto extends AutoCommandGroup {
 	protected void initialize() {
 		if (!isDrive) {
 			mMotion = new AutoMotion(mHeight, mGt, false);
-			mMotion.getBigCommandGroup().start();
+			running = mMotion.getPrepCommand();
+			running.start();
 		} else {
-			cMotion = new AutoCombo(cKeys[0], 'L');
-			cMotion.getBigCommandGroup().start();
+			// cMotion = new AutoCombo(cKeys[0], 'L');
+			// running=cMotion.getPrepCommand();
+			// running.start();
 		}
 	}
 
@@ -50,6 +54,14 @@ public class RunAuto extends AutoCommandGroup {
 	@Override
 	protected void execute() {
 		// Don't need to do anything here
+		if (!isDrive && running.done() && !begun) {
+			mMotion.getBigCommandGroup().start();
+			begun = true;
+		}
+		// }else if(isDrive&&running.done()&&!begun){
+		// 	cMotion.getBigCommandGroup().start();
+		// 	begun=true;
+		// }
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

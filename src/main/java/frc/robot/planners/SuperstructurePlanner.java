@@ -126,7 +126,8 @@ public class SuperstructurePlanner {
 		endPoint = new Translation2d(wristPoint.getX().plus(LengthKt.getInch(Math.cos(goalState.getWrist().angle.getRadian()) * intakeDiameter.getInch())),
 				wristPoint.getY().plus(LengthKt.getInch(Math.sin(goalState.getAngle().getWrist().angle.getRadian()) * intakeDiameter.getInch())));
 
-		if ((wristPoint.getX().getInch() < 0 && Math.cos(currentState.getElbowAngle().getRadian()) * carriageToIntake.getInch() > 0)) { //FIXME this probably needs another thingy
+		if ((wristPoint.getX().getInch() < 0 && Math.cos(currentState.getElbowAngle().getRadian()) * carriageToIntake.getInch() > 0)
+				|| (wristPoint.getX().getInch() > 0 && Math.cos(currentState.getElbowAngle().getRadian()) * carriageToIntake.getInch() < 0)) { //FIXME this probably needs another thingy
 			//if it passes through the elevator between current and goal
 			System.out.println("MOTION UNSAFE -- Can't pass through the elevator at points other than the pass-through point. Adding to path.");
 			errorCount++;

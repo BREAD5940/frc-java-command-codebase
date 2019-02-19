@@ -253,7 +253,7 @@ public class SuperStructure extends Subsystem {
 		return elevator;
 	}
 
-	public void move(SuperStructureState requState){
+	public void move(SuperStructureState requState) {
 		//former superstructure periodic
 		updateState();
 
