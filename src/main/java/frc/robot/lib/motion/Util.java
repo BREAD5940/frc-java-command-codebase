@@ -33,8 +33,10 @@ public class Util {
 	}
 
 	public static RoundRotation2d limit(RoundRotation2d v, RoundRotation2d min, RoundRotation2d max) {
-		if(v.getDegree() > max.getDegree()) v = max;
-		if(v.getDegree() < min.getDegree()) v = min;
+		if (v.getDegree() > max.getDegree())
+			v = max;
+		if (v.getDegree() < min.getDegree())
+			v = min;
 		return v;
 	}
 

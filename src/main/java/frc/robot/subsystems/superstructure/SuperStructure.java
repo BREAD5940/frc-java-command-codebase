@@ -23,6 +23,7 @@ import frc.robot.commands.subsystems.superstructure.SuperStructureTelop;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.PIDSettings.FeedbackMode;
 import frc.robot.lib.obj.InvertSettings;
+import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
@@ -58,6 +59,10 @@ public class SuperStructure extends Subsystem {
 	private DCMotorTransmission kElbowTransmission, kWristTransmission;
 	public static final Mass kHatchMass = MassKt.getLb(2.4); // FIXME check mass
 	public static final Mass kCargoMass = MassKt.getLb(1); // FIXME check mass
+	public static final RoundRotation2d kWristMin = RoundRotation2d.getDegree(-45); // relative
+	public static final RoundRotation2d kWristMax = RoundRotation2d.getDegree(90); // relative
+	public static final RoundRotation2d kElbowMin = RoundRotation2d.getDegree(-180); // absolute
+	public static final RoundRotation2d kElbowMax = RoundRotation2d.getDegree(-10); // absolute
 
 	public static synchronized SuperStructure getInstance() {
 		if (instance_ == null) {
@@ -95,10 +100,10 @@ public class SuperStructure extends Subsystem {
 
 		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
 
-		mWrist = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, false /* FIXME check inverting! */,
+		mWrist = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
 				Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
-		mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33,
+		mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
 				false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 
 	}
@@ -285,7 +290,7 @@ public class SuperStructure extends Subsystem {
 		lastLastSH = lastSH;
 		lastSH = currentSetHeight;
 
-		lastState  = new SuperStructureState(new ElevatorState(currentSetHeight), mReqPath.get(0).getAngle());
+		lastState = new SuperStructureState(new ElevatorState(currentSetHeight), mReqPath.get(0).getAngle());
 
 		return new SuperStructureState(new ElevatorState(currentSetHeight), mReqPath.get(0).getAngle());
 	}
