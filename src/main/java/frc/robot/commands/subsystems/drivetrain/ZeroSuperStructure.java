@@ -1,6 +1,7 @@
 package frc.robot.commands.subsystems.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -23,10 +24,13 @@ public class ZeroSuperStructure extends Command {
 	public void initialize() {
 		System.out.println("Zeroing encoders.");
 		if (p.equals("elevator")) {
+			Logger.log("zeroing elevator");
 			SuperStructure.getInstance().getElevator().zeroEncoder();
 		} else if (p.equals("elbow")) {
+			Logger.log("zeroing elbow");
 			SuperStructure.getInstance().getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(0));
 		} else if (p.equals("wrist")) {
+			Logger.log("zeroing wrist");
 			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(0));
 		} else if (p.equals("maxElevator")) {
 			SuperStructure.getInstance().getElevator().getMaster().setSensorPosition(SuperstructurePlanner.top);
