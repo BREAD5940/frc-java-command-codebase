@@ -19,6 +19,7 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 
 import frc.robot.lib.PIDSettings;
+import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.AngularVelocity;
 import frc.robot.lib.obj.HalfBakedRotatingSRX;
 import frc.robot.lib.obj.RoundRotation2d;
@@ -37,6 +38,8 @@ public class RotatingJoint /*extends Subsystem*/ {
 
 	private RotatingArmState mPeriodicIO = new RotatingArmState();
 
+	private final RoundRotation2d kMinAngle, kMaxAngle;
+
 	// private PIDSettings pidSettings;
 
 	private double mTicksPerRotation;
@@ -53,8 +56,8 @@ public class RotatingJoint /*extends Subsystem*/ {
 	 * @param motorPort on the CAN Bus (for single talon arms)
 	 * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
 	 */
-	public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor, double reduction, boolean invert, Length armLength, Mass mass) {
-		this(settings, Arrays.asList(motorPort), sensor, reduction, invert, armLength, mass); //FIXME what should the default masterInvert ACTUALLY be?
+	public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor, double reduction, RoundRotation2d min, RoundRotation2d max, boolean invert, Length armLength, Mass mass) {
+		this(settings, Arrays.asList(motorPort), sensor, reduction, min, max, invert, armLength, mass); //FIXME what should the default masterInvert ACTUALLY be?
 	}
 
 	/**
@@ -65,7 +68,10 @@ public class RotatingJoint /*extends Subsystem*/ {
 	 * @param ports of talon CAN ports as a List
 	 * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
 	 */
-	public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, double reduction, boolean masterInvert, Length armLength, Mass armMass) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
+	public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, double reduction, RoundRotation2d min, RoundRotation2d max, boolean masterInvert, Length armLength, Mass armMass) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
+
+		kMinAngle = min;
+		kMaxAngle = max;
 
 		kArmLength = armLength;
 
@@ -112,6 +118,11 @@ public class RotatingJoint /*extends Subsystem*/ {
 
 	public void setClosedLoopGains(int slot, PIDSettings config) {
 		setClosedLoopGains(slot, config.kp, config.ki, config.kd, config.kf, config.iZone, config.maxIAccum, config.minOutput, config.maxOutput);
+	}
+
+	public void requestAngle(RoundRotation2d reqAngle) {
+		reqAngle = Util.limit(reqAngle, kMinAngle, kMaxAngle);
+		getMaster().set(ControlMode.Position, reqAngle);
 	}
 
 	public void setSetpoint(double setpoint_) {}
