@@ -6,6 +6,7 @@ import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 public class HalfBakedRotatingSRX extends WPI_TalonSRX {
@@ -57,7 +58,11 @@ public class HalfBakedRotatingSRX extends WPI_TalonSRX {
 		super.set(mode, getTicks(setpoint));
 	}
 
-	// public CompatVelocity<RoundRotation2d> getSensorVelocity(){
-	//   return 
-	// }
+	public void set(ControlMode mode, RoundRotation2d setpoint, DemandType type, double arg2) {
+		if (mode == ControlMode.Position)
+			super.set(mode, getTicks(setpoint), type, arg2);
+		else {
+			System.out.println("Cannot set to any other mode with RoundRotation2d. ur bad");
+		}
+	}
 }

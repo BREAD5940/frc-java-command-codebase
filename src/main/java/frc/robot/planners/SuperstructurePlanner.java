@@ -100,24 +100,27 @@ public class SuperstructurePlanner {
 		}
 
 		//TODO do we need these angle checks?
-		if(goalState.getElbowAngle().getDegree()>overallMaxElbow.getDegree()){
+		if (goalState.getElbowAngle().getDegree() > overallMaxElbow.getDegree()) {
 			System.out.println("MOTION IMPOSSIBLE -- Elbow passes hardstop. Setting to maximum.");
-			errorCount++; corrCount++;
+			errorCount++;
+			corrCount++;
 			goalState.getElbow().setAngle(overallMaxElbow);
-		} else if (goalState.getElbowAngle().getDegree()<overallMinElbow.getDegree()){
+		} else if (goalState.getElbowAngle().getDegree() < overallMinElbow.getDegree()) {
 			System.out.println("MOTION IMPOSSIBLE -- Elbow passes hardstop. Setting to minimum.");
-			errorCount++; corrCount++;
+			errorCount++;
+			corrCount++;
 			goalState.getElbow().setAngle(overallMinElbow);
 		}
 
-
-		if(goalState.getWrist().angle.getDegree()>overallMaxWrist.getDegree()){
+		if (goalState.getWrist().angle.getDegree() > overallMaxWrist.getDegree()) {
 			System.out.println("MOTION IMPOSSIBLE -- Wrist passes hardstop. Setting to maximum.");
-			errorCount++; corrCount++;
+			errorCount++;
+			corrCount++;
 			goalState.getWrist().setAngle(overallMaxWrist);
-		}else if(goalState.getWrist().angle.getDegree()<overallMinWrist.getDegree()){
+		} else if (goalState.getWrist().angle.getDegree() < overallMinWrist.getDegree()) {
 			System.out.println("MOTION IMPOSSIBLE -- Wrist passes hardstop. Setting to minimum.");
-			errorCount++; corrCount++;
+			errorCount++;
+			corrCount++;
 			goalState.getWrist().setAngle(overallMinWrist);
 		}
 
