@@ -129,12 +129,9 @@ public class SuperStructure extends Subsystem {
 				CARGO_PLACE, CARGO_REVERSE, HATCH, HATCH_REVERSE));
 	}
 
-	public boolean setReqState(SuperStructureState reqState) {
-		if (!(planner.checkValidState(reqState)))
-			return false;
-		this.mReqState = reqState;
-		return true;
-	}
+	// public boolean setReqState(SuperStructureState reqState) {
+	// 	plan(req)
+	// }
 
 	/**
 	 * Move the superstructure based on a height, intake angle and wrist angle
