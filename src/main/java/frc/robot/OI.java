@@ -1,7 +1,5 @@
 package frc.robot;
 
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -11,17 +9,9 @@ import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.StopWithoutDisable;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
-import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
-import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
-import frc.robot.states.ElevatorState;
-import frc.robot.states.IntakeAngle;
-import frc.robot.states.SuperStructureState;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
-import frc.robot.subsystems.superstructure.SuperStructure;
-import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 /**
  * Operator Input not Out-In

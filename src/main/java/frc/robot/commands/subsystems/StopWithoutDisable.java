@@ -9,27 +9,33 @@ public class StopWithoutDisable extends Command {
 	boolean drivetrain;
 
 	public StopWithoutDisable(boolean drivetrain) {
-		if (drivetrain){
-      requires(DriveTrain.getInstance());
-    }else{
-      requires(SuperStructure.getInstance());
-    }
-    this.drivetrain=drivetrain;
+		if (drivetrain) {
+			requires(DriveTrain.getInstance());
+		} else {
+			requires(SuperStructure.getInstance());
+		}
+		this.drivetrain = drivetrain;
 	}
 
 	@Override
 	public void initialize() {
-    if(drivetrain){
-      DriveTrain.getInstance().setPowers(0, 0);
-      //FIXME this won't make the robot do an Inertia and yeet itself over, right?
-    }else{
-      SuperStructure.getInstance().move(new SuperStructureState());
-    }
+		if (drivetrain) {
+			DriveTrain.getInstance().stop();
+			//FIXME this won't make the robot do an Inertia and yeet itself over, right?
+		} else {
+			SuperStructure.getInstance().move(new SuperStructureState());
+		}
 	}
 
 	@Override
 	public void execute() {
-
+		if (drivetrain) {
+			DriveTrain.getInstance().getDefaultCommand().cancel();
+			DriveTrain.getInstance().getCurrentCommand().cancel();
+		} else {
+			SuperStructure.getInstance().getDefaultCommand().cancel();
+			SuperStructure.getInstance().getCurrentCommand().cancel();
+		}
 	}
 
 	@Override
@@ -38,8 +44,7 @@ public class StopWithoutDisable extends Command {
 	}
 
 	@Override
-	public void end() {
-	}
+	public void end() {}
 
 	@Override
 	public void interrupted() {

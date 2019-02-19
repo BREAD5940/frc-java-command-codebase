@@ -1,15 +1,15 @@
 package frc.robot;
 
-public class SuperStructureConstants{
-  public static class Wrist{
-    
-  }
+public class SuperStructureConstants {
+	public static class Wrist {
 
-  public static class Elbow{
+	}
 
-  }
+	public static class Elbow {
 
-  public static class Elevator{
+	}
 
-  }
+	public static class Elevator {
+
+	}
 }
