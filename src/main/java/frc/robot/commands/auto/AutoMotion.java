@@ -91,7 +91,6 @@ public class AutoMotion {
 			toReturn.addSequential(new RunIntake(75, 1));
 			this.endPiece = HeldPiece.CARGO;
 		} else if (this.gType == GoalType.RETRIEVE_HATCH) {
-			// Predefined grab command
 			//TODO align with vision targets
 			//yeet into loading station
 			toReturn.addSequential(new DriveDistance(0.5));
@@ -100,7 +99,7 @@ public class AutoMotion {
 			toReturn.addSequential(new SetHatchMech(HatchMechState.kClamped));
 			//pull the hatch out of the brushes
 			toReturn.addSequential(new SuperstructureGoToState(new ElevatorState(getElevatorPreset().plus(LengthKt.getInch(6))))); // lift from brushes
-			// toReturn.addSequential(new DriveDistance(-0.5)); // back up
+			toReturn.addSequential(new DriveDistance(-0.5)); // back up
 			this.endPiece = HeldPiece.HATCH;
 		}
 		return toReturn;
@@ -118,10 +117,10 @@ public class AutoMotion {
 
 		if (this.gType == GoalType.CARGO_CARGO) {
 			// Drive forward so the intake is over the bay and the bumpers are in the indent thingy
-			// toReturn.addSequential(new DriveDistance(1 + 0.43)); // the 0.43 is the bumpers FIXME check distances
+			toReturn.addSequential(new DriveDistance(0.5 + 0.43)); // the 0.43 is the bumpers FIXME check distances
 		} else {
 			// Drive forward so the intake is flush with the port/hatch
-			// toReturn.addSequential(new DriveDistance(1)); // FIXME check distances
+			toReturn.addSequential(new DriveDistance(0.5)); // FIXME check distances
 		}
 
 		if (this.piece == HeldPiece.CARGO) {

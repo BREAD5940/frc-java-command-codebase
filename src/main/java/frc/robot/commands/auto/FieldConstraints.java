@@ -16,6 +16,7 @@ import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
 import frc.robot.RobotConfig;
 
+@Deprecated
 public class FieldConstraints {
 	protected static final int numDec = 1000;
 	protected static double rad = Math.round(RobotConfig.auto.robotRadius.getFeet() * numDec);
