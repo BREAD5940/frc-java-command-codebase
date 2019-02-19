@@ -44,6 +44,7 @@ public class SuperStructure extends Subsystem {
 	private static double currentDTVelocity; //in ft/sec
 	private static Length currentSetHeight, lastSH = LengthKt.getInch(70), lastLastSH = LengthKt.getInch(70);
 	public SuperStructureState mReqState = new SuperStructureState();
+	public SuperStructureState lastState = new SuperStructureState(updateState());
 	private CommandGroup mCurrentCommandGroup;
 	private ArrayList<SuperStructureState> mReqPath;
 	private int cPathIndex = 0;
@@ -283,6 +284,8 @@ public class SuperStructure extends Subsystem {
 
 		lastLastSH = lastSH;
 		lastSH = currentSetHeight;
+
+		lastState  = new SuperStructureState(new ElevatorState(currentSetHeight), mReqPath.get(0).getAngle());
 
 		return new SuperStructureState(new ElevatorState(currentSetHeight), mReqPath.get(0).getAngle());
 	}

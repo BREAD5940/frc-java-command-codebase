@@ -42,8 +42,10 @@ public class SuperstructureGoToState extends Command {
 
 		//former superstructure periodic
 		SuperStructure.getInstance().updateState();
-		double mCurrentWristTorque = Math.abs(SuperStructure.getInstance().calculateWristTorque(SuperStructure.getInstance().updateState())); // torque due to gravity and elevator acceleration, newton meters
-		double mCurrentElbowTorque = Math.abs(SuperStructure.getInstance().calculateElbowTorques(SuperStructure.getInstance().updateState(), mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
+
+		SuperStructureState prevState = SuperStructure.getInstance().lastState;
+		double mCurrentWristTorque = Math.abs(SuperStructure.getInstance().calculateWristTorque(prevState)); // torque due to gravity and elevator acceleration, newton meters
+		double mCurrentElbowTorque = Math.abs(SuperStructure.getInstance().calculateElbowTorques(prevState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
 
 		double wristVoltageGravity = SuperStructure.getInstance().getWTransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getWrist().velocity.getValue(), mCurrentWristTorque);
 		double elbowVoltageGravity = SuperStructure.getInstance().getETransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getElbow().velocity.getValue(), mCurrentElbowTorque);
