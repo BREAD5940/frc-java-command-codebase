@@ -64,6 +64,7 @@ public class SuperstructurePlanner {
 	int corrCount; //number of corrected items in motion
 	SuperStructureState currentPlannedState;
 
+	@Deprecated //we shouldn't use this
 	public boolean checkValidState(SuperStructureState reqState) { //what is this supposed to do? does it just check if the path is possible w/o correction?
 		// TODO is this what we actuall want this to looke like?
 		ArrayList<SuperStructureState> plannedPath = this.plan(reqState, this.currentPlannedState);
@@ -98,6 +99,7 @@ public class SuperstructurePlanner {
 			goalState.getElevator().setHeight(bottom);
 		}
 
+		//TODO do we need these angle checks?
 		if(goalState.getElbowAngle().getDegree()>overallMaxElbow.getDegree()){
 			System.out.println("MOTION IMPOSSIBLE -- Elbow passes hardstop. Setting to maximum.");
 			errorCount++; corrCount++;
@@ -119,8 +121,7 @@ public class SuperstructurePlanner {
 			goalState.getWrist().setAngle(overallMinWrist);
 		}
 
-		//heights
-
+		
 		carriagePoint = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight());
 		wristPoint = new Translation2d(LengthKt.getInch(Math.cos(goalState.getElbowAngle().getRadian())* carriageToIntake.getInch()),
 				 carriagePoint.getY().plus(LengthKt.getInch(Math.sin(goalState.getAngle().getElbow().angle.getRadian()) * carriageToIntake.getInch())));
@@ -129,9 +130,11 @@ public class SuperstructurePlanner {
 
 		
 
-		if((wristPoint.getX().getInch()<0&&Math.cos(currentState.getElbowAngle().getRadian())*carriageToIntake.getInch()>0)
-				){
-
+		if((wristPoint.getX().getInch()<0&&Math.cos(currentState.getElbowAngle().getRadian())*carriageToIntake.getInch()>0)){ //FIXME this probably needs another thingy
+					//if it passes through the elevator between current and goal
+					System.out.println("MOTION UNSAFE -- Can't pass through the elevator at points other than the pass-through point. Adding to path.");
+					errorCount++;
+					toReturn.add(passThroughState);
 				}
 		
 		//le booleans
