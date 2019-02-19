@@ -243,11 +243,10 @@ public class Elevator /*extends Subsystem*/ {
 		return (mCurrentGear == ElevatorGear.LOW) ? totalF / KLowGearForcePerVolt : totalF / KHighGearForcePerVolt;
 	}
 
-	public ElevatorState getCurrentState(ElevatorState lastKnown) {
-		Time time = TimeUnitsKt.getSecond(Timer.getFPGATimestamp());
-		Acceleration<Length> accel = AccelerationKt.getAcceleration(LengthKt.getMeter(
-				(getVelocity().getValue() - lastKnown.velocity.getValue()) / (time.getValue() - lastKnown.time.getValue())));
-		return new ElevatorState(getHeight(), getVelocity(),
-				accel, time);
+	public ElevatorState getCurrentState() {
+		// Time time = TimeUnitsKt.getSecond(Timer.getFPGATimestamp());
+		// Acceleration<Length> accel = AccelerationKt.getAcceleration(LengthKt.getMeter(
+				// (getVelocity().getValue() - lastKnown.velocity.getValue()) / (time.getValue() - lastKnown.time.getValue())));
+		return new ElevatorState(getHeight(), getVelocity());
 	}
 }

@@ -38,7 +38,7 @@ public class SuperstructurePlanner {
 	static final Length carriageToIntake = LengthKt.getInch(12); //FIXME verify
 	static final Length intakeDiameter = LengthKt.getInch(19);
 
-	public static final RoundRotation2d overallMaxElbow = RoundRotation2d.getDegree(30); //FIXME actual numbers might be nice
+	public static final RoundRotation2d overallMaxElbow = RoundRotation2d.getDegree(15); //FIXME actual numbers might be nice
 	public static final RoundRotation2d overallMinElbow = RoundRotation2d.getDegree(-190); //FIXME ^^
 	public static final RoundRotation2d overallMaxWrist = RoundRotation2d.getDegree(180); //FIXME ^^
 	public static final RoundRotation2d overallMinWrist = RoundRotation2d.getDegree(-180); //FIXME ^^

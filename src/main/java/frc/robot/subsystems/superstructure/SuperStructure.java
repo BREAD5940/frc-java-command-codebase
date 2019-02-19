@@ -50,8 +50,7 @@ public class SuperStructure extends Subsystem {
 	private ArrayList<SuperStructureState> mReqPath;
 	private int cPathIndex = 0;
 	private boolean currentPathComplete = false;
-	public static Elevator elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
-			new InvertSettings(true, InvertType.FollowMaster, InvertType.FollowMaster, InvertType.OpposeMaster));
+	public static Elevator elevator;
 	public static Intake intake = new Intake(34);
 	private SuperstructurePlanner planner = new SuperstructurePlanner();
 	// public SuperStructureState mPeriodicIO = new SuperStructureState();
@@ -62,7 +61,7 @@ public class SuperStructure extends Subsystem {
 	public static final RoundRotation2d kWristMin = RoundRotation2d.getDegree(-45); // relative
 	public static final RoundRotation2d kWristMax = RoundRotation2d.getDegree(90); // relative
 	public static final RoundRotation2d kElbowMin = RoundRotation2d.getDegree(-180); // absolute
-	public static final RoundRotation2d kElbowMax = RoundRotation2d.getDegree(-10); // absolute
+	public static final RoundRotation2d kElbowMax = RoundRotation2d.getDegree(15); // absolute
 
 	public static synchronized SuperStructure getInstance() {
 		if (instance_ == null) {
@@ -106,9 +105,14 @@ public class SuperStructure extends Subsystem {
 		mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
 				false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 
+		elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
+				new InvertSettings(true, InvertType.FollowMaster, InvertType.FollowMaster, InvertType.OpposeMaster));
+				
+		mCurrentState = new SuperStructureState();
+
 	}
 
-	private SuperStructureState mCurrentState = new SuperStructureState();
+	private SuperStructureState mCurrentState;
 
 	public SuperStructureState getCurrentState() {
 		return mCurrentState;
@@ -203,20 +207,37 @@ public class SuperStructure extends Subsystem {
 	}
 
 	public SuperStructureState updateState() {
+		// ElevatorState mCurrent = mCurrentState.elevator;
+		getElevator().getCurrentState();
+		getWrist().getCurrentState();
+		getElbow().getCurrentState();
+
+
 		this.mCurrentState = new SuperStructureState(
-				elevator.getCurrentState(mCurrentState.elevator),
+				elevator.getCurrentState(),
 				// mWrist.getCurrentState(),
 				// mElbow.getCurrentState());
-				new RotatingArmState(),
-				new RotatingArmState());
+				mWrist.getCurrentState(),
+				mElbow.getCurrentState());
 		return mCurrentState;
 	}
 
 	public RotatingJoint getWrist() {
+		if(mWrist == null) mW rist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
+				Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
+
+// 		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
+// 		Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
+
+// mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
+// 		false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+
 		return mWrist;
 	}
 
 	public RotatingJoint getElbow() {
+		if(mElbow == null) mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
+				false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 		return mElbow;
 	}
 
