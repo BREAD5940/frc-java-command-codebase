@@ -40,28 +40,7 @@ public class SuperstructureGoToState extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-
-		//former superstructure periodic
-		SuperStructure.getInstance().updateState();
-
-		SuperStructureState prevState = SuperStructure.getInstance().lastState;
-		// double mCurrentWristTorque = Math.abs(SuperStructure.getInstance().calculateWristTorque(prevState)); // torque due to gravity and elevator acceleration, newton meters
-		// double mCurrentElbowTorque = Math.abs(SuperStructure.getInstance().calculateElbowTorques(prevState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
-
-		// double wristVoltageGravity = SuperStructure.getInstance().getWTransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getWrist().velocity.getValue(), mCurrentWristTorque);
-		// double elbowVoltageGravity = SuperStructure.getInstance().getETransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getElbow().velocity.getValue(), mCurrentElbowTorque);
-		double elevatorPercentVbusGravity = SuperStructure.getInstance().getElevator().getVoltage(SuperStructure.getInstance().updateState()) / 12;//getElevator().getMaster().getBusVoltage();		
-
-		// if (Math.abs(mOI.getWristAxis()) > 0.07) {
-		// SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mRequState.getWrist().angle);
-
-		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
-		SuperStructureState stateSetpoint = SuperStructure.getInstance().plan(mRequState);
-
-		SuperStructure.getInstance().getWrist().requestAngle(stateSetpoint.getWrist().angle); // div by 12 because it expects a throttle
-		SuperStructure.getInstance().getElbow().requestAngle(stateSetpoint.getElbow().angle); // div by 12 because it expects a throttle
-		SuperStructure.getInstance().getElevator().setPositionArbitraryFeedForward(stateSetpoint.getElevator().height, elevatorPercentVbusGravity / 12d);
-		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
+		SuperStructure.getInstance().move(mRequState);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

@@ -253,37 +253,28 @@ public class SuperStructure extends Subsystem {
 		return elevator;
 	}
 
-	@Override
-	public void periodic() {
-		// // this calculates gravity feed forwards based off of the current state and requested state
-		// // make sure to keep these up to date!!!
-		// updateState();
+	public void move(SuperStructureState requState){
+		//former superstructure periodic
+		updateState();
 
-		// // Make for sure for real real that the voltage is always positive
-		// // double mCurrentWristTorque = Math.abs(calculateWristTorque(this.mCurrentState)); // torque due to gravity and elevator acceleration, newton meters
-		// // double mCurrentElbowTorque = Math.abs(calculateElbowTorques(this.mCurrentState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
+		SuperStructureState prevState = lastState;
+		// double mCurrentWristTorque = Math.abs(SuperStructure.getInstance().calculateWristTorque(prevState)); // torque due to gravity and elevator acceleration, newton meters
+		// double mCurrentElbowTorque = Math.abs(SuperStructure.getInstance().calculateElbowTorques(prevState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
 
-		// // double wristVoltageGravity = kWristTransmission.getVoltageForTorque(this.mCurrentState.getWrist().velocity.getValue(), mCurrentWristTorque);
-		// // double elbowVoltageGravity = kElbowTransmission.getVoltageForTorque(this.mCurrentState.getElbow().velocity.getValue(), mCurrentElbowTorque);
-		// double elevatorPercentVbusGravity = elevator.getVoltage(this.mCurrentState) / 12;//getElevator().getMaster().getBusVoltage();
+		// double wristVoltageGravity = SuperStructure.getInstance().getWTransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getWrist().velocity.getValue(), mCurrentWristTorque);
+		// double elbowVoltageGravity = SuperStructure.getInstance().getETransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getElbow().velocity.getValue(), mCurrentElbowTorque);
+		double elevatorPercentVbusGravity = getElevator().getVoltage(updateState()) / 12;//getElevator().getMaster().getBusVoltage();		
 
-		// // System.out.println("Calculated elevator voltage" + elevator.getVoltage(getCurrentState()));
+		// if (Math.abs(mOI.getWristAxis()) > 0.07) {
+		// SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mRequState.getWrist().angle);
 
-		// // TODO velocity planning? or just let talon PID figure itself out
-		// // How about maybe motion magic?
+		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
+		SuperStructureState stateSetpoint = plan(requState);
 
-		// // getWrist().setPositionArbitraryFeedForward(mReqPath.get(0).getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
-		// // getElbow().setPositionArbitraryFeedForward(mReqPath.get(0).getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
-		// getElevator().setPositionArbitraryFeedForward(mReqPath.get(0).getElevator().height, elevatorPercentVbusGravity / 12d);
-		// // getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
-
-		// SmartDashboard.putNumber("elevator height in inches", mCurrentState.elevator.getHeight().getInch());
-		// SmartDashboard.putNumber("target elevator height", mReqPath.get(0).getElevator().height.getInch());
-		// SmartDashboard.putNumber("elevator output", getElevator().getMaster().getMotorOutputPercent());
-
-		// SmartDashboard.putNumber("Wrist position", getWrist().getPosition().getDegree());
-		// SmartDashboard.putNumber("Elbow position", getElbow().getPosition().getDegree());
-
+		getWrist().requestAngle(stateSetpoint.getWrist().angle); // div by 12 because it expects a throttle
+		getElbow().requestAngle(stateSetpoint.getElbow().angle); // div by 12 because it expects a throttle
+		getElevator().setPositionArbitraryFeedForward(stateSetpoint.getElevator().height, elevatorPercentVbusGravity / 12d);
+		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
 	}
 
 	public SuperStructureState plan(SuperStructureState mReqState) {

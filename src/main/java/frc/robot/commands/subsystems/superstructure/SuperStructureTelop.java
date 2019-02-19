@@ -12,7 +12,10 @@ import frc.robot.Robot;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
+import frc.robot.states.IntakeAngle;
+import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 public class SuperStructureTelop extends Command {
 	private OI mOI = Robot.m_oi;
@@ -62,7 +65,7 @@ public class SuperStructureTelop extends Command {
 		}
 
 		if (move) {
-			new SuperstructureGoToState(new ElevatorState(newE)).start();
+			SuperStructure.getInstance().move(new SuperStructureState(new ElevatorState(newE), new RotatingArmState(), new RotatingArmState()));
 			System.out.printf("Current elevator req height: %f\n", newE.getInch());
 		}
 
