@@ -7,6 +7,8 @@ import java.util.List;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
+import frc.robot.lib.obj.RoundRotation2d;
+
 /**
  * Contains basic functions that are used often.
  */
@@ -28,6 +30,14 @@ public class Util {
 
 	public static double limit(double v, double min, double max) {
 		return Math.min(max, Math.max(min, v));
+	}
+
+	public static RoundRotation2d limit(RoundRotation2d v, RoundRotation2d min, RoundRotation2d max) {
+		if (v.getDegree() > max.getDegree())
+			v = max;
+		if (v.getDegree() < min.getDegree())
+			v = min;
+		return v;
 	}
 
 	public static double deadband(double v, double deadband) {

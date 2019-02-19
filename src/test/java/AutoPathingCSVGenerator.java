@@ -8,22 +8,95 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
-import org.junit.jupiter.api.Test;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.Logger;
+import frc.robot.states.ElevatorState;
+import frc.robot.states.SuperStructureState;
+import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 public class AutoPathingCSVGenerator {
 
-	@Test
-	public void twoHatchLLtest() {
-		Trajectories.generateAllTrajectories(false);
-		ArrayList<Translation2d> path = TwoHatchOneCargoLeft('L', 'L');
-		writeToCSV("src/main/python/twoHatchLLtest.csv", path);
+	// @Test
+	// public void twoHatchLLtest() {
+	// 	Trajectories.generateAllTrajectories(false);
+	// 	TwoHatchOneCargoLeft routine = new TwoHatchOneCargoLeft('L', 'L');
+	// 	ArrayList<Translation2d> path = new ArrayList<>();
+	// 	for (TimedTrajectory<Pose2dWithCurvature> i : routine.trajects) {
+	// 		path.addAll(trajectToArrayList(i));
+	// 	}
+	// 	ArrayList<SuperStructureState> temp = new ArrayList<>();
+	// 	for (AutoMotion i : routine.motions) {
+	// 		temp.add(i.getSSState());
+	// 	}
 
-		// path = TwoHatchOneCargoLeft('R', 'R');
-		// writeToCSV("twoHatchRRest", path);
+	// 	routine.close();
+	// 	ArrayList<SuperStructureState> iteras = injectStates(temp, routine.trajects);
+	// 	writeToCSV("src/main/python/twoHatchLLtest.csv", path);
+	// 	writeToAngleCSV("src/main/python/twoHatchLLtestSuper.csv", iteras);
+
+	// 	// path = TwoHatchOneCargoLeft('R', 'R');
+	// 	// writeToCSV("twoHatchRRest", path);
+	// }
+
+	public ArrayList<SuperStructureState> injectStates(ArrayList<SuperStructureState> wps, ArrayList<TimedTrajectory<Pose2dWithCurvature>> bigPath) {
+		double elevatorInchPerSecond = 12;
+		double elbowRadPerSecond = 3.14159;
+		double wristRadPerSecond = 3.14159;
+		ArrayList<SuperStructureState> toReturn = new ArrayList<SuperStructureState>();
+
+		if (wps.size() != bigPath.size()) {
+			System.out.println("ur bad");
+			return toReturn;
+		}
+
+		toReturn.add(0, new SuperStructureState());
+		for (int i = 0; i < bigPath.size(); i++) {
+			SuperStructureState currentGoal = wps.get(i);
+			for (int j = 0; j < bigPath.get(i).getPoints().size() - 1; j++) {
+				if (j == 0) {
+					toReturn.add(toReturn.get(toReturn.size() - 1));
+				} else {
+					TimedEntry<Pose2dWithCurvature> point = bigPath.get(i).getPoints().get(j);
+					double deltaT = (point.getT().getSecond() - bigPath.get(i).getPoints().get(j - 1).getT().getSecond()) / 2;
+					SuperStructureState prevState = toReturn.get(toReturn.size() - 1);
+
+					double nextHeight = 0; //FIXME this requires math and ifs to make it move the right distance in the right direction
+					double nextElbow = 0;
+					double nextWrist = 0;
+
+					if (currentGoal.getElevatorHeight().getInch() - prevState.getElevatorHeight().getInch() > 0) {
+						nextHeight = prevState.getElevatorHeight().getInch() + elevatorInchPerSecond / deltaT;
+					} else {
+						nextHeight = prevState.getElevatorHeight().getInch() - elevatorInchPerSecond / deltaT;
+					}
+
+					if (currentGoal.getElbowAngle().getRadian() - prevState.getElbowAngle().getRadian() > 0) {
+						nextElbow = prevState.getElbowAngle().getRadian() + elbowRadPerSecond / deltaT;
+					} else {
+						nextElbow = prevState.getElbowAngle().getRadian() - elbowRadPerSecond / deltaT;
+					}
+
+					if (currentGoal.getWrist().angle.getRadian() - prevState.getWrist().angle.getRadian() > 0) {
+						nextElbow = prevState.getWrist().angle.getRadian() + wristRadPerSecond / deltaT;
+					} else {
+						nextElbow = prevState.getWrist().angle.getRadian() - wristRadPerSecond / deltaT;
+					}
+
+					toReturn.add(new SuperStructureState(new ElevatorState(LengthKt.getInch(nextHeight)),
+							new RotatingArmState(Rotation2dKt.getRadian(nextElbow)),
+							new RotatingArmState(Rotation2dKt.getRadian(nextWrist))));
+				}
+			}
+		}
+
+		//TODO this should add in-between states to the list  so they match up with the trajects
+		//wps should be equal in length to bigPath
+		//toReturn should be equal in length to path
+		return toReturn;
 	}
 
 	public void writeToCSV(String file, ArrayList<Translation2d> path) {
@@ -35,6 +108,26 @@ public class AutoPathingCSVGenerator {
 			pw.println("x,y");
 			for (Translation2d t : path) {
 				pw.println(t.getX().getFeet() + "," + t.getY().getFeet());
+			}
+
+			// pw.print("adsffdsaadsfdsfaadsffads1");
+
+			pw.close();
+		} catch (IOException ioe) {
+			System.out.println(ioe);
+		}
+
+	}
+
+	public void writeToAngleCSV(String file, ArrayList<SuperStructureState> path) {
+
+		try {
+			FileWriter fw = new FileWriter(file);
+			PrintWriter pw = new PrintWriter(fw, true);
+
+			pw.println("height,elbowAngle,wristAngle");
+			for (SuperStructureState t : path) {
+				pw.println(t.getElevatorHeight().getFeet() + "," + t.getElbowAngle().getRadian() + "," + t.getWrist().angle.getRadian());
 			}
 
 			// pw.print("adsffdsaadsfdsfaadsffads1");

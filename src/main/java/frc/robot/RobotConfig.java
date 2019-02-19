@@ -193,7 +193,7 @@ public class RobotConfig {
 			public static final Length cargoMiddleGoal = LengthKt.getInch(55.5);
 			public static final Length cargoHighGoal = LengthKt.getInch(83.5);
 
-			public static final Length hatchLowGoal = LengthKt.getInch(19);
+			public static final Length hatchLowGoal = LengthKt.getInch(8.5);
 			public static final Length hatchMiddleGoal = LengthKt.getInch(47);
 			public static final Length hatchHighGoal = LengthKt.getInch(75);
 
@@ -288,7 +288,7 @@ public class RobotConfig {
 	public static class elevator {
 		public static final double elevator_effective_diameter = 1.27 * 1.6; // TODO fix elevator_effective_diameter!!!! (units must be inches)
 		public static final Length elevator_minimum_height = LengthKt.getInch(0f);
-		public static final Length elevator_maximum_height = LengthKt.getInch(55f); // changed to inches, TODO verify maximum height
+		public static final Length elevator_maximum_height = LengthKt.getInch(65f); // changed to inches, TODO verify maximum height
 
 		private static final NativeUnit kSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
 		private static final Length left_radius = LengthKt.getInch(1);

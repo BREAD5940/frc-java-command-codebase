@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
@@ -42,9 +43,9 @@ public class Robot extends TimedRobot {
 	// public static VisionProcessor visionProcessor = new VisionProcessor();
 	public static LimeLight limelight = new LimeLight();
 	// public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
-	private static DoubleSolenoid shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
-	private static DoubleSolenoid intakeDoubleSolenoid = new DoubleSolenoid(9, 2, 3);
-	private static DoubleSolenoid elevatorShifterDoubleSolenoid;
+	public static DoubleSolenoid shifterDoubleSolenoid;
+	public static DoubleSolenoid intakeDoubleSolenoid;
+	public static DoubleSolenoid elevatorShifterDoubleSolenoid;
 	public static AutoMotion m_auto;
 	SendableChooser<Command> m_chooser = new SendableChooser<Command>();
 	public static Compressor compressor = new Compressor(9);
@@ -57,19 +58,38 @@ public class Robot extends TimedRobot {
 
 	// Various pneumatic shifting methods
 	public static void drivetrain_shift_high() {
-		shifterDoubleSolenoid.set(DoubleSolenoid.Value.kForward);
+		getShifterSolenoid().set(DoubleSolenoid.Value.kForward);
+	}
+
+	public static DoubleSolenoid getShifterSolenoid() {
+		if (shifterDoubleSolenoid == null)
+			shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
+		return shifterDoubleSolenoid;
+	}
+
+	public static DoubleSolenoid getIntakeSolenoidInstance() {
+		if (intakeDoubleSolenoid == null)
+			intakeDoubleSolenoid = new DoubleSolenoid(9, 2, 3);
+		return intakeDoubleSolenoid;
+	}
+
+	public static DoubleSolenoid getElevatorShifter() {
+		if (elevatorShifterDoubleSolenoid == null) {
+			elevatorShifterDoubleSolenoid = new DoubleSolenoid(9, 4, 5);
+		}
+		return elevatorShifterDoubleSolenoid;
 	}
 
 	public static Gear getDrivetrainGear() {
-		return (shifterDoubleSolenoid.get() == Value.kForward) ? Gear.HIGH : Gear.LOW;
+		return (getShifterSolenoid().get() == Value.kForward) ? Gear.HIGH : Gear.LOW;
 	}
 
-	public static Value getIntakeSolenoid() {
+	public static Value getIntakeSolenoidState() {
 		return intakeDoubleSolenoid.get();
 	}
 
 	public static void drivetrain_shift_low() {
-		shifterDoubleSolenoid.set(DoubleSolenoid.Value.kReverse);
+		getShifterSolenoid().set(DoubleSolenoid.Value.kReverse);
 	}
 
 	public static void intake_close() {
@@ -102,6 +122,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+		if (drivetrain == null)
+			drivetrain = DriveTrain.getInstance();
 		// FIXME Jocelyn this might mess with auto stuff, will it? (I think no?)
 		drivetrain.getLocalization().reset(new Pose2d(LengthKt.getFeet(5.5), LengthKt.getFeet(17), new Rotation2d(0f, 0f, false)));
 
@@ -115,8 +137,7 @@ public class Robot extends TimedRobot {
 		mGh.addOption("High", AutoMotion.GoalHeight.HIGH);
 		mGh.addOption("Dropped into the cargo ship", AutoMotion.GoalHeight.OVER);
 		SmartDashboard.putData("Goal Height", mGh);
-		SmartDashboard.putData(drivetrain);
-		SmartDashboard.putData(superstructure);
+
 		// SmartDashboard.putData(SuperStructure.intake);
 		// SmartDashboard.putData(shifterDoubleSolenoid);
 
@@ -158,7 +179,14 @@ public class Robot extends TimedRobot {
 
 		//     odometry_.setLastPosition(odometry_.getCurrentEncoderPosition());
 		// }).startPeriodic(0.02);
-
+		SmartDashboard.putData("Zero elevator height:", new ZeroSuperStructure("elevator"));
+		SmartDashboard.putData("Zero elbow angle:", new ZeroSuperStructure("elbow"));
+		SmartDashboard.putData("Zero wrist angle:", new ZeroSuperStructure("wrist"));
+		SmartDashboard.putData("Max elevator height:", new ZeroSuperStructure("maxElevator"));
+		SmartDashboard.putData("Max wrist angle:", new ZeroSuperStructure("maxWrist"));
+		SmartDashboard.putData("Min wrist angle:", new ZeroSuperStructure("minWrist"));
+		SmartDashboard.putData("Max elbow angle:", new ZeroSuperStructure("maxElbow"));
+		SmartDashboard.putData("Min elbow angle:", new ZeroSuperStructure("minElbow"));
 		drivetrain.zeroEncoders();
 		System.out.println("Robot init'ed and encoders zeroed!");
 
@@ -180,6 +208,7 @@ public class Robot extends TimedRobot {
 		}
 
 		drivetrain.setNeutralMode(NeutralMode.Coast);
+		SuperStructure.lastSH = LengthKt.getInch(0);
 
 	}
 
@@ -279,9 +308,14 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Left drivetrian feet per second", feetPerSecond.get(0));
 		SmartDashboard.putNumber("Right drivetrian feet per second", feetPerSecond.get(1));
 
-		SmartDashboard.putNumber("7 feet per second is", drivetrain.getLeft().getModel().fromModel(LengthKt.getFeet(7)).getValue());
+		SmartDashboard.putNumber("7 feet per second is", drivetrain.getLeft().getModel().toNativeUnitPosition(LengthKt.getFeet(7)).getValue());
 
 		SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
+
+		SmartDashboard.putData(drivetrain);
+		SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getCurrentState().angle.getDegree());
+		SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getCurrentState().angle.getDegree());
+		SmartDashboard.putData(superstructure);
 
 		// Limelight stuff
 		// double[] limelightdata = limelight.getData();

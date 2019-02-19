@@ -8,24 +8,25 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitRotationModel;
-import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 
 import frc.robot.lib.PIDSettings;
+import frc.robot.lib.motion.Util;
+import frc.robot.lib.obj.AngularVelocity;
+import frc.robot.lib.obj.HalfBakedRotatingSRX;
+import frc.robot.lib.obj.RoundRotation2d;
 
 public class RotatingJoint /*extends Subsystem*/ {
 
-	private ArrayList<FalconSRX<Rotation2d>> motors = new ArrayList<FalconSRX<Rotation2d>>();
+	private ArrayList<HalfBakedRotatingSRX> motors = new ArrayList<HalfBakedRotatingSRX>();
 
 	public Length kArmLength; // distance to COM of the arm
 
@@ -37,9 +38,11 @@ public class RotatingJoint /*extends Subsystem*/ {
 
 	private RotatingArmState mPeriodicIO = new RotatingArmState();
 
+	public final RoundRotation2d kMinAngle, kMaxAngle;
+
 	// private PIDSettings pidSettings;
 
-	private NativeUnitRotationModel mRotationModel;
+	private double mTicksPerRotation;
 
 	// public RotatingJoint(PIDSettings settings, int motorPort) {
 	//   this(settings, motorPort, null, 0);
@@ -53,8 +56,8 @@ public class RotatingJoint /*extends Subsystem*/ {
 	 * @param motorPort on the CAN Bus (for single talon arms)
 	 * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
 	 */
-	public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor, boolean invert, Length armLength, Mass mass) {
-		this(settings, Arrays.asList(motorPort), sensor, invert, armLength, mass); //FIXME what should the default masterInvert ACTUALLY be?
+	public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor, double reduction, RoundRotation2d min, RoundRotation2d max, boolean invert, Length armLength, Mass mass) {
+		this(settings, Arrays.asList(motorPort), sensor, reduction, min, max, invert, armLength, mass); //FIXME what should the default masterInvert ACTUALLY be?
 	}
 
 	/**
@@ -65,7 +68,10 @@ public class RotatingJoint /*extends Subsystem*/ {
 	 * @param ports of talon CAN ports as a List
 	 * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
 	 */
-	public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, boolean masterInvert, Length armLength, Mass armMass) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
+	public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, double reduction, RoundRotation2d min, RoundRotation2d max, boolean masterInvert, Length armLength, Mass armMass) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
+
+		kMinAngle = min;
+		kMaxAngle = max;
 
 		kArmLength = armLength;
 
@@ -75,20 +81,58 @@ public class RotatingJoint /*extends Subsystem*/ {
 
 		// TODO add support for more sensors
 		// if (sensor == FeedbackDevice.CTRE_MagEncoder_Relative) {
-		unitsPerRotation = NativeUnitKt.getSTU(4096);
+		// unitsPerRotation = NativeUnitKt.getSTU(4096).times(reduction);
 		// }
+		mTicksPerRotation = 4096 * reduction;
 
-		mRotationModel = new NativeUnitRotationModel(unitsPerRotation);
+		// mRotationModel = new NativeUnitRotationModel(unitsPerRotation);
 
 		// add all of our talons to the list
 		for (Integer i : ports) {
-			motors.add(new FalconSRX<Rotation2d>(i.intValue(), mRotationModel, TimeUnitsKt.getMillisecond(10)));
+			motors.add(new HalfBakedRotatingSRX(i.intValue(), mTicksPerRotation));
+		}
+
+		if (ports.size() > 1) {
+			motors.get(1).set(ControlMode.Follower, ports.get(0));
+			motors.get(1).setInverted(InvertType.OpposeMaster);
 		}
 
 		getMaster().configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
 		getMaster().configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 0);
-		getMaster().setSensorPosition(Rotation2dKt.getDegree(0));
+		getMaster().setSensorPosition(RoundRotation2d.getDegree(0));
+		setClosedLoopGains(0, settings);
 
+	}
+
+	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, double iZone, double maxIntegral, double minOut, double maxOut) {
+		getMaster().selectProfileSlot(slot, 0);
+		getMaster().config_kP(0, kp, 30);
+		getMaster().config_kI(0, ki, 30);
+		getMaster().config_kD(0, kd, 30);
+		getMaster().config_kF(0, kf, 30);
+		getMaster().config_IntegralZone(0, (int) Math.round(getMaster().getTicks(Rotation2dKt.getDegree(iZone))), 0);
+		getMaster().configMaxIntegralAccumulator(0, maxIntegral, 0);
+		getMaster().configPeakOutputForward(maxOut);
+		getMaster().configPeakOutputReverse(minOut);
+	}
+
+	public void setClosedLoopGains(int slot, PIDSettings config) {
+		setClosedLoopGains(slot, config.kp, config.ki, config.kd, config.kf, config.iZone, config.maxIAccum, config.minOutput, config.maxOutput);
+	}
+
+	public void requestAngle(RoundRotation2d reqAngle) {
+		reqAngle = Util.limit(reqAngle, kMinAngle, kMaxAngle);
+		getMaster().set(ControlMode.Position, reqAngle);
+	}
+
+	/**
+	 * Set the master talon to an anggle and arbitrary feed forward thorttle %
+	 * @param reqAngle to to to
+	 * @param feedForward extra throttle to apply
+	 */
+	public void requestAngleArbitraryFeedForward(RoundRotation2d reqAngle, double feedForward) {
+		reqAngle = Util.limit(reqAngle, kMinAngle, kMaxAngle);
+		getMaster().set(ControlMode.Position, reqAngle, DemandType.ArbitraryFeedForward, feedForward);
 	}
 
 	public void setSetpoint(double setpoint_) {}
@@ -97,15 +141,15 @@ public class RotatingJoint /*extends Subsystem*/ {
 		setSetpoint(Math.toDegrees(_setpoint.getValue()));
 	}
 
-	public Rotation2d getPosition() {
-		return getMaster().getSensorPosition();
+	public RoundRotation2d getPosition() {
+		return getMaster().getRotation2d();
 	}
 
 	/**
 	 * Set the talon as a target angle and feedforward throttle percent
 	 */
-	public void setPositionArbitraryFeedForward(Rotation2d setpoint, double feedForwardPercent) {
-		getMaster().set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
+	public void setPositionArbitraryFeedForward(RoundRotation2d setpoint, double feedForwardPercent) {
+		getMaster().set(ControlMode.Position, setpoint.getDegree(), DemandType.ArbitraryFeedForward, feedForwardPercent);
 	}
 
 	/**
@@ -125,7 +169,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 	/**
 	 * Get the master talon of the rotating arm
 	 */
-	public FalconSRX<Rotation2d> getMaster() {
+	public HalfBakedRotatingSRX getMaster() {
 		return motors.get(0);
 	}
 
@@ -133,7 +177,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 	 * Return an ArrayList of all the falconSRXes
 	 * @return motors... all of the motors
 	 */
-	public ArrayList<FalconSRX<Rotation2d>> getAllMotors() {
+	public ArrayList<HalfBakedRotatingSRX> getAllMotors() {
 		return motors;
 	}
 
@@ -141,11 +185,11 @@ public class RotatingJoint /*extends Subsystem*/ {
 	 * Get the Rotation2d of the encoder of the master talon
 	 * @return sensorPosition as a Rotation2d
 	 */
-	public Rotation2d getRotation() {
-		return getMaster().getSensorPosition();
+	public RoundRotation2d getRotation() {
+		return getMaster().getRotation2d();
 	}
 
-	public Velocity<Rotation2d> getAngularVelocity() {
+	public AngularVelocity getAngularVelocity() {
 		return getMaster().getSensorVelocity();
 	}
 
@@ -153,31 +197,35 @@ public class RotatingJoint /*extends Subsystem*/ {
 	 * Set the position of the sensor to the given Rotation2d pos_
 	 * @param pos_ of the sensor as a Rotation2d
 	 */
-	public void setRotation(Rotation2d pos_) {
+	public void setRotation(RoundRotation2d pos_) {
 		getMaster().setSensorPosition(pos_);
 	}
 
 	public static class RotatingArmState {
-		public Rotation2d angle;
-		public Velocity<Rotation2d> velocity;
+		public RoundRotation2d angle;
+		public AngularVelocity velocity;
 
 		// public double feedForwardVoltage = 0;
 		// public double pidOutput = 0;
 		public RotatingArmState() {
-			this(Rotation2dKt.getDegree(0), VelocityKt.getVelocity(Rotation2dKt.getDegree(0)));
+			this(new RoundRotation2d(), new AngularVelocity());
+		}
+
+		public RotatingArmState(RoundRotation2d angle_) {
+			this(angle_, new AngularVelocity());
 		}
 
 		public RotatingArmState(Rotation2d angle_) {
-			this(angle_, VelocityKt.getVelocity(Rotation2dKt.getDegree(0)));
+			this(RoundRotation2d.fromRotation2d(angle_), new AngularVelocity());
 		}
 
-		public RotatingArmState(Rotation2d angle_, Velocity<Rotation2d> velocity_) {
+		public RotatingArmState(RoundRotation2d angle_, AngularVelocity velocity_) {
 			this.angle = angle_;
 			this.velocity = velocity_;
 			// this.feedForwardVoltage = feedForwardVoltage;
 		}
 
-		public void setAngle(Rotation2d new__) {
+		public void setAngle(RoundRotation2d new__) {
 			this.angle = new__;
 		}
 
@@ -193,6 +241,6 @@ public class RotatingJoint /*extends Subsystem*/ {
 	}
 
 	public double getDegrees() {
-		return Math.toDegrees(getMaster().getSensorPosition().getValue());
+		return getMaster().getRotation2d().getDegree();
 	}
 }

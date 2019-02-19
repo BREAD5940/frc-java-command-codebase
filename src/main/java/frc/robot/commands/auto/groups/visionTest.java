@@ -1,7 +1,6 @@
 package frc.robot.commands.auto.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.auto.actions.FollowVisionTarget;
 
 public class visionTest extends CommandGroup {
 	/**
@@ -25,7 +24,7 @@ public class visionTest extends CommandGroup {
 		// a CommandGroup containing them would require both the chassis and the
 		// arm.
 
-		addSequential(new FollowVisionTarget(2, 10), 10);
+		addSequential(new frc.robot.commands.subsystems.drivetrain.FollowVisionTarget(2, 10), 10);
 
 		// addSequential(new DriveDistance(1));
 

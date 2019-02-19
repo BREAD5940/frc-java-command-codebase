@@ -15,7 +15,6 @@ import com.team254.lib.physics.DCMotorTransmission;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
@@ -23,6 +22,7 @@ import frc.robot.commands.subsystems.superstructure.SuperStructureTelop;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.PIDSettings.FeedbackMode;
 import frc.robot.lib.obj.InvertSettings;
+import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
@@ -42,14 +42,14 @@ public class SuperStructure extends Subsystem {
 
 	private static SuperStructure instance_;
 	private static double currentDTVelocity; //in ft/sec
-	private static double currentSetHeight, lastSH = 70, lastLastSH = 70;
-	private SuperStructureState mReqState = new SuperStructureState();
+	public static Length currentSetHeight, lastSH = LengthKt.getInch(70), lastLastSH = LengthKt.getInch(70);
+	public SuperStructureState mReqState = new SuperStructureState();
+	public SuperStructureState lastState = new SuperStructureState();
 	private CommandGroup mCurrentCommandGroup;
 	private ArrayList<SuperStructureState> mReqPath;
 	private int cPathIndex = 0;
 	private boolean currentPathComplete = false;
-	public static Elevator elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
-			new InvertSettings(true, InvertType.FollowMaster, InvertType.FollowMaster, InvertType.OpposeMaster));
+	public static Elevator elevator;
 	public static Intake intake = new Intake(34);
 	private SuperstructurePlanner planner = new SuperstructurePlanner();
 	// public SuperStructureState mPeriodicIO = new SuperStructureState();
@@ -57,12 +57,20 @@ public class SuperStructure extends Subsystem {
 	private DCMotorTransmission kElbowTransmission, kWristTransmission;
 	public static final Mass kHatchMass = MassKt.getLb(2.4); // FIXME check mass
 	public static final Mass kCargoMass = MassKt.getLb(1); // FIXME check mass
+	public static final RoundRotation2d kWristMin = RoundRotation2d.getDegree(-45); // relative
+	public static final RoundRotation2d kWristMax = RoundRotation2d.getDegree(90); // relative
+	public static final RoundRotation2d kElbowMin = RoundRotation2d.getDegree(-180); // absolute
+	public static final RoundRotation2d kElbowMax = RoundRotation2d.getDegree(15); // absolute
 
 	public static synchronized SuperStructure getInstance() {
 		if (instance_ == null) {
 			instance_ = new SuperStructure();
 		}
 		return instance_;
+	}
+
+	public Length getLastReqElevatorHeight() {
+		return lastSH;
 	}
 
 	public enum ElevatorPresets {
@@ -90,14 +98,20 @@ public class SuperStructure extends Subsystem {
 
 		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
 
-		mWrist = new RotatingJoint(new PIDSettings(0.1d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, false /* FIXME check inverting! */,
+		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
 				Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
-		mElbow = new RotatingJoint(new PIDSettings(1d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative,
+		mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
 				false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+
+		elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
+				new InvertSettings(true, InvertType.FollowMaster, InvertType.FollowMaster, InvertType.OpposeMaster));
+
+		mCurrentState = new SuperStructureState();
+
 	}
 
-	private SuperStructureState mCurrentState = new SuperStructureState();
+	private SuperStructureState mCurrentState;
 
 	public SuperStructureState getCurrentState() {
 		return mCurrentState;
@@ -105,22 +119,19 @@ public class SuperStructure extends Subsystem {
 
 	public static class iPosition {
 		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
-		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
-		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
-		public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
-		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
-		public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
+		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(-47.6)));
+		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(35.98)));
+		public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(148.35)), new RotatingArmState(Rotation2dKt.getDegree(-96.46)));
+		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(87.86)));
+		public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(148.35)), new RotatingArmState(Rotation2dKt.getDegree(-48.04)));
 
 		public static final ArrayList<IntakeAngle> presets = new ArrayList<IntakeAngle>(Arrays.asList(CARGO_GRAB, CARGO_DOWN,
 				CARGO_PLACE, CARGO_REVERSE, HATCH, HATCH_REVERSE));
 	}
 
-	public boolean setReqState(SuperStructureState reqState) {
-		if (!(planner.checkValidState(reqState)))
-			return false;
-		this.mReqState = reqState;
-		return true;
-	}
+	// public boolean setReqState(SuperStructureState reqState) {
+	// 	plan(req)
+	// }
 
 	/**
 	 * Move the superstructure based on a height, intake angle and wrist angle
@@ -188,25 +199,51 @@ public class SuperStructure extends Subsystem {
 		// Actually yeah all that you really need is the buttons
 		// well also jogging with joysticks but eehhhh
 		// actually that should be the default command, hot prank
-		setDefaultCommand(new SuperStructureTelop(getInstance()));
+		setDefaultCommand(new SuperStructureTelop());
 	}
 
 	public SuperStructureState updateState() {
+		// ElevatorState mCurrent = mCurrentState.elevator;
+		getElevator().getCurrentState();
+		getWrist().getCurrentState();
+		getElbow().getCurrentState();
+
 		this.mCurrentState = new SuperStructureState(
-				elevator.getCurrentState(mCurrentState.elevator),
+				elevator.getCurrentState(),
 				// mWrist.getCurrentState(),
 				// mElbow.getCurrentState());
-				new RotatingArmState(),
-				new RotatingArmState());
+				mWrist.getCurrentState(),
+				mElbow.getCurrentState());
 		return mCurrentState;
 	}
 
 	public RotatingJoint getWrist() {
+		if (mWrist == null)
+			mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
+					Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
+
+		// 		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
+		// 		Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
+
+		// mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
+		// 		false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+
 		return mWrist;
 	}
 
 	public RotatingJoint getElbow() {
+		if (mElbow == null)
+			mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
+					false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 		return mElbow;
+	}
+
+	public DCMotorTransmission getWTransmission() {
+		return kWristTransmission;
+	}
+
+	public DCMotorTransmission getETransmission() {
+		return kElbowTransmission;
 	}
 
 	public Elevator getElevator() {
@@ -216,55 +253,55 @@ public class SuperStructure extends Subsystem {
 		return elevator;
 	}
 
-	@Override
-	public void periodic() {
-		// this calculates gravity feed forwards based off of the current state and requested state
-		// make sure to keep these up to date!!!
+	public void move(SuperStructureState requState) {
+		//former superstructure periodic
 		updateState();
 
-		// Make for sure for real real that the voltage is always positive
-		// double mCurrentWristTorque = Math.abs(calculateWristTorque(this.mCurrentState)); // torque due to gravity and elevator acceleration, newton meters
-		// double mCurrentElbowTorque = Math.abs(calculateElbowTorques(this.mCurrentState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
+		SuperStructureState prevState = lastState;
+		// double mCurrentWristTorque = Math.abs(SuperStructure.getInstance().calculateWristTorque(prevState)); // torque due to gravity and elevator acceleration, newton meters
+		// double mCurrentElbowTorque = Math.abs(SuperStructure.getInstance().calculateElbowTorques(prevState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
 
-		// double wristVoltageGravity = kWristTransmission.getVoltageForTorque(this.mCurrentState.getWrist().velocity.getValue(), mCurrentWristTorque);
-		// double elbowVoltageGravity = kElbowTransmission.getVoltageForTorque(this.mCurrentState.getElbow().velocity.getValue(), mCurrentElbowTorque);
-		double elevatorPercentVbusGravity = elevator.getVoltage(this.mCurrentState) / getElevator().getMaster().getBusVoltage();
+		// double wristVoltageGravity = SuperStructure.getInstance().getWTransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getWrist().velocity.getValue(), mCurrentWristTorque);
+		// double elbowVoltageGravity = SuperStructure.getInstance().getETransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getElbow().velocity.getValue(), mCurrentElbowTorque);
+		double elevatorPercentVbusGravity = getElevator().getVoltage(updateState()) / 12;//getElevator().getMaster().getBusVoltage();		
 
-		// System.out.println("Calculated elevator voltage" + elevator.getVoltage(getCurrentState()));
+		// if (Math.abs(mOI.getWristAxis()) > 0.07) {
+		// SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mRequState.getWrist().angle);
 
-		// TODO velocity planning? or just let talon PID figure itself out
-		// How about maybe motion magic?
+		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
+		SuperStructureState stateSetpoint = plan(requState);
+
+		getWrist().requestAngle(stateSetpoint.getWrist().angle); // div by 12 because it expects a throttle
+		getElbow().requestAngle(stateSetpoint.getElbow().angle); // div by 12 because it expects a throttle
+		getElevator().setPositionArbitraryFeedForward(stateSetpoint.getElevator().height, elevatorPercentVbusGravity / 12d);
+		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
+	}
+
+	public SuperStructureState plan(SuperStructureState mReqState) {
 
 		mReqPath = planner.plan(mReqState, mCurrentState);
 
-		double reqSetHeight = mReqPath.get(0).getElevatorHeight().getInch();
+		Length reqSetHeight = mReqPath.get(0).getElevatorHeight();
 
-		double currentSetHeight = reqSetHeight;
+		Length currentSetHeight = reqSetHeight;
 		currentDTVelocity = Math.abs((DriveTrain.getInstance().getLeft().getFeetPerSecond() + DriveTrain.getInstance().getRight().getFeetPerSecond()) / 2);
 		currentSetHeight = reqSetHeight;
 
 		if (currentDTVelocity > 5) {
-			currentSetHeight = 0.310544 * Math.pow(currentDTVelocity, 2) - 11.7656 * currentDTVelocity + 119.868; //FIXME this is a regression based on arb. values. update after testing
-			if (currentSetHeight > reqSetHeight) {
+			currentSetHeight = LengthKt.getInch(0.310544 * Math.pow(currentDTVelocity, 2) - 11.7656 * currentDTVelocity + 119.868); //FIXME this is a regression based on arb. values. update after testing
+			if (currentSetHeight.getInch() > reqSetHeight.getInch()) {
 				currentSetHeight = reqSetHeight;
 			}
 		}
 
-		currentSetHeight = (currentSetHeight + lastSH + lastLastSH) / 3;
+		currentSetHeight = (currentSetHeight.plus(lastSH.plus(lastLastSH))).div(3);
 
 		lastLastSH = lastSH;
 		lastSH = currentSetHeight;
 
-		// getWrist().setPositionArbitraryFeedForward(mReqPath.get(0).getWrist().angle /* the wrist angle setpoint */, wristVoltageGravity / 12d); // div by 12 because it expects a throttle
-		// getElbow().setPositionArbitraryFeedForward(mReqPath.get(0).getElbow().angle /* the elbow angle setpoint */, elbowVoltageGravity / 12d); // div by 12 because it expects a throttle
-		getElevator().setPositionArbitraryFeedForward(mReqPath.get(0).getElevator().height, elevatorPercentVbusGravity / 12d);
-		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
+		lastState = new SuperStructureState(new ElevatorState(currentSetHeight), mReqPath.get(0).getAngle());
 
-		SmartDashboard.putNumber("elevator height in inches", mCurrentState.elevator.getHeight().getInch());
-		SmartDashboard.putNumber("target elevator height", mReqPath.get(0).getElevator().height.getInch());
-		SmartDashboard.putNumber("elevator output", getElevator().getMaster().getMotorOutputVoltage());
-
-		SmartDashboard.putNumber("Wrist position", getWrist().getPosition().getDegree());
+		return new SuperStructureState(new ElevatorState(currentSetHeight), mReqPath.get(0).getAngle());
 	}
 
 	/**

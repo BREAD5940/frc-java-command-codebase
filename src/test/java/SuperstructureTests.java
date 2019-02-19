@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 
 import org.junit.jupiter.api.Test;
 
+import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.planners.*;
 
 public class SuperstructureTests {
@@ -148,6 +149,11 @@ public class SuperstructureTests {
 			System.out.println(ioe);
 		}
 
+	}
+
+	@Test
+	public void rotation2dTest() {
+		assertEquals(360, RoundRotation2d.getDegree(360).getDegree(), 0.1);
 	}
 
 }
