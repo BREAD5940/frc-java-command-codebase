@@ -6,14 +6,15 @@ This is Team 5940 BREAD's 2019 codebase for the 2019 FRC game Deep Space
 ## TODO for MCC
  * Driverstation buttons? (thanks Andymark)
 
+
 ## TODO by SFR
+ * Test elbow and wrist requestAngle safing
+ * Test superstructure planner
+ * Troubleshoot bad packet/lost comms/iterative loop overrun
+ * Look into increasing timing back up to 20ms from 25ms
+ * Pathing on a notifier?
  * Vision^{tm}
-   * Calibrate LimeLight camera for SolvePNP
-   * SolvePNP
-      * Get it working with single target mode
-      * What points are sent in dual target mode?
-      * Use to augment localization?
-      * Coordinate transforms between limelight and robot?
+   * Test distance from x width / y width
    * Driver assist
       * GUI for visualising vision targets on driverstation?
       * FalconDashboard-esque localization map thing?
