@@ -23,7 +23,7 @@ import frc.robot.commands.subsystems.drivetrain.DriveShiftLow;
 public class OI {
 
   private Joystick primaryJoystick = new Joystick(RobotConfig.controls.primary_joystick_port);
-  private Joystick secondaryJoystick = new Joystick(RobotConfig.controls.secondary_joystick_port);
+  //private Joystick secondaryJoystick = new Joystick(RobotConfig.controls.secondary_joystick_port);
   // private Joystick secondaryJoystick = new Joystick(RobotConfig.controls.secondary_joystick_port);
 
   private Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
@@ -35,29 +35,29 @@ public class OI {
   Button autobutton3 = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
 
 
-          //Arcade Operator Inputs
-          //TODO add inputs to the buttons and joysticks
+  //Arcade Operator Inputs
+    //TODO add inputs to the buttons and joysticks
 
-          // Joystick elevatorHeight = new Joystick();
-          // Joystick wristPose = new Joystick ();
+    // Joystick elevatorHeight = new Joystick();
+    // Joystick wristPose = new Joystick ();
 
-          // Button level1 = new JoystickButton();
-          // Button level2 = new JoystickButton();
-          // Button level3 = new JoystickButton();
+    // Button level1 = new JoystickButton();
+    // Button level2 = new JoystickButton();
+    // Button level3 = new JoystickButton();
 
-          // Button intake4 = new JoystickButton();
-          // Button outake5 = new JoystickButton();
+    // Button intake4 = new JoystickButton();
+    // Button outake5 = new JoystickButton();
 
-          // Button hatchAuto6 = new JoystickButton();
-          // Button cargoCargo7 = new JoystickButton();
+    // Button hatchAuto6 = new JoystickButton();
+    // Button cargoCargo7 = new JoystickButton();
 
-          // Button habAuto = new JoystickButton();
+    // Button habAuto = new JoystickButton();
 
 
   //Xbox Operator Inputs
 
-  Button openHatch = new JoystickButton(secondaryJoystick, xboxmap.Buttons.RB_BUTTON);
-  Button closeHatch = new JoystickButton(secondaryJoystick, xboxmap.Buttons.LB_BUTTON);
+    //utton openHatch = new JoystickButton(secondaryJoystick, xboxmap.Buttons.RB_BUTTON);
+    //Button closeHatch = new JoystickButton(secondaryJoystick, xboxmap.Buttons.LB_BUTTON);
 
 
 
