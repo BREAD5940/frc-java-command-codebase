@@ -12,9 +12,10 @@ import frc.robot.Robot;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
+import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
-import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 public class SuperStructureTelop extends Command {
 	private OI mOI = Robot.m_oi;
@@ -38,34 +39,61 @@ public class SuperStructureTelop extends Command {
 		mLastElbow = SuperStructure.getInstance().getElbow().getRotation();
 	}
 
-	boolean firstRun = false;
+	boolean firstRunE = false;
+	boolean firstRunL = false;
+	boolean fristRunW = false;
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
 		// elevator stuff
 		Length newE = SuperStructure.getInstance().getLastReqElevatorHeight();
+		RoundRotation2d newL = SuperStructure.getInstance().lastState.getElbowAngle();
+		RoundRotation2d newW = SuperStructure.getInstance().lastState.getWrist().angle;
+
 		boolean move = false;
 		Length deltaE = LengthKt.getInch(Util.deadband(Robot.m_oi.getElevatorAxis() * 10 * Math.abs(Robot.m_oi.getElevatorAxis()), 0.08));
 		if (Math.abs(Robot.m_oi.getElevatorAxis()) > 0.08) { // only move if asked
-			firstRun = true;
+			firstRunE = true;
 			Length currentE = SuperStructure.getInstance().getLastReqElevatorHeight();
 			newE = currentE.plus(deltaE);
-			ElevatorState newReqE = new ElevatorState(newE);
 			move = true;
-			// SuperStructure.getInstance().moveSuperstructureElevator(new_s);
 
 		} else {
-			if (firstRun == true) {
+			if (firstRunE == true) {
 				newE = SuperStructure.getInstance().getLastReqElevatorHeight();
-				firstRun = false;
+				firstRunE = false;
 				move = true;
 			}
 		}
 
+		if(Math.abs(Robot.m_oi.getElbowAxis())>0.07){
+			firstRunL=true;
+			newL = SuperStructure.getInstance().lastState.getElbowAngle().plus(
+						RoundRotation2d.getDegree(Robot.m_oi.getElbowAxis()*10*Math.abs(Robot.m_oi.getElbowAxis()))); //FIXME check constant
+		}else{
+			if(firstRunL){
+				newL = SuperStructure.getInstance().lastState.getElbowAngle();
+				firstRunL=false;
+				move=true;
+			}
+		}
+
+		if(Math.abs(Robot.m_oi.getWristAxis())>0.07){
+			firstRunL=true;
+			newL = SuperStructure.getInstance().lastState.getWrist().angle.plus(
+						RoundRotation2d.getDegree(Robot.m_oi.getWristAxis()*10*Math.abs(Robot.m_oi.getWristAxis()))); //FIXME check constant
+		}else{
+			if(firstRunL){
+				newL = SuperStructure.getInstance().lastState.getWrist().angle;
+				firstRunL=false;
+				move=true;
+			}
+		}
+
 		if (move) {
-			SuperStructure.getInstance().move(new SuperStructureState(new ElevatorState(newE), new RotatingArmState(), new RotatingArmState()));
-			System.out.printf("Current elevator req height: %f\n", newE.getInch());
+			SuperStructure.getInstance().move(new SuperStructureState(new ElevatorState(newE), new RotatingArmState(newL), new RotatingArmState(newW)));
+			System.out.printf("Current elevator req height: %f   Current elbow req angle: %f   Current wrist req angle: %f\n", newE.getInch(), newL.getDegree(), newW.getDegree());
 		}
 
 		// move the whole darn thing
@@ -73,19 +101,19 @@ public class SuperStructureTelop extends Command {
 		// Logger.log("last wrist" + mLastWrist.getDegree() + " | current pos: " + SuperStructure.getInstance().getWrist().getDegrees());
 		// Logger.log("last elbow" + mLastElbow.getDegree() + " | current pos: " + SuperStructure.getInstance().getElbow().getDegrees());
 
-		if (Math.abs(mOI.getWristAxis()) > 0.07) {
-			SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getWristAxis(), 0.75));
-			mLastWrist = SuperStructure.getInstance().getWrist().getPosition();
-		} else {
-			SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mLastWrist);
-		}
+		// if (Math.abs(mOI.getWristAxis()) > 0.07) {
+		// 	SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getWristAxis(), 0.75));
+		// 	mLastWrist = SuperStructure.getInstance().getWrist().getPosition();
+		// } else {
+		// 	SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mLastWrist);
+		// }
 
-		if (Math.abs(mOI.getElbowAxis()) > 0.07) {
-			SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getElbowAxis() * 0.4, 0.75));
-			mLastElbow = SuperStructure.getInstance().getElbow().getPosition();
-		} else {
-			SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mLastElbow);
-		}
+		// if (Math.abs(mOI.getElbowAxis()) > 0.07) {
+		// 	SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getElbowAxis() * 0.4, 0.75));
+		// 	mLastElbow = SuperStructure.getInstance().getElbow().getPosition();
+		// } else {
+		// 	SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mLastElbow);
+		// }
 
 		SmartDashboard.putNumber("Elbow current", SuperStructure.getInstance().getElbow().getMaster().getOutputCurrent());
 		SmartDashboard.putNumber("Wrist current", SuperStructure.getInstance().getWrist().getMaster().getOutputCurrent());
