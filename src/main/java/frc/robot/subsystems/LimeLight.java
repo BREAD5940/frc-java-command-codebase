@@ -1,9 +1,15 @@
 package frc.robot.subsystems;
 
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.RobotConfig;
+import frc.robot.lib.obj.VisionTarget;
+import frc.robot.lib.obj.factories.VisionTargetFactory;
 
 /**
  * tv  Whether the limelight has any valid targets (0 or 1)
@@ -17,19 +23,31 @@ import frc.robot.RobotConfig;
  * @author Matthew Morley
  */
 public class LimeLight {
-	NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+	NetworkTable table;
 	double[] data, angles;
 	double cameraHeight = RobotConfig.limeLight.camera_height;
 	double cameraAngle = RobotConfig.limeLight.camera_angle;
-	double x_resolution = 320;
-	double y_resolution = 240;
-	double x_fov = 54;
-	double y_fov = 41;
-	double x_focal_length = x_resolution / (2 * Math.tan(x_fov / 2));
-	double y_focal_length = y_resolution / (2 * Math.tan(y_fov / 2));
-	double average_focal_length = (x_focal_length + y_focal_length) / 2;
+	private static final double x_resolution_low = 320;
+	private static final double y_resolution_low = 240;
+	private static final double x_resolution_high = 960;
+	private static final double y_resolution_high = 720;
+	private static final double x_fov = 59.6;
+	private static final double y_fov = 45.7;
+	private static final double x_focal_length_low = x_resolution_low / (2 * Math.tan(x_fov / 2));
+	private static final double y_focal_length_low = y_resolution_low / (2 * Math.tan(y_fov / 2));
+	private static final double x_focal_length_high = x_resolution_low / (2 * Math.tan(x_fov / 2));
+	private static final double y_focal_length_high = y_resolution_low / (2 * Math.tan(y_fov / 2));
+	boolean isHighRes = false;
+	public PipelinePreset mCurrentPipeline;
+	private static final PipelinePreset kDefaultPreset = PipelinePreset.kCargoClose;
 
-	double distance, relativeAngle;
+	private static final VisionTarget kRocketCargoTarget = VisionTargetFactory.getRocketCargoTarget();
+	private static final VisionTarget kHatchTarget = VisionTargetFactory.getHatchTarget();
+
+	public LimeLight() {
+		this.table = NetworkTableInstance.getDefault().getTable("limelight");
+		this.setPipeline(kDefaultPreset);
+	}
 
 	public double[] getData() {
 		/** Whether the limelight has any valid targets (0 or 1) */
@@ -67,7 +85,7 @@ public class LimeLight {
 	}
 
 	public enum PipelinePreset {
-		kDefault(0), kCargoFar(1), kCargoClose(2);
+		kDefault(0), kCargoFar(1), kCargoClose(2), kCargoFarHighRes(3), kCargoCloseHighRes(4);
 
 		private int id;
 
@@ -85,6 +103,12 @@ public class LimeLight {
 	 */
 	public void setPipeline(PipelinePreset req_) {
 		table.getEntry("pipeline").setNumber(req_.getId());
+		this.mCurrentPipeline = req_;
+		if (req_.name().contains("HighRes")) {
+			this.isHighRes = true;
+		} else {
+			this.isHighRes = false;
+		}
 	}
 
 	public int getPipeline() {
@@ -119,15 +143,15 @@ public class LimeLight {
 	 * Get the dx from crosshair to tracked target
 	 * @return dx
 	 */
-	public double getDx() {
-		return (table.getEntry("tx")).getDouble(0);
+	public Rotation2d getDx() {
+		return Rotation2dKt.getDegree((table.getEntry("tx")).getDouble(0));
 	}
 
 	/**
 	 * Get the dy from crosshair to tracked target
 	 */
-	public double getDy() {
-		return (table.getEntry("ty")).getDouble(0);
+	public Rotation2d getDy() {
+		return Rotation2dKt.getDegree((table.getEntry("ty")).getDouble(0));
 	}
 
 	/**
@@ -138,13 +162,9 @@ public class LimeLight {
 		return (table.getEntry("tv")).getDouble(0);
 	}
 
-	/**
-	 * Get the distance (in the same units as elevation) from a tracked vision target
-	 * @param targetElevation
-	 * @return distance to target
-	 */
-	public double getDistanceToFixedPoint(double targetElevation) {
-		return (targetElevation - cameraHeight) / Math.tan(cameraAngle + (table.getEntry("ty").getDouble(0)));
+	public Length getDistance(VisionTarget target, Rotation2d yawAngle) {
+		return null;
 	}
+	
 
 }
