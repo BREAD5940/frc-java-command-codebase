@@ -55,7 +55,8 @@ public class SuperstructurePlanner {
 	Translation2d endPointDown; // perp. to hex and wA-90
 	Translation2d endPointUp; // perp. to hex and wA+90
 	Translation2d carriagePoint;
-	Translation2d lowestPoint = new Translation2d(0,0);
+	Translation2d lowestPoint;
+	Translation2d highestPoint;
 
 	boolean throughBelow = false;
 	boolean throughAbove = false;
@@ -134,13 +135,13 @@ public class SuperstructurePlanner {
 		carriagePoint = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight());
 		wristPoint = new Translation2d(LengthKt.getInch(Math.cos(goalState.getElbowAngle().getRadian()) * carriageToIntake.getInch()),
 				carriagePoint.getY().plus(LengthKt.getInch(Math.sin(goalState.getAngle().getElbow().angle.getRadian()) * carriageToIntake.getInch())));
-		
+
 		endPointOut = new Translation2d(wristPoint.getX().plus(LengthKt.getInch(Math.cos(goalState.getWrist().angle.getRadian()) * intakeOut.getInch())),
 				wristPoint.getY().plus(LengthKt.getInch(Math.sin(goalState.getAngle().getWrist().angle.getRadian()) * intakeOut.getInch())));
-		endPointDown = new Translation2d(wristPoint.getX().plus(LengthKt.getInch(Math.cos(goalState.getWrist().angle.getRadian()-(Math.PI/2)) * intakeDown.getInch())),
-				wristPoint.getY().plus(LengthKt.getInch(Math.sin(goalState.getAngle().getWrist().angle.getRadian()-(Math.PI/2)) * intakeDown.getInch())));
-		endPointUp = new Translation2d(wristPoint.getX().plus(LengthKt.getInch(Math.cos(goalState.getWrist().angle.getRadian()+(Math.PI/2)) * intakeUp.getInch())),
-				wristPoint.getY().plus(LengthKt.getInch(Math.sin(goalState.getAngle().getWrist().angle.getRadian()+(Math.PI/2)) * intakeUp.getInch())));
+		endPointDown = new Translation2d(wristPoint.getX().plus(LengthKt.getInch(Math.cos(goalState.getWrist().angle.getRadian() - (Math.PI / 2)) * intakeDown.getInch())),
+				wristPoint.getY().plus(LengthKt.getInch(Math.sin(goalState.getAngle().getWrist().angle.getRadian() - (Math.PI / 2)) * intakeDown.getInch())));
+		endPointUp = new Translation2d(wristPoint.getX().plus(LengthKt.getInch(Math.cos(goalState.getWrist().angle.getRadian() + (Math.PI / 2)) * intakeUp.getInch())),
+				wristPoint.getY().plus(LengthKt.getInch(Math.sin(goalState.getAngle().getWrist().angle.getRadian() + (Math.PI / 2)) * intakeUp.getInch())));
 
 		if ((wristPoint.getX().getInch() < 0 && Math.cos(currentState.getElbowAngle().getRadian()) * carriageToIntake.getInch() > 0)
 				|| (wristPoint.getX().getInch() > 0 && Math.cos(currentState.getElbowAngle().getRadian()) * carriageToIntake.getInch() < 0)) { //FIXME this probably needs another thingy
@@ -150,9 +151,14 @@ public class SuperstructurePlanner {
 			toReturn.add(passThroughState);
 		}
 
-		lowestPoint=endPointDown;
-		for(Translation2d current : Arrays.asList(carriagePoint, wristPoint, endPointOut, endPointDown, endPointUp)){
-			lowestPoint = (lowestPoint.getY().getInch()>=current.getY().getInch()) ? current : lowestPoint;
+		lowestPoint = endPointDown;
+		for (Translation2d current : Arrays.asList(carriagePoint, wristPoint, endPointOut, endPointDown, endPointUp)) {
+			lowestPoint = (lowestPoint.getY().getInch() >= current.getY().getInch()) ? current : lowestPoint;
+		}
+
+		highestPoint = endPointUp;
+		for (Translation2d current : Arrays.asList(carriagePoint, wristPoint, endPointOut, endPointDown, endPointUp)) {
+			highestPoint = (highestPoint.getY().getInch() <= current.getY().getInch()) ? current : highestPoint;
 		}
 
 		//le booleans

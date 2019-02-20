@@ -165,6 +165,5 @@ public class LimeLight {
 	public Length getDistance(VisionTarget target, Rotation2d yawAngle) {
 		return null;
 	}
-	
 
 }

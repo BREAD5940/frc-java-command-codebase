@@ -3,8 +3,6 @@ package frc.robot.commands.subsystems.superstructure;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
@@ -12,10 +10,9 @@ import frc.robot.Robot;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
-import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
-import frc.robot.subsystems.superstructure.SuperStructure;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
+import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class SuperStructureTelop extends Command {
 	private OI mOI = Robot.m_oi;
@@ -67,27 +64,27 @@ public class SuperStructureTelop extends Command {
 			}
 		}
 
-		if(Math.abs(Robot.m_oi.getElbowAxis())>0.07){
-			firstRunL=true;
+		if (Math.abs(Robot.m_oi.getElbowAxis()) > 0.07) {
+			firstRunL = true;
 			newL = SuperStructure.getInstance().lastState.getElbowAngle().plus(
-						RoundRotation2d.getDegree(Robot.m_oi.getElbowAxis()*10*Math.abs(Robot.m_oi.getElbowAxis()))); //FIXME check constant
-		}else{
-			if(firstRunL){
+					RoundRotation2d.getDegree(Robot.m_oi.getElbowAxis() * 10 * Math.abs(Robot.m_oi.getElbowAxis()))); //FIXME check constant
+		} else {
+			if (firstRunL) {
 				newL = SuperStructure.getInstance().lastState.getElbowAngle();
-				firstRunL=false;
-				move=true;
+				firstRunL = false;
+				move = true;
 			}
 		}
 
-		if(Math.abs(Robot.m_oi.getWristAxis())>0.07){
-			firstRunL=true;
+		if (Math.abs(Robot.m_oi.getWristAxis()) > 0.07) {
+			firstRunL = true;
 			newL = SuperStructure.getInstance().lastState.getWrist().angle.plus(
-						RoundRotation2d.getDegree(Robot.m_oi.getWristAxis()*10*Math.abs(Robot.m_oi.getWristAxis()))); //FIXME check constant
-		}else{
-			if(firstRunL){
+					RoundRotation2d.getDegree(Robot.m_oi.getWristAxis() * 10 * Math.abs(Robot.m_oi.getWristAxis()))); //FIXME check constant
+		} else {
+			if (firstRunL) {
 				newL = SuperStructure.getInstance().lastState.getWrist().angle;
-				firstRunL=false;
-				move=true;
+				firstRunL = false;
+				move = true;
 			}
 		}
 
