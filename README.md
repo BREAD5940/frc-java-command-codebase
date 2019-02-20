@@ -18,11 +18,10 @@ This is Team 5940 BREAD's 2019 codebase for the 2019 FRC game Deep Space
    * Driver assist
       * GUI for visualising vision targets on driverstation?
       * FalconDashboard-esque localization map thing?
-* Pathing
-  * Test chooser 
-  * Safing path - fix tangent line angles
+ * AutoMotion - fix drive distance commands, do fancy stuff with joints?
+ * Pathing
   * Tuning followers/paths
   * Spin in a circle while moving
-* Auto code
+ * Auto code
   * Test auto game piece placement
   * Work on two hatch or two hatch one cargo
