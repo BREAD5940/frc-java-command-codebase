@@ -71,7 +71,7 @@ public class FollowVisionTarget extends Command {
 			forwardPID.setSetpoint(targetSpeed);
 		}
 
-		angleDeltaX = Robot.limelight.getDx();
+		angleDeltaX = Robot.limelight.getDx().getDegree(); //FIXME is this *actually* degrees?
 		targetPercentOfFrame = Robot.limelight.getTargetArea();
 	}
 
