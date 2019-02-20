@@ -33,7 +33,9 @@ public class SuperstructurePlanner {
 	static final Length crossbarBottom = LengthKt.getInch(35); //FIXME verify
 	static final Length crossbarWidth = LengthKt.getInch(4); //FIXME verify
 	static final Length carriageToIntake = LengthKt.getInch(12); //FIXME verify
-	static final Length intakeDiameter = LengthKt.getInch(19);
+	static final Length intakeOut = LengthKt.getInch(19); //FIXME check
+	static final Length intakeDown = LengthKt.getInch(6); //FIXME check
+	static final Length intakeUp = LengthKt.getInch(12); //FIXME check
 
 	public static final RoundRotation2d overallMaxElbow = RoundRotation2d.getDegree(15); //FIXME actual numbers might be nice
 	public static final RoundRotation2d overallMinElbow = RoundRotation2d.getDegree(-190); //FIXME ^^
@@ -49,7 +51,9 @@ public class SuperstructurePlanner {
 	Length disInside = bottom;
 
 	Translation2d wristPoint;
-	Translation2d endPoint;
+	Translation2d endPointOut; //perp. to hex and wA
+	Translation2d endPointDown; // perp. to hex and wA-90
+	Translation2d endPointUp; // perp. to hex and wA+90
 	Translation2d carriagePoint;
 
 	boolean throughBelow = false;
@@ -95,7 +99,7 @@ public class SuperstructurePlanner {
 			corrCount++;
 			goalState.getElevator().setHeight(top);
 		} else if (goalState.elevator.height.getInch() < bottom.getInch()) {
-			System.out.println("MOTION IMPOSSIBLE -- Elevator will attempt to smash directly through the bottom of the robot. Setting to minimum height.");
+			System.out.println("MOTION IMPOSSIBLE -- Elevator will pass minimum height. Setting to minimum height.");
 			errorCount++;
 			corrCount++;
 			goalState.getElevator().setHeight(bottom);
@@ -129,8 +133,13 @@ public class SuperstructurePlanner {
 		carriagePoint = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight());
 		wristPoint = new Translation2d(LengthKt.getInch(Math.cos(goalState.getElbowAngle().getRadian()) * carriageToIntake.getInch()),
 				carriagePoint.getY().plus(LengthKt.getInch(Math.sin(goalState.getAngle().getElbow().angle.getRadian()) * carriageToIntake.getInch())));
-		endPoint = new Translation2d(wristPoint.getX().plus(LengthKt.getInch(Math.cos(goalState.getWrist().angle.getRadian()) * intakeDiameter.getInch())),
-				wristPoint.getY().plus(LengthKt.getInch(Math.sin(goalState.getAngle().getWrist().angle.getRadian()) * intakeDiameter.getInch())));
+		
+		endPointOut = new Translation2d(wristPoint.getX().plus(LengthKt.getInch(Math.cos(goalState.getWrist().angle.getRadian()) * intakeOut.getInch())),
+				wristPoint.getY().plus(LengthKt.getInch(Math.sin(goalState.getAngle().getWrist().angle.getRadian()) * intakeOut.getInch())));
+		endPointDown = new Translation2d(wristPoint.getX().plus(LengthKt.getInch(Math.cos(goalState.getWrist().angle.getRadian()-(Math.PI/2)) * intakeDown.getInch())),
+				wristPoint.getY().plus(LengthKt.getInch(Math.sin(goalState.getAngle().getWrist().angle.getRadian()-(Math.PI/2)) * intakeDown.getInch())));
+		endPointUp = new Translation2d(wristPoint.getX().plus(LengthKt.getInch(Math.cos(goalState.getWrist().angle.getRadian()+(Math.PI/2)) * intakeUp.getInch())),
+				wristPoint.getY().plus(LengthKt.getInch(Math.sin(goalState.getAngle().getWrist().angle.getRadian()+(Math.PI/2)) * intakeUp.getInch())));
 
 		if ((wristPoint.getX().getInch() < 0 && Math.cos(currentState.getElbowAngle().getRadian()) * carriageToIntake.getInch() > 0)
 				|| (wristPoint.getX().getInch() > 0 && Math.cos(currentState.getElbowAngle().getRadian()) * carriageToIntake.getInch() < 0)) { //FIXME this probably needs another thingy
@@ -142,12 +151,12 @@ public class SuperstructurePlanner {
 
 		//le booleans
 		//FIXME this currently doesn't check if the 'forearm' is in the elevator'
-		throughBelow = endPoint.getY().getInch() < goalState.getElevatorHeight().getInch() && ((wristPoint.getX().getInch() > 0 && endPoint.getX().getInch() < 0) || (endPoint.getX().getInch() > 0 && wristPoint.getX().getInch() < 0));
+		throughBelow = endPointOut.getY().getInch() < goalState.getElevatorHeight().getInch() && ((wristPoint.getX().getInch() > 0 && endPointOut.getX().getInch() < 0) || (endPointOut.getX().getInch() > 0 && wristPoint.getX().getInch() < 0));
 
-		throughAbove = endPoint.getY().getInch() > goalState.getElevatorHeight().getInch() && ((wristPoint.getX().getInch() > 0 && endPoint.getX().getInch() < 0) || (endPoint.getX().getInch() > 0 && wristPoint.getX().getInch() < 0));
+		throughAbove = endPointOut.getY().getInch() > goalState.getElevatorHeight().getInch() && ((wristPoint.getX().getInch() > 0 && endPointOut.getX().getInch() < 0) || (endPointOut.getX().getInch() > 0 && wristPoint.getX().getInch() < 0));
 
 		if (throughAbove || throughBelow) {
-			disInside = LengthKt.getInch(endPoint.getX().getInch() - (endPoint.getY().getInch() * ((endPoint.getX().getInch() - wristPoint.getX().getInch()) / (endPoint.getY().getInch() - wristPoint.getY().getInch()))));
+			disInside = LengthKt.getInch(endPointOut.getX().getInch() - (endPointOut.getY().getInch() * ((endPointOut.getX().getInch() - wristPoint.getX().getInch()) / (endPointOut.getY().getInch() - wristPoint.getY().getInch()))));
 		} else {
 			disInside = goalState.getElevatorHeight();
 		}
@@ -162,7 +171,7 @@ public class SuperstructurePlanner {
 			goalState.setHeldPiece(currentState.getHeldPiece());
 		}
 
-		if (endPoint.getY().getFeet() < bottom.getFeet() + disInside.getFeet()) {
+		if (endPointOut.getY().getFeet() < bottom.getFeet()) {
 			System.out.println("MOTION IMPOSSIBLE -- Intake will hit literally all of the electronics. Safing elbow angle.");
 			errorCount++;
 			//finds the necessary angle of the elbow to safe the intake
@@ -174,7 +183,7 @@ public class SuperstructurePlanner {
 				//sets the elbow to the max allowed adjustment
 				goalState.setElbowAngle(RoundRotation2d.getRadian(0));
 				//finds the necessary wrist angle to finish safing the intake
-				cTheta = Math.asin(intakeDiameter.getInch() * ((bottom.getInch() + disInside.getInch()) - goalState.getElevatorHeight().getInch() -
+				cTheta = Math.asin(intakeOut.getInch() * ((bottom.getInch() + disInside.getInch()) - goalState.getElevatorHeight().getInch() -
 						Math.sin(goalState.getAngle().getElbow().angle.getRadian())));
 				//sets the wrist to that angle
 				goalState.getAngle().getWrist().setAngle(RoundRotation2d.getRadian(cTheta));
@@ -185,7 +194,7 @@ public class SuperstructurePlanner {
 			}
 		}
 		// TODO make sure commenting this out doesn't break things
-		// if (throughAbove && endPoint.getY().getFeet() > top.getFeet() - disInside.getFeet()) {
+		// if (throughAbove && endPointOut.getY().getFeet() > top.getFeet() - disInside.getFeet()) {
 		// 	System.out.println("MOTION UNSAFE -- Intake will hit the top of the elevator. Safing elbow angle.");
 		// 	errorCount++;
 		// 	if (Math.abs(minAboveAngle.getRadian() - goalState.getElbowAngle().getRadian()) <= Math.abs(maxAboveAngle.getRadian() - goalState.getElbowAngle().getRadian())) {
@@ -198,8 +207,8 @@ public class SuperstructurePlanner {
 		// }
 
 		//checks if intake will hit crossbarBottom
-		if ((throughAbove && endPoint.getY().getFeet() > crossbarBottom.getFeet() - disInside.getFeet() && endPoint.getY().getFeet() < crossbarBottom.getFeet())
-				|| throughBelow && endPoint.getY().getFeet() > crossbarBottom.getFeet() && endPoint.getY().getFeet() < crossbarBottom.getFeet() + disInside.getFeet()) {
+		if ((throughAbove && endPointOut.getY().getFeet() > crossbarBottom.getFeet() - disInside.getFeet() && endPointOut.getY().getFeet() < crossbarBottom.getFeet())
+				|| throughBelow && endPointOut.getY().getFeet() > crossbarBottom.getFeet() && endPointOut.getY().getFeet() < crossbarBottom.getFeet() + disInside.getFeet()) {
 			System.out.println("MOTION UNSAFE -- Intake will hit crossbarBottom. Setting to default intake position for movement.");
 			errorCount++;
 			toReturn.add(new SuperStructureState(currentState.elevator, iPosition.CARGO_GRAB, currentState.getHeldPiece()));
