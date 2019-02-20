@@ -82,6 +82,12 @@ public class SuperstructurePlanner {
 		SuperStructureState goalState = new SuperStructureState(goalStateIn);
 		errorCount = corrCount = 0;
 
+		if (goalState == currentState) {
+			System.out.println("MOTION UNNECESSARY -- Goal and current states are same. Exiting planner.");
+			this.currentPlannedState = goalState;
+			return new ArrayList<SuperStructureState>(Arrays.asList(goalState));
+		}
+
 		//checks if the elevator will go to high
 		if (goalState.elevator.height.getInch() > top.getInch()) {
 			System.out.println("MOTION IMPOSSIBLE -- Elevator will pass maximum height. Setting to maximum height.");
@@ -95,30 +101,30 @@ public class SuperstructurePlanner {
 			goalState.getElevator().setHeight(bottom);
 		}
 
-		//TODO do we need these angle checks?
-		if (goalState.getElbowAngle().getDegree() > overallMaxElbow.getDegree()) {
-			System.out.println("MOTION IMPOSSIBLE -- Elbow passes hardstop. Setting to maximum.");
-			errorCount++;
-			corrCount++;
-			goalState.getElbow().setAngle(overallMaxElbow);
-		} else if (goalState.getElbowAngle().getDegree() < overallMinElbow.getDegree()) {
-			System.out.println("MOTION IMPOSSIBLE -- Elbow passes hardstop. Setting to minimum.");
-			errorCount++;
-			corrCount++;
-			goalState.getElbow().setAngle(overallMinElbow);
-		}
+		// //TODO do we need these angle checks?
+		// if (goalState.getElbowAngle().getDegree() > overallMaxElbow.getDegree()) {
+		// 	System.out.println("MOTION IMPOSSIBLE -- Elbow passes hardstop. Setting to maximum.");
+		// 	errorCount++;
+		// 	corrCount++;
+		// 	goalState.getElbow().setAngle(overallMaxElbow);
+		// } else if (goalState.getElbowAngle().getDegree() < overallMinElbow.getDegree()) {
+		// 	System.out.println("MOTION IMPOSSIBLE -- Elbow passes hardstop. Setting to minimum.");
+		// 	errorCount++;
+		// 	corrCount++;
+		// 	goalState.getElbow().setAngle(overallMinElbow);
+		// }
 
-		if (goalState.getWrist().angle.getDegree() > overallMaxWrist.getDegree()) {
-			System.out.println("MOTION IMPOSSIBLE -- Wrist passes hardstop. Setting to maximum.");
-			errorCount++;
-			corrCount++;
-			goalState.getWrist().setAngle(overallMaxWrist);
-		} else if (goalState.getWrist().angle.getDegree() < overallMinWrist.getDegree()) {
-			System.out.println("MOTION IMPOSSIBLE -- Wrist passes hardstop. Setting to minimum.");
-			errorCount++;
-			corrCount++;
-			goalState.getWrist().setAngle(overallMinWrist);
-		}
+		// if (goalState.getWrist().angle.getDegree() > overallMaxWrist.getDegree()) {
+		// 	System.out.println("MOTION IMPOSSIBLE -- Wrist passes hardstop. Setting to maximum.");
+		// 	errorCount++;
+		// 	corrCount++;
+		// 	goalState.getWrist().setAngle(overallMaxWrist);
+		// } else if (goalState.getWrist().angle.getDegree() < overallMinWrist.getDegree()) {
+		// 	System.out.println("MOTION IMPOSSIBLE -- Wrist passes hardstop. Setting to minimum.");
+		// 	errorCount++;
+		// 	corrCount++;
+		// 	goalState.getWrist().setAngle(overallMinWrist);
+		// }
 
 		carriagePoint = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight());
 		wristPoint = new Translation2d(LengthKt.getInch(Math.cos(goalState.getElbowAngle().getRadian()) * carriageToIntake.getInch()),
@@ -148,12 +154,6 @@ public class SuperstructurePlanner {
 
 		goingToCrash = (throughBelow && goalState.getElevator().getHeight().getFeet() < disInside.getFeet())
 				|| (throughAbove && goalState.getElevator().getHeight().getFeet() + disInside.getFeet() > top.getFeet());
-
-		if (goalState == currentState) {
-			System.out.println("MOTION UNNECESSARY -- Goal and current states are same. Exiting planner.");
-			this.currentPlannedState = goalState;
-			return new ArrayList<SuperStructureState>(Arrays.asList(goalState));
-		}
 
 		if (goalState.getHeldPiece() != currentState.getHeldPiece()) {
 			System.out.println("MOTION IMPOSSIBLE -- Superstructure motion cannot change heldPiece. Resolving error.");
