@@ -8,6 +8,7 @@ import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotConfig;
 import frc.robot.lib.obj.VisionTarget;
 import frc.robot.lib.obj.factories.VisionTargetFactory;
@@ -47,13 +48,15 @@ public class LimeLight {
 	private static final VisionTarget kRocketCargoDualTarget = VisionTargetFactory.getRocketCargoDualTarget();
 	private static final VisionTarget kHatchDualTarget = VisionTargetFactory.getHatchDualTarget();
 	private static final int kDefaultPipeline = 1;
+	private NetworkTable smartDashboard;
 
 	public LimeLight() {
 		this.table = NetworkTableInstance.getDefault().getTable("limelight");
 		this.setPipeline(kDefaultPreset);
-		table.getEntry("Desired Vision Pipeline").setNumber(kDefaultPipeline);
-		table.addEntryListener("Desired Vision Pipeline", 
-				(table, key, entry, value, flabs) -> {
+		smartDashboard = NetworkTableInstance.getDefault().getTable("SmartDashboard");
+		smartDashboard.getEntry("Desired Vision Pipeline").setNumber(kDefaultPipeline);
+		smartDashboard.addEntryListener("Desired Vision Pipeline", 
+				(smartDashboard, key, entry, value, flabs) -> {
 					setPipeline((int) value.getDouble());
 					System.out.println("Value changed! it's now " + (int) value.getDouble());
 				},
@@ -131,7 +134,8 @@ public class LimeLight {
 	}
 
 	public void setPipeline(int req_) {
-		PipelinePreset _req_ = PipelinePreset.fromID(req_);
+		if(req_ > PipelinePreset.values().length - 1) return;
+		PipelinePreset _req_ = PipelinePreset.values()[req_];
 		this.mCurrentPipeline = _req_;
 		setPipeline(_req_);
 	}
