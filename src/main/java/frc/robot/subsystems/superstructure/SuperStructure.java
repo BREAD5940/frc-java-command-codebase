@@ -95,6 +95,9 @@ public class SuperStructure extends Subsystem {
 
 	private SuperStructure() {
 		super("SuperStructure");
+
+		lastState.setElbowAngle(RoundRotation2d.getDegree(1));
+
 		kElbowTransmission = new DCMotorTransmission(Constants.kElbowSpeedPerVolt, Constants.kElbowTorquePerVolt, Constants.kElbowStaticFrictionVoltage);
 
 		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);

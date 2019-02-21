@@ -63,7 +63,7 @@ public class RoundRotation2d {
 	}
 
 	public RoundRotation2d plus(RoundRotation2d other) {
-		return new RoundRotation2d(this.value + other.value);
+		return new RoundRotation2d(this.value + other.getDegree());
 	}
 
 	public RoundRotation2d minus(RoundRotation2d other) {
