@@ -25,3 +25,4 @@ This is Team 5940 BREAD's 2019 codebase for the 2019 FRC game Deep Space
  * Auto code
   * Test auto game piece placement
   * Work on two hatch or two hatch one cargo
+  * Make sure whe have all the paths we want
