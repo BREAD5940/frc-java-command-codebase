@@ -19,7 +19,7 @@ public class RoundRotation2d {
 	}
 
 	public RoundRotation2d() {
-		this(0);
+		this(1E-5);
 	}
 
 	public static RoundRotation2d fromRotation2d(Rotation2d meme_) {

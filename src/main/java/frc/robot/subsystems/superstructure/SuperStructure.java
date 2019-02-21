@@ -45,7 +45,7 @@ public class SuperStructure extends Subsystem {
 	private static double currentDTVelocity; //in ft/sec
 	public static Length currentSetHeight, lastSH = LengthKt.getInch(70), lastLastSH = LengthKt.getInch(70);
 	public SuperStructureState mReqState = new SuperStructureState();
-	public SuperStructureState lastState = new SuperStructureState();
+	public SuperStructureState lastState;
 	private CommandGroup mCurrentCommandGroup;
 	private ArrayList<SuperStructureState> mReqPath;
 	private int cPathIndex = 0;
@@ -95,6 +95,9 @@ public class SuperStructure extends Subsystem {
 
 	private SuperStructure() {
 		super("SuperStructure");
+
+		lastState = new SuperStructureState();
+
 		kElbowTransmission = new DCMotorTransmission(Constants.kElbowSpeedPerVolt, Constants.kElbowTorquePerVolt, Constants.kElbowStaticFrictionVoltage);
 
 		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
