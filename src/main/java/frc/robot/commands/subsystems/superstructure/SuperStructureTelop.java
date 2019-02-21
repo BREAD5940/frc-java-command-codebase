@@ -10,6 +10,7 @@ import frc.robot.Robot;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
+import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -64,27 +65,27 @@ public class SuperStructureTelop extends Command {
 			}
 		}
 
-		if (Math.abs(Robot.m_oi.getWristAxis()) > 0.07) {
+		if (Math.abs(Robot.m_oi.getElbowAxis()) > 0.07) {
 			firstRunL = true;
-			newL = SuperStructure.getInstance().lastState.getElbow().angle.plus(
-					RoundRotation2d.getDegree(Robot.m_oi.getWristAxis() * 10 * Math.abs(Robot.m_oi.getWristAxis()))); //FIXME check constant
+			newL = new RoundRotation2d(SuperStructure.getInstance().lastState.getElbow().angle.plus(
+					RoundRotation2d.getDegree(Robot.m_oi.getElbowAxis() * 10 * Math.abs(Robot.m_oi.getElbowAxis())))); //FIXME check constant
 			System.out.println("New elbow:" + newL.getDegree());
 			move = true;
 			System.out.println("Operator has requested elbow move to " + newL.getDegree());
 			System.out.println("last elbow state: " + SuperStructure.getInstance().lastState.getElbow().angle.getDegree());
 		} else {
 			if (firstRunL) {
-				newL = SuperStructure.getInstance().lastState.getElbowAngle();
+				newL = new RoundRotation2d(SuperStructure.getInstance().lastState.getElbowAngle());
 				firstRunL = false;
 				move = true;
 			}
 		}
 
-		if (Math.abs(Robot.m_oi.getElbowAxis()) > 0.07) {
+		if (Math.abs(Robot.m_oi.getWristAxis()) > 0.07) {
 			firstRunW = true;
 			move = true;
 			newW = SuperStructure.getInstance().lastState.getWrist().angle.plus(
-					RoundRotation2d.getDegree(Robot.m_oi.getElbowAxis() * 10 * Math.abs(Robot.m_oi.getElbowAxis()))); //FIXME check constant
+					RoundRotation2d.getDegree(Robot.m_oi.getWristAxis() * 10 * Math.abs(Robot.m_oi.getWristAxis()))); //FIXME check constant
 			System.out.println("Operator has requested wrist move to " + newW.getDegree());
 		} else {
 			if (firstRunW) {
@@ -95,7 +96,7 @@ public class SuperStructureTelop extends Command {
 		}
 
 		if (move) {
-			SuperStructure.getInstance().move(new SuperStructureState(new ElevatorState(newE), new RotatingArmState(newL), new RotatingArmState(newW)));
+			SuperStructure.getInstance().move(new SuperStructureState(new ElevatorState(newE), new IntakeAngle(new RotatingArmState(newL), new RotatingArmState(newW))));
 			SmartDashboard.putString("superstructure debugging", String.format("Current elevator req height: %f   Current elbow req angle: %f   Current wrist req angle: %f\n", newE.getInch(), newL.getDegree(), newW.getDegree()));
 		}
 
