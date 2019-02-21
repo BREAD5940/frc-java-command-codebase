@@ -45,8 +45,8 @@ public class ArcadeDrive extends Command {
 		boolean isQuickTurn = (Math.abs(Robot.m_oi.getForwardAxis()) < 0.08);
 		// boolean isQuickTurn = (Math.abs(Robot.m_oi.getPrimary().getRawAxis(0)) > 0.75);
 
-		Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis(),
-				Robot.m_oi.getTurnAxis()/*, isQuickTurn*/);
+		Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis() * 1,
+				Robot.m_oi.getTurnAxis() * 1/*, isQuickTurn*/);
 
 		// Logger.log("forward command: " + Robot.m_oi.getForwardAxis());
 

@@ -81,7 +81,7 @@ public class SuperStructureTelop extends Command {
 		}
 
 		if (Math.abs(mOI.getElbowAxis()) > 0.07) {
-			SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getElbowAxis() * 0.4, 0.75));
+			SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getElbowAxis() * 1, 0.75));
 			mLastElbow = SuperStructure.getInstance().getElbow().getPosition();
 		} else {
 			SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mLastElbow);

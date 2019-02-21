@@ -390,9 +390,9 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 		double right = mCalced.get(false);
 
-		tankDrive(left/12, right/12);
+		// tankDrive(left/12, right/12);
 
-		// tankDrive(leftMotorOutput, rightMotorOutput);
+		tankDrive(leftMotorOutput, rightMotorOutput);
 		// tankDrive(0.2, 0.2);
 	}
 
