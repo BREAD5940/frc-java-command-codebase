@@ -3,6 +3,14 @@ package frc.robot.subsystems;
 import java.util.Arrays;
 import java.util.List;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.kauailabs.navx.frc.AHRS;
+import com.team254.lib.physics.DifferentialDrive;
+import com.team254.lib.physics.DifferentialDrive.ChassisState;
+import com.team254.lib.physics.DifferentialDrive.WheelState;
+
 import org.ghrobotics.lib.localization.Localization;
 import org.ghrobotics.lib.localization.TankEncoderLocalization;
 import org.ghrobotics.lib.mathematics.twodim.control.FeedForwardTracker;
@@ -17,12 +25,6 @@ import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.subsystems.drive.DifferentialTrackerDriveBase;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.kauailabs.navx.frc.AHRS;
-import com.team254.lib.physics.DifferentialDrive;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
@@ -380,14 +382,17 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		// Logger.log("left motor output " + leftMotorOutput + " right motor output " +
 		// rightMotorOutput);
 
-		// ChassisState mTarget = new ChassisState(linearPercent * 6, -1 * rotationPercent * 6);
+		ChassisState mTarget = new ChassisState(linearPercent * 6, -1 * rotationPercent * 6);
 
-		// WheelState mCalced = getDifferentialDrive().solveInverseKinematics(mTarget);
+		WheelState mCalced = getDifferentialDrive().solveInverseKinematics(mTarget);
 
-		// mCalced.getLeft()
+		double left = mCalced.get(true);
 
-		// tankDrive(mCalced.getLeft() / 12, mCalced.getRight() / 12);
-		tankDrive(leftMotorOutput, rightMotorOutput);
+		double right = mCalced.get(false);
+
+		tankDrive(left/12, right/12);
+
+		// tankDrive(leftMotorOutput, rightMotorOutput);
 		// tankDrive(0.2, 0.2);
 	}
 
