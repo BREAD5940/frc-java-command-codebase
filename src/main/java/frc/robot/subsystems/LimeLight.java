@@ -4,6 +4,7 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
+import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -45,10 +46,18 @@ public class LimeLight {
 	private static final VisionTarget kHatchSingleTarget = VisionTargetFactory.getHatchSingleTarget();
 	private static final VisionTarget kRocketCargoDualTarget = VisionTargetFactory.getRocketCargoDualTarget();
 	private static final VisionTarget kHatchDualTarget = VisionTargetFactory.getHatchDualTarget();
+	private static final int kDefaultPipeline = 1;
 
 	public LimeLight() {
 		this.table = NetworkTableInstance.getDefault().getTable("limelight");
 		this.setPipeline(kDefaultPreset);
+		table.getEntry("Desired Vision Pipeline").setNumber(kDefaultPipeline);
+		table.addEntryListener("Desired Vision Pipeline", 
+				(table, key, entry, value, flabs) -> {
+					setPipeline((int) value.getDouble());
+					System.out.println("Value changed! it's now " + (int) value.getDouble());
+				},
+		EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
 	}
 
 	public double[] getData() {
@@ -91,6 +100,14 @@ public class LimeLight {
 
 		private int id;
 
+		private static PipelinePreset[] values = null;
+		public static PipelinePreset fromID(int i) {
+			if(PipelinePreset.values() == null) {
+				PipelinePreset.values = PipelinePreset.values();
+			}
+			return PipelinePreset.values[i];
+		}
+
 		private PipelinePreset(int id) {
 			this.id = id;
 		}
@@ -111,6 +128,12 @@ public class LimeLight {
 		} else {
 			this.isHighRes = false;
 		}
+	}
+
+	public void setPipeline(int req_) {
+		PipelinePreset _req_ = PipelinePreset.fromID(req_);
+		this.mCurrentPipeline = _req_;
+		setPipeline(_req_);
 	}
 
 	public int getPipeline() {
