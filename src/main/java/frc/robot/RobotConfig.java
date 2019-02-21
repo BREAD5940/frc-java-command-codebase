@@ -80,6 +80,7 @@ public class RobotConfig {
 		public static final double max_turn_speed_high = 7; // Max turn speed in degrees per second
 		public static final double max_forward_speed_low = 3; // Feet per second forward velocity
 		public static final double max_turn_speed_low = 3; // Max turn speed in degrees per second
+		public static final double tipThreshold = 5; //max ft/sec the robot can go with the elevator at full speed w/o tipping FIXME find the actual num
 
 		// Encoder stuff, dunno where else to put this
 		// public static final double VELOCITY_PULSES_PER_ROTATION = 409.6f;
@@ -188,16 +189,15 @@ public class RobotConfig {
 			// unless otherwise indicated
 			// FIXME change these values to be the distance the elevator has to go to have the intake be at the center of the object
 
-			public static final Length low_rocket_port = LengthKt.getInch(27.5);
-			public static final Length middle_rocket_port = LengthKt.getInch(55.5);
-			public static final Length high_rocket_port = LengthKt.getInch(83.5);
+			public static final Length cargoLowGoal = LengthKt.getInch(27.5);
+			public static final Length cargoMiddleGoal = LengthKt.getInch(55.5);
+			public static final Length cargoHighGoal = LengthKt.getInch(83.5);
 
-			public static final Length low_rocket_hatch = LengthKt.getInch(19);
-			public static final Length middle_rocket_hatch = LengthKt.getInch(47);
-			public static final Length high_rocket_hatch = LengthKt.getInch(75);
+			public static final Length hatchLowGoal = LengthKt.getInch(8.5);
+			public static final Length hatchMiddleGoal = LengthKt.getInch(47);
+			public static final Length hatchHighGoal = LengthKt.getInch(75);
 
-			public static final Length cargo_ship_hatch = LengthKt.getInch(19.75); // TODO this should be even with the low rocket hatch. According to the game manual, it isn't
-			public static final Length cargo_ship_wall = LengthKt.getInch(31.5); //top of wall
+			public static final Length shipWall = LengthKt.getInch(31.5); //top of wall
 		}
 
 		// String default_auto_gear = "low"; // Set the default gear for auto. If not otherwise specified, this will be used
@@ -287,8 +287,8 @@ public class RobotConfig {
 	*/
 	public static class elevator {
 		public static final double elevator_effective_diameter = 1.27 * 1.6; // TODO fix elevator_effective_diameter!!!! (units must be inches)
-		public static final int elevator_minimum_height = 0;
-		public static final Length elevator_maximum_height = LengthKt.getInch(70f); // changed to inches, TODO verify maximum height
+		public static final Length elevator_minimum_height = LengthKt.getInch(0f);
+		public static final Length elevator_maximum_height = LengthKt.getInch(65f); // changed to inches, TODO verify maximum height
 
 		private static final NativeUnit kSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
 		private static final Length left_radius = LengthKt.getInch(1);

@@ -3,6 +3,14 @@ package frc.robot.subsystems;
 import java.util.Arrays;
 import java.util.List;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.kauailabs.navx.frc.AHRS;
+import com.team254.lib.physics.DifferentialDrive;
+import com.team254.lib.physics.DifferentialDrive.ChassisState;
+import com.team254.lib.physics.DifferentialDrive.WheelState;
+
 import org.ghrobotics.lib.localization.Localization;
 import org.ghrobotics.lib.localization.TankEncoderLocalization;
 import org.ghrobotics.lib.mathematics.twodim.control.FeedForwardTracker;
@@ -17,12 +25,6 @@ import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.subsystems.drive.DifferentialTrackerDriveBase;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.kauailabs.navx.frc.AHRS;
-import com.team254.lib.physics.DifferentialDrive;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
@@ -339,10 +341,10 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 	public void arcadeDrive(double linearPercent, double rotationPercent, boolean squareInputs) {
 		linearPercent = Util.limit(linearPercent, 1);
-		linearPercent = Util.deadband(linearPercent, 0.05);
+		linearPercent = Util.deadband(linearPercent, 0.02);
 
 		rotationPercent = Util.limit(rotationPercent, 1);
-		rotationPercent = Util.deadband(rotationPercent, 0.05);
+		rotationPercent = Util.deadband(rotationPercent, 0.02);
 
 		// Square the inputs (while preserving the sign) to increase fine control
 		// while permitting full power.
@@ -379,6 +381,17 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		// rotationPercent);
 		// Logger.log("left motor output " + leftMotorOutput + " right motor output " +
 		// rightMotorOutput);
+
+		ChassisState mTarget = new ChassisState(linearPercent * 6, -1 * rotationPercent * 6);
+
+		WheelState mCalced = getDifferentialDrive().solveInverseKinematics(mTarget);
+
+		double left = mCalced.get(true);
+
+		double right = mCalced.get(false);
+
+		// tankDrive(left/12, right/12);
+
 		tankDrive(leftMotorOutput, rightMotorOutput);
 		// tankDrive(0.2, 0.2);
 	}
@@ -440,8 +453,6 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 	public void tankDrive(double leftPercent, double rightPercent) {
 		lastCommandedVoltages = Arrays.asList(leftPercent * 12, rightPercent * 12);
-		getLeft().getMaster().set(ControlMode.PercentOutput, leftPercent); // because C O M P E N S A T I O N
-		getRight().getMaster().set(ControlMode.PercentOutput, rightPercent);
 
 		// Logger.log("Left error: " + getLeft().getClosedLoopError().getFeet());
 		// Logger.log("Right error: " + getRight().getClosedLoopError().getFeet());
@@ -455,6 +466,9 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 		if (rightPercent < 0.06 && rightPercent > -0.06)
 			rightPercent = 0.0;
+
+		getLeft().getMaster().set(ControlMode.PercentOutput, leftPercent); // because C O M P E N S A T I O N
+		getRight().getMaster().set(ControlMode.PercentOutput, rightPercent);
 
 		// 2.1 meters per second in low gear
 		//

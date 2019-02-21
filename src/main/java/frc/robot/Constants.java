@@ -37,7 +37,7 @@ public class Constants {
 			kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveLeftLow),
 			kVInterceptLeftLow);
 
-	private static final DCMotorTransmission kRightTransmissionModelLowGear = new DCMotorTransmission(1 / kVDriveRightLow,
+	public static final DCMotorTransmission kRightTransmissionModelLowGear = new DCMotorTransmission(1 / kVDriveRightLow,
 			kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveRightLow),
 			kVInterceptRightLow);
 

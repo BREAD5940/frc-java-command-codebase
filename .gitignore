@@ -164,6 +164,8 @@ bin/
 twoHatchLLtest.csv
 twoHatchLLtest
 twoHatchRRest
+*.gz
+src/test/java/safingTestOut.csv
 src/main/python/twoHatchLLtest.csv
 src/main/python/twoHatchLLtest.csv
 src\main\python\twoHatchLLtest.csv

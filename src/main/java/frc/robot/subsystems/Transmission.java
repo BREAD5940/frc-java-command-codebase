@@ -48,8 +48,8 @@ public class Transmission {
 		this.side = side;
 
 		if (mode == EncoderMode.CTRE_MagEncoder_Relative) {
-			mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
-			mMaster.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30);
+			mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+			mMaster.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 0);
 		}
 		mSlave.set(ControlMode.Follower, mMaster.getDeviceID());
 		// Quadrature Encoder of current
@@ -97,7 +97,7 @@ public class Transmission {
 
 	public Length getClosedLoopError() {
 		if (getMaster().getControlMode() != ControlMode.PercentOutput) {
-			return lengthModel.toModel(NativeUnitKt.getSTU(mMaster.getClosedLoopError()));
+			return lengthModel.fromNativeUnitPosition(NativeUnitKt.getNativeUnits(mMaster.getClosedLoopError()));
 		} else {
 			return LengthKt.getFeet(0);
 		}
@@ -122,7 +122,7 @@ public class Transmission {
 		mMaster.config_kI(0, ki, 0);
 		mMaster.config_kD(0, kd, 0);
 		mMaster.config_kF(0, kf, 0);
-		mMaster.config_IntegralZone(0, (int) Math.round(lengthModel.fromModel(LengthKt.getMeter(iZone)).getValue()), 30);
+		mMaster.config_IntegralZone(0, (int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getMeter(iZone)).getValue()), 30);
 		mMaster.configMaxIntegralAccumulator(0, maxIntegral, 0);
 	}
 
