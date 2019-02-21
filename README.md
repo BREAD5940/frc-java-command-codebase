@@ -10,6 +10,7 @@ This is Team 5940 BREAD's 2019 codebase for the 2019 FRC game Deep Space
 ## TODO by SFR
  * Test elbow and wrist requestAngle safing
  * Test superstructure planner
+  * Improve the model of the size/shape of the intake
  * Troubleshoot bad packet/lost comms/iterative loop overrun
  * Look into increasing timing back up to 20ms from 25ms
  * Pathing on a notifier?

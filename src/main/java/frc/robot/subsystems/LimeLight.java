@@ -31,18 +31,20 @@ public class LimeLight {
 	private static final double y_resolution_low = 240;
 	private static final double x_resolution_high = 960;
 	private static final double y_resolution_high = 720;
-	private static final double x_fov = 59.6;
-	private static final double y_fov = 45.7;
-	private static final double x_focal_length_low = x_resolution_low / (2 * Math.tan(x_fov / 2));
-	private static final double y_focal_length_low = y_resolution_low / (2 * Math.tan(y_fov / 2));
-	private static final double x_focal_length_high = x_resolution_low / (2 * Math.tan(x_fov / 2));
-	private static final double y_focal_length_high = y_resolution_low / (2 * Math.tan(y_fov / 2));
+	private static final Rotation2d x_fov = Rotation2dKt.getDegree(59.6);
+	private static final Rotation2d y_fov = Rotation2dKt.getDegree(45.7);
+	private static final double x_focal_length_low = x_resolution_low / (2 * Math.tan(x_fov.getRadian() / 2));
+	private static final double y_focal_length_low = y_resolution_low / (2 * Math.tan(y_fov.getRadian() / 2));
+	private static final double x_focal_length_high = x_resolution_low / (2 * Math.tan(x_fov.getRadian() / 2));
+	private static final double y_focal_length_high = y_resolution_low / (2 * Math.tan(y_fov.getRadian() / 2));
 	boolean isHighRes = false;
 	public PipelinePreset mCurrentPipeline;
 	private static final PipelinePreset kDefaultPreset = PipelinePreset.kCargoClose;
 
-	private static final VisionTarget kRocketCargoTarget = VisionTargetFactory.getRocketCargoTarget();
-	private static final VisionTarget kHatchTarget = VisionTargetFactory.getHatchTarget();
+	private static final VisionTarget kRocketCargoSingleTarget = VisionTargetFactory.getRocketCargoSingleTarget();
+	private static final VisionTarget kHatchSingleTarget = VisionTargetFactory.getHatchSingleTarget();
+	private static final VisionTarget kRocketCargoDualTarget = VisionTargetFactory.getRocketCargoDualTarget();
+	private static final VisionTarget kHatchDualTarget = VisionTargetFactory.getHatchDualTarget();
 
 	public LimeLight() {
 		this.table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -162,8 +164,34 @@ public class LimeLight {
 		return (table.getEntry("tv")).getDouble(0);
 	}
 
-	public Length getDistance(VisionTarget target, Rotation2d yawAngle) {
-		return null;
+	/**
+	 * Estimate the distance to a given target using a measurement
+	 * @param kTarget the target we are tracking
+	 * @param mMeasured the target we measured
+	 */
+	public Length getDistance(VisionTarget kTarget, MeasuredVisionTarget mMeasured) {
+		Length width = kTarget.getWidth();
+		double focalLen = (isHighRes) ? x_focal_length_high : x_focal_length_low;
+		Length distance = width.times(focalLen).div(mMeasured.getX());
+		return distance;
+	}
+
+
+	public class MeasuredVisionTarget {
+		private double x_, y_, width_, height_, area_;
+		MeasuredVisionTarget(double x, double y, double width, double height, double area) {
+			x_ = x;
+			y_ = y;
+			width_ = width;
+			height_ = height;
+			area_ = area;
+		}
+
+		public double getX() {return x_;}
+		public double getY() {return y_;}
+		public double getWidth() {return width_;}
+		public double getHeight() {return height_;}
+		public double getArea() {return area_;}
 	}
 
 }
