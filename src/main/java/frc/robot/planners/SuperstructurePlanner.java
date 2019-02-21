@@ -101,7 +101,7 @@ public class SuperstructurePlanner {
 			errorCount++;
 			corrCount++;
 			goalState.getElevator().setHeight(SuperStructureConstants.Elevator.top);
-		} else if (goalState.getElevatorHeight.getInch() < SuperStructureConstants.Elevator.bottom.getInch()) {
+		} else if (goalState.getElevatorHeight().getInch() < SuperStructureConstants.Elevator.bottom.getInch()) {
 			System.out.println("MOTION IMPOSSIBLE -- Elevator will pass minimum height. Setting to minimum height.");
 			System.out.printf("Requested height: %f   Adjusted height: %f\n", goalState.getElevatorHeight().getInch(), SuperStructureConstants.Elevator.bottom.getInch());
 			errorCount++;

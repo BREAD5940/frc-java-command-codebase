@@ -126,7 +126,7 @@ public class OI {
 	}
 
 	public double getIntakeAxis() {
-		return (secondaryJoystick.getRawButton(xboxmap.Buttons.RB_BUTTON)) ? 1 * 0.7 : 0;
+		return (secondaryJoystick.getRawButton(xboxmap.Buttons.RB_BUTTON)) ? 1 * 1 : 0;
 	}
 
 	public double getOuttakeAxis() {
