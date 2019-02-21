@@ -64,10 +64,10 @@ public class SuperStructureTelop extends Command {
 			}
 		}
 
-		if (Math.abs(Robot.m_oi.getElbowAxis()) > 0.07) {
+		if (Math.abs(Robot.m_oi.getWristAxis()) > 0.07) {
 			firstRunL = true;
 			newL = SuperStructure.getInstance().lastState.getElbow().angle.plus(
-					RoundRotation2d.getDegree(Robot.m_oi.getElbowAxis() * 10 * Math.abs(Robot.m_oi.getElbowAxis()))); //FIXME check constant
+					RoundRotation2d.getDegree(Robot.m_oi.getWristAxis() * 10 * Math.abs(Robot.m_oi.getWristAxis()))); //FIXME check constant
 			System.out.println("New elbow:" + newL.getDegree());
 			move = true;
 		} else {
@@ -78,11 +78,11 @@ public class SuperStructureTelop extends Command {
 			}
 		}
 
-		if (Math.abs(Robot.m_oi.getWristAxis()) > 0.07) {
+		if (Math.abs(Robot.m_oi.getElbowAxis()) > 0.07) {
 			firstRunW = true;
 			move = true;
 			newW = SuperStructure.getInstance().lastState.getWrist().angle.plus(
-					RoundRotation2d.getDegree(Robot.m_oi.getWristAxis() * 10 * Math.abs(Robot.m_oi.getWristAxis()))); //FIXME check constant
+					RoundRotation2d.getDegree(Robot.m_oi.getElbowAxis() * 10 * Math.abs(Robot.m_oi.getElbowAxis()))); //FIXME check constant
 		} else {
 			if (firstRunW) {
 				newW = SuperStructure.getInstance().lastState.getWrist().angle;
