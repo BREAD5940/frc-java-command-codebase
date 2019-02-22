@@ -269,17 +269,13 @@ public class SuperStructure extends Subsystem {
 		// SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mRequState.getWrist().angle);
 
 		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
-		SuperStructureState stateSetpoint = plan(requState);
+		// SuperStructureState stateSetpoint = plan(requState);
 
-		getWrist().requestAngle(stateSetpoint.getWrist().angle); // div by 12 because it expects a throttle
-		getElbow().requestAngle(stateSetpoint.getElbow().angle); // div by 12 because it expects a throttle
-		getElevator().setPositionArbitraryFeedForward(stateSetpoint.getElevator().height, elevatorPercentVbusGravity / 12d);
+		// getWrist().requestAngle(stateSetpoint.getWrist().angle); // div by 12 because it expects a throttle
+		// getElbow().requestAngle(stateSetpoint.getElbow().angle); // div by 12 because it expects a throttle
+		// getElevator().setPositionArbitraryFeedForward(stateSetpoint.getElevator().height, elevatorPercentVbusGravity / 12d);
 		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
 
-		if (getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed())
-			System.out.println("elbow limit switch triggered");
-		if (getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed())
-			System.out.println("wrist limit switch triggered");
 	}
 
 	public SuperStructureState plan(SuperStructureState mReqState) {
