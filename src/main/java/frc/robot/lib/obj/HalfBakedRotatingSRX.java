@@ -33,6 +33,12 @@ public class HalfBakedRotatingSRX extends WPI_TalonSRX {
 		super.setSelectedSensorPosition(ticks);
 	}
 
+	public RoundRotation2d getSensorPosition() {
+		int ticks = super.getSelectedSensorPosition();
+		RoundRotation2d pos_ = RoundRotation2d.getDegree(ticks/mModel);
+		return pos_;
+	}
+
 	public AngularVelocity getSensorVelocity() {
 		int raw_ = super.getSelectedSensorVelocity();
 		double rotPerSec = raw_ / mModel * 10;
