@@ -83,7 +83,8 @@ public class FollowVisionTarget extends Command {
 			double[] data = Robot.limelight.getData();
 			double xAxisOffset = data[1]; // x axis offset
 			double sizeData = data[3]; // percent of frame
-			turnSpeed = xAxisOffset * (1 / 30) * (1 / 20);
+			turnSpeed = xAxisOffset / 8d;
+
 
 			forwardSpeed = 0;
 
@@ -93,6 +94,8 @@ public class FollowVisionTarget extends Command {
 			forwardSpeed = Util.limit(forwardSpeed, 0.5);
 
 			Robot.drivetrain.arcadeDrive(forwardSpeed, turnSpeed);
+			System.out.println("X axis offset: " + xAxisOffset + " Control input: " + forwardSpeed + "," + turnSpeed);
+
 		} else {
 			System.out.println("No targets currently being tracked! Can't track thin air, can I?");
 			Robot.drivetrain.arcadeDrive(0, 0);

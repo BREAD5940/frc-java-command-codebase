@@ -10,6 +10,7 @@ import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
@@ -27,6 +28,7 @@ import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.obj.InvertSettings;
+import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
 
@@ -77,7 +79,7 @@ public class Elevator /*extends Subsystem*/ {
 	public static final double KLowGearForcePerVolt = (512d / 12d /* newtons */) * 1.5;
 	public static final double KHighGearForcePerVolt = (1500d / 12d /* newtons */ );
 
-	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.2 * 4, 0, 2, 0);
+	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.2 * 4, 0.1, 2, 0);
 	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.05, 0, 0, 0);
 	private static final int kLowGearPIDSlot = 0;
 	private static final int kHighGearPIDSlot = 1;
@@ -125,6 +127,14 @@ public class Elevator /*extends Subsystem*/ {
 		// setup PID gains
 		setClosedLoopGains(kLowGearPIDSlot, LOW_GEAR_PID);
 		setClosedLoopGains(kHighGearPIDSlot, HIGH_GEAR_PID);
+
+		NativeUnit maxHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.top);
+		getMaster().setSoftLimitForward(maxHeightRaw);
+		getMaster().setSoftLimitForwardEnabled(true);
+		NativeUnit minHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.bottom);
+		getMaster().setSoftLimitReverse(minHeightRaw);
+		getMaster().setSoftLimitReverseEnabled(true);
+
 
 		mCurrentGear = kDefaultGear;
 		setGear(kDefaultGear); // set shifter and closed loop slot
