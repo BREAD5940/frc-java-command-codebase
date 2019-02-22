@@ -16,6 +16,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 
 import frc.robot.lib.PIDSettings;
@@ -92,6 +94,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 			motors.add(new HalfBakedRotatingSRX(i.intValue(), mTicksPerRotation));
 		}
 
+		getMaster().setInverted(masterInvert);
 		if (ports.size() > 1) {
 			motors.get(1).set(ControlMode.Follower, ports.get(0));
 			motors.get(1).setInverted(InvertType.OpposeMaster);
@@ -101,6 +104,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 		getMaster().configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 0);
 		getMaster().setSensorPosition(RoundRotation2d.getDegree(0));
 		setClosedLoopGains(0, settings);
+		getMaster().configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
 
 	}
 

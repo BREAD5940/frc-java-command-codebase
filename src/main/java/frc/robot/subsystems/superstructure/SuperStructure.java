@@ -98,11 +98,11 @@ public class SuperStructure extends Subsystem {
 
 		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
 
-		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
+		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, false /* FIXME check inverting! */,
 				Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
 		mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
-				false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+				true /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 
 		elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
 				new InvertSettings(true, InvertType.FollowMaster, InvertType.FollowMaster, InvertType.OpposeMaster));
@@ -275,6 +275,11 @@ public class SuperStructure extends Subsystem {
 		getElbow().requestAngle(stateSetpoint.getElbow().angle); // div by 12 because it expects a throttle
 		getElevator().setPositionArbitraryFeedForward(stateSetpoint.getElevator().height, elevatorPercentVbusGravity / 12d);
 		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
+
+		if (getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed())
+			System.out.println("elbow limit switch triggered");
+		if (getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed())
+			System.out.println("wrist limit switch triggered");
 	}
 
 	public SuperStructureState plan(SuperStructureState mReqState) {
