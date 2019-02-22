@@ -141,7 +141,7 @@ public class OI {
 	}
 
 	public double getElbowAxis() {
-		return secondaryJoystick.getRawAxis(2) - secondaryJoystick.getRawAxis(3); // triggers
+		return (secondaryJoystick.getRawAxis(2) - secondaryJoystick.getRawAxis(3)) * -1; // triggers
 	}
 
 	/**
