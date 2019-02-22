@@ -14,8 +14,8 @@ import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
-import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 import frc.robot.subsystems.superstructure.Elevator;
+import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class SuperStructureTelop extends Command {
@@ -65,7 +65,7 @@ public class SuperStructureTelop extends Command {
 				move = true;
 			}
 		}
-		if(move) {
+		if (move) {
 			double volts = Elevator.getVoltage(new SuperStructureState(new ElevatorState(newE), new RotatingArmState(), new RotatingArmState()));
 			SuperStructure.getInstance().getElevator().getMaster().set(ControlMode.Position, newE, DemandType.ArbitraryFeedForward, volts);
 		}

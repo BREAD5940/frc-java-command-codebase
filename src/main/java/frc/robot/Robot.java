@@ -215,7 +215,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledPeriodic() {
-		boolean reset=false;
+		boolean reset = false;
 		if (superstructure.getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
 			RoundRotation2d new_ = RoundRotation2d.getDegree(15);
 			superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(15));
@@ -229,7 +229,7 @@ public class Robot extends TimedRobot {
 		}
 		if (superstructure.getElbow().getMaster().getSensorCollection().isRevLimitSwitchClosed()) {
 			System.out.println("elbow rev triggered!");
-			superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(-180-15));
+			superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(-180 - 15));
 			reset = true;
 		}
 		if (superstructure.getWrist().getMaster().getSensorCollection().isRevLimitSwitchClosed()) {
@@ -237,7 +237,7 @@ public class Robot extends TimedRobot {
 			superstructure.getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(-90));
 			reset = true;
 		}
-		if(reset) {
+		if (reset) {
 			superstructure.getCurrentCommand().cancel();
 			superstructure.getDefaultCommand().start();
 		}

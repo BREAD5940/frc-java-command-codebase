@@ -7,6 +7,7 @@ import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.subsystems.DriveTrain;
@@ -69,7 +70,8 @@ public class OI {
 		if (plzNoDieDriveTrain.get())
 			DriveTrain.getInstance().getCurrentCommand().cancel();
 
-		test1Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.LOW));
+		// test1Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.LOW));
+		test1Button.whenPressed(new FollowVisionTarget(1, 10));
 		test2Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.MIDDLE));
 		test3Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.HIGH));
 		test4Button.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW));

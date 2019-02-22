@@ -35,7 +35,7 @@ public class HalfBakedRotatingSRX extends WPI_TalonSRX {
 
 	public RoundRotation2d getSensorPosition() {
 		int ticks = super.getSelectedSensorPosition();
-		RoundRotation2d pos_ = RoundRotation2d.getDegree(ticks/mModel);
+		RoundRotation2d pos_ = RoundRotation2d.getDegree(ticks / mModel);
 		return pos_;
 	}
 
