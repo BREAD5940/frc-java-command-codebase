@@ -3,8 +3,8 @@ package frc.robot.commands.subsystems.drivetrain;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
-import frc.robot.lib.EncoderLib;
 import frc.robot.lib.TerriblePID;
+import frc.robot.lib.motion.Util;
 
 /**
  * Follow a vision target tracked by a limelight
@@ -39,6 +39,7 @@ public class FollowVisionTarget extends Command {
 	public FollowVisionTarget(double speed, double timeout) {
 		this.timeout = timeout;
 		this.targetSpeed = speed;
+		this.targetPercentOfFrame = 2;
 		requires(Robot.drivetrain);
 	}
 
@@ -72,56 +73,32 @@ public class FollowVisionTarget extends Command {
 		}
 
 		angleDeltaX = Robot.limelight.getDx();
-		targetPercentOfFrame = Robot.limelight.getTargetArea();
+		// targetPercentOfFrame = Robot.limelight.getTargetArea();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
 		if (Robot.limelight.getData()[0] != 0) {
-			// if (followRange) {
-			//   forwardSpeed = forwardPID.update(Robot.limelight.getTargetArea());
-			// } else {
-			//   forwardSpeed = forwardPID.update(Robot.drivetrain.getLeftVelocity());
-			// }
-			// turnSpeed = turnPID.update(Robot.limelight.getData()[1]);
 			double[] data = Robot.limelight.getData();
-			double limelightData = data[1];
-			double sizeData = data[3];
-			turnSpeed = limelightData * (1 / 30);
+			double xAxisOffset = data[1]; // x axis offset
+			double sizeData = data[3]; // percent of frame
+			turnSpeed = xAxisOffset / 8d;
+
 
 			forwardSpeed = 0;
 
-			leftSpeedRaw = EncoderLib.distanceToRaw(forwardSpeed + turnSpeed, RobotConfig.driveTrain.left_wheel_effective_diameter / 12,
-					RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
-			rightSpeedRaw = EncoderLib.distanceToRaw(forwardSpeed - turnSpeed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12,
-					RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
-
-			// System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeft().getFeet() + 
-			// " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());
-			// System.out.println("TURN PID: Setpoint: " + turnPID.getSetpoint()+ 
-			// " Error: " + turnPID.getError() + " OUTPUT VELOCITY (ft/s): " + turnPID.getOutput());
-
-			System.out.println("Limelight data: " + limelightData + " Turn speed: " + turnSpeed);
-
 			// double targetSizeSetpoint = 2;
 			double distanceRatio = targetPercentOfFrame - sizeData;
-
 			double forwardSpeed = distanceRatio * 0.5;
+			forwardSpeed = Util.limit(forwardSpeed, 0.5);
 
-			if (forwardSpeed > 0.5) {
-				forwardSpeed = 0.5;
-			}
-			if (forwardSpeed < -0.5) {
-				forwardSpeed = -0.5;
-			}
-
-			// Robot.drivetrain.setSpeeds(leftSpeedRaw, rightSpeedRaw);
-			Robot.drivetrain.setPowers(forwardSpeed + limelightData / 20, forwardSpeed - limelightData / 20);
+			Robot.drivetrain.arcadeDrive(forwardSpeed, turnSpeed);
+			System.out.println("X axis offset: " + xAxisOffset + " Control input: " + forwardSpeed + "," + turnSpeed);
 
 		} else {
 			System.out.println("No targets currently being tracked! Can't track thin air, can I?");
-			Robot.drivetrain.setPowers(0, 0);
+			Robot.drivetrain.arcadeDrive(0, 0);
 		}
 	}
 
