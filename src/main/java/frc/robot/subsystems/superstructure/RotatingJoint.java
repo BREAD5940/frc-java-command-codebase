@@ -105,7 +105,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 		getMaster().setSensorPosition(RoundRotation2d.getDegree(0));
 		setClosedLoopGains(0, settings);
 		getMaster().configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-
+		getMaster().configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
 	}
 
 	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, double iZone, double maxIntegral, double minOut, double maxOut) {

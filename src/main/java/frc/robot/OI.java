@@ -5,9 +5,12 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
+import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
+import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
@@ -26,6 +29,7 @@ public class OI {
 
 	private Joystick primaryJoystick = new Joystick(RobotConfig.controls.primary_joystick_port);
 	private Joystick secondaryJoystick = new Joystick(RobotConfig.controls.secondary_joystick_port);
+	private Joystick driverStation = new Joystick(3); //TODO make a constant
 
 	private Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
 	private Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
@@ -50,6 +54,19 @@ public class OI {
 	// Trajectory trajectory = Pathfinder.readFromCSV(file);
 	// PathfinderTrajectory pftraj = /*new PathfinderTrajectory(trajectory);*/ PathfinderTrajectory.readFromTrajectory(trajectory);
 
+	Button cargoOverButton = new JoystickButton(driverStation, DriverstationMap.Buttons.cargoCargo);
+	Button cargo1Button = new JoystickButton(driverStation, DriverstationMap.Buttons.cargo1);
+	Button cargo2Button = new JoystickButton(driverStation, DriverstationMap.Buttons.cargo2);
+	Button cargo3Button = new JoystickButton(driverStation, DriverstationMap.Buttons.cargo3);
+
+	Button hatch1Button = new JoystickButton(driverStation, DriverstationMap.Buttons.hatch1);
+	Button hatch2Button = new JoystickButton(driverStation, DriverstationMap.Buttons.hatch2);
+	Button hatch3Button = new JoystickButton(driverStation, DriverstationMap.Buttons.hatch3);
+
+	Button hatchPickupButton = new JoystickButton(driverStation, DriverstationMap.Buttons.hatchPickup);
+	Button intakeButton = new JoystickButton(driverStation, DriverstationMap.Buttons.intake);
+	Button outtakeButton = new JoystickButton(driverStation, DriverstationMap.Buttons.outtake);
+
 	public OI() {
 		shift_up_button.whenPressed(new SetGearCommand(Gear.HIGH));
 		shift_down_button.whenPressed(new SetGearCommand(Gear.LOW));
@@ -69,10 +86,26 @@ public class OI {
 		if (plzNoDieDriveTrain.get())
 			DriveTrain.getInstance().getCurrentCommand().cancel();
 
-		test1Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.LOW));
+		// test1Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.LOW));
+		test1Button.whenPressed(new FollowVisionTarget(1, 10));
 		test2Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.MIDDLE));
 		test3Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.HIGH));
 		test4Button.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW));
+
+
+
+		cargoOverButton.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.OVER));
+		cargo1Button.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.LOW));
+		cargo2Button.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.MIDDLE));
+		cargo3Button.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.HIGH));
+
+		hatch1Button.whenPressed(new RunAuto(HeldPiece.HATCH, GoalHeight.LOW));
+		hatch2Button.whenPressed(new RunAuto(HeldPiece.HATCH, GoalHeight.MIDDLE));
+		hatch3Button.whenPressed(new RunAuto(HeldPiece.HATCH, GoalHeight.HIGH));
+		
+		hatchPickupButton.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW));
+		intakeButton.whileHeld(new RunIntake(1,5));
+		outtakeButton.whileHeld(new RunIntake(-1,5));
 
 		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
 		// yeetInACircleButton.whenPressed(new TurnInPlace(Rotation2dKt.getDegree(180), false));
@@ -142,6 +175,14 @@ public class OI {
 
 	public double getElbowAxis() {
 		return (secondaryJoystick.getRawAxis(2) - secondaryJoystick.getRawAxis(3)) * -1; // triggers
+	}
+
+	public double getDSElbowAxis(){
+		return (driverStation.getRawAxis(DriverstationMap.Axes.elbowStick));
+	}
+
+	public double getDSElevatorAxis(){
+		return (driverStation.getRawAxis(DriverstationMap.Axes.elevatorStick));
 	}
 
 	/**

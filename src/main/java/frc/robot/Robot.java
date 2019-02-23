@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
+import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
@@ -214,6 +215,33 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledPeriodic() {
+		boolean reset = false;
+		if (superstructure.getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
+			RoundRotation2d new_ = RoundRotation2d.getDegree(15);
+			superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(15));
+			System.out.println("elbow fwd triggered! new pos: " + new_.getDegree());
+			reset = true;
+		}
+		if (superstructure.getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
+			System.out.println("wrist fwd triggered!");
+			superstructure.getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(90));
+			reset = true;
+		}
+		if (superstructure.getElbow().getMaster().getSensorCollection().isRevLimitSwitchClosed()) {
+			System.out.println("elbow rev triggered!");
+			superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(-180 - 15));
+			reset = true;
+		}
+		if (superstructure.getWrist().getMaster().getSensorCollection().isRevLimitSwitchClosed()) {
+			System.out.println("wrist rev triggered!");
+			superstructure.getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(-90));
+			reset = true;
+		}
+		if (reset) {
+			superstructure.getCurrentCommand().cancel();
+			superstructure.getDefaultCommand().start();
+		}
+
 		Scheduler.getInstance().run();
 	}
 
@@ -313,8 +341,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
 
 		SmartDashboard.putData(drivetrain);
-		SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getCurrentState().angle.getDegree());
-		SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getCurrentState().angle.getDegree());
+		SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getMaster().getSensorPosition().getDegree());
+		SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
 		SmartDashboard.putData(superstructure);
 
 		// Limelight stuff
@@ -329,6 +357,12 @@ public class Robot extends TimedRobot {
 
 		// long elapsed = System.currentTimeMillis() - now;
 		// System.out.println("RobotPeriodic took " + elapsed + "ms");
+
+		// if (getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed())
+		// System.out.println("elbow limit: " + superstructure.getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed());
+		// if (getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed())
+		// System.out.println("wrist limit: " + superstructure.getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed());
+
 	}
 
 }

@@ -4,6 +4,7 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -13,6 +14,7 @@ import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
+import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
@@ -46,12 +48,13 @@ public class SuperStructureTelop extends Command {
 		// elevator stuff
 		Length newE = SuperStructure.getInstance().getLastReqElevatorHeight();
 		boolean move = false;
+		ElevatorState newReqE;
 		Length deltaE = LengthKt.getInch(Util.deadband(Robot.m_oi.getElevatorAxis() * 10 * Math.abs(Robot.m_oi.getElevatorAxis()), 0.08));
 		if (Math.abs(Robot.m_oi.getElevatorAxis()) > 0.08) { // only move if asked
 			firstRun = true;
 			Length currentE = SuperStructure.getInstance().getLastReqElevatorHeight();
 			newE = currentE.plus(deltaE);
-			ElevatorState newReqE = new ElevatorState(newE);
+			newReqE = new ElevatorState(newE);
 			move = true;
 			// SuperStructure.getInstance().moveSuperstructureElevator(new_s);
 
@@ -62,10 +65,9 @@ public class SuperStructureTelop extends Command {
 				move = true;
 			}
 		}
-
 		if (move) {
-			SuperStructure.getInstance().move(new SuperStructureState(new ElevatorState(newE), new RotatingArmState(), new RotatingArmState()));
-			System.out.printf("Current elevator req height: %f\n", newE.getInch());
+			double volts = Elevator.getVoltage(new SuperStructureState(new ElevatorState(newE), new RotatingArmState(), new RotatingArmState()));
+			SuperStructure.getInstance().getElevator().getMaster().set(ControlMode.Position, newE, DemandType.ArbitraryFeedForward, volts);
 		}
 
 		// move the whole darn thing
