@@ -27,6 +27,7 @@ import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.lib.PIDSettings;
+import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.ElevatorState;
@@ -79,8 +80,10 @@ public class Elevator /*extends Subsystem*/ {
 	public static final double KLowGearForcePerVolt = (512d / 12d /* newtons */) * 1.5;
 	public static final double KHighGearForcePerVolt = (1500d / 12d /* newtons */ );
 
+	private static final int mHighGearUnitsPer100ms = 8192;
+	private static final int mHighGearKf = (int) 1023 / mHighGearUnitsPer100ms;
 	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.2 * 4, 0.1, 2, 0); // high speed low torque
-	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.15, 0, 0, 0); // low torque high speed
+	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.15, 0, 0, mHighGearKf, 8192 /* raw units per 100ms */, 8192 /* raw units per 100ms */); // low torque high speed
 	private static final int kLowGearPIDSlot = 0;
 	private static final int kHighGearPIDSlot = 1;
 
@@ -134,7 +137,6 @@ public class Elevator /*extends Subsystem*/ {
 		NativeUnit minHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.bottom);
 		getMaster().setSoftLimitReverse(minHeightRaw);
 		getMaster().setSoftLimitReverseEnabled(true);
-
 
 		mCurrentGear = kDefaultGear;
 		setGear(kDefaultGear); // set shifter and closed loop slot
@@ -191,6 +193,15 @@ public class Elevator /*extends Subsystem*/ {
 		}
 	}
 
+	public void requestClosedLoop(ControlMode mode, Length req_) {
+		requestClosedLoop(mode, req_, DemandType.Neutral, 0);
+	}
+	
+	public void requestClosedLoop(ControlMode mode, Length req_, DemandType type, double arg2) {
+		req_ = Util.limit(req_, RobotConfig.elevator.elevator_minimum_height, RobotConfig.elevator.elevator_maximum_height);
+		getMaster().set(mode, req_, type, arg2);
+	}
+
 	public void zeroEncoder() {
 		mMaster.setSensorPosition(LengthKt.getMeter(0));
 	}
@@ -205,12 +216,15 @@ public class Elevator /*extends Subsystem*/ {
 		getMaster().set(ControlMode.PercentOutput, 0);
 	}
 
-	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, double iZone, double maxIntegral, double minOut, double maxOut) {
+	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, double mmVel, double mmAccel, double iZone, double maxIntegral, double minOut, double maxOut) {
 		mMaster.selectProfileSlot(slot, 0);
 		mMaster.config_kP(slot, kp, 0);
 		mMaster.config_kI(slot, ki, 0);
 		mMaster.config_kD(slot, kd, 0);
 		mMaster.config_kF(slot, kf, 0);
+		mMaster.configMotionCruiseVelocity((int)mmVel);
+		mMaster.configMotionAcceleration((int)mmAccel);
+		mMaster.configMotionSCurveStrength(0);
 		mMaster.config_IntegralZone(slot, (int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getInch(iZone)).getValue()), 0);
 		mMaster.configMaxIntegralAccumulator(slot, maxIntegral, 0);
 		mMaster.configPeakOutputForward(maxOut);
@@ -218,7 +232,7 @@ public class Elevator /*extends Subsystem*/ {
 	}
 
 	public void setClosedLoopGains(int slot, PIDSettings config) {
-		setClosedLoopGains(slot, config.kp, config.ki, config.kd, config.kf, config.iZone, config.maxIAccum, config.minOutput, config.maxOutput);
+		setClosedLoopGains(slot, config.kp, config.ki, config.kd, config.kf, config.motionMagicCruiseVelocity, config.motionMagicAccel, config.iZone, config.maxIAccum, config.minOutput, config.maxOutput);
 	}
 
 	/**
