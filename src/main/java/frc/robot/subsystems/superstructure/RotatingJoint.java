@@ -216,7 +216,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 		}
 
 		public RotatingArmState(RoundRotation2d angle_) {
-			this(angle_, new AngularVelocity());
+			this(angle_, new AngularVelocity()); //TODO should the velocity take the angle as an argument with a time of the loop time? or would that be bad?
 		}
 
 		public RotatingArmState(Rotation2d angle_) {

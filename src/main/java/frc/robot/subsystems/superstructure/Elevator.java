@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
+import frc.robot.SuperStructureConstants;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.obj.InvertSettings;
@@ -237,10 +238,10 @@ public class Elevator /*extends Subsystem*/ {
 		Mass total = MassKt.getLb(kCarriageMass.getLb());
 
 		if (state.getHeldPiece() == HeldPiece.HATCH) {
-			total = total.plus(SuperStructure.kHatchMass);
+			total = total.plus(SuperStructureConstants.kHatchMass);
 		}
 		if (state.getHeldPiece() == HeldPiece.CARGO) {
-			total = total.plus(SuperStructure.kCargoMass);
+			total = total.plus(SuperStructureConstants.kCargoMass);
 		}
 		if (state.getElevatorHeight().getInch() >= kTopOfInnerStage.getInch()) {
 			total = total.plus(kInnerStageMass);

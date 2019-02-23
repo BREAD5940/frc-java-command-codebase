@@ -16,6 +16,7 @@ import com.team254.lib.physics.DCMotorTransmission;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Constants;
+import frc.robot.SuperStructureConstants;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.subsystems.superstructure.SuperStructureTelop;
@@ -44,7 +45,7 @@ public class SuperStructure extends Subsystem {
 	private static double currentDTVelocity; //in ft/sec
 	public static Length currentSetHeight, lastSH = LengthKt.getInch(70), lastLastSH = LengthKt.getInch(70);
 	public SuperStructureState mReqState = new SuperStructureState();
-	public SuperStructureState lastState = new SuperStructureState();
+	public SuperStructureState lastState;
 	private CommandGroup mCurrentCommandGroup;
 	private ArrayList<SuperStructureState> mReqPath;
 	private int cPathIndex = 0;
@@ -55,12 +56,12 @@ public class SuperStructure extends Subsystem {
 	// public SuperStructureState mPeriodicIO = new SuperStructureState();
 	private RotatingJoint mWrist, mElbow;
 	private DCMotorTransmission kElbowTransmission, kWristTransmission;
-	public static final Mass kHatchMass = MassKt.getLb(2.4); // FIXME check mass
-	public static final Mass kCargoMass = MassKt.getLb(1); // FIXME check mass
-	public static final RoundRotation2d kWristMin = RoundRotation2d.getDegree(-45); // relative
-	public static final RoundRotation2d kWristMax = RoundRotation2d.getDegree(90); // relative
-	public static final RoundRotation2d kElbowMin = RoundRotation2d.getDegree(-180); // absolute
-	public static final RoundRotation2d kElbowMax = RoundRotation2d.getDegree(15); // absolute
+	// public static final Mass kHatchMass = MassKt.getLb(2.4); // FIXME check mass
+	// public static final Mass kCargoMass = MassKt.getLb(1); // FIXME check mass
+	// public static final RoundRotation2d SuperStructureConstants.Wrist.kWristMin = RoundRotation2d.getDegree(-45); // relative
+	// public static final RoundRotation2d SuperStructureConstants.Wrist.kWristMax = RoundRotation2d.getDegree(90); // relative
+	// public static final RoundRotation2d SuperStructureConstants.Wrist.kElbowMin = RoundRotation2d.getDegree(-180); // absolute
+	// public static final RoundRotation2d SuperStructureConstants.Elbow.kElbowMax = RoundRotation2d.getDegree(15); // absolute
 
 	public static synchronized SuperStructure getInstance() {
 		if (instance_ == null) {
@@ -94,15 +95,19 @@ public class SuperStructure extends Subsystem {
 
 	private SuperStructure() {
 		super("SuperStructure");
+
+		lastState = new SuperStructureState();
+		lastState.setElbowAngle(RoundRotation2d.getDegree(1));
+
 		kElbowTransmission = new DCMotorTransmission(Constants.kElbowSpeedPerVolt, Constants.kElbowTorquePerVolt, Constants.kElbowStaticFrictionVoltage);
 
 		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
 
-		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, false /* FIXME check inverting! */,
+		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, SuperStructureConstants.Wrist.kWristMin, SuperStructureConstants.Wrist.kWristMax, true /* FIXME check inverting! */,
 				Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
-		mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
-				true /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+		mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, SuperStructureConstants.Elbow.kElbowMin, SuperStructureConstants.Elbow.kElbowMax,
+				false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 
 		elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
 				new InvertSettings(true, InvertType.FollowMaster, InvertType.FollowMaster, InvertType.OpposeMaster));
@@ -219,13 +224,13 @@ public class SuperStructure extends Subsystem {
 
 	public RotatingJoint getWrist() {
 		if (mWrist == null)
-			mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
+			mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, SuperStructureConstants.Wrist.kWristMin, SuperStructureConstants.Wrist.kWristMax, true /* FIXME check inverting! */,
 					Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
-		// 		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
+		// 		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, SuperStructureConstants.Wrist.kWristMin, SuperStructureConstants.Wrist.kWristMax, true /* FIXME check inverting! */,
 		// 		Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
-		// mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
+		// mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, SuperStructureConstants.Wrist.kElbowMin, SuperStructureConstants.Elbow.kElbowMax,
 		// 		false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 
 		return mWrist;
@@ -233,7 +238,7 @@ public class SuperStructure extends Subsystem {
 
 	public RotatingJoint getElbow() {
 		if (mElbow == null)
-			mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
+			mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, SuperStructureConstants.Elbow.kElbowMin, SuperStructureConstants.Elbow.kElbowMax,
 					false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 		return mElbow;
 	}
@@ -313,9 +318,9 @@ public class SuperStructure extends Subsystem {
 	public double calculateWristTorque(SuperStructureState state) {
 		Mass totalMass = getWrist().kArmMass;
 		if (state.getHeldPiece() == HeldPiece.HATCH)
-			totalMass.plus(kHatchMass);
+			totalMass.plus(SuperStructureConstants.kHatchMass);
 		if (state.getHeldPiece() == HeldPiece.CARGO)
-			totalMass.plus(kCargoMass);
+			totalMass.plus(SuperStructureConstants.kCargoMass);
 		/* The distance from the pivot of the wrist to the center of mass */
 		double x1 = (getWrist().kArmLength.getValue()) * Math.abs(state.jointAngles.getWrist().angle.getCos()); // absolute value so cosine is always positive
 		/* The torque due to gravity  */
@@ -335,9 +340,9 @@ public class SuperStructure extends Subsystem {
 	public double calculateElbowTorques(SuperStructureState state, double wristTorque) {
 		Mass wristTotalMass = getWrist().kArmMass;
 		if (state.getHeldPiece() == HeldPiece.HATCH)
-			wristTotalMass.plus(kHatchMass);
+			wristTotalMass.plus(SuperStructureConstants.kHatchMass);
 		if (state.getHeldPiece() == HeldPiece.CARGO)
-			wristTotalMass.plus(kCargoMass);
+			wristTotalMass.plus(SuperStructureConstants.kCargoMass);
 
 		/* The distance from the pivot to the center of mass of the elbow */
 		double x_2 = (getElbow().kArmLength.getMeter()) * Math.abs(state.jointAngles.getWrist().angle.getCos());// absolute value so cosine is always positive
