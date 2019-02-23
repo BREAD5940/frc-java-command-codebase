@@ -25,7 +25,7 @@ public class RunAuto extends AutoCommandGroup {
 	public RunAuto(HeldPiece mHP, GoalHeight mHeight){
 		switch(mHP){
 			case CARGO:
-				if(mHeight==GoalHeight.LOW){
+				if(mHeight==GoalHeight.OVER){
 					this.mGt = GoalType.CARGO_CARGO;
 				}else{
 					this.mGt = GoalType.ROCKET_CARGO;

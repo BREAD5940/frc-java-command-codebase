@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
+import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
@@ -93,14 +94,14 @@ public class OI {
 
 
 
-		cargoOverButton.whenPressed(new RunAuto(GoalType.CARGO_CARGO, GoalHeight.OVER));
-		cargo1Button.whenPressed(new RunAuto(GoalType.ROCKET_CARGO, GoalHeight.LOW));
-		cargo2Button.whenPressed(new RunAuto(GoalType.ROCKET_CARGO, GoalHeight.MIDDLE));
-		cargo3Button.whenPressed(new RunAuto(GoalType.ROCKET_CARGO, GoalHeight.HIGH));
+		cargoOverButton.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.OVER));
+		cargo1Button.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.LOW));
+		cargo2Button.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.MIDDLE));
+		cargo3Button.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.HIGH));
 
-		hatch1Button.whenPressed(new RunAuto(GoalType.CARGO_HATCH, GoalHeight.LOW));
-		hatch2Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.MIDDLE));
-		hatch3Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.HIGH));
+		hatch1Button.whenPressed(new RunAuto(HeldPiece.HATCH, GoalHeight.LOW));
+		hatch2Button.whenPressed(new RunAuto(HeldPiece.HATCH, GoalHeight.MIDDLE));
+		hatch3Button.whenPressed(new RunAuto(HeldPiece.HATCH, GoalHeight.HIGH));
 		
 		hatchPickupButton.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW));
 		intakeButton.whileHeld(new RunIntake(1,5));
