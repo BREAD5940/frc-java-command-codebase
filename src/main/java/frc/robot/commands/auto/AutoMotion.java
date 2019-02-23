@@ -7,6 +7,7 @@ import frc.robot.RobotConfig;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.subsystems.drivetrain.DriveDistance;
+import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
@@ -88,17 +89,18 @@ public class AutoMotion {
 		AutoCommandGroup toReturn = new AutoCommandGroup();
 		if (this.gType == GoalType.RETRIEVE_CARGO) {
 			//TODO target cargo
-			toReturn.addSequential(new RunIntake(75, 1));
+			toReturn.addSequential(new RunIntake(.75d, 1));
 			this.endPiece = HeldPiece.CARGO;
 		} else if (this.gType == GoalType.RETRIEVE_HATCH) {
 			//TODO align with vision targets
+			toReturn.addSequential(new FollowVisionTarget(1, 5, 10));
 			//yeet into loading station
-			toReturn.addSequential(new DriveDistance(0.5));
+			// toReturn.addSequential(new DriveDistance());
 			//TODO maybe check the alignment with the center of the hatch with a sensor or some shit?
 			//grab
-			toReturn.addSequential(new SetHatchMech(HatchMechState.kClamped));
+			toReturn.addSequential(new RunIntake(1, 1));
 			//pull the hatch out of the brushes
-			toReturn.addSequential(new SuperstructureGoToState(new ElevatorState(getElevatorPreset().plus(LengthKt.getInch(6))))); // lift from brushes
+			// toReturn.addSequential(new SuperstructureGoToState(new ElevatorState(getElevatorPreset().plus(LengthKt.getInch(6))))); // lift from brushes
 			toReturn.addSequential(new DriveDistance(-0.5)); // back up
 			this.endPiece = HeldPiece.HATCH;
 		}
