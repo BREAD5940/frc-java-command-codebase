@@ -14,8 +14,13 @@ import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class ElevatorMotionMagicTest extends Command {
+
+  SuperStructureState mCurrent;
+  private final double kDefaultTimeout = 5;
+
   public ElevatorMotionMagicTest() {
     requires(SuperStructure.getInstance());
+    setTimeout(kDefaultTimeout);
   }
 
   // Called just before this Command runs the first time
@@ -29,12 +34,13 @@ public class ElevatorMotionMagicTest extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    mCurrent = SuperStructure.getInstance().updateState();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return SuperStructure.getElevator().isWithinTolerence(mCurrent) || isTimedOut();
   }
 
   // Called once after isFinished returns true
