@@ -79,8 +79,8 @@ public class Elevator /*extends Subsystem*/ {
 	public static final double KLowGearForcePerVolt = (512d / 12d /* newtons */) * 1.5;
 	public static final double KHighGearForcePerVolt = (1500d / 12d /* newtons */ );
 
-	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.2 * 4, 0.1, 2, 0);
-	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.05, 0, 0, 0);
+	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.2 * 4, 0.1, 2, 0); // high speed low torque
+	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.15, 0, 0, 0); // low torque high speed
 	private static final int kLowGearPIDSlot = 0;
 	private static final int kHighGearPIDSlot = 1;
 
@@ -207,12 +207,12 @@ public class Elevator /*extends Subsystem*/ {
 
 	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, double iZone, double maxIntegral, double minOut, double maxOut) {
 		mMaster.selectProfileSlot(slot, 0);
-		mMaster.config_kP(0, kp, 30);
-		mMaster.config_kI(0, ki, 30);
-		mMaster.config_kD(0, kd, 30);
-		mMaster.config_kF(0, kf, 30);
-		mMaster.config_IntegralZone(0, (int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getInch(iZone)).getValue()), 30);
-		mMaster.configMaxIntegralAccumulator(0, maxIntegral, 0);
+		mMaster.config_kP(slot, kp, 0);
+		mMaster.config_kI(slot, ki, 0);
+		mMaster.config_kD(slot, kd, 0);
+		mMaster.config_kF(slot, kf, 0);
+		mMaster.config_IntegralZone(slot, (int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getInch(iZone)).getValue()), 0);
+		mMaster.configMaxIntegralAccumulator(slot, maxIntegral, 0);
 		mMaster.configPeakOutputForward(maxOut);
 		mMaster.configPeakOutputReverse(minOut);
 	}
