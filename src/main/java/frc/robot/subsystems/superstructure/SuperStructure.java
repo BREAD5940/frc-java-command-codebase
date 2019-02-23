@@ -207,6 +207,15 @@ public class SuperStructure extends Subsystem {
 		setDefaultCommand(new SuperStructureTelop());
 	}
 
+	private void updateObservedState(SuperStructureState state) {
+		state.getElevator().setHeight(getElevator().getCurrentState().getHeight());;
+		state.getElbow().setAngle(getElbow().getCurrentState().angle);
+
+		//FIXME this is a Very Jank way to do this, but the V being 0 *should* mean the traject is done
+		state.elevatorSentLastTrajectory = getElevator().getCurrentState().velocity.getValue()==0;//.hasFinishedTrajectory();
+		state.elbowSentLastTrajectory = getElbow().getCurrentState().velocity.getValue()==0;//.hasFinishedTrajectory();
+	}
+
 	public SuperStructureState updateState() {
 		// ElevatorState mCurrent = mCurrentState.elevator;
 		getElevator().getCurrentState();
