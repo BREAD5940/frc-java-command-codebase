@@ -41,6 +41,7 @@ public class SuperstructureGoToState extends Command {
 	@Override
 	protected void execute() {
 		SuperStructure.getInstance().move(mRequState);
+
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

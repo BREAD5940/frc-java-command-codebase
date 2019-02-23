@@ -11,6 +11,16 @@ import frc.robot.states.DumbCommandyBoi;
 import frc.robot.states.SuperStructureState;
 
 public class SuperStructureStateMachine {
+
+    private static SuperStructureStateMachine instance_;
+
+    public static SuperStructureStateMachine getInstance(){
+        if(instance_==null){
+            instance_ = new SuperStructureStateMachine();
+        }
+        return instance_;
+    }
+
 	public enum WantedAction {
 		IDLE, GO_TO_POSITION, WANT_MANUAL,
 	}

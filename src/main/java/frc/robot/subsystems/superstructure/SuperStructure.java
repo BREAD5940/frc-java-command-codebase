@@ -23,6 +23,8 @@ import frc.robot.lib.PIDSettings;
 import frc.robot.lib.PIDSettings.FeedbackMode;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.lib.obj.RoundRotation2d;
+import frc.robot.lib.statemachines.SuperStructureStateMachine;
+import frc.robot.lib.statemachines.SuperStructureStateMachine.WantedAction;
 import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
@@ -52,6 +54,8 @@ public class SuperStructure extends Subsystem {
 	public static Elevator elevator;
 	public static Intake intake = new Intake(34);
 	private SuperstructurePlanner planner = new SuperstructurePlanner();
+	public SuperStructureStateMachine.WantedAction mWantedAction = WantedAction.IDLE;
+	public boolean isElevatorJogging=false, isElbowJogging=false;
 	// public SuperStructureState mPeriodicIO = new SuperStructureState();
 	private RotatingJoint mWrist, mElbow;
 	private DCMotorTransmission kElbowTransmission, kWristTransmission;
@@ -268,26 +272,61 @@ public class SuperStructure extends Subsystem {
 	}
 
 	public void move(SuperStructureState requState) {
-		//former superstructure periodic
-		updateState();
 
-		SuperStructureState prevState = lastState;
-		SuperStructureState stateSetpoint = plan(requState);
-		// double mCurrentWristTorque = Math.abs(SuperStructure.getInstance().calculateWristTorque(prevState)); // torque due to gravity and elevator acceleration, newton meters
-		// double mCurrentElbowTorque = Math.abs(SuperStructure.getInstance().calculateElbowTorques(prevState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
+		RoundRotation2d desired_angle = requState.getElbowAngle();
+		Length desired_height = requState.getElevatorHeight();
+		
+		// Attempt to fix wrist angle if we will be in an invalid state.
+		if (!Double.isNaN(requState.getElevatorHeight().getInch()) && Double.isNaN(requState.getElbow().angle.getDegree()) &&
+				requState.getElevatorHeight().getInch() > SuperStructureConstants.Elevator.kClearFirstStageMaxHeight.getInch()) {
+			if (SuperStructureStateMachine.getInstance().getScoringAngle().getDegree() <
+							SuperStructureConstants.Elbow.kClearFirstStageMinElbowAngle.getDegree()) {
+					desired_angle = SuperStructureConstants.Elbow.kClearFirstStageMinElbowAngle;
+			}
+			}
 
-		// double wristVoltageGravity = SuperStructure.getInstance().getWTransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getWrist().velocity.getValue(), mCurrentWristTorque);
-		// double elbowVoltageGravity = SuperStructure.getInstance().getETransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getElbow().velocity.getValue(), mCurrentElbowTorque);
-		double elevatorPercentVbusGravity = getElevator().getVoltage(stateSetpoint) / 12;//getElevator().getMaster().getBusVoltage();		
+			if (Double.isNaN(desired_angle.getDegree()) && Double.isNaN(desired_height.getInch())) {
+			getInstance().setWantedAction(SuperStructureStateMachine.WantedAction.IDLE);
+			} else if (Double.isNaN(desired_angle.getDegree())) {
+			getInstance().setDesiredHeight(desired_height);
+			} else if (Double.isNaN(desired_height.getInch())) {
+			getInstance().setDesiredAngle(desired_angle);
+			} else if (!Double.isNaN(desired_angle.getDegree()) && !Double.isNaN(desired_height.getInch())) {
+			getInstance().setDesiredAngle(desired_angle);
+			getInstance().setDesiredHeight(desired_height);
+		}
 
-		// if (Math.abs(mOI.getWristAxis()) > 0.07) {
-		// SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mRequState.getWrist().angle);
+		
+		
+		
+		
+		
+		
+		// //former superstructure periodic
+		// updateState();
 
-		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
+		// SuperStructureState prevState = lastState;
+		// SuperStructureState stateSetpoint = plan(requState);
+		// // double mCurrentWristTorque = Math.abs(SuperStructure.getInstance().calculateWristTorque(prevState)); // torque due to gravity and elevator acceleration, newton meters
+		// // double mCurrentElbowTorque = Math.abs(SuperStructure.getInstance().calculateElbowTorques(prevState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
 
-		getWrist().requestAngle(stateSetpoint.getWrist().angle); // div by 12 because it expects a throttle
-		getElbow().requestAngle(stateSetpoint.getElbow().angle); // div by 12 because it expects a throttle
-		getElevator().setPositionArbitraryFeedForward(stateSetpoint.getElevator().height, elevatorPercentVbusGravity / 12d);
+		// // double wristVoltageGravity = SuperStructure.getInstance().getWTransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getWrist().velocity.getValue(), mCurrentWristTorque);
+		// // double elbowVoltageGravity = SuperStructure.getInstance().getETransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getElbow().velocity.getValue(), mCurrentElbowTorque);
+		// double elevatorPercentVbusGravity = getElevator().getVoltage(stateSetpoint) / 12;//getElevator().getMaster().getBusVoltage();		
+
+		// // if (Math.abs(mOI.getWristAxis()) > 0.07) {
+		// // SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mRequState.getWrist().angle);
+
+		// // SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
+
+		// getWrist().requestAngle(stateSetpoint.getWrist().angle); // div by 12 because it expects a throttle
+		// getElbow().requestAngle(stateSetpoint.getElbow().angle); // div by 12 because it expects a throttle
+		// getElevator().setPositionArbitraryFeedForward(stateSetpoint.getElevator().height, elevatorPercentVbusGravity / 12d);
+	}
+
+
+	public synchronized void setWantedAction(SuperStructureStateMachine.WantedAction wantedAction) {
+		mWantedAction = wantedAction;
 	}
 
 	public SuperStructureState plan(SuperStructureState mReqState) {
@@ -361,5 +400,49 @@ public class SuperStructure extends Subsystem {
 		double torqueWrstComponent = (wristTotalMass.getKilogram() * getElbow().kArmLength.getMeter() * 2 /* double the distance from the joint to COM*/ * 9.8);
 
 		return torqueGravity + torqueAccel + torqueWrstComponent + wristTorque;
+	}
+
+
+
+
+
+	
+		public synchronized void setDesiredHeight(Length height) {
+			isElevatorJogging = false;
+			SuperStructureStateMachine.getInstance().setScoringHeight(height);
+			mWantedAction = SuperStructureStateMachine.WantedAction.GO_TO_POSITION;
+	}
+
+	public synchronized void setDesiredAngle(RoundRotation2d angle) {
+			isElbowJogging = false;
+			SuperStructureStateMachine.getInstance().setScoringAngle(angle);
+			mWantedAction = SuperStructureStateMachine.WantedAction.GO_TO_POSITION;
+	}
+
+	public synchronized void setElevatorJog(Length relative_inches) {
+			isElevatorJogging = true;
+			SuperStructureStateMachine.getInstance().jogElevator(relative_inches);
+			mWantedAction = SuperStructureStateMachine.WantedAction.GO_TO_POSITION;
+	}
+
+	public synchronized void setWristJog(RoundRotation2d relative_degrees) {
+			isElbowJogging = true;
+			SuperStructureStateMachine.getInstance().jogWrist(relative_degrees);
+			mWantedAction = SuperStructureStateMachine.WantedAction.GO_TO_POSITION;
+	}
+
+	public synchronized void setElevatorLowGear() {
+			SuperStructureStateMachine.getInstance().setManualWantsLowGear(true);
+			mWantedAction = SuperStructureStateMachine.WantedAction.WANT_MANUAL;
+	}
+
+	public synchronized void setElevatorHighGear() {
+			SuperStructureStateMachine.getInstance().setManualWantsLowGear(false);
+			mWantedAction = SuperStructureStateMachine.WantedAction.WANT_MANUAL;
+	}
+
+	public synchronized void setHangThrottle(double throttle) {
+			SuperStructureStateMachine.getInstance().setOpenLoopPower(throttle);
+			mWantedAction = SuperStructureStateMachine.WantedAction.WANT_MANUAL;
 	}
 }
