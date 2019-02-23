@@ -193,6 +193,19 @@ public class Elevator /*extends Subsystem*/ {
 		}
 	}
 
+	public boolean isWithinTolerence(SuperStructureState mCurrent) {
+		return isWithinTolerence(mCurrent.getElevator());
+	}
+
+	public boolean isWithinTolerence(ElevatorState mCurrent) {
+		return isWithinTolerence(mCurrent.height);
+	}
+
+	public boolean isWithinTolerence(Length mCurrent) {
+		return ( Math.abs(getClosedLoopError().getInch()) < RobotConfig.elevator.elevatorTolerences.position_tolerence.getInch());
+	}
+
+
 	public void requestClosedLoop(ControlMode mode, Length req_) {
 		requestClosedLoop(mode, req_, DemandType.Neutral, 0);
 	}
