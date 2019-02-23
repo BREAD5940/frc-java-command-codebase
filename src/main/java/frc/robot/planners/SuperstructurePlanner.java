@@ -7,7 +7,6 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import frc.robot.RobotConfig;
 import frc.robot.SuperStructureConstants;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
@@ -27,21 +26,7 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 public class SuperstructurePlanner {
 
 	public SuperstructurePlanner() {}
-	//TODO get actual irl angles amd heights
-
-	// public static final Length bottom = LengthKt.getInch(RobotConfig.elevator.elevator_minimum_height.getInch() + 0.5);
-	// public static final Length top = RobotConfig.elevator.elevator_maximum_height;
-	// static final Length crossbarBottom = LengthKt.getInch(35); //FIXME verify
-	// static final Length crossbarWidth = LengthKt.getInch(4); //FIXME verify
-	// static final Length carriageToIntake = LengthKt.getInch(12); //FIXME verify
-	// static final Length intakeOut = LengthKt.getInch(19); //FIXME check
-	// static final Length intakeDown = LengthKt.getInch(6); //FIXME check
-	// static final Length intakeUp = LengthKt.getInch(12); //FIXME check
-
-	// public static final RoundRotation2d overallMaxElbow = RoundRotation2d.getDegree(15); //FIXME actual numbers might be nice
-	// public static final RoundRotation2d overallMinElbow = RoundRotation2d.getDegree(-190); //FIXME ^^
-	// public static final RoundRotation2d overallMaxWrist = RoundRotation2d.getDegree(180); //FIXME ^^
-	// public static final RoundRotation2d overallMinWrist = RoundRotation2d.getDegree(-180); //FIXME ^^
+	
 
 	public static final SuperStructureState passThroughState = new SuperStructureState(new ElevatorState(SuperStructureConstants.Elevator.crossbarBottom),
 			new RotatingArmState(RoundRotation2d.getDegree(-90)), new RotatingArmState(RoundRotation2d.getDegree(-90)));
@@ -70,7 +55,7 @@ public class SuperstructurePlanner {
 	@Deprecated //we shouldn't use this
 	public boolean checkValidState(SuperStructureState reqState) { //what is this supposed to do? does it just check if the path is possible w/o correction?
 		// TODO is this what we actuall want this to looke like?
-		ArrayList<SuperStructureState> plannedPath = this.plan(reqState, this.currentPlannedState);
+		ArrayList<SuperStructureState> plannedPath = this.plan(reqState, this.currentPlannedState, false);
 		return (plannedPath.get(plannedPath.size() - 1).isEqualTo(plannedPath.get(0)) && plannedPath.size() == 1);
 		//so now it just checks to see if it can move from the current planned state to the reqstate w/ no correction
 	}
@@ -84,7 +69,7 @@ public class SuperstructurePlanner {
 	 * @return
 	 *    the ideal command group to get from the currentState to the goalState
 	 */
-	public ArrayList<SuperStructureState> plan(SuperStructureState goalStateIn, SuperStructureState currentState) {
+	public ArrayList<SuperStructureState> plan(SuperStructureState goalStateIn, SuperStructureState currentState, boolean isSingle) {
 		ArrayList<SuperStructureState> toReturn = new ArrayList<SuperStructureState>();// = new List<SuperStructureState>();
 		SuperStructureState goalState = new SuperStructureState(goalStateIn);
 		errorCount = corrCount = 0;
@@ -109,30 +94,30 @@ public class SuperstructurePlanner {
 			goalState.getElevator().setHeight(SuperStructureConstants.Elevator.bottom);
 		}
 
-		// //TODO do we need these angle checks?
-		// if (goalState.getElbowAngle().getDegree() > overallMaxElbow.getDegree()) {
-		// 	System.out.println("MOTION IMPOSSIBLE -- Elbow passes hardstop. Setting to maximum.");
-		// 	errorCount++;
-		// 	corrCount++;
-		// 	goalState.getElbow().setAngle(overallMaxElbow);
-		// } else if (goalState.getElbowAngle().getDegree() < overallMinElbow.getDegree()) {
-		// 	System.out.println("MOTION IMPOSSIBLE -- Elbow passes hardstop. Setting to minimum.");
-		// 	errorCount++;
-		// 	corrCount++;
-		// 	goalState.getElbow().setAngle(overallMinElbow);
-		// }
+		//TODO do we need these angle checks?
+		if (goalState.getElbowAngle().getDegree() > SuperStructureConstants.Elbow.kElbowMax.getDegree()) {
+			System.out.println("MOTION IMPOSSIBLE -- Elbow passes hardstop. Setting to maximum.");
+			errorCount++;
+			corrCount++;
+			goalState.getElbow().setAngle(SuperStructureConstants.Elbow.kElbowMax);
+		} else if (goalState.getElbowAngle().getDegree() < SuperStructureConstants.Elbow.kElbowMin.getDegree()) {
+			System.out.println("MOTION IMPOSSIBLE -- Elbow passes hardstop. Setting to minimum.");
+			errorCount++;
+			corrCount++;
+			goalState.getElbow().setAngle(SuperStructureConstants.Elbow.kElbowMin);
+		}
 
-		// if (goalState.getWrist().angle.getDegree() > overallMaxWrist.getDegree()) {
-		// 	System.out.println("MOTION IMPOSSIBLE -- Wrist passes hardstop. Setting to maximum.");
-		// 	errorCount++;
-		// 	corrCount++;
-		// 	goalState.getWrist().setAngle(overallMaxWrist);
-		// } else if (goalState.getWrist().angle.getDegree() < overallMinWrist.getDegree()) {
-		// 	System.out.println("MOTION IMPOSSIBLE -- Wrist passes hardstop. Setting to minimum.");
-		// 	errorCount++;
-		// 	corrCount++;
-		// 	goalState.getWrist().setAngle(overallMinWrist);
-		// }
+		if (goalState.getWrist().angle.getDegree() > SuperStructureConstants.Wrist.kWristMax.getDegree()) {
+			System.out.println("MOTION IMPOSSIBLE -- Wrist passes hardstop. Setting to maximum.");
+			errorCount++;
+			corrCount++;
+			goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMax);
+		} else if (goalState.getWrist().angle.getDegree() < SuperStructureConstants.Wrist.kWristMin.getDegree()) {
+			System.out.println("MOTION IMPOSSIBLE -- Wrist passes hardstop. Setting to minimum.");
+			errorCount++;
+			corrCount++;
+			goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMin);
+		}
 
 		carriagePoint = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight());
 		wristPoint = new Translation2d(LengthKt.getInch(Math.cos(goalState.getElbowAngle().getRadian()) * SuperStructureConstants.Elbow.carriageToIntake.getInch()),
@@ -151,6 +136,7 @@ public class SuperstructurePlanner {
 			System.out.println("MOTION UNSAFE -- Can't pass through the elevator at points other than the pass-through point. Adding to path.");
 			errorCount++;
 			toReturn.add(passThroughState);
+			if (isSingle) return toReturn;
 		}
 
 		lowestPoint = endPointDown;
@@ -226,6 +212,7 @@ public class SuperstructurePlanner {
 			System.out.println("MOTION UNSAFE -- Intake will hit crossbarBottom. Setting to default intake position for movement.");
 			errorCount++;
 			toReturn.add(new SuperStructureState(currentState.elevator, iPosition.CARGO_GRAB, currentState.getHeldPiece()));
+			if (isSingle) return toReturn;
 		}
 
 		//move to corrected state
@@ -239,7 +226,7 @@ public class SuperstructurePlanner {
 	}
 
 	public SuperStructureState getPlannedState(SuperStructureState goalStateIn, SuperStructureState currentState) {
-		this.plan(goalStateIn, currentState);
+		this.plan(goalStateIn, currentState, false);
 		return this.currentPlannedState;
 	}
 }

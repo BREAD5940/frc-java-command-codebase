@@ -129,10 +129,10 @@ public class Elevator /*extends Subsystem*/ {
 		setClosedLoopGains(kLowGearPIDSlot, LOW_GEAR_PID);
 		setClosedLoopGains(kHighGearPIDSlot, HIGH_GEAR_PID);
 
-		NativeUnit maxHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.top);
+		NativeUnit maxHeightRaw = lengthModel.toNativeUnitPosition(SuperStructureConstants.Elevator.top);
 		getMaster().setSoftLimitForward(maxHeightRaw);
 		getMaster().setSoftLimitForwardEnabled(true);
-		NativeUnit minHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.bottom);
+		NativeUnit minHeightRaw = lengthModel.toNativeUnitPosition(SuperStructureConstants.Elevator.bottom);
 		getMaster().setSoftLimitReverse(minHeightRaw);
 		getMaster().setSoftLimitReverseEnabled(true);
 

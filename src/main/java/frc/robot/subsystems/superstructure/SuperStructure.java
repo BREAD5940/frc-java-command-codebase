@@ -167,7 +167,7 @@ public class SuperStructure extends Subsystem {
 
 		// TODO the wrist angle is mega broken because it's solely based on the currently held game piece 
 		// this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
-		this.mReqPath = planner.plan(mRequState_, mCurrentState);
+		this.mReqPath = planner.plan(mRequState_, mCurrentState, false);
 		mReqState = mRequState_; // TODO I still don't trust mReqState
 		// return this.mCurrentCommandGroup;
 	}
@@ -263,29 +263,28 @@ public class SuperStructure extends Subsystem {
 		updateState();
 
 		SuperStructureState prevState = lastState;
+		SuperStructureState stateSetpoint = plan(requState);
 		// double mCurrentWristTorque = Math.abs(SuperStructure.getInstance().calculateWristTorque(prevState)); // torque due to gravity and elevator acceleration, newton meters
 		// double mCurrentElbowTorque = Math.abs(SuperStructure.getInstance().calculateElbowTorques(prevState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
 
 		// double wristVoltageGravity = SuperStructure.getInstance().getWTransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getWrist().velocity.getValue(), mCurrentWristTorque);
 		// double elbowVoltageGravity = SuperStructure.getInstance().getETransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getElbow().velocity.getValue(), mCurrentElbowTorque);
-		double elevatorPercentVbusGravity = getElevator().getVoltage(updateState()) / 12;//getElevator().getMaster().getBusVoltage();		
+		double elevatorPercentVbusGravity = getElevator().getVoltage(stateSetpoint) / 12;//getElevator().getMaster().getBusVoltage();		
 
 		// if (Math.abs(mOI.getWristAxis()) > 0.07) {
 		// SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mRequState.getWrist().angle);
 
 		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
-		// SuperStructureState stateSetpoint = plan(requState);
+		
 
-		// getWrist().requestAngle(stateSetpoint.getWrist().angle); // div by 12 because it expects a throttle
-		// getElbow().requestAngle(stateSetpoint.getElbow().angle); // div by 12 because it expects a throttle
-		// getElevator().setPositionArbitraryFeedForward(stateSetpoint.getElevator().height, elevatorPercentVbusGravity / 12d);
-		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
-
+		getWrist().requestAngle(stateSetpoint.getWrist().angle); // div by 12 because it expects a throttle
+		getElbow().requestAngle(stateSetpoint.getElbow().angle); // div by 12 because it expects a throttle
+		getElevator().setPositionArbitraryFeedForward(stateSetpoint.getElevator().height, elevatorPercentVbusGravity / 12d);
 	}
 
 	public SuperStructureState plan(SuperStructureState mReqState) {
 
-		mReqPath = planner.plan(mReqState, mCurrentState);
+		mReqPath = planner.plan(mReqState, mCurrentState, true);
 
 		Length reqSetHeight = mReqPath.get(0).getElevatorHeight();
 
@@ -305,9 +304,9 @@ public class SuperStructure extends Subsystem {
 		lastLastSH = lastSH;
 		lastSH = currentSetHeight;
 
-		lastState = new SuperStructureState(new ElevatorState(currentSetHeight), mReqPath.get(0).getAngle());
+		lastState = new SuperStructureState(new ElevatorState(currentSetHeight), mReqPath.get(0).getElbow(), mReqPath.get(0).getWrist());
 
-		return new SuperStructureState(new ElevatorState(currentSetHeight), mReqPath.get(0).getAngle());
+		return new SuperStructureState(new ElevatorState(currentSetHeight), mReqPath.get(0).getElbow(), mReqPath.get(0).getWrist());
 	}
 
 	/**

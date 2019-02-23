@@ -73,10 +73,10 @@ public class SuperStructureTelop extends Command {
 
 		if (Math.abs(Robot.m_oi.getElbowAxis()) > 0.07) {
 			firstRunL = true;
-			newL = new RoundRotation2d(SuperStructure.getInstance().lastState.getElbow().angle.plus(
-					RoundRotation2d.getDegree(Robot.m_oi.getElbowAxis() * 10 * Math.abs(Robot.m_oi.getElbowAxis())))); //FIXME check constant
-			System.out.println("New elbow:" + newL.getDegree());
 			move = true;
+			newL = SuperStructure.getInstance().lastState.getElbow().angle.plus(
+					RoundRotation2d.getDegree(Robot.m_oi.getElbowAxis() * 10 * Math.abs(Robot.m_oi.getElbowAxis()))); //FIXME check constant
+			System.out.println("New elbow:" + newL.getDegree());
 			System.out.println("Operator has requested elbow move to " + newL.getDegree());
 			System.out.println("last elbow state: " + SuperStructure.getInstance().lastState.getElbow().angle.getDegree());
 		} else {
