@@ -83,7 +83,7 @@ public class FollowVisionTarget extends Command {
 			double[] data = Robot.limelight.getData();
 			double xAxisOffset = data[1]; // x axis offset
 			double sizeData = data[3]; // percent of frame
-			turnSpeed = xAxisOffset / 8d;
+			turnSpeed = xAxisOffset / 16d;
 
 
 			forwardSpeed = 0;

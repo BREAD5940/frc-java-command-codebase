@@ -9,7 +9,7 @@ import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class SuperstructureGoToState extends Command {
 	SuperStructureState mRequState;
-	private double kDefaultTimeout = 2;
+	private double kDefaultTimeout = 5;
 
 	public SuperstructureGoToState(SuperStructureState requState) {
 		requires(SuperStructure.getInstance());
@@ -46,11 +46,12 @@ public class SuperstructureGoToState extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
+		Logger.log("elevator: " + SuperStructure.getInstance().updateState().getElevatorHeight().getInch() + "target: " + (mRequState.getElevatorHeight().getInch())) ;
 		Logger.log("elevator within tolerence? " + ((Math.abs(mRequState.getElevatorHeight().getInch() - SuperStructure.getInstance().updateState().getElevatorHeight().getInch()) <= 0.5)));
 		Logger.log("elbow within tolerence? " + (Math.abs(mRequState.getElbow().angle.getDegree() - SuperStructure.getInstance().updateState().getElbow().angle.getDegree()) <= 5));
 		Logger.log("wrist within tolerence? " + (Math.abs(mRequState.getWrist().angle.getDegree() - SuperStructure.getInstance().updateState().getWrist().angle.getDegree()) <= 5));
-		return ((Math.abs(mRequState.getElevatorHeight().getInch() - SuperStructure.getInstance().updateState().getElevatorHeight().getInch()) <= 0.5)
-				&& (Math.abs(mRequState.getElbow().angle.getDegree() - SuperStructure.getInstance().updateState().getElbow().angle.getDegree()) <= 5) //FIXME check tolerences
+		return ((Math.abs(mRequState.getElevatorHeight().getInch() - SuperStructure.getInstance().updateState().getElevatorHeight().getInch()) <= 0.5 * 5)
+				&& (Math.abs(mRequState.getElbow().angle.getDegree() - SuperStructure.getInstance().updateState().getElbow().angle.getDegree()) <= 5 * 3) //FIXME check tolerences
 				&& (Math.abs(mRequState.getWrist().angle.getDegree() - SuperStructure.getInstance().updateState().getWrist().angle.getDegree()) <= 5)) || isTimedOut();
 	}
 

@@ -102,7 +102,7 @@ public class DriveDistance extends Command {
 		SmartDashboard.putNumber("Current distance setpoint for auto is: ", Robot.drivetrain.getLeft().getFeet());
 
 		System.out.println("target forward speed: " + forward_speed);
-		System.out.println("Left speed raw/right speed raw: " + left_speed_raw + "/" + right_speed_raw);
+		// System.out.println("Left speed raw/right speed raw: " + left_speed_raw + "/" + right_speed_raw);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
