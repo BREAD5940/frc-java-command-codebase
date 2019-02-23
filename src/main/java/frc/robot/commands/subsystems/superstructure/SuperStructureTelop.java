@@ -46,7 +46,7 @@ public class SuperStructureTelop extends Command {
 	@Override
 	protected void execute() {
 		SuperStructure.getInstance().updateState();
-		
+
 		// elevator stuff
 		Length newE = SuperStructure.getInstance().getLastReqElevatorHeight();
 		boolean move = false;
@@ -69,7 +69,7 @@ public class SuperStructureTelop extends Command {
 		}
 		if (move) {
 			double volts = Elevator.getVoltage(new SuperStructureState(new ElevatorState(newE), new RotatingArmState(), new RotatingArmState()));
-			SuperStructure.getInstance().getElevator().getMaster().set(ControlMode.Position, newE, DemandType.ArbitraryFeedForward, volts);
+			SuperStructure.getInstance().getElevator().requestClosedLoop(ControlMode.MotionMagic, newE, DemandType.ArbitraryFeedForward, volts);
 		}
 
 		// move the whole darn thing
