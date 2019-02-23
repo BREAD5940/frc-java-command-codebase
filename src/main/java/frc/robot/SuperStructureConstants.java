@@ -20,6 +20,8 @@ public class SuperStructureConstants {
 		public static final RoundRotation2d kElbowMin = RoundRotation2d.getDegree(-180); // absolute
 		public static final RoundRotation2d kElbowMax = RoundRotation2d.getDegree(15); // absolute
 		public static final Length carriageToIntake = LengthKt.getInch(12); //FIXME verify
+		public static final RoundRotation2d kStowedAngle = RoundRotation2d.getDegree(-80); //FIXME completely arb
+		public static final RoundRotation2d kClearFirstStageMinElbowAngle = RoundRotation2d.getDegree(-70); //FIXME
 
 	}
 
@@ -28,7 +30,10 @@ public class SuperStructureConstants {
 		public static final Length top = RobotConfig.elevator.elevator_maximum_height;
 		public static final Length crossbarBottom = LengthKt.getInch(35); //FIXME verify
 		public static final Length crossbarWidth = LengthKt.getInch(4); //FIXME verify
-		
+		public static final Length kElevatorLongRaiseDistance = LengthKt.getInch(27);//FIXME mostly arb.
+		public static final Length kClearFirstStageMaxHeight = crossbarBottom; //yay its redundant
+		public static final Length kElevatorApproachingThreshold = LengthKt.getInch(2); //FIXME
+
 	}
 
 

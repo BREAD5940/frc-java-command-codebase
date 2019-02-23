@@ -4,9 +4,14 @@ package frc.robot.planners;
 import java.util.LinkedList;
 import java.util.Optional;
 
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+
 import frc.robot.SuperStructureConstants;
+import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.SuperStructureState;
+import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 public class SuperstructurePlannerTheSecond {
     private boolean mUpwardsSubcommandEnabled = true;
@@ -17,24 +22,26 @@ public class SuperstructurePlannerTheSecond {
         }
 
         public SuperStructureState mEndState;
-        public double mHeightThreshold = 1.0;
-        public double mWristThreshold = 5.0;
+        public Length mHeightThreshold = LengthKt.getInch(1.0);
+        public RoundRotation2d mElbowThreshold = RoundRotation2d.getDegree(5.0);
 
         public boolean isFinished(SuperStructureState currentState) {
-            return mEndState.isInRange(currentState, mHeightThreshold, mWristThreshold);
+						return Math.abs(mEndState.getElevatorHeight().getInch()-currentState.getElevatorHeight().getInch())<= mHeightThreshold.getInch()
+									&& Math.abs(mEndState.getElbow().angle.getDegree()-currentState.getElbow().angle.getDegree())<= mElbowThreshold.getDegree();
         }
     }
 
-    class WaitForWristSafeSubcommand extends SubCommand {
-        public WaitForWristSafeSubcommand(SuperStructureState endState) {
+    class WaitForElbowSafeSubcommand extends SubCommand {
+        public WaitForElbowSafeSubcommand(SuperStructureState endState) {
 			super(endState);
-            mWristThreshold = mWristThreshold + Math.max(0.0, mEndState.getWrist().angle.getDegree() - SuperStructureConstants
-                    .kClearFirstStageMinWristAngle);
+						mElbowThreshold = mElbowThreshold.plus(RoundRotation2d.getDegree(Math.max(0.0, mEndState.getElbow().angle.getDegree() - 
+						SuperStructureConstants.Elbow.kClearFirstStageMinElbowAngle.getDegree())));
         }
 
         @Override
         public boolean isFinished(SuperStructureState currentState) {
-            return mEndState.isInRange(currentState, Double.POSITIVE_INFINITY, mWristThreshold);
+						return Math.abs(mEndState.getElevatorHeight().getInch()-currentState.getElevatorHeight().getInch())<= Double.POSITIVE_INFINITY
+						&& Math.abs(mEndState.getElbow().angle.getDegree()-currentState.getElbow().angle.getDegree())<= mElbowThreshold.getDegree();
         }
     }
 
@@ -42,29 +49,31 @@ public class SuperstructurePlannerTheSecond {
         public WaitForElevatorSafeSubcommand(SuperStructureState endState, SuperStructureState currentState) {
             super(endState);
             if (endState.getElevatorHeight().getInch() >= currentState.getElevatorHeight().getInch()) {
-                mHeightThreshold = mHeightThreshold + Math.max(0.0, mEndState.getElevatorHeight().getInch() - SuperStructureConstants
-                        .kClearFirstStageMaxHeight);
+								mHeightThreshold = mHeightThreshold.plus(LengthKt.getInch(Math.max(0.0, mEndState.getElevatorHeight().getInch() - 
+								SuperStructureConstants.Elevator.kClearFirstStageMaxHeight.getInch())));
             } else {
-                mHeightThreshold = mHeightThreshold + Math.max(0.0, SuperStructureConstants.kClearFirstStageMaxHeight
-                        - mEndState.getElevatorHeight().getInch());
+                mHeightThreshold = mHeightThreshold.plus(LengthKt.getInch(Math.max(0.0, SuperStructureConstants.Elevator.kClearFirstStageMaxHeight.getInch()
+                        - mEndState.getElevatorHeight().getInch())));
             }
         }
 
         @Override
         public boolean isFinished(SuperStructureState currentState) {
-            return mEndState.isInRange(currentState, mHeightThreshold, Double.POSITIVE_INFINITY);
+						return Math.abs(mEndState.getElevatorHeight().getInch()-currentState.getElevatorHeight().getInch())<= mHeightThreshold.getInch()
+						&& Math.abs(mEndState.getElbow().angle.getDegree()-currentState.getElbow().angle.getDegree())<= Double.POSITIVE_INFINITY;
         }
     }
 
     class WaitForElevatorApproachingSubcommand extends SubCommand {
         public WaitForElevatorApproachingSubcommand(SuperStructureState endState) {
             super(endState);
-            mHeightThreshold = SuperStructureConstants.kElevatorApproachingThreshold;
+            mHeightThreshold = SuperStructureConstants.Elevator.kElevatorApproachingThreshold;
         }
 
         @Override
         public boolean isFinished(SuperStructureState currentState) {
-            return mEndState.isInRange(currentState, mHeightThreshold, Double.POSITIVE_INFINITY);
+						return Math.abs(mEndState.getElevatorHeight().getInch()-currentState.getElevatorHeight().getInch())<= mHeightThreshold.getInch()
+						&& Math.abs(mEndState.getElbow().angle.getDegree()-currentState.getElbow().angle.getDegree())<= Double.POSITIVE_INFINITY;
         }
     }
 
@@ -75,7 +84,7 @@ public class SuperstructurePlannerTheSecond {
 
         @Override
         public boolean isFinished(SuperStructureState currentState) {
-            return currentState.elevatorSentLastTrajectory && currentState.wristSentLastTrajectory;
+            return currentState.elevatorSentLastTrajectory && currentState.elbowSentLastTrajectory;
         }
     }
 
@@ -88,42 +97,42 @@ public class SuperstructurePlannerTheSecond {
         SuperStructureState desiredState = new SuperStructureState(desiredStateIn);
 
         // Limit illegal inputs.
-        desiredState.getWrist().angle = RoundRotation2d.getDouble(Util.limit(desiredState.getWrist().angle.getDegree(), SuperStructureConstants.Wrist.kWristMin.getDegree(),
-                SuperStructureConstants.Wrist.kWristMax.getInch()));
-        desiredState.getElevator().setHeight(Util.limit(desiredState.getElevatorHeight().getInch(), SuperStructureConstants.Elevator.bottom.getInch(),
-                SuperStructureConstants.Elevator.top.getInch()));
+        desiredState.getElbow().angle = RoundRotation2d.getDegree(Util.limit(desiredState.getElbow().angle.getDegree(), SuperStructureConstants.Elbow.kElbowMin.getDegree(),
+                SuperStructureConstants.Elbow.kElbowMax.getDegree()));
+        desiredState.getElevator().setHeight(LengthKt.getInch(Util.limit(desiredState.getElevatorHeight().getInch(), SuperStructureConstants.Elevator.bottom.getInch(),
+                SuperStructureConstants.Elevator.top.getInch())));
 
 
         // Everything beyond this is probably do-able; clear queue
         mCommandQueue.clear();
 
-        final boolean longUpwardsMove = desiredState.getElevatorHeight().getInch() - currentState.getElevatorHeight().getInch() > SuperStructureConstants
-                .kElevatorLongRaiseDistance;
-        final double firstWristAngle = longUpwardsMove ? Math.min(desiredState.getWrist().angle.getDegree(), SuperStructureConstants
-                .kStowedAngle) : desiredState.getWrist().angle.getDegree();
+				final boolean longUpwardsMove = desiredState.getElevatorHeight().getInch() - currentState.getElevatorHeight().getInch() > 
+				SuperStructureConstants.Elevator.kElevatorLongRaiseDistance.getInch();
+				final RoundRotation2d firstElbowAngle = longUpwardsMove ? RoundRotation2d.getDegree(Math.min(desiredState.getElbow().angle.getDegree(), 
+									SuperStructureConstants.Elbow.kStowedAngle.getDegree())) : desiredState.getElbow().angle;
 
-        if (currentState.getWrist().angle.getDegree() < SuperStructureConstants.kClearFirstStageMinWristAngle && desiredState.getElevatorHeight().getInch() >
-                SuperStructureConstants.kClearFirstStageMaxHeight) {
-            // PRECONDITION: wrist is unsafe, want to go high
-            // mCommandQueue.add(new WaitForWristSafeSubcommand(new SuperStructureState(SuperStructureConstants
-            // .kClearFirstStageMaxHeight, Math.max(SuperStructureConstants
-            //        .kClearFirstStageMinWristAngle, firstWristAngle), true)));
-            // POSTCONDITION: wrist is safe (either at desired getWrist().angle.getDegree(), or the cruise getWrist().angle.getDegree()), elevator is as close as
+        if (currentState.getElbow().angle.getDegree() < SuperStructureConstants.Elbow.kClearFirstStageMinElbowAngle.getDegree() && desiredState.getElevatorHeight().getInch() >
+                SuperStructureConstants.Elevator.kClearFirstStageMaxHeight.getInch()) {
+            // PRECONDITION: Elbow is unsafe, want to go high
+            // mCommandQueue.add(new WaitForElbowSafeSubcommand(new SuperStructureState(SuperStructureConstants
+            // .Elevator.kClearFirstStageMaxHeight.getInch(), Math.max(SuperStructureConstants
+            //        .kClearFirstStageMinElbowAngle, firstElbowAngle), true)));
+            // POSTCONDITION: Elbow is safe (either at desired getElbow().angle.getDegree(), or the cruise getElbow().angle.getDegree()), elevator is as close as
             // possible to goal.
-        } else if (desiredState.getWrist().angle.getDegree() < SuperStructureConstants.kClearFirstStageMinWristAngle && currentState.getElevatorHeight().getInch()
-                > SuperStructureConstants.kClearFirstStageMaxHeight) {
-            // PRECONDITION: wrist is safe, want to go low.
+        } else if (desiredState.getElbow().angle.getDegree() < SuperStructureConstants.Elbow.kClearFirstStageMinElbowAngle.getDegree() && currentState.getElevatorHeight().getInch()
+                > SuperStructureConstants.Elevator.kClearFirstStageMaxHeight.getInch()) {
+            // PRECONDITION: Elbow is safe, want to go low.
 //            mCommandQueue.add(new WaitForElevatorSafeSubcommand(new SuperStructureState(desiredState.getElevatorHeight().getInch(),
 //                    SuperStructureConstants
-//                    .kClearFirstStageMinWristAngle, true), currentState));
-            // POSTCONDITION: elevator is safe, wrist is as close as possible to goal.
+//                    .kClearFirstStageMinElbowAngle, true), currentState));
+            // POSTCONDITION: elevator is safe, Elbow is as close as possible to goal.
         }
 
         if (longUpwardsMove) {
-            // PRECONDITION: wrist is safe, we are moving upwards.
+            // PRECONDITION: Elbow is safe, we are moving upwards.
             if (mUpwardsSubcommandEnabled) {
                 mCommandQueue.add(new WaitForElevatorApproachingSubcommand(new SuperStructureState(desiredState.getElevator(),
-                        firstWristAngle)));
+                        new RotatingArmState(firstElbowAngle), new RotatingArmState())));
             }
             // POSTCONDITION: elevator is approaching final goal.
         }
@@ -144,7 +153,7 @@ public class SuperstructurePlannerTheSecond {
     }
 
     public boolean isFinished(SuperStructureState currentState) {
-        return mCurrentCommand.isPresent() && mCommandQueue.isEmpty() && currentState.wristSentLastTrajectory &&
+        return mCurrentCommand.isPresent() && mCommandQueue.isEmpty() && currentState.elbowSentLastTrajectory &&
                 currentState.elevatorSentLastTrajectory;
     }
 
@@ -169,10 +178,10 @@ public class SuperstructurePlannerTheSecond {
             mIntermediateCommandState = currentState;
         }
 
-        mCommandedState.getWrist().angle = Util.limit(mIntermediateCommandState.getWrist().angle.getDegree(), SuperStructureConstants.Wrist.kWristMin.getDegree(),
-                SuperStructureConstants.Wrist.kWristMax.getDegree());
-        mCommandedState.getElevator().setHeight(Util.limit(mIntermediateCommandState.getElevatorHeight().getInch(), SuperStructureConstants
-                .Elevator.bottom.getInch(), SuperStructureConstants.Elevator.top.getInch()));
+        mCommandedState.getElbow().angle = RoundRotation2d.getDegree(Util.limit(mIntermediateCommandState.getElbow().angle.getDegree(), SuperStructureConstants.Elbow.kElbowMin.getDegree(),
+                SuperStructureConstants.Elbow.kElbowMax.getDegree()));
+        mCommandedState.getElevator().setHeight(LengthKt.getInch(Util.limit(mIntermediateCommandState.getElevatorHeight().getInch(), SuperStructureConstants
+                .Elevator.bottom.getInch(), SuperStructureConstants.Elevator.top.getInch())));
 
         return mCommandedState;
     }
