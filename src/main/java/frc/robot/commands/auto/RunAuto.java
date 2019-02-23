@@ -5,6 +5,7 @@ import frc.robot.commands.auto.AutoMotion.GoalType;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.superstructure.SuperStructure;
 
 /**
  * Selects and runs an auto command group
@@ -27,6 +28,7 @@ public class RunAuto extends AutoCommandGroup {
 		this.isDrive = false;
 		// requires(SuperStructure.getInstance());
 		requires(DriveTrain.getInstance());
+		requires(SuperStructure.getInstance());
 	}
 
 	public RunAuto(HeldPiece cPiece, String... cKeys) {
