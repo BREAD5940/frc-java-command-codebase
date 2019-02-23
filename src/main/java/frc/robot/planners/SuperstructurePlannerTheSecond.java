@@ -16,8 +16,8 @@ import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 public class SuperstructurePlannerTheSecond {
     private boolean mUpwardsSubcommandEnabled = true;
 
-    class SubCommand {
-        public SubCommand(SuperStructureState endState) {
+    class FakeCommand {
+        public FakeCommand(SuperStructureState endState) {
             mEndState = endState;
         }
 
@@ -31,9 +31,9 @@ public class SuperstructurePlannerTheSecond {
         }
     }
 
-    class WaitForElbowSafeSubcommand extends SubCommand {
+    class WaitForElbowSafeSubcommand extends FakeCommand {
         public WaitForElbowSafeSubcommand(SuperStructureState endState) {
-			super(endState);
+						super(endState);
 						mElbowThreshold = mElbowThreshold.plus(RoundRotation2d.getDegree(Math.max(0.0, mEndState.getElbow().angle.getDegree() - 
 						SuperStructureConstants.Elbow.kClearFirstStageMinElbowAngle.getDegree())));
         }
@@ -45,7 +45,7 @@ public class SuperstructurePlannerTheSecond {
         }
     }
 
-    class WaitForElevatorSafeSubcommand extends SubCommand {
+    class WaitForElevatorSafeSubcommand extends FakeCommand {
         public WaitForElevatorSafeSubcommand(SuperStructureState endState, SuperStructureState currentState) {
             super(endState);
             if (endState.getElevatorHeight().getInch() >= currentState.getElevatorHeight().getInch()) {
@@ -64,7 +64,7 @@ public class SuperstructurePlannerTheSecond {
         }
     }
 
-    class WaitForElevatorApproachingSubcommand extends SubCommand {
+    class WaitForElevatorApproachingSubcommand extends FakeCommand {
         public WaitForElevatorApproachingSubcommand(SuperStructureState endState) {
             super(endState);
             mHeightThreshold = SuperStructureConstants.Elevator.kElevatorApproachingThreshold;
@@ -77,7 +77,7 @@ public class SuperstructurePlannerTheSecond {
         }
     }
 
-    class WaitForFinalSetpointSubcommand extends SubCommand {
+    class WaitForFinalSetpointSubcommand extends FakeCommand {
         public WaitForFinalSetpointSubcommand(SuperStructureState endState) {
             super(endState);
         }
@@ -90,8 +90,8 @@ public class SuperstructurePlannerTheSecond {
 
     protected SuperStructureState mCommandedState = new SuperStructureState();
     protected SuperStructureState mIntermediateCommandState = new SuperStructureState();
-    protected LinkedList<SubCommand> mCommandQueue = new LinkedList<>();
-    protected Optional<SubCommand> mCurrentCommand = Optional.empty();
+    protected LinkedList<FakeCommand> mCommandQueue = new LinkedList<>();
+    protected Optional<FakeCommand> mCurrentCommand = Optional.empty();
 
     public synchronized boolean setDesiredState(SuperStructureState desiredStateIn, SuperStructureState currentState) {
         SuperStructureState desiredState = new SuperStructureState(desiredStateIn);
@@ -167,7 +167,7 @@ public class SuperstructurePlannerTheSecond {
         }
 
         if (mCurrentCommand.isPresent()) {
-            SubCommand subCommand = mCurrentCommand.get();
+            FakeCommand subCommand = mCurrentCommand.get();
             mIntermediateCommandState = subCommand.mEndState;
             if (subCommand.isFinished(currentState) && !mCommandQueue.isEmpty()) {
                 // Let the current command persist until there is something in the queue. or not. desired outcome
