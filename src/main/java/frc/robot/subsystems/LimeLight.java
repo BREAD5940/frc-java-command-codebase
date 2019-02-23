@@ -8,7 +8,6 @@ import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotConfig;
 import frc.robot.lib.obj.VisionTarget;
 import frc.robot.lib.obj.factories.VisionTargetFactory;
@@ -55,12 +54,12 @@ public class LimeLight {
 		this.setPipeline(kDefaultPreset);
 		smartDashboard = NetworkTableInstance.getDefault().getTable("SmartDashboard");
 		smartDashboard.getEntry("Desired Vision Pipeline").setNumber(kDefaultPipeline);
-		smartDashboard.addEntryListener("Desired Vision Pipeline", 
+		smartDashboard.addEntryListener("Desired Vision Pipeline",
 				(smartDashboard, key, entry, value, flabs) -> {
 					setPipeline((int) value.getDouble());
 					System.out.println("Value changed! it's now " + (int) value.getDouble());
 				},
-		EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+				EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
 	}
 
 	public double[] getData() {
@@ -104,8 +103,9 @@ public class LimeLight {
 		private int id;
 
 		private static PipelinePreset[] values = null;
+
 		public static PipelinePreset fromID(int i) {
-			if(PipelinePreset.values() == null) {
+			if (PipelinePreset.values() == null) {
 				PipelinePreset.values = PipelinePreset.values();
 			}
 			return PipelinePreset.values[i];
@@ -134,7 +134,8 @@ public class LimeLight {
 	}
 
 	public void setPipeline(int req_) {
-		if(req_ > PipelinePreset.values().length - 1) return;
+		if (req_ > PipelinePreset.values().length - 1)
+			return;
 		PipelinePreset _req_ = PipelinePreset.values()[req_];
 		this.mCurrentPipeline = _req_;
 		setPipeline(_req_);
@@ -203,9 +204,9 @@ public class LimeLight {
 		return distance;
 	}
 
-
 	public class MeasuredVisionTarget {
 		private double x_, y_, width_, height_, area_;
+
 		MeasuredVisionTarget(double x, double y, double width, double height, double area) {
 			x_ = x;
 			y_ = y;
@@ -214,11 +215,25 @@ public class LimeLight {
 			area_ = area;
 		}
 
-		public double getX() {return x_;}
-		public double getY() {return y_;}
-		public double getWidth() {return width_;}
-		public double getHeight() {return height_;}
-		public double getArea() {return area_;}
+		public double getX() {
+			return x_;
+		}
+
+		public double getY() {
+			return y_;
+		}
+
+		public double getWidth() {
+			return width_;
+		}
+
+		public double getHeight() {
+			return height_;
+		}
+
+		public double getArea() {
+			return area_;
+		}
 	}
 
 }

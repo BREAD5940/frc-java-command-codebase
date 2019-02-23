@@ -26,7 +26,6 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 public class SuperstructurePlanner {
 
 	public SuperstructurePlanner() {}
-	
 
 	public static final SuperStructureState passThroughState = new SuperStructureState(new ElevatorState(SuperStructureConstants.Elevator.crossbarBottom),
 			new RotatingArmState(RoundRotation2d.getDegree(-90)), new RotatingArmState(RoundRotation2d.getDegree(-90)));
@@ -136,7 +135,8 @@ public class SuperstructurePlanner {
 			System.out.println("MOTION UNSAFE -- Can't pass through the elevator at points other than the pass-through point. Adding to path.");
 			errorCount++;
 			toReturn.add(passThroughState);
-			if (isSingle) return toReturn;
+			if (isSingle)
+				return toReturn;
 		}
 
 		lowestPoint = endPointDown;
@@ -212,7 +212,8 @@ public class SuperstructurePlanner {
 			System.out.println("MOTION UNSAFE -- Intake will hit crossbarBottom. Setting to default intake position for movement.");
 			errorCount++;
 			toReturn.add(new SuperStructureState(currentState.elevator, iPosition.CARGO_GRAB, currentState.getHeldPiece()));
-			if (isSingle) return toReturn;
+			if (isSingle)
+				return toReturn;
 		}
 
 		//move to corrected state

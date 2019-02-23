@@ -87,7 +87,6 @@ public class FollowVisionTarget extends Command {
 			double sizeData = data[3]; // percent of frame
 			turnSpeed = xAxisOffset / 8d;
 
-
 			forwardSpeed = 0;
 
 			// double targetSizeSetpoint = 2;

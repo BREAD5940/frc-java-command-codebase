@@ -6,7 +6,6 @@ import java.util.Arrays;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Mass;
-import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -208,12 +207,13 @@ public class SuperStructure extends Subsystem {
 	}
 
 	private void updateObservedState(SuperStructureState state) {
-		state.getElevator().setHeight(getElevator().getCurrentState().getHeight());;
+		state.getElevator().setHeight(getElevator().getCurrentState().getHeight());
+		;
 		state.getElbow().setAngle(getElbow().getCurrentState().angle);
 
 		//FIXME this is a Very Jank way to do this, but the V being 0 *should* mean the traject is done
-		state.elevatorSentLastTrajectory = getElevator().getCurrentState().velocity.getValue()==0;//.hasFinishedTrajectory();
-		state.elbowSentLastTrajectory = getElbow().getCurrentState().velocity.getValue()==0;//.hasFinishedTrajectory();
+		state.elevatorSentLastTrajectory = getElevator().getCurrentState().velocity.getValue() == 0;//.hasFinishedTrajectory();
+		state.elbowSentLastTrajectory = getElbow().getCurrentState().velocity.getValue() == 0;//.hasFinishedTrajectory();
 	}
 
 	public SuperStructureState updateState() {
@@ -284,7 +284,6 @@ public class SuperStructure extends Subsystem {
 		// SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mRequState.getWrist().angle);
 
 		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
-		
 
 		getWrist().requestAngle(stateSetpoint.getWrist().angle); // div by 12 because it expects a throttle
 		getElbow().requestAngle(stateSetpoint.getElbow().angle); // div by 12 because it expects a throttle

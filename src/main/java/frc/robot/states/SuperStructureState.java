@@ -12,8 +12,6 @@ public class SuperStructureState implements Loggable {
 	public ElevatorState elevator;
 	private HeldPiece piece = HeldPiece.NONE;
 
-
-	
 	public boolean elevatorSentLastTrajectory = false;
 	public boolean elbowSentLastTrajectory = false;
 

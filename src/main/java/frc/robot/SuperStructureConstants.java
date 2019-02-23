@@ -36,7 +36,6 @@ public class SuperStructureConstants {
 
 	}
 
-
 	public static final Mass kHatchMass = MassKt.getLb(2.4); // FIXME check mass
 	public static final Mass kCargoMass = MassKt.getLb(1); // FIXME check mass
 }

@@ -29,7 +29,6 @@ import frc.robot.SuperStructureConstants;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.obj.InvertSettings;
-import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
 
@@ -135,7 +134,6 @@ public class Elevator /*extends Subsystem*/ {
 		NativeUnit minHeightRaw = lengthModel.toNativeUnitPosition(SuperStructureConstants.Elevator.bottom);
 		getMaster().setSoftLimitReverse(minHeightRaw);
 		getMaster().setSoftLimitReverseEnabled(true);
-
 
 		mCurrentGear = kDefaultGear;
 		setGear(kDefaultGear); // set shifter and closed loop slot
