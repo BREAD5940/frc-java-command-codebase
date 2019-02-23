@@ -45,6 +45,8 @@ public class SuperStructureTelop extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+		SuperStructure.getInstance().updateState();
+		
 		// elevator stuff
 		Length newE = SuperStructure.getInstance().getLastReqElevatorHeight();
 		boolean move = false;
