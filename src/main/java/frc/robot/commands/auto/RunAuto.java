@@ -5,6 +5,7 @@ import frc.robot.commands.auto.AutoMotion.GoalType;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.superstructure.SuperStructure;
 
 /**
  * Selects and runs an auto command group
@@ -21,11 +22,35 @@ public class RunAuto extends AutoCommandGroup {
 	private boolean begun = false;
 	private AutoCommandGroup running;
 
+	public RunAuto(HeldPiece mHP, GoalHeight mHeight){
+		switch(mHP){
+			case CARGO:
+				if(mHeight==GoalHeight.LOW){
+					this.mGt = GoalType.CARGO_CARGO;
+				}else{
+					this.mGt = GoalType.ROCKET_CARGO;
+				}
+				break;
+			case HATCH:
+				this.mGt = GoalType.ROCKET_HATCH;
+				break;
+			case NONE:
+				this.mGt = GoalType.RETRIEVE_HATCH; //FIXME this assumes we're never ever using RETRIEVE_CARGO
+				break;
+		}
+
+		this.mHeight = mHeight;
+		this.isDrive = false;
+
+		requires(SuperStructure.getInstance());
+		requires(DriveTrain.getInstance());
+	}
+	
 	public RunAuto(GoalType mGt, GoalHeight mHeight) {
 		this.mGt = mGt;
 		this.mHeight = mHeight;
 		this.isDrive = false;
-		// requires(SuperStructure.getInstance());
+		requires(SuperStructure.getInstance());
 		requires(DriveTrain.getInstance());
 	}
 
@@ -33,7 +58,7 @@ public class RunAuto extends AutoCommandGroup {
 		this.cKeys = cKeys;
 		this.isDrive = true;
 		this.cPiece = cPiece;
-		// requires(SuperStructure.getInstance());
+		requires(SuperStructure.getInstance());
 		requires(DriveTrain.getInstance());
 	}
 
