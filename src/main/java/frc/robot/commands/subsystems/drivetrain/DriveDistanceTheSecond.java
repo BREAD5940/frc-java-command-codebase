@@ -3,7 +3,9 @@ package frc.robot.commands.subsystems.drivetrain;
 import java.util.Arrays;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
@@ -44,6 +46,11 @@ public class DriveDistanceTheSecond extends Command {
 		var mCurrentPose = drive.getLocalization().getRobotPosition();
 		var mDelta = new Pose2d(new Translation2d(distance, mCurrentPose.getRotation()), mCurrentPose.getRotation());
 		this.mCommand = drive.followTrajectory(Trajectories.generateTrajectoryLowGear(Arrays.asList(mCurrentPose, mDelta), reversed));
+	}
+
+	public DriveDistanceTheSecond(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean reversed) {
+		this.drive = DriveTrain.getInstance();
+		this.mCommand = drive.followTrajectory(trajectory, reversed);
 	}
 
 	// Called just before this Command runs the first time
