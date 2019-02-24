@@ -32,7 +32,6 @@ import frc.robot.lib.obj.InvertSettings;
 import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
-import io.github.oblarg.oblog.annotations.Log;
 
 /**
  * The elevator subsystem controls the elevator height
@@ -81,10 +80,10 @@ public class Elevator /*extends Subsystem*/ {
 	public static final double KLowGearForcePerVolt = (512d / 12d /* newtons */) * 1.5;
 	public static final double KHighGearForcePerVolt = (1500d / 12d /* newtons */ );
 
-	private static final int mHighGearUnitsPer100ms = 8192;
+	private static final int mHighGearUnitsPer100ms = 8192 / 10;
 	private static final int mHighGearKf = (int) 1023 / mHighGearUnitsPer100ms;
-	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.2 * 4, 0.1, 2, 0); // high speed low torque
-	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.15, 0, 0, mHighGearKf, 8192 /* raw units per 100ms */, 8192 /* raw units per 100ms */); // low torque high speed
+	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.15, 0, 0, 0); // high torque low speed
+	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.15, 0, 0, mHighGearKf, 8192 /* raw units per 100ms */, 8192 / 10 /* raw units per 100ms */); // low torque high speed
 	private static final int kLowGearPIDSlot = 0;
 	private static final int kHighGearPIDSlot = 1;
 
@@ -92,8 +91,8 @@ public class Elevator /*extends Subsystem*/ {
 
 	private FalconSRX<Length> mSlave1, mSlave2, mSlave3;
 
-	private static ElevatorGear mCurrentGear;
-	private static final ElevatorGear kDefaultGear = ElevatorGear.LOW;
+	private ElevatorGear mCurrentGear;
+	private static final ElevatorGear kDefaultGear = ElevatorGear.HIGH;
 
 	NativeUnitLengthModel lengthModel = RobotConfig.elevator.elevatorModel;
 
@@ -119,7 +118,7 @@ public class Elevator /*extends Subsystem*/ {
 		mMaster.configPeakOutputForward(+1.0, 0);
 		mMaster.configPeakOutputReverse(-1.0, 0);
 
-		mMaster.setSelectedSensorPosition(0);
+		zeroEncoder();
 
 		mMaster.setInverted(settings.masterInverted);
 		mSlave1.setInverted(settings.slave1FollowerMode);
@@ -132,12 +131,12 @@ public class Elevator /*extends Subsystem*/ {
 		setClosedLoopGains(kLowGearPIDSlot, LOW_GEAR_PID);
 		setClosedLoopGains(kHighGearPIDSlot, HIGH_GEAR_PID);
 
-		NativeUnit maxHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.top);
-		getMaster().setSoftLimitForward(maxHeightRaw);
-		getMaster().setSoftLimitForwardEnabled(true);
-		NativeUnit minHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.bottom);
-		getMaster().setSoftLimitReverse(minHeightRaw);
-		getMaster().setSoftLimitReverseEnabled(true);
+		// NativeUnit maxHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.top);
+		// getMaster().setSoftLimitForward(maxHeightRaw);
+		// getMaster().setSoftLimitForwardEnabled(true);
+		// NativeUnit minHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.bottom.minus(LengthKt.getInch(0.5)));
+		// getMaster().setSoftLimitReverse(minHeightRaw);
+		// getMaster().setSoftLimitReverseEnabled(false);
 
 		mCurrentGear = kDefaultGear;
 		setGear(kDefaultGear); // set shifter and closed loop slot
@@ -212,6 +211,7 @@ public class Elevator /*extends Subsystem*/ {
 
 	public void requestClosedLoop(ControlMode mode, Length req_, DemandType type, double arg2) {
 		req_ = Util.limit(req_, RobotConfig.elevator.elevator_minimum_height, RobotConfig.elevator.elevator_maximum_height);
+		System.out.printf("requesting a move to %s in control mode %s with a demand of %s and value %s", req_.getInch(), mode.name(), arg2, type.name());
 		getMaster().set(mode, req_, type, arg2);
 	}
 
@@ -273,7 +273,7 @@ public class Elevator /*extends Subsystem*/ {
 			total = total.plus(kInnerStageMass);
 		}
 		double totalF = total.getKilogram() * 9.81 /* g */;
-		return (mCurrentGear == ElevatorGear.LOW) ? totalF / KLowGearForcePerVolt : totalF / KHighGearForcePerVolt;
+		return (SuperStructure.getElevator().mCurrentGear == ElevatorGear.LOW) ? totalF / KLowGearForcePerVolt : totalF / KHighGearForcePerVolt;
 	}
 
 	public ElevatorState getCurrentState() {
@@ -283,14 +283,126 @@ public class Elevator /*extends Subsystem*/ {
 		return new ElevatorState(getHeight(), getVelocity());
 	}
 
-	@Log.Graph(name = "Elevator Height", visibleTime = 15)
+	// @Log.Graph(name = "Elevator Height", visibleTime = 15)
 	public double getHeightInches() {
 		return getHeight().getInch();
 	}
 
-	@Log.Graph(name = "Elevator Velocity", visibleTime = 15)
+	// @Log.Graph(name = "Elevator Velocity", visibleTime = 15)
 	public double getVelocityInSec() {
 		return VelocityKt.getInchesPerSecond(getVelocity());
+	}
+
+	/**
+	 * @return the mSolenoid
+	 */
+	public DoubleSolenoid getmSolenoid() {
+		return mSolenoid;
+	}
+
+	/**
+	 * @param mSolenoid the mSolenoid to set
+	 */
+	public void setmSolenoid(DoubleSolenoid mSolenoid) {
+		this.mSolenoid = mSolenoid;
+	}
+
+	/**
+	 * @return the elevatorGear
+	 */
+	public ElevatorGear getElevatorGear() {
+		return elevatorGear;
+	}
+
+	/**
+	 * @param elevatorGear the elevatorGear to set
+	 */
+	public void setElevatorGear(ElevatorGear elevatorGear) {
+		this.elevatorGear = elevatorGear;
+	}
+
+	/**
+	 * @return the mMaster
+	 */
+	public FalconSRX<Length> getmMaster() {
+		return mMaster;
+	}
+
+	/**
+	 * @param mMaster the mMaster to set
+	 */
+	public void setmMaster(FalconSRX<Length> mMaster) {
+		this.mMaster = mMaster;
+	}
+
+	/**
+	 * @return the mSlave1
+	 */
+	public FalconSRX<Length> getmSlave1() {
+		return mSlave1;
+	}
+
+	/**
+	 * @param mSlave1 the mSlave1 to set
+	 */
+	public void setmSlave1(FalconSRX<Length> mSlave1) {
+		this.mSlave1 = mSlave1;
+	}
+
+	/**
+	 * @return the mSlave2
+	 */
+	public FalconSRX<Length> getmSlave2() {
+		return mSlave2;
+	}
+
+	/**
+	 * @param mSlave2 the mSlave2 to set
+	 */
+	public void setmSlave2(FalconSRX<Length> mSlave2) {
+		this.mSlave2 = mSlave2;
+	}
+
+	/**
+	 * @return the mSlave3
+	 */
+	public FalconSRX<Length> getmSlave3() {
+		return mSlave3;
+	}
+
+	/**
+	 * @param mSlave3 the mSlave3 to set
+	 */
+	public void setmSlave3(FalconSRX<Length> mSlave3) {
+		this.mSlave3 = mSlave3;
+	}
+
+	/**
+	 * @return the mCurrentGear
+	 */
+	public ElevatorGear getmCurrentGear() {
+		return mCurrentGear;
+	}
+
+	/**
+	 * @param mCurrentGear the mCurrentGear to set
+	 */
+	public void setmCurrentGear(ElevatorGear mCurrentGear) {
+		this.mCurrentGear = mCurrentGear;
+	}
+
+	/**
+	 * @return the lengthModel
+	 */
+	public NativeUnitLengthModel getLengthModel() {
+		return lengthModel;
+	}
+
+	/**
+	 * @param lengthModel the lengthModel to set
+	 */
+	public void setLengthModel(NativeUnitLengthModel lengthModel) {
+		this.lengthModel = lengthModel;
 	}
 
 }

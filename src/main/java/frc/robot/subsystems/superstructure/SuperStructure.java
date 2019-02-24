@@ -9,6 +9,8 @@ import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.team254.lib.physics.DCMotorTransmission;
@@ -30,7 +32,7 @@ import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.superstructure.Elevator.EncoderMode;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
-import io.github.oblarg.oblog.Loggable;
+// import io.github.oblarg.oblog.Loggable;
 
 /**
  * First level of control for the superstructure of the robot. Contains all the
@@ -38,7 +40,7 @@ import io.github.oblarg.oblog.Loggable;
  * 
  * @author Jocelyn McHugo
  */
-public class SuperStructure extends Subsystem implements Loggable {
+public class SuperStructure extends Subsystem {
 
 	private static SuperStructure instance_;
 	private static double currentDTVelocity; //in ft/sec
@@ -268,11 +270,11 @@ public class SuperStructure extends Subsystem implements Loggable {
 		// SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mRequState.getWrist().angle);
 
 		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
-		// SuperStructureState stateSetpoint = plan(requState);
+		SuperStructureState stateSetpoint = plan(requState);
 
 		// getWrist().requestAngle(stateSetpoint.getWrist().angle); // div by 12 because it expects a throttle
 		// getElbow().requestAngle(stateSetpoint.getElbow().angle); // div by 12 because it expects a throttle
-		// getElevator().setPositionArbitraryFeedForward(stateSetpoint.getElevator().height, elevatorPercentVbusGravity / 12d);
+		getElevator().requestClosedLoop(ControlMode.MotionMagic, stateSetpoint.getElevator().height, DemandType.ArbitraryFeedForward, elevatorPercentVbusGravity / 12d);
 		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
 
 	}

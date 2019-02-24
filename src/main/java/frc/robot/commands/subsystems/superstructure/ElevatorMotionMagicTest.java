@@ -26,21 +26,32 @@ public class ElevatorMotionMagicTest extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Length mTarget = LengthKt.getFeet(2);
+		Length mTarget = LengthKt.getFeet(1);
 		double volts = Elevator.getVoltage(new SuperStructureState(new ElevatorState(mTarget), new RotatingArmState(), new RotatingArmState()));
-		SuperStructure.getElevator().requestClosedLoop(ControlMode.MotionMagic, mTarget, DemandType.ArbitraryFeedForward, volts);
+		// SuperStructure.getElevator().requestClosedLoop(ControlMode.MotionMagic, mTarget, DemandType.ArbitraryFeedForward, volts);
+		SuperStructure.getElevator().getMaster().set(ControlMode.MotionMagic,
+				(int) SuperStructure.getElevator().getModel().toNativeUnitPosition(mTarget).getValue(), DemandType.ArbitraryFeedForward, volts);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
 		mCurrent = SuperStructure.getInstance().updateState();
+		// System.out.printf("Forward soft lim: %s rev soft lim: %s", SuperStructure.getElevator().getMaster().softlimit )
+		Length mTarget = LengthKt.getFeet(1);
+		double volts = Elevator.getVoltage(new SuperStructureState(new ElevatorState(mTarget), new RotatingArmState(), new RotatingArmState()));
+		// SuperStructure.getElevator().requestClosedLoop(ControlMode.MotionMagic, mTarget, DemandType.ArbitraryFeedForward, volts);
+		double targetTic = (int) SuperStructure.getElevator().getModel().toNativeUnitPosition(mTarget).getValue();
+		System.out.println(targetTic);
+		SuperStructure.getElevator().getMaster().set(ControlMode.Position,
+				targetTic, DemandType.ArbitraryFeedForward, volts);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return SuperStructure.getElevator().isWithinTolerence(mCurrent) || isTimedOut();
+		return false;
+		// return SuperStructure.getElevator().isWithinTolerence(mCurrent) || isTimedOut();
 	}
 
 	// Called once after isFinished returns true
