@@ -32,6 +32,7 @@ import frc.robot.lib.obj.InvertSettings;
 import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
+import io.github.oblarg.oblog.annotations.Log;
 
 /**
  * The elevator subsystem controls the elevator height
@@ -281,4 +282,16 @@ public class Elevator /*extends Subsystem*/ {
 		// (getVelocity().getValue() - lastKnown.velocity.getValue()) / (time.getValue() - lastKnown.time.getValue())));
 		return new ElevatorState(getHeight(), getVelocity());
 	}
+
+	@Log.Graph(name = "Elevator Height", visibleTime = 15)
+	public double getHeightInches() {
+		return getHeight().getInch();
+	}
+
+	@Log.Graph(name = "Elevator Velocity", visibleTime = 15)
+	public double getVelocityInSec() {
+		return VelocityKt.getInchesPerSecond(getVelocity());
+	}
+
+
 }

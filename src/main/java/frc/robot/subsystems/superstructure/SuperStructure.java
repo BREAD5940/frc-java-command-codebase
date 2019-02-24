@@ -30,6 +30,7 @@ import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.superstructure.Elevator.EncoderMode;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
+import io.github.oblarg.oblog.Loggable;
 
 /**
  * First level of control for the superstructure of the robot. Contains all the
@@ -37,7 +38,7 @@ import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
  * 
  * @author Jocelyn McHugo
  */
-public class SuperStructure extends Subsystem {
+public class SuperStructure extends Subsystem implements Loggable {
 
 	private static SuperStructure instance_;
 	private static double currentDTVelocity; //in ft/sec

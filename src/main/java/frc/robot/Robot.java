@@ -1,13 +1,9 @@
 package frc.robot;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
@@ -28,6 +24,7 @@ import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import io.github.oblarg.oblog.Logger;
 
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly init
@@ -155,26 +152,6 @@ public class Robot extends TimedRobot {
 			drivetrain.setHighGear();
 		}
 
-		// odometry_ = Odometer.getInstance();
-		// Thanks to RoboLancers for odometry code
-		// odometry_ = Odometry.getInstance();
-		// new Notifier(() -> {
-		//     // odometry_.setCurrentEncoderPosition((DriveTrain.getInstance().getLeft().getEncoderCount() + DriveTrain.getInstance().getRight().getEncoderCount()) / 2.0);
-
-		//     // Incrament the current encoder position by the average
-		//     odometry_.setCurrentEncoderPosition((drivetrain.m_left_talon.getSelectedSensorPosition() + drivetrain.m_right_talon.getSelectedSensorPosition()) / 2.0);
-
-		//     // odometry_.setDeltaPosition(RobotUtil.encoderTicksToFeets(odometry_.getCurrentEncoderPosition() - odometry_.getLastPosition()));
-		//     odometry_.setDeltaPosition(EncoderLib.rawToDistance(odometry_.getCurrentEncoderPosition() - odometry_.getLastPosition(), RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
-		//               (RobotConfig.driveTrain.left_wheel_effective_diameter / 12 + RobotConfig.driveTrain.right_wheel_effective_diameter / 12)/2.0));
-
-		//     odometry_.setTheta(Math.toRadians(Pathfinder.boundHalfDegrees(gyro.getAngle())));
-
-		//     odometry_.addX(Math.cos(odometry_.getTheta()) * odometry_.getDeltaPosition());
-		//     odometry_.addY(Math.sin(odometry_.getTheta()) * odometry_.getDeltaPosition());
-
-		//     odometry_.setLastPosition(odometry_.getCurrentEncoderPosition());
-		// }).startPeriodic(0.02);
 		SmartDashboard.putData("Zero elevator height:", new ZeroSuperStructure("elevator"));
 		SmartDashboard.putData("Zero elbow angle:", new ZeroSuperStructure("elbow"));
 		SmartDashboard.putData("Zero wrist angle:", new ZeroSuperStructure("wrist"));
@@ -185,6 +162,8 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Min elbow angle:", new ZeroSuperStructure("minElbow"));
 		drivetrain.zeroEncoders();
 		System.out.println("Robot init'ed and encoders zeroed!");
+
+		Logger.configureLogging(this);
 
 	}
 
@@ -308,30 +287,11 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotPeriodic() {
 		drivetrain.getLocalization().update(); // TODO put me on a notifier?
-		// long now = System.currentTimeMillis();
-
-		SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
-		SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
+		Logger.updateEntries();
 
 		LiveDashboard.INSTANCE.setRobotX(drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
 		LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
 		LiveDashboard.INSTANCE.setRobotHeading(drivetrain.getLocalization().getRobotPosition().getRotation().getRadian());
-
-		SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getFeetPerSecond());
-		SmartDashboard.putNumber("Left talon error", drivetrain.getLeft().getClosedLoopError().getFeet());
-		SmartDashboard.putNumber("Right talon speed", drivetrain.getRight().getFeetPerSecond());
-		SmartDashboard.putNumber("Right talon error", drivetrain.getRight().getClosedLoopError().getFeet());
-
-		List<Double> feetPerSecond = Arrays.asList(
-				VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()),
-				VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()));
-		List<Double> feetPerSecondPerSecond = Arrays.asList(
-				(VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()) - drivetrain.lastFeetPerSecond.get(0)) / 0.02d,
-				(VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()) - drivetrain.lastFeetPerSecond.get(0)) / 0.02d);
-		SmartDashboard.putNumber("Left drivetrian feet per second", feetPerSecond.get(0));
-		SmartDashboard.putNumber("Right drivetrian feet per second", feetPerSecond.get(1));
-
-		SmartDashboard.putNumber("7 feet per second is", drivetrain.getLeft().getModel().toNativeUnitPosition(LengthKt.getFeet(7)).getValue());
 
 		SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
 
