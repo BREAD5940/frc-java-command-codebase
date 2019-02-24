@@ -46,7 +46,7 @@ public class SuperstructureGoToState extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		Logger.log("elevator: " + SuperStructure.getInstance().updateState().getElevatorHeight().getInch() + "target: " + (mRequState.getElevatorHeight().getInch())) ;
+		Logger.log("elevator: " + SuperStructure.getInstance().updateState().getElevatorHeight().getInch() + "target: " + (mRequState.getElevatorHeight().getInch()));
 		Logger.log("elevator within tolerence? " + ((Math.abs(mRequState.getElevatorHeight().getInch() - SuperStructure.getInstance().updateState().getElevatorHeight().getInch()) <= 0.5)));
 		Logger.log("elbow within tolerence? " + (Math.abs(mRequState.getElbow().angle.getDegree() - SuperStructure.getInstance().updateState().getElbow().angle.getDegree()) <= 5));
 		Logger.log("wrist within tolerence? " + (Math.abs(mRequState.getWrist().angle.getDegree() - SuperStructure.getInstance().updateState().getWrist().angle.getDegree()) <= 5));

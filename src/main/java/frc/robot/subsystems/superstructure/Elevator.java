@@ -202,14 +202,13 @@ public class Elevator /*extends Subsystem*/ {
 	}
 
 	public boolean isWithinTolerence(Length mCurrent) {
-		return ( Math.abs(getClosedLoopError().getInch()) < RobotConfig.elevator.elevatorTolerences.position_tolerence.getInch());
+		return (Math.abs(getClosedLoopError().getInch()) < RobotConfig.elevator.elevatorTolerences.position_tolerence.getInch());
 	}
-
 
 	public void requestClosedLoop(ControlMode mode, Length req_) {
 		requestClosedLoop(mode, req_, DemandType.Neutral, 0);
 	}
-	
+
 	public void requestClosedLoop(ControlMode mode, Length req_, DemandType type, double arg2) {
 		req_ = Util.limit(req_, RobotConfig.elevator.elevator_minimum_height, RobotConfig.elevator.elevator_maximum_height);
 		getMaster().set(mode, req_, type, arg2);
@@ -235,8 +234,8 @@ public class Elevator /*extends Subsystem*/ {
 		mMaster.config_kI(slot, ki, 0);
 		mMaster.config_kD(slot, kd, 0);
 		mMaster.config_kF(slot, kf, 0);
-		mMaster.configMotionCruiseVelocity((int)mmVel);
-		mMaster.configMotionAcceleration((int)mmAccel);
+		mMaster.configMotionCruiseVelocity((int) mmVel);
+		mMaster.configMotionAcceleration((int) mmAccel);
 		mMaster.configMotionSCurveStrength(0);
 		mMaster.config_IntegralZone(slot, (int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getInch(iZone)).getValue()), 0);
 		mMaster.configMaxIntegralAccumulator(slot, maxIntegral, 0);

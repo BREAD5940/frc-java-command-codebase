@@ -92,8 +92,6 @@ public class OI {
 		test3Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.HIGH));
 		test4Button.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW));
 
-
-
 		cargoOverButton.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.OVER));
 		cargo1Button.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.LOW));
 		cargo2Button.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.MIDDLE));
@@ -102,10 +100,10 @@ public class OI {
 		hatch1Button.whenPressed(new RunAuto(HeldPiece.HATCH, GoalHeight.LOW));
 		hatch2Button.whenPressed(new RunAuto(HeldPiece.HATCH, GoalHeight.MIDDLE));
 		hatch3Button.whenPressed(new RunAuto(HeldPiece.HATCH, GoalHeight.HIGH));
-		
+
 		hatchPickupButton.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW));
-		intakeButton.whileHeld(new RunIntake(1,5));
-		outtakeButton.whileHeld(new RunIntake(-1,5));
+		intakeButton.whileHeld(new RunIntake(1, 5));
+		outtakeButton.whileHeld(new RunIntake(-1, 5));
 
 		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
 		// yeetInACircleButton.whenPressed(new TurnInPlace(Rotation2dKt.getDegree(180), false));
@@ -177,11 +175,11 @@ public class OI {
 		return (secondaryJoystick.getRawAxis(2) - secondaryJoystick.getRawAxis(3)) * -1; // triggers
 	}
 
-	public double getDSElbowAxis(){
+	public double getDSElbowAxis() {
 		return (driverStation.getRawAxis(DriverstationMap.Axes.elbowStick));
 	}
 
-	public double getDSElevatorAxis(){
+	public double getDSElevatorAxis() {
 		return (driverStation.getRawAxis(DriverstationMap.Axes.elevatorStick));
 	}
 

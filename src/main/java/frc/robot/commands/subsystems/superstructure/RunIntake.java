@@ -8,7 +8,7 @@
 package frc.robot.commands.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.subsystems.superstructure.SuperStructure;
+import frc.robot.subsystems.Intake;
 
 public class RunIntake extends Command {
 	double demand, duratuion;
@@ -19,7 +19,7 @@ public class RunIntake extends Command {
 	 * @param duration
 	 */
 	public RunIntake(double demand_, double duration_) {
-		requires(SuperStructure.intake); // TODO make sure this works
+		requires(Intake.getInstance());
 		this.demand = demand_;
 		this.duratuion = duration_;
 		setTimeout(duration_);
@@ -27,7 +27,7 @@ public class RunIntake extends Command {
 
 	@Override
 	protected void initialize() {
-		SuperStructure.intake.setSpeed(demand);
+		Intake.getInstance().setSpeed(demand);
 	}
 
 	@Override
@@ -40,8 +40,7 @@ public class RunIntake extends Command {
 
 	@Override
 	protected void end() {
-		SuperStructure.intake.setSpeed(0d);
-		SuperStructure.intake.setSpeed(0d);
+		Intake.getInstance().setSpeed(0d);
 	}
 
 	@Override

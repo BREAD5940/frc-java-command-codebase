@@ -9,7 +9,6 @@ package frc.robot.commands.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class IntakeTelop extends Command {
 	public IntakeTelop() {
