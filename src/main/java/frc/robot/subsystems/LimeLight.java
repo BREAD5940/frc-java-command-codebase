@@ -17,6 +17,22 @@ import frc.robot.RobotConfig;
  * @author Matthew Morley
  */
 public class LimeLight {
+
+	private static LimeLight instance;
+	private static Object mutex = new Object();
+
+	public static LimeLight getInstance() {
+		LimeLight result = instance;
+		if (result == null) {
+			synchronized (mutex) {
+				result = instance;
+				if (result == null)
+					instance = result = new LimeLight();
+			}
+		}
+		return result;
+	}
+
 	NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
 	double[] data, angles;
 	double cameraHeight = RobotConfig.limeLight.camera_height;
