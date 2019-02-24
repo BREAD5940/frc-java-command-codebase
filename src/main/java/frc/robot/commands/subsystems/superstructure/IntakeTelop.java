@@ -14,7 +14,7 @@ import frc.robot.subsystems.superstructure.SuperStructure;
 public class IntakeTelop extends Command {
 	public IntakeTelop() {
 		// Use requires() here to declare subsystem dependencies
-		requires(SuperStructure.intake);
+		requires(Robot.intake);
 	}
 
 	// Called just before this Command runs the first time
@@ -24,7 +24,7 @@ public class IntakeTelop extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		SuperStructure.intake.setSpeed(Robot.m_oi.getIntakeSpeed());
+		Robot.intake.setSpeed(Robot.m_oi.getIntakeSpeed());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

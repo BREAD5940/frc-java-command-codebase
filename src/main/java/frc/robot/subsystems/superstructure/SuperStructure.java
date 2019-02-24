@@ -50,7 +50,6 @@ public class SuperStructure extends Subsystem {
 	private int cPathIndex = 0;
 	private boolean currentPathComplete = false;
 	public static Elevator elevator;
-	public static Intake intake = new Intake(34);
 	private SuperstructurePlanner planner = new SuperstructurePlanner();
 	// public SuperStructureState mPeriodicIO = new SuperStructureState();
 	private RotatingJoint mWrist, mElbow;

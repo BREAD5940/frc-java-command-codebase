@@ -19,6 +19,21 @@ import frc.robot.commands.subsystems.superstructure.IntakeTelop;
 public class Intake extends Subsystem {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
+	private static volatile Intake instance;
+	private static Object mutex = new Object();
+
+	public static Intake getInstance() {
+		Intake result = instance;
+		if (result == null) {
+			synchronized (mutex) {
+				result = instance;
+				if (result == null)
+					instance = result = new Intake();
+			}
+		}
+		return result;
+	}
+
 	private DoubleSolenoid mSolenoid = Robot.getIntakeSolenoidInstance();
 
 	private DoubleSolenoid getSolenoid() {
@@ -49,9 +64,13 @@ public class Intake extends Subsystem {
 
 	float position_setpoint;
 
-	public Intake(int port) {
+	private Intake(int port) {
 		talon = new WPI_TalonSRX(port);
 		talon.configOpenloopRamp(0.15);
+	}
+
+	private Intake() {
+		this(34);
 	}
 
 	/**

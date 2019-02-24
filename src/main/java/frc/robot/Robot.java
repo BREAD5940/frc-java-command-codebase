@@ -24,6 +24,7 @@ import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -37,22 +38,16 @@ import frc.robot.subsystems.superstructure.SuperStructure;
 public class Robot extends TimedRobot {
 	public static SendableChooser<AutoMotion.GoalHeight> mGh;
 	public static OI m_oi;
-	// public static Intake intake = new Intake();
-	// public static Elevator elevator = new Elevator();
+	public static Intake intake = Intake.getInstance();
 	public static DriveTrain drivetrain = DriveTrain.getInstance();
 	public static SuperStructure superstructure = SuperStructure.getInstance();
-	// public static VisionProcessor visionProcessor = new VisionProcessor();
 	public static LimeLight limelight = new LimeLight();
-	// public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
 	public static DoubleSolenoid shifterDoubleSolenoid;
 	public static DoubleSolenoid intakeDoubleSolenoid;
 	public static DoubleSolenoid elevatorShifterDoubleSolenoid;
 	public static AutoMotion m_auto;
 	SendableChooser<Command> m_chooser = new SendableChooser<Command>();
 	public static Compressor compressor = new Compressor(9);
-	// public static Odometer odometry_;
-	// public static DifferentialUltrasonicSensor differentialUltrasonicSensor = DifferentialUltrasonicSensor.getInstance();
-	// private Logger logger;
 
 	public static boolean intakeOpen = false; // TODO I'm aware this shouldn't go here, I'll rewrite the intake subsystem
 												// later
