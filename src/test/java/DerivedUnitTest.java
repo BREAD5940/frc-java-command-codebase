@@ -1,9 +1,12 @@
 import static org.junit.Assert.assertEquals;
 
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.junit.jupiter.api.Test;
 
 import frc.robot.lib.Logger;
@@ -22,9 +25,15 @@ public class DerivedUnitTest {
 	}
 
 	@Test
-	public void meme() {
-		Length kStart = LengthKt.getInch(4);
-		System.out.println("Start: " + kStart.toString());
+	public void testDriveDistancePoseOffset() {
+		var mCurrentPose = new Pose2d(new Translation2d(), Rotation2dKt.getDegree(45));
+		var distance = LengthKt.getFeet(Math.sqrt(2));
+		var mDelta = new Pose2d(new Translation2d(distance, mCurrentPose.getRotation()), mCurrentPose.getRotation());
+		System.out.println("starting pose: " + mCurrentPose.getTranslation().getX().getFeet() + "," + mCurrentPose.getTranslation().getY().getFeet());
+		System.out.println("ending pose: " + mDelta.getTranslation().getX().getFeet() + "," + mDelta.getTranslation().getY().getFeet());
+
+		var expected = new Translation2d(LengthKt.getFeet(1), LengthKt.getFeet(1));
+		assertEquals(expected, mDelta.getTranslation());
 	}
 
 }
