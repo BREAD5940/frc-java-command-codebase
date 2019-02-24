@@ -26,8 +26,42 @@ public class PIDSettings {
 		mode = mode_;
 	}
 
+	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double mmVel, double mmAccel, double minOutput_, double maxOutput_, double iZone_, double maxIAccum_, FeedbackMode mode_) {
+		kp = kp_;
+		ki = ki_;
+		kd = kd_;
+		kf = kf_;
+		minOutput = minOutput_;
+		maxOutput = maxOutput_;
+		iZone = iZone_;
+		maxIAccum = maxIAccum_;
+		mode = mode_;
+		motionMagicAccel = mmAccel;
+		motionMagicCruiseVelocity = mmVel;
+	}
+
+	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double mmVel, double mmAccel, FeedbackMode mode_) {
+		kp = kp_;
+		ki = ki_;
+		kd = kd_;
+		kf = kf_;
+		motionMagicAccel = mmAccel;
+		motionMagicCruiseVelocity = mmVel;
+		mode = mode_;
+	}
+
+	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double mmVel, double mmAccel) {
+		kp = kp_;
+		ki = ki_;
+		kd = kd_;
+		kf = kf_;
+		motionMagicAccel = mmAccel;
+		motionMagicCruiseVelocity = mmVel;
+	}
+
 	public FeedbackMode mode;
 	public double kp, ki, kd, kf, minOutput, maxOutput, maxIAccum;
+	public double motionMagicCruiseVelocity, motionMagicAccel;
 	public double iZone;
 	public FeedForwardMode feedForwardMode;
 	public FeedForwardBehavior feedForwardBehavior;

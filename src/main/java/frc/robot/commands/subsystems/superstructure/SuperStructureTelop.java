@@ -21,8 +21,7 @@ import frc.robot.subsystems.superstructure.SuperStructure;
 public class SuperStructureTelop extends Command {
 	private OI mOI = Robot.m_oi;
 
-	RoundRotation2d mLastWrist = SuperStructure.getInstance().getWrist().getRotation();
-	RoundRotation2d mLastElbow = SuperStructure.getInstance().getElbow().getRotation();
+	SuperStructureState mCachedState;
 
 	/** Run theSuperStructure.getInstance()(elevator for now) during telop using an xbox
 	  * joystick. 
@@ -36,8 +35,7 @@ public class SuperStructureTelop extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		mLastWrist = SuperStructure.getInstance().getWrist().getRotation();
-		mLastElbow = SuperStructure.getInstance().getElbow().getRotation();
+		mCachedState = SuperStructure.getInstance().updateState();
 	}
 
 	boolean firstRun = false;
@@ -45,61 +43,39 @@ public class SuperStructureTelop extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		SuperStructure.getInstance().updateState();
-		
-		// elevator stuff
-		Length newE = SuperStructure.getInstance().getLastReqElevatorHeight();
-		boolean move = false;
-		ElevatorState newReqE;
-		Length deltaE = LengthKt.getInch(Util.deadband(Robot.m_oi.getElevatorAxis() * 10 * Math.abs(Robot.m_oi.getElevatorAxis()), 0.08));
-		if (Math.abs(Robot.m_oi.getElevatorAxis()) > 0.08) { // only move if asked
-			firstRun = true;
-			Length currentE = SuperStructure.getInstance().getLastReqElevatorHeight();
-			newE = currentE.plus(deltaE);
-			newReqE = new ElevatorState(newE);
-			move = true;
-			// SuperStructure.getInstance().moveSuperstructureElevator(new_s);
+		SuperStructureState mCurrentState = SuperStructure.getInstance().updateState();
+		var mNewState = new SuperStructureState();
+		var mElevatorPower = Robot.m_oi.getElevatorAxis();
+		var mWristPower = Robot.m_oi.getWristAxis();
+		var mElbowPower = Robot.m_oi.getElbowAxis();
+		var kDeadband = 0.05d;
 
+		// Figure out of the operator is commanding an elevator move. If so, increment the new state and cache the current state - if not, stay at the cached state.
+		if(Math.abs(mElevatorPower) > kDeadband) {
+			mNewState.elevator = new ElevatorState(mCurrentState.getElevatorHeight().plus(LengthKt.getInch(mElevatorPower * 5)));
+			mCachedState.elevator = mNewState.elevator;
 		} else {
-			if (firstRun == true) {
-				newE = SuperStructure.getInstance().getLastReqElevatorHeight();
-				firstRun = false;
-				move = true;
-			}
-		}
-		if (move) {
-			double volts = Elevator.getVoltage(new SuperStructureState(new ElevatorState(newE), new RotatingArmState(), new RotatingArmState()));
-			SuperStructure.getInstance().getElevator().getMaster().set(ControlMode.Position, newE, DemandType.ArbitraryFeedForward, volts);
+			mNewState.elevator = mCachedState.elevator;
 		}
 
-		// move the whole darn thing
-		// SuperStructure.getInstance().moveSuperstructureCombo(newReqE,SuperStructure.getInstance().getCurrentState().getElbow(), newReqW);
-		// Logger.log("last wrist" + mLastWrist.getDegree() + " | current pos: " + SuperStructure.getInstance().getWrist().getDegrees());
-		// Logger.log("last elbow" + mLastElbow.getDegree() + " | current pos: " + SuperStructure.getInstance().getElbow().getDegrees());
-
-		if (Math.abs(mOI.getWristAxis()) > 0.07) {
-			SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getWristAxis(), 0.75));
-			mLastWrist = SuperStructure.getInstance().getWrist().getPosition();
+		// Figure out of the operator is commanding a wrist move. If so, increment the new state and cache the current state - if not, stay at the cached state.
+		if(Math.abs(mWristPower) > kDeadband) {
+			mNewState.jointAngles.wristAngle = new RotatingArmState(mCurrentState.getWrist().angle.plus(RoundRotation2d.getDegree(mWristPower * 15)));
+			// System.out.println("new wrist angle: " + mNewState.jointAngles.wristAngle.angle.getDegree() + "old wrist angle: " + mCurrentState.getWrist().angle.getDegree());
+			mCachedState.jointAngles.wristAngle = mNewState.jointAngles.wristAngle;
 		} else {
-			SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mLastWrist);
+			mNewState.jointAngles.wristAngle = mCachedState.jointAngles.wristAngle;
 		}
 
-		if (Math.abs(mOI.getElbowAxis()) > 0.07) {
-			SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.PercentOutput, Util.limit(Robot.m_oi.getElbowAxis() * 1, 0.75));
-			mLastElbow = SuperStructure.getInstance().getElbow().getPosition();
+		// Figure out of the operator is commanding a elbow move. If so, increment the new state and cache the current state - if not, stay at the cached state.
+		if(Math.abs(mElbowPower) > kDeadband) {
+			mNewState.jointAngles.elbowAngle = new RotatingArmState(mCurrentState.getElbow().angle.plus(RoundRotation2d.getDegree(mElbowPower * 5)));
+			mCachedState.jointAngles.elbowAngle = mNewState.jointAngles.elbowAngle;
 		} else {
-			SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mLastElbow);
+			mNewState.jointAngles.elbowAngle = mCachedState.jointAngles.elbowAngle;
 		}
 
-		SmartDashboard.putNumber("Elbow current", SuperStructure.getInstance().getElbow().getMaster().getOutputCurrent());
-		SmartDashboard.putNumber("Wrist current", SuperStructure.getInstance().getWrist().getMaster().getOutputCurrent());
-		SmartDashboard.putNumber("Elevator current", SuperStructure.getInstance().getElevator().getMaster().getOutputCurrent());
-
-		// double elbowDelta = Robot.m_oi.getElbowAxis();
-		// Rotation2d newElbow = SuperStructure.getInstance().mReqState.getWrist().angle.plus(Rotation2dKt.getDegree(elbowDelta * 10));
-		// SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, newElbow);
-
-		// Logger.log("wrist percent output " + SuperStructure.getInstance().getWrist().getMaster().getMotorOutputPercent() + "wrist error raw: " + SuperStructure.getInstance().getWrist().getMaster().getClosedLoopError() + "new wrist setpoint: " + mLastWrist.getDegree());
+		SuperStructure.getInstance().move(mNewState);
 
 	}
 

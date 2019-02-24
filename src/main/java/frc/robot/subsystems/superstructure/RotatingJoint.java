@@ -129,6 +129,11 @@ public class RotatingJoint /*extends Subsystem*/ {
 		getMaster().set(ControlMode.Position, reqAngle);
 	}
 
+	public void requestAngle(ControlMode mode, RoundRotation2d reqAngle) {
+		reqAngle = Util.limit(reqAngle, kMinAngle, kMaxAngle);
+		getMaster().set(mode, reqAngle);
+	}
+
 	/**
 	 * Set the master talon to an anggle and arbitrary feed forward thorttle %
 	 * @param reqAngle to to to

@@ -1,5 +1,7 @@
 package frc.robot.commands.subsystems.superstructure;
 
+import org.ghrobotics.lib.mathematics.units.Length;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.lib.Logger;
 import frc.robot.states.ElevatorState;
@@ -19,6 +21,10 @@ public class SuperstructureGoToState extends Command {
 
 	public SuperstructureGoToState(ElevatorState eState) {
 		this(new SuperStructureState(eState, SuperStructure.getInstance().updateState().getAngle()));
+	}
+
+	public SuperstructureGoToState(Length eState, IntakeAngle aState) {
+		this(new SuperStructureState(new ElevatorState(eState), aState));
 	}
 
 	public SuperstructureGoToState(IntakeAngle aState) {

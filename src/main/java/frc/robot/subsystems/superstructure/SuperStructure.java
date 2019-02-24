@@ -9,6 +9,7 @@ import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.team254.lib.physics.DCMotorTransmission;
@@ -42,7 +43,7 @@ public class SuperStructure extends Subsystem {
 
 	private static SuperStructure instance_;
 	private static double currentDTVelocity; //in ft/sec
-	public static Length currentSetHeight, lastSH = LengthKt.getInch(70), lastLastSH = LengthKt.getInch(70);
+	public static Length currentSetHeight, lastSH = LengthKt.getInch(0), lastLastSH = LengthKt.getInch(0);
 	public SuperStructureState mReqState = new SuperStructureState();
 	public SuperStructureState lastState = new SuperStructureState();
 	private CommandGroup mCurrentCommandGroup;
@@ -123,6 +124,7 @@ public class SuperStructure extends Subsystem {
 		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(35.98)));
 		public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(148.35)), new RotatingArmState(Rotation2dKt.getDegree(-96.46)));
 		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(87.86 - 90)));
+		public static final IntakeAngle STOWED = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(90)));
 		public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(148.35)), new RotatingArmState(Rotation2dKt.getDegree(-48.04 - 90)));
 
 		public static final ArrayList<IntakeAngle> presets = new ArrayList<IntakeAngle>(Arrays.asList(CARGO_GRAB, CARGO_DOWN,
@@ -203,17 +205,15 @@ public class SuperStructure extends Subsystem {
 	}
 
 	public SuperStructureState updateState() {
-		// ElevatorState mCurrent = mCurrentState.elevator;
-		getElevator().getCurrentState();
-		getWrist().getCurrentState();
-		getElbow().getCurrentState();
+		var mNewWrist = getWrist().getCurrentState();
+		var mNewElbow = getElbow().getCurrentState();
+		var mNewElevator = getElevator().getCurrentState();
+		var mNewIntakeAngles = new IntakeAngle(mNewElbow, mNewWrist);
 
-		this.mCurrentState = new SuperStructureState(
-				elevator.getCurrentState(),
-				// mWrist.getCurrentState(),
-				// mElbow.getCurrentState());
-				mWrist.getCurrentState(),
-				mElbow.getCurrentState());
+		this.mCurrentState = new SuperStructureState(mNewElevator, mNewIntakeAngles);
+
+		System.out.println("current state per the wrist: " + getWrist().getCurrentState() + "new wrist per the updated state: " + mCurrentState.jointAngles.wristAngle.angle.getDegree()); 
+
 		return mCurrentState;
 	}
 
@@ -246,7 +246,7 @@ public class SuperStructure extends Subsystem {
 		return kElbowTransmission;
 	}
 
-	public Elevator getElevator() {
+	public static Elevator getElevator() {
 		if (elevator == null)
 			elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
 					new InvertSettings(false, InvertType.FollowMaster, InvertType.OpposeMaster, InvertType.OpposeMaster));
@@ -271,8 +271,8 @@ public class SuperStructure extends Subsystem {
 		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
 		// SuperStructureState stateSetpoint = plan(requState);
 
-		// getWrist().requestAngle(stateSetpoint.getWrist().angle); // div by 12 because it expects a throttle
-		// getElbow().requestAngle(stateSetpoint.getElbow().angle); // div by 12 because it expects a throttle
+		getWrist().requestAngle(ControlMode.Position, requState.getWrist().angle);
+		// getElbow().requestAngle(stateSetpoint.getElbow().angle);
 		// getElevator().setPositionArbitraryFeedForward(stateSetpoint.getElevator().height, elevatorPercentVbusGravity / 12d);
 		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
 

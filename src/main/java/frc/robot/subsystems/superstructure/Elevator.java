@@ -112,8 +112,8 @@ public class Elevator /*extends Subsystem*/ {
 
 		// Quadrature Encoder of current
 		// Talon
-		mMaster.configPeakOutputForward(+1.0, 0);
-		mMaster.configPeakOutputReverse(-1.0, 0);
+		mMaster.configPeakOutputForward(+0.3, 0);
+		mMaster.configPeakOutputReverse(-0.3, 0);
 
 		mMaster.setSelectedSensorPosition(0);
 

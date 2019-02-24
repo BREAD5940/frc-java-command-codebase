@@ -6,16 +6,20 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
+import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
+import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
  * Operator Input not Out-In
@@ -87,8 +91,8 @@ public class OI {
 			DriveTrain.getInstance().getCurrentCommand().cancel();
 
 		// test1Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.LOW));
-		test1Button.whenPressed(new FollowVisionTarget(1, 10));
-		test2Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.MIDDLE));
+		test1Button.whenPressed(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		test2Button.whenPressed(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.STOWED));
 		test3Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.HIGH));
 		test4Button.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW));
 
