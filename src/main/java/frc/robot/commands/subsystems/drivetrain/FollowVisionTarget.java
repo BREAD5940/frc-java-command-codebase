@@ -72,7 +72,7 @@ public class FollowVisionTarget extends Command {
 			forwardPID.setSetpoint(targetSpeed);
 		}
 
-		angleDeltaX = Robot.limelight.getDx();
+		angleDeltaX = Robot.limelight.getDx().getDegree();
 		// targetPercentOfFrame = Robot.limelight.getTargetArea();
 	}
 
@@ -84,7 +84,6 @@ public class FollowVisionTarget extends Command {
 			double xAxisOffset = data[1]; // x axis offset
 			double sizeData = data[3]; // percent of frame
 			turnSpeed = xAxisOffset / 16d;
-
 
 			forwardSpeed = 0;
 

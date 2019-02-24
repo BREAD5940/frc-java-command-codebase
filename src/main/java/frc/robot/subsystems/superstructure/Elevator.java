@@ -27,6 +27,7 @@ import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.lib.PIDSettings;
+import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.planners.SuperstructurePlanner;
 import frc.robot.states.ElevatorState;
@@ -225,6 +226,7 @@ public class Elevator /*extends Subsystem*/ {
 	 * Set the talon as a target angle and feedforward throttle percent
 	 */
 	public void setPositionArbitraryFeedForward(Length setpoint, double feedForwardPercent) {
+		setpoint = Util.limit(setpoint, SuperstructurePlanner.bottom, SuperstructurePlanner.top);
 		getMaster().set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
 	}
 

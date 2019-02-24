@@ -51,7 +51,7 @@ public class SuperStructure extends Subsystem {
 	private int cPathIndex = 0;
 	private boolean currentPathComplete = false;
 	public static Elevator elevator;
-	public static Intake intake = new Intake(34);
+	public static Intake intake = Intake.getInstance();
 	private SuperstructurePlanner planner = new SuperstructurePlanner();
 	// public SuperStructureState mPeriodicIO = new SuperStructureState();
 	private RotatingJoint mWrist, mElbow;
@@ -119,12 +119,12 @@ public class SuperStructure extends Subsystem {
 	}
 
 	public static class iPosition {
-		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
-		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(-47.6)));
-		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(35.98)));
+		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0.001)), new RotatingArmState(Rotation2dKt.getDegree(0)));
+		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0.001)), new RotatingArmState(Rotation2dKt.getDegree(-47.6)));
+		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0.001)), new RotatingArmState(Rotation2dKt.getDegree(35.98)));
 		public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(148.35)), new RotatingArmState(Rotation2dKt.getDegree(-96.46)));
-		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(87.86 - 90)));
-		public static final IntakeAngle STOWED = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(90)));
+		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0.001)), new RotatingArmState(Rotation2dKt.getDegree(87.86 - 90)));
+		public static final IntakeAngle STOWED = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0.001)), new RotatingArmState(Rotation2dKt.getDegree(90)));
 		public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(148.35)), new RotatingArmState(Rotation2dKt.getDegree(-48.04 - 90)));
 
 		public static final ArrayList<IntakeAngle> presets = new ArrayList<IntakeAngle>(Arrays.asList(CARGO_GRAB, CARGO_DOWN,
@@ -212,7 +212,7 @@ public class SuperStructure extends Subsystem {
 
 		this.mCurrentState = new SuperStructureState(mNewElevator, mNewIntakeAngles);
 
-		System.out.println("current state per the wrist: " + getWrist().getCurrentState() + "new wrist per the updated state: " + mCurrentState.jointAngles.wristAngle.angle.getDegree()); 
+		// System.out.println("current state per the wrist: " + getWrist().getCurrentState() + "new wrist per the updated state: " + mCurrentState.jointAngles.wristAngle.angle.getDegree()); 
 
 		return mCurrentState;
 	}
@@ -263,7 +263,7 @@ public class SuperStructure extends Subsystem {
 
 		// double wristVoltageGravity = SuperStructure.getInstance().getWTransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getWrist().velocity.getValue(), mCurrentWristTorque);
 		// double elbowVoltageGravity = SuperStructure.getInstance().getETransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getElbow().velocity.getValue(), mCurrentElbowTorque);
-		double elevatorPercentVbusGravity = getElevator().getVoltage(updateState()) / 12;//getElevator().getMaster().getBusVoltage();		
+		double elevatorPercentVbusGravity = Elevator.getVoltage(updateState()) / 12;//getElevator().getMaster().getBusVoltage();		
 
 		// if (Math.abs(mOI.getWristAxis()) > 0.07) {
 		// SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mRequState.getWrist().angle);
@@ -272,8 +272,8 @@ public class SuperStructure extends Subsystem {
 		// SuperStructureState stateSetpoint = plan(requState);
 
 		getWrist().requestAngle(ControlMode.Position, requState.getWrist().angle);
-		// getElbow().requestAngle(stateSetpoint.getElbow().angle);
-		// getElevator().setPositionArbitraryFeedForward(stateSetpoint.getElevator().height, elevatorPercentVbusGravity / 12d);
+		getElbow().requestAngle(ControlMode.Position, requState.getElbow().angle);
+		getElevator().setPositionArbitraryFeedForward(requState.getElevator().height, elevatorPercentVbusGravity);
 		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
 
 	}
