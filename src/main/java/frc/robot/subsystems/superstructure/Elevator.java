@@ -293,5 +293,4 @@ public class Elevator /*extends Subsystem*/ {
 		return VelocityKt.getInchesPerSecond(getVelocity());
 	}
 
-
 }
