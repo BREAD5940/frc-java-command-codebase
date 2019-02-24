@@ -25,6 +25,10 @@ public class SuperstructureGoToState extends Command {
 		this(new SuperStructureState(SuperStructure.getInstance().updateState().getElevator(), aState));
 	}
 
+	public SuperstructureGoToState(ElevatorState eState, IntakeAngle aState) {
+		this(new SuperStructureState(eState, aState));
+	}
+
 	public SuperstructureGoToState(SuperStructureState requState, double timeout) {
 		requires(SuperStructure.getInstance());
 		mRequState = requState;
