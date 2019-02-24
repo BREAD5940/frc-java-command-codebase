@@ -14,7 +14,7 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 public class PickupHatch extends CommandGroup {
 
 	/**
-	 * Add your docs here.
+	 * Pickup a hatch from the loading station
 	 */
 	public PickupHatch() {
 
@@ -24,6 +24,6 @@ public class PickupHatch extends CommandGroup {
 
 		addSequential(new RunIntake(-1, 0.5));
 
-		addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(.5), true));
+		addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(.5), true)); // TODO run the next spline, saves time, vs backing up
 	}
 }

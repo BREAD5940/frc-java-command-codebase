@@ -5,6 +5,7 @@ import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.TerriblePID;
 import frc.robot.lib.motion.Util;
+import frc.robot.subsystems.DriveTrain;
 
 /**
  * Follow a vision target tracked by a limelight
@@ -72,7 +73,7 @@ public class FollowVisionTarget extends Command {
 			forwardPID.setSetpoint(targetSpeed);
 		}
 
-		angleDeltaX = Robot.limelight.getDx();
+		angleDeltaX = Robot.limelight.getDx().getDegree();
 		// targetPercentOfFrame = Robot.limelight.getTargetArea();
 	}
 
