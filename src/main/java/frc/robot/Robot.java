@@ -24,7 +24,6 @@ import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.superstructure.SuperStructure;
-import io.github.oblarg.oblog.Logger;
 
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly init
@@ -162,9 +161,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Min elbow angle:", new ZeroSuperStructure("minElbow"));
 		drivetrain.zeroEncoders();
 		System.out.println("Robot init'ed and encoders zeroed!");
-
-		Logger.configureLogging(this);
-
 	}
 
 	/**
@@ -287,7 +283,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotPeriodic() {
 		drivetrain.getLocalization().update(); // TODO put me on a notifier?
-		Logger.updateEntries();
 
 		LiveDashboard.INSTANCE.setRobotX(drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
 		LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());

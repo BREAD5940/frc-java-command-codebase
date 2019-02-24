@@ -13,14 +13,14 @@ import frc.robot.Robot;
  * 
  * @author Matthew Morley
  */
-public class ArcadeDrive extends Command {
+public class DrivetrainTelop extends Command {
 
 	// System.out.println("im an arcade drive command!");
 	/**
 	 * This command runs arcade drive as the default command for the drivetrain.
 	 * This command will reserve the drivetrain.
 	 */
-	public ArcadeDrive() {
+	public DrivetrainTelop() {
 		requires(Robot.drivetrain);
 	}
 

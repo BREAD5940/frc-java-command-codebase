@@ -22,7 +22,6 @@ import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.AutoCommand;
 import frc.robot.lib.Logger;
 import frc.robot.subsystems.DriveTrain;
-import io.github.oblarg.oblog.annotations.Log;
 
 // @SuppressWarnings({"WeakerAccess", "unused"})
 public class TrajectoryTrackerCommand extends AutoCommand {
@@ -32,13 +31,9 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 	private boolean reset;
 	private TrajectoryTrackerOutput output;
 	// TODO make sure that this fabled namespace collision doesn't happen on Shuffleboard 
-	@Log
 	Length mDesiredLeft;
-	@Log
 	Length mDesiredRight;
-	@Log
 	double mCurrentLeft;
-	@Log
 	double mCurrentRight;
 
 	public TrajectoryTrackerCommand(DriveTrain driveBase, Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource) {
