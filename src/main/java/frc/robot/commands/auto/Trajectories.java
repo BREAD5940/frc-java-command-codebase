@@ -232,7 +232,7 @@ public class Trajectories {
 	 * @param maxAcceleration for the trajectory
 	 * @param reversed for if the path should be reversed (flipped)
 	 */
-	public static TimedTrajectory<Pose2dWithCurvature> generateTrajectory(List<Pose2d> waypoints,
+	private static TimedTrajectory<Pose2dWithCurvature> generateTrajectory(List<Pose2d> waypoints,
 			List<? extends TimingConstraint<Pose2dWithCurvature>> constraints_, Velocity<Length> startVelocity, Velocity<Length> endVelocity, Velocity<Length> maxVelocity, Acceleration<Length> maxAcceleration, boolean reversed, boolean optomizeSplines) {
 		return TrajectoryGeneratorKt.getDefaultTrajectoryGenerator().generateTrajectory(
 				waypoints,
