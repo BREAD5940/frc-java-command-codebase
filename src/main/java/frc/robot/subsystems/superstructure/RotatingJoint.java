@@ -224,10 +224,6 @@ public class RotatingJoint /*extends Subsystem*/ {
 			this(angle_, new AngularVelocity());
 		}
 
-		public RotatingArmState(Rotation2d angle_) {
-			this(RoundRotation2d.fromRotation2d(angle_), new AngularVelocity());
-		}
-
 		public RotatingArmState(RoundRotation2d angle_, AngularVelocity velocity_) {
 			this.angle = angle_;
 			this.velocity = velocity_;
