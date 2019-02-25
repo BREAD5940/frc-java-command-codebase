@@ -7,6 +7,7 @@ import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
+import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -28,6 +29,7 @@ public class SuperStructureTelop extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		SuperStructure.elevator.setGear(Elevator.kDefaultGear);
 		mCachedState = SuperStructure.getInstance().updateState();
 	}
 
