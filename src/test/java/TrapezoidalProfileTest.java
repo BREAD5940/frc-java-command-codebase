@@ -15,8 +15,6 @@ public class TrapezoidalProfileTest {
 
 		final Profile profile = Profile.getVelProfile(v_max, accel, dist, start_vel, end_vel);
 
-		// final pwm
-
 	}
 
 	public int toTicks(double rotations) {
