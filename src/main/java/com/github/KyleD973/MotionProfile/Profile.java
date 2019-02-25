@@ -1,3 +1,5 @@
+package com.github.kyled973.motionprofile;
+
 /**
  *
  * @author kyledematias
