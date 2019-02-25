@@ -41,7 +41,7 @@ public class SuperstructurePlanner {
 	public static final RoundRotation2d overallMinWrist = RoundRotation2d.getDegree(-180); //FIXME ^^
 
 	public static final SuperStructureState passThroughState = new SuperStructureState(new ElevatorState(crossbarBottom),
-			new RotatingArmState(RoundRotation2d.getDegree(-90)), new RotatingArmState(RoundRotation2d.getDegree(30)));
+			new RotatingArmState(RoundRotation2d.getDegree(-90)), new RotatingArmState(RoundRotation2d.getDegree(25)));
 
 	Length minSafeHeight = bottom;
 	Length maxSafeHeight = top;
