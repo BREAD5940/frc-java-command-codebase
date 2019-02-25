@@ -4,12 +4,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.auto.AutoMotion.GoalHeight;
-import frc.robot.commands.auto.AutoMotion.GoalType;
-import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.auto.routines.PassThrough;
+import frc.robot.commands.auto.routines.passthrough.PassThrough;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
+import frc.robot.commands.subsystems.superstructure.ElevatorMotionMagicTest;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.subsystems.DriveTrain;
@@ -88,10 +86,11 @@ public class OI {
 			DriveTrain.getInstance().getCurrentCommand().cancel();
 
 		// test1Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.LOW));
-		test1Button.whenPressed(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-		test2Button.whenPressed(new PassThrough());
-		test3Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.HIGH));
-		test4Button.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW));
+		test1Button.whenPressed(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)); // y button
+		test2Button.whenPressed(new PassThrough()); // a button
+		test3Button.whenPressed(new ElevatorMotionMagicTest());
+		// test4Button.whenPressed(new VisionAssistedDriving());
+		// test4Button.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW)); // b button - used now for dealy
 
 		// cargoOverButton.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.OVER));
 		// cargo1Button.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.LOW));
@@ -146,6 +145,10 @@ public class OI {
 		// open_clamp_button.whenPressed(new OpenClamp());
 		// close_clamp_button.whenPressed(new CloseClamp());
 		// open_clamp_button.whenPressed(new PurePursuit());
+	}
+
+	public boolean getWaiterButton() {
+		return test4Button.get();
 	}
 
 	public Joystick getPrimary() {
