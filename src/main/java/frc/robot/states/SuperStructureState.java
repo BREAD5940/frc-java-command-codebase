@@ -1,5 +1,7 @@
 package frc.robot.states;
 
+import java.util.ArrayList;
+
 import org.ghrobotics.lib.mathematics.units.Length;
 
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
@@ -56,6 +58,10 @@ public class SuperStructureState implements Loggable {
 		return jointAngles.getElbow().angle;
 	}
 
+	public RoundRotation2d getWristAngle() {
+		return jointAngles.getWrist().angle;
+	}
+
 	public void setElbowAngle(RoundRotation2d newAngle) {
 		jointAngles.getElbow().setAngle(newAngle);
 	}
@@ -107,8 +113,8 @@ public class SuperStructureState implements Loggable {
 
 	@Override
 	public String toCSV() {
-		return Math.round(elevator.getHeight().getInch()*10)/10 + "," + Math.round(jointAngles.getElbow().angle.getDegree() * 10)/10 + ","
-				+ Math.round(jointAngles.getWrist().angle.getDegree()*10)/10 + "," + piece.name();
+		return Math.round(elevator.getHeight().getInch() * 100) / 100 + "," + Math.round(jointAngles.getElbow().angle.getDegree() * 100) / 100 + ","
+				+ Math.round(jointAngles.getWrist().angle.getDegree() * 100) / 100 + "," + piece.name();
 	}
 
 }
