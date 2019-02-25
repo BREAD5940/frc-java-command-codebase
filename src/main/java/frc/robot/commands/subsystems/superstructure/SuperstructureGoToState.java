@@ -12,13 +12,13 @@ import frc.robot.subsystems.superstructure.SuperStructure;
 public class SuperstructureGoToState extends Command {
 	SuperStructureState mRequState;
 	double kWristSetpoint, kElbowSetpoint;
-	private double kDefaultTimeout = 5;
+	private static final double kDefaultTimeout = 4;
 	private boolean hasSetState = false;
+	private final RoundRotation2d wristSetpoint, elbowSetpoint;
+	private final Length elevatorSetpoint;
 
 	public SuperstructureGoToState(SuperStructureState requState) {
-		requires(SuperStructure.getInstance());
-		mRequState = requState;
-		setTimeout(kDefaultTimeout);
+		this(requState, kDefaultTimeout);
 	}
 
 	public SuperstructureGoToState(ElevatorState eState) {
@@ -41,14 +41,18 @@ public class SuperstructureGoToState extends Command {
 		requires(SuperStructure.getInstance());
 		mRequState = requState;
 		setTimeout(timeout);
+
+		this.elevatorSetpoint = requState.getElevatorHeight();
+		this.wristSetpoint = requState.getWristAngle();
+		this.elbowSetpoint = requState.getElbowAngle();
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
 		System.out.println("==============================================================");
-		System.out.println("Requested move loc: " + mRequState.getCSVHeader());
-		System.out.println(mRequState.toCSV());
+		System.out.println("Requested move loc: ");
+		System.out.println(String.format("Elevator (%s) elbow (%s) wrist (%s)", elevatorSetpoint.getInch(), elbowSetpoint.getDegree(), wristSetpoint.getDegree()));
 		System.out.println("==============================================================");
 		SuperStructure.getInstance().move(mRequState);
 		hasSetState = true;
@@ -66,7 +70,8 @@ public class SuperstructureGoToState extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		if(!hasSetState) execute();
+		if (!hasSetState)
+			execute();
 		return (checkElbow() && checkWrist() && checkElevator()) || isTimedOut();
 	}
 
@@ -74,9 +79,9 @@ public class SuperstructureGoToState extends Command {
 		RoundRotation2d mCurrent = SuperStructure.getInstance().getCurrentState().getElbow().angle;
 		// RoundRotation2d mTarget = mRequState.getWrist().angle;
 		double kTolerence = 5; // degrees
-		var mError = SuperStructure.getInstance().getElbow().getMaster().getRotation2dError();
-		boolean isWithin = (Math.abs(mError.getDegree()) < kTolerence);
-		System.out.printf("ELBOW: Current %s Target %s Error %s within Tolerance %s", mCurrent.getDegree(), kWristSetpoint, mError.getDegree(), isWithin);
+		var mError = Math.abs(elbowSetpoint.getDegree() - mCurrent.getDegree());
+		boolean isWithin = (Math.abs(mError) < kTolerence);
+		System.out.printf("ELBOW: Current %s Target %s Error %s within Tolerance %s", mCurrent.getDegree(), kWristSetpoint, mError, isWithin);
 		System.out.println("");
 		return isWithin;
 	}
@@ -85,9 +90,9 @@ public class SuperstructureGoToState extends Command {
 		RoundRotation2d mCurrent = SuperStructure.getInstance().getCurrentState().getWrist().angle;
 		// RoundRotation2d mTarget = mRequState.getWrist().angle;
 		double kTolerence = 5; // degrees
-		var mError = SuperStructure.getInstance().getElbow().getMaster().getRotation2dError();
-		boolean isWithin = (Math.abs(mError.getDegree()) < kTolerence);
-		System.out.printf("WRIST: Current %s Target %s Error %s within Tolerance %s", mCurrent.getDegree(), kWristSetpoint, mError.getDegree(), isWithin);
+		var mError = Math.abs(wristSetpoint.getDegree() - mCurrent.getDegree());
+		boolean isWithin = (Math.abs(mError) < kTolerence);
+		System.out.printf("WRIST: Current %s Target %s Error %s within Tolerance %s", mCurrent.getDegree(), kWristSetpoint, mError, isWithin);
 		System.out.println("");
 		return isWithin;
 	}
