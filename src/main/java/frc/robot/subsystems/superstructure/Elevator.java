@@ -130,7 +130,7 @@ public class Elevator /*extends Subsystem*/ {
 		setClosedLoopGains(kHighGearPIDSlot, HIGH_GEAR_PID);
 
 		NativeUnit maxHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.top.times(0.95));
-		getMaster().configForwardSoftLimitThreshold((int)maxHeightRaw.getValue());
+		getMaster().configForwardSoftLimitThreshold((int) maxHeightRaw.getValue());
 		getMaster().setSoftLimitForwardEnabled(true);
 		NativeUnit minHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.bottom);
 		getMaster().configReverseSoftLimitThreshold(1);

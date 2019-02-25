@@ -9,7 +9,6 @@ package frc.robot.commands.auto.routines.passthrough;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;

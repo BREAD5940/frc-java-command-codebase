@@ -1,7 +1,5 @@
 package frc.robot.states;
 
-import java.util.ArrayList;
-
 import org.ghrobotics.lib.mathematics.units.Length;
 
 import frc.robot.commands.auto.AutoMotion.HeldPiece;

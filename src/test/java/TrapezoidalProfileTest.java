@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.Test;
 
 import frc.kyled973.motionprofile.Profile;
-import frc.kyled973.motionprofile.TrapProfile;
 
 public class TrapezoidalProfileTest {
 
@@ -16,7 +15,7 @@ public class TrapezoidalProfileTest {
 
 		final Profile profile = Profile.getVelProfile(v_max, accel, dist, start_vel, end_vel);
 
-
+		// final pwm
 
 	}
 

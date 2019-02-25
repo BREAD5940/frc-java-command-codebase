@@ -14,7 +14,7 @@
 //         }
 //         assert Math.abs((Math.abs(totalDist) - Math.abs(profileObj.getDist()))) <= 1.0: "Distance error"; 
 //     }
-    
+
 //     public static void exceedsMaxVelocity(Profile profileObj){
 //         // Velocity constraints test
 //         for(double t = 0.0; t < profileObj.getFinalTime() - 0.0005; t+= 0.0005){
@@ -27,14 +27,14 @@
 //             //System.out.println(Math.abs(profileObj.getVelocityAtTime(t)));
 //         }
 //     }
-    
+
 //     public static void exceedsAccel(Profile profileObj){
 //         for(double t = 0.0;t < profileObj.getFinalTime() - 0.01; t+= 0.01){
 //             assert Math.abs((profileObj.getVelocityAtTime(t + 0.01) - profileObj.getVelocityAtTime(t)) / 0.01) 
 //                        < profileObj.getAccel() + 0.1: "Exceeds Accel";
 //         }
 //     }
-    
+
 //     public static void checkExtremes(Profile profileObj){
 //         if(profileObj.getDist() >= 0.0){
 //             assert profileObj.getVelocityAtTime(0.0) == profileObj.getStartVel() 
@@ -45,7 +45,7 @@
 //                     && profileObj.getVelocityAtTime(profileObj.getFinalTime()) == -profileObj.getEndVel(): "Initial and Final Velocities not matching";
 //         }
 //     }
-    
+
 //     public static void main (String[] args) throws java.lang.Exception
 // 	{
 //             for(double v_max = -5.0; v_max <= 10.0; v_max++){
