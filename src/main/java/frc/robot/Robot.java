@@ -1,19 +1,16 @@
 package frc.robot;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -191,6 +188,39 @@ public class Robot extends TimedRobot {
 		drivetrain.zeroEncoders();
 		System.out.println("Robot init'ed and encoders zeroed!");
 
+		Notifier mResetNotifier = new Notifier(() -> {
+
+			boolean reset = false;
+			if (superstructure.getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
+				RoundRotation2d new_ = RoundRotation2d.getDegree(15);
+				superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(15));
+				System.out.println("elbow fwd triggered! new pos: " + new_.getDegree());
+				reset = true;
+			}
+			if (superstructure.getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
+				System.out.println("wrist fwd triggered!");
+				superstructure.getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(90));
+				reset = true;
+			}
+			if (superstructure.getElbow().getMaster().getSensorCollection().isRevLimitSwitchClosed()) {
+				System.out.println("elbow rev triggered!");
+				superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(-180 - 15));
+				reset = true;
+			}
+			if (superstructure.getWrist().getMaster().getSensorCollection().isRevLimitSwitchClosed()) {
+				System.out.println("wrist rev triggered!");
+				superstructure.getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(-90));
+				reset = true;
+			}
+			if (reset) {
+				superstructure.getCurrentCommand().cancel();
+				superstructure.getDefaultCommand().start();
+			}
+
+		});
+
+		mResetNotifier.startPeriodic(0.5);
+
 	}
 
 	/**
@@ -215,32 +245,6 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledPeriodic() {
-		boolean reset = false;
-		if (superstructure.getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
-			RoundRotation2d new_ = RoundRotation2d.getDegree(15);
-			superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(15));
-			System.out.println("elbow fwd triggered! new pos: " + new_.getDegree());
-			reset = true;
-		}
-		if (superstructure.getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
-			System.out.println("wrist fwd triggered!");
-			superstructure.getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(90));
-			reset = true;
-		}
-		if (superstructure.getElbow().getMaster().getSensorCollection().isRevLimitSwitchClosed()) {
-			System.out.println("elbow rev triggered!");
-			superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(-180 - 15));
-			reset = true;
-		}
-		if (superstructure.getWrist().getMaster().getSensorCollection().isRevLimitSwitchClosed()) {
-			System.out.println("wrist rev triggered!");
-			superstructure.getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(-90));
-			reset = true;
-		}
-		if (reset) {
-			superstructure.getCurrentCommand().cancel();
-			superstructure.getDefaultCommand().start();
-		}
 
 		Scheduler.getInstance().run();
 	}
@@ -315,6 +319,8 @@ public class Robot extends TimedRobot {
 		drivetrain.getLocalization().update(); // TODO put me on a notifier?
 		// long now = System.currentTimeMillis();
 
+		SmartDashboard.putString(SuperStructure.getInstance().getCurrentState().getCSVHeader(), SuperStructure.getInstance().getCurrentState().toCSV());
+
 		SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
 		SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
 
@@ -322,27 +328,27 @@ public class Robot extends TimedRobot {
 		LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
 		LiveDashboard.INSTANCE.setRobotHeading(drivetrain.getLocalization().getRobotPosition().getRotation().getRadian());
 
-		SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getFeetPerSecond());
-		SmartDashboard.putNumber("Left talon error", drivetrain.getLeft().getClosedLoopError().getFeet());
-		SmartDashboard.putNumber("Right talon speed", drivetrain.getRight().getFeetPerSecond());
-		SmartDashboard.putNumber("Right talon error", drivetrain.getRight().getClosedLoopError().getFeet());
+		// SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getFeetPerSecond());
+		// SmartDashboard.putNumber("Left talon error", drivetrain.getLeft().getClosedLoopError().getFeet());
+		// SmartDashboard.putNumber("Right talon speed", drivetrain.getRight().getFeetPerSecond());
+		// SmartDashboard.putNumber("Right talon error", drivetrain.getRight().getClosedLoopError().getFeet());
 
-		List<Double> feetPerSecond = Arrays.asList(
-				VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()),
-				VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()));
-		List<Double> feetPerSecondPerSecond = Arrays.asList(
-				(VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()) - drivetrain.lastFeetPerSecond.get(0)) / 0.02d,
-				(VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()) - drivetrain.lastFeetPerSecond.get(0)) / 0.02d);
-		SmartDashboard.putNumber("Left drivetrian feet per second", feetPerSecond.get(0));
-		SmartDashboard.putNumber("Right drivetrian feet per second", feetPerSecond.get(1));
+		// List<Double> feetPerSecond = Arrays.asList(
+		// 		VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()),
+		// 		VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()));
+		// List<Double> feetPerSecondPerSecond = Arrays.asList(
+		// 		(VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()) - drivetrain.lastFeetPerSecond.get(0)) / 0.02d,
+		// 		(VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()) - drivetrain.lastFeetPerSecond.get(0)) / 0.02d);
+		// SmartDashboard.putNumber("Left drivetrian feet per second", feetPerSecond.get(0));
+		// SmartDashboard.putNumber("Right drivetrian feet per second", feetPerSecond.get(1));
 
-		SmartDashboard.putNumber("7 feet per second is", drivetrain.getLeft().getModel().toNativeUnitPosition(LengthKt.getFeet(7)).getValue());
+		// SmartDashboard.putNumber("7 feet per second is", drivetrain.getLeft().getModel().toNativeUnitPosition(LengthKt.getFeet(7)).getValue());
 
 		SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
 
 		SmartDashboard.putData(drivetrain);
-		SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getMaster().getSensorPosition().getDegree());
-		SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
+		// SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getMaster().getSensorPosition().getDegree());
+		// SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
 		SmartDashboard.putData(superstructure);
 
 		// Limelight stuff

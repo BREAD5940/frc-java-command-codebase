@@ -20,6 +20,7 @@ import frc.robot.Constants;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.subsystems.superstructure.SuperStructureTelop;
+import frc.robot.lib.Loggable;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.PIDSettings.FeedbackMode;
 import frc.robot.lib.obj.InvertSettings;
@@ -39,7 +40,7 @@ import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
  * 
  * @author Jocelyn McHugo
  */
-public class SuperStructure extends Subsystem {
+public class SuperStructure extends Subsystem implements Loggable {
 
 	private static SuperStructure instance_;
 	private static double currentDTVelocity; //in ft/sec
@@ -58,9 +59,9 @@ public class SuperStructure extends Subsystem {
 	private DCMotorTransmission kElbowTransmission, kWristTransmission;
 	public static final Mass kHatchMass = MassKt.getLb(2.4); // FIXME check mass
 	public static final Mass kCargoMass = MassKt.getLb(1); // FIXME check mass
-	public static final RoundRotation2d kWristMin = RoundRotation2d.getDegree(-45); // relative
+	public static final RoundRotation2d kWristMin = RoundRotation2d.getDegree(-180); // relative
 	public static final RoundRotation2d kWristMax = RoundRotation2d.getDegree(90); // relative
-	public static final RoundRotation2d kElbowMin = RoundRotation2d.getDegree(-180); // absolute
+	public static final RoundRotation2d kElbowMin = RoundRotation2d.getDegree(-200); // absolute
 	public static final RoundRotation2d kElbowMax = RoundRotation2d.getDegree(15); // absolute
 
 	public static synchronized SuperStructure getInstance() {
@@ -349,5 +350,15 @@ public class SuperStructure extends Subsystem {
 		double torqueWrstComponent = (wristTotalMass.getKilogram() * getElbow().kArmLength.getMeter() * 2 /* double the distance from the joint to COM*/ * 9.8);
 
 		return torqueGravity + torqueAccel + torqueWrstComponent + wristTorque;
+	}
+
+	@Override
+	public String getCSVHeader() {
+		return "mCurrentState";
+	}
+
+	@Override
+	public String toCSV() {
+		return getCurrentState().toCSV();
 	}
 }

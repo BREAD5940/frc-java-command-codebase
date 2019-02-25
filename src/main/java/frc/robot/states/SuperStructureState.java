@@ -107,8 +107,8 @@ public class SuperStructureState implements Loggable {
 
 	@Override
 	public String toCSV() {
-		return elevator.getHeight().getInch() + "," + jointAngles.getElbow().angle.getDegree() + ","
-				+ jointAngles.getWrist().angle.getDegree() + "," + piece.name();
+		return Math.round(elevator.getHeight().getInch()*10)/10 + "," + Math.round(jointAngles.getElbow().angle.getDegree() * 10)/10 + ","
+				+ Math.round(jointAngles.getWrist().angle.getDegree()*10)/10 + "," + piece.name();
 	}
 
 }

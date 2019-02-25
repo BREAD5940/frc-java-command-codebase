@@ -3,7 +3,6 @@ package frc.robot.commands.subsystems.superstructure;
 import org.ghrobotics.lib.mathematics.units.Length;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
@@ -12,7 +11,9 @@ import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class SuperstructureGoToState extends Command {
 	SuperStructureState mRequState;
+	double kWristSetpoint, kElbowSetpoint;
 	private double kDefaultTimeout = 5;
+	private boolean hasSetState = false;
 
 	public SuperstructureGoToState(SuperStructureState requState) {
 		requires(SuperStructure.getInstance());
@@ -46,62 +47,67 @@ public class SuperstructureGoToState extends Command {
 	@Override
 	protected void initialize() {
 		System.out.println("==============================================================");
-		System.out.println("requested elbow angle: " + mRequState.getElbowAngle().getDegree());
-		System.out.println("current elbow angle: " + SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree());
+		System.out.println("Requested move loc: " + mRequState.getCSVHeader());
+		System.out.println(mRequState.toCSV());
 		System.out.println("==============================================================");
-		SuperStructure.getInstance().moveSuperstructureCombo(mRequState);
+		SuperStructure.getInstance().move(mRequState);
+		hasSetState = true;
+		// SuperStructure.getInstance().moveSuperstructureCombo(mRequState);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
 		SuperStructure.getInstance().move(mRequState);
+		hasSetState = true;
 		// System.out.println("target state: " + mRequState.toCSV());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
+		if(!hasSetState) execute();
 		return (checkElbow() && checkWrist() && checkElevator()) || isTimedOut();
 	}
 
 	private boolean checkElbow() {
-		RoundRotation2d mCurrent = SuperStructure.getInstance().getCurrentState().getElbowAngle();
-		RoundRotation2d mTarget = mRequState.getElbowAngle();
+		RoundRotation2d mCurrent = SuperStructure.getInstance().getCurrentState().getElbow().angle;
+		// RoundRotation2d mTarget = mRequState.getWrist().angle;
 		double kTolerence = 5; // degrees
-		double mError = mTarget.minus(mCurrent).getDegree();
-		boolean isWithin = (Math.abs(mError) < kTolerence);
-		System.out.printf("ELBOW: Current %s Target %s Error %s within Tolerance %s", mCurrent.getDegree(), mTarget.getDegree(), mError, isWithin);
-		System.out.println(" ");
+		var mError = SuperStructure.getInstance().getElbow().getMaster().getRotation2dError();
+		boolean isWithin = (Math.abs(mError.getDegree()) < kTolerence);
+		System.out.printf("ELBOW: Current %s Target %s Error %s within Tolerance %s", mCurrent.getDegree(), kWristSetpoint, mError.getDegree(), isWithin);
+		System.out.println("");
 		return isWithin;
 	}
 
 	private boolean checkWrist() {
 		RoundRotation2d mCurrent = SuperStructure.getInstance().getCurrentState().getWrist().angle;
-		RoundRotation2d mTarget = mRequState.getWrist().angle;
+		// RoundRotation2d mTarget = mRequState.getWrist().angle;
 		double kTolerence = 5; // degrees
-		double mError = mTarget.minus(mCurrent).getDegree();
-		boolean isWithin = (Math.abs(mError) < kTolerence);
-		System.out.printf("WRIST: Current %s Target %s Error %s within Tolerance %s", mCurrent.getDegree(), mTarget.getDegree(), mError, isWithin);
-		System.out.println("------------------------------");
+		var mError = SuperStructure.getInstance().getElbow().getMaster().getRotation2dError();
+		boolean isWithin = (Math.abs(mError.getDegree()) < kTolerence);
+		System.out.printf("WRIST: Current %s Target %s Error %s within Tolerance %s", mCurrent.getDegree(), kWristSetpoint, mError.getDegree(), isWithin);
+		System.out.println("");
 		return isWithin;
 	}
 
 	private boolean checkElevator() {
 		Length mCurrent = SuperStructure.getInstance().getCurrentState().getElevatorHeight();
 		Length mTarget = mRequState.elevator.height;
-		double kTolerence = 2; // inches
+		double kTolerence = 1; // inches
 		double mError = mTarget.minus(mCurrent).getInch();
 		boolean isWithin = (Math.abs(mError) < kTolerence);
 		System.out.printf("ELEVATOR: Current %s Target %s Error %s within Tolerance %s", mCurrent.getInch(), mTarget.getInch(), mError, isWithin);
-		System.out.println("------------------------------");
+		System.out.println("");
 		return isWithin;
 	}
 
-
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
+	protected void end() {
+		System.out.println("==============================================================");
+	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run

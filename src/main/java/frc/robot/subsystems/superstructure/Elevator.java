@@ -72,7 +72,7 @@ public class Elevator /*extends Subsystem*/ {
 	}
 
 	// TODO check these quick maths, kTopOfInnerStage is used to switch gravity feedforward
-	public static final Mass kCarriageMass = MassKt.getLb(30); // TODO add in the intake and stuff
+	public static final Mass kCarriageMass = MassKt.getLb(/*30*/15); // TODO add in the intake and stuff
 	public static final Mass kInnerStageMass = MassKt.getLb(6.5);
 
 	public static final Length kTopOfInnerStage = LengthKt.getInch(40);
@@ -135,7 +135,6 @@ public class Elevator /*extends Subsystem*/ {
 		NativeUnit minHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.bottom);
 		getMaster().setSoftLimitReverse(minHeightRaw);
 		getMaster().setSoftLimitReverseEnabled(true);
-
 
 		mCurrentGear = kDefaultGear;
 		setGear(kDefaultGear); // set shifter and closed loop slot

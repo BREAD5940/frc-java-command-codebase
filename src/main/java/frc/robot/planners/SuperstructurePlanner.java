@@ -30,7 +30,7 @@ public class SuperstructurePlanner {
 
 	public static final Length bottom = LengthKt.getInch(RobotConfig.elevator.elevator_minimum_height.getInch() + 0.5);
 	public static final Length top = RobotConfig.elevator.elevator_maximum_height;
-	static final Length crossbarBottom = LengthKt.getInch(35); //FIXME verify
+	static final Length crossbarBottom = LengthKt.getInch(27); //FIXME verify
 	static final Length crossbarWidth = LengthKt.getInch(4); //FIXME verify
 	static final Length carriageToIntake = LengthKt.getInch(12); //FIXME verify
 	static final Length intakeDiameter = LengthKt.getInch(19);
@@ -41,7 +41,7 @@ public class SuperstructurePlanner {
 	public static final RoundRotation2d overallMinWrist = RoundRotation2d.getDegree(-180); //FIXME ^^
 
 	public static final SuperStructureState passThroughState = new SuperStructureState(new ElevatorState(crossbarBottom),
-			new RotatingArmState(RoundRotation2d.getDegree(-90)), new RotatingArmState(RoundRotation2d.getDegree(-90)));
+			new RotatingArmState(RoundRotation2d.getDegree(-90)), new RotatingArmState(RoundRotation2d.getDegree(30)));
 
 	Length minSafeHeight = bottom;
 	Length maxSafeHeight = top;

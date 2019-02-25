@@ -3,18 +3,15 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
-import frc.robot.commands.auto.AutoMotion.HeldPiece;
-import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
+import frc.robot.commands.auto.routines.PassThrough;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
-import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
-import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
@@ -92,11 +89,9 @@ public class OI {
 
 		// test1Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.LOW));
 		test1Button.whenPressed(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-		test2Button.whenPressed(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.STOWED));
+		test2Button.whenPressed(new PassThrough());
 		test3Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.HIGH));
 		test4Button.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW));
-
-
 
 		// cargoOverButton.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.OVER));
 		// cargo1Button.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.LOW));
@@ -106,7 +101,7 @@ public class OI {
 		// hatch1Button.whenPressed(new RunAuto(HeldPiece.HATCH, GoalHeight.LOW));
 		// hatch2Button.whenPressed(new RunAuto(HeldPiece.HATCH, GoalHeight.MIDDLE));
 		// hatch3Button.whenPressed(new RunAuto(HeldPiece.HATCH, GoalHeight.HIGH));
-		
+
 		// hatchPickupButton.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW));
 		// intakeButton.whileHeld(new RunIntake(1,5));
 		// outtakeButton.whileHeld(new RunIntake(-1,5));
@@ -181,11 +176,11 @@ public class OI {
 		return (secondaryJoystick.getRawAxis(2) - secondaryJoystick.getRawAxis(3)) * -1; // triggers
 	}
 
-	public double getDSElbowAxis(){
+	public double getDSElbowAxis() {
 		return 0;//(driverStation.getRawAxis(DriverstationMap.Axes.elbowStick));
 	}
 
-	public double getDSElevatorAxis(){
+	public double getDSElevatorAxis() {
 		return 0;//(driverStation.getRawAxis(DriverstationMap.Axes.elevatorStick));
 	}
 

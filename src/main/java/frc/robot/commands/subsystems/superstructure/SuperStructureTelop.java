@@ -1,20 +1,13 @@
 package frc.robot.commands.subsystems.superstructure;
 
-import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.Robot;
-import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
-import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
@@ -51,15 +44,15 @@ public class SuperStructureTelop extends Command {
 		var kDeadband = 0.05d;
 
 		// Figure out of the operator is commanding an elevator move. If so, increment the new state and cache the current state - if not, stay at the cached state.
-		if(Math.abs(mElevatorPower) > kDeadband) {
-			mNewState.elevator = new ElevatorState(mCurrentState.getElevatorHeight().plus(LengthKt.getInch(mElevatorPower * ((mElevatorPower > 0) ? 5 : 10 ))));
+		if (Math.abs(mElevatorPower) > kDeadband) {
+			mNewState.elevator = new ElevatorState(mCurrentState.getElevatorHeight().plus(LengthKt.getInch(mElevatorPower * ((mElevatorPower > 0) ? 5 : 10))));
 			mCachedState.elevator = mNewState.elevator;
 		} else {
 			mNewState.elevator = mCachedState.elevator;
 		}
 
 		// Figure out of the operator is commanding a wrist move. If so, increment the new state and cache the current state - if not, stay at the cached state.
-		if(Math.abs(mWristPower) > kDeadband) {
+		if (Math.abs(mWristPower) > kDeadband) {
 			mNewState.jointAngles.wristAngle = new RotatingArmState(mCurrentState.getWrist().angle.plus(RoundRotation2d.getDegree(mWristPower * 15)));
 			// System.out.println("new wrist angle: " + mNewState.jointAngles.wristAngle.angle.getDegree() + "old wrist angle: " + mCurrentState.getWrist().angle.getDegree());
 			mCachedState.jointAngles.wristAngle = mNewState.jointAngles.wristAngle;
@@ -68,7 +61,7 @@ public class SuperStructureTelop extends Command {
 		}
 
 		// Figure out of the operator is commanding a elbow move. If so, increment the new state and cache the current state - if not, stay at the cached state.
-		if(Math.abs(mElbowPower) > kDeadband) {
+		if (Math.abs(mElbowPower) > kDeadband) {
 			mNewState.jointAngles.elbowAngle = new RotatingArmState(mCurrentState.getElbow().angle.plus(RoundRotation2d.getDegree(mElbowPower * 5)));
 			mCachedState.jointAngles.elbowAngle = mNewState.jointAngles.elbowAngle;
 		} else {
