@@ -3,7 +3,9 @@ package frc.robot.lib.obj;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
-public class RoundRotation2d {
+import frc.robot.lib.Loggable;
+
+public class RoundRotation2d implements Loggable {
 	protected double value;
 	protected double cosine;
 	protected double sine;
@@ -72,6 +74,21 @@ public class RoundRotation2d {
 
 	public double getRotations() {
 		return getDegree() / 360d;
+	}
+
+	@Override
+	public String getCSVHeader() {
+		return "degrees";
+	}
+
+	@Override
+	public String toCSV() {
+		return "" + getDegree();
+	}
+
+	@Override
+	public String toString() {
+		return "Degrees: " + getDegree();
 	}
 
 }
