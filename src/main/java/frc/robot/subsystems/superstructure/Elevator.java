@@ -90,7 +90,7 @@ public class Elevator /*extends Subsystem*/ {
 	private FalconSRX<Length> mSlave1, mSlave2, mSlave3;
 
 	private static ElevatorGear mCurrentGear;
-	private static final ElevatorGear kDefaultGear = ElevatorGear.LOW;
+	public static final ElevatorGear kDefaultGear = ElevatorGear.LOW;
 
 	NativeUnitLengthModel lengthModel = RobotConfig.elevator.elevatorModel;
 
@@ -129,12 +129,12 @@ public class Elevator /*extends Subsystem*/ {
 		setClosedLoopGains(kLowGearPIDSlot, LOW_GEAR_PID);
 		setClosedLoopGains(kHighGearPIDSlot, HIGH_GEAR_PID);
 
-		NativeUnit maxHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.top);
-		getMaster().setSoftLimitForward(maxHeightRaw);
+		NativeUnit maxHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.top.times(0.95));
+		getMaster().configForwardSoftLimitThreshold((int)maxHeightRaw.getValue());
 		getMaster().setSoftLimitForwardEnabled(true);
 		NativeUnit minHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.bottom);
-		getMaster().setSoftLimitReverse(minHeightRaw);
-		getMaster().setSoftLimitReverseEnabled(true);
+		getMaster().configReverseSoftLimitThreshold(1);
+		getMaster().configReverseSoftLimitEnable(true);
 
 		mCurrentGear = kDefaultGear;
 		setGear(kDefaultGear); // set shifter and closed loop slot
