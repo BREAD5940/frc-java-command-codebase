@@ -100,6 +100,7 @@ public class TrajectoryGenerator {
     // Choose an automatic strategy.
     if (strategy == AutomaticStrategy) {
       strategy = chooseStrategy(start_vel, goal_vel, config.max_vel);
+      System.out.println("Chose the " + strategy.toString() + " strategy!");
     }
 
     Trajectory traj;

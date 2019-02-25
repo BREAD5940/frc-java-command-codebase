@@ -11,9 +11,14 @@ public class TrapezoidalProfileTest {
 		test(0, 0, 120, TrajectoryGenerator.TrapezoidalStrategy);
 	}
 
+	// @Test
+	// public void testP2PSCurve() {
+	// 	test(0, 0, 100, TrajectoryGenerator.SCurvesStrategy);
+	// }
+
 	@Test
-	public void testP2PSCurve() {
-		test(0, 0, 120, TrajectoryGenerator.SCurvesStrategy);
+	public void AutoStrategyCurve() {
+		test(0, 0, 100, TrajectoryGenerator.AutomaticStrategy);
 	}
 
 	/** 
@@ -29,10 +34,10 @@ public class TrapezoidalProfileTest {
 
 		System.out.println("=============================== Testing strategy " + strategy.toString() + " ===============================");
 
-		config.dt = .01;
-		config.max_acc = 250.0;
-		config.max_jerk = 1250.0;
-		config.max_vel = 100.0;
+		config.dt = .02;
+		config.max_acc = 750.0;
+		config.max_jerk = 2000.0;
+		config.max_vel = 150.0;
 
 		Trajectory traj = TrajectoryGenerator.generate(
 				config,

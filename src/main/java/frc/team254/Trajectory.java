@@ -136,14 +136,15 @@ public class Trajectory {
   }
 
   public String toString() {
-    String str = "Segment,\tPos,\tVel,\tAcc,\tJerk,\tHeading\n";
+    String str = "Segment\tTime\tPos\tVel\tAcc\tJerk\tHeading\n";
     for (int i = 0; i < getNumSegments(); ++i) {
       Trajectory.Segment segment = getSegment(i);
-      str += i + ",\t";
-      str += segment.pos + ",\t";
-      str += segment.vel + ",\t";
-      str += segment.acc + ",\t";
-      str += segment.jerk + ",\t";
+      str += i + "\t";
+      str += segment.dt * i + "\t";
+      str += segment.pos + "\t";
+      str += segment.vel + "\t";
+      str += segment.acc + "\t";
+      str += segment.jerk + "\t";
       str += segment.heading + "\t";
       str += "\n";
     }
