@@ -9,11 +9,11 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.Logger;
+import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
@@ -87,8 +87,8 @@ public class AutoPathingCSVGenerator {
 					}
 
 					toReturn.add(new SuperStructureState(new ElevatorState(LengthKt.getInch(nextHeight)),
-							new RotatingArmState(Rotation2dKt.getRadian(nextElbow)),
-							new RotatingArmState(Rotation2dKt.getRadian(nextWrist))));
+							new RotatingArmState(RoundRotation2d.getRadian(nextElbow)),
+							new RotatingArmState(RoundRotation2d.getRadian(nextWrist))));
 				}
 			}
 		}

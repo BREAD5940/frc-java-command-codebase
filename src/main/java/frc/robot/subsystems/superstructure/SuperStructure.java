@@ -7,15 +7,16 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.team254.lib.physics.DCMotorTransmission;
 
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
@@ -62,7 +63,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 	public static final RoundRotation2d kWristMin = RoundRotation2d.getDegree(-180); // relative
 	public static final RoundRotation2d kWristMax = RoundRotation2d.getDegree(90); // relative
 	public static final RoundRotation2d kElbowMin = RoundRotation2d.getDegree(-200); // absolute
-	public static final RoundRotation2d kElbowMax = RoundRotation2d.getDegree(15); // absolute
+	public static final RoundRotation2d kElbowMax = RoundRotation2d.getDegree(60); // absolute
 
 	public static synchronized SuperStructure getInstance() {
 		if (instance_ == null) {
@@ -111,6 +112,11 @@ public class SuperStructure extends Subsystem implements Loggable {
 
 		mCurrentState = new SuperStructureState();
 
+		Notifier mSmartDashboardUpdater = new Notifier(() -> {
+			SmartDashboard.putString("Superstructure move setpoint", mReqState.toCSV());
+		});
+		mSmartDashboardUpdater.startPeriodic(0.5);
+
 	}
 
 	private SuperStructureState mCurrentState;
@@ -120,13 +126,13 @@ public class SuperStructure extends Subsystem implements Loggable {
 	}
 
 	public static class iPosition {
-		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0.001)), new RotatingArmState(Rotation2dKt.getDegree(0)));
-		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0.001)), new RotatingArmState(Rotation2dKt.getDegree(-47.6)));
-		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0.001)), new RotatingArmState(Rotation2dKt.getDegree(35.98)));
-		public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(148.35)), new RotatingArmState(Rotation2dKt.getDegree(-96.46)));
-		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0.001)), new RotatingArmState(Rotation2dKt.getDegree(87.86 - 90)));
-		public static final IntakeAngle STOWED = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0.001)), new RotatingArmState(Rotation2dKt.getDegree(90)));
-		public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(148.35)), new RotatingArmState(Rotation2dKt.getDegree(-48.04 - 90)));
+		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(0)));
+		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(-47.6)));
+		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(35.98)));
+		public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(148.35)), new RotatingArmState(RoundRotation2d.getDegree(-96.46)));
+		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(87.86 - 90)));
+		public static final IntakeAngle STOWED = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(90)));
+		public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-190)), new RotatingArmState(RoundRotation2d.getDegree(-110)));
 
 		public static final ArrayList<IntakeAngle> presets = new ArrayList<IntakeAngle>(Arrays.asList(CARGO_GRAB, CARGO_DOWN,
 				CARGO_PLACE, CARGO_REVERSE, HATCH, HATCH_REVERSE));
@@ -258,7 +264,8 @@ public class SuperStructure extends Subsystem implements Loggable {
 		//former superstructure periodic
 		updateState();
 
-		SuperStructureState prevState = lastState;
+		this.mReqState = requState;
+		// SuperStructureState prevState = lastState;
 		// double mCurrentWristTorque = Math.abs(SuperStructure.getInstance().calculateWristTorque(prevState)); // torque due to gravity and elevator acceleration, newton meters
 		// double mCurrentElbowTorque = Math.abs(SuperStructure.getInstance().calculateElbowTorques(prevState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
 
