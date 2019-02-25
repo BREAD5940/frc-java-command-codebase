@@ -1,4 +1,4 @@
-package com.github.kyled973.motionprofile;
+package frc.kyled973.motionprofile;
 import java.util.ArrayList;
 
 /**
@@ -87,13 +87,22 @@ public class TrapProfile extends Profile {
         }
     }
     
-    //per 100 msec
+    //per 20ms
     public ArrayList<Double> getDistances(){
         ArrayList<Double> distArr = new ArrayList<>();
-        for(double i = 0.0; i < getFinalTime(); i += 0.05){
+        for(double i = 0.0; i < getFinalTime(); i += 0.02){
             distArr.add(new Double(getDistAtTime(i)));
         }
         return distArr;
+    }
+
+    //per 20ms
+    public ArrayList<Double> getVelocities(){
+        ArrayList<Double> velArr = new ArrayList<>();
+        for(double i = 0.0; i < getFinalTime(); i += 0.02){
+            velArr.add(new Double(getVelocityAtTime(i)));
+        }
+        return velArr;
     }
     
     public double getDist(){

@@ -1,4 +1,4 @@
-package com.github.kyled973.motionprofile;
+package frc.kyled973.motionprofile;
 
 
 /**
@@ -73,9 +73,18 @@ public class TriProfile extends Profile {
     public ArrayList<Double> getDistances(){
         ArrayList<Double> distArr = new ArrayList<>();
         for(double i = 0.0; i < getFinalTime(); i += 0.1){
-            distArr.add(new Double(getDistAtTime(i)));
+            distArr.add(Double.valueOf(getDistAtTime(i)));
         }
         return distArr;
+    }
+
+    //per 20ms
+    public ArrayList<Double> getVelocities(){
+        ArrayList<Double> velArr = new ArrayList<>();
+        for(double i = 0.0; i < getFinalTime(); i += 0.02){
+            velArr.add(Double.valueOf(getVelocityAtTime(i)));
+        }
+        return velArr;
     }
     
     public double getFinalTime(){

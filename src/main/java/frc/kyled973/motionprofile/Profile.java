@@ -1,4 +1,4 @@
-package com.github.kyled973.motionprofile;
+package frc.kyled973.motionprofile;
 
 /**
  *
