@@ -1,24 +1,54 @@
 import org.junit.jupiter.api.Test;
 
-import frc.kyled973.motionprofile.Profile;
+import frc.team254.Trajectory;
+import frc.team254.TrajectoryGenerator;
+import junit.framework.Assert;
 
 public class TrapezoidalProfileTest {
 
 	@Test
-	public void testTrapProfile() {
-
-		final int v_max = toTicks(1);
-		final int accel = toTicks(10);
-		final int dist = toTicks(0.5);
-		final int start_vel = 0;
-		final int end_vel = 0;
-
-		final Profile profile = Profile.getVelProfile(v_max, accel, dist, start_vel, end_vel);
-
+	public void testP2PTrapezoid() {
+		test(0, 0, 120, TrajectoryGenerator.TrapezoidalStrategy);
 	}
 
-	public int toTicks(double rotations) {
-		return (int) (rotations * 4096);
+	@Test
+	public void testP2PSCurve() {
+		test(0, 0, 120, TrajectoryGenerator.SCurvesStrategy);
+	}
+
+	/** 
+	 * Test a trajectory with some default settings
+	 * @param start_vel the velocity to start at 
+	 * @param goal_vel the end velocity
+	 * @param goal_distance how far to go
+	 * @param strategy the strategy to follow
+	 */
+	static void test(double start_vel, double goal_vel, double goal_distance,
+			TrajectoryGenerator.Strategy strategy) {
+		TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
+
+		System.out.println("=============================== Testing strategy " + strategy.toString() + " ===============================");
+
+		config.dt = .01;
+		config.max_acc = 250.0;
+		config.max_jerk = 1250.0;
+		config.max_vel = 100.0;
+
+		Trajectory traj = TrajectoryGenerator.generate(
+				config,
+				strategy,
+				start_vel,
+				0,
+				goal_distance,
+				goal_vel,
+				0);
+
+		System.out.print(traj.toString());
+
+		Trajectory.Segment last = traj.getSegment(traj.getNumSegments() - 1);
+		Assert.assertFalse(Math.abs(last.pos - goal_distance) > 1.0);
+		Assert.assertFalse(Math.abs(last.vel - goal_vel) > 1.0);
+		Assert.assertFalse(Math.abs(last.heading) > 1.0);
 	}
 
 }
