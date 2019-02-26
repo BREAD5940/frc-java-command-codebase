@@ -7,12 +7,14 @@ import java.util.Optional;
 import javax.annotation.processing.RoundEnvironment;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
+import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import frc.robot.SuperStructureConstants;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
+import frc.robot.commands.subsystems.superstructure.ArmWaitForElevator;
 import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.SuperStructureState;
@@ -114,18 +116,28 @@ public class SuperstructureMotion extends Command {
     
 
     //CLEAR the queue
+    queue.clear();
 
     
     //CHECK the position of the intake -- hatch or cargo
     // IF it's a long climb
-      //ADD intake stowage to the queue
-      //ADD a commandoncondition to the queue to reset the intake when the elevator is within tolerance
+    boolean isLongClimb = Math.abs(goalState.getElevatorHeight().minus(currentState.getElevatorHeight()).getInch()) >= SuperStructureConstants.Elevator.longClimb.getInch();
+
+    if(isLongClimb){
+      queue.add(new ArmMove(SuperStructure.iPosition.STOWED));
+    }
     //CHECK if the elevator point is in proximity to the crossbar
-      //STOW the intake if it's in danger
-    //
+
+    if((GPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch() && SPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch())
+      || (GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch() && SPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch())
+        || (GPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.plus(SuperStructureConstants.Elevator.crossbarWidth).getInch()
+          && GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch())){
+            queue.add(new ArmMove(SuperStructure.iPosition.STOWED));
+      }
 
 
-    queue.add(new ArmMove(goalState.getAngle()));
+    queue.add(new ArmWaitForElevator(goalState.getAngle(), goalState.getElevatorHeight(), LengthKt.getInch(3), 
+              goalState.getElevatorHeight().getInch() < currentState.getElevatorHeight().getInch()));
     queue.add(new ElevatorMove(goalState.getElevator()));
 
 

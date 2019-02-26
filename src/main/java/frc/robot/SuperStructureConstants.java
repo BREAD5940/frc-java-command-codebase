@@ -30,6 +30,7 @@ public class SuperStructureConstants {
 		public static final Length top = RobotConfig.elevator.elevator_maximum_height;
 		public static final Length crossbarBottom = LengthKt.getInch(35); //FIXME verify
 		public static final Length crossbarWidth = LengthKt.getInch(4); //FIXME verify
+		public static final Length longClimb = LengthKt.getInch(20); //FIXME actual number, perhaps?
 		
 	}
 
