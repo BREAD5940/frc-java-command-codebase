@@ -12,43 +12,43 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.DriveTrain;
 
 public class DrivePower extends Command {
-  double power, time, now;
-  public DrivePower(double power, double time) {
-    // Use requires() here to declare subsystem dependencies
-    requires(DriveTrain.getInstance());
-    this.power = power;
-    this.time = time;
-    // setTimeout(time);
-  }
+	double power, time, now;
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-    time = time + Timer.getFPGATimestamp();
-  }
+	public DrivePower(double power, double time) {
+		// Use requires() here to declare subsystem dependencies
+		requires(DriveTrain.getInstance());
+		this.power = power;
+		this.time = time;
+		// setTimeout(time);
+	}
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    System.out.println("hi!");
-    DriveTrain.getInstance().arcadeDrive(power, 0, false);
-  }
+	// Called just before this Command runs the first time
+	@Override
+	protected void initialize() {
+		time = time + Timer.getFPGATimestamp();
+	}
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return (Timer.getFPGATimestamp() > time);
-  }
+	// Called repeatedly when this Command is scheduled to run
+	@Override
+	protected void execute() {
+		System.out.println("hi!");
+		DriveTrain.getInstance().arcadeDrive(power, 0, false);
+	}
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-    DriveTrain.getInstance().stop();
-  }
+	// Make this return true when this Command no longer needs to run execute()
+	@Override
+	protected boolean isFinished() {
+		return (Timer.getFPGATimestamp() > time);
+	}
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+	// Called once after isFinished returns true
+	@Override
+	protected void end() {
+		DriveTrain.getInstance().stop();
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	@Override
+	protected void interrupted() {}
 }

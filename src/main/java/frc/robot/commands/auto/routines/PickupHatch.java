@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.subsystems.drivetrain.DrivePower;
-import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.commands.subsystems.drivetrain.FollowVisonTargetTheSecond;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
@@ -37,9 +36,6 @@ public class PickupHatch extends CommandGroup {
 		addSequential(new PrintCommand("driving at a power in reverse"));
 
 		addSequential(new DrivePower(-0.2, 0.75));
-
-
-
 
 		// addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(.5), true)); // TODO run the next spline, saves time, vs backing up
 	}

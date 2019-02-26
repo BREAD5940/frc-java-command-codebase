@@ -75,7 +75,9 @@ public class FollowVisionTarget extends Command {
 		angleDeltaX = Robot.limelight.getDx().getDegree();
 		// targetPercentOfFrame = Robot.limelight.getTargetArea();
 	}
+
 	double sizeData;
+
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
@@ -84,7 +86,7 @@ public class FollowVisionTarget extends Command {
 			double xAxisOffset = data[1]; // x axis offset
 			sizeData = data[3]; // percent of frame`
 
-			double kMultiplier = 1/20f;
+			double kMultiplier = 1 / 20f;
 
 			System.out.println("kMultiplier: " + kMultiplier);
 			turnSpeed = xAxisOffset / kMultiplier;
@@ -96,7 +98,7 @@ public class FollowVisionTarget extends Command {
 			double forwardSpeed = distanceRatio * 0.5;
 			forwardSpeed = Util.limit(forwardSpeed, 0.5);
 
-			Robot.drivetrain.arcadeDrive(forwardSpeed + 0.5/12d, turnSpeed);
+			Robot.drivetrain.arcadeDrive(forwardSpeed + 0.5 / 12d, turnSpeed);
 			System.out.println("X axis offset: " + xAxisOffset + " Control input: " + forwardSpeed + "," + turnSpeed);
 
 		} else {
