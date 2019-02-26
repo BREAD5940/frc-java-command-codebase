@@ -1,6 +1,7 @@
 package frc.robot.commands.subsystems.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.SuperStructureConstants;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.planners.SuperstructurePlanner;
@@ -42,20 +43,20 @@ public class ZeroSuperStructure extends Command {
 			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(0));
 			old.getWrist().setAngle(new RoundRotation2d());
 		} else if (p.equals("maxElevator")) {
-			SuperStructure.getInstance().getElevator().getMaster().setSensorPosition(SuperstructurePlanner.top);
-			old.getElevator().setHeight(SuperstructurePlanner.top);
+			SuperStructure.getInstance().getElevator().getMaster().setSensorPosition(SuperStructureConstants.Elevator.top);
+			old.getElevator().setHeight(SuperStructureConstants.Elevator.top);
 		} else if (p.equals("maxWrist")) {
-			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(SuperstructurePlanner.overallMaxWrist);
-			old.getWrist().setAngle(SuperstructurePlanner.overallMaxWrist);
+			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(SuperStructureConstants.Wrist.kWristMax);
+			old.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMax);
 		} else if (p.equals("minWrist")) {
-			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(SuperstructurePlanner.overallMinWrist);
-			old.getWrist().setAngle(SuperstructurePlanner.overallMinWrist);
+			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(SuperStructureConstants.Wrist.kWristMin);
+			old.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMin);
 		} else if (p.equals("maxElbow")) {
-			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(SuperstructurePlanner.overallMaxElbow);
-			old.getWrist().setAngle(SuperstructurePlanner.overallMaxElbow);
+			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(SuperStructureConstants.Elbow.kElbowMax);
+			old.getWrist().setAngle(SuperStructureConstants.Elbow.kElbowMax);
 		} else if (p.equals("minElbow")) {
-			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(SuperstructurePlanner.overallMinElbow);
-			old.getWrist().setAngle(SuperstructurePlanner.overallMinElbow);
+			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(SuperStructureConstants.Elbow.kElbowMin);
+			old.getWrist().setAngle(SuperStructureConstants.Elbow.kElbowMin);
 		}
 	}
 
