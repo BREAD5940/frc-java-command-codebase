@@ -41,8 +41,8 @@ public class OI {
 	private Button close_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.A_BUTTON);
 	private Button plzNoDieElevator = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
 	private Button plzNoDieDriveTrain = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
-	// Button turnAutoButton = new JoystickButton(secondaryJoystick, xboxmap.Buttons.B_BUTTON);
-	// Button autobutton2 = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
+	Button secondaryTest1 = new JoystickButton(secondaryJoystick, xboxmap.Buttons.B_BUTTON);
+	Button secondaryTest2 = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 	// Button autobutton3 = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
 
 	// TODO change these to a button console once created
