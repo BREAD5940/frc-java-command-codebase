@@ -74,21 +74,22 @@ public class SuperstructureMotion extends Command {
     }
     //SAFE illegal inputs
     if(goalState.getElevatorHeight().getInch() > SuperStructureConstants.Elevator.top.getInch()){
-      goalState.getElevator().setHeight(SuperStructureConstants.Elevator.top);
+      goalState.getElevator().setHeight(SuperStructureConstants.Elevator.top); // constrain elevator to max height
     } else if (goalState.getElevatorHeight().getInch() < SuperStructureConstants.Elevator.bottom.getInch()){
-      goalState.getElevator().setHeight(SuperStructureConstants.Elevator.bottom);
+      goalState.getElevator().setHeight(SuperStructureConstants.Elevator.bottom); // constrain elevator to min height
     }
 
     if(goalState.getElbowAngle().getDegree() > SuperStructureConstants.Elbow.kElbowMax.getDegree()){
-      goalState.getElbow().setAngle(SuperStructureConstants.Elbow.kElbowMax);
+      goalState.getElbow().setAngle(SuperStructureConstants.Elbow.kElbowMax); // Constrain elbow to max
     } else if (goalState.getElbowAngle().getDegree() < SuperStructureConstants.Elbow.kElbowMin.getDegree()){
-      goalState.getElbow().setAngle(SuperStructureConstants.Elbow.kElbowMin);
+      goalState.getElbow().setAngle(SuperStructureConstants.Elbow.kElbowMin); // Constrain elbow to min
     }
 
+    // FIXME so the issue here is that the maximum position of the wrist depends on the proximal (elbow) angle. So we have to measure it somehow yay. Also the sprocket on there means that the wrist will slowly rotate as the proximal joint rotates
     if(goalState.getWristAngle().getDegree() > SuperStructureConstants.Wrist.kWristMax.getDegree()){
-      goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMax);
+      goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMax); // constrain wrist to max
     }else if (goalState.getWristAngle().getDegree() < SuperStructureConstants.Wrist.kWristMin.getDegree()){
-      goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMin);
+      goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMin); // constrain wrist to min
     }
 
     //DEFINE the three goal points -- elevator, wrist, and end of intake
@@ -97,6 +98,7 @@ public class SuperstructureMotion extends Command {
             LengthKt.getInch(goalState.getElbowAngle().getSin()*SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(GPelevator.getY()));
     Translation2d GPeoi = new Translation2d(LengthKt.getInch(goalState.getWristAngle().getCos()*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getX()),
             LengthKt.getInch(goalState.getWristAngle().getSin()*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
+            
     //DEFINE the three start points -- elevator, wrist, and end of intake
     Translation2d SPelevator = new Translation2d(LengthKt.getInch(0), currentState.getElevatorHeight());
     Translation2d SPwrist = new Translation2d(LengthKt.getInch(currentState.getElbowAngle().getCos()*SuperStructureConstants.Elbow.carriageToIntake.getInch()),

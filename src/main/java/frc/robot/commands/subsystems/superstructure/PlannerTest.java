@@ -28,7 +28,8 @@ public class PlannerTest extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return true; // are you sure about that....
+    // if this command exits will superstructureteleop do an oof?
   }
 
   // Called once after isFinished returns true
