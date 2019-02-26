@@ -32,6 +32,10 @@ public class RoundRotation2d implements Loggable {
 		return new RoundRotation2d(reciever);
 	}
 
+	public RoundRotation2d absoluteValueOf() {
+		return new RoundRotation2d(Math.abs(value));
+	}
+
 	public static RoundRotation2d getRadian(double reciever) {
 		return new RoundRotation2d(reciever * (180 / Math.PI));
 	}
