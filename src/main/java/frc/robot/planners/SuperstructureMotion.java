@@ -66,7 +66,7 @@ public class SuperstructureMotion extends Command {
 
 
   public boolean plan(SuperStructureState gsIn, SuperStructureState currentState){
-    SuperStructureState goalState = new SuperStructureState(gsIn);
+    var goalState = new SuperStructureState(gsIn);
 
     //CHECK if the current and goal match
     if(goalState.isEqualTo(currentState)){
@@ -93,30 +93,30 @@ public class SuperstructureMotion extends Command {
     }
 
     //DEFINE the three goal points -- elevator, wrist, and end of intake
-    Translation2d GPelevator  = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight());
-    Translation2d GPwrist = new Translation2d(LengthKt.getInch(goalState.getElbowAngle().getCos()*SuperStructureConstants.Elbow.carriageToIntake.getInch()),
+    var GPelevator  = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight());
+    var GPwrist = new Translation2d(LengthKt.getInch(goalState.getElbowAngle().getCos()*SuperStructureConstants.Elbow.carriageToIntake.getInch()),
             LengthKt.getInch(goalState.getElbowAngle().getSin()*SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(GPelevator.getY()));
-    Translation2d GPeoi = new Translation2d(LengthKt.getInch(goalState.getWristAngle().getCos()*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getX()),
+            var GPeoi = new Translation2d(LengthKt.getInch(goalState.getWristAngle().getCos()*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getX()),
             LengthKt.getInch(goalState.getWristAngle().getSin()*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
             
     //DEFINE the three start points -- elevator, wrist, and end of intake
-    Translation2d SPelevator = new Translation2d(LengthKt.getInch(0), currentState.getElevatorHeight());
-    Translation2d SPwrist = new Translation2d(LengthKt.getInch(currentState.getElbowAngle().getCos()*SuperStructureConstants.Elbow.carriageToIntake.getInch()),
+    var SPelevator = new Translation2d(LengthKt.getInch(0), currentState.getElevatorHeight());
+    var SPwrist = new Translation2d(LengthKt.getInch(currentState.getElbowAngle().getCos()*SuperStructureConstants.Elbow.carriageToIntake.getInch()),
             LengthKt.getInch(currentState.getElbowAngle().getSin()*SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(SPelevator.getY()));
-    Translation2d SPeoi = new Translation2d(LengthKt.getInch(currentState.getWristAngle().getCos()*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(SPwrist.getX()),
+            var SPeoi = new Translation2d(LengthKt.getInch(currentState.getWristAngle().getCos()*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(SPwrist.getX()),
     LengthKt.getInch(currentState.getWristAngle().getSin()*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(SPwrist.getY()));
 
     //SAFE potential crashes on the end state
     
     if(GPeoi.getY().getInch() < SuperStructureConstants.electronicsHeight.getInch()){
-      RoundRotation2d tempTheta = goalState.getWristAngle();
+      var tempTheta = goalState.getWristAngle();
       tempTheta = RoundRotation2d.getRadian(Math.asin((GPeoi.getY().getInch()-GPwrist.getY().getInch())/SuperStructureConstants.Wrist.intakeOut.getInch()));
       goalState.getWrist().setAngle(tempTheta);
       GPeoi = new Translation2d(GPeoi.getX(),  LengthKt.getInch(Math.sin(tempTheta.getRadian())*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
     }
 
     if(GPwrist.getY().getInch() < SuperStructureConstants.electronicsHeight.getInch()){
-      RoundRotation2d tempTheta = goalState.getElbowAngle();
+      var tempTheta = goalState.getElbowAngle();
       tempTheta = RoundRotation2d.getRadian(Math.asin((GPwrist.getY().getInch()-GPelevator.getY().getInch())/SuperStructureConstants.Elbow.carriageToIntake.getInch()));
       goalState.getElbow().setAngle(tempTheta);
       GPwrist = new Translation2d(GPwrist.getX(),  LengthKt.getInch(Math.sin(tempTheta.getRadian())*SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(GPelevator.getY()));
