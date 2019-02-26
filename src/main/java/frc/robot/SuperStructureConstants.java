@@ -12,7 +12,9 @@ public class SuperStructureConstants {
 		public static final RoundRotation2d kWristMin = RoundRotation2d.getDegree(-45); // relative
 		public static final RoundRotation2d kWristMax = RoundRotation2d.getDegree(90); // relative
 		public static final Length intakeOut = LengthKt.getInch(19); //FIXME check
+		@Deprecated
 		public static final Length intakeDown = LengthKt.getInch(6); //FIXME check
+		@Deprecated
 		public static final Length intakeUp = LengthKt.getInch(12); //FIXME check
 	}
 
@@ -31,7 +33,7 @@ public class SuperStructureConstants {
 		
 	}
 
-
+	public static final Length electronicsHeight = LengthKt.getInch(0);
 	public static final Mass kHatchMass = MassKt.getLb(2.4); // FIXME check mass
 	public static final Mass kCargoMass = MassKt.getLb(1); // FIXME check mass
 }
