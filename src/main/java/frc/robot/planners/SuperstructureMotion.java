@@ -47,7 +47,7 @@ public class SuperstructureMotion extends Command {
   }
 
   
-  private SuperstructureMotion instance_;
+  private static SuperstructureMotion instance_;
   protected CommandGroup queue = new CommandGroup();
   // protected CommandGroup eleQueue = new CommandGroup();
   // protected CommandGroup armQueue = new CommandGroup();
@@ -55,7 +55,7 @@ public class SuperstructureMotion extends Command {
 
 
 
-  public SuperstructureMotion getInstance(){
+  public static SuperstructureMotion getInstance(){
     if (instance_ == null) {
       instance_ = new SuperstructureMotion();
     }

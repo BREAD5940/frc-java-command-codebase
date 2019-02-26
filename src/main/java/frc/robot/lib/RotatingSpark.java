@@ -32,7 +32,8 @@ public class RotatingSpark extends Spark implements Loggable {
 
   @Override
   public String toCSV() {
-    return super.getSpeed() + "," + getDegrees();
+    // return super.getSpeed() + "," + getDegrees();
+    return "";
   }
 
 }

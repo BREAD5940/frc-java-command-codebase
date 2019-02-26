@@ -1,5 +1,7 @@
 package frc.robot;
 
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -8,8 +10,11 @@ import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.routines.passthrough.PassThrough;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.ElevatorMotionMagicTest;
+import frc.robot.commands.subsystems.superstructure.PlannerTest;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
+import frc.robot.states.ElevatorState;
+import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
@@ -88,7 +93,7 @@ public class OI {
 		// test1Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.LOW));
 		test1Button.whenPressed(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)); // y button
 		test2Button.whenPressed(new PassThrough()); // a button
-		test3Button.whenPressed(new ElevatorMotionMagicTest()); // x button
+		test3Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(30)), iPosition.HATCH_REVERSE))); // x button
 		// test4Button.whenPressed(new VisionAssistedDriving());
 		// test4Button.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW)); // b button - used now for dealy
 
