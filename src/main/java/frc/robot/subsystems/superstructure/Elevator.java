@@ -23,13 +23,15 @@ import com.ctre.phoenix.motorcontrol.SensorTerm;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
+import frc.robot.SuperStructureConstants;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.InvertSettings;
-import frc.robot.planners.SuperstructurePlanner;
+import frc.robot.planners.SuperstructurePlannerOLD;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
 
@@ -40,7 +42,7 @@ import frc.robot.states.SuperStructureState;
  * 
  * @author Matthew Morley
  */
-public class Elevator /*extends Subsystem*/ {
+public class Elevator extends Subsystem {
 
 	private DoubleSolenoid mSolenoid = Robot.getElevatorShifter();
 
@@ -129,10 +131,10 @@ public class Elevator /*extends Subsystem*/ {
 		setClosedLoopGains(kLowGearPIDSlot, LOW_GEAR_PID);
 		setClosedLoopGains(kHighGearPIDSlot, HIGH_GEAR_PID);
 
-		NativeUnit maxHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.top.times(0.95));
+		NativeUnit maxHeightRaw = lengthModel.toNativeUnitPosition(SuperStructureConstants.Elevator.top.times(0.95));
 		getMaster().configForwardSoftLimitThreshold((int) maxHeightRaw.getValue());
 		getMaster().setSoftLimitForwardEnabled(true);
-		NativeUnit minHeightRaw = lengthModel.toNativeUnitPosition(SuperstructurePlanner.bottom);
+		NativeUnit minHeightRaw = lengthModel.toNativeUnitPosition(SuperStructureConstants.Elevator.bottom);
 		getMaster().configReverseSoftLimitThreshold(1);
 		getMaster().configReverseSoftLimitEnable(true);
 
@@ -225,7 +227,7 @@ public class Elevator /*extends Subsystem*/ {
 	 * Set the talon as a target angle and feedforward throttle percent
 	 */
 	public void setPositionArbitraryFeedForward(Length setpoint, double feedForwardPercent) {
-		setpoint = Util.limit(setpoint, SuperstructurePlanner.bottom, SuperstructurePlanner.top);
+		setpoint = Util.limit(setpoint, SuperStructureConstants.Elevator.bottom, SuperStructureConstants.Elevator.top);
 		getMaster().set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
 	}
 
@@ -255,5 +257,10 @@ public class Elevator /*extends Subsystem*/ {
 		// Acceleration<Length> accel = AccelerationKt.getAcceleration(LengthKt.getMeter(
 		// (getVelocity().getValue() - lastKnown.velocity.getValue()) / (time.getValue() - lastKnown.time.getValue())));
 		return new ElevatorState(getHeight(), getVelocity());
+	}
+
+	@Override
+	protected void initDefaultCommand() {
+
 	}
 }

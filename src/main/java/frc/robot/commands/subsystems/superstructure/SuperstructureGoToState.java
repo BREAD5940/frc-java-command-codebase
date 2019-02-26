@@ -39,6 +39,9 @@ public class SuperstructureGoToState extends Command {
 
 	public SuperstructureGoToState(SuperStructureState requState, double timeout) {
 		requires(SuperStructure.getInstance());
+		requires(SuperStructure.getInstance().getWrist());
+		requires(SuperStructure.getInstance().getElbow());
+		requires(SuperStructure.getElevator());
 		mRequState = requState;
 		setTimeout(timeout);
 

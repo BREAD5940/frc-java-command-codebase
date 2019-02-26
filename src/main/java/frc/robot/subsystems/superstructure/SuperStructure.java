@@ -26,7 +26,7 @@ import frc.robot.lib.PIDSettings;
 import frc.robot.lib.PIDSettings.FeedbackMode;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.lib.obj.RoundRotation2d;
-import frc.robot.planners.SuperstructurePlanner;
+import frc.robot.planners.SuperstructurePlannerOLD;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
@@ -54,7 +54,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 	private boolean currentPathComplete = false;
 	public static Elevator elevator;
 	public static Intake intake = Intake.getInstance();
-	private SuperstructurePlanner planner = new SuperstructurePlanner();
+	private SuperstructurePlannerOLD planner = new SuperstructurePlannerOLD();
 	// public SuperStructureState mPeriodicIO = new SuperStructureState();
 	private RotatingJoint mWrist, mElbow;
 	private DCMotorTransmission kElbowTransmission, kWristTransmission;

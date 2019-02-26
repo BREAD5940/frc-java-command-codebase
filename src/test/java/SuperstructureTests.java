@@ -13,7 +13,7 @@ public class SuperstructureTests {
 
 	// @Test
 	// public void testWrists() {
-	// 	SuperstructurePlanner planner = new SuperstructurePlanner();
+	// 	SuperstructurePlannerOLD planner = new SuperstructurePlannerOLD();
 	// 	SuperStructureState currentState = new SuperStructureState(new ElevatorState(), iPosition.CARGO_GRAB, HeldPiece.NONE);
 	// 	ArrayList<SuperStructureState> goalStates = new ArrayList<SuperStructureState>(Arrays.asList(
 	// 			new SuperStructureState(new ElevatorState(), iPosition.CARGO_GRAB, HeldPiece.NONE),
@@ -47,7 +47,7 @@ public class SuperstructureTests {
 
 	// @Test
 	// public void testElevator() {
-	// 	SuperstructurePlanner planner = new SuperstructurePlanner();
+	// 	SuperstructurePlannerOLD planner = new SuperstructurePlannerOLD();
 	// 	SuperStructureState currentState = new SuperStructureState(new ElevatorState(true), iPosition.CARGO_GRAB, HeldPiece.NONE);
 	// 	ArrayList<SuperStructureState> goalStates = new ArrayList<SuperStructureState>(Arrays.asList(
 	// 			new SuperStructureState(new ElevatorState(LengthKt.getInch(10), true), iPosition.CARGO_GRAB, HeldPiece.NONE),
@@ -74,7 +74,7 @@ public class SuperstructureTests {
 
 	// @Test
 	// public void bigScaryComboTests() {
-	// 	SuperstructurePlanner planner = new SuperstructurePlanner();
+	// 	SuperstructurePlannerOLD planner = new SuperstructurePlannerOLD();
 	// 	SuperStructureState currentState = new SuperStructureState(new ElevatorState(), iPosition.CARGO_GRAB, HeldPiece.NONE);
 	// 	ArrayList<SuperStructureState> goalStates = new ArrayList<SuperStructureState>(Arrays.asList(
 	// 			new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH, HeldPiece.NONE),
