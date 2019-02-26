@@ -10,7 +10,6 @@ import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.routines.PickupHatch;
 import frc.robot.commands.auto.routines.passthrough.PassThrough;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
-import frc.robot.commands.subsystems.superstructure.ElevatorMotionMagicTest;
 import frc.robot.commands.subsystems.superstructure.PlannerTest;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;

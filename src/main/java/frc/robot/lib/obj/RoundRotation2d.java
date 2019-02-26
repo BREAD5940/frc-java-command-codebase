@@ -92,9 +92,9 @@ public class RoundRotation2d implements Loggable {
 	}
 
 	public boolean isEqualTo(RoundRotation2d other) {
-		final double kEpsilon = 1e-12;	
-		return ( Math.abs(other.getDegree() - this.getDegree()) < kEpsilon );
-	
+		final double kEpsilon = 1e-12;
+		return (Math.abs(other.getDegree() - this.getDegree()) < kEpsilon);
+
 	}
 
 }

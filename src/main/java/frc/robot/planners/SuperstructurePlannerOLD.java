@@ -7,7 +7,6 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import frc.robot.RobotConfig;
 import frc.robot.SuperStructureConstants;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
@@ -66,7 +65,6 @@ public class SuperstructurePlannerOLD {
 	int errorCount; //number of errors in motion
 	int corrCount; //number of corrected items in motion
 	SuperStructureState currentPlannedState;
-
 
 	/**
 	 * Creates a command group of superstructure motions that will prevent any damage to the intake/elevator
