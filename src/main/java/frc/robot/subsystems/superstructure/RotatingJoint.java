@@ -22,6 +22,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 
+import frc.robot.SuperStructureConstants;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.AngularVelocity;
@@ -253,6 +254,10 @@ public class RotatingJoint extends Subsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-
 	}
+
+	public boolean isWithinTolerance(RoundRotation2d tolerance, RoundRotation2d setpoint) {
+		return Math.abs(getRotation().minus(setpoint).getDegree()) < tolerance.getDegree();
+	}
+	
 }
