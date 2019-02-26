@@ -81,17 +81,23 @@ public class Elevator extends Subsystem {
 	public static final double KLowGearForcePerVolt = (512d / 12d /* newtons */) * 1.5;
 	public static final double KHighGearForcePerVolt = (1500d / 12d /* newtons */ );
 
-	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.15, 0.0, 0, 0);
-	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.15, 0, 0, 0);
-	private static final int kLowGearPIDSlot = 0;
-	private static final int kHighGearPIDSlot = 1;
+	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.15, 0.0, 0, 0); // Low speed
+	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.15, 0, 0, 0); // High speed 
+	private static final int kLowGearPIDSlot = 0; // low speed slot
+	private static final int kHighGearPIDSlot = 1; // high gear slot
+	public static final PIDSettings HIGH_GEAR_MOTION_MAGIC = new PIDSettings(0.45, 0, 0, 0.3, 4000, 9500); // High speed 
+	private static final int kLowGearMotionMagicPIDSlot = 3; // low speed slot
 
 	private FalconSRX<Length> mMaster;
 
 	private FalconSRX<Length> mSlave1, mSlave2, mSlave3;
 
 	private static ElevatorGear mCurrentGear;
-	public static final ElevatorGear kDefaultGear = ElevatorGear.HIGH;
+	public static final ElevatorGear kDefaultGear = ElevatorGear.HIGH; // start in high speed
+
+	public enum PositionMode {
+		POSITION, MOTIONMAGIC;
+	}
 
 	NativeUnitLengthModel lengthModel = RobotConfig.elevator.elevatorModel;
 
@@ -129,6 +135,7 @@ public class Elevator extends Subsystem {
 		// setup PID gains
 		setClosedLoopGains(kLowGearPIDSlot, LOW_GEAR_PID);
 		setClosedLoopGains(kHighGearPIDSlot, HIGH_GEAR_PID);
+		setClosedLoopGains(kLowGearMotionMagicPIDSlot, HIGH_GEAR_MOTION_MAGIC);
 
 		NativeUnit maxHeightRaw = lengthModel.toNativeUnitPosition(SuperStructureConstants.Elevator.top.times(0.95));
 		getMaster().configForwardSoftLimitThreshold((int) maxHeightRaw.getValue());
@@ -139,6 +146,17 @@ public class Elevator extends Subsystem {
 
 		mCurrentGear = kDefaultGear;
 		setGear(kDefaultGear); // set shifter and closed loop slot
+	}
+
+	public void setPositionMode(PositionMode mode) {
+		if(mode == PositionMode.MOTIONMAGIC) {
+			configMotionMagicGains(HIGH_GEAR_MOTION_MAGIC);
+		}
+	}
+
+	public void configMotionMagicGains(PIDSettings settings) {
+		getMaster().configMotionCruiseVelocity((int)settings.motionMagicCruiseVelocity);
+		getMaster().configMotionAcceleration((int)settings.motionMagicAccel);
 	}
 
 	public FalconSRX<Length> getMaster() {
@@ -228,6 +246,11 @@ public class Elevator extends Subsystem {
 	public void setPositionArbitraryFeedForward(Length setpoint, double feedForwardPercent) {
 		setpoint = Util.limit(setpoint, SuperStructureConstants.Elevator.bottom, SuperStructureConstants.Elevator.top);
 		getMaster().set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
+	}
+
+	public void setMMArbitraryFeedForward(Length setpoint, double feedForwardPercent) {
+		setpoint = Util.limit(setpoint, SuperStructureConstants.Elevator.bottom, SuperStructureConstants.Elevator.top);
+		getMaster().set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
 	}
 
 	/**
