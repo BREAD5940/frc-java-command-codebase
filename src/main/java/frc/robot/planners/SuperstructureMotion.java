@@ -59,8 +59,6 @@ public class SuperstructureMotion extends Command {
 
     //CHECK if the current and goal match
     if(goalState.isEqualTo(currentState)){
-      queue.add(new ArmMove());
-      queue.add(new ElevatorMove());
       return true;
     }
     //SAFE illegal inputs
@@ -125,6 +123,10 @@ public class SuperstructureMotion extends Command {
     //CHECK if the elevator point is in proximity to the crossbar
       //STOW the intake if it's in danger
     //
+
+
+    queue.add(new ArmMove(goalState.getAngle()));
+    queue.add(new ElevatorMove(goalState.getElevator()));
 
 
     return true;
