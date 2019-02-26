@@ -52,7 +52,6 @@ public class RunAuto extends AutoCommandGroup {
 		this.isDrive = false;
 		requires(SuperStructure.getInstance());
 		requires(DriveTrain.getInstance());
-		requires(SuperStructure.getInstance());
 	}
 
 	public RunAuto(HeldPiece cPiece, String... cKeys) {
@@ -80,7 +79,9 @@ public class RunAuto extends AutoCommandGroup {
 	@Override
 	protected void execute() {
 		// Don't need to do anything here
+		System.out.println("Done? " +  running.done());
 		if (!isDrive && running.done() && !begun) {
+			System.out.println("starting big command group");
 			mMotion.getBigCommandGroup().start();
 			begun = true;
 		}
@@ -93,11 +94,12 @@ public class RunAuto extends AutoCommandGroup {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		if (!isDrive) {
-			return mMotion.getBigCommandGroup().done();
-		} else {
-			return cMotion.getBigCommandGroup().done();
-		}
+		// if (!isDrive) {
+		// 	return mMotion.getBigCommandGroup().done();
+		// } else {
+		// 	return cMotion.getBigCommandGroup().done();
+		// }
+		return false;
 	}
 
 	// Called once after isFinished returns true

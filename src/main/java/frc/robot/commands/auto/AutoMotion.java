@@ -2,6 +2,7 @@ package frc.robot.commands.auto;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 
+import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.PlaceHatch;
@@ -89,6 +90,7 @@ public class AutoMotion {
 			toReturn.addSequential(new RunIntake(.75d, 1));
 			this.endPiece = HeldPiece.CARGO;
 		} else if (this.gType == GoalType.RETRIEVE_HATCH) {
+			toReturn.addSequential(new PrintCommand("running grab commands!"));
 			//TODO align with vision targets
 			toReturn.addSequential(new FollowVisionTarget(1, 5, 10));
 			//yeet into loading station

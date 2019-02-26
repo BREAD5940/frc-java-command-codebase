@@ -30,6 +30,7 @@ public class SuperStructureTelop extends Command {
 	@Override
 	protected void initialize() {
 		SuperStructure.elevator.setGear(Elevator.kDefaultGear);
+		System.out.println("kp: ================ " + SuperStructure.elevator.getMaster().getKP());
 		mCachedState = SuperStructure.getInstance().updateState();
 	}
 

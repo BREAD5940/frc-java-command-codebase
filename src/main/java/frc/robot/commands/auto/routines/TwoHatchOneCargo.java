@@ -20,7 +20,7 @@ import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
  * 2-hatch 1-cargo auto
  */
 //FIXME why is this specified as left if it also takes an input for side?
-public class TwoHatchOneCargoLeft extends AutoCommandGroup {
+public class TwoHatchOneCargo extends AutoCommandGroup {
 	// private AutoCommandGroup mBigCommandGroup;
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
 	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
@@ -30,7 +30,7 @@ public class TwoHatchOneCargoLeft extends AutoCommandGroup {
 	 * @param side to target (L or R)
 	 * @param startPos L M or R on the hab
 	 */
-	public TwoHatchOneCargoLeft(char startPos, char side) {
+	public TwoHatchOneCargo(char startPos, char side) {
 		HeldPiece cPiece = HeldPiece.HATCH; // we start with a hatch
 		String cStart = "hab" + startPos;
 

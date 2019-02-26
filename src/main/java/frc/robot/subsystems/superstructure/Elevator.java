@@ -80,7 +80,7 @@ public class Elevator /*extends Subsystem*/ {
 	public static final double KLowGearForcePerVolt = (512d / 12d /* newtons */) * 1.5;
 	public static final double KHighGearForcePerVolt = (1500d / 12d /* newtons */ );
 
-	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.2, 0.1, 2, 0);
+	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.15, 0.0, 0, 0);
 	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.15, 0, 0, 0);
 	private static final int kLowGearPIDSlot = 0;
 	private static final int kHighGearPIDSlot = 1;
