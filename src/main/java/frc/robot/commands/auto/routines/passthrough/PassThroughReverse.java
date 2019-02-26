@@ -13,7 +13,7 @@ import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.lib.obj.RoundRotation2d;
-import frc.robot.planners.SuperstructurePlanner;
+import frc.robot.planners.SuperstructurePlannerOLD;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
@@ -25,7 +25,7 @@ public class PassThroughReverse extends AutoCommandGroup {
 	 */
 	public PassThroughReverse() {
 
-		SuperStructureState passthroughInitState = SuperstructurePlanner.passThroughState;
+		SuperStructureState passthroughInitState = SuperstructurePlannerOLD.passThroughState;
 
 		SuperStructureState passedThrough = new SuperStructureState(
 				new ElevatorState(LengthKt.getInch(26)),
