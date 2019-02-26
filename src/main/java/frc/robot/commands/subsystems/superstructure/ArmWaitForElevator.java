@@ -16,7 +16,10 @@ public class ArmWaitForElevator extends Command{
   boolean isDescending;
 
   public ArmWaitForElevator(IntakeAngle desired, Length finalEleHeight, Length tolerence, boolean isDescending){
-
+    this.desired = desired;
+    this.finalEleHeight = finalEleHeight;
+    this.tolerence = tolerence;
+    this.isDescending = isDescending;
   }
 
   @Override
@@ -29,7 +32,7 @@ public class ArmWaitForElevator extends Command{
     if((SuperStructure.getElevator().getHeight().getInch() < finalEleHeight.plus(tolerence).getInch() && isDescending) 
         || (SuperStructure.getElevator().getHeight().getInch() > finalEleHeight.minus(tolerence).getInch()
             && !isDescending)) {
-      requires(SuperStructure.getInstance());
+      requires(SuperStructure.getInstance()); // I'm still really confused about the whole superstructure is a subsystem BUT ALSO everything in it is a subsystem. Maybe we should just choose one?
 		  requires(SuperStructure.getInstance().getWrist());
 		  requires(SuperStructure.getInstance().getElbow());
       SuperStructure.getInstance().getWrist().requestAngle(desired.getWrist().angle);
