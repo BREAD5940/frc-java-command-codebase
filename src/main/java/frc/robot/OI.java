@@ -4,8 +4,14 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
+import frc.robot.commands.auto.AutoMotion;
+import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.auto.AutoMotion.GoalHeight;
+import frc.robot.commands.auto.AutoMotion.GoalType;
+import frc.robot.commands.auto.routines.PickupHatch;
 import frc.robot.commands.auto.routines.passthrough.PassThrough;
+import frc.robot.commands.subsystems.drivetrain.FollowVisonTargetTheSecond;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.ElevatorMotionMagicTest;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
@@ -88,7 +94,8 @@ public class OI {
 		// test1Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.LOW));
 		test1Button.whenPressed(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)); // y button
 		test2Button.whenPressed(new PassThrough()); // a button
-		test3Button.whenPressed(new ElevatorMotionMagicTest()); // x button
+		test3Button.whenPressed(new PickupHatch()); // x button
+		// test3Button.whenPressed(new FollowVisonTargetTheSecond());
 		// test4Button.whenPressed(new VisionAssistedDriving());
 		// test4Button.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW)); // b button - used now for dealy
 

@@ -75,15 +75,19 @@ public class FollowVisionTarget extends Command {
 		angleDeltaX = Robot.limelight.getDx().getDegree();
 		// targetPercentOfFrame = Robot.limelight.getTargetArea();
 	}
-
+	double sizeData;
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
 		if (Robot.limelight.getData()[0] != 0) {
 			double[] data = Robot.limelight.getData();
 			double xAxisOffset = data[1]; // x axis offset
-			double sizeData = data[3]; // percent of frame
-			turnSpeed = xAxisOffset / 16d;
+			sizeData = data[3]; // percent of frame`
+
+			double kMultiplier = 1/20f;
+
+			System.out.println("kMultiplier: " + kMultiplier);
+			turnSpeed = xAxisOffset / kMultiplier;
 
 			forwardSpeed = 0;
 
@@ -92,7 +96,7 @@ public class FollowVisionTarget extends Command {
 			double forwardSpeed = distanceRatio * 0.5;
 			forwardSpeed = Util.limit(forwardSpeed, 0.5);
 
-			Robot.drivetrain.arcadeDrive(forwardSpeed, turnSpeed);
+			Robot.drivetrain.arcadeDrive(forwardSpeed + 0.5/12d, turnSpeed);
 			System.out.println("X axis offset: " + xAxisOffset + " Control input: " + forwardSpeed + "," + turnSpeed);
 
 		} else {
@@ -104,7 +108,7 @@ public class FollowVisionTarget extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return isTimedOut();
+		return isTimedOut() || Math.abs(sizeData - this.targetPercentOfFrame) < 0.2;
 	}
 
 	// Called once after isFinished returns true
