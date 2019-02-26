@@ -12,6 +12,8 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 
+import edu.wpi.first.wpilibj.command.Subsystem;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -26,7 +28,7 @@ import frc.robot.lib.obj.AngularVelocity;
 import frc.robot.lib.obj.HalfBakedRotatingSRX;
 import frc.robot.lib.obj.RoundRotation2d;
 
-public class RotatingJoint /*extends Subsystem*/ {
+public class RotatingJoint extends Subsystem {
 
 	private ArrayList<HalfBakedRotatingSRX> motors = new ArrayList<HalfBakedRotatingSRX>();
 
@@ -247,5 +249,10 @@ public class RotatingJoint /*extends Subsystem*/ {
 
 	public double getDegrees() {
 		return getMaster().getRotation2d().getDegree();
+	}
+
+	@Override
+	protected void initDefaultCommand() {
+
 	}
 }

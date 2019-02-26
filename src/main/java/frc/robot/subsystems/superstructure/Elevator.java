@@ -23,6 +23,7 @@ import com.ctre.phoenix.motorcontrol.SensorTerm;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.SuperStructureConstants;
@@ -41,7 +42,7 @@ import frc.robot.states.SuperStructureState;
  * 
  * @author Matthew Morley
  */
-public class Elevator /*extends Subsystem*/ {
+public class Elevator extends Subsystem {
 
 	private DoubleSolenoid mSolenoid = Robot.getElevatorShifter();
 
@@ -256,5 +257,10 @@ public class Elevator /*extends Subsystem*/ {
 		// Acceleration<Length> accel = AccelerationKt.getAcceleration(LengthKt.getMeter(
 		// (getVelocity().getValue() - lastKnown.velocity.getValue()) / (time.getValue() - lastKnown.time.getValue())));
 		return new ElevatorState(getHeight(), getVelocity());
+	}
+
+	@Override
+	protected void initDefaultCommand() {
+
 	}
 }

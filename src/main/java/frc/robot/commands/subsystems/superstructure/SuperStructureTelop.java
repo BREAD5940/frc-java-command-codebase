@@ -24,6 +24,9 @@ public class SuperStructureTelop extends Command {
 	public SuperStructureTelop() {
 		// Use requires() here to declare subsystem dependencies
 		requires(SuperStructure.getInstance());
+		requires(SuperStructure.getInstance().getWrist());
+		requires(SuperStructure.getInstance().getElbow());
+		requires(SuperStructure.getElevator());
 	}
 
 	// Called just before this Command runs the first time

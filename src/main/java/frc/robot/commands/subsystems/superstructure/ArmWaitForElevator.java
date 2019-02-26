@@ -30,6 +30,8 @@ public class ArmWaitForElevator extends Command{
         || (SuperStructure.getElevator().getHeight().getInch() > finalEleHeight.minus(tolerence).getInch()
             && !isDescending)) {
       requires(SuperStructure.getInstance());
+		  requires(SuperStructure.getInstance().getWrist());
+		  requires(SuperStructure.getInstance().getElbow());
       SuperStructure.getInstance().getWrist().requestAngle(desired.getWrist().angle);
       SuperStructure.getInstance().getElbow().requestAngle(desired.getElbow().angle);
     }

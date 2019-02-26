@@ -20,6 +20,7 @@ public class ElevatorMotionMagicTest extends Command {
 
 	public ElevatorMotionMagicTest() {
 		requires(SuperStructure.getInstance());
+		requires(SuperStructure.getElevator());
 		setTimeout(kDefaultTimeout);
 	}
 

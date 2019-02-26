@@ -40,6 +40,10 @@ public class SuperstructureMotion extends Command {
 
   private SuperstructureMotion() {
     requires(SuperStructure.getInstance());
+    
+		requires(SuperStructure.getInstance().getWrist());
+		requires(SuperStructure.getInstance().getElbow());
+		requires(SuperStructure.getElevator());
   }
 
   
