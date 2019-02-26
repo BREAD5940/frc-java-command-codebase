@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import frc.robot.SuperStructureConstants;
+import frc.robot.commands.auto.routines.passthrough.PassThroughForward;
+import frc.robot.commands.auto.routines.passthrough.PassThroughReverse;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.ArmWaitForElevator;
 import frc.robot.commands.subsystems.superstructure.ElevatorMove;
@@ -117,6 +119,13 @@ public class SuperstructureMotion extends Command {
       goalState.getElbow().setAngle(tempTheta);
       GPwrist = new Translation2d(GPwrist.getX(),  LengthKt.getInch(Math.sin(tempTheta.getRadian())*SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(GPelevator.getY()));
 
+    }
+
+
+    if(GPwrist.getX().getInch() > 0 && SPwrist.getX().getInch()<0){
+      queue.addSequential(new PassThroughReverse());
+    }else if(GPwrist.getX().getInch() < 0 && SPwrist.getX().getInch() >0){
+      queue.addSequential(new PassThroughForward());
     }
 
     
