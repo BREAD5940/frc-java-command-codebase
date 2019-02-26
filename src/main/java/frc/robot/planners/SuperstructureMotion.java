@@ -11,6 +11,7 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import frc.robot.SuperStructureConstants;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
@@ -43,7 +44,9 @@ public class SuperstructureMotion extends Command {
 
   
   private SuperstructureMotion instance_;
-  protected LinkedList<Command> queue = new LinkedList<Command>();
+  protected CommandGroup queue = new CommandGroup();
+  // protected CommandGroup eleQueue = new CommandGroup();
+  // protected CommandGroup armQueue = new CommandGroup();
   protected Optional<Command> current;
 
 
@@ -116,7 +119,7 @@ public class SuperstructureMotion extends Command {
     
 
     //CLEAR the queue
-    queue.clear();
+    queue = new CommandGroup();
 
     
     //CHECK the position of the intake -- hatch or cargo
@@ -124,7 +127,7 @@ public class SuperstructureMotion extends Command {
     boolean isLongClimb = Math.abs(goalState.getElevatorHeight().minus(currentState.getElevatorHeight()).getInch()) >= SuperStructureConstants.Elevator.longClimb.getInch();
 
     if(isLongClimb){
-      queue.add(new ArmMove(SuperStructure.iPosition.STOWED));
+      queue.addParallel(new ArmMove(SuperStructure.iPosition.STOWED));
     }
     //CHECK if the elevator point is in proximity to the crossbar
 
@@ -132,41 +135,27 @@ public class SuperstructureMotion extends Command {
       || (GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch() && SPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch())
         || (GPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.plus(SuperStructureConstants.Elevator.crossbarWidth).getInch()
           && GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch())){
-            queue.add(new ArmMove(SuperStructure.iPosition.STOWED));
+            queue.addSequential(new ArmMove(SuperStructure.iPosition.STOWED));
       }
 
 
-    queue.add(new ArmWaitForElevator(goalState.getAngle(), goalState.getElevatorHeight(), LengthKt.getInch(3), 
+    queue.addParallel(new ArmWaitForElevator(goalState.getAngle(), goalState.getElevatorHeight(), LengthKt.getInch(3), 
               goalState.getElevatorHeight().getInch() < currentState.getElevatorHeight().getInch()));
-    queue.add(new ElevatorMove(goalState.getElevator()));
+    queue.addSequential(new ElevatorMove(goalState.getElevator()));
 
 
     return true;
   }
 
 
-
-  public LinkedList<Command> getQueue(){
-    return this.queue;
-  }
-
-
-  // public Command getCurrent(){
-  //   return this.current;
-  // }
-
-  public void setCurrent(int queuePos){
-    // this.current = this.queue.get(queuePos);
+  @Override
+  protected void initialize() {
+    queue.start();
   }
 
   @Override
   protected boolean isFinished() {
-    boolean itBeDone = true;
-    for(int i=0; i<this.queue.size(); i++){
-      itBeDone = this.queue.get(i).isCompleted() && itBeDone;
-    }
-
-    return itBeDone;
+    return queue.isCompleted();
   }
 
   
