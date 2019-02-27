@@ -129,6 +129,7 @@ public class Elevator extends Subsystem {
 		// setup PID gains
 		setClosedLoopGains(kLowGearPIDSlot, LOW_GEAR_PID);
 		setClosedLoopGains(kHighGearPIDSlot, HIGH_GEAR_PID);
+		setMotionMagicGains();
 
 		NativeUnit maxHeightRaw = lengthModel.toNativeUnitPosition(SuperStructureConstants.Elevator.top.times(0.95));
 		getMaster().configForwardSoftLimitThreshold((int) maxHeightRaw.getValue());
@@ -153,6 +154,19 @@ public class Elevator extends Subsystem {
 
 	public NativeUnitLengthModel getModel() {
 		return lengthModel;
+	}
+
+	public void setMotionMagicGains() {
+		// Elevator elev = SuperStructure.getElevator();
+		this.getMaster().configMotionAcceleration((int) (600 * 9 * 1.75));
+		this.getMaster().configMotionCruiseVelocity(4000); // about 3500 theoretical max
+		this.getMaster().configMotionSCurveStrength(0);
+		this.getMaster().config_kP(3, 0.45, 0);
+		this.getMaster().config_kI(3, 0.0, 0);
+		this.getMaster().config_kD(3, 4, 0);
+		this.getMaster().config_kF(3, 0.24 * (500 / 400), 0);
+		// this.getMaster().selectProfileSlot(3, 0);
+		// this.getMaster().configClosedloopRamp(0.1);
 	}
 
 	public Length getHeight() {

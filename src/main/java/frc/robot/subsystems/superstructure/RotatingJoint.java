@@ -107,6 +107,7 @@ public class RotatingJoint extends Subsystem {
 		setClosedLoopGains(0, settings);
 		getMaster().configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
 		getMaster().configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+		setMotionMagicGains();
 	}
 
 	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, double iZone, double maxIntegral, double minOut, double maxOut) {
@@ -119,6 +120,26 @@ public class RotatingJoint extends Subsystem {
 		getMaster().configMaxIntegralAccumulator(0, maxIntegral, 0);
 		getMaster().configPeakOutputForward(maxOut);
 		getMaster().configPeakOutputReverse(minOut);
+	}
+
+	public void setGainMode(boolean isMotionMagic) {
+		if(isMotionMagic) getMaster().selectProfileSlot(3, 0); 
+		if(!isMotionMagic) getMaster().selectProfileSlot(0, 0);
+	}
+
+	private PIDSettings kDefaultMotionMagicPidSettings = new PIDSettings(.1, 0, 0, 0.1, 1000, 1000);
+
+	public void setMotionMagicGains() {
+		// Elevator elev = SuperStructure.getElevator();
+		this.getMaster().configMotionAcceleration((int) (1000));
+		this.getMaster().configMotionCruiseVelocity(1000); // about 3500 theoretical max
+		this.getMaster().configMotionSCurveStrength(0);
+		this.getMaster().config_kP(3, 0.4, 0);
+		this.getMaster().config_kI(3, 0.0, 0);
+		this.getMaster().config_kD(3, 4.0, 0);
+		this.getMaster().config_kF(3, 0.75 * 1.25, 0);
+		// this.getMaster().selectProfileSlot(3, 0);
+		// this.getMaster().configClosedloopRamp(0.1);
 	}
 
 	public void setClosedLoopGains(int slot, PIDSettings config) {
