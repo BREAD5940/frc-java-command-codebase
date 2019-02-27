@@ -37,7 +37,7 @@ public class SetPoseFromVisionTarget extends InstantCommand {
       Rotation2d yaw = Rotation2dKt.getDegree(4);
 
       Pose2d newPose = new Pose2d(x, y, yaw);
-
+      System.out.println("setting new pose");
       mRun.accept(newPose);
     }
     
