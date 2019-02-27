@@ -19,6 +19,7 @@ import frc.robot.commands.auto.routines.passthrough.PassThroughReverse;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.ArmWaitForElevator;
 import frc.robot.commands.subsystems.superstructure.ElevatorMove;
+import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -70,27 +71,27 @@ public class SuperstructureMotion extends Command {
 
     //CHECK if the current and goal match
     if(goalState.isEqualTo(currentState)){
+      Logger.log("Goal and current states same.");
       return true;
     }
     //SAFE illegal inputs
     if(goalState.getElevatorHeight().getInch() > SuperStructureConstants.Elevator.top.getInch()){
+      Logger.log("Elevator high");
       goalState.getElevator().setHeight(SuperStructureConstants.Elevator.top); // constrain elevator to max height
     } else if (goalState.getElevatorHeight().getInch() < SuperStructureConstants.Elevator.bottom.getInch()){
+      Logger.log("Elevator low");
       goalState.getElevator().setHeight(SuperStructureConstants.Elevator.bottom); // constrain elevator to min height
     }
 
     if(goalState.getElbowAngle().getDegree() > SuperStructureConstants.Elbow.kElbowMax.getDegree()){
+      Logger.log("Elbow big");
       goalState.getElbow().setAngle(SuperStructureConstants.Elbow.kElbowMax); // Constrain elbow to max
     } else if (goalState.getElbowAngle().getDegree() < SuperStructureConstants.Elbow.kElbowMin.getDegree()){
+      Logger.log("Elbow small");
       goalState.getElbow().setAngle(SuperStructureConstants.Elbow.kElbowMin); // Constrain elbow to min
     }
 
-    // FIXME so the issue here is that the maximum position of the wrist depends on the proximal (elbow) angle. So we have to measure it somehow yay. Also the sprocket on there means that the wrist will slowly rotate as the proximal joint rotates
-    if(goalState.getWristAngle().getDegree() > SuperStructureConstants.Wrist.kWristMax.getDegree()){
-      goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMax); // constrain wrist to max
-    }else if (goalState.getWristAngle().getDegree() < SuperStructureConstants.Wrist.kWristMin.getDegree()){
-      goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMin); // constrain wrist to min
-    }
+    
 
     //DEFINE the three goal points -- elevator, wrist, and end of intake
     Translation2d GPelevator  = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight());
@@ -105,6 +106,18 @@ public class SuperstructureMotion extends Command {
             LengthKt.getInch(currentState.getElbowAngle().getSin()*SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(SPelevator.getY()));
     Translation2d SPeoi = new Translation2d(LengthKt.getInch(currentState.getWristAngle().getCos()*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(SPwrist.getX()),
     LengthKt.getInch(currentState.getWristAngle().getSin()*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(SPwrist.getY()));
+
+
+
+    // FIXME so the issue here is that the maximum position of the wrist depends on the proximal (elbow) angle. So we have to measure it somehow yay. Also the sprocket on there means that the wrist will slowly rotate as the proximal joint rotates
+    //FIXME mostly fixed, check math
+    if(Math.atan((GPeoi.getY().getInch()+GPwrist.getY().getInch())/(GPeoi.getX().getInch()+GPwrist.getX().getInch())) > SuperStructureConstants.Wrist.kWristMax.getRadian()){
+      goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMax); // constrain wrist to max
+    }else if (Math.atan((GPeoi.getY().getInch()+GPwrist.getY().getInch())/(GPeoi.getX().getInch()+GPwrist.getX().getInch())) < SuperStructureConstants.Wrist.kWristMin.getRadian()){
+      goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMin); // constrain wrist to min
+    }
+
+
 
     //SAFE potential crashes on the end state
     
