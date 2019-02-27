@@ -10,6 +10,7 @@ import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.routines.PickupHatch;
 import frc.robot.commands.auto.routines.passthrough.PassThrough;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
+import frc.robot.commands.subsystems.superstructure.ElevatorMotionMagicTest;
 import frc.robot.commands.subsystems.superstructure.PlannerTest;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
@@ -95,8 +96,8 @@ public class OI {
 		test2Button.whenPressed(new PassThrough()); // a button
 		test3Button.whenPressed(new PickupHatch()); // x button
 		// test3Button.whenPressed(new FollowVisonTargetTheSecond());
-		test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button
-		// test4Button.whenPressed(new VisionAssistedDriving());
+		// test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button
+		test4Button.whenPressed(new ElevatorMotionMagicTest()); // b button
 		// test4Button.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW)); // b button - used now for dealy
 
 		// cargoOverButton.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.OVER));

@@ -280,8 +280,8 @@ public class SuperStructure extends Subsystem implements Loggable {
 		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
 		// SuperStructureState stateSetpoint = plan(requState);
 
-		getWrist().requestAngle(ControlMode.MotionMagic, requState.getWrist().angle);
-		getElbow().requestAngle(ControlMode.MotionMagic, requState.getElbow().angle);
+		getWrist().requestAngle(ControlMode.Position, requState.getWrist().angle);
+		getElbow().requestAngle(ControlMode.Position, requState.getElbow().angle);
 		getElevator().setMMArbitraryFeedForward(requState.getElevator().height, elevatorPercentVbusGravity);
 		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
 

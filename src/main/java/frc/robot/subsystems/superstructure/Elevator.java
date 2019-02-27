@@ -28,6 +28,7 @@ import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.SuperStructureConstants;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.lib.Logger;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.InvertSettings;
@@ -86,7 +87,7 @@ public class Elevator extends Subsystem {
 	private static final int kLowGearPIDSlot = 0; // low speed slot
 	private static final int kHighGearPIDSlot = 1; // high gear slot
 	public static final PIDSettings HIGH_GEAR_MOTION_MAGIC = new PIDSettings(0.45, 0, 0, 0.3, 4000, 9500); // High speed 
-	private static final int kLowGearMotionMagicPIDSlot = 3; // low speed slot
+	private static final int kHighGearMotionMagicPIDSlot = 3; // low speed slot
 
 	private FalconSRX<Length> mMaster;
 
@@ -135,7 +136,7 @@ public class Elevator extends Subsystem {
 		// setup PID gains
 		setClosedLoopGains(kLowGearPIDSlot, LOW_GEAR_PID);
 		setClosedLoopGains(kHighGearPIDSlot, HIGH_GEAR_PID);
-		setClosedLoopGains(kLowGearMotionMagicPIDSlot, HIGH_GEAR_MOTION_MAGIC);
+		setClosedLoopGains(kHighGearMotionMagicPIDSlot, HIGH_GEAR_MOTION_MAGIC);
 
 		NativeUnit maxHeightRaw = lengthModel.toNativeUnitPosition(SuperStructureConstants.Elevator.top.times(0.95));
 		getMaster().configForwardSoftLimitThreshold((int) maxHeightRaw.getValue());
@@ -187,10 +188,13 @@ public class Elevator extends Subsystem {
 		if (req == ElevatorGear.LOW) {
 			Robot.setElevatorShifter(true);
 			getMaster().selectProfileSlot(kLowGearPIDSlot, 0);
+			setMMGains(LOW_GEAR_PID);
 		}
 		if (req == ElevatorGear.HIGH) {
 			Robot.setElevatorShifter(false);
-			getMaster().selectProfileSlot(kHighGearPIDSlot, 0);
+			// getMaster().selectProfileSlot(kHighGearPIDSlot, 0);
+			getMaster().selectProfileSlot(kHighGearMotionMagicPIDSlot, 0);
+			setMMGains(HIGH_GEAR_MOTION_MAGIC);
 		}
 	}
 
@@ -248,9 +252,23 @@ public class Elevator extends Subsystem {
 		getMaster().set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
 	}
 
+	/**
+	 * Set the position of the elevator in motion magic mode mode
+	 * @param setpoint how high to go
+	 * @param feedForwardPercent how much throttle to add
+	 */
 	public void setMMArbitraryFeedForward(Length setpoint, double feedForwardPercent) {
 		setpoint = Util.limit(setpoint, SuperStructureConstants.Elevator.bottom, SuperStructureConstants.Elevator.top);
+		getMaster().selectProfileSlot(3, 0);
+		Logger.log("Elevator setpoint: " + setpoint.getInch() + " feedforward: " + feedForwardPercent + " current raw output: " + getMaster().getMotorOutputPercent());
 		getMaster().set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
+	}
+
+	public void setMMGains(PIDSettings config) {
+		Logger.log("Setting motion magic gains! Velocity: " + (int)config.motionMagicCruiseVelocity + 
+		    " acceleration: " + (int)config.motionMagicAccel);
+		getMaster().configMotionCruiseVelocity((int)config.motionMagicCruiseVelocity);
+		getMaster().configMotionAcceleration((int)config.motionMagicAccel);
 	}
 
 	/**
