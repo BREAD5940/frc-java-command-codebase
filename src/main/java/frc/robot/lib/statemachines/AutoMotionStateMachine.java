@@ -13,4 +13,15 @@ public class AutoMotionStateMachine{
 	public enum GoalType {
 		CARGO_CARGO, CARGO_HATCH, ROCKET_CARGO, ROCKET_HATCH, RETRIEVE_HATCH, RETRIEVE_CARGO
 	}
+
+	private static HeldPiece heldPiece = HeldPiece.NONE;
+
+
+	public static void setHeldPiece(HeldPiece piece){
+		heldPiece = piece;
+	}
+
+	public static HeldPiece getHeldPiece(){
+		return heldPiece;
+	}
 }
