@@ -7,11 +7,13 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class RunIntake extends Command {
 	double demand, duratuion;
+	double endTime;
 
 	/**
 	 * Run the intake for a set amount of time
@@ -22,26 +24,30 @@ public class RunIntake extends Command {
 		requires(SuperStructure.intake); // TODO make sure this works
 		this.demand = demand_;
 		this.duratuion = duration_;
-		setTimeout(duration_);
 	}
 
 	@Override
 	protected void initialize() {
 		SuperStructure.intake.setSpeed(demand);
+		endTime = Timer.getFPGATimestamp() + duratuion;
 	}
 
 	@Override
-	protected void execute() {}
+	protected void execute() {
+		SuperStructure.intake.setSpeed(demand);
+	}
 
 	@Override
 	protected boolean isFinished() {
-		return this.isTimedOut();
+		System.out.println("Now: " + Timer.getFPGATimestamp() + "end: " + endTime + " is intake/outtake timed out? " + (Timer.getFPGATimestamp() > endTime));
+
+		return (endTime < Timer.getFPGATimestamp());
 	}
 
 	@Override
 	protected void end() {
 		SuperStructure.intake.setSpeed(0d);
-		SuperStructure.intake.setSpeed(0d);
+		// SuperStructure.intake.setSpeed(0d);
 	}
 
 	@Override

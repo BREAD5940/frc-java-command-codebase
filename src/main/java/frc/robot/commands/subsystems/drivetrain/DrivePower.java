@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.DriveTrain;
 
 public class DrivePower extends Command {
-	double power, time, now;
+	double power, time, reqEndTime;
 
 	public DrivePower(double power, double time) {
 		// Use requires() here to declare subsystem dependencies
@@ -25,20 +25,22 @@ public class DrivePower extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		time = time + Timer.getFPGATimestamp();
+		reqEndTime = time + Timer.getFPGATimestamp();
+		System.out.println("Requested end time: " + reqEndTime + "now: " + Timer.getFPGATimestamp());
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		System.out.println("hi!");
+		// System.out.println("hi!");
 		DriveTrain.getInstance().arcadeDrive(power, 0, false);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return (Timer.getFPGATimestamp() > time);
+		System.out.println("Now: " + Timer.getFPGATimestamp() + "end: " + reqEndTime + " is drive power timed out? " + (Timer.getFPGATimestamp() > reqEndTime));
+		return (Timer.getFPGATimestamp() > reqEndTime);
 	}
 
 	// Called once after isFinished returns true

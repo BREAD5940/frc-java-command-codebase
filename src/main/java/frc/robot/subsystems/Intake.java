@@ -67,7 +67,7 @@ public class Intake extends Subsystem {
 	private Intake(int port) {
 		talon = new WPI_TalonSRX(port);
 		// talon.configOpenloopRamp(0.15);
-		talon.configContinuousCurrentLimit(25);
+		talon.configContinuousCurrentLimit(30);
 		talon.configPeakCurrentLimit(40);
 		talon.enableCurrentLimit(true);
 		talon.setName("Intake");
@@ -82,8 +82,13 @@ public class Intake extends Subsystem {
 	 * @param speed
 	 */
 	public void setSpeed(double speed) {
+		// if (Math.abs(speed) < 0.2)
+		// 	speed = 0.1;
+		// speed = Util.limit(speed, -0.75, 0.75);
+
 		talon.set(ControlMode.PercentOutput, speed);
 		SmartDashboard.putNumber("Intake speed setpoint", speed);
+
 	}
 
 	@Override

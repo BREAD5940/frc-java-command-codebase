@@ -12,9 +12,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.DriveTrain;
 
 public class FollowVisonTargetTheSecond extends Command {
-	public FollowVisonTargetTheSecond() {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+
+	double targetArea = 4.5;
+
+	public FollowVisonTargetTheSecond(double targetArea) {
+		requires(DriveTrain.getInstance());
+		this.targetArea = targetArea;
 	}
 
 	// Called just before this Command runs the first time
@@ -59,8 +62,8 @@ public class FollowVisonTargetTheSecond extends Command {
 	public void Update_Limelight_Tracking() {
 		// These numbers must be tuned for your Robot!  Be careful!
 		final double STEER_K = 0.05;                    // how hard to turn toward the target
-		final double DRIVE_K = 0.26;                    // how hard to drive fwd toward the target
-		final double DESIRED_TARGET_AREA = 7.5;         // Area of the target when the robot reaches the wall
+		final double DRIVE_K = 0.26 * 1.6;                    // how hard to drive fwd toward the target
+		final double DESIRED_TARGET_AREA = 5;         // Area of the target when the robot reaches the wall
 		final double MAX_DRIVE = 0.7;                   // Simple speed limit so we don't drive too fast
 
 		double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);

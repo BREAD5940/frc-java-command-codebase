@@ -103,7 +103,7 @@ public class SuperstructureGoToState extends Command {
 	private boolean checkElevator() {
 		Length mCurrent = SuperStructure.getInstance().getCurrentState().getElevatorHeight();
 		Length mTarget = mRequState.elevator.height;
-		double kTolerence = 1; // inches
+		double kTolerence = 1.5; // inches
 		double mError = mTarget.minus(mCurrent).getInch();
 		boolean isWithin = (Math.abs(mError) < kTolerence);
 		System.out.printf("ELEVATOR: Current %s Target %s Error %s within Tolerance %s", mCurrent.getInch(), mTarget.getInch(), mError, isWithin);

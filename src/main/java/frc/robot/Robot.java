@@ -192,10 +192,10 @@ public class Robot extends TimedRobot {
 
 			boolean reset = false;
 			if (superstructure.getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
-				RoundRotation2d new_ = RoundRotation2d.getDegree(15);
-				superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(15));
-				System.out.println("elbow fwd triggered! new pos: " + new_.getDegree());
-				reset = true;
+				// RoundRotation2d new_ = RoundRotation2d.getDegree(15);
+				// superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(15));
+				// System.out.println("elbow fwd triggered! new pos: " + new_.getDegree());
+				// reset = true;
 			}
 			if (superstructure.getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
 				System.out.println("wrist fwd triggered!");

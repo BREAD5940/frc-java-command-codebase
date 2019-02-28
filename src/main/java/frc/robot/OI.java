@@ -3,12 +3,16 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.routines.PickupHatch;
+import frc.robot.commands.auto.routines.PlaceHatch;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.ElevatorMotionMagicTest;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
+import frc.robot.lib.obj.factories.SequentialCommandFactory;
+import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
@@ -68,8 +72,16 @@ public class OI {
 	public OI() {
 		shift_up_button.whenPressed(new SetGearCommand(Gear.HIGH));
 		shift_down_button.whenPressed(new SetGearCommand(Gear.LOW));
-		open_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kOpen));
+		// open_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kOpen));
+		// close_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kClamped));
+		open_clamp_button.whenPressed(new SuperstructureGoToState(new ElevatorState(fieldPositions.hatchHighGoal), iPosition.HATCH)); // y button
+		secondaryTest1.whenPressed(new SuperstructureGoToState(new ElevatorState(fieldPositions.hatchMiddleGoal), iPosition.HATCH)); // b button
+		// close_clamp_button.whenP
+
+		secondaryTest2.whenPressed(SequentialCommandFactory.levelOneHatch());
+
 		close_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kClamped));
+
 		if (Trajectories.forward20Feet == null)
 			Trajectories.generateAllTrajectories();
 		// testAutoButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.generatedTrajectories.get("test"), true));
@@ -92,7 +104,7 @@ public class OI {
 		test3Button.whenPressed(new PickupHatch()); // x button
 		// test3Button.whenPressed(new FollowVisonTargetTheSecond());
 		// test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button
-		test4Button.whenPressed(new ElevatorMotionMagicTest());
+		test4Button.whenPressed(new PlaceHatch());
 		// test4Button.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW)); // b button - used now for dealy
 
 		// cargoOverButton.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.OVER));

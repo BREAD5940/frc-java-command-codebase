@@ -30,7 +30,9 @@ public class SetPoseFromVisionTarget extends InstantCommand {
 	protected void initialize() {
 		double[] camtran = NetworkTableInstance.getDefault().getTable("limelight").getEntry("camtran").getDoubleArray(new double[]{});
 		if (camtran.length < 5) {
-			System.out.println("oof");
+			var new__ = new Pose2d(LengthKt.getInch(0.1), LengthKt.getInch(0.1), Rotation2dKt.getDegree(10));
+			System.out.println("oof, new angle will be " + new__.getRotation().getDegree());
+			mRun.accept(new__);
 		} else {
 			Length x = LengthKt.getInch(5);//camtran[0]);
 			Length y = LengthKt.getInch(4);//camtran[1]);
@@ -38,7 +40,7 @@ public class SetPoseFromVisionTarget extends InstantCommand {
 
 			Pose2d newPose = new Pose2d(x, y, yaw);
 			System.out.println("setting new pose");
-			mRun.accept(newPose);
+			// mRun.accept(newPose);
 		}
 
 	}
