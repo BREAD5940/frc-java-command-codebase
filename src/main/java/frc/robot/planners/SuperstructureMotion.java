@@ -32,6 +32,8 @@ import frc.robot.subsystems.superstructure.SuperStructure;
  *  - Call SuperstructureMotion.getInstance().start();
  *    - This will iterate through the planned commandQueue
  *    - It'll end when it's done
+ * 
+ * @author Jocelyn McHugo
  */
 public class SuperstructureMotion extends Command {
   /* RELEVANT COMMANDS:
