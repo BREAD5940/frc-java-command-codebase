@@ -24,14 +24,19 @@ public class SuperStructureTelop extends Command {
 	public SuperStructureTelop() {
 		// Use requires() here to declare subsystem dependencies
 		requires(SuperStructure.getInstance());
+		requires(SuperStructure.getInstance().getWrist());
+		requires(SuperStructure.getInstance().getElbow());
+		requires(SuperStructure.getElevator());
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
 		SuperStructure.elevator.setGear(Elevator.kDefaultGear);
-		System.out.println("kp: ================ " + SuperStructure.elevator.getMaster().getKP());
+		// System.out.println("kp: ================ " + SuperStructure.elevator.getMaster().getKP());
 		mCachedState = SuperStructure.getInstance().updateState();
+		SuperStructure.getElevator().getMaster().selectProfileSlot(3, 0);
+		SuperStructure.getInstance().getElbow().getMaster().selectProfileSlot(3, 0);
 	}
 
 	boolean firstRun = false;
@@ -44,6 +49,7 @@ public class SuperStructureTelop extends Command {
 		var mElevatorPower = Robot.m_oi.getElevatorAxis();
 		var mWristPower = Robot.m_oi.getWristAxis();
 		var mElbowPower = Robot.m_oi.getElbowAxis();
+		mElbowPower = mElbowPower * Math.abs(mElbowPower); // square inputs
 		var kDeadband = 0.05d;
 
 		// Figure out of the operator is commanding an elevator move. If so, increment the new state and cache the current state - if not, stay at the cached state.
@@ -65,7 +71,7 @@ public class SuperStructureTelop extends Command {
 
 		// Figure out of the operator is commanding a elbow move. If so, increment the new state and cache the current state - if not, stay at the cached state.
 		if (Math.abs(mElbowPower) > kDeadband) {
-			mNewState.jointAngles.elbowAngle = new RotatingArmState(mCurrentState.getElbow().angle.plus(RoundRotation2d.getDegree(mElbowPower * 5)));
+			mNewState.jointAngles.elbowAngle = new RotatingArmState(mCurrentState.getElbow().angle.plus(RoundRotation2d.getDegree(mElbowPower * 5 * 3)));
 			mCachedState.jointAngles.elbowAngle = mNewState.jointAngles.elbowAngle;
 		} else {
 			mNewState.jointAngles.elbowAngle = mCachedState.jointAngles.elbowAngle;

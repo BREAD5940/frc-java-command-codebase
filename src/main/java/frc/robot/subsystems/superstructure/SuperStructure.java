@@ -9,6 +9,7 @@ import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.team254.lib.physics.DCMotorTransmission;
@@ -26,7 +27,7 @@ import frc.robot.lib.PIDSettings;
 import frc.robot.lib.PIDSettings.FeedbackMode;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.lib.obj.RoundRotation2d;
-import frc.robot.planners.SuperstructurePlanner;
+import frc.robot.planners.SuperstructurePlannerOLD;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
@@ -54,9 +55,10 @@ public class SuperStructure extends Subsystem implements Loggable {
 	private boolean currentPathComplete = false;
 	public static Elevator elevator;
 	public static Intake intake = Intake.getInstance();
-	private SuperstructurePlanner planner = new SuperstructurePlanner();
+	private SuperstructurePlannerOLD planner = new SuperstructurePlannerOLD();
 	// public SuperStructureState mPeriodicIO = new SuperStructureState();
-	private RotatingJoint mWrist, mElbow;
+	private Wrist mWrist;
+	private RotatingJoint mElbow;
 	private DCMotorTransmission kElbowTransmission, kWristTransmission;
 	public static final Mass kHatchMass = MassKt.getLb(2.4); // FIXME check mass
 	public static final Mass kCargoMass = MassKt.getLb(1); // FIXME check mass
@@ -130,10 +132,14 @@ public class SuperStructure extends Subsystem implements Loggable {
 		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(-47.6)));
 		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(35.98)));
 		public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(148.35)), new RotatingArmState(RoundRotation2d.getDegree(-96.46)));
-		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(87.86 - 90)));
+		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(12)), new RotatingArmState(RoundRotation2d.getDegree(87.86 - 90 + 5)));
 		public static final IntakeAngle HATCH_PITCHED_UP = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(87.86 - 90 + 15)));
 		public static final IntakeAngle STOWED = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(90)));
 		public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-190)), new RotatingArmState(RoundRotation2d.getDegree(-110)));
+
+		// grab a hatch by ramming against the loading station. Takes advantage of bumper recesses
+		public static final SuperStructureState HATCH_GRAB_INSIDE = new SuperStructureState(new ElevatorState(LengthKt.getInch(20.5)), new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(40))));
+		public static final SuperStructureState HATCH_GRAB_INSIDE_PREP = new SuperStructureState(new ElevatorState(LengthKt.getInch(17)), new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(40 + 7))));
 
 		public static final ArrayList<IntakeAngle> presets = new ArrayList<IntakeAngle>(Arrays.asList(CARGO_GRAB, CARGO_DOWN,
 				CARGO_PLACE, CARGO_REVERSE, HATCH, HATCH_REVERSE));
@@ -225,7 +231,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 		return mCurrentState;
 	}
 
-	public RotatingJoint getWrist() {
+	public Wrist getWrist() {
 		if (mWrist == null)
 			mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
 					Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
@@ -280,9 +286,9 @@ public class SuperStructure extends Subsystem implements Loggable {
 		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
 		// SuperStructureState stateSetpoint = plan(requState);
 
-		getWrist().requestAngle(ControlMode.Position, requState.getWrist().angle);
-		getElbow().requestAngle(ControlMode.Position, requState.getElbow().angle);
-		getElevator().setPositionArbitraryFeedForward(requState.getElevator().height, elevatorPercentVbusGravity);
+		getWrist().requestAngle(ControlMode.MotionMagic, requState.getWrist().angle, getCurrentState());
+		getElbow().requestAngle(ControlMode.MotionMagic, requState.getElbow().angle);
+		getElevator().getMaster().set(ControlMode.MotionMagic, requState.getElevator().height, DemandType.ArbitraryFeedForward, elevatorPercentVbusGravity);
 		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
 
 	}

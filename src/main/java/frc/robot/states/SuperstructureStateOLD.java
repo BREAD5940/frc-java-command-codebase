@@ -7,7 +7,7 @@
 // import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 // /**
-//  * A state the robot superstructure (elevator, wrist, intake, etc.) can be in. Used mainly by the SuperstructurePlanner
+//  * A state the robot superstructure (elevator, wrist, intake, etc.) can be in. Used mainly by the SuperstructurePlannerOLD
 //  * (deprecited by superstructurestate in the superstructure class)
 //  * @deprecated
 //  * @author Jocelyn McHugo

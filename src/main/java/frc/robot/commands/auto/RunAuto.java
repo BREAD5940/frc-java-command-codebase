@@ -43,6 +43,9 @@ public class RunAuto extends AutoCommandGroup {
 		this.isDrive = false;
 
 		requires(SuperStructure.getInstance());
+		requires(SuperStructure.getInstance().getWrist());
+		requires(SuperStructure.getInstance().getElbow());
+		requires(SuperStructure.getElevator());
 		requires(DriveTrain.getInstance());
 	}
 
@@ -79,7 +82,7 @@ public class RunAuto extends AutoCommandGroup {
 	@Override
 	protected void execute() {
 		// Don't need to do anything here
-		System.out.println("Done? " +  running.done());
+		System.out.println("Done? " + running.done());
 		if (!isDrive && running.done() && !begun) {
 			System.out.println("starting big command group");
 			mMotion.getBigCommandGroup().start();
