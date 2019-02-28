@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.lib.DPadButton;
+import frc.robot.lib.DPadButton.Direction;
 import frc.robot.lib.statemachines.SetAutoStuff;
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
@@ -60,7 +61,10 @@ public class OI {
 	//cargo ship vs rocket
 	private Button toggleGoal = new JoystickButton(secondaryJoystick, xboxmap.Buttons.A_BUTTON);
 	//actually use the automotion vs just presets
-	private Button useMotion = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
+	// private Button useMotion = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
+	//use the full automotion
+	private Button useMotion = new DPadButton(secondaryJoystick, Direction.LEFT);
+	private Button usePreset = new DPadButton(secondaryJoystick, Direction.RIGHT);
 
 
 	public OI() {
