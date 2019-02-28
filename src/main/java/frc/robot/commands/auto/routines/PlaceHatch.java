@@ -35,6 +35,8 @@ public class PlaceHatch extends CommandGroup {
 
 		addSequential(new FollowVisonTargetTheSecond(5));
 
+		// addSequential(new SuperstructureGoToState(new ElevatorState(fieldPositions.hatchHighGoal), iPosition.HATCH));
+
 		// Consumer<Pose2d> translationSetter = (Pose2d newP) -> {this.mMeasuredPose = newP;};
 
 		// addSequential(new PrintCommand("pose: " + this.mMeasuredPose.getRotation().getDegree()));
@@ -49,11 +51,14 @@ public class PlaceHatch extends CommandGroup {
 
 		// addSequential(new PrintCommand("driving forward at a power"));
 
-		addSequential(new DrivePower(0.15, 0.75));
 
 		addSequential(new PrintCommand("outtaking...."));
 
-		addSequential(new RunIntake(-1, 1));
+		addParallel(new RunIntake(-1, 0.75));
+		addSequential(new DrivePower(0.15, 0.75));
+
+		addParallel(new RunIntake(-1, 0.75));
+		addSequential(new DrivePower(-0.2, 0.75));
 
 
 		addSequential(new PrintCommand("We done bois, hatch placed...."));
@@ -62,7 +67,6 @@ public class PlaceHatch extends CommandGroup {
 
 		// addSequential(new PrintCommand("driving at a power in reverse"));
 
-		addSequential(new DrivePower(-0.2, 1));
 
 		// addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(.5), true)); // TODO run the next spline, saves time, vs backing up
 	}
