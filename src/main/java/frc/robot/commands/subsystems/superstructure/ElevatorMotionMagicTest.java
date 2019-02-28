@@ -57,7 +57,7 @@ public class ElevatorMotionMagicTest extends Command {
 		double targetTic = (int) SuperStructure.getElevator().getModel().toNativeUnitPosition(mTarget).getValue();
 		// System.out.println(targetTic);
 		SuperStructure.getElevator().getMaster().set(ControlMode.MotionMagic,
-				12000, DemandType.ArbitraryFeedForward, volts);
+				LengthKt.getInch(12), DemandType.ArbitraryFeedForward, volts);
 
 		// System.out.println(SuperStructure.getElevator().getMaster().getSelectedSensorVelocity() / (391.13918814264197718560873686429) * 0.23);
 	}

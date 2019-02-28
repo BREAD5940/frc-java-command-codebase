@@ -66,7 +66,11 @@ public class Intake extends Subsystem {
 
 	private Intake(int port) {
 		talon = new WPI_TalonSRX(port);
-		talon.configOpenloopRamp(0.15);
+		// talon.configOpenloopRamp(0.15);
+		talon.configContinuousCurrentLimit(25);
+		talon.configPeakCurrentLimit(40);
+		talon.enableCurrentLimit(true);
+		talon.setName("Intake");
 	}
 
 	private Intake() {
