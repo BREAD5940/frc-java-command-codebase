@@ -105,36 +105,51 @@ public class SuperstructureMotion extends Command {
     Translation2d SPwrist = new Translation2d(LengthKt.getInch(currentState.getElbowAngle().getCos()*SuperStructureConstants.Elbow.carriageToIntake.getInch()),
             LengthKt.getInch(currentState.getElbowAngle().getSin()*SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(SPelevator.getY()));
     Translation2d SPeoi = new Translation2d(LengthKt.getInch(currentState.getWristAngle().getCos()*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(SPwrist.getX()),
-    LengthKt.getInch(currentState.getWristAngle().getSin()*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(SPwrist.getY()));
+            LengthKt.getInch(currentState.getWristAngle().getSin()*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(SPwrist.getY()));
 
 
 
     // FIXME so the issue here is that the maximum position of the wrist depends on the proximal (elbow) angle. So we have to measure it somehow yay. Also the sprocket on there means that the wrist will slowly rotate as the proximal joint rotates
     //FIXME mostly fixed, check math
     if(Math.atan((GPeoi.getY().getInch()+GPwrist.getY().getInch())/(GPeoi.getX().getInch()+GPwrist.getX().getInch())) > SuperStructureConstants.Wrist.kWristMax.getRadian()){
+      Logger.log("Wrist big");
       goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMax); // constrain wrist to max
     }else if (Math.atan((GPeoi.getY().getInch()+GPwrist.getY().getInch())/(GPeoi.getX().getInch()+GPwrist.getX().getInch())) < SuperStructureConstants.Wrist.kWristMin.getRadian()){
+      Logger.log("Wrist small");
       goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMin); // constrain wrist to min
     }
 
 
 
     //SAFE potential crashes on the end state
+
+    if(GPwrist.getY().getInch() < SuperStructureConstants.electronicsHeight.getInch() || GPeoi.getY().getInch() < SuperStructureConstants.electronicsHeight.getInch()){
+      RoundRotation2d tempTheta = goalState.getElbowAngle();
+      tempTheta = RoundRotation2d.getRadian(
+                    Math.asin(
+                      Math.abs(SuperStructureConstants.electronicsHeight.getInch()-GPelevator.getY().getInch())
+                      /SuperStructureConstants.Elbow.carriageToIntake.getInch()
+                    ));
+      goalState.getElbow().setAngle(tempTheta);
+      GPwrist = new Translation2d(LengthKt.getInch(tempTheta.getCos()*SuperStructureConstants.Elbow.carriageToIntake.getInch()),
+                                  LengthKt.getInch(Math.sin(tempTheta.getRadian())*SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(GPelevator.getY()));
+      GPeoi = new Translation2d(LengthKt.getInch(goalState.getWristAngle().getCos()*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getX()),
+                                  LengthKt.getInch(goalState.getWristAngle().getSin()*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
+    }
     
     if(GPeoi.getY().getInch() < SuperStructureConstants.electronicsHeight.getInch()){
       RoundRotation2d tempTheta = goalState.getWristAngle();
-      tempTheta = RoundRotation2d.getRadian(Math.asin((GPeoi.getY().getInch()-GPwrist.getY().getInch())/SuperStructureConstants.Wrist.intakeOut.getInch()));
+      tempTheta = RoundRotation2d.getRadian(
+                    Math.asin(
+                      Math.abs(GPeoi.getY().getInch()-GPwrist.getY().getInch())
+                      /SuperStructureConstants.Wrist.intakeOut.getInch()
+                    ));
       goalState.getWrist().setAngle(tempTheta);
-      GPeoi = new Translation2d(GPeoi.getX(),  LengthKt.getInch(Math.sin(tempTheta.getRadian())*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
+      GPeoi = new Translation2d(LengthKt.getInch(tempTheta.getCos()*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getX()),  
+                                LengthKt.getInch(Math.sin(tempTheta.getRadian())*SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
     }
 
-    if(GPwrist.getY().getInch() < SuperStructureConstants.electronicsHeight.getInch()){
-      RoundRotation2d tempTheta = goalState.getElbowAngle();
-      tempTheta = RoundRotation2d.getRadian(Math.asin((GPwrist.getY().getInch()-GPelevator.getY().getInch())/SuperStructureConstants.Elbow.carriageToIntake.getInch()));
-      goalState.getElbow().setAngle(tempTheta);
-      GPwrist = new Translation2d(GPwrist.getX(),  LengthKt.getInch(Math.sin(tempTheta.getRadian())*SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(GPelevator.getY()));
-
-    }
+    
 
 
     if(GPwrist.getX().getInch() > 0 && SPwrist.getX().getInch()<0){
