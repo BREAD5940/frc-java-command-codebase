@@ -20,7 +20,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.commands.auto.AutoMotion;
-import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.lib.statemachines.AutoMotionStateMachine;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 import frc.robot.commands.subsystems.superstructure.SuperStructureTelop;
 import frc.robot.lib.Loggable;
 import frc.robot.lib.PIDSettings;
@@ -209,7 +210,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 	 *    the command group necessary to safely move the superstructure
 	 */
 	@Deprecated
-	public void moveSuperstructureAngle(IntakeAngle intakeState, AutoMotion.HeldPiece piece) {
+	public void moveSuperstructureAngle(IntakeAngle intakeState, AutoMotionStateMachine.HeldPiece piece) {
 		// updateState();
 		this.moveSuperstructureCombo(mReqState.getElevator(), intakeState);
 	}

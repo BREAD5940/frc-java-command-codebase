@@ -10,10 +10,14 @@ import frc.robot.commands.subsystems.drivetrain.DriveDistance;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalType;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
+
 
 /**
  * Creates a command group for a specific automatic motion. Input a type of goal
@@ -24,17 +28,7 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
  */
 public class AutoMotion {
 
-	public enum HeldPiece {
-		HATCH, CARGO, NONE
-	}
-
-	public enum GoalHeight {
-		LOW, MIDDLE, HIGH, OVER
-	}
-
-	public enum GoalType {
-		CARGO_CARGO, CARGO_HATCH, ROCKET_CARGO, ROCKET_HATCH, RETRIEVE_HATCH, RETRIEVE_CARGO
-	}
+	
 
 	private GoalHeight gHeight;
 	private GoalType gType;

@@ -1,7 +1,7 @@
 package frc.robot.commands.auto.actions;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 
 /**
  * SetIntakeMode sets the wrist to either cargo or hatch 'mode', then either 

@@ -10,7 +10,7 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;

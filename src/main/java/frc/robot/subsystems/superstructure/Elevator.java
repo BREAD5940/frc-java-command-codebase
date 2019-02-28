@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.SuperStructureConstants;
-import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 import frc.robot.lib.Logger;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.motion.Util;
