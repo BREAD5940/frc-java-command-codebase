@@ -9,7 +9,7 @@ import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
-import frc.robot.commands.auto.routines.PickupHatch;
+import frc.robot.commands.auto.groups.PickupHatch;
 import frc.robot.commands.auto.routines.passthrough.PassThrough;
 import frc.robot.commands.subsystems.drivetrain.FollowVisonTargetTheSecond;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
