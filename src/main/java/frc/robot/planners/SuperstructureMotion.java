@@ -75,7 +75,7 @@ public class SuperstructureMotion extends Command {
       return true;
     }
     //SAFE illegal inputs
-    if(goalState.getElevatorHeight().getInch() > SuperStructureConstants.Elevator.top.getInch()){
+    if(goalState.getElevatorHeight().getInch() > SuperStructureConstants.Elevator.top.getInch() - SuperStructureConstants.Elevator.carriageHeight.getInch()){
       Logger.log("Elevator high");
       goalState.getElevator().setHeight(SuperStructureConstants.Elevator.top); // constrain elevator to max height
     } else if (goalState.getElevatorHeight().getInch() < SuperStructureConstants.Elevator.bottom.getInch()){
@@ -124,6 +124,7 @@ public class SuperstructureMotion extends Command {
     //SAFE potential crashes on the end state
 
     if(GPwrist.getY().getInch() < SuperStructureConstants.electronicsHeight.getInch() || GPeoi.getY().getInch() < SuperStructureConstants.electronicsHeight.getInch()){
+      Logger.log("intake too low");
       RoundRotation2d tempTheta = goalState.getElbowAngle();
       tempTheta = RoundRotation2d.getRadian(
                     Math.asin(
@@ -138,6 +139,7 @@ public class SuperstructureMotion extends Command {
     }
     
     if(GPeoi.getY().getInch() < SuperStructureConstants.electronicsHeight.getInch()){
+      Logger.log("intake still too low");
       RoundRotation2d tempTheta = goalState.getWristAngle();
       tempTheta = RoundRotation2d.getRadian(
                     Math.asin(
@@ -174,10 +176,12 @@ public class SuperstructureMotion extends Command {
     }
     //CHECK if the elevator point is in proximity to the crossbar
 
-    if((GPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch() && SPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch())
-      || (GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch() && SPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch())
-        || (GPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.plus(SuperStructureConstants.Elevator.crossbarWidth).getInch()
-          && GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch())){
+    if((GPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch() 
+        && SPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch())
+      || (GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch() 
+        && SPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch())
+      || (GPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.plus(SuperStructureConstants.Elevator.crossbarWidth).getInch()
+        && GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch())){
             queue.addSequential(new ArmMove(SuperStructure.iPosition.STOWED));
       }
 
