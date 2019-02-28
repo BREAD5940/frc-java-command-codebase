@@ -43,6 +43,8 @@ public class RotatingJoint extends Subsystem {
 
 	public final RoundRotation2d kMinAngle, kMaxAngle;
 
+	final ControlMode kDefaultControlMode = ControlMode.MotionMagic;
+
 	// private PIDSettings pidSettings;
 
 	private double mTicksPerRotation;
@@ -123,8 +125,10 @@ public class RotatingJoint extends Subsystem {
 	}
 
 	public void setGainMode(boolean isMotionMagic) {
-		if(isMotionMagic) getMaster().selectProfileSlot(3, 0); 
-		if(!isMotionMagic) getMaster().selectProfileSlot(0, 0);
+		if (isMotionMagic)
+			getMaster().selectProfileSlot(3, 0);
+		if (!isMotionMagic)
+			getMaster().selectProfileSlot(0, 0);
 	}
 
 	private PIDSettings kDefaultMotionMagicPidSettings = new PIDSettings(.1, 0, 0, 0.1, 1000, 1000);
@@ -148,7 +152,7 @@ public class RotatingJoint extends Subsystem {
 
 	public void requestAngle(RoundRotation2d reqAngle) {
 		reqAngle = Util.limit(reqAngle, kMinAngle, kMaxAngle);
-		getMaster().set(ControlMode.Position, reqAngle);
+		getMaster().set(kDefaultControlMode, reqAngle);
 	}
 
 	public void requestAngle(ControlMode mode, RoundRotation2d reqAngle) {

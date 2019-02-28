@@ -26,13 +26,19 @@ public class Wrist extends RotatingJoint {
 	public void requestAngle(RoundRotation2d reqAngle, SuperStructureState mCurrent) {
 		RoundRotation2d normed = reqAngle.minus(mCurrent.getElbowAngle());
 		normed = Util.limit(reqAngle, super.kMinAngle, super.kMaxAngle);
-		super.getMaster().set(ControlMode.Position, normed);
+		super.getMaster().set(kDefaultControlMode, normed);
+	}
+
+	public void requestAngle(ControlMode mode, RoundRotation2d reqAngle, SuperStructureState mCurrent) {
+		RoundRotation2d normed = reqAngle.minus(mCurrent.getElbowAngle());
+		normed = Util.limit(reqAngle, super.kMinAngle, super.kMaxAngle);
+		super.getMaster().set(mode, normed);
 	}
 
 	public void requestAngle(RoundRotation2d reqAngle, double arbitraryFeedForward, SuperStructureState mCurrent) {
 		RoundRotation2d normed = reqAngle.minus(mCurrent.getElbowAngle());
 		normed = Util.limit(reqAngle, super.kMinAngle, super.kMaxAngle);
-		super.getMaster().set(ControlMode.Position, normed, DemandType.ArbitraryFeedForward, arbitraryFeedForward);
+		super.getMaster().set(kDefaultControlMode, normed, DemandType.ArbitraryFeedForward, arbitraryFeedForward);
 	}
 
 	private PIDSettings kDefaultMotionMagicPidSettings = new PIDSettings(.1, 0, 0, 0.1, 1000, 1000);
@@ -43,13 +49,12 @@ public class Wrist extends RotatingJoint {
 		this.getMaster().configMotionAcceleration((int) (1000));
 		this.getMaster().configMotionCruiseVelocity(1000); // about 3500 theoretical max
 		this.getMaster().configMotionSCurveStrength(0);
-		this.getMaster().config_kP(3, 0.4, 0);
+		this.getMaster().config_kP(3, 0.8, 0);
 		this.getMaster().config_kI(3, 0.0, 0);
-		this.getMaster().config_kD(3, 4.0, 0);
-		this.getMaster().config_kF(3, 0.75 * 1.25, 0);
+		this.getMaster().config_kD(3, 0.0, 0);
+		this.getMaster().config_kF(3, 0.3, 0);
 		// this.getMaster().selectProfileSlot(3, 0);
 		// this.getMaster().configClosedloopRamp(0.1);
 	}
-
 
 }

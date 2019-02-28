@@ -57,7 +57,8 @@ public class SuperStructure extends Subsystem implements Loggable {
 	public static Intake intake = Intake.getInstance();
 	private SuperstructurePlannerOLD planner = new SuperstructurePlannerOLD();
 	// public SuperStructureState mPeriodicIO = new SuperStructureState();
-	private RotatingJoint mWrist, mElbow;
+	private Wrist mWrist;
+	private RotatingJoint mElbow;
 	private DCMotorTransmission kElbowTransmission, kWristTransmission;
 	public static final Mass kHatchMass = MassKt.getLb(2.4); // FIXME check mass
 	public static final Mass kCargoMass = MassKt.getLb(1); // FIXME check mass
@@ -139,7 +140,6 @@ public class SuperStructure extends Subsystem implements Loggable {
 		// grab a hatch by ramming against the loading station. Takes advantage of bumper recesses
 		public static final SuperStructureState HATCH_GRAB_INSIDE = new SuperStructureState(new ElevatorState(LengthKt.getInch(22)), new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(40))));
 		public static final SuperStructureState HATCH_GRAB_INSIDE_PREP = new SuperStructureState(new ElevatorState(LengthKt.getInch(18)), new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(40))));
-
 
 		public static final ArrayList<IntakeAngle> presets = new ArrayList<IntakeAngle>(Arrays.asList(CARGO_GRAB, CARGO_DOWN,
 				CARGO_PLACE, CARGO_REVERSE, HATCH, HATCH_REVERSE));
@@ -231,7 +231,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 		return mCurrentState;
 	}
 
-	public RotatingJoint getWrist() {
+	public Wrist getWrist() {
 		if (mWrist == null)
 			mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
 					Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
@@ -286,7 +286,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
 		// SuperStructureState stateSetpoint = plan(requState);
 
-		getWrist().requestAngle(ControlMode.Position, requState.getWrist().angle);
+		getWrist().requestAngle(ControlMode.MotionMagic, requState.getWrist().angle, getCurrentState());
 		getElbow().requestAngle(ControlMode.MotionMagic, requState.getElbow().angle);
 		getElevator().getMaster().set(ControlMode.MotionMagic, requState.getElevator().height, DemandType.ArbitraryFeedForward, elevatorPercentVbusGravity);
 		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);

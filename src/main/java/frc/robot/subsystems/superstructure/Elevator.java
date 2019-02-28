@@ -150,14 +150,14 @@ public class Elevator extends Subsystem {
 	}
 
 	public void setPositionMode(PositionMode mode) {
-		if(mode == PositionMode.MOTIONMAGIC) {
+		if (mode == PositionMode.MOTIONMAGIC) {
 			configMotionMagicGains(HIGH_GEAR_MOTION_MAGIC);
 		}
 	}
 
 	public void configMotionMagicGains(PIDSettings settings) {
-		getMaster().configMotionCruiseVelocity((int)settings.motionMagicCruiseVelocity);
-		getMaster().configMotionAcceleration((int)settings.motionMagicAccel);
+		getMaster().configMotionCruiseVelocity((int) settings.motionMagicCruiseVelocity);
+		getMaster().configMotionAcceleration((int) settings.motionMagicAccel);
 	}
 
 	public FalconSRX<Length> getMaster() {
@@ -278,10 +278,10 @@ public class Elevator extends Subsystem {
 	}
 
 	public void setMMGains(PIDSettings config) {
-		Logger.log("Setting motion magic gains! Velocity: " + (int)config.motionMagicCruiseVelocity + 
-		    " acceleration: " + (int)config.motionMagicAccel);
-		getMaster().configMotionCruiseVelocity((int)config.motionMagicCruiseVelocity);
-		getMaster().configMotionAcceleration((int)config.motionMagicAccel);
+		Logger.log("Setting motion magic gains! Velocity: " + (int) config.motionMagicCruiseVelocity +
+				" acceleration: " + (int) config.motionMagicAccel);
+		getMaster().configMotionCruiseVelocity((int) config.motionMagicCruiseVelocity);
+		getMaster().configMotionAcceleration((int) config.motionMagicAccel);
 	}
 
 	/**

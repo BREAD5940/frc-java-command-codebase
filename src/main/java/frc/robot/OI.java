@@ -1,21 +1,14 @@
 package frc.robot;
 
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.routines.PickupHatch;
-import frc.robot.commands.auto.routines.passthrough.PassThrough;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.ElevatorMotionMagicTest;
-import frc.robot.commands.subsystems.superstructure.PlannerTest;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
-import frc.robot.states.ElevatorState;
-import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;

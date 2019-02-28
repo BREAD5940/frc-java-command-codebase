@@ -1,25 +1,14 @@
 package frc.robot.commands.auto.routines;
 
-import java.util.function.Consumer;
-
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.PrintCommand;
-import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.subsystems.drivetrain.DrivePower;
-import frc.robot.commands.subsystems.drivetrain.FollowVisonTargetTheSecond;
 import frc.robot.commands.subsystems.drivetrain.SetPoseFromVisionTarget;
-import frc.robot.commands.subsystems.superstructure.RunIntake;
-import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
-import frc.robot.states.ElevatorState;
-import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 public class PickupHatch extends CommandGroup {
 
-  Pose2d mMeasuredPose = new Pose2d();
+	Pose2d mMeasuredPose = new Pose2d();
 
 	public void setPose(Pose2d new_) {
 		this.mMeasuredPose = new_;
@@ -31,14 +20,14 @@ public class PickupHatch extends CommandGroup {
 	public PickupHatch() {
 
 		// addSequential(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
-		
+
 		// addSequential(new FollowVisonTargetTheSecond());
-		
+
 		// Consumer<Pose2d> translationSetter = (Pose2d newP) -> {this.mMeasuredPose = newP;};
 
 		addSequential(new PrintCommand(mMeasuredPose.toString()));
 
-		addSequential(new SetPoseFromVisionTarget( this::setPose ));
+		addSequential(new SetPoseFromVisionTarget(this::setPose));
 
 		addSequential(new PrintCommand(mMeasuredPose.toString()));
 
