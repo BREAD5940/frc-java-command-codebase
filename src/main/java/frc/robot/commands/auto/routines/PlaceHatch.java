@@ -1,5 +1,7 @@
 package frc.robot.commands.auto.routines;
 
+import java.util.Optional;
+
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -7,25 +9,31 @@ import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.subsystems.drivetrain.DrivePower;
 import frc.robot.commands.subsystems.drivetrain.FollowVisonTargetTheSecond;
+import frc.robot.commands.subsystems.drivetrain.SetPoseFromVisionTarget;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
+import frc.robot.lib.obj.factories.VisionTargetFactory;
 import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 public class PlaceHatch extends CommandGroup {
 
-	Pose2d mMeasuredPose = new Pose2d();
+	// Pose2d mMeasuredPose = new Pose2d();
 
-	public void setPose(Pose2d newPose) {
-		System.out.println("============================ Calleback called! ============================");
-		System.out.println("New pose: " + mMeasuredPose.getRotation().getDegree());
-		this.mMeasuredPose = newPose;
+	// public void setPose(Pose2d newPose) {
+	// 	System.out.println("============================ Calleback called! ============================");
+	// 	System.out.println("New pose: " + mMeasuredPose.getRotation().getDegree());
+	// 	this.mMeasuredPose = newPose;
+	// }
+
+	public PlaceHatch() {
+		this(new Pose2d(), false);
 	}
 
 	/**
 	 * Pickup a hatch from the loading station
 	 */
-	public PlaceHatch() {
+	public PlaceHatch(Pose2d goalPose, boolean setOdometry) {
 
 		addSequential(new PrintCommand("Placing a hatch;;;...."));
 
@@ -41,7 +49,7 @@ public class PlaceHatch extends CommandGroup {
 
 		// addSequential(new PrintCommand("pose: " + this.mMeasuredPose.getRotation().getDegree()));
 
-		// addSequential(new SetPoseFromVisionTarget(this::setPose));
+		addSequential(new SetPoseFromVisionTarget(goalPose));
 
 		// addSequential(new PrintCommand("pose: " + this.mMeasuredPose.getRotation().getDegree()));
 
