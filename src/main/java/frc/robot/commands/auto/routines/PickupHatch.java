@@ -15,14 +15,6 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 public class PickupHatch extends CommandGroup {
 
-	Pose2d mMeasuredPose = new Pose2d();
-
-	public void setPose(Pose2d newPose) {
-		System.out.println("============================ Calleback called! ============================");
-		System.out.println("New pose: " + mMeasuredPose.getRotation().getDegree());
-		this.mMeasuredPose = newPose;
-	}
-
 	/**
 	 * Pickup a hatch from the loading station
 	 */
@@ -34,11 +26,11 @@ public class PickupHatch extends CommandGroup {
 
 		// Consumer<Pose2d> translationSetter = (Pose2d newP) -> {this.mMeasuredPose = newP;};
 
-		addSequential(new PrintCommand("pose: " + this.mMeasuredPose.getRotation().getDegree()));
+		// addSequential(new PrintCommand("pose: " + this.mMeasuredPose.getRotation().getDegree()));
 
-		addSequential(new SetPoseFromVisionTarget(this::setPose));
+		// addSequential(new SetPoseFromVisionTarget(this::setPose));
 
-		addSequential(new PrintCommand("pose: " + this.mMeasuredPose.getRotation().getDegree()));
+		// addSequential(new PrintCommand("pose: " + this.mMeasuredPose.getRotation().getDegree()));
 
 		// next we drive forward a foot or two
 
