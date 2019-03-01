@@ -127,7 +127,7 @@ public class AutoMotion {
 		if (this.piece == HeldPiece.CARGO) {
 			toReturn.addSequential(new RunIntake(-1, 0.5));
 		} else if (this.piece == HeldPiece.HATCH) {
-			toReturn.addSequential(new PlaceHatch());
+			toReturn.addSequential(new PlaceHatch()); // TODO so we need to pass in the goal lol
 		}
 		this.endPiece = HeldPiece.NONE;
 		return toReturn;
