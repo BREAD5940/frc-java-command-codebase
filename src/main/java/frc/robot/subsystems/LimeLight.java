@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
@@ -9,6 +12,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.RobotConfig;
+import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.VisionTarget;
 import frc.robot.lib.obj.factories.VisionTargetFactory;
 
@@ -111,6 +115,22 @@ public class LimeLight {
 	/** Turn off the Limelight LED */
 	public void turnOffLED() {
 		table.getEntry("ledMode").setNumber(1);
+	}
+
+	public Pose2d getPose() {
+		double[] camtran = NetworkTableInstance.getDefault().getTable("limelight").getEntry("camtran").getDoubleArray(new double[]{});
+
+		final double kOffset = 200;
+
+		final double kLimelightForeOffset = 40; //inches from limelight to hatch pannel
+		// forward/backward motion, left/right motion
+		Translation2d mTranToGoal = new Translation2d(LengthKt.getInch(camtran[2] + kLimelightForeOffset + kOffset), LengthKt.getInch(camtran[0] + kOffset));
+		Rotation2d mRotToGoal = Rotation2dKt.getDegree(camtran[4]);
+		Pose2d mPoseToGoal = new Pose2d(mTranToGoal, mRotToGoal);
+
+		System.out.println(Util.toString(mPoseToGoal));
+
+		return mPoseToGoal;
 	}
 
 	public enum PipelinePreset {

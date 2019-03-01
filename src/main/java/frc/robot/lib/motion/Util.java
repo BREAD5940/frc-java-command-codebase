@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
@@ -111,6 +112,10 @@ public class Util {
 		if (v.getValue() < min.getValue())
 			v = min;
 		return v;
+	}
+
+	public static String toString(Pose2d pose) {
+		return String.format("Pose: (%s, %s) theta: (%s)", pose.getTranslation().getX().getInch(), pose.getTranslation().getY().getInch(), pose.getRotation().getDegree());
 	}
 
 }
