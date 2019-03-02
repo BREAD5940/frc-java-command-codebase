@@ -117,15 +117,15 @@ public class LimeLight {
 		table.getEntry("ledMode").setNumber(1);
 	}
 
-	public Pose2d getPose() {
+	public Pose2d getPose(double kOffset) {
 		double[] camtran = NetworkTableInstance.getDefault().getTable("limelight").getEntry("camtran").getDoubleArray(new double[]{});
 
-		final double kOffset = 200;
+		// final double kOffset = 100;
 
-		final double kLimelightForeOffset = 40; //inches from limelight to hatch pannel
+		// final double kLimelightForeOffset = 25; //inches from limelight to hatch pannel
 		// forward/backward motion, left/right motion
-		Translation2d mTranToGoal = new Translation2d(LengthKt.getInch(camtran[2] + kLimelightForeOffset + kOffset), LengthKt.getInch(camtran[0] + kOffset));
-		Rotation2d mRotToGoal = Rotation2dKt.getDegree(camtran[4]);
+		Translation2d mTranToGoal = new Translation2d(LengthKt.getInch((camtran[2]) + kOffset), LengthKt.getInch((camtran[0] * -1) + kOffset));
+		Rotation2d mRotToGoal = Rotation2dKt.getDegree(camtran[4] * 1);
 		Pose2d mPoseToGoal = new Pose2d(mTranToGoal, mRotToGoal);
 
 		System.out.println(Util.toString(mPoseToGoal));
