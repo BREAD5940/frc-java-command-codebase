@@ -1,4 +1,4 @@
-package frc.robot.commands.auto.routines;
+package frc.robot.commands.auto.groups;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
