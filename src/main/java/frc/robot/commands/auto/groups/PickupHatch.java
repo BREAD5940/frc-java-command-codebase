@@ -16,7 +16,10 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 public class PickupHatch extends CommandGroup {
 
 	/**
-	 * Pickup a hatch from the loading station
+	 * Pickup a hatch from the loading station using some jank open loop code.
+	 * Vision code coming soon, I hope
+	 * 
+	 * @author Matthew Morley
 	 */
 	public PickupHatch() {
 

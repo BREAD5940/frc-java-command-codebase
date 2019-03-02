@@ -14,7 +14,13 @@ import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
- * Add your docs here.
+ * Maybe a factory for making preset command groups. This should be used for things like
+ * level one hatch, where you have to move the wrist before the elevator. In theory will
+ * be replaced by the suprestructureplanner.
+ * 
+ * @deprecated
+ * 
+ * @author Matthew Morley
  */
 public class SequentialCommandFactory {
 

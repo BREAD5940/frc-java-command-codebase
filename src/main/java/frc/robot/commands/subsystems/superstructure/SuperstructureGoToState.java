@@ -37,8 +37,15 @@ public class SuperstructureGoToState extends Command {
 		this(new SuperStructureState(SuperStructure.getInstance().updateState().getElevator(), aState));
 	}
 
+	/**
+	 * Move the superstructure to a requested state.
+	 * @param requState the state requested of the superstructure
+	 * @param timeout the timeout of this command
+	 * 
+	 * @author Matthew Morley
+	 */
 	public SuperstructureGoToState(SuperStructureState requState, double timeout) {
-		requires(SuperStructure.getInstance());
+		requires(SuperStructure.getInstance()); // TODO so I'm still <confuse> about reserving superstructure vs the individual parts.
 		requires(SuperStructure.getInstance().getWrist());
 		requires(SuperStructure.getInstance().getElbow());
 		requires(SuperStructure.getElevator());

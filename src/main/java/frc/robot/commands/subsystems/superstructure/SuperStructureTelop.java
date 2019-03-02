@@ -17,10 +17,11 @@ public class SuperStructureTelop extends Command {
 
 	SuperStructureState mCachedState;
 
-	/** Run theSuperStructure.getInstance()(elevator for now) during telop using an xbox
-	  * joystick. 
-	  * @param struc theSuperStructure.getInstance()object
-	  **/
+	/**
+	 * Jog the superstructure using an xbox controller. Mainly used for testing.
+	 * 
+	 * @author Matthew Morley
+	 */
 	public SuperStructureTelop() {
 		// Use requires() here to declare subsystem dependencies
 		requires(SuperStructure.getInstance());

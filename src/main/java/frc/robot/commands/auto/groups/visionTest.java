@@ -23,7 +23,17 @@ import frc.robot.commands.subsystems.drivetrain.FollowVisonTargetTheSecond;
 
 public class visionTest extends CommandGroup {
 	/**
-	 * Add your docs here.
+	 * Nyoooooooooooooooooooooooooooooooooooooooooooom
+	 * <P>
+	 * Literally
+	 * <P>
+	 * Right now this goes from loading station to rocket using a Ramsete tracker and 
+	 * then uses vision splines from there. This is for messing with pathing and vision.
+	 * 
+	 * @deprecated
+	 * 
+	 * @author Matthew Morley
+	 * 
 	 */
 	public visionTest() {
 		// addSequential(new VisionSplineTest(25, 4)); // todo check numbers

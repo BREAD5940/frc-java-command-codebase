@@ -69,7 +69,7 @@ public class LimeLight {
 	private static final int kDefaultPipeline = 1;
 	private NetworkTable smartDashboard;
 
-	public LimeLight() {
+	private LimeLight() {
 		this.table = NetworkTableInstance.getDefault().getTable("limelight");
 		this.setPipeline(kDefaultPreset);
 		smartDashboard = NetworkTableInstance.getDefault().getTable("SmartDashboard");

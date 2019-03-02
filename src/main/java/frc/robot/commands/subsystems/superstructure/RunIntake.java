@@ -16,9 +16,11 @@ public class RunIntake extends Command {
 	double endTime;
 
 	/**
-	 * Run the intake for a set amount of time
-	 * @param demand
-	 * @param duration
+	 * Run the intake for a set amount of time at a requested power
+	 * @param demand the percent output of the intake talon
+	 * @param duration the time for which to run this command
+	 * 
+	 * @author Matthew Morley
 	 */
 	public RunIntake(double demand_, double duration_) {
 		requires(SuperStructure.intake); // TODO make sure this works

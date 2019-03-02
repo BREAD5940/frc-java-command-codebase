@@ -32,7 +32,10 @@ public class VisionSplineTest extends CommandGroup {
   double targetDistance, exitArea;
 
   /**
-   * Follow a spline shaped trajectory to a vision target. 
+   * Follow a spline shaped trajectory to a vision target. This command gets the vision target pose on first init and will reset the robot odometry.
+   * 
+   * @author Matthew Morley
+   * 
    * @param targetLimelightOffset How far to stop away from the target in inches (ahem, the limelight is behind the bumpers, ahem)
    * @param areaAtWhichToExit the area at which the command will exit
    */

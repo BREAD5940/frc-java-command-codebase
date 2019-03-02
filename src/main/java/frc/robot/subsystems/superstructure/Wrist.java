@@ -15,7 +15,10 @@ import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.SuperStructureState;
 
 /**
- * Add your docs here.
+ * The Wrist contains some specific wrist safing stuff and extends
+ * RotatingJoint. Also Overloads motino magic gains lol
+ * 
+ * @author Matthew Morley
  */
 public class Wrist extends RotatingJoint {
 

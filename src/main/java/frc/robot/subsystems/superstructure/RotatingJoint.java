@@ -72,6 +72,8 @@ public class RotatingJoint extends Subsystem {
 	 * @param PIDSettigns for the PIDSubsystem to use
 	 * @param ports of talon CAN ports as a List
 	 * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
+	 * 
+	 * @author Matthew Morley
 	 */
 	public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, double reduction, RoundRotation2d min, RoundRotation2d max, boolean masterInvert, Length armLength, Mass armMass) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
 

@@ -9,12 +9,19 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.subsystems.DriveTrain;
 
 public class DrivePower extends Command {
 	double power, time, reqEndTime;
 
+	/**
+	 * So I fear no man. But this, this scares me. Literally drive forward for a couple seconds.
+	 * @param power
+	 * @param time
+	 */
 	public DrivePower(double power, double time) {
+		// super(arg0, arg1)
 		// Use requires() here to declare subsystem dependencies
 		requires(DriveTrain.getInstance());
 		this.power = power;
