@@ -1,24 +1,12 @@
 package frc.robot;
 
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.visionTest;
-import frc.robot.commands.auto.routines.PickupHatch;
-import frc.robot.commands.auto.AutoMotion.GoalHeight;
-import frc.robot.commands.auto.AutoMotion.GoalType;
-import frc.robot.commands.auto.groups.PickupHatch;
-import frc.robot.commands.auto.routines.passthrough.PassThrough;
-import frc.robot.commands.subsystems.drivetrain.FollowVisonTargetTheSecond;
-import frc.robot.commands.auto.routines.PlaceHatch;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
-import frc.robot.commands.subsystems.drivetrain.SetPoseFromVisionTarget;
-import frc.robot.commands.subsystems.drivetrain.VisionSplineTest;
-import frc.robot.commands.subsystems.superstructure.ElevatorMotionMagicTest;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.lib.obj.factories.SequentialCommandFactory;
@@ -28,6 +16,7 @@ import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
+import frc.robot.commands.auto.groups.PickupHatch;
 
 /**
  * Operator Input not Out-In
