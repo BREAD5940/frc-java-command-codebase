@@ -37,7 +37,7 @@ public class ElevatorMotionMagicTest extends Command {
 		elev.getMaster().config_kD(3, 0.0, 0);
 		elev.getMaster().config_kF(3, 0.24 * (500 / 400), 0);
 		elev.getMaster().selectProfileSlot(3, 0);
-		elev.getMaster().configClosedloopRamp(0.1);
+		// elev.getMaster().configClosedloopRamp(0.1);
 
 		Length mTarget = LengthKt.getFeet(1);
 		double volts = Elevator.getVoltage(new SuperStructureState(new ElevatorState(mTarget), new RotatingArmState(), new RotatingArmState()));
