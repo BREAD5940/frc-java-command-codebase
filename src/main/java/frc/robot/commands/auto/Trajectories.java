@@ -89,7 +89,7 @@ public class Trajectories {
 	// new Pose2d(LengthKt.getFeet(20), LengthKt.getFeet(5), Rotation2dKt.getDegree(45))));
 	public static TimedTrajectory<Pose2dWithCurvature> forward20Feet;
 
-	private static List<TimingConstraint<Pose2dWithCurvature>> kLowGearConstraints = Arrays.asList(
+	public static List<TimingConstraint<Pose2dWithCurvature>> kLowGearConstraints = Arrays.asList(
 			new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getFeet(10))),
 			new DifferentialDriveDynamicsConstraint(Constants.kLowGearDifferentialDrive, 12 /* volts */),
 			// This limits our velocity while within the given Rectangle2d to 2 feet per second (read: the hab)
