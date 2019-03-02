@@ -17,6 +17,8 @@ public class DrivePower extends TimedCommand {
 	 * So I fear no man. But this, this scares me. Literally drive forward for a couple seconds.
 	 * @param power
 	 * @param time
+	 * 
+	 * @author Matthew Morley
 	 */
 	public DrivePower(double power, double time) {
 		super(time);

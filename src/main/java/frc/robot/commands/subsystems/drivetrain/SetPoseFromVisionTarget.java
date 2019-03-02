@@ -26,6 +26,12 @@ import frc.robot.lib.motion.Util;
 public class SetPoseFromVisionTarget extends InstantCommand {
 	Pose2d goalPose;
 
+	/**
+	 * Eventually (tm) set the pose of the robot given the Pose2d of the vision target. TODO make this actually work
+	 * @param goalPose the Pose2d of the vision target in the field reference frame
+	 * 
+	 * @author Matthew Morley
+	 */
 	public SetPoseFromVisionTarget(Pose2d goalPose) {
 		this.goalPose = goalPose;
 	}
