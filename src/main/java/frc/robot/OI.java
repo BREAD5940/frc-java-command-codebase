@@ -1,13 +1,18 @@
 package frc.robot;
 
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.auto.groups.visionTest;
 import frc.robot.commands.auto.routines.PickupHatch;
 import frc.robot.commands.auto.routines.PlaceHatch;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
+import frc.robot.commands.subsystems.drivetrain.SetPoseFromVisionTarget;
+import frc.robot.commands.subsystems.drivetrain.VisionSplineTest;
 import frc.robot.commands.subsystems.superstructure.ElevatorMotionMagicTest;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
@@ -96,6 +101,7 @@ public class OI {
 		if (plzNoDieDriveTrain.get())
 			DriveTrain.getInstance().getCurrentCommand().cancel();
 
+
 		// test1Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.LOW));
 		test1Button.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE_PREP)); // y button
 		test2Button.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE)); // a button
@@ -104,7 +110,7 @@ public class OI {
 		test3Button.whenPressed(new PickupHatch()); // x button
 		// test3Button.whenPressed(new FollowVisonTargetTheSecond());
 		// test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button
-		test4Button.whenPressed(new PlaceHatch());
+		test4Button.whenPressed(new visionTest()); // b button
 		// test4Button.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW)); // b button - used now for dealy
 
 		// cargoOverButton.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.OVER));
