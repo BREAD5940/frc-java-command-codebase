@@ -10,38 +10,39 @@ package frc.robot.commands.subsystems.drivetrain;
 import java.util.function.Consumer;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2dKt;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Twist2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import frc.robot.lib.motion.Util;
 
 public class SetPoseFromVisionTarget extends InstantCommand {
-	Consumer<Pose2d> mRun;
+	Pose2d goalPose;
 
-	public SetPoseFromVisionTarget(Consumer<Pose2d> run) {
-		this.mRun = run;
+	public SetPoseFromVisionTarget(Pose2d goalPose) {
+		this.goalPose = goalPose;
 	}
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	protected void execute() {
 		double[] camtran = NetworkTableInstance.getDefault().getTable("limelight").getEntry("camtran").getDoubleArray(new double[]{});
-		if (camtran.length < 5) {
-			var new__ = new Pose2d(LengthKt.getInch(0.1), LengthKt.getInch(0.1), Rotation2dKt.getDegree(10));
-			System.out.println("oof, new angle will be " + new__.getRotation().getDegree());
-			mRun.accept(new__);
-		} else {
-			Length x = LengthKt.getInch(5);//camtran[0]);
-			Length y = LengthKt.getInch(4);//camtran[1]);
-			Rotation2d yaw = Rotation2dKt.getDegree(4);
 
-			Pose2d newPose = new Pose2d(x, y, yaw);
-			System.out.println("setting new pose");
-			// mRun.accept(newPose);
-		}
+		Translation2d mTranToGoal = new Translation2d(LengthKt.getInch(camtran[2]), LengthKt.getInch(camtran[0]));
+		Rotation2d mRotToGoal = Rotation2dKt.getDegree(camtran[4]);
+		Pose2d mPoseToGoal = new Pose2d(mTranToGoal, mRotToGoal);
+
+		System.out.println(Util.toString(mPoseToGoal));
+
+		
 
 	}
+
 }
