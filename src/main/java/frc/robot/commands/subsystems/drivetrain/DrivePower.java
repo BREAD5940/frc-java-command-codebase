@@ -7,12 +7,10 @@
 
 package frc.robot.commands.subsystems.drivetrain;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.subsystems.DriveTrain;
 
-public class DrivePower extends Command {
+public class DrivePower extends TimedCommand {
 	double power, time, reqEndTime;
 
 	/**
@@ -21,7 +19,7 @@ public class DrivePower extends Command {
 	 * @param time
 	 */
 	public DrivePower(double power, double time) {
-		// super(arg0, arg1)
+		super(time);
 		// Use requires() here to declare subsystem dependencies
 		requires(DriveTrain.getInstance());
 		this.power = power;
@@ -29,25 +27,11 @@ public class DrivePower extends Command {
 		// setTimeout(time);
 	}
 
-	// Called just before this Command runs the first time
-	@Override
-	protected void initialize() {
-		reqEndTime = time + Timer.getFPGATimestamp();
-		System.out.println("Requested end time: " + reqEndTime + "now: " + Timer.getFPGATimestamp());
-	}
-
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
 		// System.out.println("hi!");
 		DriveTrain.getInstance().arcadeDrive(power, 0, false);
-	}
-
-	// Make this return true when this Command no longer needs to run execute()
-	@Override
-	protected boolean isFinished() {
-		System.out.println("Now: " + Timer.getFPGATimestamp() + "end: " + reqEndTime + " is drive power timed out? " + (Timer.getFPGATimestamp() > reqEndTime));
-		return (Timer.getFPGATimestamp() > reqEndTime);
 	}
 
 	// Called once after isFinished returns true
@@ -59,5 +43,7 @@ public class DrivePower extends Command {
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
-	protected void interrupted() {}
+	protected void interrupted() {
+		end();
+	}
 }
