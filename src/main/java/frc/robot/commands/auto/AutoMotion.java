@@ -18,7 +18,6 @@ import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
-
 /**
  * Creates a command group for a specific automatic motion. Input a type of goal
  * and a height then start the mBigCommandGroup externally In the future, this
@@ -27,8 +26,6 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
  * @author Jocelyn McHugo
  */
 public class AutoMotion {
-
-	
 
 	private GoalHeight gHeight;
 	private GoalType gType;

@@ -57,7 +57,7 @@ public class SuperstructureMotion extends Command {
 	}
 
 	public boolean plan(SuperStructureState gsIn, SuperStructureState currentState) {
-    var goalState = new SuperStructureState(gsIn);
+		var goalState = new SuperStructureState(gsIn);
 		//CHECK if the current and goal match
 		if (goalState.isEqualTo(currentState)) {
 			Logger.log("Goal and current states same.");

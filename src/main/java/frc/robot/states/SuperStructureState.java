@@ -2,9 +2,9 @@ package frc.robot.states;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 
-import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 import frc.robot.lib.Loggable;
 import frc.robot.lib.obj.RoundRotation2d;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 public class SuperStructureState implements Loggable {

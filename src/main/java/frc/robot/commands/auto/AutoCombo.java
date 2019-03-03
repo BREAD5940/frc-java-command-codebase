@@ -1,8 +1,8 @@
 package frc.robot.commands.auto;
 
-import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.routines.TwoHatchOneCargo;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 
 /**
  * Creates an AutoMotion and drive plan based on the inputted params. Will

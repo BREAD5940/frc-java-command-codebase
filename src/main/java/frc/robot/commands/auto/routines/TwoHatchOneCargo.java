@@ -7,12 +7,12 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
 import frc.robot.commands.auto.AutoMotion;
-import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
-import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalType;
-import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalType;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 

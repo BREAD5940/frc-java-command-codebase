@@ -1,8 +1,8 @@
 package frc.robot.lib.statemachines;
 
-public class AutoMotionStateMachine{
+public class AutoMotionStateMachine {
 
-  public enum HeldPiece {
+	public enum HeldPiece {
 		HATCH, CARGO, NONE
 	}
 
@@ -14,11 +14,11 @@ public class AutoMotionStateMachine{
 		CARGO_CARGO, CARGO_HATCH, ROCKET_CARGO, ROCKET_HATCH, RETRIEVE_HATCH, RETRIEVE_CARGO
 	}
 
-	public enum GoalLocation{
+	public enum GoalLocation {
 		CARGO_SHIP, ROCKET
 	}
 
-	public enum MotionType{
+	public enum MotionType {
 		PICKUP, PLACE
 	}
 
@@ -29,80 +29,78 @@ public class AutoMotionStateMachine{
 	private static MotionType motionType = MotionType.PICKUP;
 	private static GoalType goalType = GoalType.RETRIEVE_HATCH; //FIXME set default
 
-	protected static void updateGoalType(){
-		switch (motionType){
-			case PLACE:
-				switch (goalLocation){
-					case ROCKET:
-						switch (heldPiece){
-							case HATCH:
-								goalType = GoalType.ROCKET_HATCH;
-							case CARGO:
-								goalType = GoalType.ROCKET_CARGO;
-							case NONE:
-								//error, not allowed
-								goalType = GoalType.ROCKET_HATCH;
-								
-						}
-					case CARGO_SHIP:
-						switch(heldPiece){
-							case HATCH:
-								goalType = GoalType.CARGO_HATCH;
-							case CARGO:
-								goalType = GoalType.CARGO_CARGO;
-							case NONE:
-								//error, not allowed
-								goalType = GoalType.CARGO_HATCH;
-						}
+	protected static void updateGoalType() {
+		switch (motionType) {
+		case PLACE:
+			switch (goalLocation) {
+			case ROCKET:
+				switch (heldPiece) {
+				case HATCH:
+					goalType = GoalType.ROCKET_HATCH;
+				case CARGO:
+					goalType = GoalType.ROCKET_CARGO;
+				case NONE:
+					//error, not allowed
+					goalType = GoalType.ROCKET_HATCH;
+
 				}
-			case PICKUP:
-				switch (goalPiece){
-					case HATCH:
-						goalType = GoalType.RETRIEVE_HATCH;
-					case CARGO:
-						goalType = GoalType.RETRIEVE_CARGO;
-					case NONE:
-						//error not allowed
-						goalType = GoalType.RETRIEVE_HATCH;
+			case CARGO_SHIP:
+				switch (heldPiece) {
+				case HATCH:
+					goalType = GoalType.CARGO_HATCH;
+				case CARGO:
+					goalType = GoalType.CARGO_CARGO;
+				case NONE:
+					//error, not allowed
+					goalType = GoalType.CARGO_HATCH;
 				}
+			}
+		case PICKUP:
+			switch (goalPiece) {
+			case HATCH:
+				goalType = GoalType.RETRIEVE_HATCH;
+			case CARGO:
+				goalType = GoalType.RETRIEVE_CARGO;
+			case NONE:
+				//error not allowed
+				goalType = GoalType.RETRIEVE_HATCH;
+			}
 
 		}
 	}
 
-
-	public static void setHeldPiece(HeldPiece piece){
+	public static void setHeldPiece(HeldPiece piece) {
 		heldPiece = piece;
 		updateGoalType();
 	}
 
-	public static HeldPiece getHeldPiece(){
+	public static HeldPiece getHeldPiece() {
 		return heldPiece;
 	}
 
-	public static void setGoalHeight(GoalHeight gH){
+	public static void setGoalHeight(GoalHeight gH) {
 		goalHeight = gH;
 		updateGoalType();
 	}
 
-	public static void goalHeightUp(){
-		if(goalHeight==GoalHeight.LOW){
+	public static void goalHeightUp() {
+		if (goalHeight == GoalHeight.LOW) {
 			setGoalHeight(GoalHeight.MIDDLE);
-		}else if(goalHeight==GoalHeight.MIDDLE){
+		} else if (goalHeight == GoalHeight.MIDDLE) {
 			setGoalHeight(GoalHeight.HIGH);
 		}
 	}
 
-	public static void goalHeightDown(){
-		if(goalHeight==GoalHeight.HIGH){
+	public static void goalHeightDown() {
+		if (goalHeight == GoalHeight.HIGH) {
 			setGoalHeight(GoalHeight.MIDDLE);
-		}else if (goalHeight==GoalHeight.MIDDLE){
+		} else if (goalHeight == GoalHeight.MIDDLE) {
 			setGoalHeight(GoalHeight.LOW);
 		}
 	}
 
-	public static GoalHeight getGoalHeight(){
+	public static GoalHeight getGoalHeight() {
 		return goalHeight;
 	}
 
-	
 }

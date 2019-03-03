@@ -3,22 +3,18 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.auto.routines.PickupHatch;
+import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
+import frc.robot.commands.subsystems.superstructure.ElevatorMotionMagicTest;
+import frc.robot.commands.subsystems.superstructure.SetHatchMech;
+import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.lib.DPadButton;
 import frc.robot.lib.DPadButton.Direction;
 import frc.robot.lib.statemachines.ChangeGoalHeight;
 import frc.robot.lib.statemachines.SetPieceToggle;
-import frc.robot.commands.auto.RunAuto;
-import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.auto.routines.PickupHatch;
-import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
-import frc.robot.commands.subsystems.superstructure.PlannerTest;
-import frc.robot.commands.subsystems.superstructure.ElevatorMotionMagicTest;
-import frc.robot.commands.subsystems.superstructure.SetHatchMech;
-import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
-import frc.robot.subsystems.superstructure.SuperStructure;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
@@ -67,7 +63,6 @@ public class OI {
 	private Button useMotion = new DPadButton(secondaryJoystick, Direction.LEFT);
 	private Button usePreset = new DPadButton(secondaryJoystick, Direction.RIGHT);
 
-
 	public OI() {
 
 		toggleHP.toggleWhenPressed(new SetPieceToggle());
@@ -78,8 +73,6 @@ public class OI {
 
 		goalUp.whenPressed(new ChangeGoalHeight(true));
 		goalDown.whenPressed(new ChangeGoalHeight(false));
-
-
 
 		shift_up_button.whenPressed(new SetGearCommand(Gear.HIGH));
 		shift_down_button.whenPressed(new SetGearCommand(Gear.LOW));
