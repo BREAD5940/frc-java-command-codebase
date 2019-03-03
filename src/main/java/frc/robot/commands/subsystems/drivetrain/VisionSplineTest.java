@@ -20,85 +20,83 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.RobotConfig.driveTrain;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
+import frc.robot.subsystems.LimeLight;
 
 public class VisionSplineTest extends CommandGroup {
-  double targetDistance, exitArea;
+	double targetDistance, exitArea;
 
-  /**
-   * Follow a spline shaped trajectory to a vision target. This command gets the vision target pose on first init and will reset the robot odometry.
-   * 
-   * @author Matthew Morley
-   * 
-   * @param targetLimelightOffset How far to stop away from the target in inches (ahem, the limelight is behind the bumpers, ahem)
-   * @param areaAtWhichToExit the area at which the command will exit
-   */
-  public VisionSplineTest(double targetLimelightOffset, double areaAtWhichToExit) {
-    this.targetDistance = targetLimelightOffset;
-    this.exitArea = areaAtWhichToExit;
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    // requires(DriveTrain.getInstance());
-  }
+	/**
+	 * Follow a spline shaped trajectory to a vision target. This command gets the vision target pose on first init and will reset the robot odometry.
+	 * 
+	 * @author Matthew Morley
+	 * 
+	 * @param targetLimelightOffset How far to stop away from the target in inches (ahem, the limelight is behind the bumpers, ahem)
+	 * @param areaAtWhichToExit the area at which the command will exit
+	 */
+	public VisionSplineTest(double targetLimelightOffset, double areaAtWhichToExit) {
+		this.targetDistance = targetLimelightOffset;
+		this.exitArea = areaAtWhichToExit;
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		// requires(DriveTrain.getInstance());
+	}
 
-  boolean mCommandStarted = false;
-  TimedTrajectory<Pose2dWithCurvature> trajectory;
-  Command mFollowerCommand;
+	boolean mCommandStarted = false;
+	TimedTrajectory<Pose2dWithCurvature> trajectory;
+	Command mFollowerCommand;
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-    final double kOffset = 100; // so that the spline ends up in FalconDashboard instead of off the map
+	// Called just before this Command runs the first time
+	@Override
+	protected void initialize() {
+		final double kOffset = 100; // so that the spline ends up in FalconDashboard instead of off the map
 
-    Pose2d mVisionTargetPose = LimeLight.getInstance().getPose(kOffset);
+		Pose2d mVisionTargetPose = LimeLight.getInstance().getPose(kOffset);
 
-    double now = Timer.getFPGATimestamp();
-    // Pose2d start = new Pose2d(new Translation2d(LengthKt.getInch(-50 + 200), LengthKt.getInch(-20 + 200)), Rotation2dKt.getDegree(-10));
-    Pose2d end = new Pose2d(new Translation2d(LengthKt.getInch((-1 * targetDistance) + kOffset), LengthKt.getInch(0+kOffset)), Rotation2dKt.getDegree(0));
+		double now = Timer.getFPGATimestamp();
+		// Pose2d start = new Pose2d(new Translation2d(LengthKt.getInch(-50 + 200), LengthKt.getInch(-20 + 200)), Rotation2dKt.getDegree(-10));
+		Pose2d end = new Pose2d(new Translation2d(LengthKt.getInch((-1 * targetDistance) + kOffset), LengthKt.getInch(0 + kOffset)), Rotation2dKt.getDegree(0));
 
 		trajectory = Trajectories.generateTrajectory(Arrays.asList(mVisionTargetPose, end), Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(1)), VelocityKt.getVelocity(LengthKt.getFeet(2)), VelocityKt.getVelocity(LengthKt.getFeet(2)), Trajectories.kDefaultAcceleration.div(2), false, true);
 
-    mFollowerCommand = DriveTrain.getInstance().followTrajectoryWithGear(trajectory, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true);
-    
-    System.out.println("========== Vision spline generated in " + (Timer.getFPGATimestamp() - now) + " seconds! ==========");
+		mFollowerCommand = DriveTrain.getInstance().followTrajectoryWithGear(trajectory, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true);
 
-    System.out.println("Pose2d of the target that we measured: " + Util.toString(mVisionTargetPose));
+		System.out.println("========== Vision spline generated in " + (Timer.getFPGATimestamp() - now) + " seconds! ==========");
 
-    // this.clearRequirements();
-    mFollowerCommand.start();
-    mCommandStarted = true;
+		System.out.println("Pose2d of the target that we measured: " + Util.toString(mVisionTargetPose));
 
-    // addSequential(mFollowerCommand);
-  
-  }
+		// this.clearRequirements();
+		mFollowerCommand.start();
+		mCommandStarted = true;
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    // if(mCommandStarted && mFollowerCommand.isCompleted()) requires(DriveTrain.getInstance());
-  }
+		// addSequential(mFollowerCommand);
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return (mCommandStarted && mFollowerCommand.isCompleted()) || (LimeLight.getInstance().getTargetArea() > exitArea);
-  }
+	}
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-    DriveTrain.getInstance().stop();
-  }
+	// Called repeatedly when this Command is scheduled to run
+	@Override
+	protected void execute() {
+		// if(mCommandStarted && mFollowerCommand.isCompleted()) requires(DriveTrain.getInstance());
+	}
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+	// Make this return true when this Command no longer needs to run execute()
+	@Override
+	protected boolean isFinished() {
+		return (mCommandStarted && mFollowerCommand.isCompleted()) || (LimeLight.getInstance().getTargetArea() > exitArea);
+	}
+
+	// Called once after isFinished returns true
+	@Override
+	protected void end() {
+		DriveTrain.getInstance().stop();
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	@Override
+	protected void interrupted() {}
 }

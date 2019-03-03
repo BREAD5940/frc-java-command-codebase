@@ -19,16 +19,16 @@ import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 /**
  * 2-hatch 1-cargo auto
  */
-//FIXME why is this specified as left if it also takes an input for side?
 public class TwoHatchOneCargo extends AutoCommandGroup {
 	// private AutoCommandGroup mBigCommandGroup;
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
 	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
 
 	/**
-	 * 2-hatch 1-cargo hard-coded auto. ow.
+	 * 2-hatch 1-cargo hard-coded auto. ow. This is fine. Everything is fine. I'm not even mad. I'm just dissapoi
 	 * @param side to target (L or R)
 	 * @param startPos L M or R on the hab
+	 * @author Matthew Morley
 	 */
 	public TwoHatchOneCargo(char startPos, char side) {
 		HeldPiece cPiece = HeldPiece.HATCH; // we start with a hatch
@@ -36,12 +36,12 @@ public class TwoHatchOneCargo extends AutoCommandGroup {
 
 		/* Get a trajectory to move to the cargo ship */
 		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargoM" + side); //current trajectory from hashmap in Trajectorie
-		AutoMotion motion = new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH, true);
-		trajects.add(traject);
-		motions.add(motion);
-		this.addParallel(motion.getPrepCommand());
+		// AutoMotion motion = new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH, true);
+		// trajects.add(traject);
+		// motions.add(motion);
+		// this.addParallel(motion.getPrepCommand());
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, true)); //drive to goal
-		this.addSequential(motion.getBigCommandGroup()); //do a motion
+		// this.addSequential(motion.getBigCommandGroup()); //do a motion
 		// this.addSequential(new DelayCommand(TimeUnitsKt.getSecond(0.5)).getWrappedValue());
 
 		/* Move from middle of cargo ship to loading station on the same side to pick up a hatch */

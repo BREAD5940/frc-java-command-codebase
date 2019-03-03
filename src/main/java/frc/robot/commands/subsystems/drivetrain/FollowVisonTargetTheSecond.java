@@ -10,7 +10,6 @@ package frc.robot.commands.subsystems.drivetrain;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class FollowVisonTargetTheSecond extends Command {
 
@@ -75,9 +74,10 @@ public class FollowVisonTargetTheSecond extends Command {
 		double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
 		double ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
 
-		if (Math.abs(DESIRED_TARGET_AREA - ta) < 0.3){
+		if (Math.abs(DESIRED_TARGET_AREA - ta) < 0.3) {
 			System.out.println("WE DONE BOIS");
-			m_isDone = true;}
+			m_isDone = true;
+		}
 
 		System.out.println("DESIRED_TARGET_AREA - ta: " + (DESIRED_TARGET_AREA - ta));
 

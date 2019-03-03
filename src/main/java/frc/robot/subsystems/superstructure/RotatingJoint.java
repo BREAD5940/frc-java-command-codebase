@@ -144,7 +144,7 @@ public class RotatingJoint extends Subsystem {
 		this.getMaster().config_kI(3, 0.0, 0);
 		this.getMaster().config_kD(3, 2.0, 0);
 		this.getMaster().config_kF(3, 0.45, 0);
-		this.getMaster().configClearPositionOnLimitF(true,0);
+		this.getMaster().configClearPositionOnLimitF(true, 0);
 		// this.getMaster().selectProfileSlot(3, 0);
 		// this.getMaster().configClosedloopRamp(0.1);
 	}

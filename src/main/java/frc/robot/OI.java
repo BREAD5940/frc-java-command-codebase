@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.auto.groups.PickupHatch;
 import frc.robot.commands.auto.groups.visionTest;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
@@ -16,7 +17,6 @@ import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
-import frc.robot.commands.auto.groups.PickupHatch;
 
 /**
  * Operator Input not Out-In
@@ -94,7 +94,6 @@ public class OI {
 			SuperStructure.getInstance().getCurrentCommand().cancel();
 		if (plzNoDieDriveTrain.get())
 			DriveTrain.getInstance().getCurrentCommand().cancel();
-
 
 		// test1Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.LOW));
 		test1Button.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE_PREP)); // y button

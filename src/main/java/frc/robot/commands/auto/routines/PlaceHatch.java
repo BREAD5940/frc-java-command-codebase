@@ -1,7 +1,5 @@
 package frc.robot.commands.auto.routines;
 
-import java.util.Optional;
-
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -13,7 +11,6 @@ import frc.robot.commands.subsystems.drivetrain.SetPoseFromVisionTarget;
 import frc.robot.commands.subsystems.drivetrain.VisionSplineTest;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
-import frc.robot.lib.obj.factories.VisionTargetFactory;
 import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
@@ -64,7 +61,6 @@ public class PlaceHatch extends CommandGroup {
 
 		// addSequential(new PrintCommand("driving forward at a power"));
 
-
 		addSequential(new PrintCommand("outtaking...."));
 
 		addParallel(new RunIntake(-1, 0.75));
@@ -73,13 +69,11 @@ public class PlaceHatch extends CommandGroup {
 		addParallel(new RunIntake(-1, 0.75));
 		addSequential(new DrivePower(-0.2, 0.75));
 
-
 		addSequential(new PrintCommand("We done bois, hatch placed...."));
 
 		// addParallel(new SuperstructureGoToState(new ElevatorState(fieldPositions.hatchLowGoal.plus(LengthKt.getInch(3))), iPosition.HATCH_PITCHED_UP));
 
 		// addSequential(new PrintCommand("driving at a power in reverse"));
-
 
 		// addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(.5), true)); // TODO run the next spline, saves time, vs backing up
 	}
