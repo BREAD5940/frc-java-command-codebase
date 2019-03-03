@@ -1,6 +1,7 @@
 package frc.robot.lib.statemachines;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 
 /**
  * is literally a toggle
@@ -17,9 +18,9 @@ public class ChangeGoalHeight extends Command {
 	@Override
 	protected void initialize() {
 		if (up) {
-			AutoMotionStateMachine.goalHeightUp();
+			Robot.autoState.goalHeightUp();
 		} else {
-			AutoMotionStateMachine.goalHeightDown();
+			Robot.autoState.goalHeightDown();
 		}
 	}
 

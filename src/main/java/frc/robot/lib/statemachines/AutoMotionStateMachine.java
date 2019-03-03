@@ -22,85 +22,89 @@ public class AutoMotionStateMachine {
 		PICKUP, PLACE
 	}
 
-	private static HeldPiece heldPiece = HeldPiece.NONE;
-	private static HeldPiece goalPiece = HeldPiece.NONE;
-	private static GoalHeight goalHeight = GoalHeight.LOW;
-	private static GoalLocation goalLocation = GoalLocation.ROCKET;
-	private static MotionType motionType = MotionType.PICKUP;
-	private static GoalType goalType = GoalType.RETRIEVE_HATCH; //FIXME set default
+	private HeldPiece heldPiece = HeldPiece.NONE;
+	private HeldPiece goalPiece = HeldPiece.NONE;
+	private GoalHeight goalHeight = GoalHeight.LOW;
+	private GoalLocation goalLocation = GoalLocation.ROCKET;
+	private MotionType motionType = MotionType.PICKUP;
+	private GoalType goalType = GoalType.RETRIEVE_HATCH; //FIXME set default
 
-	protected static void updateGoalType() {
-		switch (motionType) {
+	protected void updateGoalType() {
+		switch (this.motionType) {
 		case PLACE:
-			switch (goalLocation) {
+			switch (this.goalLocation) {
 			case ROCKET:
-				switch (heldPiece) {
+				switch (this.heldPiece) {
 				case HATCH:
-					goalType = GoalType.ROCKET_HATCH;
+					this.goalType = GoalType.ROCKET_HATCH;
 				case CARGO:
-					goalType = GoalType.ROCKET_CARGO;
+					this.goalType = GoalType.ROCKET_CARGO;
 				case NONE:
 					//error, not allowed
-					goalType = GoalType.ROCKET_HATCH;
+					this.goalType = GoalType.ROCKET_HATCH;
 
 				}
 			case CARGO_SHIP:
-				switch (heldPiece) {
+				switch (this.heldPiece) {
 				case HATCH:
-					goalType = GoalType.CARGO_HATCH;
+					this.goalType = GoalType.CARGO_HATCH;
 				case CARGO:
-					goalType = GoalType.CARGO_CARGO;
+					this.goalType = GoalType.CARGO_CARGO;
 				case NONE:
 					//error, not allowed
-					goalType = GoalType.CARGO_HATCH;
+					this.goalType = GoalType.CARGO_HATCH;
 				}
 			}
 		case PICKUP:
-			switch (goalPiece) {
+			switch (this.goalPiece) {
 			case HATCH:
-				goalType = GoalType.RETRIEVE_HATCH;
+				this.goalType = GoalType.RETRIEVE_HATCH;
 			case CARGO:
-				goalType = GoalType.RETRIEVE_CARGO;
+				this.goalType = GoalType.RETRIEVE_CARGO;
 			case NONE:
 				//error not allowed
-				goalType = GoalType.RETRIEVE_HATCH;
+				this.goalType = GoalType.RETRIEVE_HATCH;
 			}
 
 		}
 	}
 
-	public static void setHeldPiece(HeldPiece piece) {
-		heldPiece = piece;
+	public GoalType getGoalType(){
+		return this.goalType;
+	}
+
+	public void setHeldPiece(HeldPiece piece) {
+		this.heldPiece = piece;
 		updateGoalType();
 	}
 
-	public static HeldPiece getHeldPiece() {
-		return heldPiece;
+	public HeldPiece getHeldPiece() {
+		return this.heldPiece;
 	}
 
-	public static void setGoalHeight(GoalHeight gH) {
-		goalHeight = gH;
+	public void setGoalHeight(GoalHeight gH) {
+		this.goalHeight = gH;
 		updateGoalType();
 	}
 
-	public static void goalHeightUp() {
-		if (goalHeight == GoalHeight.LOW) {
+	public void goalHeightUp() {
+		if (this.goalHeight == GoalHeight.LOW) {
 			setGoalHeight(GoalHeight.MIDDLE);
-		} else if (goalHeight == GoalHeight.MIDDLE) {
+		} else if (this.goalHeight == GoalHeight.MIDDLE) {
 			setGoalHeight(GoalHeight.HIGH);
 		}
 	}
 
-	public static void goalHeightDown() {
-		if (goalHeight == GoalHeight.HIGH) {
+	public void goalHeightDown() {
+		if (this.goalHeight == GoalHeight.HIGH) {
 			setGoalHeight(GoalHeight.MIDDLE);
-		} else if (goalHeight == GoalHeight.MIDDLE) {
+		} else if (this.goalHeight == GoalHeight.MIDDLE) {
 			setGoalHeight(GoalHeight.LOW);
 		}
 	}
 
-	public static GoalHeight getGoalHeight() {
-		return goalHeight;
+	public GoalHeight getGoalHeight() {
+		return this.goalHeight;
 	}
 
 }

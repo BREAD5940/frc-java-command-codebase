@@ -1,6 +1,7 @@
 package frc.robot.lib.statemachines;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 
 /**
@@ -13,12 +14,12 @@ public class SetPieceToggle extends Command {
 
 	@Override
 	protected void initialize() {
-		AutoMotionStateMachine.setHeldPiece(HeldPiece.CARGO);
+		Robot.autoState.setHeldPiece(HeldPiece.CARGO);
 	}
 
 	@Override
 	protected void interrupted() {
-		AutoMotionStateMachine.setHeldPiece(HeldPiece.HATCH);
+		Robot.autoState.setHeldPiece(HeldPiece.HATCH);
 	}
 
 	@Override

@@ -36,6 +36,7 @@ import frc.robot.subsystems.superstructure.SuperStructure;
 public class Robot extends TimedRobot {
 	public static SendableChooser<GoalHeight> mGh;
 	public static OI m_oi;
+	public static AutoMotionStateMachine autoState; //TODO this should be static, right?
 	// public static Intake intake = new Intake();
 	// public static Elevator elevator = new Elevator();
 	public static DriveTrain drivetrain = DriveTrain.getInstance();
@@ -130,12 +131,15 @@ public class Robot extends TimedRobot {
 		Trajectories.generateAllTrajectories();
 
 		// logger = Logger.getInstance();
-		m_oi = new OI();
+		
 		mGh = new SendableChooser<GoalHeight>();
 		mGh.setDefaultOption("Low", GoalHeight.LOW);
 		mGh.addOption("Middle", GoalHeight.MIDDLE);
 		mGh.addOption("High", GoalHeight.HIGH);
 		SmartDashboard.putData("Goal Height", mGh);
+
+		m_oi = new OI();
+		autoState = new AutoMotionStateMachine();
 
 		// SmartDashboard.putData(SuperStructure.intake);
 		// SmartDashboard.putData(shifterDoubleSolenoid);
@@ -352,7 +356,7 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
 		SmartDashboard.putData(superstructure);
 
-		SmartDashboard.putString("Current held piece:", AutoMotionStateMachine.getHeldPiece().toString()); //TODO check if this works
+		SmartDashboard.putString("Current held piece:", autoState.getHeldPiece().toString()); //TODO check if this works
 
 		// Limelight stuff
 		// double[] limelightdata = limelight.getData();
