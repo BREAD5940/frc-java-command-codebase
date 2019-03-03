@@ -8,8 +8,8 @@ import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
  * 
  * @author jocleyn McHugo
  */
-public class SetAutoStuff extends Command{
-  public SetAutoStuff(){}
+public class SetPieceToggle extends Command{
+  public SetPieceToggle(){}
 
   @Override
   protected void initialize() {

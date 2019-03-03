@@ -7,7 +7,7 @@ public class AutoMotionStateMachine{
 	}
 
 	public enum GoalHeight {
-		LOW, MIDDLE, HIGH, OVER
+		LOW, MIDDLE, HIGH
 	}
 
 	public enum GoalType {
@@ -82,6 +82,22 @@ public class AutoMotionStateMachine{
 	public static void setGoalHeight(GoalHeight gH){
 		goalHeight = gH;
 		updateGoalType();
+	}
+
+	public static void goalHeightUp(){
+		if(goalHeight==GoalHeight.LOW){
+			setGoalHeight(GoalHeight.MIDDLE);
+		}else if(goalHeight==GoalHeight.MIDDLE){
+			setGoalHeight(GoalHeight.HIGH);
+		}
+	}
+
+	public static void goalHeightDown(){
+		if(goalHeight==GoalHeight.HIGH){
+			setGoalHeight(GoalHeight.MIDDLE);
+		}else if (goalHeight==GoalHeight.MIDDLE){
+			setGoalHeight(GoalHeight.LOW);
+		}
 	}
 
 	public static GoalHeight getGoalHeight(){

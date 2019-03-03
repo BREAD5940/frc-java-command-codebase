@@ -89,7 +89,7 @@ public class TwoHatchOneCargo extends AutoCommandGroup {
 		cStart = "depot" + side;
 		cPiece = HeldPiece.CARGO;
 		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
-		motion = new AutoMotion(GoalHeight.OVER, GoalType.CARGO_CARGO, false);
+		motion = new AutoMotion(GoalHeight.LOW, GoalType.CARGO_CARGO, false);
 		trajects.add(traject);
 		motions.add(motion);
 		this.addParallel(motion.getPrepCommand());

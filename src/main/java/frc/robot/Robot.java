@@ -135,7 +135,6 @@ public class Robot extends TimedRobot {
 		mGh.setDefaultOption("Low", GoalHeight.LOW);
 		mGh.addOption("Middle", GoalHeight.MIDDLE);
 		mGh.addOption("High", GoalHeight.HIGH);
-		mGh.addOption("Dropped into the cargo ship", GoalHeight.OVER);
 		SmartDashboard.putData("Goal Height", mGh);
 
 		// SmartDashboard.putData(SuperStructure.intake);

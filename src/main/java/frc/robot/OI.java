@@ -5,7 +5,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.lib.DPadButton;
 import frc.robot.lib.DPadButton.Direction;
-import frc.robot.lib.statemachines.SetAutoStuff;
+import frc.robot.lib.statemachines.ChangeGoalHeight;
+import frc.robot.lib.statemachines.SetPieceToggle;
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.routines.PickupHatch;
@@ -69,14 +70,14 @@ public class OI {
 
 	public OI() {
 
-		toggleHP.toggleWhenPressed(new SetAutoStuff());
+		toggleHP.toggleWhenPressed(new SetPieceToggle());
 		// togglePickup.toggleWhenPressed(command);
 		// toggleGoal.toggleWhenPressed(command);
 
 		// useMotion.whenPressed(new RunAuto(AutoMotionStateMachine.getGoalType(), AutoMotionStateMachine.getGoalHeight()));
 
-		// goalUp.whenPressed(command);
-		// goalDown.whenPressed(command);
+		goalUp.whenPressed(new ChangeGoalHeight(true));
+		goalDown.whenPressed(new ChangeGoalHeight(false));
 
 
 
