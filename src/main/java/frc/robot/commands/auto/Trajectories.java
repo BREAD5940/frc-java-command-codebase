@@ -187,14 +187,17 @@ public class Trajectories {
 						Rotation2dKt.getDegree(30.0))),
 			true));
 
-		// Trajectories to the rocket. format is rocket[L/R for left/right][C/M/F for close/middle/far]. These are offset to allow for a vision target to yeet into it
+		// Trajectories to the rocket. format is rocket[L/R for left/right][C/M/F for close/middle/far]. This one is backed up 3 feet already!!!!!!!!!!!!!!!!!!!!!!!!!!
 		generatedLGTrajectories.put("rocketLF to loadingL", generateTrajectoryLowGear(
 			Arrays.asList(
-				locations.get("habL"),
 				new Pose2d(
-					LengthKt.getFeet(19.445),
-					LengthKt.getFeet(22.808),
-					Rotation2dKt.getDegree(26)),
+					LengthKt.getFeet(23.92),
+					LengthKt.getFeet(23.28),
+					Rotation2dKt.getDegree(-33)),
+				new Pose2d(
+					LengthKt.getFeet(19.5),
+					LengthKt.getFeet(23.065),
+					Rotation2dKt.getDegree(0)),
 				locations.get("loadingL").plus(
 					new Pose2d(LengthKt.getFeet(3), LengthKt.getFeet(0), Rotation2dKt.getDegree(0)) // offset by 3 feet to allow the vision spline to kick in a bit
 				)),

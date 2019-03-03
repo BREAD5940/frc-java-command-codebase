@@ -13,7 +13,7 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.subsystems.drivetrain.VisionSplineTest;
+import frc.robot.commands.subsystems.drivetrain.SplineToVisionTarget;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
@@ -51,7 +51,7 @@ public class visionTest extends CommandGroup {
 
 		addSequential(new PrintCommand("==================================== moving on to next command ======================="));
 
-		addSequential(new VisionSplineTest(20, 6.5)); // todo check numbers
+		// addSequential(new SplineToVisionTarget(, 6.5)); // todo check numbers
 
 	}
 }
