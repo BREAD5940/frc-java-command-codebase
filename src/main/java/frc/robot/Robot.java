@@ -356,8 +356,8 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
 		SmartDashboard.putData(superstructure);
 
-		SmartDashboard.putString("Current held piece:", autoState.getHeldPiece().toString()); //TODO check if this works
 
+		SmartDashboard.putData(autoState); //TODO test to see if it actually does the thing
 		// Limelight stuff
 		// double[] limelightdata = limelight.getData();
 

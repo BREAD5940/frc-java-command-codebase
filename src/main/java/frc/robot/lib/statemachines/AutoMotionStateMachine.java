@@ -1,6 +1,10 @@
 package frc.robot.lib.statemachines;
 
-public class AutoMotionStateMachine {
+import edu.wpi.first.wpilibj.SendableBase;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import edu.wpi.first.wpilibj.Sendable;
+
+public class AutoMotionStateMachine extends SendableBase {
 
 	public enum HeldPiece {
 		HATCH, CARGO, NONE
@@ -73,6 +77,10 @@ public class AutoMotionStateMachine {
 		return this.goalType;
 	}
 
+	private String goalTypeString(){
+		return this.getGoalType().toString();
+	}
+
 	public void setHeldPiece(HeldPiece piece) {
 		this.heldPiece = piece;
 		updateGoalType();
@@ -80,6 +88,10 @@ public class AutoMotionStateMachine {
 
 	public HeldPiece getHeldPiece() {
 		return this.heldPiece;
+	}
+
+	private String heldPieceString(){
+		return this.getHeldPiece().toString();
 	}
 
 	public void setGoalHeight(GoalHeight gH) {
@@ -105,6 +117,22 @@ public class AutoMotionStateMachine {
 
 	public GoalHeight getGoalHeight() {
 		return this.goalHeight;
+	}
+
+	public String goalHeightString(){
+		return this.getGoalHeight().toString();
+	}
+
+	@Override
+	public void initSendable(SendableBuilder builder) {
+		builder.setSmartDashboardType("StateMachine");
+
+		builder.addStringProperty(".heldPiece", this::heldPieceString, null);
+		// builder.addStringProperty(".goalPiece", this::goalPieceString, null);
+		builder.addStringProperty(".goalHeight", this::goalHeightString, null);
+		// builder.addStringProperty(".goalLocation", this::goalLocationString, null);
+		// builder.addStringProperty(".motionType", this::motionTypeString, null);
+		builder.addStringProperty(".goalType", this::goalTypeString, null);
 	}
 
 }
