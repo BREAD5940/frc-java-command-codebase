@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.subsystems.drivetrain.DrivePower;
-import frc.robot.commands.subsystems.drivetrain.FollowVisonTargetTheSecond;
+import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.states.ElevatorState;
@@ -39,7 +39,7 @@ public class PlaceHatch extends CommandGroup {
 
 		addSequential(new PrintCommand("=== running vision target follower ==="));
 
-		addSequential(new FollowVisonTargetTheSecond(2.8));
+		addSequential(new FollowVisionTargetTheSecond(2.8));
 
 		// FIXME this is broken because the offset backwards doesn't work. Like, attttttttttttttttttttttttttt alllll
 		// addSequential(new VisionSplineTest(, 6.5)); // todo check numbers

@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.subsystems.drivetrain.DrivePower;
-import frc.robot.commands.subsystems.drivetrain.FollowVisonTargetTheSecond;
+import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
@@ -23,7 +23,7 @@ public class PickupHatch extends CommandGroup {
 
 		addSequential(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
 
-		addSequential(new FollowVisonTargetTheSecond(7.5));
+		addSequential(new FollowVisionTargetTheSecond(7.5));
 
 		// Consumer<Pose2d> translationSetter = (Pose2d newP) -> {this.mMeasuredPose = newP;};
 
