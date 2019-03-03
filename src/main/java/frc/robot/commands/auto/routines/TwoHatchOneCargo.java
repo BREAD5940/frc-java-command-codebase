@@ -2,30 +2,42 @@ package frc.robot.commands.auto.routines;
 
 import java.util.ArrayList;
 
+import org.ghrobotics.lib.commands.CommandGroupBuilder;
+import org.ghrobotics.lib.commands.FalconCommandGroup;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.GoalHeight;
 import frc.robot.commands.auto.AutoMotion.GoalType;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.commands.auto.actions.SetTempPoseFromVisionTarget;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
+import frc.robot.commands.auto.groups.PickupHatch;
+import frc.robot.commands.auto.groups.VisionCommandGroup;
+import frc.robot.commands.subsystems.drivetrain.SplineToVisionTarget;
 import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
+import frc.robot.commands.subsystems.drivetrain.VisionSplineTest;
+import frc.robot.commands.subsystems.superstructure.RunIntake;
+import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
+import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
  * 2-hatch 1-cargo auto
  */
-public class TwoHatchOneCargo extends AutoCommandGroup {
+public class TwoHatchOneCargo extends VisionCommandGroup {
 	// private AutoCommandGroup mBigCommandGroup;
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
 	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
 
 	/**
-	 * 2-hatch 1-cargo hard-coded auto. ow. This is fine. Everything is fine. I'm not even mad. I'm just dissapoi
+	 * 2-hatch 1-cargo hard-coded auto. ow. This is fine. Everything is fine. 
 	 * @param side to target (L or R)
 	 * @param startPos L M or R on the hab
 	 * @author Matthew Morley
@@ -34,28 +46,28 @@ public class TwoHatchOneCargo extends AutoCommandGroup {
 		HeldPiece cPiece = HeldPiece.HATCH; // we start with a hatch
 		String cStart = "hab" + startPos;
 
+
 		/* Get a trajectory to move to the cargo ship */
-		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargoM" + side); //current trajectory from hashmap in Trajectorie
-		// AutoMotion motion = new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH, true);
-		// trajects.add(traject);
-		// motions.add(motion);
-		// this.addParallel(motion.getPrepCommand());
-		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, true)); //drive to goal
-		// this.addSequential(motion.getBigCommandGroup()); //do a motion
-		// this.addSequential(new DelayCommand(TimeUnitsKt.getSecond(0.5)).getWrappedValue());
+		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedLGTrajectories.get(cStart + " to " + "cargoM" + side); //current trajectory from hashmap in Trajectorie
+		addParallel(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE_PREP));
+		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
+		addSequential(new SetTempPoseFromVisionTarget(this, PoseStorage.POSE1, false));
+		addParallel(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE.elevator.plus(iPosition.kOffsetFromL1toL2), iPosition.HATCH_SLAM_ROCKET_INSIDE.jointAngles));
+		addSequential(new SplineToVisionTarget(this.getPoseStorage1(), 6.5));
+		addSequential(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE), 1);
+		addSequential(new RunIntake(-1, 1));
+		
 
 		/* Move from middle of cargo ship to loading station on the same side to pick up a hatch */
 		cStart = "cargoM" + side;
 		cPiece = HeldPiece.NONE;
 
 		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "loading" + side); //current trajectory from hashmap in Trajectorie
-		motion = new AutoMotion(GoalHeight.LOW, GoalType.RETRIEVE_HATCH, false);
-		trajects.add(traject);
-		motions.add(motion);
-		this.addParallel(motion.getPrepCommand());
+		this.addParallel(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
+		this.addSequential(DriveTrain.getInstance().followTrajectory(Trajectories.reverse3FeetLowGear, TrajectoryTrackerMode.RAMSETE, false)); //back up mega fast to clear rocket
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
-		this.addSequential(motion.getBigCommandGroup()); //do a motion
-		// this.addSequential(new DelayCommand(TimeUnitsKt.getSecond(0.5)).getWrappedValue());
+		addSequential(new PickupHatch());
+
 
 		/* Go right up to the cargo ship from the loading station */
 		cStart = "loading" + side;

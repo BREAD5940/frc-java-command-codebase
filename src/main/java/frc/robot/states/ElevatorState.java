@@ -89,4 +89,8 @@ public class ElevatorState {
 				&& this.velocity.getValue() == other.velocity.getValue());
 	}
 
+	public ElevatorState plus(Length offset) {
+		return new ElevatorState(this.height.plus(offset));
+	}
+
 }

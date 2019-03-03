@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.subsystems.drivetrain.DrivePower;
 import frc.robot.commands.subsystems.drivetrain.FollowVisonTargetTheSecond;
-import frc.robot.commands.subsystems.drivetrain.SetPoseFromVisionTarget;
 import frc.robot.commands.subsystems.drivetrain.VisionSplineTest;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
@@ -43,7 +42,8 @@ public class PlaceHatch extends CommandGroup {
 
 		addSequential(new FollowVisonTargetTheSecond(2.8));
 
-		addSequential(new VisionSplineTest(20, 6.5)); // todo check numbers
+		// FIXME this is broken because the offset backwards doesn't work. Like, attttttttttttttttttttttttttt alllll
+		// addSequential(new VisionSplineTest(, 6.5)); // todo check numbers
 
 		// addSequential(new SuperstructureGoToState(new ElevatorState(fieldPositions.hatchHighGoal), iPosition.HATCH));
 
@@ -51,7 +51,7 @@ public class PlaceHatch extends CommandGroup {
 
 		// addSequential(new PrintCommand("pose: " + this.mMeasuredPose.getRotation().getDegree()));
 
-		addSequential(new SetPoseFromVisionTarget(goalPose));
+		// addSequential(new SetPoseFromVisionTarget(goalPose));
 
 		// addSequential(new PrintCommand("pose: " + this.mMeasuredPose.getRotation().getDegree()));
 

@@ -27,20 +27,23 @@ import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 import frc.robot.subsystems.LimeLight;
 
-public class VisionSplineTest extends CommandGroup {
+public class SplineToVisionTarget extends CommandGroup {
 	double targetDistance, exitArea;
+
+	final Pose2d initialPose;
 
 	/**
 	 * Follow a spline shaped trajectory to a vision target. This command gets the vision target pose on first init and will reset the robot odometry.
 	 * 
 	 * @author Matthew Morley
 	 * 
-	 * @param targetLimelightOffset How far to stop away from the target in inches (ahem, the limelight is behind the bumpers, ahem)
+	 * @param currentPose the current pose of the robot (vision target centric fama)
 	 * @param areaAtWhichToExit the area at which the command will exit
 	 */
-	public VisionSplineTest(double targetLimelightOffset, double areaAtWhichToExit) {
-		this.targetDistance = targetLimelightOffset;
+	public SplineToVisionTarget(Pose2d currentPose, double areaAtWhichToExit) {
+		// this.targetDistance = targetLimelightOffset;
 		this.exitArea = areaAtWhichToExit;
+		this.initialPose = currentPose;
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		// requires(DriveTrain.getInstance());
@@ -53,13 +56,13 @@ public class VisionSplineTest extends CommandGroup {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		final double kOffset = 100; // so that the spline ends up in FalconDashboard instead of off the map
+		final double kOffset = 100; // so that the spline ends up in FalconDashboard instead of off the map. HOly shit the possibilty for bugs here is big. Let's not.
 
 		Pose2d mVisionTargetPose = LimeLight.getInstance().getPose(kOffset);
 
 		double now = Timer.getFPGATimestamp();
 		// Pose2d start = new Pose2d(new Translation2d(LengthKt.getInch(-50 + 200), LengthKt.getInch(-20 + 200)), Rotation2dKt.getDegree(-10));
-		Pose2d end = new Pose2d(new Translation2d(LengthKt.getInch((-1 * targetDistance) + kOffset), LengthKt.getInch(0 + kOffset)), Rotation2dKt.getDegree(0));
+		Pose2d end = new Pose2d(new Translation2d(LengthKt.getInch(kOffset), LengthKt.getInch(0 + kOffset)), Rotation2dKt.getDegree(0));
 
 		trajectory = Trajectories.generateTrajectory(Arrays.asList(mVisionTargetPose, end), Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(1)), VelocityKt.getVelocity(LengthKt.getFeet(2)), VelocityKt.getVelocity(LengthKt.getFeet(2)), Trajectories.kDefaultAcceleration.div(2), false, true);
 
