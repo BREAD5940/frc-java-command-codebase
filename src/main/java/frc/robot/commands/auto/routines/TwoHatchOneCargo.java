@@ -45,7 +45,7 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		String cStart = "hab" + startPos;
 
 
-		/* Get a trajectory to move to the cargo ship */
+		/* Get a trajectory to move to the cargo ship. THE ROBOT IS REVERSED */
 		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedLGTrajectories.get("habL" + " to " + "rocketLF"); //current trajectory from hashmap in Trajectorie
 		addParallel(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE_PREP));
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, true)); //drive to goal
@@ -53,7 +53,7 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		addParallel(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE.elevator.plus(iPosition.kOffsetFromL1toL2), iPosition.HATCH_SLAM_ROCKET_INSIDE.jointAngles));
 		addSequential(new SplineToVisionTarget(this.getPoseStorage1(), 6.5));
 		addSequential(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE), 1);
-		addSequential(new RunIntake(-1, 1));
+		addSequential(new RunIntake(-1, 0, 1));
 		
 
 		/* Move from middle of cargo ship to loading station on the same side to pick up a hatch */

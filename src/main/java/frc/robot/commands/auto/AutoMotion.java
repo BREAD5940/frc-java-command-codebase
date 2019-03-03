@@ -87,7 +87,7 @@ public class AutoMotion {
 		AutoCommandGroup toReturn = new AutoCommandGroup();
 		if (this.gType == GoalType.RETRIEVE_CARGO) {
 			//TODO target cargo
-			toReturn.addSequential(new RunIntake(.75d, 1));
+			toReturn.addSequential(new RunIntake(0.75d, .75d, 1));
 			this.endPiece = HeldPiece.CARGO;
 		} else if (this.gType == GoalType.RETRIEVE_HATCH) {
 			toReturn.addSequential(new PrintCommand("running grab commands!"));
@@ -97,7 +97,7 @@ public class AutoMotion {
 			// toReturn.addSequential(new DriveDistance());
 			//TODO maybe check the alignment with the center of the hatch with a sensor or some shit?
 			//grab
-			toReturn.addSequential(new RunIntake(1, 1));
+			toReturn.addSequential(new RunIntake(1, 1, 1));
 			//pull the hatch out of the brushes
 			// toReturn.addSequential(new SuperstructureGoToState(new ElevatorState(getElevatorPreset().plus(LengthKt.getInch(6))))); // lift from brushes
 			toReturn.addSequential(new DriveDistance(-0.5)); // back up
@@ -125,7 +125,7 @@ public class AutoMotion {
 		}
 
 		if (this.piece == HeldPiece.CARGO) {
-			toReturn.addSequential(new RunIntake(-1, 0.5));
+			toReturn.addSequential(new RunIntake(-1, -1, 0.5));
 		} else if (this.piece == HeldPiece.HATCH) {
 			toReturn.addSequential(new PlaceHatch()); // TODO so we need to pass in the goal lol
 		}

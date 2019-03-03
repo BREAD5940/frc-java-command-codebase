@@ -13,10 +13,10 @@ public class DropCargo extends CommandGroup {
 	public DropCargo(boolean isDrop) {
 		if (!isDrop) {
 			// addSequential(new SetWrist(0, false));
-			addSequential(new RunIntake(-1, 2));
+			addSequential(new RunIntake(-1, -1, 2));
 		} else {
 			// addSequential(new SetWrist(-90, false)); // TODO the entire SetWrist command is currently commented out
-			addSequential(new RunIntake(-1, 2));
+			addSequential(new RunIntake(-1, 01, 2));
 		}
 
 	}

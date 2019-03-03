@@ -29,7 +29,7 @@ import frc.robot.lib.Logger;
 // @SuppressWarnings("WeakerAccess")
 public class Trajectories {
 
-	public static final TimedTrajectory<Pose2dWithCurvature> reverse3FeetLowGear = generateTrajectoryLowGear(Arrays.asList(new Pose2d(LengthKt.getFeet(0), LengthKt.getFeet(0), Rotation2dKt.getDegree(180)), new Pose2d(LengthKt.getFeet(3), LengthKt.getFeet(0), Rotation2dKt.getDegree(180))), true);
+	public static TimedTrajectory<Pose2dWithCurvature> reverse3FeetLowGear;// = generateTrajectoryLowGear(Arrays.asList(new Pose2d(LengthKt.getFeet(0), LengthKt.getFeet(0), Rotation2dKt.getDegree(180)), new Pose2d(LengthKt.getFeet(3), LengthKt.getFeet(0), Rotation2dKt.getDegree(180))), true);
 	public static HashMap<String, Pose2d> locations = new HashMap<String, Pose2d>();
 	public static Velocity<Length> yeetSpeed = VelocityKt.getVelocity(LengthKt.getFeet(12.5)); //FIXME what is the speed for the spin?
 
@@ -113,6 +113,7 @@ public class Trajectories {
 	public static void generateAllTrajectories(boolean isReal) {
 		/** High gear trajectory for going forward 20ft! */
 		forward20Feet = generateTrajectoryHighGear(forward20ftSrc, false);
+		reverse3FeetLowGear = generateTrajectoryLowGear(Arrays.asList(new Pose2d(LengthKt.getFeet(0), LengthKt.getFeet(0), Rotation2dKt.getDegree(180)), new Pose2d(LengthKt.getFeet(3), LengthKt.getFeet(0), Rotation2dKt.getDegree(180))), true);
 
 		Logger.log("Generating ALL trajectories");
 		genLocs();

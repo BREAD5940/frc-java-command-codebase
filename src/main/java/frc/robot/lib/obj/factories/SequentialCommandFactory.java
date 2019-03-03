@@ -22,6 +22,7 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
  * 
  * @author Matthew Morley
  */
+@Deprecated
 public class SequentialCommandFactory {
 
 	public static CommandGroup levelOneHatch() {

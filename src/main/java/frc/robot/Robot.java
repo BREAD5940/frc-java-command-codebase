@@ -67,7 +67,7 @@ public class Robot extends TimedRobot {
 
 	public static DoubleSolenoid getIntakeSolenoidInstance() {
 		if (intakeDoubleSolenoid == null)
-			intakeDoubleSolenoid = new DoubleSolenoid(9, 2, 3);
+			intakeDoubleSolenoid = new DoubleSolenoid(9, 6, 7);
 		return intakeDoubleSolenoid;
 	}
 

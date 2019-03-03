@@ -40,7 +40,7 @@ public class Intake extends Subsystem {
 		return Robot.getIntakeSolenoidInstance();
 	}
 
-	public WPI_TalonSRX talon;
+	public WPI_TalonSRX cargoTalon, hatchTalon;
 	// public TalonSRX talon_right = new TalonSRX(RobotConfig.intake.right_intake_talon_port);
 
 	public enum HatchMechState {
@@ -64,31 +64,46 @@ public class Intake extends Subsystem {
 
 	float position_setpoint;
 
-	private Intake(int port) {
-		talon = new WPI_TalonSRX(port);
+	private Intake(int cargoPort, int hatchPort) {
+		cargoTalon = new WPI_TalonSRX(cargoPort);
+		hatchTalon = new WPI_TalonSRX(hatchPort);
 		// talon.configOpenloopRamp(0.15);
-		talon.configContinuousCurrentLimit(30);
-		talon.configPeakCurrentLimit(40);
-		talon.enableCurrentLimit(true);
-		talon.setName("Intake");
+		// talon.configContinuousCurrentLimit(30);
+		// talon.configPeakCurrentLimit(40);
+		// talon.enableCurrentLimit(true);
+		// talon.setName("Intake");
 	}
 
 	private Intake() {
-		this(34);
+		this(35, 34);
 	}
 
 	/**
-	 * Set speed to raw percent output
+	 * Set the cargo intake speed as a percent vbus
 	 * @param speed
 	 */
-	public void setSpeed(double speed) {
-		// if (Math.abs(speed) < 0.2)
-		// 	speed = 0.1;
-		// speed = Util.limit(speed, -0.75, 0.75);
+	public void setCargoSpeed(double speed) {
+		cargoTalon.set(ControlMode.PercentOutput, speed);
+		SmartDashboard.putNumber("Cargo speed setpoint", speed);
+	}
 
-		talon.set(ControlMode.PercentOutput, speed);
-		SmartDashboard.putNumber("Intake speed setpoint", speed);
+	/**
+	 * Set the cargo intake speed as a percent vbus
+	 * @param speed
+	 */
+	public void setHatchSpeed(double speed) {
+		hatchTalon.set(ControlMode.PercentOutput, speed);
+		SmartDashboard.putNumber("Hatch speed setpoint", speed);
+	}
 
+	public void setSpeed(double hatch, double cargo) {
+		setCargoSpeed(cargo);
+		setHatchSpeed(hatch);
+	}
+
+	public void stop() {
+		setCargoSpeed(0);
+		setHatchSpeed(0);
 	}
 
 	@Override

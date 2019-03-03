@@ -24,7 +24,11 @@ public class IntakeTelop extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		SuperStructure.intake.setSpeed(Robot.m_oi.getIntakeSpeed());
+		if(Math.abs(Robot.m_oi.getCargoSpeed()) > 0.2) {
+			SuperStructure.intake.setSpeed(-1 * Robot.m_oi.getCargoSpeed(), Robot.m_oi.getCargoSpeed());
+		} else {
+			SuperStructure.intake.setSpeed(Robot.m_oi.getIntakeSpeed(), 0);
+		}
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

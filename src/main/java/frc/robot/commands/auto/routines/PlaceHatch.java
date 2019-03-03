@@ -62,10 +62,10 @@ public class PlaceHatch extends CommandGroup {
 
 		addSequential(new PrintCommand("outtaking...."));
 
-		addParallel(new RunIntake(-1, 0.75));
+		addParallel(new RunIntake(-1, 0, 0.75));
 		addSequential(new DrivePower(0.15, 0.75));
 
-		addParallel(new RunIntake(-1, 0.75));
+		addParallel(new RunIntake(-1, 0, 0.75));
 		addSequential(new DrivePower(-0.2, 0.75));
 
 		addSequential(new PrintCommand("We done bois, hatch placed...."));

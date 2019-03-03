@@ -8,6 +8,7 @@ import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.PickupHatch;
 import frc.robot.commands.auto.groups.visionTest;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
+import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.lib.obj.factories.SequentialCommandFactory;
@@ -45,10 +46,10 @@ public class OI {
 	// TODO change these to a button console once created
 	// Button auto_place_cargo_cargo_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 	// Button auto_place_hatch_cargo_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.B_BUTTON);
-	Button test1Button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
-	Button test2Button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
-	Button test3Button = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
-	Button test4Button = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
+	Button primaryYButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
+	Button primaryAButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
+	Button primaryXButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
+	Button primaryBButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
 	// Button test2button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 
 	// File file = new File("/home/lvuser/deploy/paths/test.pf1.csv");
@@ -71,39 +72,16 @@ public class OI {
 	public OI() {
 		shift_up_button.whenPressed(new SetGearCommand(Gear.HIGH));
 		shift_down_button.whenPressed(new SetGearCommand(Gear.LOW));
-		// open_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kOpen));
-		// close_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kClamped));
-		open_clamp_button.whenPressed(new SuperstructureGoToState(new ElevatorState(fieldPositions.hatchHighGoal), iPosition.HATCH)); // y button
-		secondaryTest1.whenPressed(new SuperstructureGoToState(new ElevatorState(fieldPositions.hatchMiddleGoal), iPosition.HATCH)); // b button
-		// close_clamp_button.whenP
+		open_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kOpen)); // y button
+		close_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kClamped)); // a button
 
-		secondaryTest2.whenPressed(SequentialCommandFactory.levelOneHatch());
-
-		close_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kClamped));
-
-		if (Trajectories.forward20Feet == null)
-			Trajectories.generateAllTrajectories();
-		// testAutoButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.generatedTrajectories.get("test"), true));
-
-		// test2button.whenPressed(new SuperstructureGoToState(
-		// 		new SuperStructureState(new ElevatorState(RobotConfig.auto.fieldPositions.hatchLowGoal),
-		// 				new IntakeAngle(new RotatingArmState(), new RotatingArmState(Rotation2dKt.getDegree(90)))),
-		// 		5));
-
-		if (plzNoDieElevator.get())
-			SuperStructure.getInstance().getCurrentCommand().cancel();
-		if (plzNoDieDriveTrain.get())
-			DriveTrain.getInstance().getCurrentCommand().cancel();
-
-		// test1Button.whenPressed(new RunAuto(GoalType.ROCKET_HATCH, GoalHeight.LOW));
-		test1Button.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE_PREP)); // y button
-		test2Button.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE)); // a button
-
+		primaryYButton.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE_PREP)); // y button
+		primaryAButton.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE)); // a button
 		// test2Button.whenPressed(new PassThrough()); // a button
-		test3Button.whenPressed(new PickupHatch()); // x button
+		primaryXButton.whenPressed(new RunIntake(1, 1, 2)); // x button
 		// test3Button.whenPressed(new FollowVisonTargetTheSecond());
 		// test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button
-		test4Button.whenPressed(new visionTest()); // b button
+		primaryBButton.whenPressed(new visionTest()); // b button
 		// test4Button.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW)); // b button - used now for dealy
 
 		// cargoOverButton.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.OVER));
@@ -162,7 +140,7 @@ public class OI {
 	}
 
 	public boolean getWaiterButton() {
-		return test4Button.get();
+		return primaryBButton.get();
 	}
 
 	public Joystick getPrimary() {
@@ -179,6 +157,15 @@ public class OI {
 
 	public double getIntakeAxis() {
 		return (secondaryJoystick.getRawButton(xboxmap.Buttons.RB_BUTTON)) ? 1 * 1 : 0;
+	}
+
+	
+	public double getCargoOuttake() {
+		return (secondaryJoystick.getRawButton(xboxmap.Buttons.X_BUTTON)) ? 1 * 1 : 0;
+	}
+
+	public double getCargoIntake() {
+		return (secondaryJoystick.getRawButton(xboxmap.Buttons.B_BUTTON)) ? 1 * 1 : 0;
 	}
 
 	public double getOuttakeAxis() {
@@ -206,6 +193,10 @@ public class OI {
 	 */
 	public double getIntakeSpeed() {
 		return getIntakeAxis() - getOuttakeAxis();
+	}
+
+	public double getCargoSpeed() {
+		return getCargoIntake() - getCargoOuttake();
 	}
 
 	public double getElevatorAxis() {

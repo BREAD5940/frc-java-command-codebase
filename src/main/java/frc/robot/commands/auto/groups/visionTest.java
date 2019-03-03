@@ -32,6 +32,7 @@ public class visionTest extends CommandGroup {
 	 * @author Matthew Morley
 	 * 
 	 */
+	@Deprecated
 	public visionTest() {
 		// addSequential(new VisionSplineTest(25, 4)); // todo check numbers
 

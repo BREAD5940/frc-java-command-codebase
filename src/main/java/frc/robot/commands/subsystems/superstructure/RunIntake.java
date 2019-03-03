@@ -7,51 +7,46 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class RunIntake extends Command {
-	double demand, duratuion;
-	double endTime;
+/**
+ * Add your docs here.
+ */
+public class RunIntake extends TimedCommand {
+  /**
+   * Run the intake at some speeds for a time
+   */
+  double hatch, cargo;
+  public RunIntake(double hatchSpeed, double cargoSpeed, double timeout) {
+    super(timeout);
+    // Use requires() here to declare subsystem dependencies
+    // eg. requires(chassis);
+    requires(SuperStructure.intake);
+    this.hatch = hatchSpeed;
+    this.cargo = cargoSpeed;
+  }
 
-	/**
-	 * Run the intake for a set amount of time at a requested power
-	 * @param demand the percent output of the intake talon
-	 * @param duration the time for which to run this command
-	 * 
-	 * @author Matthew Morley
-	 */
-	public RunIntake(double demand_, double duration_) {
-		requires(SuperStructure.intake); // TODO make sure this works
-		this.demand = demand_;
-		this.duratuion = duration_;
-	}
+  // Called just before this Command runs the first time
+  @Override
+  protected void initialize() {
+    SuperStructure.intake.setCargoSpeed(cargo);
+    SuperStructure.intake.setHatchSpeed(hatch);
+  }
 
-	@Override
-	protected void initialize() {
-		SuperStructure.intake.setSpeed(demand);
-		endTime = Timer.getFPGATimestamp() + duratuion;
-	}
+  // Called repeatedly when this Command is scheduled to run
+  @Override
+  protected void execute() {
+  }
 
-	@Override
-	protected void execute() {
-		SuperStructure.intake.setSpeed(demand);
-	}
+  // Called once after timeout
+  @Override
+  protected void end() {
+  }
 
-	@Override
-	protected boolean isFinished() {
-		System.out.println("Now: " + Timer.getFPGATimestamp() + "end: " + endTime + " is intake/outtake timed out? " + (Timer.getFPGATimestamp() > endTime));
-
-		return (endTime < Timer.getFPGATimestamp());
-	}
-
-	@Override
-	protected void end() {
-		SuperStructure.intake.setSpeed(0d);
-		// SuperStructure.intake.setSpeed(0d);
-	}
-
-	@Override
-	protected void interrupted() {}
+  // Called when another command which requires one or more of the same
+  // subsystems is scheduled to run
+  @Override
+  protected void interrupted() {
+  }
 }
