@@ -19,6 +19,7 @@ import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
+import frc.robot.commands.auto.groups.VisionCommandGroup;
 
 /**
  * Operator Input not Out-In
