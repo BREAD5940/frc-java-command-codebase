@@ -71,7 +71,7 @@ public class SuperstructureGoToState extends CommandGroup {
 		
 			@Override
 			protected boolean condition() {
-				return false;
+				return checkPassthrough(SuperStructure.getInstance().getCurrentState(), requState);
 			}
 		});
 
