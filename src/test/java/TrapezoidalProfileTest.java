@@ -4,7 +4,7 @@ import frc.team254.Trajectory;
 import frc.team254.TrajectoryGenerator;
 import junit.framework.Assert;
 
-public class TrapezoidalProfileTest {
+public class TrapezoidalProfileTest extends Testable {
 
 	@Test
 	public void testP2PTrapezoid() {

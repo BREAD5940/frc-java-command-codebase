@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.planners.*;
 
-public class SuperstructureTests {
+public class SuperstructureTests extends Testable {
 
 	// @Test
 	// public void testWrists() {
@@ -131,25 +131,25 @@ public class SuperstructureTests {
 		writeToCSV("src/test/java/safingTestOut.csv", toPrint);
 	}
 
-	public void writeToCSV(String file, double[][] path) {
+	// public void writeToCSV(String file, double[][] path) {
 
-		try {
-			FileWriter fw = new FileWriter(file);
-			PrintWriter pw = new PrintWriter(fw, true);
+	// 	try {
+	// 		FileWriter fw = new FileWriter(file);
+	// 		PrintWriter pw = new PrintWriter(fw, true);
 
-			pw.println("time,elevatorHeight,drivetrainSpeed");
-			for (double[] t : path) {
-				pw.println(t[0] + "," + t[1] + "," + t[2]);
-			}
+	// 		pw.println("time,elevatorHeight,drivetrainSpeed");
+	// 		for (double[] t : path) {
+	// 			pw.println(t[0] + "," + t[1] + "," + t[2]);
+	// 		}
 
-			// pw.print("adsffdsaadsfdsfaadsffads1");
+	// 		// pw.print("adsffdsaadsfdsfaadsffads1");
 
-			pw.close();
-		} catch (IOException ioe) {
-			System.out.println(ioe);
-		}
+	// 		pw.close();
+	// 	} catch (IOException ioe) {
+	// 		System.out.println(ioe);
+	// 	}
 
-	}
+	// }
 
 	@Test
 	public void rotation2dTest() {
