@@ -24,8 +24,6 @@ import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
-import frc.robot.subsystems.Wrist;
-import frc.robot.subsystems.superstructure.RotatingJoint;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 /**
@@ -59,7 +57,7 @@ public class Robot extends TimedRobot {
 
 	public static boolean intakeOpen = false; // TODO I'm aware this shouldn't go here, I'll rewrite the intake subsystem
 
-												// later
+	// later
 
 	// Various pneumatic shifting methods
 	public static void drivetrain_shift_high() {
@@ -154,7 +152,7 @@ public class Robot extends TimedRobot {
 		drivetrain.zeroGyro();
 		var elevator = SuperStructure.getElevator();
 		var startingHeightTicks = elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24.5)).getValue();
-		elevator.getMaster().setSelectedSensorPosition((int)startingHeightTicks);
+		elevator.getMaster().setSelectedSensorPosition((int) startingHeightTicks);
 
 		var proximal = SuperStructure.getInstance().getElbow();
 		var startingAngleTicks = proximal.getMaster().getTicks(RoundRotation2d.getDegree(-94));
@@ -210,11 +208,10 @@ public class Robot extends TimedRobot {
 		mResetNotifier = new Notifier(() -> {
 
 			// SuperStructure.getElevator().getMaster().setSelectedSensorPosition((int)startingHeightTicks);
-	
-			// SuperStructure.getInstance().getElbow().getMaster().setSelectedSensorPosition(proximal.getMaster().getTicks(RoundRotation2d.getDegree(-94)));
-	
-			// SuperStructure.getInstance().getWrist().getMaster().setSelectedSensorPosition(proximal.getMaster().getTicks(RoundRotation2d.getDegree(-42)));
 
+			// SuperStructure.getInstance().getElbow().getMaster().setSelectedSensorPosition(proximal.getMaster().getTicks(RoundRotation2d.getDegree(-94)));
+
+			// SuperStructure.getInstance().getWrist().getMaster().setSelectedSensorPosition(proximal.getMaster().getTicks(RoundRotation2d.getDegree(-42)));
 
 			boolean reset = false;
 			if (superstructure.getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
@@ -278,8 +275,6 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledPeriodic() {
-
-		
 
 		Scheduler.getInstance().run();
 	}

@@ -7,7 +7,6 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.lib.motion.Util;

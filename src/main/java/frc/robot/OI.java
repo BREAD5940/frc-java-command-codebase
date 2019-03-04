@@ -5,19 +5,16 @@ import java.util.List;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.auto.groups.visionTest;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.lib.DPadButton;
-import frc.robot.lib.DPadButton.Direction;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
@@ -58,7 +55,6 @@ public class OI {
 	Button secondaryDpadUp = new DPadButton(secondaryJoystick, DPadButton.Direction.UP);
 	Button secondaryDpadLeft = new DPadButton(secondaryJoystick, DPadButton.Direction.LEFT);
 	Button secondaryDpadRight = new DPadButton(secondaryJoystick, DPadButton.Direction.RIGHT);
-	
 
 	// Button test2button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 
@@ -93,7 +89,6 @@ public class OI {
 		secondaryDpadUp.whenPressed(new SuperstructureGoToState(LengthKt.getInch(3.5), iPosition.CARGO_GRAB));
 		secondaryDpadLeft.whenPressed(new SuperstructureGoToState(fieldPositions.cargoLowGoal, iPosition.CARGO_PLACE_INSIDE));
 		secondaryDpadRight.whenPressed(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE));
-
 
 		// test3Button.whenPressed(new FollowVisonTargetTheSecond());
 		// test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button
@@ -179,9 +174,9 @@ public class OI {
 		value = Util.limit(value, 0, 1);
 		stick.setRumble(side, value);
 	}
-	
+
 	public void setAllRumble(double value) {
-		for(Joystick stick : getAllSticks()) {
+		for (Joystick stick : getAllSticks()) {
 			setRumble(RumbleType.kLeftRumble, stick, value);
 			// setRumble(RumbleType.kRightRumble, stick, value);
 		}
