@@ -131,7 +131,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 	}
 
 	public static class iPosition {
-		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(0)));
+		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(10)), new RotatingArmState(RoundRotation2d.getDegree(-45)));
 		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(-47.6)));
 		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(35.98)));
 		public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(148.35)), new RotatingArmState(RoundRotation2d.getDegree(-96.46)));

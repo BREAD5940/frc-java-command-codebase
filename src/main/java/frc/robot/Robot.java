@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotConfig.elevator;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
@@ -23,6 +24,8 @@ import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.Wrist;
+import frc.robot.subsystems.superstructure.RotatingJoint;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 /**
@@ -47,11 +50,15 @@ public class Robot extends TimedRobot {
 	public static AutoMotion m_auto;
 	SendableChooser<Command> m_chooser = new SendableChooser<Command>();
 	public static Compressor compressor = new Compressor(9);
+
+	private Notifier mResetNotifier;
+
 	// public static Odometer odometry_;
 	// public static DifferentialUltrasonicSensor differentialUltrasonicSensor = DifferentialUltrasonicSensor.getInstance();
 	// private Logger logger;
 
 	public static boolean intakeOpen = false; // TODO I'm aware this shouldn't go here, I'll rewrite the intake subsystem
+
 												// later
 
 	// Various pneumatic shifting methods
@@ -145,6 +152,17 @@ public class Robot extends TimedRobot {
 		// elevator.init();
 		// wrist.init();
 		drivetrain.zeroGyro();
+		var elevator = SuperStructure.getElevator();
+		var startingHeightTicks = elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24.5)).getValue();
+		elevator.getMaster().setSelectedSensorPosition((int)startingHeightTicks);
+
+		var proximal = SuperStructure.getInstance().getElbow();
+		var startingAngleTicks = proximal.getMaster().getTicks(RoundRotation2d.getDegree(-94));
+		proximal.getMaster().setSelectedSensorPosition(startingAngleTicks);
+
+		var wrist = SuperStructure.getInstance().getWrist();
+		startingAngleTicks = wrist.getMaster().getTicks(RoundRotation2d.getDegree(-42));
+		wrist.getMaster().setSelectedSensorPosition(startingAngleTicks);
 
 		switch (RobotConfig.auto.auto_gear) {
 		case HIGH:
@@ -189,7 +207,14 @@ public class Robot extends TimedRobot {
 		drivetrain.zeroEncoders();
 		System.out.println("Robot init'ed and encoders zeroed!");
 
-		Notifier mResetNotifier = new Notifier(() -> {
+		mResetNotifier = new Notifier(() -> {
+
+			// SuperStructure.getElevator().getMaster().setSelectedSensorPosition((int)startingHeightTicks);
+	
+			// SuperStructure.getInstance().getElbow().getMaster().setSelectedSensorPosition(proximal.getMaster().getTicks(RoundRotation2d.getDegree(-94)));
+	
+			// SuperStructure.getInstance().getWrist().getMaster().setSelectedSensorPosition(proximal.getMaster().getTicks(RoundRotation2d.getDegree(-42)));
+
 
 			boolean reset = false;
 			if (superstructure.getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
@@ -231,6 +256,13 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
+
+		try {
+			mResetNotifier.startPeriodic(0.5);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		if (RobotConfig.auto.auto_gear == Gear.LOW) {
 			drivetrain.setLowGear();
 		} else if (RobotConfig.auto.auto_gear == Gear.HIGH) {
@@ -247,11 +279,14 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledPeriodic() {
 
+		
+
 		Scheduler.getInstance().run();
 	}
 
 	@Override
 	public void autonomousInit() {
+		mResetNotifier.stop();
 		// DriveTrajectoryPathfinder meme = new DriveTrajectoryPathfinder("file");
 		// meme.start();
 
@@ -277,6 +312,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+		mResetNotifier.stop();
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove

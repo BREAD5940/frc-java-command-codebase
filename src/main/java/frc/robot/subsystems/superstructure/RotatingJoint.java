@@ -154,7 +154,7 @@ public class RotatingJoint extends Subsystem {
 		getMaster().configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
 		getMaster().configForwardSoftLimitThreshold(maxTicks);
 		getMaster().configForwardSoftLimitEnable(true);
-		getMaster().configClearPositionOnLimitF(true, 0);
+		getMaster().configClearPositionOnLimitF(false, 0);
 	}
 
 	public void setClosedLoopGains(int slot, PIDSettings config) {

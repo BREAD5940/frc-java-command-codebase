@@ -20,6 +20,10 @@ public class ZeroSuperStructure extends Command {
 		// requires(SuperStructure.getInstance());
 		setInterruptible(false);
 		struc = SuperStructure.getInstance();
+		requires(SuperStructure.getInstance());
+		requires(SuperStructure.getElevator());
+		requires(SuperStructure.getInstance().getElbow());
+		requires(SuperStructure.getInstance().getWrist());
 		// Command comm = struc.getCurrentCommand();
 		// if (comm != null)
 		// comm.cancel();
@@ -33,7 +37,7 @@ public class ZeroSuperStructure extends Command {
 		System.out.println("Zeroing encoder to " + p);
 		if (p.equals("elevator")) {
 			Logger.log("zeroing elevator");
-			SuperStructure.getInstance().getElevator().zeroEncoder();
+			SuperStructure.getElevator().zeroEncoder();
 			old.elevator = new ElevatorState();
 		} else if (p.equals("elbow")) {
 			Logger.log("zeroing elbow");
@@ -44,7 +48,7 @@ public class ZeroSuperStructure extends Command {
 			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(0));
 			old.getWrist().setAngle(new RoundRotation2d());
 		} else if (p.equals("maxElevator")) {
-			SuperStructure.getInstance().getElevator().getMaster().setSensorPosition(SuperStructureConstants.Elevator.top);
+			SuperStructure.getElevator().getMaster().setSensorPosition(SuperStructureConstants.Elevator.top);
 			old.getElevator().setHeight(SuperStructureConstants.Elevator.top);
 		} else if (p.equals("maxWrist")) {
 			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(SuperStructureConstants.Wrist.kWristMax);

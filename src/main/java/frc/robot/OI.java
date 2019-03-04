@@ -85,7 +85,7 @@ public class OI {
 		// test2Button.whenPressed(new PassThrough()); // a button
 		primaryXButton.whenPressed(new RunIntake(1, 1, 2)); // x button
 
-		secondaryDpadUp.whenPressed(new SuperstructureGoToState(LengthKt.getInch(0.5), iPosition.CARGO_GRAB));
+		secondaryDpadUp.whenPressed(new SuperstructureGoToState(LengthKt.getInch(2), iPosition.CARGO_GRAB));
 
 		// test3Button.whenPressed(new FollowVisonTargetTheSecond());
 		// test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button
