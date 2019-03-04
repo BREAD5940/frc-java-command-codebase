@@ -168,6 +168,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 	 * Move the superstructure based on a height, intake angle and wrist angle
 	 * TODO how do we go from held game piece to target angle?
 	 */
+	@Deprecated
 	public void moveSuperstructureCombo(ElevatorState elevator, RotatingArmState elbow,
 			RotatingArmState wrist) {
 		moveSuperstructureCombo(new SuperStructureState(elevator, elbow, wrist));
@@ -177,6 +178,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 	* Move the superstructure based on a height, intake angle and wrist angle
 	* TODO how do we go from held game piece to target angle?
 	*/
+	@Deprecated
 	public void moveSuperstructureCombo(ElevatorState elevator, IntakeAngle intakeState) {
 		moveSuperstructureCombo(new SuperStructureState(elevator, intakeState));
 	}
@@ -189,6 +191,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 	 * @returnW
 	 *    the command group necessary to safely move the superstructure
 	 */
+	@Deprecated
 	public void moveSuperstructureCombo(SuperStructureState mRequState_) {
 
 		// TODO the wrist angle is mega broken because it's solely based on the currently held game piece 
@@ -205,6 +208,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 	 * @return
 	 *    the command group necessary to safely move the superstructure
 	 */
+	@Deprecated
 	public void moveSuperstructureElevator(Length height) {
 		// updateState();
 		this.moveSuperstructureCombo(new ElevatorState(height), getCurrentState().getElbow(), getCurrentState().getWrist());
@@ -219,6 +223,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 	 * @return
 	 *    the command group necessary to safely move the superstructure
 	 */
+	@Deprecated
 	public void moveSuperstructureAngle(IntakeAngle intakeState, AutoMotion.HeldPiece piece) {
 		// updateState();
 		this.moveSuperstructureCombo(mReqState.getElevator(), intakeState);

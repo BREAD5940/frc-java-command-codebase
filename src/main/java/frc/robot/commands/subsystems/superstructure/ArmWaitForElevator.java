@@ -5,6 +5,9 @@ import java.util.concurrent.Callable;
 import org.ghrobotics.lib.mathematics.units.Length;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.states.IntakeAngle;
+import frc.robot.subsystems.superstructure.SuperStructure;
+
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.lib.AutoWaitForCondition;
 import frc.robot.states.IntakeAngle;
@@ -33,7 +36,8 @@ public class ArmWaitForElevator extends AutoCommandGroup {
 
 	@Override
 	protected boolean isFinished() {
-		return false;
+		return Math.abs(desired.wristAngle.angle.getDegree() - SuperStructure.getInstance().getWrist().getDegrees()) <= 2
+				|| Math.abs(desired.elbowAngle.angle.getDegree() - SuperStructure.getInstance().getElbow().getDegrees()) <= 2;
 	}
 
 }

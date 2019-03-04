@@ -13,6 +13,7 @@ import frc.robot.commands.auto.routines.passthrough.PassThroughReverse;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.ArmWaitForElevator;
 import frc.robot.commands.subsystems.superstructure.ElevatorMove;
+import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -24,6 +25,8 @@ import frc.robot.subsystems.superstructure.SuperStructure;
  *  - Call SuperstructureMotion.getInstance().start();
  *    - This will iterate through the planned commandQueue
  *    - It'll end when it's done
+ * 
+ * @author Jocelyn McHugo
  */
 public class SuperstructureMotion extends Command {
 	/* RELEVANT COMMANDS:
@@ -54,61 +57,79 @@ public class SuperstructureMotion extends Command {
 	}
 
 	public boolean plan(SuperStructureState gsIn, SuperStructureState currentState) {
-		var goalState = new SuperStructureState(gsIn);
-
+    var goalState = new SuperStructureState(gsIn);
 		//CHECK if the current and goal match
 		if (goalState.isEqualTo(currentState)) {
+			Logger.log("Goal and current states same.");
 			return true;
 		}
 		//SAFE illegal inputs
-		if (goalState.getElevatorHeight().getInch() > SuperStructureConstants.Elevator.top.getInch()) {
+		if (goalState.getElevatorHeight().getInch() > SuperStructureConstants.Elevator.top.getInch() - SuperStructureConstants.Elevator.carriageHeight.getInch()) {
+			Logger.log("Elevator high");
 			goalState.getElevator().setHeight(SuperStructureConstants.Elevator.top); // constrain elevator to max height
 		} else if (goalState.getElevatorHeight().getInch() < SuperStructureConstants.Elevator.bottom.getInch()) {
+			Logger.log("Elevator low");
 			goalState.getElevator().setHeight(SuperStructureConstants.Elevator.bottom); // constrain elevator to min height
 		}
 
 		if (goalState.getElbowAngle().getDegree() > SuperStructureConstants.Elbow.kElbowMax.getDegree()) {
+			Logger.log("Elbow big");
 			goalState.getElbow().setAngle(SuperStructureConstants.Elbow.kElbowMax); // Constrain elbow to max
 		} else if (goalState.getElbowAngle().getDegree() < SuperStructureConstants.Elbow.kElbowMin.getDegree()) {
+			Logger.log("Elbow small");
 			goalState.getElbow().setAngle(SuperStructureConstants.Elbow.kElbowMin); // Constrain elbow to min
 		}
 
-		// FIXME so the issue here is that the maximum position of the wrist depends on the proximal (elbow) angle. So we have to measure it somehow yay. Also the sprocket on there means that the wrist will slowly rotate as the proximal joint rotates
-		if (goalState.getWristAngle().getDegree() > SuperStructureConstants.Wrist.kWristMax.getDegree()) {
-			goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMax); // constrain wrist to max
-		} else if (goalState.getWristAngle().getDegree() < SuperStructureConstants.Wrist.kWristMin.getDegree()) {
-			goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMin); // constrain wrist to min
-		}
-
 		//DEFINE the three goal points -- elevator, wrist, and end of intake
-		var GPelevator = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight());
-		var GPwrist = new Translation2d(LengthKt.getInch(goalState.getElbowAngle().getCos() * SuperStructureConstants.Elbow.carriageToIntake.getInch()),
+		Translation2d GPelevator = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight());
+		Translation2d GPwrist = new Translation2d(LengthKt.getInch(goalState.getElbowAngle().getCos() * SuperStructureConstants.Elbow.carriageToIntake.getInch()),
 				LengthKt.getInch(goalState.getElbowAngle().getSin() * SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(GPelevator.getY()));
-		var GPeoi = new Translation2d(LengthKt.getInch(goalState.getWristAngle().getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getX()),
+		Translation2d GPeoi = new Translation2d(LengthKt.getInch(goalState.getWristAngle().getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getX()),
 				LengthKt.getInch(goalState.getWristAngle().getSin() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
 
 		//DEFINE the three start points -- elevator, wrist, and end of intake
-		var SPelevator = new Translation2d(LengthKt.getInch(0), currentState.getElevatorHeight());
-		var SPwrist = new Translation2d(LengthKt.getInch(currentState.getElbowAngle().getCos() * SuperStructureConstants.Elbow.carriageToIntake.getInch()),
+		Translation2d SPelevator = new Translation2d(LengthKt.getInch(0), currentState.getElevatorHeight());
+		Translation2d SPwrist = new Translation2d(LengthKt.getInch(currentState.getElbowAngle().getCos() * SuperStructureConstants.Elbow.carriageToIntake.getInch()),
 				LengthKt.getInch(currentState.getElbowAngle().getSin() * SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(SPelevator.getY()));
-		var SPeoi = new Translation2d(LengthKt.getInch(currentState.getWristAngle().getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(SPwrist.getX()),
+		Translation2d SPeoi = new Translation2d(LengthKt.getInch(currentState.getWristAngle().getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(SPwrist.getX()),
 				LengthKt.getInch(currentState.getWristAngle().getSin() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(SPwrist.getY()));
+
+		// FIXME so the issue here is that the maximum position of the wrist depends on the proximal (elbow) angle. So we have to measure it somehow yay. Also the sprocket on there means that the wrist will slowly rotate as the proximal joint rotates
+		//FIXME mostly fixed, check math
+		if (Math.atan((GPeoi.getY().getInch() + GPwrist.getY().getInch()) / (GPeoi.getX().getInch() + GPwrist.getX().getInch())) > SuperStructureConstants.Wrist.kWristMax.getRadian()) {
+			Logger.log("Wrist big");
+			goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMax); // constrain wrist to max
+		} else if (Math.atan((GPeoi.getY().getInch() + GPwrist.getY().getInch()) / (GPeoi.getX().getInch() + GPwrist.getX().getInch())) < SuperStructureConstants.Wrist.kWristMin.getRadian()) {
+			Logger.log("Wrist small");
+			goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMin); // constrain wrist to min
+		}
 
 		//SAFE potential crashes on the end state
 
-		if (GPeoi.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch()) {
-			var tempTheta = goalState.getWristAngle();
-			tempTheta = RoundRotation2d.getRadian(Math.asin((GPeoi.getY().getInch() - GPwrist.getY().getInch()) / SuperStructureConstants.Wrist.intakeOut.getInch()));
-			goalState.getWrist().setAngle(tempTheta);
-			GPeoi = new Translation2d(GPeoi.getX(), LengthKt.getInch(Math.sin(tempTheta.getRadian()) * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
+		if (GPwrist.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch() || GPeoi.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch()) {
+			Logger.log("intake too low");
+			RoundRotation2d tempTheta = goalState.getElbowAngle();
+			tempTheta = RoundRotation2d.getRadian(
+					Math.asin(
+							Math.abs(SuperStructureConstants.Elevator.electronicsHeight.getInch() - GPelevator.getY().getInch())
+									/ SuperStructureConstants.Elbow.carriageToIntake.getInch()));
+			goalState.getElbow().setAngle(tempTheta);
+			GPwrist = new Translation2d(LengthKt.getInch(tempTheta.getCos() * SuperStructureConstants.Elbow.carriageToIntake.getInch()),
+					LengthKt.getInch(Math.sin(tempTheta.getRadian()) * SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(GPelevator.getY()));
+			GPeoi = new Translation2d(LengthKt.getInch(goalState.getWristAngle().getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getX()),
+					LengthKt.getInch(goalState.getWristAngle().getSin() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
 		}
 
-		if (GPwrist.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch()) {
-			var tempTheta = goalState.getElbowAngle();
-			tempTheta = RoundRotation2d.getRadian(Math.asin((GPwrist.getY().getInch() - GPelevator.getY().getInch()) / SuperStructureConstants.Elbow.carriageToIntake.getInch()));
-			goalState.getElbow().setAngle(tempTheta);
-			GPwrist = new Translation2d(GPwrist.getX(), LengthKt.getInch(Math.sin(tempTheta.getRadian()) * SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(GPelevator.getY()));
-
+		if (GPeoi.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch()) {
+			Logger.log("intake still too low");
+			RoundRotation2d tempTheta = goalState.getWristAngle();
+			tempTheta = RoundRotation2d.getRadian(
+					Math.asin(
+							Math.abs(GPeoi.getY().getInch() - GPwrist.getY().getInch())
+									/ SuperStructureConstants.Wrist.intakeOut.getInch()));
+			goalState.getWrist().setAngle(tempTheta);
+			GPeoi = new Translation2d(LengthKt.getInch(tempTheta.getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getX()),
+					LengthKt.getInch(Math.sin(tempTheta.getRadian()) * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
 		}
 
 		if (GPwrist.getX().getInch() > 0 && SPwrist.getX().getInch() < 0) {
@@ -129,8 +150,10 @@ public class SuperstructureMotion extends Command {
 		}
 		//CHECK if the elevator point is in proximity to the crossbar
 
-		if ((GPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch() && SPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch())
-				|| (GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch() && SPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch())
+		if ((GPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch()
+				&& SPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch())
+				|| (GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch()
+						&& SPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch())
 				|| (GPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.plus(SuperStructureConstants.Elevator.crossbarWidth).getInch()
 						&& GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch())) {
 			queue.addSequential(new ArmMove(SuperStructure.iPosition.STOWED));

@@ -37,6 +37,8 @@ public class SuperStructureConstants {
 		public static final Length kClearFirstStageMaxHeight = crossbarBottom; //yay its redundant
 		public static final Length kElevatorApproachingThreshold = LengthKt.getInch(2); //FIXME
 		public static final Length electronicsHeight = LengthKt.getInch(0);
+		public static final Length longClimb = LengthKt.getInch(20); //FIXME actual number, perhaps?
+		public static final Length carriageHeight = LengthKt.getInch(12); //TODO this one is maybe mostly right
 
 	}
 
