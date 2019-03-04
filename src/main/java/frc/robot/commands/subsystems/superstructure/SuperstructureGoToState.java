@@ -43,6 +43,13 @@ public class SuperstructureGoToState extends CommandGroup {
 	Length elevatorSetpoint;
 	RoundRotation2d wristSetpoint, elbowSetpoint;
 
+	public boolean checkPassthrough(SuperStructureState currentState, SuperStructureState mReqState) {
+		var isPassThrough = ( currentState.getElbowAngle().getDegree() < -125 && mReqState.getElbowAngle().getDegree() > -85 ) 
+			|| ( currentState.getElbowAngle().getDegree() > 60 && mReqState.getElbowAngle().getDegree() < -125 );
+
+		return isPassThrough;
+	}
+
 	/**
 	 * Move the superstructure to a requested state. This implements a super basic command que and stuff
 	 * @param requState the state requested of the superstructure
@@ -59,14 +66,42 @@ public class SuperstructureGoToState extends CommandGroup {
 		var elevatorR = requState.getElevatorHeight();
 		var proximalR = requState.getElbowAngle();
 		var wristR = requState.getWristAngle();
+
+		addSequential(new ConditionalCommand(new ){
+		
+			@Override
+			protected boolean condition() {
+				return false;
+			}
+		});
+
 		// first of all, decide if we need to move the elevator at all. We don't need to move the elevator if the elevator is already safe or if we aren't passing through
 		addSequential(new ConditionalCommand(new WaitForElevatorSubcommand(new SuperStructureState(new ElevatorState(SuperStructureConstants.Elevator.kClearFirstStageMaxHeight)))) {
 			@Override
 			protected boolean condition() {
-				SuperStructure.getInstance().updateState();
-				double degrees = SuperStructure.getInstance().getCurrentState().jointAngles.elbowAngle.angle.getDegree();
-				boolean direction = (degrees > -90);
-				return (SuperStructure.getInstance().getCurrentState().jointAngles.elbowAngle.angle.getDegree() > -90);
+				var currentState = SuperStructure.getInstance().updateState();
+
+				// boolean vertical;
+				// check if the elbow is already vertical and we aren't trying to yeet into anything
+				var vertical = ( Math.abs(requState.getElbowAngle().getDegree()-90) < 10 || Math.abs(requState.getWristAngle().getDegree()-90) < 10 );
+
+				// check if we are moving up or down
+				var deltaHeight = currentState.getElevatorHeight().minus(requState.getElevatorHeight());
+				var upwardMove = (deltaHeight.getInch() > 0);
+
+				//check if the proximal is in danger of hitting something. First, check if we are staying "deployed" (extended in the front) or not. 
+				var deployedThreshold = 60;
+				var isDeployed = (currentState.getElbowAngle().absoluteValueOf().getDegree() > deployedThreshold); // TODO check angles and absolute value
+				var isStayingDeployed = isDeployed && (requState.getElbowAngle().absoluteValueOf().getDegree() > deployedThreshold);
+
+
+				
+				var isMoveFromDeployedToRetracted = ( currentState.getElbowAngle().getDegree() > -60 && requState.getElbowAngle().getDegree() < -30 );
+				
+				var isMoveFromRetractedToDeployed = (  currentState.getElbowAngle().getDegree() < -60 && requState.getElbowAngle().getDegree() > -30 );
+
+				// so we need to mvoe the elevator to a safe position if we want to passthrough
+
 			}
 		}
 		);
