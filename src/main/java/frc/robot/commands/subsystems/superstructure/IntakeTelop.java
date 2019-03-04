@@ -32,7 +32,7 @@ public class IntakeTelop extends Command {
 			SuperStructure.intake.setSpeed(Robot.m_oi.getIntakeSpeed(), 0);
 		}
 		var oi = Robot.m_oi;
-		oi.setAllRumble(Util.limit(Math.max(Robot.m_oi.getCargoSpeed(), Robot.m_oi.getIntakeSpeed()), 0, 0.5));
+		oi.setAllRumble(Util.limit(Math.max(Robot.m_oi.getCargoSpeed(), Robot.m_oi.getIntakeSpeed()), 0, 0.9));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
