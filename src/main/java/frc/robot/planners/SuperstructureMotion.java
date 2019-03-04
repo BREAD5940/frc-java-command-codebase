@@ -96,14 +96,14 @@ public class SuperstructureMotion extends Command {
 
 		//SAFE potential crashes on the end state
 
-		if (GPeoi.getY().getInch() < SuperStructureConstants.electronicsHeight.getInch()) {
+		if (GPeoi.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch()) {
 			var tempTheta = goalState.getWristAngle();
 			tempTheta = RoundRotation2d.getRadian(Math.asin((GPeoi.getY().getInch() - GPwrist.getY().getInch()) / SuperStructureConstants.Wrist.intakeOut.getInch()));
 			goalState.getWrist().setAngle(tempTheta);
 			GPeoi = new Translation2d(GPeoi.getX(), LengthKt.getInch(Math.sin(tempTheta.getRadian()) * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
 		}
 
-		if (GPwrist.getY().getInch() < SuperStructureConstants.electronicsHeight.getInch()) {
+		if (GPwrist.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch()) {
 			var tempTheta = goalState.getElbowAngle();
 			tempTheta = RoundRotation2d.getRadian(Math.asin((GPwrist.getY().getInch() - GPelevator.getY().getInch()) / SuperStructureConstants.Elbow.carriageToIntake.getInch()));
 			goalState.getElbow().setAngle(tempTheta);
@@ -122,7 +122,7 @@ public class SuperstructureMotion extends Command {
 
 		//CHECK the position of the intake -- hatch or cargo
 		// IF it's a long climb
-		boolean isLongClimb = Math.abs(goalState.getElevatorHeight().minus(currentState.getElevatorHeight()).getInch()) >= SuperStructureConstants.Elevator.longClimb.getInch();
+		boolean isLongClimb = Math.abs(goalState.getElevatorHeight().minus(currentState.getElevatorHeight()).getInch()) >= SuperStructureConstants.Elevator.kElevatorLongRaiseDistance.getInch();
 
 		if (isLongClimb) {
 			queue.addParallel(new ArmMove(SuperStructure.iPosition.STOWED));
