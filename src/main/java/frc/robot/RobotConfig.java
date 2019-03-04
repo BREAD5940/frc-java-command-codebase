@@ -189,7 +189,7 @@ public class RobotConfig {
 			// unless otherwise indicated
 			// FIXME change these values to be the distance the elevator has to go to have the intake be at the center of the object
 
-			public static final Length cargoLowGoal = LengthKt.getInch(27.5);
+			public static final Length cargoLowGoal = LengthKt.getInch(25);
 			public static final Length cargoMiddleGoal = LengthKt.getInch(55.5);
 			public static final Length cargoHighGoal = LengthKt.getInch(83.5);
 
