@@ -43,7 +43,7 @@ public class SuperstructureMotion extends Command {
 		requires(SuperStructure.getElevator());
 	}
 
-	public SuperstructureMotion(SuperStructureState gsIn){
+	public SuperstructureMotion(SuperStructureState gsIn) {
 		plan(gsIn, SuperStructure.getInstance().getCurrentState());
 
 		requires(SuperStructure.getInstance().getWrist());

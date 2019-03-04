@@ -3,7 +3,6 @@ package frc.robot.lib.statemachines;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalLocation;
-import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 
 /**
  * is literally a toggle
@@ -11,8 +10,7 @@ import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
  * @author jocleyn McHugo
  */
 public class LocationToggle extends Command {
-	public LocationToggle() {
-	}
+	public LocationToggle() {}
 
 	@Override
 	protected void initialize() {

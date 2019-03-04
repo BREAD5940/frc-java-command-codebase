@@ -131,7 +131,7 @@ public class Robot extends TimedRobot {
 		Trajectories.generateAllTrajectories();
 
 		// logger = Logger.getInstance();
-		
+
 		mGh = new SendableChooser<GoalHeight>();
 		mGh.setDefaultOption("Low", GoalHeight.LOW);
 		mGh.addOption("Middle", GoalHeight.MIDDLE);
@@ -357,7 +357,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData(superstructure);
 
 		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
-
 
 		SmartDashboard.putData(autoState); //TODO test to see if it actually does the thing
 		// Limelight stuff

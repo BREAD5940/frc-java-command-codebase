@@ -2,7 +2,6 @@ package frc.robot.lib.statemachines;
 
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
-import edu.wpi.first.wpilibj.Sendable;
 
 public class AutoMotionStateMachine extends SendableBase {
 
@@ -32,7 +31,6 @@ public class AutoMotionStateMachine extends SendableBase {
 	private GoalLocation goalLocation = GoalLocation.ROCKET;
 	private MotionType motionType = MotionType.PICKUP; //FIXME default pickup or place?
 	private GoalType goalType = GoalType.RETRIEVE_HATCH; //FIXME set default
-
 
 	//Goal Type
 
@@ -76,14 +74,13 @@ public class AutoMotionStateMachine extends SendableBase {
 		}
 	}
 
-	public GoalType getGoalType(){
+	public GoalType getGoalType() {
 		return this.goalType;
 	}
 
-	private String goalTypeString(){
+	private String goalTypeString() {
 		return this.getGoalType().toString();
 	}
-
 
 	//Held Piece
 
@@ -96,26 +93,24 @@ public class AutoMotionStateMachine extends SendableBase {
 		return this.heldPiece;
 	}
 
-	private String heldPieceString(){
+	private String heldPieceString() {
 		return this.getHeldPiece().toString();
 	}
 
-
 	//Goal Piece
 
-	public void setGoalPiece(HeldPiece gp){
+	public void setGoalPiece(HeldPiece gp) {
 		this.goalPiece = gp;
 		updateGoalType();
 	}
 
-	public HeldPiece getGoalPiece(){
+	public HeldPiece getGoalPiece() {
 		return this.goalPiece;
 	}
 
-	public String goalPieceString(){
+	public String goalPieceString() {
 		return this.getGoalPiece().toString();
 	}
-
 
 	//Goal Height
 
@@ -144,42 +139,39 @@ public class AutoMotionStateMachine extends SendableBase {
 		return this.goalHeight;
 	}
 
-	public String goalHeightString(){
+	public String goalHeightString() {
 		return this.getGoalHeight().toString();
 	}
 
-
 	//Goal Location
-	
-	public void setGoalLocation(GoalLocation loc){
+
+	public void setGoalLocation(GoalLocation loc) {
 		this.goalLocation = loc;
 		updateGoalType();
 	}
 
-	public GoalLocation getGoalLocation(){
+	public GoalLocation getGoalLocation() {
 		return this.goalLocation;
 	}
 
-	public String goalLocationString(){
+	public String goalLocationString() {
 		return this.getGoalLocation().toString();
 	}
 
-
 	//Motion Type
 
-	public void setMotionType(MotionType type){
+	public void setMotionType(MotionType type) {
 		this.motionType = type;
 		updateGoalType();
 	}
 
-	public MotionType getMotionType(){
+	public MotionType getMotionType() {
 		return this.motionType;
 	}
 
-	public String motionTypeString(){
+	public String motionTypeString() {
 		return this.getMotionType().toString();
 	}
-
 
 	//Sendable
 

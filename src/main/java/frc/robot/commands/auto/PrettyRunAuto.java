@@ -13,7 +13,7 @@ public class PrettyRunAuto extends Command {
 	protected AutoCommandGroup ssCommand;
 	protected boolean mainBegun = false;
 
-	public PrettyRunAuto(AutoMotionStateMachine machine, boolean onlyPreset){
+	public PrettyRunAuto(AutoMotionStateMachine machine, boolean onlyPreset) {
 		//plz no require thing
 		this.machine = machine;
 		this.onlyPreset = onlyPreset;
@@ -23,15 +23,15 @@ public class PrettyRunAuto extends Command {
 	}
 
 	@Override
-	protected void initialize(){
+	protected void initialize() {
 		ssCommand.start();
 	}
 
 	@Override
-	protected void execute(){
+	protected void execute() {
 		System.out.printf("Done? %b\n", ssCommand.done());
 
-		if(ssCommand.done() && !mainBegun && !onlyPreset){
+		if (ssCommand.done() && !mainBegun && !onlyPreset) {
 			createdMotion.getBigCommandGroup().start();
 			mainBegun = true;
 		}
@@ -39,9 +39,9 @@ public class PrettyRunAuto extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		if(onlyPreset){
+		if (onlyPreset) {
 			return ssCommand.done();
-		}else{
+		} else {
 			return mainBegun && mainCommand.done();
 		}
 	}
