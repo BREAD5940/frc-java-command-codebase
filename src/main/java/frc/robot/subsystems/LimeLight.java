@@ -117,14 +117,19 @@ public class LimeLight {
 		table.getEntry("ledMode").setNumber(1);
 	}
 
-	public Pose2d getPose(double kOffset) {
+	/**
+	 * Get the Pose2d of a vision target with an offset applied. This way someone else can account for offset from limelight to bumpers
+	 * @param kOffset how far away the front of the bumpers is from the camera (in inches)
+	 * @param distanceToShiftBy how far to move everything up/right so it shows up on falcon dashboard
+	 */
+	public Pose2d getPose(double kOffset, double distanceToShiftBy) {
 		double[] camtran = NetworkTableInstance.getDefault().getTable("limelight").getEntry("camtran").getDoubleArray(new double[]{});
 
 		// final double kOffset = 100;
 
 		// final double kLimelightForeOffset = 25; //inches from limelight to hatch pannel
 		// forward/backward motion, left/right motion
-		Translation2d mTranToGoal = new Translation2d(LengthKt.getInch((camtran[2]) + kOffset), LengthKt.getInch((camtran[0] * -1) + kOffset));
+		Translation2d mTranToGoal = new Translation2d(LengthKt.getInch((camtran[2]) + distanceToShiftBy + kOffset), LengthKt.getInch((camtran[0] * -1) + distanceToShiftBy));
 		Rotation2d mRotToGoal = Rotation2dKt.getDegree(camtran[4] * 1);
 		Pose2d mPoseToGoal = new Pose2d(mTranToGoal, mRotToGoal);
 

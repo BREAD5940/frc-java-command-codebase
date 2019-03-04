@@ -5,14 +5,16 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.RobotConfig.auto.fieldPositions;
+import frc.robot.commands.auto.groups.VisionCommandGroup;
 import frc.robot.commands.subsystems.drivetrain.DrivePower;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
+import frc.robot.commands.subsystems.drivetrain.SplineToVisionTarget;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
-public class PlaceHatch extends CommandGroup {
+public class PlaceHatch extends VisionCommandGroup {
 
 	// Pose2d mMeasuredPose = new Pose2d();
 
@@ -35,35 +37,10 @@ public class PlaceHatch extends CommandGroup {
 
 		addSequential(new PrintCommand("Placing a hatch;;;...."));
 
-		addSequential(new SuperstructureGoToState(new ElevatorState(fieldPositions.hatchLowGoal), iPosition.HATCH));
-
-		addSequential(new PrintCommand("=== running vision target follower ==="));
-
-		addSequential(new FollowVisionTargetTheSecond(2.8));
-
-		// FIXME this is broken because the offset backwards doesn't work. Like, attttttttttttttttttttttttttt alllll
-		// addSequential(new VisionSplineTest(, 6.5)); // todo check numbers
-
-		// addSequential(new SuperstructureGoToState(new ElevatorState(fieldPositions.hatchHighGoal), iPosition.HATCH));
-
-		// Consumer<Pose2d> translationSetter = (Pose2d newP) -> {this.mMeasuredPose = newP;};
-
-		// addSequential(new PrintCommand("pose: " + this.mMeasuredPose.getRotation().getDegree()));
-
-		// addSequential(new SetPoseFromVisionTarget(goalPose));
-
-		// addSequential(new PrintCommand("pose: " + this.mMeasuredPose.getRotation().getDegree()));
-
-		// next we drive forward a foot or two
-
-		// addParallel(new SuperstructureGoToState(iPosition.HATCH));
-
-		// addSequential(new PrintCommand("driving forward at a power"));
-
-		addSequential(new PrintCommand("outtaking...."));
-
-		addParallel(new RunIntake(-1, 0, 0.75));
-		addSequential(new DrivePower(0.15, 0.75));
+		addParallel(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE.elevator.plus(iPosition.kOffsetFromL1toL2), iPosition.HATCH_SLAM_ROCKET_INSIDE.jointAngles));
+		addSequential(new SplineToVisionTarget(this.getPoseStorage1(), 6.5));
+		addSequential(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE), 1);
+		addSequential(new RunIntake(-1, 0, 1));
 
 		addParallel(new RunIntake(-1, 0, 0.75));
 		addSequential(new DrivePower(-0.2, 0.75));

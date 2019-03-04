@@ -13,7 +13,9 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
+import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
@@ -30,7 +32,8 @@ import frc.robot.subsystems.LimeLight;
 public class SplineToVisionTarget extends CommandGroup {
 	double targetDistance, exitArea;
 
-	final Pose2d initialPose;
+	// final Pose2d initialPose;
+	Length kEndOffset, straightLength;
 
 	/**
 	 * Follow a spline shaped trajectory to a vision target. This command gets the vision target pose on first init and will reset the robot odometry.
@@ -40,10 +43,12 @@ public class SplineToVisionTarget extends CommandGroup {
 	 * @param currentPose the current pose of the robot (vision target centric fama)
 	 * @param areaAtWhichToExit the area at which the command will exit
 	 */
-	public SplineToVisionTarget(Pose2d currentPose, double areaAtWhichToExit) {
+	public SplineToVisionTarget(Pose2d currentPose, Length driveStraightDistance, Length desired_end, double areaAtWhichToExit) {
 		// this.targetDistance = targetLimelightOffset;
 		this.exitArea = areaAtWhichToExit;
-		this.initialPose = currentPose;
+		// this.initialPose = currentPose;
+		this.kEndOffset = desired_end;
+		this.straightLength = driveStraightDistance;
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		// requires(DriveTrain.getInstance());
@@ -56,16 +61,16 @@ public class SplineToVisionTarget extends CommandGroup {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		final double kOffset = 100; // so that the spline ends up in FalconDashboard instead of off the map. HOly shit the possibilty for bugs here is big. Let's not.
-
-		Pose2d mVisionTargetPose = LimeLight.getInstance().getPose(kOffset);
+		final Length kOffset = LengthKt.getInch(100); // so that the spline ends up in FalconDashboard instead of off the map. HOly shit the possibilty for bugs here is big. Let's not.
 
 		double now = Timer.getFPGATimestamp();
-		// Pose2d start = new Pose2d(new Translation2d(LengthKt.getInch(-50 + 200), LengthKt.getInch(-20 + 200)), Rotation2dKt.getDegree(-10));
-		Pose2d end = new Pose2d(new Translation2d(LengthKt.getInch(kOffset), LengthKt.getInch(0 + kOffset)), Rotation2dKt.getDegree(0));
 
-		trajectory = Trajectories.generateTrajectory(Arrays.asList(mVisionTargetPose, end), Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(1)), VelocityKt.getVelocity(LengthKt.getFeet(2)), VelocityKt.getVelocity(LengthKt.getFeet(2)), Trajectories.kDefaultAcceleration.div(2), false, true);
+		// get the current and target poses in addition to drive straight pose
+		Pose2d mVisionTargetPose = LimeLight.getInstance().getPose(kEndOffset.getInch(), kOffset.getInch());		
+		Pose2d end = new Pose2d(new Translation2d(kOffset.plus(kEndOffset), kOffset), Rotation2dKt.getDegree(0));
+		Pose2d splineEnd = end.minus(new Pose2d(kOffset.plus(kEndOffset).minus(straightLength), LengthKt.getInch(0), Rotation2dKt.getDegree(0)));
 
+		trajectory = Trajectories.generateTrajectory(Arrays.asList(mVisionTargetPose, splineEnd, end), Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(1)), VelocityKt.getVelocity(LengthKt.getFeet(2)), VelocityKt.getVelocity(LengthKt.getFeet(2)), Trajectories.kDefaultAcceleration.div(2), false, true);
 		mFollowerCommand = DriveTrain.getInstance().followTrajectoryWithGear(trajectory, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true);
 
 		System.out.println("========== Vision spline generated in " + (Timer.getFPGATimestamp() - now) + " seconds! ==========");

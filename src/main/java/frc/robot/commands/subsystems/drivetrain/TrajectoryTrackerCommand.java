@@ -115,4 +115,9 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 	protected boolean isFinished() {
 		return trajectoryTracker.isFinished();
 	}
+
+	public TimedTrajectory<Pose2dWithCurvature> getTrajectory() {
+		return this.trajectorySource.get();
+	}
+
 }
