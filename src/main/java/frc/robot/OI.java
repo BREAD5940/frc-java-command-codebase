@@ -3,15 +3,21 @@ package frc.robot;
 import java.util.Arrays;
 import java.util.List;
 
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.PrintCommand;
+import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.groups.visionTest;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
+import frc.robot.lib.DPadButton;
+import frc.robot.lib.DPadButton.Direction;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
@@ -48,6 +54,7 @@ public class OI {
 	Button primaryAButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
 	Button primaryXButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
 	Button primaryBButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
+	Button secondaryDpadUp = new DPadButton(secondaryJoystick, DPadButton.Direction.UP);
 	// Button test2button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 
 	// File file = new File("/home/lvuser/deploy/paths/test.pf1.csv");
@@ -77,6 +84,9 @@ public class OI {
 		primaryAButton.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE)); // a button
 		// test2Button.whenPressed(new PassThrough()); // a button
 		primaryXButton.whenPressed(new RunIntake(1, 1, 2)); // x button
+
+		secondaryDpadUp.whenPressed(new SuperstructureGoToState(LengthKt.getInch(0.5), iPosition.CARGO_GRAB));
+
 		// test3Button.whenPressed(new FollowVisonTargetTheSecond());
 		// test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button
 		// primaryBButton.whenPressed(new visionTest()); // b button
