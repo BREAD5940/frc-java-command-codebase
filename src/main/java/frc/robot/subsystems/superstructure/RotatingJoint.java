@@ -137,10 +137,10 @@ public class RotatingJoint extends Subsystem {
 
 	public void setMotionMagicGains() {
 		// Elevator elev = SuperStructure.getElevator();
-		this.getMaster().configMotionAcceleration((int) (4000));
+		this.getMaster().configMotionAcceleration((int) (3000));
 		this.getMaster().configMotionCruiseVelocity(2000); // about 3500 theoretical max
 		this.getMaster().configMotionSCurveStrength(0);
-		this.getMaster().config_kP(3, 0.4, 0);
+		this.getMaster().config_kP(3, 0.45, 0);
 		this.getMaster().config_kI(3, 0.0, 0);
 		this.getMaster().config_kD(3, 2.0, 0);
 		this.getMaster().config_kF(3, 0.45, 0);
