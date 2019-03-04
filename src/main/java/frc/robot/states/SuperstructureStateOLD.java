@@ -2,7 +2,7 @@
 
 // import frc.robot.RobotConfig;
 // import frc.robot.commands.auto.AutoMotion;
-// import frc.robot.commands.auto.AutoMotion.HeldPiece;
+// import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 // import frc.robot.subsystems.superstructure.SuperStructure;
 // import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
@@ -16,7 +16,7 @@
 
 //   private double elevatorHeight;
 //   private IntakeAngle angle;
-//   private AutoMotion.HeldPiece piece = HeldPiece.NONE;
+//   private AutoMotionStateMachine.HeldPiece piece = HeldPiece.NONE;
 
 //   /**
 //    * Create a new state with default params

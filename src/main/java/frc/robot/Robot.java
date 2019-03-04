@@ -21,6 +21,8 @@ import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
 import frc.robot.lib.obj.RoundRotation2d;
+import frc.robot.lib.statemachines.AutoMotionStateMachine;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
@@ -33,8 +35,9 @@ import frc.robot.subsystems.superstructure.SuperStructure;
  * @author Matthew Morley
  */
 public class Robot extends TimedRobot {
-	public static SendableChooser<AutoMotion.GoalHeight> mGh;
+	public static SendableChooser<GoalHeight> mGh;
 	public static OI m_oi;
+	public static AutoMotionStateMachine autoState; //TODO this should be static, right?
 	// public static Intake intake = new Intake();
 	// public static Elevator elevator = new Elevator();
 	public static DriveTrain drivetrain = DriveTrain.getInstance();
@@ -133,13 +136,15 @@ public class Robot extends TimedRobot {
 		Trajectories.generateAllTrajectories();
 
 		// logger = Logger.getInstance();
-		m_oi = new OI();
-		mGh = new SendableChooser<AutoMotion.GoalHeight>();
-		mGh.setDefaultOption("Low", AutoMotion.GoalHeight.LOW);
-		mGh.addOption("Middle", AutoMotion.GoalHeight.MIDDLE);
-		mGh.addOption("High", AutoMotion.GoalHeight.HIGH);
-		mGh.addOption("Dropped into the cargo ship", AutoMotion.GoalHeight.OVER);
+
+		mGh = new SendableChooser<GoalHeight>();
+		mGh.setDefaultOption("Low", GoalHeight.LOW);
+		mGh.addOption("Middle", GoalHeight.MIDDLE);
+		mGh.addOption("High", GoalHeight.HIGH);
 		SmartDashboard.putData("Goal Height", mGh);
+
+		m_oi = new OI();
+		autoState = new AutoMotionStateMachine();
 
 		// SmartDashboard.putData(SuperStructure.intake);
 		// SmartDashboard.putData(shifterDoubleSolenoid);
@@ -383,6 +388,9 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
 		SmartDashboard.putData(superstructure);
 
+		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
+
+		SmartDashboard.putData(autoState); //TODO test to see if it actually does the thing
 		// Limelight stuff
 		// double[] limelightdata = limelight.getData();
 
