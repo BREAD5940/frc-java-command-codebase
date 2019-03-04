@@ -55,6 +55,9 @@ public class RunAuto extends AutoCommandGroup {
 		this.isDrive = false;
 		requires(SuperStructure.getInstance());
 		requires(DriveTrain.getInstance());
+		requires(SuperStructure.getInstance().getWrist());
+		requires(SuperStructure.getInstance().getElbow());
+		requires(SuperStructure.getElevator());
 	}
 
 	public RunAuto(HeldPiece cPiece, String... cKeys) {
