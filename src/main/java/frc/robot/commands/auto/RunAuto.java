@@ -22,6 +22,8 @@ public class RunAuto extends AutoCommandGroup {
 	private boolean begun = false;
 	private AutoCommandGroup running;
 
+
+	@Deprecated
 	public RunAuto(HeldPiece mHP, GoalHeight mHeight) {
 		switch (mHP) {
 		case CARGO:

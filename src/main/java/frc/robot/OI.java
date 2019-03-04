@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.routines.PickupHatch;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
@@ -69,7 +70,8 @@ public class OI {
 		// togglePickup.toggleWhenPressed(command);
 		// toggleGoal.toggleWhenPressed(command);
 
-		// useMotion.whenPressed(new RunAuto(AutoMotionStateMachine.getGoalType(), AutoMotionStateMachine.getGoalHeight()));
+		useMotion.whenPressed(new RunAuto(Robot.autoState.getGoalType(), Robot.autoState.getGoalHeight()));
+		usePreset.whenPressed(new RunAuto());
 
 		goalUp.whenPressed(new ChangeGoalHeight(true));
 		goalDown.whenPressed(new ChangeGoalHeight(false));

@@ -20,7 +20,7 @@ import frc.robot.subsystems.superstructure.SuperStructure;
 
 /**
  * Instructions for using this mutant command-thing:
- *  - Do NOT call the constructor
+ *  - Do NOT call the constructor (unless ur OI)
  *  - Call the planner
  *  - Call SuperstructureMotion.getInstance().start();
  *    - This will iterate through the planned commandQueue
@@ -37,6 +37,14 @@ public class SuperstructureMotion extends Command {
 
 	private SuperstructureMotion() {
 		requires(SuperStructure.getInstance());
+
+		requires(SuperStructure.getInstance().getWrist());
+		requires(SuperStructure.getInstance().getElbow());
+		requires(SuperStructure.getElevator());
+	}
+
+	public SuperstructureMotion(SuperStructureState gsIn){
+		plan(gsIn, SuperStructure.getInstance().getCurrentState());
 
 		requires(SuperStructure.getInstance().getWrist());
 		requires(SuperStructure.getInstance().getElbow());
