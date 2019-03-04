@@ -38,6 +38,10 @@ public class SuperStructureState implements Loggable {
 		this(elevatorState, intakeState, HeldPiece.NONE);
 	}
 
+	public SuperStructureState(ElevatorState eState) {
+		this(eState, new RotatingArmState(), new RotatingArmState(), HeldPiece.NONE);
+	}
+
 	public SuperStructureState(ElevatorState elevatorState, IntakeAngle angles___, HeldPiece piece__) {
 		jointAngles = angles___;
 		elevator = elevatorState;

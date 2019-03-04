@@ -284,6 +284,18 @@ public class Elevator extends Subsystem {
 		getMaster().configMotionAcceleration((int) config.motionMagicAccel);
 	}
 
+	SuperStructureState requState;
+
+	public void setPositionSetpoint(SuperStructureState requ_) {
+		this.requState = requ_;
+	}
+
+	@Override
+	public void periodic() {
+		var feedForwardVoltage = getVoltage(requState);
+		setMMArbitraryFeedForward(requState.getElevatorHeight(), feedForwardVoltage / 12d);
+	}
+
 	/**
 	 * Calculate the bexpected mass on the elevator given a state
 	 * @param state current state, including game piece held

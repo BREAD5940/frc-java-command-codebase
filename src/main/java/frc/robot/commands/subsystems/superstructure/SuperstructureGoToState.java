@@ -1,10 +1,15 @@
 package frc.robot.commands.subsystems.superstructure;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.ConditionalCommand;
+import edu.wpi.first.wpilibj.command.InstantCommand;
+import frc.robot.SuperStructureConstants;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
@@ -39,20 +44,33 @@ public class SuperstructureGoToState extends CommandGroup {
 	RoundRotation2d wristSetpoint, elbowSetpoint;
 
 	/**
-	 * Move the superstructure to a requested state.
+	 * Move the superstructure to a requested state. This implements a super basic command que and stuff
 	 * @param requState the state requested of the superstructure
 	 * @param timeout the timeout of this command
 	 * 
 	 * @author Matthew Morley
+	 * 
 	 */
 	public SuperstructureGoToState(SuperStructureState requState, double timeout) {
 
 		mRequState = requState;
 		setTimeout(timeout);
 
-		this.elevatorSetpoint = requState.getElevatorHeight();
-		this.wristSetpoint = requState.getWristAngle();
-		this.elbowSetpoint = requState.getElbowAngle();
+		var elevatorR = requState.getElevatorHeight();
+		var proximalR = requState.getElbowAngle();
+		var wristR = requState.getWristAngle();
+		// first of all, decide if we need to move the elevator at all. We don't need to move the elevator if the elevator is already safe or if we aren't passing through
+		addSequential(new ConditionalCommand(new WaitForElevatorSubcommand(new SuperStructureState(new ElevatorState(SuperStructureConstants.Elevator.kClearFirstStageMaxHeight)))) {
+			@Override
+			protected boolean condition() {
+				SuperStructure.getInstance().updateState();
+				double degrees = SuperStructure.getInstance().getCurrentState().jointAngles.elbowAngle.angle.getDegree();
+				boolean direction = (degrees > -90);
+				return (SuperStructure.getInstance().getCurrentState().jointAngles.elbowAngle.angle.getDegree() > -90);
+			}
+		}
+		);
+		
 	}
 
 	class StateMovementCommand extends Command {
@@ -175,15 +193,11 @@ public class SuperstructureGoToState extends CommandGroup {
 		protected void interrupted() {}
 	}
 
-	class FullWaitSubCommand extends WaitSubCommand {
-		public FullWaitSubCommand(SuperStructureState endState) {
+	class WaitForFinalSetpointSubcommand  extends WaitSubCommand {
+		public WaitForFinalSetpointSubcommand (SuperStructureState endState) {
 			super(endState);
 			// mEndState = endState;
 		}
-
-		public SuperStructureState mEndState;
-		public Length mHeightThreshold = LengthKt.getInch(1.0);
-		public RoundRotation2d mElbowThreshold = RoundRotation2d.getDegree(5.0);
 
 		@Override
 		public boolean isFinished(SuperStructureState currentState) {
@@ -193,19 +207,97 @@ public class SuperstructureGoToState extends CommandGroup {
 		}
 	}
 
-	abstract class WaitSubCommand extends Command {
-		SuperStructureState mReqState, currentState;
-
-		public WaitSubCommand(SuperStructureState requ_) {
-			this.mReqState = requ_;
+	class WaitForElbowSubcommand  extends WaitSubCommand {
+		public WaitForElbowSubcommand (SuperStructureState endState) {
+			super(endState);
+			// mEndState = endState;
 		}
 
-		public void feedState(SuperStructureState new_){ 
-			this.currentState = new_;
+		@Override
+		public boolean isFinished(SuperStructureState currentState) {
+			return Math.abs(mEndState.getElbow().angle.getDegree() - currentState.getElbow().angle.getDegree()) <= mElbowThreshold.getDegree();
+		}
+	}
+
+	class WaitForWristSubcommand  extends WaitSubCommand {
+		public WaitForWristSubcommand (SuperStructureState endState) {
+			super(endState);
+			// mEndState = endState;
+		}
+
+		@Override
+		public boolean isFinished(SuperStructureState currentState) {
+			return Math.abs(mEndState.getWrist().angle.getDegree() - currentState.getWrist().angle.getDegree()) <= mElbowThreshold.getDegree();
+		}
+	}
+
+	class WaitForElevatorSubcommand extends WaitSubCommand {
+		public WaitForElevatorSubcommand (SuperStructureState endState) {
+			super(endState);
+			// mEndState = endState;
+		}
+
+		@Override
+		public boolean isFinished(SuperStructureState currentState) {
+  		return Math.abs(mEndState.getElevatorHeight().getInch() - currentState.getElevatorHeight().getInch()) <= mHeightThreshold.getInch();
+		}
+	}
+
+	class SetWristSetpoint extends InstantCommand {
+		RoundRotation2d mSetpoint;
+		public SetWristSetpoint(RoundRotation2d setpoint) {
+			this.mSetpoint = setpoint;
+		}
+
+		@Override
+		protected void initialize() {
+			SuperStructure.getInstance().getWrist().requestAngle(ControlMode.MotionMagic, mSetpoint);
+		}
+	}
+
+	class SetElbowSetpoint extends InstantCommand {
+		RoundRotation2d mSetpoint;
+		public SetElbowSetpoint(RoundRotation2d setpoint) {
+			this.mSetpoint = setpoint;
+		}
+
+		@Override
+		protected void initialize() {
+			SuperStructure.getInstance().getElbow().requestAngle(ControlMode.MotionMagic, mSetpoint);
+		}
+	}
+
+	class SetElevatorSetpoint extends InstantCommand {
+		SuperStructureState mSetpoint;
+		public SetElevatorSetpoint(SuperStructureState setpoint) {
+			this.mSetpoint = setpoint;
+		}
+
+		@Override
+		protected void initialize() {
+			SuperStructure.getElevator().setPositionSetpoint(mSetpoint);
+		}
+	}
+
+	
+
+	abstract class WaitSubCommand extends Command {
+		SuperStructureState mEndState, currentState;
+		public Length mHeightThreshold = LengthKt.getInch(1.0);
+		public RoundRotation2d mElbowThreshold = RoundRotation2d.getDegree(5.0);
+		public RoundRotation2d mWristThreshold = RoundRotation2d.getDegree(5.0);
+
+		public WaitSubCommand(SuperStructureState requ_) {
+			this.mEndState = requ_;
+		}
+
+		public void feedState(SuperStructureState currentState){ 
+			this.currentState = currentState;
 		}
 
 		@Override
 		protected boolean isFinished() {
+			feedState(SuperStructure.getInstance().getCurrentState());
 			return isFinished(currentState);
 		}
 
