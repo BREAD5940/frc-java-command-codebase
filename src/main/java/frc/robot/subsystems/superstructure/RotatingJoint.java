@@ -149,6 +149,14 @@ public class RotatingJoint extends Subsystem {
 		// this.getMaster().configClosedloopRamp(0.1);
 	}
 
+	public void setLimitSwitches() {
+		var maxTicks = getMaster().getTicks(kMaxAngle);
+		getMaster().configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+		getMaster().configForwardSoftLimitThreshold(maxTicks);
+		getMaster().configForwardSoftLimitEnable(true);
+		getMaster().configClearPositionOnLimitF(true, 0);
+	}
+
 	public void setClosedLoopGains(int slot, PIDSettings config) {
 		setClosedLoopGains(slot, config.kp, config.ki, config.kd, config.kf, config.iZone, config.maxIAccum, config.minOutput, config.maxOutput);
 	}

@@ -113,6 +113,8 @@ public class SuperStructure extends Subsystem implements Loggable {
 		elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
 				new InvertSettings(true, InvertType.FollowMaster, InvertType.FollowMaster, InvertType.OpposeMaster));
 
+		mElbow.setLimitSwitches();
+
 		mCurrentState = new SuperStructureState();
 
 		Notifier mSmartDashboardUpdater = new Notifier(() -> {
