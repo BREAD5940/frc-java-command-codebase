@@ -72,6 +72,8 @@ public class Intake extends Subsystem {
 		// talon.configPeakCurrentLimit(40);
 		// talon.enableCurrentLimit(true);
 		// talon.setName("Intake");
+		cargoTalon.configPeakOutputForward(.4);
+		cargoTalon.configPeakOutputReverse(-.4);
 	}
 
 	private Intake() {

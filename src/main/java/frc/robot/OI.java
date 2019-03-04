@@ -1,6 +1,10 @@
 package frc.robot;
 
+import java.util.Arrays;
+import java.util.List;
+
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.auto.groups.visionTest;
@@ -8,6 +12,7 @@ import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
+import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
@@ -138,6 +143,30 @@ public class OI {
 
 	public Joystick getPrimary() {
 		return primaryJoystick;
+	}
+
+	public Joystick getSecondary() {
+		return secondaryJoystick;
+	}
+
+	public List<Joystick> getAllSticks() {
+		return Arrays.asList(getPrimary(), getSecondary());
+	}
+
+	public enum OperatorControllers {
+		PRIMARY, SECONDARY;
+	}
+
+	public void setRumble(RumbleType side, Joystick stick, double value) {
+		value = Util.limit(value, 0, 1);
+		stick.setRumble(side, value);
+	}
+	
+	public void setAllRumble(double value) {
+		for(Joystick stick : getAllSticks()) {
+			setRumble(RumbleType.kLeftRumble, stick, value);
+			// setRumble(RumbleType.kRightRumble, stick, value);
+		}
 	}
 
 	public double getForwardAxis() {

@@ -52,12 +52,12 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		// cStart = "cargoM" + side;
 		// cPiece = HeldPiece.NONE;
 
-		traject = Trajectories.generatedHGTrajectories.get("rocketLF" + " to " + "loading" + side); //current trajectory from hashmap in Trajectorie
-		this.addParallel(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
-		this.addSequential(DriveTrain.getInstance().followTrajectory(Trajectories.reverse3FeetLowGear, TrajectoryTrackerMode.RAMSETE, false)); //back up mega fast to clear rocket
-		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
-		addSequential(new SetTempPoseFromVisionTarget(this, PoseStorage.POSE1, false));
-		addSequential(new SplineToVisionTarget(this.getPoseStorage1(), LengthKt.getInch(0), LengthKt.getInch(30), 6.5));
+		// traject = Trajectories.generatedHGTrajectories.get("rocketLF" + " to " + "loading" + side); //current trajectory from hashmap in Trajectorie
+		// this.addParallel(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
+		// this.addSequential(DriveTrain.getInstance().followTrajectory(Trajectories.reverse3FeetLowGear, TrajectoryTrackerMode.RAMSETE, false)); //back up mega fast to clear rocket
+		// this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
+		// addSequential(new SetTempPoseFromVisionTarget(this, PoseStorage.POSE1, false));
+		// addSequential(new SplineToVisionTarget(this.getPoseStorage1(), LengthKt.getInch(0), LengthKt.getInch(30), 6.5));
 
 		// /* Go right up to the cargo ship from the loading station */
 		// cStart = "loading" + side;

@@ -181,7 +181,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Zero elbow angle:", new ZeroSuperStructure("elbow"));
 		SmartDashboard.putData("Zero wrist angle:", new ZeroSuperStructure("wrist"));
 		SmartDashboard.putData("Max elevator height:", new ZeroSuperStructure("maxElevator"));
-		SmartDashboard.putData("Top of inner stage elevator height", new ZeroSuperStructure("topInnerElevator"));
+		// SmartDashboard.putData("Top of inner stage elevator height", new ZeroSuperStructure("topInnerElevator"));
 		SmartDashboard.putData("Max wrist angle:", new ZeroSuperStructure("maxWrist"));
 		SmartDashboard.putData("Min wrist angle:", new ZeroSuperStructure("minWrist"));
 		SmartDashboard.putData("Max elbow angle:", new ZeroSuperStructure("maxElbow"));

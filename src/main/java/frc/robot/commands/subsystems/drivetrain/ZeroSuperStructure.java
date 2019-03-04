@@ -58,10 +58,11 @@ public class ZeroSuperStructure extends Command {
 		} else if (p.equals("minElbow")) {
 			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(SuperStructureConstants.Elbow.kElbowMin);
 			old.getWrist().setAngle(SuperStructureConstants.Elbow.kElbowMin);
-		} else if (p.equals("topInnerElevator")) {
-			SuperStructure.getInstance().getElevator().getMaster().setSensorPosition(LengthKt.getInch(26));
-			old.getElevator().setHeight(LengthKt.getInch(26));
 		}
+		// } else if (p.equals("topInnerElevator")) {
+		// 	SuperStructure.getInstance().getElevator().getMaster().setSensorPosition(LengthKt.getInch(26));
+		// 	old.getElevator().setHeight(LengthKt.getInch(26));
+		// }
 	}
 
 	@Override
