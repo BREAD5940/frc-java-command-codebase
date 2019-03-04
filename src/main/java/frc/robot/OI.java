@@ -54,7 +54,12 @@ public class OI {
 	Button primaryAButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
 	Button primaryXButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
 	Button primaryBButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
+
 	Button secondaryDpadUp = new DPadButton(secondaryJoystick, DPadButton.Direction.UP);
+	Button secondaryDpadLeft = new DPadButton(secondaryJoystick, DPadButton.Direction.LEFT);
+	Button secondaryDpadRight = new DPadButton(secondaryJoystick, DPadButton.Direction.RIGHT);
+	
+
 	// Button test2button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 
 	// File file = new File("/home/lvuser/deploy/paths/test.pf1.csv");
@@ -85,7 +90,10 @@ public class OI {
 		// test2Button.whenPressed(new PassThrough()); // a button
 		primaryXButton.whenPressed(new RunIntake(1, 1, 2)); // x button
 
-		secondaryDpadUp.whenPressed(new SuperstructureGoToState(LengthKt.getInch(2), iPosition.CARGO_GRAB));
+		secondaryDpadUp.whenPressed(new SuperstructureGoToState(LengthKt.getInch(3.5), iPosition.CARGO_GRAB));
+		secondaryDpadLeft.whenPressed(new SuperstructureGoToState(fieldPositions.cargoLowGoal, iPosition.CARGO_PLACE_INSIDE));
+		secondaryDpadRight.whenPressed(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE));
+
 
 		// test3Button.whenPressed(new FollowVisonTargetTheSecond());
 		// test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button
