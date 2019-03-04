@@ -7,23 +7,28 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.team254.lib.physics.DCMotorTransmission;
 
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.subsystems.superstructure.SuperStructureTelop;
+import frc.robot.lib.Loggable;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.PIDSettings.FeedbackMode;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.lib.obj.RoundRotation2d;
-import frc.robot.planners.SuperstructurePlanner;
+import frc.robot.planners.SuperstructurePlannerOLD;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
@@ -38,11 +43,11 @@ import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
  * 
  * @author Jocelyn McHugo
  */
-public class SuperStructure extends Subsystem {
+public class SuperStructure extends Subsystem implements Loggable {
 
 	private static SuperStructure instance_;
 	private static double currentDTVelocity; //in ft/sec
-	public static Length currentSetHeight, lastSH = LengthKt.getInch(70), lastLastSH = LengthKt.getInch(70);
+	public static Length currentSetHeight, lastSH = LengthKt.getInch(0), lastLastSH = LengthKt.getInch(0);
 	public SuperStructureState mReqState = new SuperStructureState();
 	public SuperStructureState lastState = new SuperStructureState();
 	private CommandGroup mCurrentCommandGroup;
@@ -50,17 +55,18 @@ public class SuperStructure extends Subsystem {
 	private int cPathIndex = 0;
 	private boolean currentPathComplete = false;
 	public static Elevator elevator;
-	public static Intake intake = new Intake(34);
-	private SuperstructurePlanner planner = new SuperstructurePlanner();
+	public static Intake intake = Intake.getInstance();
+	private SuperstructurePlannerOLD planner = new SuperstructurePlannerOLD();
 	// public SuperStructureState mPeriodicIO = new SuperStructureState();
-	private RotatingJoint mWrist, mElbow;
+	private Wrist mWrist;
+	private RotatingJoint mElbow;
 	private DCMotorTransmission kElbowTransmission, kWristTransmission;
 	public static final Mass kHatchMass = MassKt.getLb(2.4); // FIXME check mass
 	public static final Mass kCargoMass = MassKt.getLb(1); // FIXME check mass
-	public static final RoundRotation2d kWristMin = RoundRotation2d.getDegree(-45); // relative
+	public static final RoundRotation2d kWristMin = RoundRotation2d.getDegree(-180); // relative
 	public static final RoundRotation2d kWristMax = RoundRotation2d.getDegree(90); // relative
-	public static final RoundRotation2d kElbowMin = RoundRotation2d.getDegree(-180); // absolute
-	public static final RoundRotation2d kElbowMax = RoundRotation2d.getDegree(15); // absolute
+	public static final RoundRotation2d kElbowMin = RoundRotation2d.getDegree(-200); // absolute
+	public static final RoundRotation2d kElbowMax = RoundRotation2d.getDegree(60); // absolute
 
 	public static synchronized SuperStructure getInstance() {
 		if (instance_ == null) {
@@ -98,16 +104,23 @@ public class SuperStructure extends Subsystem {
 
 		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
 
-		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
+		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, false /* FIXME check inverting! */,
 				Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
 		mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
-				false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+				true /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 
 		elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
 				new InvertSettings(true, InvertType.FollowMaster, InvertType.FollowMaster, InvertType.OpposeMaster));
 
+		mElbow.setLimitSwitches();
+
 		mCurrentState = new SuperStructureState();
+
+		Notifier mSmartDashboardUpdater = new Notifier(() -> {
+			SmartDashboard.putString("Superstructure move setpoint", mReqState.toCSV());
+		});
+		mSmartDashboardUpdater.startPeriodic(0.5);
 
 	}
 
@@ -118,12 +131,30 @@ public class SuperStructure extends Subsystem {
 	}
 
 	public static class iPosition {
-		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(0)));
-		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(-47.6)));
-		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(35.98)));
-		public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(148.35)), new RotatingArmState(Rotation2dKt.getDegree(-96.46)));
-		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(0)), new RotatingArmState(Rotation2dKt.getDegree(87.86)));
-		public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(new RotatingArmState(Rotation2dKt.getDegree(148.35)), new RotatingArmState(Rotation2dKt.getDegree(-48.04)));
+		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(10)), new RotatingArmState(RoundRotation2d.getDegree(-45)));
+		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(-47.6)));
+		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(35.98)));
+
+		public static final IntakeAngle CARGO_PLACE_INSIDE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(67)));
+
+		public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(148.35)), new RotatingArmState(RoundRotation2d.getDegree(-96.46)));
+		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(12)), new RotatingArmState(RoundRotation2d.getDegree(87.86 - 90 + 5)));
+		public static final IntakeAngle HATCH_PITCHED_UP = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(87.86 - 90 + 15)));
+		public static final IntakeAngle STOWED = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(90)));
+		public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-190)), new RotatingArmState(RoundRotation2d.getDegree(-110)));
+
+		// grab a hatch by ramming against the loading station. Takes advantage of bumper recesses
+		public static final SuperStructureState HATCH_GRAB_INSIDE = new SuperStructureState(new ElevatorState(LengthKt.getInch(21)),
+				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-115)), new RotatingArmState(RoundRotation2d.getDegree(67))));
+		public static final SuperStructureState HATCH_GRAB_INSIDE_PREP = new SuperStructureState(new ElevatorState(LengthKt.getInch(17)),
+				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(60))));
+
+		// place a hatch and take advantage of the proximal to slam the hatch into the side.
+		public static final SuperStructureState HATCH_SLAM_ROCKET_INSIDE = new SuperStructureState(new ElevatorState(LengthKt.getInch(21)),
+				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-75)), new RotatingArmState(RoundRotation2d.getDegree(61))));
+		public static final SuperStructureState HATCH_SLAM_ROCKET_INSIDE_PREP = new SuperStructureState(new ElevatorState(LengthKt.getInch(17)),
+				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(40 + 7))));
+		public static final Length kOffsetFromL1toL2 = fieldPositions.hatchMiddleGoal.minus(fieldPositions.hatchLowGoal);
 
 		public static final ArrayList<IntakeAngle> presets = new ArrayList<IntakeAngle>(Arrays.asList(CARGO_GRAB, CARGO_DOWN,
 				CARGO_PLACE, CARGO_REVERSE, HATCH, HATCH_REVERSE));
@@ -203,21 +234,19 @@ public class SuperStructure extends Subsystem {
 	}
 
 	public SuperStructureState updateState() {
-		// ElevatorState mCurrent = mCurrentState.elevator;
-		getElevator().getCurrentState();
-		getWrist().getCurrentState();
-		getElbow().getCurrentState();
+		var mNewWrist = getWrist().getCurrentState();
+		var mNewElbow = getElbow().getCurrentState();
+		var mNewElevator = getElevator().getCurrentState();
+		var mNewIntakeAngles = new IntakeAngle(mNewElbow, mNewWrist);
 
-		this.mCurrentState = new SuperStructureState(
-				elevator.getCurrentState(),
-				// mWrist.getCurrentState(),
-				// mElbow.getCurrentState());
-				mWrist.getCurrentState(),
-				mElbow.getCurrentState());
+		this.mCurrentState = new SuperStructureState(mNewElevator, mNewIntakeAngles);
+
+		// System.out.println("current state per the wrist: " + getWrist().getCurrentState() + "new wrist per the updated state: " + mCurrentState.jointAngles.wristAngle.angle.getDegree()); 
+
 		return mCurrentState;
 	}
 
-	public RotatingJoint getWrist() {
+	public Wrist getWrist() {
 		if (mWrist == null)
 			mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
 					Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
@@ -246,7 +275,7 @@ public class SuperStructure extends Subsystem {
 		return kElbowTransmission;
 	}
 
-	public Elevator getElevator() {
+	public static Elevator getElevator() {
 		if (elevator == null)
 			elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
 					new InvertSettings(false, InvertType.FollowMaster, InvertType.OpposeMaster, InvertType.OpposeMaster));
@@ -257,24 +286,26 @@ public class SuperStructure extends Subsystem {
 		//former superstructure periodic
 		updateState();
 
-		SuperStructureState prevState = lastState;
+		this.mReqState = requState;
+		// SuperStructureState prevState = lastState;
 		// double mCurrentWristTorque = Math.abs(SuperStructure.getInstance().calculateWristTorque(prevState)); // torque due to gravity and elevator acceleration, newton meters
 		// double mCurrentElbowTorque = Math.abs(SuperStructure.getInstance().calculateElbowTorques(prevState, mCurrentWristTorque)); // torque due to gravity and elevator acceleration, newton meters
 
 		// double wristVoltageGravity = SuperStructure.getInstance().getWTransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getWrist().velocity.getValue(), mCurrentWristTorque);
 		// double elbowVoltageGravity = SuperStructure.getInstance().getETransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getElbow().velocity.getValue(), mCurrentElbowTorque);
-		double elevatorPercentVbusGravity = getElevator().getVoltage(updateState()) / 12;//getElevator().getMaster().getBusVoltage();		
+		double elevatorPercentVbusGravity = Elevator.getVoltage(updateState()) / 12;//getElevator().getMaster().getBusVoltage();		
 
 		// if (Math.abs(mOI.getWristAxis()) > 0.07) {
 		// SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mRequState.getWrist().angle);
 
 		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
-		SuperStructureState stateSetpoint = plan(requState);
+		// SuperStructureState stateSetpoint = plan(requState);
 
-		getWrist().requestAngle(stateSetpoint.getWrist().angle); // div by 12 because it expects a throttle
-		getElbow().requestAngle(stateSetpoint.getElbow().angle); // div by 12 because it expects a throttle
-		getElevator().setPositionArbitraryFeedForward(stateSetpoint.getElevator().height, elevatorPercentVbusGravity / 12d);
+		getWrist().requestAngle(ControlMode.MotionMagic, requState.getWrist().angle, getCurrentState());
+		getElbow().requestAngle(ControlMode.MotionMagic, requState.getElbow().angle);
+		getElevator().getMaster().set(ControlMode.MotionMagic, requState.getElevator().height, DemandType.ArbitraryFeedForward, elevatorPercentVbusGravity);
 		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
+
 	}
 
 	public SuperStructureState plan(SuperStructureState mReqState) {
@@ -348,5 +379,15 @@ public class SuperStructure extends Subsystem {
 		double torqueWrstComponent = (wristTotalMass.getKilogram() * getElbow().kArmLength.getMeter() * 2 /* double the distance from the joint to COM*/ * 9.8);
 
 		return torqueGravity + torqueAccel + torqueWrstComponent + wristTorque;
+	}
+
+	@Override
+	public String getCSVHeader() {
+		return "mCurrentState";
+	}
+
+	@Override
+	public String toCSV() {
+		return getCurrentState().toCSV();
 	}
 }

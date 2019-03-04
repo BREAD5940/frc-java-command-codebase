@@ -1,27 +1,26 @@
 package frc.robot;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotConfig.elevator;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
+import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
@@ -41,7 +40,7 @@ public class Robot extends TimedRobot {
 	public static DriveTrain drivetrain = DriveTrain.getInstance();
 	public static SuperStructure superstructure = SuperStructure.getInstance();
 	// public static VisionProcessor visionProcessor = new VisionProcessor();
-	public static LimeLight limelight = new LimeLight();
+	public static LimeLight limelight = LimeLight.getInstance();
 	// public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
 	public static DoubleSolenoid shifterDoubleSolenoid;
 	public static DoubleSolenoid intakeDoubleSolenoid;
@@ -49,12 +48,16 @@ public class Robot extends TimedRobot {
 	public static AutoMotion m_auto;
 	SendableChooser<Command> m_chooser = new SendableChooser<Command>();
 	public static Compressor compressor = new Compressor(9);
+
+	private Notifier mResetNotifier;
+
 	// public static Odometer odometry_;
 	// public static DifferentialUltrasonicSensor differentialUltrasonicSensor = DifferentialUltrasonicSensor.getInstance();
 	// private Logger logger;
 
 	public static boolean intakeOpen = false; // TODO I'm aware this shouldn't go here, I'll rewrite the intake subsystem
-												// later
+
+	// later
 
 	// Various pneumatic shifting methods
 	public static void drivetrain_shift_high() {
@@ -69,7 +72,7 @@ public class Robot extends TimedRobot {
 
 	public static DoubleSolenoid getIntakeSolenoidInstance() {
 		if (intakeDoubleSolenoid == null)
-			intakeDoubleSolenoid = new DoubleSolenoid(9, 2, 3);
+			intakeDoubleSolenoid = new DoubleSolenoid(9, 6, 7);
 		return intakeDoubleSolenoid;
 	}
 
@@ -113,7 +116,7 @@ public class Robot extends TimedRobot {
 	 * FIXME it's a hack, set the period to 25ms
 	 */
 	public Robot() {
-		super(0.025d);
+		super(0.02d);
 	}
 
 	/**
@@ -147,6 +150,17 @@ public class Robot extends TimedRobot {
 		// elevator.init();
 		// wrist.init();
 		drivetrain.zeroGyro();
+		var elevator = SuperStructure.getElevator();
+		var startingHeightTicks = elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24.5)).getValue();
+		elevator.getMaster().setSelectedSensorPosition((int) startingHeightTicks);
+
+		var proximal = SuperStructure.getInstance().getElbow();
+		var startingAngleTicks = proximal.getMaster().getTicks(RoundRotation2d.getDegree(-94));
+		proximal.getMaster().setSelectedSensorPosition(startingAngleTicks);
+
+		var wrist = SuperStructure.getInstance().getWrist();
+		startingAngleTicks = wrist.getMaster().getTicks(RoundRotation2d.getDegree(-42));
+		wrist.getMaster().setSelectedSensorPosition(startingAngleTicks);
 
 		switch (RobotConfig.auto.auto_gear) {
 		case HIGH:
@@ -183,12 +197,52 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("Zero elbow angle:", new ZeroSuperStructure("elbow"));
 		SmartDashboard.putData("Zero wrist angle:", new ZeroSuperStructure("wrist"));
 		SmartDashboard.putData("Max elevator height:", new ZeroSuperStructure("maxElevator"));
+		// SmartDashboard.putData("Top of inner stage elevator height", new ZeroSuperStructure("topInnerElevator"));
 		SmartDashboard.putData("Max wrist angle:", new ZeroSuperStructure("maxWrist"));
 		SmartDashboard.putData("Min wrist angle:", new ZeroSuperStructure("minWrist"));
 		SmartDashboard.putData("Max elbow angle:", new ZeroSuperStructure("maxElbow"));
 		SmartDashboard.putData("Min elbow angle:", new ZeroSuperStructure("minElbow"));
 		drivetrain.zeroEncoders();
 		System.out.println("Robot init'ed and encoders zeroed!");
+
+		mResetNotifier = new Notifier(() -> {
+
+			// SuperStructure.getElevator().getMaster().setSelectedSensorPosition((int)startingHeightTicks);
+
+			// SuperStructure.getInstance().getElbow().getMaster().setSelectedSensorPosition(proximal.getMaster().getTicks(RoundRotation2d.getDegree(-94)));
+
+			// SuperStructure.getInstance().getWrist().getMaster().setSelectedSensorPosition(proximal.getMaster().getTicks(RoundRotation2d.getDegree(-42)));
+
+			boolean reset = false;
+			if (superstructure.getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
+				// RoundRotation2d new_ = RoundRotation2d.getDegree(15);
+				// superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(15));
+				// System.out.println("elbow fwd triggered! new pos: " + new_.getDegree());
+				// reset = true;
+			}
+			if (superstructure.getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
+				System.out.println("wrist fwd triggered!");
+				superstructure.getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(90));
+				reset = true;
+			}
+			if (superstructure.getElbow().getMaster().getSensorCollection().isRevLimitSwitchClosed()) {
+				System.out.println("elbow rev triggered!");
+				superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(-180 - 15));
+				reset = true;
+			}
+			if (superstructure.getWrist().getMaster().getSensorCollection().isRevLimitSwitchClosed()) {
+				System.out.println("wrist rev triggered!");
+				superstructure.getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(-90));
+				reset = true;
+			}
+			if (reset) {
+				superstructure.getCurrentCommand().cancel();
+				superstructure.getDefaultCommand().start();
+			}
+
+		});
+
+		mResetNotifier.startPeriodic(0.5);
 
 	}
 
@@ -199,6 +253,13 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void disabledInit() {
+
+		try {
+			mResetNotifier.startPeriodic(0.5);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		if (RobotConfig.auto.auto_gear == Gear.LOW) {
 			drivetrain.setLowGear();
 		} else if (RobotConfig.auto.auto_gear == Gear.HIGH) {
@@ -214,11 +275,13 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void disabledPeriodic() {
+
 		Scheduler.getInstance().run();
 	}
 
 	@Override
 	public void autonomousInit() {
+		mResetNotifier.stop();
 		// DriveTrajectoryPathfinder meme = new DriveTrajectoryPathfinder("file");
 		// meme.start();
 
@@ -244,6 +307,7 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+		mResetNotifier.stop();
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
@@ -287,6 +351,8 @@ public class Robot extends TimedRobot {
 		drivetrain.getLocalization().update(); // TODO put me on a notifier?
 		// long now = System.currentTimeMillis();
 
+		SmartDashboard.putString(SuperStructure.getInstance().getCurrentState().getCSVHeader(), SuperStructure.getInstance().getCurrentState().toCSV());
+
 		SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
 		SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
 
@@ -294,27 +360,27 @@ public class Robot extends TimedRobot {
 		LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
 		LiveDashboard.INSTANCE.setRobotHeading(drivetrain.getLocalization().getRobotPosition().getRotation().getRadian());
 
-		SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getFeetPerSecond());
-		SmartDashboard.putNumber("Left talon error", drivetrain.getLeft().getClosedLoopError().getFeet());
-		SmartDashboard.putNumber("Right talon speed", drivetrain.getRight().getFeetPerSecond());
-		SmartDashboard.putNumber("Right talon error", drivetrain.getRight().getClosedLoopError().getFeet());
+		// SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getFeetPerSecond());
+		// SmartDashboard.putNumber("Left talon error", drivetrain.getLeft().getClosedLoopError().getFeet());
+		// SmartDashboard.putNumber("Right talon speed", drivetrain.getRight().getFeetPerSecond());
+		// SmartDashboard.putNumber("Right talon error", drivetrain.getRight().getClosedLoopError().getFeet());
 
-		List<Double> feetPerSecond = Arrays.asList(
-				VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()),
-				VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()));
-		List<Double> feetPerSecondPerSecond = Arrays.asList(
-				(VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()) - drivetrain.lastFeetPerSecond.get(0)) / 0.02d,
-				(VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()) - drivetrain.lastFeetPerSecond.get(0)) / 0.02d);
-		SmartDashboard.putNumber("Left drivetrian feet per second", feetPerSecond.get(0));
-		SmartDashboard.putNumber("Right drivetrian feet per second", feetPerSecond.get(1));
+		// List<Double> feetPerSecond = Arrays.asList(
+		// 		VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()),
+		// 		VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()));
+		// List<Double> feetPerSecondPerSecond = Arrays.asList(
+		// 		(VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()) - drivetrain.lastFeetPerSecond.get(0)) / 0.02d,
+		// 		(VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()) - drivetrain.lastFeetPerSecond.get(0)) / 0.02d);
+		// SmartDashboard.putNumber("Left drivetrian feet per second", feetPerSecond.get(0));
+		// SmartDashboard.putNumber("Right drivetrian feet per second", feetPerSecond.get(1));
 
-		SmartDashboard.putNumber("7 feet per second is", drivetrain.getLeft().getModel().toNativeUnitPosition(LengthKt.getFeet(7)).getValue());
+		// SmartDashboard.putNumber("7 feet per second is", drivetrain.getLeft().getModel().toNativeUnitPosition(LengthKt.getFeet(7)).getValue());
 
 		SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
 
 		SmartDashboard.putData(drivetrain);
-		SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getCurrentState().angle.getDegree());
-		SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getCurrentState().angle.getDegree());
+		// SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getMaster().getSensorPosition().getDegree());
+		// SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
 		SmartDashboard.putData(superstructure);
 
 		// Limelight stuff
@@ -329,6 +395,12 @@ public class Robot extends TimedRobot {
 
 		// long elapsed = System.currentTimeMillis() - now;
 		// System.out.println("RobotPeriodic took " + elapsed + "ms");
+
+		// if (getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed())
+		// System.out.println("elbow limit: " + superstructure.getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed());
+		// if (getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed())
+		// System.out.println("wrist limit: " + superstructure.getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed());
+
 	}
 
 }

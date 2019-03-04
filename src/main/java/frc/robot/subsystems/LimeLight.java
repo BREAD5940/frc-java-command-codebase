@@ -1,9 +1,20 @@
 package frc.robot.subsystems;
 
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+
+import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.RobotConfig;
+import frc.robot.lib.motion.Util;
+import frc.robot.lib.obj.VisionTarget;
+import frc.robot.lib.obj.factories.VisionTargetFactory;
 
 /**
  * tv  Whether the limelight has any valid targets (0 or 1)
@@ -17,19 +28,59 @@ import frc.robot.RobotConfig;
  * @author Matthew Morley
  */
 public class LimeLight {
-	NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+
+	private static LimeLight instance;
+	private static Object mutex = new Object();
+
+	public static LimeLight getInstance() {
+		LimeLight result = instance;
+		if (result == null) {
+			synchronized (mutex) {
+				result = instance;
+				if (result == null)
+					instance = result = new LimeLight();
+			}
+		}
+		return result;
+	}
+
+	NetworkTable table;
 	double[] data, angles;
 	double cameraHeight = RobotConfig.limeLight.camera_height;
 	double cameraAngle = RobotConfig.limeLight.camera_angle;
-	double x_resolution = 320;
-	double y_resolution = 240;
-	double x_fov = 54;
-	double y_fov = 41;
-	double x_focal_length = x_resolution / (2 * Math.tan(x_fov / 2));
-	double y_focal_length = y_resolution / (2 * Math.tan(y_fov / 2));
-	double average_focal_length = (x_focal_length + y_focal_length) / 2;
+	private static final double x_resolution_low = 320;
+	private static final double y_resolution_low = 240;
+	private static final double x_resolution_high = 960;
+	private static final double y_resolution_high = 720;
+	private static final Rotation2d x_fov = Rotation2dKt.getDegree(59.6);
+	private static final Rotation2d y_fov = Rotation2dKt.getDegree(45.7);
+	private static final double x_focal_length_low = x_resolution_low / (2 * Math.tan(x_fov.getRadian() / 2));
+	private static final double y_focal_length_low = y_resolution_low / (2 * Math.tan(y_fov.getRadian() / 2));
+	private static final double x_focal_length_high = x_resolution_low / (2 * Math.tan(x_fov.getRadian() / 2));
+	private static final double y_focal_length_high = y_resolution_low / (2 * Math.tan(y_fov.getRadian() / 2));
+	boolean isHighRes = false;
+	public PipelinePreset mCurrentPipeline;
+	private static final PipelinePreset kDefaultPreset = PipelinePreset.kCargoClose;
 
-	double distance, relativeAngle;
+	private static final VisionTarget kRocketCargoSingleTarget = VisionTargetFactory.getRocketCargoSingleTarget();
+	private static final VisionTarget kHatchSingleTarget = VisionTargetFactory.getHatchSingleTarget();
+	private static final VisionTarget kRocketCargoDualTarget = VisionTargetFactory.getRocketCargoDualTarget();
+	private static final VisionTarget kHatchDualTarget = VisionTargetFactory.getHatchDualTarget();
+	private static final int kDefaultPipeline = 1;
+	private NetworkTable smartDashboard;
+
+	private LimeLight() {
+		this.table = NetworkTableInstance.getDefault().getTable("limelight");
+		this.setPipeline(kDefaultPreset);
+		smartDashboard = NetworkTableInstance.getDefault().getTable("SmartDashboard");
+		smartDashboard.getEntry("Desired Vision Pipeline").setNumber(kDefaultPipeline);
+		smartDashboard.addEntryListener("Desired Vision Pipeline",
+				(smartDashboard, key, entry, value, flabs) -> {
+					setPipeline((int) value.getDouble());
+					System.out.println("Value changed! it's now " + (int) value.getDouble());
+				},
+				EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+	}
 
 	public double[] getData() {
 		/** Whether the limelight has any valid targets (0 or 1) */
@@ -67,6 +118,77 @@ public class LimeLight {
 	}
 
 	/**
+	 * Get the Pose2d of a vision target with an offset applied. This way someone else can account for offset from limelight to bumpers
+	 * @param kOffset how far away the front of the bumpers is from the camera (in inches)
+	 * @param distanceToShiftBy how far to move everything up/right so it shows up on falcon dashboard
+	 */
+	public Pose2d getPose(double kOffset, double distanceToShiftBy) {
+		double[] camtran = NetworkTableInstance.getDefault().getTable("limelight").getEntry("camtran").getDoubleArray(new double[]{});
+
+		// final double kOffset = 100;
+
+		// LinearDigitalFilter
+
+		// final double kLimelightForeOffset = 25; //inches from limelight to hatch pannel
+		// forward/backward motion, left/right motion
+		Translation2d mTranToGoal = new Translation2d(LengthKt.getInch((camtran[2]) + distanceToShiftBy + kOffset), LengthKt.getInch((camtran[0] * -1) + distanceToShiftBy));
+		Rotation2d mRotToGoal = Rotation2dKt.getDegree(camtran[4] * 1);
+		Pose2d mPoseToGoal = new Pose2d(mTranToGoal, mRotToGoal);
+
+		System.out.println(Util.toString(mPoseToGoal));
+
+		return mPoseToGoal;
+	}
+
+	public enum PipelinePreset {
+		kDefault(0), kCargoFar(1), kCargoClose(2), kCargoFarHighRes(3), kCargoCloseHighRes(4);
+
+		private int id;
+
+		private static PipelinePreset[] values = null;
+
+		public static PipelinePreset fromID(int i) {
+			if (PipelinePreset.values() == null) {
+				PipelinePreset.values = PipelinePreset.values();
+			}
+			return PipelinePreset.values[i];
+		}
+
+		private PipelinePreset(int id) {
+			this.id = id;
+		}
+
+		public int getId() {
+			return id;
+		}
+	}
+
+	/**
+	 * Set the pipeline of the limelight
+	 */
+	public void setPipeline(PipelinePreset req_) {
+		table.getEntry("pipeline").setNumber(req_.getId());
+		this.mCurrentPipeline = req_;
+		if (req_.name().contains("HighRes")) {
+			this.isHighRes = true;
+		} else {
+			this.isHighRes = false;
+		}
+	}
+
+	public void setPipeline(int req_) {
+		if (req_ > PipelinePreset.values().length - 1)
+			return;
+		PipelinePreset _req_ = PipelinePreset.values()[req_];
+		this.mCurrentPipeline = _req_;
+		setPipeline(_req_);
+	}
+
+	public int getPipeline() {
+		return table.getEntry("pipeline").getNumber(0).intValue();
+	}
+
+	/**
 	 * Get the area of the tracked target as a percentage from 0% to 100%
 	 * @return area as percentage of total area 
 	 */
@@ -94,15 +216,15 @@ public class LimeLight {
 	 * Get the dx from crosshair to tracked target
 	 * @return dx
 	 */
-	public double getDx() {
-		return (table.getEntry("tx")).getDouble(0);
+	public Rotation2d getDx() {
+		return Rotation2dKt.getDegree((table.getEntry("tx")).getDouble(0));
 	}
 
 	/**
 	 * Get the dy from crosshair to tracked target
 	 */
-	public double getDy() {
-		return (table.getEntry("ty")).getDouble(0);
+	public Rotation2d getDy() {
+		return Rotation2dKt.getDegree((table.getEntry("ty")).getDouble(0));
 	}
 
 	/**
@@ -114,32 +236,47 @@ public class LimeLight {
 	}
 
 	/**
-	 * Get the current delta x (left/right) angle from crosshair to vision target
-	 * @return delta x in degrees to target
+	 * Estimate the distance to a given target using a measurement
+	 * @param kTarget the target we are tracking
+	 * @param mMeasured the target we measured
 	 */
-	public double getDxAngle() {
-		return Math.toDegrees(
-				Math.atan(
-						getDx() / average_focal_length));
+	public Length getDistance(VisionTarget kTarget, MeasuredVisionTarget mMeasured) {
+		Length width = kTarget.getWidth();
+		double focalLen = (isHighRes) ? x_focal_length_high : x_focal_length_low;
+		Length distance = width.times(focalLen).div(mMeasured.getX());
+		return distance;
 	}
 
-	/**
-	 * Get the current elevation (delta y) angle from crosshair to vision target
-	 * @return degrees of elevation from crosshair to target 
-	 */
-	public double getDyAngle() {
-		return Math.toDegrees(
-				Math.atan(
-						getDy() / average_focal_length));
-	}
+	public class MeasuredVisionTarget {
+		private double x_, y_, width_, height_, area_;
 
-	/**
-	 * Get the distance (in the same units as elevation) from a tracked vision target
-	 * @param targetElevation
-	 * @return distance to target
-	 */
-	public double getDistanceToFixedPoint(double targetElevation) {
-		return (targetElevation - cameraHeight) / Math.tan(cameraAngle + (table.getEntry("ty").getDouble(0)));
+		MeasuredVisionTarget(double x, double y, double width, double height, double area) {
+			x_ = x;
+			y_ = y;
+			width_ = width;
+			height_ = height;
+			area_ = area;
+		}
+
+		public double getX() {
+			return x_;
+		}
+
+		public double getY() {
+			return y_;
+		}
+
+		public double getWidth() {
+			return width_;
+		}
+
+		public double getHeight() {
+			return height_;
+		}
+
+		public double getArea() {
+			return area_;
+		}
 	}
 
 }

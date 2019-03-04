@@ -3,7 +3,9 @@ package frc.robot.lib.obj;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
-public class RoundRotation2d {
+import frc.robot.lib.Loggable;
+
+public class RoundRotation2d implements Loggable {
 	protected double value;
 	protected double cosine;
 	protected double sine;
@@ -28,6 +30,10 @@ public class RoundRotation2d {
 
 	public static RoundRotation2d getDegree(double reciever) {
 		return new RoundRotation2d(reciever);
+	}
+
+	public RoundRotation2d absoluteValueOf() {
+		return new RoundRotation2d(Math.abs(value));
 	}
 
 	public static RoundRotation2d getRadian(double reciever) {
@@ -67,11 +73,32 @@ public class RoundRotation2d {
 	}
 
 	public RoundRotation2d minus(RoundRotation2d other) {
-		return new RoundRotation2d((this.value - other.value));
+		return new RoundRotation2d((this.getDegree() - other.getDegree()));
 	}
 
 	public double getRotations() {
 		return getDegree() / 360d;
+	}
+
+	@Override
+	public String getCSVHeader() {
+		return "degrees";
+	}
+
+	@Override
+	public String toCSV() {
+		return "" + getDegree();
+	}
+
+	@Override
+	public String toString() {
+		return "Degrees: " + getDegree();
+	}
+
+	public boolean isEqualTo(RoundRotation2d other) {
+		final double kEpsilon = 1e-12;
+		return (Math.abs(other.getDegree() - this.getDegree()) < kEpsilon);
+
 	}
 
 }

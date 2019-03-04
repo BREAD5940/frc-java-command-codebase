@@ -2,7 +2,7 @@ package frc.robot.commands.auto;
 
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
-import frc.robot.commands.auto.routines.TwoHatchOneCargoLeft;
+import frc.robot.commands.auto.routines.TwoHatchOneCargo;
 
 /**
  * Creates an AutoMotion and drive plan based on the inputted params. Will
@@ -30,7 +30,7 @@ public class AutoCombo {
 		}
 		cStart = "hab";
 
-		mBigCommandGroup = new TwoHatchOneCargoLeft(start.charAt(start.length() - 1), side);
+		mBigCommandGroup = new TwoHatchOneCargo(start.charAt(start.length() - 1), side);
 		// TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargoM" + side); //current trajectory from hashmap in Trajectorie
 		// AutoMotion motion = new AutoMotion(GoalHeight.LOW, GoalType.CARGO_HATCH, true);
 		// this.mBigCommandGroup.addParallel(motion.getPrepCommand());

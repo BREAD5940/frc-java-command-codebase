@@ -11,8 +11,8 @@ import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
  */
 public class IntakeAngle {
 
-	private RotatingArmState elbowAngle;
-	private RotatingArmState wristAngle;
+	public RotatingArmState elbowAngle;
+	public RotatingArmState wristAngle;
 	// TODO maybe have sanity checking on the angles to make sure they're not out of bounds in the context of the intake?
 
 	public IntakeAngle(RotatingArmState elbowAngle, RotatingArmState wristAngle) {
@@ -38,7 +38,7 @@ public class IntakeAngle {
 	}
 
 	public boolean isEqualTo(IntakeAngle other) {
-		return (this.elbowAngle.angle.getDegree() == other.elbowAngle.angle.getDegree()
-				&& this.wristAngle.angle.getDegree() == other.wristAngle.angle.getDegree());
+		return (this.elbowAngle.angle.isEqualTo(other.elbowAngle.angle)
+				&& this.wristAngle.angle.isEqualTo(other.wristAngle.angle));
 	}
 }

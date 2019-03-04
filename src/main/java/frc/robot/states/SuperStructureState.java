@@ -38,6 +38,10 @@ public class SuperStructureState implements Loggable {
 		this(elevatorState, intakeState, HeldPiece.NONE);
 	}
 
+	public SuperStructureState(ElevatorState eState) {
+		this(eState, new RotatingArmState(), new RotatingArmState(), HeldPiece.NONE);
+	}
+
 	public SuperStructureState(ElevatorState elevatorState, IntakeAngle angles___, HeldPiece piece__) {
 		jointAngles = angles___;
 		elevator = elevatorState;
@@ -54,6 +58,10 @@ public class SuperStructureState implements Loggable {
 
 	public RoundRotation2d getElbowAngle() {
 		return jointAngles.getElbow().angle;
+	}
+
+	public RoundRotation2d getWristAngle() {
+		return jointAngles.getWrist().angle;
 	}
 
 	public void setElbowAngle(RoundRotation2d newAngle) {
@@ -107,8 +115,8 @@ public class SuperStructureState implements Loggable {
 
 	@Override
 	public String toCSV() {
-		return elevator.getHeight().getInch() + "," + jointAngles.getElbow().angle.getDegree() + ","
-				+ jointAngles.getWrist().angle.getDegree() + "," + piece.name();
+		return Math.round(elevator.getHeight().getInch() * 100) / 100 + "," + Math.round(jointAngles.getElbow().angle.getDegree() * 100) / 100 + ","
+				+ Math.round(jointAngles.getWrist().angle.getDegree() * 100) / 100 + "," + piece.name();
 	}
 
 }

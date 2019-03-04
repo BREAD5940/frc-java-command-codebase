@@ -9,6 +9,7 @@ package frc.robot.commands.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class IntakeTelop extends Command {
@@ -24,7 +25,13 @@ public class IntakeTelop extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		SuperStructure.intake.setSpeed(Robot.m_oi.getIntakeSpeed());
+		if (Math.abs(Robot.m_oi.getCargoSpeed()) > 0.2) {
+			SuperStructure.intake.setSpeed(-1 * Robot.m_oi.getCargoSpeed(), Robot.m_oi.getCargoSpeed());
+		} else {
+			SuperStructure.intake.setSpeed(Robot.m_oi.getIntakeSpeed(), 0);
+		}
+		var oi = Robot.m_oi;
+		oi.setAllRumble(Util.limit(Math.max(Robot.m_oi.getCargoSpeed(), Robot.m_oi.getIntakeSpeed()), 0, 0.9));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

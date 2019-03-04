@@ -7,43 +7,44 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class RunIntake extends Command {
-	double demand, duratuion;
-
+/**
+ * Add your docs here.
+ */
+public class RunIntake extends TimedCommand {
 	/**
-	 * Run the intake for a set amount of time
-	 * @param demand
-	 * @param duration
+	 * Run the intake at some speeds for a time
 	 */
-	public RunIntake(double demand_, double duration_) {
-		requires(SuperStructure.intake); // TODO make sure this works
-		this.demand = demand_;
-		this.duratuion = duration_;
-		setTimeout(duration_);
+	double hatch, cargo;
+
+	public RunIntake(double hatchSpeed, double cargoSpeed, double timeout) {
+		super(timeout);
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		requires(SuperStructure.intake);
+		this.hatch = hatchSpeed;
+		this.cargo = cargoSpeed;
 	}
 
+	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		SuperStructure.intake.setSpeed(demand);
+		SuperStructure.intake.setCargoSpeed(cargo);
+		SuperStructure.intake.setHatchSpeed(hatch);
 	}
 
+	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {}
 
+	// Called once after timeout
 	@Override
-	protected boolean isFinished() {
-		return this.isTimedOut();
-	}
+	protected void end() {}
 
-	@Override
-	protected void end() {
-		SuperStructure.intake.setSpeed(0d);
-		SuperStructure.intake.setSpeed(0d);
-	}
-
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {}
 }

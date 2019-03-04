@@ -8,7 +8,7 @@ import frc.robot.commands.subsystems.superstructure.RunIntake;
  */
 public class GrabCargo extends CommandGroup {
 	public GrabCargo() {
-		addSequential(new RunIntake(50, 1)); // FIXME check runtime
+		addSequential(new RunIntake(1, 1, 1)); // FIXME check runtime
 	}
 
 }

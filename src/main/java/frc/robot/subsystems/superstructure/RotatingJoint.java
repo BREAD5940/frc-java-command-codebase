@@ -16,15 +16,18 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.AngularVelocity;
 import frc.robot.lib.obj.HalfBakedRotatingSRX;
 import frc.robot.lib.obj.RoundRotation2d;
 
-public class RotatingJoint /*extends Subsystem*/ {
+public class RotatingJoint extends Subsystem {
 
 	private ArrayList<HalfBakedRotatingSRX> motors = new ArrayList<HalfBakedRotatingSRX>();
 
@@ -39,6 +42,8 @@ public class RotatingJoint /*extends Subsystem*/ {
 	private RotatingArmState mPeriodicIO = new RotatingArmState();
 
 	public final RoundRotation2d kMinAngle, kMaxAngle;
+
+	final ControlMode kDefaultControlMode = ControlMode.MotionMagic;
 
 	// private PIDSettings pidSettings;
 
@@ -67,6 +72,8 @@ public class RotatingJoint /*extends Subsystem*/ {
 	 * @param PIDSettigns for the PIDSubsystem to use
 	 * @param ports of talon CAN ports as a List
 	 * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
+	 * 
+	 * @author Matthew Morley
 	 */
 	public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, double reduction, RoundRotation2d min, RoundRotation2d max, boolean masterInvert, Length armLength, Mass armMass) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
 
@@ -92,6 +99,7 @@ public class RotatingJoint /*extends Subsystem*/ {
 			motors.add(new HalfBakedRotatingSRX(i.intValue(), mTicksPerRotation));
 		}
 
+		getMaster().setInverted(masterInvert);
 		if (ports.size() > 1) {
 			motors.get(1).set(ControlMode.Follower, ports.get(0));
 			motors.get(1).setInverted(InvertType.OpposeMaster);
@@ -101,7 +109,9 @@ public class RotatingJoint /*extends Subsystem*/ {
 		getMaster().configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 0);
 		getMaster().setSensorPosition(RoundRotation2d.getDegree(0));
 		setClosedLoopGains(0, settings);
-
+		getMaster().configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+		getMaster().configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+		setMotionMagicGains();
 	}
 
 	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, double iZone, double maxIntegral, double minOut, double maxOut) {
@@ -116,13 +126,49 @@ public class RotatingJoint /*extends Subsystem*/ {
 		getMaster().configPeakOutputReverse(minOut);
 	}
 
+	public void setGainMode(boolean isMotionMagic) {
+		if (isMotionMagic)
+			getMaster().selectProfileSlot(3, 0);
+		if (!isMotionMagic)
+			getMaster().selectProfileSlot(0, 0);
+	}
+
+	private PIDSettings kDefaultMotionMagicPidSettings = new PIDSettings(.1, 0, 0, 0.1, 1000, 1000);
+
+	public void setMotionMagicGains() {
+		// Elevator elev = SuperStructure.getElevator();
+		this.getMaster().configMotionAcceleration((int) (3000));
+		this.getMaster().configMotionCruiseVelocity(2000); // about 3500 theoretical max
+		this.getMaster().configMotionSCurveStrength(0);
+		this.getMaster().config_kP(3, 0.45, 0);
+		this.getMaster().config_kI(3, 0.0, 0);
+		this.getMaster().config_kD(3, 2.0, 0);
+		this.getMaster().config_kF(3, 0.45, 0);
+		this.getMaster().configClearPositionOnLimitF(true, 0);
+		// this.getMaster().selectProfileSlot(3, 0);
+		// this.getMaster().configClosedloopRamp(0.1);
+	}
+
+	public void setLimitSwitches() {
+		var maxTicks = getMaster().getTicks(kMaxAngle);
+		getMaster().configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+		getMaster().configForwardSoftLimitThreshold(maxTicks);
+		getMaster().configForwardSoftLimitEnable(true);
+		getMaster().configClearPositionOnLimitF(false, 0);
+	}
+
 	public void setClosedLoopGains(int slot, PIDSettings config) {
 		setClosedLoopGains(slot, config.kp, config.ki, config.kd, config.kf, config.iZone, config.maxIAccum, config.minOutput, config.maxOutput);
 	}
 
 	public void requestAngle(RoundRotation2d reqAngle) {
 		reqAngle = Util.limit(reqAngle, kMinAngle, kMaxAngle);
-		getMaster().set(ControlMode.Position, reqAngle);
+		getMaster().set(kDefaultControlMode, reqAngle);
+	}
+
+	public void requestAngle(ControlMode mode, RoundRotation2d reqAngle) {
+		reqAngle = Util.limit(reqAngle, kMinAngle, kMaxAngle);
+		getMaster().set(mode, reqAngle);
 	}
 
 	/**
@@ -215,10 +261,6 @@ public class RotatingJoint /*extends Subsystem*/ {
 			this(angle_, new AngularVelocity());
 		}
 
-		public RotatingArmState(Rotation2d angle_) {
-			this(RoundRotation2d.fromRotation2d(angle_), new AngularVelocity());
-		}
-
 		public RotatingArmState(RoundRotation2d angle_, AngularVelocity velocity_) {
 			this.angle = angle_;
 			this.velocity = velocity_;
@@ -243,4 +285,12 @@ public class RotatingJoint /*extends Subsystem*/ {
 	public double getDegrees() {
 		return getMaster().getRotation2d().getDegree();
 	}
+
+	@Override
+	protected void initDefaultCommand() {}
+
+	public boolean isWithinTolerance(RoundRotation2d tolerance, RoundRotation2d setpoint) {
+		return Math.abs(getRotation().minus(setpoint).getDegree()) < tolerance.getDegree();
+	}
+
 }

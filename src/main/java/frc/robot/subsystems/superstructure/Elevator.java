@@ -10,6 +10,7 @@ import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
@@ -22,10 +23,14 @@ import com.ctre.phoenix.motorcontrol.SensorTerm;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
+import frc.robot.SuperStructureConstants;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
+import frc.robot.lib.Logger;
 import frc.robot.lib.PIDSettings;
+import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
@@ -37,7 +42,7 @@ import frc.robot.states.SuperStructureState;
  * 
  * @author Matthew Morley
  */
-public class Elevator /*extends Subsystem*/ {
+public class Elevator extends Subsystem {
 
 	private DoubleSolenoid mSolenoid = Robot.getElevatorShifter();
 
@@ -69,7 +74,7 @@ public class Elevator /*extends Subsystem*/ {
 	}
 
 	// TODO check these quick maths, kTopOfInnerStage is used to switch gravity feedforward
-	public static final Mass kCarriageMass = MassKt.getLb(30); // TODO add in the intake and stuff
+	public static final Mass kCarriageMass = MassKt.getLb(/*30*/15); // TODO add in the intake and stuff
 	public static final Mass kInnerStageMass = MassKt.getLb(6.5);
 
 	public static final Length kTopOfInnerStage = LengthKt.getInch(40);
@@ -77,17 +82,23 @@ public class Elevator /*extends Subsystem*/ {
 	public static final double KLowGearForcePerVolt = (512d / 12d /* newtons */) * 1.5;
 	public static final double KHighGearForcePerVolt = (1500d / 12d /* newtons */ );
 
-	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.2 * 4, 0, 2, 0);
-	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.05, 0, 0, 0);
-	private static final int kLowGearPIDSlot = 0;
-	private static final int kHighGearPIDSlot = 1;
+	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.15, 0.0, 0, 0); // Low speed
+	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.15, 0, 0, 0); // High speed 
+	private static final int kLowGearPIDSlot = 0; // low speed slot
+	private static final int kHighGearPIDSlot = 1; // high gear slot
+	public static final PIDSettings HIGH_GEAR_MOTION_MAGIC = new PIDSettings(0.45, 0, 0, 0.3, 4000, 9500); // High speed 
+	private static final int kHighGearMotionMagicPIDSlot = 3; // low speed slot
 
 	private FalconSRX<Length> mMaster;
 
 	private FalconSRX<Length> mSlave1, mSlave2, mSlave3;
 
 	private static ElevatorGear mCurrentGear;
-	private static final ElevatorGear kDefaultGear = ElevatorGear.LOW;
+	public static final ElevatorGear kDefaultGear = ElevatorGear.HIGH; // start in high speed
+
+	public enum PositionMode {
+		POSITION, MOTIONMAGIC;
+	}
 
 	NativeUnitLengthModel lengthModel = RobotConfig.elevator.elevatorModel;
 
@@ -110,8 +121,8 @@ public class Elevator /*extends Subsystem*/ {
 
 		// Quadrature Encoder of current
 		// Talon
-		mMaster.configPeakOutputForward(+1.0, 0);
-		mMaster.configPeakOutputReverse(-1.0, 0);
+		mMaster.configPeakOutputForward(+0.3, 0);
+		mMaster.configPeakOutputReverse(-0.3, 0);
 
 		mMaster.setSelectedSensorPosition(0);
 
@@ -125,9 +136,28 @@ public class Elevator /*extends Subsystem*/ {
 		// setup PID gains
 		setClosedLoopGains(kLowGearPIDSlot, LOW_GEAR_PID);
 		setClosedLoopGains(kHighGearPIDSlot, HIGH_GEAR_PID);
+		setMotionMagicGains();
+
+		NativeUnit maxHeightRaw = lengthModel.toNativeUnitPosition(SuperStructureConstants.Elevator.top.times(0.95));
+		getMaster().configForwardSoftLimitThreshold((int) maxHeightRaw.getValue());
+		getMaster().setSoftLimitForwardEnabled(true);
+		NativeUnit minHeightRaw = lengthModel.toNativeUnitPosition(SuperStructureConstants.Elevator.bottom);
+		getMaster().configReverseSoftLimitThreshold(1);
+		getMaster().configReverseSoftLimitEnable(true);
 
 		mCurrentGear = kDefaultGear;
 		setGear(kDefaultGear); // set shifter and closed loop slot
+	}
+
+	public void setPositionMode(PositionMode mode) {
+		if (mode == PositionMode.MOTIONMAGIC) {
+			configMotionMagicGains(HIGH_GEAR_MOTION_MAGIC);
+		}
+	}
+
+	public void configMotionMagicGains(PIDSettings settings) {
+		getMaster().configMotionCruiseVelocity((int) settings.motionMagicCruiseVelocity);
+		getMaster().configMotionAcceleration((int) settings.motionMagicAccel);
 	}
 
 	public FalconSRX<Length> getMaster() {
@@ -144,6 +174,19 @@ public class Elevator /*extends Subsystem*/ {
 		return lengthModel;
 	}
 
+	public void setMotionMagicGains() {
+		// Elevator elev = SuperStructure.getElevator();
+		this.getMaster().configMotionAcceleration((int) (600 * 9 * 1.75));
+		this.getMaster().configMotionCruiseVelocity(4000); // about 3500 theoretical max
+		this.getMaster().configMotionSCurveStrength(0);
+		this.getMaster().config_kP(3, 0.45, 0);
+		this.getMaster().config_kI(3, 0.0, 0);
+		this.getMaster().config_kD(3, 4, 0);
+		this.getMaster().config_kF(3, 0.24 * (500 / 400), 0);
+		// this.getMaster().selectProfileSlot(3, 0);
+		// this.getMaster().configClosedloopRamp(0.1);
+	}
+
 	public Length getHeight() {
 		return mMaster.getSensorPosition();
 	}
@@ -158,10 +201,13 @@ public class Elevator /*extends Subsystem*/ {
 		if (req == ElevatorGear.LOW) {
 			Robot.setElevatorShifter(true);
 			getMaster().selectProfileSlot(kLowGearPIDSlot, 0);
+			setMMGains(LOW_GEAR_PID);
 		}
 		if (req == ElevatorGear.HIGH) {
 			Robot.setElevatorShifter(false);
-			getMaster().selectProfileSlot(kHighGearPIDSlot, 0);
+			// getMaster().selectProfileSlot(kHighGearPIDSlot, 0);
+			getMaster().selectProfileSlot(kHighGearMotionMagicPIDSlot, 0);
+			setMMGains(HIGH_GEAR_MOTION_MAGIC);
 		}
 	}
 
@@ -197,12 +243,12 @@ public class Elevator /*extends Subsystem*/ {
 
 	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, double iZone, double maxIntegral, double minOut, double maxOut) {
 		mMaster.selectProfileSlot(slot, 0);
-		mMaster.config_kP(0, kp, 30);
-		mMaster.config_kI(0, ki, 30);
-		mMaster.config_kD(0, kd, 30);
-		mMaster.config_kF(0, kf, 30);
-		mMaster.config_IntegralZone(0, (int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getInch(iZone)).getValue()), 30);
-		mMaster.configMaxIntegralAccumulator(0, maxIntegral, 0);
+		mMaster.config_kP(slot, kp, 30);
+		mMaster.config_kI(slot, ki, 30);
+		mMaster.config_kD(slot, kd, 30);
+		mMaster.config_kF(slot, kf, 30);
+		mMaster.config_IntegralZone(slot, (int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getInch(iZone)).getValue()), 30);
+		mMaster.configMaxIntegralAccumulator(slot, maxIntegral, 0);
 		mMaster.configPeakOutputForward(maxOut);
 		mMaster.configPeakOutputReverse(minOut);
 	}
@@ -215,7 +261,39 @@ public class Elevator /*extends Subsystem*/ {
 	 * Set the talon as a target angle and feedforward throttle percent
 	 */
 	public void setPositionArbitraryFeedForward(Length setpoint, double feedForwardPercent) {
+		setpoint = Util.limit(setpoint, SuperStructureConstants.Elevator.bottom, SuperStructureConstants.Elevator.top);
 		getMaster().set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
+	}
+
+	/**
+	 * Set the position of the elevator in motion magic mode mode
+	 * @param setpoint how high to go
+	 * @param feedForwardPercent how much throttle to add
+	 */
+	public void setMMArbitraryFeedForward(Length setpoint, double feedForwardPercent) {
+		setpoint = Util.limit(setpoint, SuperStructureConstants.Elevator.bottom, SuperStructureConstants.Elevator.top);
+		getMaster().selectProfileSlot(3, 0);
+		Logger.log("Elevator setpoint: " + setpoint.getInch() + " feedforward: " + feedForwardPercent + " current raw output: " + getMaster().getMotorOutputPercent());
+		getMaster().set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
+	}
+
+	public void setMMGains(PIDSettings config) {
+		Logger.log("Setting motion magic gains! Velocity: " + (int) config.motionMagicCruiseVelocity +
+				" acceleration: " + (int) config.motionMagicAccel);
+		getMaster().configMotionCruiseVelocity((int) config.motionMagicCruiseVelocity);
+		getMaster().configMotionAcceleration((int) config.motionMagicAccel);
+	}
+
+	SuperStructureState requState;
+
+	public void setPositionSetpoint(SuperStructureState requ_) {
+		this.requState = requ_;
+	}
+
+	@Override
+	public void periodic() {
+		var feedForwardVoltage = getVoltage(requState);
+		setMMArbitraryFeedForward(requState.getElevatorHeight(), feedForwardVoltage / 12d);
 	}
 
 	/**
@@ -244,5 +322,10 @@ public class Elevator /*extends Subsystem*/ {
 		// Acceleration<Length> accel = AccelerationKt.getAcceleration(LengthKt.getMeter(
 		// (getVelocity().getValue() - lastKnown.velocity.getValue()) / (time.getValue() - lastKnown.time.getValue())));
 		return new ElevatorState(getHeight(), getVelocity());
+	}
+
+	@Override
+	protected void initDefaultCommand() {
+
 	}
 }

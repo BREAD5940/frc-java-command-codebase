@@ -26,9 +26,10 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.lib.Logger;
 
-@SuppressWarnings("WeakerAccess")
+// @SuppressWarnings("WeakerAccess")
 public class Trajectories {
 
+	public static TimedTrajectory<Pose2dWithCurvature> reverse3FeetLowGear;// = generateTrajectoryLowGear(Arrays.asList(new Pose2d(LengthKt.getFeet(0), LengthKt.getFeet(0), Rotation2dKt.getDegree(180)), new Pose2d(LengthKt.getFeet(3), LengthKt.getFeet(0), Rotation2dKt.getDegree(180))), true);
 	public static HashMap<String, Pose2d> locations = new HashMap<String, Pose2d>();
 	public static Velocity<Length> yeetSpeed = VelocityKt.getVelocity(LengthKt.getFeet(12.5)); //FIXME what is the speed for the spin?
 
@@ -69,7 +70,7 @@ public class Trajectories {
 	public static final Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
 	public static final Velocity<Length> kDefaultEndVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
 
-	public static final Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(5));
+	public static final Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(5 / 5)); // lowered for vision memes
 	public static final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(8));
 
 	public static final boolean kOptomizeSplines = true;
@@ -89,7 +90,7 @@ public class Trajectories {
 	// new Pose2d(LengthKt.getFeet(20), LengthKt.getFeet(5), Rotation2dKt.getDegree(45))));
 	public static TimedTrajectory<Pose2dWithCurvature> forward20Feet;
 
-	private static List<TimingConstraint<Pose2dWithCurvature>> kLowGearConstraints = Arrays.asList(
+	public static List<TimingConstraint<Pose2dWithCurvature>> kLowGearConstraints = Arrays.asList(
 			new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getFeet(10))),
 			new DifferentialDriveDynamicsConstraint(Constants.kLowGearDifferentialDrive, 12 /* volts */),
 			// This limits our velocity while within the given Rectangle2d to 2 feet per second (read: the hab)
@@ -112,6 +113,7 @@ public class Trajectories {
 	public static void generateAllTrajectories(boolean isReal) {
 		/** High gear trajectory for going forward 20ft! */
 		forward20Feet = generateTrajectoryHighGear(forward20ftSrc, false);
+		reverse3FeetLowGear = generateTrajectoryLowGear(Arrays.asList(new Pose2d(LengthKt.getFeet(0), LengthKt.getFeet(0), Rotation2dKt.getDegree(180)), new Pose2d(LengthKt.getFeet(3), LengthKt.getFeet(0), Rotation2dKt.getDegree(180))), true);
 
 		Logger.log("Generating ALL trajectories");
 		genLocs();
@@ -169,6 +171,36 @@ public class Trajectories {
 
 		generatedLGTrajectories.put("depotL to cargoL1", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotL"), locations.get("cargoL1"))), false));
 		generatedLGTrajectories.put("depotR to cargoR1", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotR"), locations.get("cargoR1"))), false));
+
+		// Trajectories to the rocket from (REVERSED) on habL. format is rocket[L/R for left/right][C/M/F for close/middle/far]. These are offset to allow for a vision target to yeet into it
+		generatedLGTrajectories.put("habL to rocketLF", generateTrajectoryLowGear(
+				Arrays.asList(
+						locations.get("habL"),
+						new Pose2d(
+								LengthKt.getFeet(19.445),
+								LengthKt.getFeet(22.808),
+								Rotation2dKt.getDegree(26)),
+						new Pose2d(
+								LengthKt.getFeet(23.801),
+								LengthKt.getFeet(23.509),
+								Rotation2dKt.getDegree(30.0))),
+				true));
+
+		// Trajectories to the rocket. format is rocket[L/R for left/right][C/M/F for close/middle/far]. This one is backed up 3 feet already!!!!!!!!!!!!!!!!!!!!!!!!!!
+		generatedLGTrajectories.put("rocketLF to loadingL", generateTrajectoryLowGear(
+				Arrays.asList(
+						new Pose2d(
+								LengthKt.getFeet(23.92),
+								LengthKt.getFeet(23.28),
+								Rotation2dKt.getDegree(-33)),
+						new Pose2d(
+								LengthKt.getFeet(19.5),
+								LengthKt.getFeet(23.065),
+								Rotation2dKt.getDegree(0)),
+						locations.get("loadingL").plus(
+								new Pose2d(LengthKt.getFeet(3), LengthKt.getFeet(0), Rotation2dKt.getDegree(0)) // offset by 3 feet to allow the vision spline to kick in a bit
+						)),
+				true));
 
 		generatedLGTrajectories.put("loadingL to cargoL1", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(
 				locations.get("loadingL"), locations.get("cargoL1").plus(

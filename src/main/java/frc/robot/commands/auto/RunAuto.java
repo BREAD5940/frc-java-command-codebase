@@ -5,6 +5,7 @@ import frc.robot.commands.auto.AutoMotion.GoalType;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.superstructure.SuperStructure;
 
 /**
  * Selects and runs an auto command group
@@ -21,19 +22,49 @@ public class RunAuto extends AutoCommandGroup {
 	private boolean begun = false;
 	private AutoCommandGroup running;
 
+	public RunAuto(HeldPiece mHP, GoalHeight mHeight) {
+		switch (mHP) {
+		case CARGO:
+			if (mHeight == GoalHeight.OVER) {
+				this.mGt = GoalType.CARGO_CARGO;
+			} else {
+				this.mGt = GoalType.ROCKET_CARGO;
+			}
+			break;
+		case HATCH:
+			this.mGt = GoalType.ROCKET_HATCH;
+			break;
+		case NONE:
+			this.mGt = GoalType.RETRIEVE_HATCH; //FIXME this assumes we're never ever using RETRIEVE_CARGO
+			break;
+		}
+
+		this.mHeight = mHeight;
+		this.isDrive = false;
+
+		requires(SuperStructure.getInstance());
+		requires(SuperStructure.getInstance().getWrist());
+		requires(SuperStructure.getInstance().getElbow());
+		requires(SuperStructure.getElevator());
+		requires(DriveTrain.getInstance());
+	}
+
 	public RunAuto(GoalType mGt, GoalHeight mHeight) {
 		this.mGt = mGt;
 		this.mHeight = mHeight;
 		this.isDrive = false;
-		// requires(SuperStructure.getInstance());
+		requires(SuperStructure.getInstance());
 		requires(DriveTrain.getInstance());
+		requires(SuperStructure.getInstance().getWrist());
+		requires(SuperStructure.getInstance().getElbow());
+		requires(SuperStructure.getElevator());
 	}
 
 	public RunAuto(HeldPiece cPiece, String... cKeys) {
 		this.cKeys = cKeys;
 		this.isDrive = true;
 		this.cPiece = cPiece;
-		// requires(SuperStructure.getInstance());
+		requires(SuperStructure.getInstance());
 		requires(DriveTrain.getInstance());
 	}
 
@@ -54,7 +85,9 @@ public class RunAuto extends AutoCommandGroup {
 	@Override
 	protected void execute() {
 		// Don't need to do anything here
+		System.out.println("Done? " + running.done());
 		if (!isDrive && running.done() && !begun) {
+			System.out.println("starting big command group");
 			mMotion.getBigCommandGroup().start();
 			begun = true;
 		}
@@ -67,11 +100,12 @@ public class RunAuto extends AutoCommandGroup {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		if (!isDrive) {
-			return mMotion.getBigCommandGroup().done();
-		} else {
-			return cMotion.getBigCommandGroup().done();
-		}
+		// if (!isDrive) {
+		// 	return mMotion.getBigCommandGroup().done();
+		// } else {
+		// 	return cMotion.getBigCommandGroup().done();
+		// }
+		return false;
 	}
 
 	// Called once after isFinished returns true
