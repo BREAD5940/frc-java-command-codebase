@@ -14,39 +14,37 @@ import frc.robot.subsystems.superstructure.SuperStructure;
  * Add your docs here.
  */
 public class RunIntake extends TimedCommand {
-  /**
-   * Run the intake at some speeds for a time
-   */
-  double hatch, cargo;
-  public RunIntake(double hatchSpeed, double cargoSpeed, double timeout) {
-    super(timeout);
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(SuperStructure.intake);
-    this.hatch = hatchSpeed;
-    this.cargo = cargoSpeed;
-  }
+	/**
+	 * Run the intake at some speeds for a time
+	 */
+	double hatch, cargo;
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-    SuperStructure.intake.setCargoSpeed(cargo);
-    SuperStructure.intake.setHatchSpeed(hatch);
-  }
+	public RunIntake(double hatchSpeed, double cargoSpeed, double timeout) {
+		super(timeout);
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		requires(SuperStructure.intake);
+		this.hatch = hatchSpeed;
+		this.cargo = cargoSpeed;
+	}
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-  }
+	// Called just before this Command runs the first time
+	@Override
+	protected void initialize() {
+		SuperStructure.intake.setCargoSpeed(cargo);
+		SuperStructure.intake.setHatchSpeed(hatch);
+	}
 
-  // Called once after timeout
-  @Override
-  protected void end() {
-  }
+	// Called repeatedly when this Command is scheduled to run
+	@Override
+	protected void execute() {}
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+	// Called once after timeout
+	@Override
+	protected void end() {}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	@Override
+	protected void interrupted() {}
 }

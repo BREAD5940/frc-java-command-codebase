@@ -172,37 +172,35 @@ public class Trajectories {
 		generatedLGTrajectories.put("depotL to cargoL1", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotL"), locations.get("cargoL1"))), false));
 		generatedLGTrajectories.put("depotR to cargoR1", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotR"), locations.get("cargoR1"))), false));
 
-
-
 		// Trajectories to the rocket from (REVERSED) on habL. format is rocket[L/R for left/right][C/M/F for close/middle/far]. These are offset to allow for a vision target to yeet into it
 		generatedLGTrajectories.put("habL to rocketLF", generateTrajectoryLowGear(
-			Arrays.asList(
-				locations.get("habL"),
-				new Pose2d(
-					LengthKt.getFeet(19.445),
-					LengthKt.getFeet(22.808),
-					Rotation2dKt.getDegree(26)),
-				new Pose2d(
-						LengthKt.getFeet(23.801),
-						LengthKt.getFeet(23.509),
-						Rotation2dKt.getDegree(30.0))),
-			true));
+				Arrays.asList(
+						locations.get("habL"),
+						new Pose2d(
+								LengthKt.getFeet(19.445),
+								LengthKt.getFeet(22.808),
+								Rotation2dKt.getDegree(26)),
+						new Pose2d(
+								LengthKt.getFeet(23.801),
+								LengthKt.getFeet(23.509),
+								Rotation2dKt.getDegree(30.0))),
+				true));
 
 		// Trajectories to the rocket. format is rocket[L/R for left/right][C/M/F for close/middle/far]. This one is backed up 3 feet already!!!!!!!!!!!!!!!!!!!!!!!!!!
 		generatedLGTrajectories.put("rocketLF to loadingL", generateTrajectoryLowGear(
-			Arrays.asList(
-				new Pose2d(
-					LengthKt.getFeet(23.92),
-					LengthKt.getFeet(23.28),
-					Rotation2dKt.getDegree(-33)),
-				new Pose2d(
-					LengthKt.getFeet(19.5),
-					LengthKt.getFeet(23.065),
-					Rotation2dKt.getDegree(0)),
-				locations.get("loadingL").plus(
-					new Pose2d(LengthKt.getFeet(3), LengthKt.getFeet(0), Rotation2dKt.getDegree(0)) // offset by 3 feet to allow the vision spline to kick in a bit
-				)),
-			true));
+				Arrays.asList(
+						new Pose2d(
+								LengthKt.getFeet(23.92),
+								LengthKt.getFeet(23.28),
+								Rotation2dKt.getDegree(-33)),
+						new Pose2d(
+								LengthKt.getFeet(19.5),
+								LengthKt.getFeet(23.065),
+								Rotation2dKt.getDegree(0)),
+						locations.get("loadingL").plus(
+								new Pose2d(LengthKt.getFeet(3), LengthKt.getFeet(0), Rotation2dKt.getDegree(0)) // offset by 3 feet to allow the vision spline to kick in a bit
+						)),
+				true));
 
 		generatedLGTrajectories.put("loadingL to cargoL1", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(
 				locations.get("loadingL"), locations.get("cargoL1").plus(

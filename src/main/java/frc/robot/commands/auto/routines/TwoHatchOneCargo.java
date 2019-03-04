@@ -2,24 +2,16 @@ package frc.robot.commands.auto.routines;
 
 import java.util.ArrayList;
 
-import org.ghrobotics.lib.commands.CommandGroupBuilder;
-import org.ghrobotics.lib.commands.FalconCommandGroup;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.auto.AutoMotion;
-import frc.robot.commands.auto.AutoMotion.GoalHeight;
-import frc.robot.commands.auto.AutoMotion.GoalType;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
-import frc.robot.commands.auto.actions.SetTempPoseFromVisionTarget;
 import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.auto.actions.SetTempPoseFromVisionTarget;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
-import frc.robot.commands.auto.groups.PickupHatch;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
 import frc.robot.commands.subsystems.drivetrain.SplineToVisionTarget;
-import frc.robot.commands.subsystems.drivetrain.TurnInPlace;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.subsystems.DriveTrain;
@@ -45,7 +37,6 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		HeldPiece cPiece = HeldPiece.HATCH; // we start with a hatch
 		String cStart = "hab" + startPos;
 
-
 		/* Get a trajectory to move to the cargo ship. THE ROBOT IS REVERSED */
 		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedLGTrajectories.get("habL" + " to " + "rocketLF"); //current trajectory from hashmap in Trajectorie
 		addParallel(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE_PREP)); // move arm inside to prep state
@@ -55,7 +46,6 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		addSequential(new SplineToVisionTarget(this.getPoseStorage1(), 6.5));
 		addSequential(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE), 1);
 		addSequential(new RunIntake(-1, 0, 1));
-		
 
 		/* Move from middle of cargo ship to loading station on the same side to pick up a hatch */
 		// cStart = "cargoM" + side;
@@ -67,7 +57,6 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 		addSequential(new SetTempPoseFromVisionTarget(this, PoseStorage.POSE1, false));
 		addSequential(new SplineToVisionTarget(this.getPoseStorage1(), 6.5));
-
 
 		// /* Go right up to the cargo ship from the loading station */
 		// cStart = "loading" + side;

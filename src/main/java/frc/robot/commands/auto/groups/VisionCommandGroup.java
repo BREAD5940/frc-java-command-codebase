@@ -2,10 +2,6 @@ package frc.robot.commands.auto.groups;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.lib.Logger;
-
 /**
  * Contains getters and settetrs in adition to local variables for tracking robot pose and stuff.
  * Because a b s t r a c t i o n I guess.
@@ -44,13 +40,13 @@ public class VisionCommandGroup extends AutoCommandGroup {
 	 * @param value
 	 */
 	public void setPoseStorage(PoseStorage toSet, Pose2d value) {
-		switch(toSet) {
-			case POSE1:
-				setPoseStorage1(value);
-				break;
-			case POSE2:
-				setPoseStorage2(value);
-				break;
+		switch (toSet) {
+		case POSE1:
+			setPoseStorage1(value);
+			break;
+		case POSE2:
+			setPoseStorage2(value);
+			break;
 		}
 	}
 

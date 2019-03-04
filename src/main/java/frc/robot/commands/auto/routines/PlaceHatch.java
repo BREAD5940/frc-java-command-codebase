@@ -2,16 +2,12 @@ package frc.robot.commands.auto.routines;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.PrintCommand;
-import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
 import frc.robot.commands.subsystems.drivetrain.DrivePower;
-import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
 import frc.robot.commands.subsystems.drivetrain.SplineToVisionTarget;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
-import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 public class PlaceHatch extends VisionCommandGroup {

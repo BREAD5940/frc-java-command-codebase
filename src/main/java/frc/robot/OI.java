@@ -3,20 +3,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.auto.groups.PickupHatch;
 import frc.robot.commands.auto.groups.visionTest;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
-import frc.robot.lib.obj.factories.SequentialCommandFactory;
-import frc.robot.states.ElevatorState;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
-import frc.robot.subsystems.superstructure.SuperStructure;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
@@ -159,7 +152,6 @@ public class OI {
 		return (secondaryJoystick.getRawButton(xboxmap.Buttons.RB_BUTTON)) ? 1 * 1 : 0;
 	}
 
-	
 	public double getCargoOuttake() {
 		return (secondaryJoystick.getRawButton(xboxmap.Buttons.X_BUTTON)) ? 1 * 1 : 0;
 	}
