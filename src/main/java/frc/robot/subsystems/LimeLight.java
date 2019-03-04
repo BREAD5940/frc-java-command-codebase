@@ -127,6 +127,8 @@ public class LimeLight {
 
 		// final double kOffset = 100;
 
+		// LinearDigitalFilter
+
 		// final double kLimelightForeOffset = 25; //inches from limelight to hatch pannel
 		// forward/backward motion, left/right motion
 		Translation2d mTranToGoal = new Translation2d(LengthKt.getInch((camtran[2]) + distanceToShiftBy + kOffset), LengthKt.getInch((camtran[0] * -1) + distanceToShiftBy));

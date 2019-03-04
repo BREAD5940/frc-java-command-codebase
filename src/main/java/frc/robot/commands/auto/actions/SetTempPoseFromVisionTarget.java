@@ -40,7 +40,7 @@ public class SetTempPoseFromVisionTarget extends InstantCommand {
 	// Called once when the command executes
 	@Override
 	protected void initialize() {
-		command.setPoseStorage(toSet_, LimeLight.getInstance().getPose(limelightOffsetFromFront));
+		command.setPoseStorage(toSet_, LimeLight.getInstance().getPose(limelightOffsetFromFront, 0));
 	}
 
 }

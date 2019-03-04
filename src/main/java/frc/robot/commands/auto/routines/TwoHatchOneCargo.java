@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.AutoMotion.HeldPiece;
@@ -43,7 +44,7 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		this.addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
 		// addSequential(new SetTempPoseFromVisionTarget(this, PoseStorage.POSE1, false)); // set this' temp pose from vision target
 		addParallel(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE.elevator.plus(iPosition.kOffsetFromL1toL2), iPosition.HATCH_SLAM_ROCKET_INSIDE.jointAngles));
-		addSequential(new SplineToVisionTarget(this.getPoseStorage1(), 6.5));
+		addSequential(new SplineToVisionTarget(this.getPoseStorage1(), LengthKt.getInch(0), LengthKt.getInch(30), 6.5));
 		addSequential(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE), 1);
 		addSequential(new RunIntake(-1, 0, 1));
 
@@ -56,7 +57,7 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		this.addSequential(DriveTrain.getInstance().followTrajectory(Trajectories.reverse3FeetLowGear, TrajectoryTrackerMode.RAMSETE, false)); //back up mega fast to clear rocket
 		this.addSequential(DriveTrain.getInstance().followTrajectory(traject, TrajectoryTrackerMode.RAMSETE, false)); //drive to goal
 		addSequential(new SetTempPoseFromVisionTarget(this, PoseStorage.POSE1, false));
-		addSequential(new SplineToVisionTarget(this.getPoseStorage1(), 6.5));
+		addSequential(new SplineToVisionTarget(this.getPoseStorage1(), LengthKt.getInch(0), LengthKt.getInch(30), 6.5));
 
 		// /* Go right up to the cargo ship from the loading station */
 		// cStart = "loading" + side;

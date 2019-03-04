@@ -1,6 +1,7 @@
 package frc.robot.commands.auto.routines;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
@@ -34,7 +35,7 @@ public class PlaceHatch extends VisionCommandGroup {
 		addSequential(new PrintCommand("Placing a hatch;;;...."));
 
 		addParallel(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE.elevator.plus(iPosition.kOffsetFromL1toL2), iPosition.HATCH_SLAM_ROCKET_INSIDE.jointAngles));
-		addSequential(new SplineToVisionTarget(this.getPoseStorage1(), 6.5));
+		addSequential(new SplineToVisionTarget(this.getPoseStorage1(), LengthKt.getInch(0), LengthKt.getInch(30), 6.5));
 		addSequential(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE), 1);
 		addSequential(new RunIntake(-1, 0, 1));
 

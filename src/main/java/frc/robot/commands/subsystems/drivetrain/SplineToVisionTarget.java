@@ -8,6 +8,7 @@
 package frc.robot.commands.subsystems.drivetrain;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
@@ -40,7 +41,9 @@ public class SplineToVisionTarget extends CommandGroup {
 	 * @author Matthew Morley
 	 * 
 	 * @param currentPose the current pose of the robot (vision target centric fama)
-	 * @param areaAtWhichToExit the area at which the command will exit
+	 * @param driveStraightDistance the distance to drive straight for
+	 * @param dsired_end how far away from the vision target to exit at
+	 * @param areaAtWhichToExit the area at which the command will exit, regarless of everything else
 	 */
 	public SplineToVisionTarget(Pose2d currentPose, Length driveStraightDistance, Length desired_end, double areaAtWhichToExit) {
 		// this.targetDistance = targetLimelightOffset;
@@ -67,9 +70,18 @@ public class SplineToVisionTarget extends CommandGroup {
 		// get the current and target poses in addition to drive straight pose
 		Pose2d mVisionTargetPose = LimeLight.getInstance().getPose(kEndOffset.getInch(), kOffset.getInch());
 		Pose2d end = new Pose2d(new Translation2d(kOffset.plus(kEndOffset), kOffset), Rotation2dKt.getDegree(0));
+		// offset the end by the end offset to make a straight portion
 		Pose2d splineEnd = end.minus(new Pose2d(kOffset.plus(kEndOffset).minus(straightLength), LengthKt.getInch(0), Rotation2dKt.getDegree(0)));
 
-		trajectory = Trajectories.generateTrajectory(Arrays.asList(mVisionTargetPose, splineEnd, end), Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(1)), VelocityKt.getVelocity(LengthKt.getFeet(2)), VelocityKt.getVelocity(LengthKt.getFeet(2)), Trajectories.kDefaultAcceleration.div(2), false, true);
+		List<Pose2d> path;
+		// just go straight if we are too close or straight distance is zero
+		if (end.getTranslation().getX().epsilonEquals(splineEnd.getTranslation().getX()) || (mVisionTargetPose.getTranslation().getX().minus(kOffset).getInch() < straightLength.getInch())) {
+			path = Arrays.asList(mVisionTargetPose, end);
+		} else {
+			path = Arrays.asList(mVisionTargetPose, splineEnd, end);
+		}
+
+		trajectory = Trajectories.generateTrajectory(path, Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(1)), VelocityKt.getVelocity(LengthKt.getFeet(2)), VelocityKt.getVelocity(LengthKt.getFeet(2)), Trajectories.kDefaultAcceleration.div(2), false, true);
 		mFollowerCommand = DriveTrain.getInstance().followTrajectoryWithGear(trajectory, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true);
 
 		System.out.println("========== Vision spline generated in " + (Timer.getFPGATimestamp() - now) + " seconds! ==========");
