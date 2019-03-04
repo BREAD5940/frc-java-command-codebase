@@ -142,7 +142,8 @@ public class SuperStructure extends Subsystem implements Loggable {
 
 		// grab a hatch by ramming against the loading station. Takes advantage of bumper recesses
 		public static final SuperStructureState HATCH_GRAB_INSIDE = new SuperStructureState(new ElevatorState(LengthKt.getInch(20.5)),
-				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(40))));
+				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(48
+				))));
 		public static final SuperStructureState HATCH_GRAB_INSIDE_PREP = new SuperStructureState(new ElevatorState(LengthKt.getInch(17)),
 				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(40 + 7))));
 
