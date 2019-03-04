@@ -74,7 +74,7 @@ public class OI {
 		primaryXButton.whenPressed(new RunIntake(1, 1, 2)); // x button
 		// test3Button.whenPressed(new FollowVisonTargetTheSecond());
 		// test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button
-		primaryBButton.whenPressed(new visionTest()); // b button
+		// primaryBButton.whenPressed(new visionTest()); // b button
 		// test4Button.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW)); // b button - used now for dealy
 
 		// cargoOverButton.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.OVER));
