@@ -3,19 +3,16 @@ package frc.robot.commands.subsystems.superstructure;
 import org.ghrobotics.lib.mathematics.units.Length;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class SuperstructureGoToState extends Command {
-	SuperStructureState mRequState;
-	double kWristSetpoint, kElbowSetpoint;
+public class SuperstructureGoToState extends CommandGroup {
 	private static final double kDefaultTimeout = 4;
-	private boolean hasSetState = false;
-	private final RoundRotation2d wristSetpoint, elbowSetpoint;
-	private final Length elevatorSetpoint;
+
 
 	public SuperstructureGoToState(SuperStructureState requState) {
 		this(requState, kDefaultTimeout);
@@ -37,6 +34,11 @@ public class SuperstructureGoToState extends Command {
 		this(new SuperStructureState(SuperStructure.getInstance().updateState().getElevator(), aState));
 	}
 
+SuperStructureState mRequState;
+Length elevatorSetpoint;
+RoundRotation2d wristSetpoint, elbowSetpoint;
+
+
 	/**
 	 * Move the superstructure to a requested state.
 	 * @param requState the state requested of the superstructure
@@ -45,6 +47,77 @@ public class SuperstructureGoToState extends Command {
 	 * @author Matthew Morley
 	 */
 	public SuperstructureGoToState(SuperStructureState requState, double timeout) {
+
+		mRequState = requState;
+		setTimeout(timeout);
+
+		this.elevatorSetpoint = requState.getElevatorHeight();
+		this.wristSetpoint = requState.getWristAngle();
+		this.elbowSetpoint = requState.getElbowAngle();
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	class StateMovementSubcommand extends Command {
+	SuperStructureState mRequState;
+	double kWristSetpoint, kElbowSetpoint;
+	private boolean hasSetState = false;
+	private final RoundRotation2d wristSetpoint, elbowSetpoint;
+	private final Length elevatorSetpoint;
+
+	public StateMovementSubcommand(SuperStructureState requState) {
+		this(requState, kDefaultTimeout);
+	}
+
+	public StateMovementSubcommand(ElevatorState eState) {
+		this(new SuperStructureState(eState, SuperStructure.getInstance().updateState().getAngle()));
+	}
+
+	public StateMovementSubcommand(Length eState, IntakeAngle aState) {
+		this(new SuperStructureState(new ElevatorState(eState), aState));
+	}
+
+	public StateMovementSubcommand(ElevatorState eState, IntakeAngle aState) {
+		this(new SuperStructureState(eState, aState));
+	}
+
+	public StateMovementSubcommand(IntakeAngle aState) {
+		this(new SuperStructureState(SuperStructure.getInstance().updateState().getElevator(), aState));
+	}
+
+	/**
+	 * Move the superstructure to a requested state.
+	 * @param requState the state requested of the superstructure
+	 * @param timeout the timeout of this command
+	 * 
+	 * @author Matthew Morley
+	 */
+	public StateMovementSubcommand(SuperStructureState requState, double timeout) {
 		requires(SuperStructure.getInstance()); // TODO so I'm still <confuse> about reserving superstructure vs the individual parts.
 		requires(SuperStructure.getInstance().getWrist());
 		requires(SuperStructure.getInstance().getElbow());
@@ -128,4 +201,5 @@ public class SuperstructureGoToState extends Command {
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {}
+}
 }
