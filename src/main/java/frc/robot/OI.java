@@ -176,10 +176,8 @@ public class OI {
 	}
 
 	public void setAllRumble(double value) {
-		for (Joystick stick : getAllSticks()) {
-			setRumble(RumbleType.kLeftRumble, stick, value);
-			// setRumble(RumbleType.kRightRumble, stick, value);
-		}
+		setRumble(RumbleType.kLeftRumble, getPrimary(), value);
+		setRumble(RumbleType.kLeftRumble, getSecondary(), value);
 	}
 
 	public double getForwardAxis() {
