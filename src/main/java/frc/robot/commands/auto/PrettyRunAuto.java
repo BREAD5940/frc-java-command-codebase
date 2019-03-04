@@ -45,5 +45,4 @@ public class PrettyRunAuto extends Command {
 			return mainBegun && mainCommand.done();
 		}
 	}
-
 }

@@ -356,6 +356,8 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
 		SmartDashboard.putData(superstructure);
 
+		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
+
 
 		SmartDashboard.putData(autoState); //TODO test to see if it actually does the thing
 		// Limelight stuff

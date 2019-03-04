@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.auto.PrettyRunAuto;
 import frc.robot.commands.auto.RunAuto;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.routines.PickupHatch;
@@ -13,6 +14,8 @@ import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.lib.DPadButton;
 import frc.robot.lib.DPadButton.Direction;
 import frc.robot.lib.statemachines.ChangeGoalHeight;
+import frc.robot.lib.statemachines.LocationToggle;
+import frc.robot.lib.statemachines.PickupToggle;
 import frc.robot.lib.statemachines.SetPieceToggle;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
@@ -67,14 +70,14 @@ public class OI {
 	public OI() {
 
 		toggleHP.toggleWhenPressed(new SetPieceToggle());
-		// togglePickup.toggleWhenPressed(command);
-		// toggleGoal.toggleWhenPressed(command);
-
-		useMotion.whenPressed(new RunAuto(Robot.autoState.getGoalType(), Robot.autoState.getGoalHeight()));
-		usePreset.whenPressed(new RunAuto());
+		togglePickup.toggleWhenPressed(new PickupToggle());
+		toggleGoal.toggleWhenPressed(new LocationToggle());
 
 		goalUp.whenPressed(new ChangeGoalHeight(true));
 		goalDown.whenPressed(new ChangeGoalHeight(false));
+
+		useMotion.whenPressed(new PrettyRunAuto(Robot.autoState, false));
+		usePreset.whenPressed(new PrettyRunAuto(Robot.autoState, true));
 
 		shift_up_button.whenPressed(new SetGearCommand(Gear.HIGH));
 		shift_down_button.whenPressed(new SetGearCommand(Gear.LOW));

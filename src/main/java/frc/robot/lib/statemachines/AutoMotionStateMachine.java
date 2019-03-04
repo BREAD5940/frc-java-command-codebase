@@ -30,8 +30,11 @@ public class AutoMotionStateMachine extends SendableBase {
 	private HeldPiece goalPiece = HeldPiece.NONE;
 	private GoalHeight goalHeight = GoalHeight.LOW;
 	private GoalLocation goalLocation = GoalLocation.ROCKET;
-	private MotionType motionType = MotionType.PICKUP;
+	private MotionType motionType = MotionType.PICKUP; //FIXME default pickup or place?
 	private GoalType goalType = GoalType.RETRIEVE_HATCH; //FIXME set default
+
+
+	//Goal Type
 
 	protected void updateGoalType() {
 		switch (this.motionType) {
@@ -81,6 +84,9 @@ public class AutoMotionStateMachine extends SendableBase {
 		return this.getGoalType().toString();
 	}
 
+
+	//Held Piece
+
 	public void setHeldPiece(HeldPiece piece) {
 		this.heldPiece = piece;
 		updateGoalType();
@@ -93,6 +99,25 @@ public class AutoMotionStateMachine extends SendableBase {
 	private String heldPieceString(){
 		return this.getHeldPiece().toString();
 	}
+
+
+	//Goal Piece
+
+	public void setGoalPiece(HeldPiece gp){
+		this.goalPiece = gp;
+		updateGoalType();
+	}
+
+	public HeldPiece getGoalPiece(){
+		return this.goalPiece;
+	}
+
+	public String goalPieceString(){
+		return this.getGoalPiece().toString();
+	}
+
+
+	//Goal Height
 
 	public void setGoalHeight(GoalHeight gH) {
 		this.goalHeight = gH;
@@ -123,15 +148,54 @@ public class AutoMotionStateMachine extends SendableBase {
 		return this.getGoalHeight().toString();
 	}
 
+
+	//Goal Location
+	
+	public void setGoalLocation(GoalLocation loc){
+		this.goalLocation = loc;
+		updateGoalType();
+	}
+
+	public GoalLocation getGoalLocation(){
+		return this.goalLocation;
+	}
+
+	public String goalLocationString(){
+		return this.getGoalLocation().toString();
+	}
+
+
+	//Motion Type
+
+	public void setMotionType(MotionType type){
+		this.motionType = type;
+		updateGoalType();
+	}
+
+	public MotionType getMotionType(){
+		return this.motionType;
+	}
+
+	public String motionTypeString(){
+		return this.getMotionType().toString();
+	}
+
+
+	//Sendable
+
 	@Override
 	public void initSendable(SendableBuilder builder) {
-		builder.setSmartDashboardType("StateMachine");
+		builder.setSmartDashboardType("StateMachine"); //FIXME this may or may not make it die
+		//So the deal with this method is that it uses a 'named data type', but it keeps it in a heckin' string, and there's not exactly
+		//a list of what they are (the ones I've seen are 'subsystem' and 'gyro'), so I have no idea how to do this properly. I think
+		//we might want to try using something out of Widget.java, or writing our own. Also we are WAY underutilizing smartdashboard
+		//right now, we should probably look more into using more than one of its features
 
 		builder.addStringProperty(".heldPiece", this::heldPieceString, null);
-		// builder.addStringProperty(".goalPiece", this::goalPieceString, null);
+		builder.addStringProperty(".goalPiece", this::goalPieceString, null);
 		builder.addStringProperty(".goalHeight", this::goalHeightString, null);
-		// builder.addStringProperty(".goalLocation", this::goalLocationString, null);
-		// builder.addStringProperty(".motionType", this::motionTypeString, null);
+		builder.addStringProperty(".goalLocation", this::goalLocationString, null);
+		builder.addStringProperty(".motionType", this::motionTypeString, null);
 		builder.addStringProperty(".goalType", this::goalTypeString, null);
 	}
 
