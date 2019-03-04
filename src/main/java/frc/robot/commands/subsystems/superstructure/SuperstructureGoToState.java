@@ -59,7 +59,7 @@ public class SuperstructureGoToState extends CommandGroup {
 	 * 
 	 */
 	public SuperstructureGoToState(SuperStructureState requState, double timeout) {
-
+		requires(SuperStructure.getInstance());
 		mRequState = requState;
 		setTimeout(timeout);
 
@@ -67,6 +67,7 @@ public class SuperstructureGoToState extends CommandGroup {
 		var proximalR = requState.getElbowAngle();
 		var wristR = requState.getWristAngle();
 
+		// check if the elbow is going to whack anything
 		addSequential(new ConditionalCommand(new ){
 		
 			@Override
@@ -311,6 +312,20 @@ public class SuperstructureGoToState extends CommandGroup {
 		@Override
 		protected void initialize() {
 			SuperStructure.getElevator().setPositionSetpoint(mSetpoint);
+		}
+	}
+
+	class SetIntakeAnglesSetpoint extends InstantCommand {
+		SuperStructureState mSetpoint;
+		public SetIntakeAnglesSetpoint(SuperStructureState setpoint) {
+			this.mSetpoint = setpoint;
+		}
+
+		@Override
+		protected void initialize() {
+			SuperStructure.getInstance().getElbow().requestAngle(ControlMode.MotionMagic, mSetpoint);
+			SuperStructure.getInstance().getWrist().requestAngle(ControlMode.MotionMagic, mSetpoint);
+
 		}
 	}
 
