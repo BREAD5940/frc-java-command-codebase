@@ -1,9 +1,5 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import org.junit.jupiter.api.Test;
 
 import frc.robot.lib.obj.RoundRotation2d;
