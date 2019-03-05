@@ -3,11 +3,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.junit.jupiter.api.Test;
 
+import frc.robot.RobotConfig.auto.fieldPositions;
+import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
+import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 public class SuperstructureTests extends Testable {
 
@@ -140,6 +143,11 @@ public class SuperstructureTests extends Testable {
 		SuperStructureState Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(10)),
 			new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
 
+		testableSSMotion.getInstance().plan(Goal1, Start1);
+
+		Start1 = iPosition.HATCH_GRAB_INSIDE;
+		Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(3.5)), iPosition.CARGO_GRAB);
+		Logger.log("======== testing hatch grab to cargo pickup ========");
 		testableSSMotion.getInstance().plan(Goal1, Start1);
 
 		// var planned = testableSSMotion.getInstance().getQueue();
