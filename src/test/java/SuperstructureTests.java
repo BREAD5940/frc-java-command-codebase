@@ -1,9 +1,13 @@
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.junit.jupiter.api.Test;
 
 import frc.robot.lib.obj.RoundRotation2d;
-import frc.robot.planners.*;
+import frc.robot.states.ElevatorState;
+import frc.robot.states.IntakeAngle;
+import frc.robot.states.SuperStructureState;
+import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 public class SuperstructureTests extends Testable {
 
@@ -127,25 +131,23 @@ public class SuperstructureTests extends Testable {
 		writeToCSV("src/test/java/safingTestOut.csv", toPrint);
 	}
 
-	// public void writeToCSV(String file, double[][] path) {
+	@Test
+	public void superstructureMotionTest() {
 
-	// 	try {
-	// 		FileWriter fw = new FileWriter(file);
-	// 		PrintWriter pw = new PrintWriter(fw, true);
+		SuperStructureState Start1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(5)),
+			new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
 
-	// 		pw.println("time,elevatorHeight,drivetrainSpeed");
-	// 		for (double[] t : path) {
-	// 			pw.println(t[0] + "," + t[1] + "," + t[2]);
-	// 		}
+		SuperStructureState Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(10)),
+			new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
 
-	// 		// pw.print("adsffdsaadsfdsfaadsffads1");
+		testableSSMotion.getInstance().plan(Goal1, Start1);
 
-	// 		pw.close();
-	// 	} catch (IOException ioe) {
-	// 		System.out.println(ioe);
-	// 	}
+		// var planned = testableSSMotion.getInstance().getQueue();
 
-	// }
+		// for(Command c : planned.)
+
+	}
+
 
 	@Test
 	public void rotation2dTest() {

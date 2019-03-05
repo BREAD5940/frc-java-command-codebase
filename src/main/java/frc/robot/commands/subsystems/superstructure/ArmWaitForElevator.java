@@ -18,6 +18,13 @@ public class ArmWaitForElevator extends AutoCommandGroup {
 	Callable<Boolean> elevatorMoved;
 	Command mDelayedCommand;
 
+	/**
+	 * Move the arm after waiting for the elevator to attain a desired state. This assumes that the elevator setpoint has already been set!
+	 * @param desired the desired intake angles after the elevator moves
+	 * @param finalEleHeight the elevator height to wait for
+	 * @param tolerence the tolerance about the elevator setpoint
+	 * @param isDescending if the elevator is going down or not
+	 */
 	public ArmWaitForElevator(IntakeAngle desired, Length finalEleHeight, Length tolerence, boolean isDescending) {
 		elevatorMoved = (() -> {
 			return ((SuperStructure.getElevator().getHeight().getInch() < finalEleHeight.plus(tolerence).getInch() && isDescending)

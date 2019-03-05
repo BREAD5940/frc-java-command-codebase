@@ -290,6 +290,10 @@ public class Elevator extends Subsystem {
 		this.requState = requ_;
 	}
 
+	public void setPositionSetpoint(ElevatorState requ_) {
+		setPositionSetpoint(new SuperStructureState(requ_));
+	}
+
 	@Override
 	public void periodic() {
 		var feedForwardVoltage = getVoltage(requState);

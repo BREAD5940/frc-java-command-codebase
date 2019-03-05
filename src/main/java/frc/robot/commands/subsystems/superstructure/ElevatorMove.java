@@ -9,6 +9,10 @@ public class ElevatorMove extends Command {
 
 	private final ElevatorState mGoal;
 
+	/**
+	 * Move
+	 * @param goal
+	 */
 	public ElevatorMove(ElevatorState goal) {
 		this.mGoal = goal;
 		requires(SuperStructure.getElevator());
@@ -21,9 +25,10 @@ public class ElevatorMove extends Command {
 	protected void execute() {
 		// como se dice "how should we do dis because elevator gravity feed forward sucks" en espa~nol?\
 		// yo no sé, pero lo haré de todos modos
+		// solución: periodic() otra vez 
 
-		double elevatorPercentVbusGravity = Elevator.getVoltage(SuperStructure.getInstance().updateState()) / 12;
-		SuperStructure.getElevator().setPositionArbitraryFeedForward(mGoal.height, elevatorPercentVbusGravity);
+		// double elevatorPercentVbusGravity = Elevator.getVoltage(SuperStructure.getInstance().updateState()) / 12;
+		SuperStructure.getElevator().setPositionSetpoint(mGoal);
 
 	}
 

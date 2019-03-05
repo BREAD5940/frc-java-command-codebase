@@ -48,7 +48,7 @@ public class TrapezoidalProfileTest {
 				goal_vel,
 				0);
 
-		System.out.print(traj.toString());
+		// System.out.print(traj.toString());
 
 		Trajectory.Segment last = traj.getSegment(traj.getNumSegments() - 1);
 		Assert.assertFalse(Math.abs(last.pos - goal_distance) > 1.0);

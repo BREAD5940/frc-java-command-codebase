@@ -29,7 +29,7 @@ public class AutoWaitForCondition extends Command {
 
 	@Override
 	protected void end() {
-		System.out.println("===== delay command is complete! =====");
+		System.out.println("===== auto wait for condition command is complete! =====");
 	}
 
 }

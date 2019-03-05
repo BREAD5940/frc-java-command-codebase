@@ -9,6 +9,10 @@ public class ArmMove extends Command {
 
 	IntakeAngle mDesired;
 
+	/**
+	 * Move the intake joints to a desired state and wait for them to get there
+	 * @param state the desired IntakeAngle state (assumed to be safe!)
+	 */
 	public ArmMove(IntakeAngle state) {
 		this.mDesired = state;
 		requires(SuperStructure.getInstance().getWrist());

@@ -1,18 +1,18 @@
-package frc.robot.planners;
+// package frc.robot.planners;
 
 import java.util.Optional;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
+// import edu.wpi.first.wpilibj.command.Command;
+// import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.SuperStructureConstants;
-import frc.robot.commands.auto.routines.passthrough.PassThroughForward;
-import frc.robot.commands.auto.routines.passthrough.PassThroughReverse;
-import frc.robot.commands.subsystems.superstructure.ArmMove;
-import frc.robot.commands.subsystems.superstructure.ArmWaitForElevator;
-import frc.robot.commands.subsystems.superstructure.ElevatorMove;
+// import frc.robot.commands.auto.routines.passthrough.PassThroughForward;
+// import frc.robot.commands.auto.routines.passthrough.PassThroughReverse;
+// import frc.robot.commands.subsystems.superstructure.ArmMove;
+// import frc.robot.commands.subsystems.superstructure.ArmWaitForElevator;
+// import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.SuperStructureState;
@@ -28,38 +28,38 @@ import frc.robot.subsystems.superstructure.SuperStructure;
  * 
  * @author Jocelyn McHugo
  */
-public class SuperstructureMotion extends Command {
+public class testableSSMotion /*extends Command*/ {
 	/* RELEVANT COMMANDS:
 	  - ElevatorMove
 	  - ArmMove
 	  - ArmWaitForElevator
 	 */
 
-	private SuperstructureMotion() {
-		requires(SuperStructure.getInstance());
+	private testableSSMotion() {
+		// requires(SuperStructure.getInstance());
 
-		requires(SuperStructure.getInstance().getWrist());
-		requires(SuperStructure.getInstance().getElbow());
-		requires(SuperStructure.getElevator());
+		// requires(SuperStructure.getInstance().getWrist());
+		// requires(SuperStructure.getInstance().getElbow());
+		// requires(SuperStructure.getElevator());
 	}
 
-	public SuperstructureMotion(SuperStructureState gsIn) {
+	public testableSSMotion(SuperStructureState gsIn) {
 		plan(gsIn, SuperStructure.getInstance().getCurrentState());
 
-		requires(SuperStructure.getInstance().getWrist());
-		requires(SuperStructure.getInstance().getElbow());
-		requires(SuperStructure.getElevator());
+		// requires(SuperStructure.getInstance().getWrist());
+		// requires(SuperStructure.getInstance().getElbow());
+		// requires(SuperStructure.getElevator());
 	}
 
-	private static SuperstructureMotion instance_;
-	protected CommandGroup queue = new CommandGroup();
+	private static testableSSMotion instance_;
+	// protected CommandGroup queue = new CommandGroup();
 	// protected CommandGroup eleQueue = new CommandGroup();
 	// protected CommandGroup armQueue = new CommandGroup();
-	protected Optional<Command> current;
+	// protected Optional<Command> current;
 
-	public static SuperstructureMotion getInstance() {
+	public static testableSSMotion getInstance() {
 		if (instance_ == null) {
-			instance_ = new SuperstructureMotion();
+			instance_ = new testableSSMotion();
 		}
 		return instance_;
 	}
@@ -142,20 +142,20 @@ public class SuperstructureMotion extends Command {
 		}
 
 		if (GPwrist.getX().getInch() > 0 && SPwrist.getX().getInch() < 0) {
-			queue.addSequential(new PassThroughReverse());
+			Logger.log("queue.addSequential(new PassThroughReverse());");
 		} else if (GPwrist.getX().getInch() < 0 && SPwrist.getX().getInch() > 0) {
-			queue.addSequential(new PassThroughForward());
+			Logger.log("queue.addSequential(new PassThroughForward())");
 		}
 
 		//CLEAR the queue
-		queue = new CommandGroup();
+		// queue = new CommandGroup();
 
 		//CHECK the position of the intake -- hatch or cargo
 		// IF it's a long climb
 		boolean isLongClimb = Math.abs(goalState.getElevatorHeight().minus(currentState.getElevatorHeight()).getInch()) >= SuperStructureConstants.Elevator.kElevatorLongRaiseDistance.getInch();
 
 		if (isLongClimb) {
-			queue.addParallel(new ArmMove(SuperStructure.iPosition.STOWED));
+			Logger.log("queue.addParallel(new ArmMove(SuperStructure.iPosition.STOWED));");
 		}
 
 		//CHECK if the elevator point is in proximity to the crossbar - if it is, stow it
@@ -165,28 +165,27 @@ public class SuperstructureMotion extends Command {
 						&& SPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch())
 				|| (GPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.plus(SuperStructureConstants.Elevator.crossbarWidth).getInch()
 						&& GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch())) {
-			queue.addSequential(new ArmMove(SuperStructure.iPosition.STOWED));
+			Logger.log("queue.addSequential(new ArmMove(SuperStructure.iPosition.STOWED))");
 		}
 
-		queue.addParallel(new ArmWaitForElevator(goalState.getAngle(), goalState.getElevatorHeight(), LengthKt.getInch(3),
-				goalState.getElevatorHeight().getInch() < currentState.getElevatorHeight().getInch()));
-		queue.addSequential(new ElevatorMove(goalState.getElevator()));
+		Logger.log("queue.addParallel(new ArmWaitForElevator(goalState.getAngle(), goalState.getElevatorHeight(), LengthKt.getInch(3), goalState.getElevatorHeight().getInch() < currentState.getElevatorHeight().getInch()));");
+    Logger.log("queue.addSequential(new ElevatorMove(goalState.getElevator()));");
 
 		return true;
 	}
 
-	public CommandGroup getQueue() {
-		return queue;
-	}
+	// public CommandGroup getQueue() {
+	// 	return queue;
+	// }
 
-	@Override
-	protected void initialize() {
-		queue.start();
-	}
+	// @Override
+	// protected void initialize() {
+	// 	queue.start();
+	// }
 
-	@Override
-	protected boolean isFinished() {
-		return queue.isCompleted();
-	}
+	// @Override
+	// protected boolean isFinished() {
+	// 	return queue.isCompleted();
+	// }
 
 }
