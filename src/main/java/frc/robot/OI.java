@@ -25,6 +25,7 @@ import frc.robot.lib.statemachines.SetPieceToggle;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
  * Operator Input not Out-In
@@ -60,8 +61,15 @@ public class OI {
 	Button primaryBButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
 
 	Button secondaryDpadUp = new DPadButton(secondaryJoystick, DPadButton.Direction.UP);
+	Button secondaryDpadDown = new DPadButton(secondaryJoystick, DPadButton.Direction.DOWN);
 	Button secondaryDpadLeft = new DPadButton(secondaryJoystick, DPadButton.Direction.LEFT);
 	Button secondaryDpadRight = new DPadButton(secondaryJoystick, DPadButton.Direction.RIGHT);
+
+	
+	Button primaryDpadUp = new DPadButton(primaryJoystick, DPadButton.Direction.UP);
+	Button primaryDpadDown = new DPadButton(primaryJoystick, DPadButton.Direction.DOWN);
+	Button primaryDpadLeft = new DPadButton(primaryJoystick, DPadButton.Direction.LEFT);
+	Button primaryDpadRight = new DPadButton(primaryJoystick, DPadButton.Direction.RIGHT);
 
 	// Button test2button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 
@@ -87,22 +95,22 @@ public class OI {
 	//cargo ship vs rocket
 	private Button toggleGoal = new JoystickButton(secondaryJoystick, xboxmap.Buttons.A_BUTTON);
 	//actually use the automotion vs just presets
-	// private Button useMotion = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
+	// private Button secondaryDpadLeft = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 	//use the full automotion
-	private Button useMotion = new DPadButton(secondaryJoystick, Direction.LEFT);
-	private Button usePreset = new DPadButton(secondaryJoystick, Direction.RIGHT);
+	// private Button secondaryDpadLeft = new DPadButton(secondaryJoystick, Direction.LEFT);
+	// private Button usePreset = new DPadButton(secondaryJoystick, Direction.RIGHT);
 
 	public OI() {
 
-		toggleHP.toggleWhenPressed(new SetPieceToggle());
-		togglePickup.toggleWhenPressed(new PickupToggle());
-		toggleGoal.toggleWhenPressed(new LocationToggle());
+		// toggleHP.toggleWhenPressed(new SetPieceToggle());
+		// togglePickup.toggleWhenPressed(new PickupToggle());
+		// toggleGoal.toggleWhenPressed(new LocationToggle());
 
-		goalUp.whenPressed(new ChangeGoalHeight(true));
-		goalDown.whenPressed(new ChangeGoalHeight(false));
+		// goalUp.whenPressed(new ChangeGoalHeight(true));
+		// goalDown.whenPressed(new ChangeGoalHeight(false));
 
-		useMotion.whenPressed(new PrettyRunAuto(Robot.autoState, false));
-		usePreset.whenPressed(new PrettyRunAuto(Robot.autoState, true));
+		// useMotion.whenPressed(new PrettyRunAuto(Robot.autoState, false));
+		// usePreset.whenPressed(new PrettyRunAuto(Robot.autoState, true));
 
 		shift_up_button.whenPressed(new SetGearCommand(Gear.HIGH));
 		shift_down_button.whenPressed(new SetGearCommand(Gear.LOW));
@@ -112,11 +120,21 @@ public class OI {
 		primaryYButton.whenPressed(new SuperstructureGoToState(SuperStructure.iPosition.HATCH_GRAB_INSIDE_PREP)); // y button
 		primaryAButton.whenPressed(new SuperstructureGoToState(SuperStructure.iPosition.HATCH_GRAB_INSIDE)); // a button
 		// test2Button.whenPressed(new PassThrough()); // a button
-		primaryXButton.whenPressed(new RunIntake(1, 1, 2)); // x button
+		// primaryXButton.whenPressed(new RunIntake(1, 1, 2)); // x button
 
-		secondaryDpadUp.whenPressed(new SuperstructureGoToState(LengthKt.getInch(3.5), SuperStructure.iPosition.CARGO_GRAB));
+		// cargo presets
+		secondaryDpadDown.whenPressed(new SuperstructureGoToState(LengthKt.getInch(3.5), SuperStructure.iPosition.CARGO_GRAB));
 		secondaryDpadLeft.whenPressed(new SuperstructureGoToState(fieldPositions.cargoLowGoal, SuperStructure.iPosition.CARGO_PLACE_INSIDE));
-		secondaryDpadRight.whenPressed(new SuperstructureGoToState(SuperStructure.iPosition.HATCH_SLAM_ROCKET_INSIDE));
+		// secondaryDpadRight.whenPressed(new SuperstructureGoToState(fieldPositions.cargoMiddleGoal, SuperStructure.iPosition.CARGO_PLACE));
+		// secondaryDpadUp.whenPressed(new SuperstructureGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE));
+
+		// hatch presets
+		primaryDpadDown.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
+		primaryDpadLeft.whenPressed(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE));
+		// primaryDpadRight.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
+		// primaryDpadUp.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
+
+		
 
 		// test3Button.whenPressed(new FollowVisonTargetTheSecond());
 		// test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button
