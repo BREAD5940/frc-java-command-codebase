@@ -14,19 +14,17 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * Add your docs here.
  */
 public class Sensors extends Subsystem {
-  SPI kWristEncoder, kElbowEncoder;
-  final int encoderCPR = 2048;
+	SPI kWristEncoder, kElbowEncoder;
+	final int encoderCPR = 2048;
 
-  public Sensors(SPI.Port wristPort, SPI.Port elbowPort) {
-    this.kWristEncoder = new SPI(wristPort);
-    this.kElbowEncoder = new SPI(elbowPort);
-  }
+	public Sensors(SPI.Port wristPort, SPI.Port elbowPort) {
+		this.kWristEncoder = new SPI(wristPort);
+		this.kElbowEncoder = new SPI(elbowPort);
+	}
 
-
-
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
+	@Override
+	public void initDefaultCommand() {
+		// Set the default command for a subsystem here.
+		// setDefaultCommand(new MySpecialCommand());
+	}
 }

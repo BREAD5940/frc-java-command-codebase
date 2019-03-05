@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.subsystems.superstructure.SuperStructureTelop;
 import frc.robot.lib.Loggable;
 import frc.robot.lib.PIDSettings;

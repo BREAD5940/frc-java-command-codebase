@@ -10,18 +10,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.auto.PrettyRunAuto;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
-import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.lib.DPadButton;
-import frc.robot.lib.DPadButton.Direction;
 import frc.robot.lib.motion.Util;
-import frc.robot.lib.statemachines.ChangeGoalHeight;
-import frc.robot.lib.statemachines.LocationToggle;
-import frc.robot.lib.statemachines.PickupToggle;
-import frc.robot.lib.statemachines.SetPieceToggle;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -46,8 +39,7 @@ public class OI {
 	private Button open_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.Y_BUTTON);
 	private Button close_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.A_BUTTON);
 	private Button plzNoDieElevator = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
-	private Button plzNoDieDriveTrain = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON)
-	;
+	private Button plzNoDieDriveTrain = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
 	Button secondaryTest1 = new JoystickButton(secondaryJoystick, xboxmap.Buttons.B_BUTTON);
 	Button secondaryTest2 = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 	// Button autobutton3 = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
@@ -65,7 +57,6 @@ public class OI {
 	Button secondaryDpadLeft = new DPadButton(secondaryJoystick, DPadButton.Direction.LEFT);
 	Button secondaryDpadRight = new DPadButton(secondaryJoystick, DPadButton.Direction.RIGHT);
 
-	
 	Button primaryDpadUp = new DPadButton(primaryJoystick, DPadButton.Direction.UP);
 	Button primaryDpadDown = new DPadButton(primaryJoystick, DPadButton.Direction.DOWN);
 	Button primaryDpadLeft = new DPadButton(primaryJoystick, DPadButton.Direction.LEFT);
@@ -133,8 +124,6 @@ public class OI {
 		primaryDpadLeft.whenPressed(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE));
 		// primaryDpadRight.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
 		// primaryDpadUp.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
-
-		
 
 		// test3Button.whenPressed(new FollowVisonTargetTheSecond());
 		// test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button

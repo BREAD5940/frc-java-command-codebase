@@ -69,7 +69,7 @@
 
 // 		// check if the elbow is going to whack anything
 // 		addSequential(new ConditionalCommand(new ){
-		
+
 // 			@Override
 // 			protected boolean condition() {
 // 				return checkPassthrough(SuperStructure.getInstance().getCurrentState(), requState);
@@ -95,10 +95,8 @@
 // 				var isDeployed = (currentState.getElbowAngle().absoluteValueOf().getDegree() > deployedThreshold); // TODO check angles and absolute value
 // 				var isStayingDeployed = isDeployed && (requState.getElbowAngle().absoluteValueOf().getDegree() > deployedThreshold);
 
-
-				
 // 				var isMoveFromDeployedToRetracted = ( currentState.getElbowAngle().getDegree() > -60 && requState.getElbowAngle().getDegree() < -30 );
-				
+
 // 				var isMoveFromRetractedToDeployed = (  currentState.getElbowAngle().getDegree() < -60 && requState.getElbowAngle().getDegree() > -30 );
 
 // 				// so we need to mvoe the elevator to a safe position if we want to passthrough
@@ -106,7 +104,7 @@
 // 			}
 // 		}
 // 		);
-		
+
 // 	}
 
 // 	class StateMovementCommand extends Command {
@@ -329,8 +327,6 @@
 // 		}
 // 	}
 
-	
-
 // 	abstract class WaitSubCommand extends Command {
 // 		SuperStructureState mEndState, currentState;
 // 		public Length mHeightThreshold = LengthKt.getInch(1.0);
@@ -355,18 +351,15 @@
 
 // 		@Override
 // 		protected void initialize() {}
-	
+
 // 		@Override
 // 		protected void execute() {}
 
 // 		@Override
 // 		protected void end() {}
-	
+
 // 		@Override
 // 		protected void interrupted() {}
 // 	}
-
-	
-
 
 // }
