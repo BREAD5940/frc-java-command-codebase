@@ -132,8 +132,8 @@ public class SuperStructure extends Subsystem implements Loggable {
 
 	public static class iPosition {
 		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(10)), new RotatingArmState(RoundRotation2d.getDegree(-45)));
-		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(-47.6)));
-		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(35.98)));
+		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(-50)));
+		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(6)), new RotatingArmState(RoundRotation2d.getDegree(35)));
 
 		public static final IntakeAngle CARGO_PLACE_INSIDE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(67)));
 
@@ -147,7 +147,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 		public static final SuperStructureState HATCH_GRAB_INSIDE = new SuperStructureState(new ElevatorState(LengthKt.getInch(21)),
 				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-115)), new RotatingArmState(RoundRotation2d.getDegree(67))));
 		public static final SuperStructureState HATCH_GRAB_INSIDE_PREP = new SuperStructureState(new ElevatorState(LengthKt.getInch(17)),
-				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(60))));
+				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-115)), new RotatingArmState(RoundRotation2d.getDegree(67))));
 
 		// place a hatch and take advantage of the proximal to slam the hatch into the side.
 		public static final SuperStructureState HATCH_SLAM_ROCKET_INSIDE = new SuperStructureState(new ElevatorState(LengthKt.getInch(21)),
@@ -308,7 +308,8 @@ public class SuperStructure extends Subsystem implements Loggable {
 
 		getWrist().requestAngle(ControlMode.MotionMagic, requState.getWrist().angle, getCurrentState());
 		getElbow().requestAngle(ControlMode.MotionMagic, requState.getElbow().angle);
-		getElevator().getMaster().set(ControlMode.MotionMagic, requState.getElevator().height, DemandType.ArbitraryFeedForward, elevatorPercentVbusGravity);
+		// getElevator().getMaster().set(ControlMode.MotionMagic, requState.getElevator().height, DemandType.ArbitraryFeedForward, elevatorPercentVbusGravity);
+		getElevator().setPositionSetpoint(requState);
 		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
 
 	}

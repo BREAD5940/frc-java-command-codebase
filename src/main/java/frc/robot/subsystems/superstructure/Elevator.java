@@ -273,7 +273,7 @@ public class Elevator extends Subsystem {
 	public void setMMArbitraryFeedForward(Length setpoint, double feedForwardPercent) {
 		setpoint = Util.limit(setpoint, SuperStructureConstants.Elevator.bottom, SuperStructureConstants.Elevator.top);
 		getMaster().selectProfileSlot(3, 0);
-		Logger.log("Elevator setpoint: " + setpoint.getInch() + " feedforward: " + feedForwardPercent + " current raw output: " + getMaster().getMotorOutputPercent());
+		// Logger.log("Elevator setpoint: " + setpoint.getInch() + " feedforward: " + feedForwardPercent + " current raw output: " + getMaster().getMotorOutputPercent());
 		getMaster().set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
 	}
 
@@ -284,7 +284,7 @@ public class Elevator extends Subsystem {
 		getMaster().configMotionAcceleration((int) config.motionMagicAccel);
 	}
 
-	SuperStructureState requState;
+	SuperStructureState requState = new SuperStructureState(new ElevatorState(LengthKt.getInch(27)));
 
 	public void setPositionSetpoint(SuperStructureState requ_) {
 		this.requState = requ_;
