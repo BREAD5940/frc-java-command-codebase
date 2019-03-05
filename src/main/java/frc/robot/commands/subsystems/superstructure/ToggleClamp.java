@@ -29,6 +29,7 @@ public class ToggleClamp extends InstantCommand {
   protected void initialize() {
     var currentState = SuperStructure.intake.getHatchMechState();
     var newState = (currentState == HatchMechState.kClamped) ? HatchMechState.kOpen : HatchMechState.kClamped;
+    System.out.println("OLD STATE: " + currentState.name() + " NEW STATE: " + newState.name());
     SuperStructure.intake.setHatchMech(newState);
   }
 

@@ -47,7 +47,7 @@ public class Intake extends Subsystem {
 		kOpen, kClamped;
 
 		public static Value get(HatchMechState state) {
-			return (state == kOpen) ? Value.kReverse : Value.kForward; // TODO check kforward state
+			return (state == HatchMechState.kClamped) ? Value.kReverse : Value.kForward; // TODO check kforward state
 		}
 	}
 
@@ -55,7 +55,7 @@ public class Intake extends Subsystem {
 	private static final HatchMechState kDefaultState = HatchMechState.kOpen;
 
 	public HatchMechState getHatchMechState() {
-		return (getSolenoid().get() == Value.kReverse) ? HatchMechState.kOpen : HatchMechState.kClamped; // TODO check kforward state
+		return (getSolenoid().get() == Value.kForward) ? HatchMechState.kOpen : HatchMechState.kClamped; // TODO check kforward state
 	}
 
 	public void setHatchMech(HatchMechState mReq) {
@@ -72,8 +72,8 @@ public class Intake extends Subsystem {
 		// talon.configPeakCurrentLimit(40);
 		// talon.enableCurrentLimit(true);
 		// talon.setName("Intake");
-		cargoTalon.configPeakOutputForward(.4);
-		cargoTalon.configPeakOutputReverse(-.4);
+		cargoTalon.configPeakOutputForward(.8);
+		cargoTalon.configPeakOutputReverse(-.8);
 	}
 
 	private Intake() {

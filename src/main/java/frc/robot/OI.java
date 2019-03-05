@@ -121,7 +121,7 @@ public class OI {
 		close_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kClamped)); // a button
 		dsClampToggle.whenPressed(new ToggleClamp());
 
-		primaryYButton.whenPressed(new SetHatchMech(HatchMechState.kOpen));
+		// primaryYButton.whenPressed(new SetHatchMech(HatchMechState.kOpen));
 
 		// primaryYButton.whenPressed(new PickupHatch()); // y button
 		// primaryYButton.whenPressed(new DriveDistanceTheSecond(LengthKt.getFeet(6), false)); // y button
@@ -285,7 +285,7 @@ public class OI {
 	 * Get intake speed is the difference between intake and outtake axis speeds
 	 */
 	public double getHatchSpeed() {
-		System.out.println("HATCH SPEED: " + driverStation.getRawAxis(0));
+		// System.out.println("HATCH SPEED: " + driverStation.getRawAxis(0));
 		return driverStation.getRawAxis(0);
 	}
 

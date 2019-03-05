@@ -23,7 +23,7 @@ public class PickupHatch extends CommandGroup {
 
 		addSequential(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
 
-		addSequential(new FollowVisionTargetTheSecond(7.5));
+		addSequential(new FollowVisionTargetTheSecond(6.5)); // in low res mode
 
 		// Consumer<Pose2d> translationSetter = (Pose2d newP) -> {this.mMeasuredPose = newP;};
 
@@ -35,17 +35,19 @@ public class PickupHatch extends CommandGroup {
 
 		// next we drive forward a foot or two
 
-		// addParallel(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
+		addParallel(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
 
-		addSequential(new PrintCommand("intaking...."));
+		// addSequential(new DrivePower(0.4, 1));
+
+		// addSequential(new PrintCommand("intaking...."));
 
 		// addParallel(new RunIntake(-1, 1));
 
 		addSequential(new PrintCommand("driving at a power"));
 
-		addSequential(new DrivePower(0.135, 0.9));
+		addSequential(new DrivePower(0.3, 1.5));
 
-		addParallel(new SuperstructureGoToState(new ElevatorState(fieldPositions.hatchLowGoal.plus(LengthKt.getInch(3))), iPosition.HATCH_PITCHED_UP));
+		addParallel(new SuperstructureGoToState(new ElevatorState(fieldPositions.hatchLowGoal.plus(LengthKt.getInch(3))), iPosition.HATCH_GRAB_INSIDE.getAngle()));
 
 		addSequential(new PrintCommand("driving at a power in reverse"));
 
