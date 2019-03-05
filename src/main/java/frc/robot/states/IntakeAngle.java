@@ -41,4 +41,8 @@ public class IntakeAngle {
 		return (this.elbowAngle.angle.isEqualTo(other.elbowAngle.angle)
 				&& this.wristAngle.angle.isEqualTo(other.wristAngle.angle));
 	}
+
+	public String toString() {
+		return elbowAngle.toString() + ", " + wristAngle.toString();
+	}
 }

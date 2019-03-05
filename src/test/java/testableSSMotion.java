@@ -14,6 +14,7 @@ import frc.robot.SuperStructureConstants;
 // import frc.robot.commands.subsystems.superstructure.ArmWaitForElevator;
 // import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.lib.Logger;
+import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -65,6 +66,10 @@ public class testableSSMotion /*extends Command*/ {
 	}
 
 	public boolean plan(SuperStructureState gsIn, SuperStructureState currentState) {
+    Logger.log("\t" + "\t" + gsIn.getCSVHeader());
+    Logger.log("INPUT STATE: " + "\t" + currentState.toCSV());
+    Logger.log("GOAL STATE: " + "\t" + gsIn.toCSV());
+
 		var goalState = new SuperStructureState(gsIn);
 		//CHECK if the current and goal match
 		if (goalState.isEqualTo(currentState)) {
@@ -168,8 +173,8 @@ public class testableSSMotion /*extends Command*/ {
 			Logger.log("queue.addSequential(new ArmMove(SuperStructure.iPosition.STOWED))");
 		}
 
-		Logger.log("queue.addParallel(new ArmWaitForElevator(goalState.getAngle(), goalState.getElevatorHeight(), LengthKt.getInch(3), goalState.getElevatorHeight().getInch() < currentState.getElevatorHeight().getInch()));");
-    Logger.log("queue.addSequential(new ElevatorMove(goalState.getElevator()));");
+		Logger.log("queue.addParallel(new ArmWaitForElevator(([ANGLES] " + goalState.getAngle().toString() + "), [ELEHEIGHT] " + goalState.getElevatorHeight().getInch() + ", [TOLERANCE]" + LengthKt.getInch(3).getInch() + ", [ISDESCENDING] " + (goalState.getElevatorHeight().getInch() < currentState.getElevatorHeight().getInch())+ "));");
+    Logger.log("queue.addSequential(new ElevatorMove(" + goalState.getElevator().getHeight().getInch() + "));");
 
 		return true;
 	}
