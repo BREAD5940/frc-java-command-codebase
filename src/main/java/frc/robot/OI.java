@@ -9,10 +9,15 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotConfig.auto.fieldPositions;
+import frc.robot.commands.auto.groups.PickupHatch;
+import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheSecond;
+import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
+import frc.robot.commands.subsystems.superstructure.ToggleClamp;
 import frc.robot.lib.DPadButton;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain.Gear;
@@ -32,21 +37,15 @@ public class OI {
 
 	private Joystick primaryJoystick = new Joystick(RobotConfig.controls.primary_joystick_port);
 	private Joystick secondaryJoystick = new Joystick(RobotConfig.controls.secondary_joystick_port);
-	// private Joystick driverStation = new Joystick(3); //TODO make a constant
+	private Joystick driverStation = new Joystick(5); //TODO make a constant
 
 	private Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
 	private Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
 	private Button open_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.Y_BUTTON);
 	private Button close_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.A_BUTTON);
-	private Button plzNoDieElevator = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
-	private Button plzNoDieDriveTrain = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
-	Button secondaryTest1 = new JoystickButton(secondaryJoystick, xboxmap.Buttons.B_BUTTON);
-	Button secondaryTest2 = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
-	// Button autobutton3 = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
 
 	// TODO change these to a button console once created
-	// Button auto_place_cargo_cargo_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
-	// Button auto_place_hatch_cargo_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.B_BUTTON);
+
 	Button primaryYButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
 	Button primaryAButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
 	Button primaryXButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
@@ -61,6 +60,19 @@ public class OI {
 	Button primaryDpadDown = new DPadButton(primaryJoystick, DPadButton.Direction.DOWN);
 	Button primaryDpadLeft = new DPadButton(primaryJoystick, DPadButton.Direction.LEFT);
 	Button primaryDpadRight = new DPadButton(primaryJoystick, DPadButton.Direction.RIGHT);
+
+	Button dsCargo1  = new JoystickButton(driverStation, 9);
+	Button dsCargo2 = new JoystickButton(driverStation, 6);
+	Button dsCargo3 = new JoystickButton(driverStation, 10);
+	Button dsCargoCargo = new JoystickButton(driverStation, 2);
+	Button dsCargoIn = new JoystickButton(driverStation, 7);
+
+	Button dsHatch1 = new JoystickButton(driverStation, 12);
+	Button dsHatch2 = new JoystickButton(driverStation, 1);
+	Button dsHatch3 = new JoystickButton(driverStation, 11);
+	Button dsHatchIn = new JoystickButton(driverStation, 8);
+
+	Button dsClampToggle = new JoystickButton(driverStation, 3);
 
 	// Button test2button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 
@@ -107,25 +119,36 @@ public class OI {
 		shift_down_button.whenPressed(new SetGearCommand(Gear.LOW));
 		open_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kOpen)); // y button
 		close_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kClamped)); // a button
+		dsClampToggle.whenPressed(new ToggleClamp());
 
-		primaryYButton.whenPressed(new SuperstructureGoToState(SuperStructure.iPosition.HATCH_GRAB_INSIDE_PREP)); // y button
-		primaryAButton.whenPressed(new SuperstructureGoToState(SuperStructure.iPosition.HATCH_GRAB_INSIDE)); // a button
+		primaryYButton.whenPressed(new SetHatchMech(HatchMechState.kOpen));
+
+		// primaryYButton.whenPressed(new PickupHatch()); // y button
+		// primaryYButton.whenPressed(new DriveDistanceTheSecond(LengthKt.getFeet(6), false)); // y button
+
+		// primaryAButton.whenPressed(new SuperstructureGoToState(SuperStructure.iPosition.HATCH_GRAB_INSIDE)); // a button
 		// test2Button.whenPressed(new PassThrough()); // a button
 		// primaryXButton.whenPressed(new RunIntake(1, 1, 2)); // x button
 
 		// cargo presets
-		secondaryDpadDown.whenPressed(new SuperstructureGoToState(LengthKt.getInch(3.5), SuperStructure.iPosition.CARGO_GRAB));
-		secondaryDpadLeft.whenPressed(new SuperstructureGoToState(fieldPositions.cargoLowGoal, SuperStructure.iPosition.CARGO_PLACE_INSIDE));
+		dsCargoIn.whenPressed(new SuperstructureGoToState(LengthKt.getInch(3.5), SuperStructure.iPosition.CARGO_GRAB));
+		dsCargo1.whenPressed(new SuperstructureGoToState(fieldPositions.cargoLowGoal, SuperStructure.iPosition.CARGO_PLACE));
+		dsCargo2.whenPressed(new SuperstructureGoToState(fieldPositions.cargoMiddleGoal, SuperStructure.iPosition.CARGO_PLACE));
+		dsCargo3.whenPressed(new SuperstructureGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE));
+
 		// secondaryDpadRight.whenPressed(new SuperstructureGoToState(fieldPositions.cargoMiddleGoal, SuperStructure.iPosition.CARGO_PLACE));
 		// secondaryDpadUp.whenPressed(new SuperstructureGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE));
 
 		// hatch presets
-		primaryDpadDown.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
-		primaryDpadLeft.whenPressed(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE));
+		dsHatchIn.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
+		dsHatch1.whenPressed(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		dsHatch2.whenPressed(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
+		dsHatch3.whenPressed(new SuperstructureGoToState(fieldPositions.hatchHighGoal, iPosition.HATCH));
+		
 		// primaryDpadRight.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
 		// primaryDpadUp.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
 
-		// test3Button.whenPressed(new FollowVisonTargetTheSecond());
+		// test3Button.whenPressed(new FollowVisonTargetTheSecond());\
 		// test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button
 		// primaryBButton.whenPressed(new visionTest()); // b button
 		// test4Button.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW)); // b button - used now for dealy
@@ -213,6 +236,9 @@ public class OI {
 	public void setAllRumble(double value) {
 		setRumble(RumbleType.kLeftRumble, getPrimary(), value);
 		setRumble(RumbleType.kLeftRumble, getSecondary(), value);
+
+		setRumble(RumbleType.kRightRumble, getPrimary(), value);
+		setRumble(RumbleType.kRightRumble, getSecondary(), value);
 	}
 
 	public double getForwardAxis() {
@@ -223,21 +249,21 @@ public class OI {
 		return primaryJoystick.getRawAxis(RobotConfig.controls.turn_axis);
 	}
 
-	public double getIntakeAxis() {
-		return (secondaryJoystick.getRawButton(xboxmap.Buttons.RB_BUTTON)) ? 1 * 1 : 0;
-	}
+	// public double getIntakeAxis() {
+	// 	return (secondaryJoystick.getRawButton(xboxmap.Buttons.RB_BUTTON)) ? 1 * 1 : 0;
+	// }
 
-	public double getCargoOuttake() {
-		return (secondaryJoystick.getRawButton(xboxmap.Buttons.X_BUTTON)) ? 1 * 1 : 0;
-	}
+	// public double getCargoOuttake() {
+	// 	return (secondaryJoystick.getRawButton(xboxmap.Buttons.X_BUTTON)) ? 1 * 1 : 0;
+	// }
 
-	public double getCargoIntake() {
-		return (secondaryJoystick.getRawButton(xboxmap.Buttons.B_BUTTON)) ? 1 * 1 : 0;
-	}
+	// public double getCargoIntake() {
+	// 	return (secondaryJoystick.getRawButton(xboxmap.Buttons.B_BUTTON)) ? 1 * 1 : 0;
+	// }
 
-	public double getOuttakeAxis() {
-		return (secondaryJoystick.getRawButton(xboxmap.Buttons.LB_BUTTON)) ? 1 * 1 : 0;
-	}
+	// public double getOuttakeAxis() {
+	// 	return (secondaryJoystick.getRawButton(xboxmap.Buttons.LB_BUTTON)) ? 1 * 1 : 0;
+	// }
 
 	public double getWristAxis() {
 		return secondaryJoystick.getRawAxis(5);
@@ -258,12 +284,13 @@ public class OI {
 	/**
 	 * Get intake speed is the difference between intake and outtake axis speeds
 	 */
-	public double getIntakeSpeed() {
-		return getIntakeAxis() - getOuttakeAxis();
+	public double getHatchSpeed() {
+		System.out.println("HATCH SPEED: " + driverStation.getRawAxis(0));
+		return driverStation.getRawAxis(0);
 	}
 
 	public double getCargoSpeed() {
-		return getCargoIntake() - getCargoOuttake();
+		return driverStation.getRawAxis(1);
 	}
 
 	public double getElevatorAxis() {
