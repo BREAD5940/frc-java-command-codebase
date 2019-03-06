@@ -21,13 +21,14 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.lib.HalfBakedSubsystem;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.AngularVelocity;
 import frc.robot.lib.obj.HalfBakedRotatingSRX;
 import frc.robot.lib.obj.RoundRotation2d;
 
-public class RotatingJoint extends Subsystem {
+public class RotatingJoint extends HalfBakedSubsystem {
 
 	private ArrayList<HalfBakedRotatingSRX> motors = new ArrayList<HalfBakedRotatingSRX>();
 
@@ -291,6 +292,11 @@ public class RotatingJoint extends Subsystem {
 
 	public boolean isWithinTolerance(RoundRotation2d tolerance, RoundRotation2d setpoint) {
 		return Math.abs(getRotation().minus(setpoint).getDegree()) < tolerance.getDegree();
+	}
+
+	@Override
+	public void onDisable() {
+		getMaster().set(ControlMode.PercentOutput, 0);
 	}
 
 }

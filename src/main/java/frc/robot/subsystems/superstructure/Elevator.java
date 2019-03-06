@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.SuperStructureConstants;
+import frc.robot.lib.HalfBakedSubsystem;
 import frc.robot.lib.Logger;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.motion.Util;
@@ -42,7 +43,7 @@ import frc.robot.states.SuperStructureState;
  * 
  * @author Matthew Morley
  */
-public class Elevator extends Subsystem {
+public class Elevator extends HalfBakedSubsystem {
 
 	private DoubleSolenoid mSolenoid = Robot.getElevatorShifter();
 
@@ -331,5 +332,10 @@ public class Elevator extends Subsystem {
 	@Override
 	protected void initDefaultCommand() {
 
+	}
+
+	@Override
+	public void onDisable() {
+		getMaster().set(ControlMode.PercentOutput, 0);
 	}
 }
