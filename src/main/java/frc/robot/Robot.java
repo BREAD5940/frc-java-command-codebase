@@ -259,6 +259,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledInit() {
 
+		SuperStructure.elevator.onDisable();
+		SuperStructure.getInstance().getElbow().onDisable();
+		SuperStructure.getInstance().getWrist().onDisable();
+
 		try {
 			mResetNotifier.startPeriodic(0.5);
 		} catch (Exception e) {
