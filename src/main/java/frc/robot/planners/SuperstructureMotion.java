@@ -98,7 +98,7 @@ public class SuperstructureMotion extends Command {
 				// LengthKt.getInch(goalState.getElbowAngle().getSin() * SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(GPelevator.getY()));
 
 		// for example, you can do this:
-		Translation2d GPwrist = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake.plus(GPelevator.getY()), goalState.getElbowAngle().toRotation2d()));
+		Translation2d GPwrist = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, goalState.getElbowAngle().toRotation2d()).plus(GPelevator);
 
 		Translation2d GPeoi = new Translation2d(LengthKt.getInch(goalState.getWristAngle().getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getX()),
 				LengthKt.getInch(goalState.getWristAngle().getSin() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
