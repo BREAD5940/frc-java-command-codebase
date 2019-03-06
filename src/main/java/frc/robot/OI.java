@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.groups.PickupHatch;
+import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
@@ -131,6 +132,8 @@ public class OI {
 				new RotatingArmState(RoundRotation2d.getDegree(-94)), 
 				new RotatingArmState(RoundRotation2d.getDegree(-42)))
 		));
+
+		primaryAButton.whileHeld(new HybridDriverAssist(7));
 
 		// cargo presets
 		dsCargoIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
