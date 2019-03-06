@@ -8,6 +8,7 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.SuperStructureConstants;
+import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.routines.passthrough.PassThroughForward;
 import frc.robot.commands.auto.routines.passthrough.PassThroughReverse;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
@@ -52,7 +53,7 @@ public class SuperstructureMotion extends Command {
 	}
 
 	private static SuperstructureMotion instance_;
-	protected CommandGroup queue = new CommandGroup();
+	protected AutoCommandGroup queue = new AutoCommandGroup();
 	// protected CommandGroup eleQueue = new CommandGroup();
 	// protected CommandGroup armQueue = new CommandGroup();
 	protected Optional<Command> current;
@@ -154,7 +155,7 @@ public class SuperstructureMotion extends Command {
 		}
 
 		//CLEAR the queue
-		queue = new CommandGroup();
+		queue = new AutoCommandGroup();
 
 		//CHECK the position of the intake -- hatch or cargo
 		// IF it's a long climb
@@ -181,7 +182,7 @@ public class SuperstructureMotion extends Command {
 		return true;
 	}
 
-	public CommandGroup getQueue() {
+	public AutoCommandGroup getQueue() {
 		return queue;
 	}
 

@@ -131,6 +131,12 @@ public class AutoMotionStateMachine extends SendableBase {
 		updateFromType();
 	}
 
+	public void setGoalType(GoalType type, GoalHeight height){
+		this.goalType = type;
+		updateFromType();
+		this.goalHeight = height;
+	}
+
 	public GoalType getGoalType() {
 		return this.goalType;
 	}
