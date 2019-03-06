@@ -37,14 +37,13 @@ public class PickupHatch extends CommandGroup {
 
 		addSequential(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
 
-		// addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(1), false)); // TODO run the next spline, saves time, vs backing up
-
-
-
-
 		// addSequential(SequentialCommandFactory.getSequentialCommands(Arrays.asList(
 				// new WaitCommand(0.75),
 				// new RunIntake(1, 0, 0.5))));
+
+		addParallel(new DriveDistanceTheSecond(LengthKt.getFeet(0.5), false)); // TODO run the next spline, saves time, vs backing up
+
+		addSequential(new RunIntake(1, 0, .5));
 
 		addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(1), true)); // TODO run the next spline, saves time, vs backing up
 
