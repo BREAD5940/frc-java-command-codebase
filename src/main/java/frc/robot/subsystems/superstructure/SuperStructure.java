@@ -9,7 +9,6 @@ import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.team254.lib.physics.DCMotorTransmission;
@@ -146,7 +145,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 		// grab a hatch by ramming against the loading station. Takes advantage of bumper recesses
 		public static final SuperStructureState HATCH_GRAB_INSIDE = new SuperStructureState(new ElevatorState(LengthKt.getInch(21)),
 				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-115)), new RotatingArmState(RoundRotation2d.getDegree(67))));
-		public static final SuperStructureState HATCH_GRAB_INSIDE_PREP = new SuperStructureState(new ElevatorState(LengthKt.getInch(17)),
+		public static final SuperStructureState HATCH_GRAB_INSIDE_PREP = new SuperStructureState(new ElevatorState(LengthKt.getInch(16)),
 				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-115)), new RotatingArmState(RoundRotation2d.getDegree(67))));
 
 		// place a hatch and take advantage of the proximal to slam the hatch into the side.

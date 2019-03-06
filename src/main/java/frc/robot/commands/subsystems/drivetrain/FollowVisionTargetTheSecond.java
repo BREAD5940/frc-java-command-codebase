@@ -14,6 +14,7 @@ import frc.robot.subsystems.DriveTrain;
 public class FollowVisionTargetTheSecond extends Command {
 
 	double targetArea;
+	boolean mHadTarget = false;
 
 	public FollowVisionTargetTheSecond(double targetArea) {
 		requires(DriveTrain.getInstance());
@@ -23,6 +24,7 @@ public class FollowVisionTargetTheSecond extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		m_isDone = false;
 		// SuperStructure.getElevator().getMaster().configPeakOutputForward(0);
 		// SuperStructure.getElevator().getMaster().configPeakOutputReverse(0);
 	}
@@ -41,7 +43,7 @@ public class FollowVisionTargetTheSecond extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		return m_isDone;
+		return m_isDone || (mHadTarget && !m_LimelightHasValidTarget);
 	}
 
 	// Called once after isFinished returns true
@@ -64,10 +66,10 @@ public class FollowVisionTargetTheSecond extends Command {
 	 */
 	public void Update_Limelight_Tracking() {
 		// These numbers must be tuned for your Robot!  Be careful!
-		final double STEER_K = 0.05;                    // how hard to turn toward the target
-		final double DRIVE_K = 0.26 * 1.6 * 1.6;                    // how hard to drive fwd toward the target
+		double STEER_K = 0.05;                    // how hard to turn toward the target
+		double DRIVE_K = 0.26 * 1.6 * 1.3;                    // how hard to drive fwd toward the target
 		double DESIRED_TARGET_AREA = this.targetArea;         // Area of the target when the robot reaches the wall
-		final double MAX_DRIVE = 0.7;                   // Simple speed limit so we don't drive too fast
+		double MAX_DRIVE = 0.7;                   // Simple speed limit so we don't drive too fast
 
 		double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
 		double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
@@ -89,6 +91,8 @@ public class FollowVisionTargetTheSecond extends Command {
 		}
 
 		m_LimelightHasValidTarget = true;
+
+		mHadTarget = true;
 
 		// Start with proportional steering
 		double steer_cmd = tx * STEER_K;

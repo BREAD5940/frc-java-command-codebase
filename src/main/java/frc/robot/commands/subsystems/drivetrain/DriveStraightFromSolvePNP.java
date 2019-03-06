@@ -33,7 +33,7 @@ public class DriveDistanceTheSecond extends Command {
 	private boolean commandStarted = false;
 
 	/**
-	 * Drive a distance (straight) forwards or backwards using a spliney boi.
+	 * Drive a distance (straight) forwards or backwards using a spliney boi. Distance is calculated using sovePNP
 	 * @param distance how far to move
 	 * @param reversed if the path is reversed
 	 */
@@ -52,10 +52,10 @@ public class DriveDistanceTheSecond extends Command {
 	protected void initialize() {
 		List<Pose2d> waypoints = (!reversed) ? Arrays.asList(
 				new Pose2d(LengthKt.getInch(0), LengthKt.getInch(30), Rotation2dKt.getDegree(0)),
-				new Pose2d(distance, LengthKt.getInch(30), Rotation2dKt.getDegree(0)))
-				: Arrays.asList(
-						new Pose2d(LengthKt.getInch(0), LengthKt.getInch(30), Rotation2dKt.getDegree(0)),
-						new Pose2d(distance.times(-1), LengthKt.getInch(30), Rotation2dKt.getDegree(0)));
+				// new Pose2d(distance, LengthKt.getInch(30), Rotation2dKt.getDegree(0)))
+				// : Arrays.asList(
+						// new Pose2d(LengthKt.getInch(0), LengthKt.getInch(30), Rotation2dKt.getDegree(0)),
+						// new Pose2d(distance.times(-1), LengthKt.getInch(30), Rotation2dKt.getDegree(0)));
 
 		var trajectory = Trajectories.generateTrajectoryLowGear(waypoints, reversed);
 

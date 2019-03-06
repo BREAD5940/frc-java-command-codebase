@@ -1,14 +1,18 @@
 package frc.robot.commands.auto.groups;
 
+import java.util.Arrays;
+
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.PrintCommand;
-import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.subsystems.drivetrain.DrivePower;
+import edu.wpi.first.wpilibj.command.WaitCommand;
+import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheSecond;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
+import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
-import frc.robot.states.ElevatorState;
+import frc.robot.lib.obj.factories.SequentialCommandFactory;
+import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.LimeLight.PipelinePreset;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 public class PickupHatch extends CommandGroup {
@@ -21,38 +25,30 @@ public class PickupHatch extends CommandGroup {
 	 */
 	public PickupHatch() {
 
+		addSequential(new LimeLight.SetLEDs(LimeLight.LEDMode.kON));
+
+		addSequential(new LimeLight.setPipeline(PipelinePreset.k3dVision));
+
 		addSequential(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
 
-		addSequential(new FollowVisionTargetTheSecond(6.5)); // in low res mode
+		addSequential(new FollowVisionTargetTheSecond(8)); // in high res mode
 
-		// Consumer<Pose2d> translationSetter = (Pose2d newP) -> {this.mMeasuredPose = newP;};
+		// ======================================================================
 
-		// addSequential(new PrintCommand("pose: " + this.mMeasuredPose.getRotation().getDegree()));
+		addSequential(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
 
-		// addSequential(new SetPoseFromVisionTarget(this::setPose));
+		// addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(1), false)); // TODO run the next spline, saves time, vs backing up
 
-		// addSequential(new PrintCommand("pose: " + this.mMeasuredPose.getRotation().getDegree()));
 
-		// next we drive forward a foot or two
 
-		addParallel(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
 
-		// addSequential(new DrivePower(0.4, 1));
+		// addSequential(SequentialCommandFactory.getSequentialCommands(Arrays.asList(
+				// new WaitCommand(0.75),
+				// new RunIntake(1, 0, 0.5))));
 
-		// addSequential(new PrintCommand("intaking...."));
+		addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(1), true)); // TODO run the next spline, saves time, vs backing up
 
-		// addParallel(new RunIntake(-1, 1));
+		addSequential(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
 
-		addSequential(new PrintCommand("driving at a power"));
-
-		addSequential(new DrivePower(0.3, 1.5));
-
-		addParallel(new SuperstructureGoToState(new ElevatorState(fieldPositions.hatchLowGoal.plus(LengthKt.getInch(3))), iPosition.HATCH_GRAB_INSIDE.getAngle()));
-
-		addSequential(new PrintCommand("driving at a power in reverse"));
-
-		addSequential(new DrivePower(-0.2, 0.75));
-
-		// addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(.5), true)); // TODO run the next spline, saves time, vs backing up
 	}
 }

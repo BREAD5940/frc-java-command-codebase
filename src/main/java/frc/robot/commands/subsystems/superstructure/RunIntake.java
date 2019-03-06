@@ -37,14 +37,23 @@ public class RunIntake extends TimedCommand {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {}
+	protected void execute() {
+		SuperStructure.intake.setCargoSpeed(cargo);
+		SuperStructure.intake.setHatchSpeed(hatch);
+
+	}
 
 	// Called once after timeout
 	@Override
-	protected void end() {}
+	protected void end() {		
+		SuperStructure.intake.setCargoSpeed(0);
+		SuperStructure.intake.setHatchSpeed(0);
+}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
-	protected void interrupted() {}
+	protected void interrupted() {
+		end();
+	}
 }

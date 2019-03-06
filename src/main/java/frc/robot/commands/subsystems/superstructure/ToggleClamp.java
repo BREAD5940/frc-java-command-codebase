@@ -15,22 +15,22 @@ import frc.robot.subsystems.superstructure.SuperStructure;
  * Add your docs here.
  */
 public class ToggleClamp extends InstantCommand {
-  /**
-   * Add your docs here.
-   */
-  public ToggleClamp() {
-    super();
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-  }
+	/**
+	 * Add your docs here.
+	 */
+	public ToggleClamp() {
+		super();
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+	}
 
-  // Called once when the command executes
-  @Override
-  protected void initialize() {
-    var currentState = SuperStructure.intake.getHatchMechState();
-    var newState = (currentState == HatchMechState.kClamped) ? HatchMechState.kOpen : HatchMechState.kClamped;
-    System.out.println("OLD STATE: " + currentState.name() + " NEW STATE: " + newState.name());
-    SuperStructure.intake.setHatchMech(newState);
-  }
+	// Called once when the command executes
+	@Override
+	protected void initialize() {
+		var currentState = SuperStructure.intake.getHatchMechState();
+		var newState = (currentState == HatchMechState.kClamped) ? HatchMechState.kOpen : HatchMechState.kClamped;
+		System.out.println("OLD STATE: " + currentState.name() + " NEW STATE: " + newState.name());
+		SuperStructure.intake.setHatchMech(newState);
+	}
 
 }

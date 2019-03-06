@@ -25,6 +25,7 @@ import frc.robot.lib.statemachines.AutoMotionStateMachine;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
+import frc.robot.subsystems.LimeLight.LEDMode;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
@@ -142,6 +143,10 @@ public class Robot extends TimedRobot {
 		mGh.addOption("Middle", GoalHeight.MIDDLE);
 		mGh.addOption("High", GoalHeight.HIGH);
 		SmartDashboard.putData("Goal Height", mGh);
+
+		SmartDashboard.putData("LIMELIGHT LED ON", new LimeLight.SetLEDs(LEDMode.kON));
+		SmartDashboard.putData("LIMELIGHT LED OFF", new LimeLight.SetLEDs(LEDMode.kOFF));
+
 
 		m_oi = new OI();
 		autoState = new AutoMotionStateMachine();
@@ -316,6 +321,9 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
+
+		SuperStructure.elevator.onDisable();
+
 		mResetNotifier.stop();
 		// This makes sure that the autonomous stops running when
 		// teleop starts running. If you want the autonomous to

@@ -12,7 +12,7 @@ public class VisionTarget implements Loggable {
 
 	private final Length width, height;
 	private final Length goalHeight;
-	public static final List<Length> kDualVisionTapeShape = Arrays.asList(LengthKt.getInch(12), LengthKt.getInch(5)); // TODO check me
+	public static final List<Length> kDualVisionTapeShape = Arrays.asList(LengthKt.getInch(15), LengthKt.getInch(5)); // TODO check me
 	public static final List<Length> kSingleVisionTapeShape = Arrays.asList(LengthKt.getInch(3), LengthKt.getInch(5)); // TODO check me
 
 	/**

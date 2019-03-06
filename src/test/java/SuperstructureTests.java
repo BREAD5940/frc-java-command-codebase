@@ -3,7 +3,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.junit.jupiter.api.Test;
 
-import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
@@ -138,10 +137,10 @@ public class SuperstructureTests extends Testable {
 	public void superstructureMotionTest() {
 
 		SuperStructureState Start1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(5)),
-			new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
+				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
 
 		SuperStructureState Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(10)),
-			new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
+				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
 
 		testableSSMotion.getInstance().plan(Goal1, Start1);
 
@@ -155,7 +154,6 @@ public class SuperstructureTests extends Testable {
 		// for(Command c : planned.)
 
 	}
-
 
 	@Test
 	public void rotation2dTest() {

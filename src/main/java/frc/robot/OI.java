@@ -9,20 +9,23 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.groups.PickupHatch;
-import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheSecond;
-import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
+import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.commands.subsystems.superstructure.ToggleClamp;
 import frc.robot.lib.DPadButton;
 import frc.robot.lib.motion.Util;
+import frc.robot.lib.obj.RoundRotation2d;
+import frc.robot.lib.obj.factories.SequentialCommandFactory;
+import frc.robot.states.ElevatorState;
+import frc.robot.states.IntakeAngle;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
@@ -61,18 +64,18 @@ public class OI {
 	Button primaryDpadLeft = new DPadButton(primaryJoystick, DPadButton.Direction.LEFT);
 	Button primaryDpadRight = new DPadButton(primaryJoystick, DPadButton.Direction.RIGHT);
 
-	Button dsCargo1  = new JoystickButton(driverStation, 9);
+	Button dsCargo1 = new JoystickButton(driverStation, 9);
 	Button dsCargo2 = new JoystickButton(driverStation, 6);
 	Button dsCargo3 = new JoystickButton(driverStation, 10);
-	Button dsCargoCargo = new JoystickButton(driverStation, 2);
-	Button dsCargoIn = new JoystickButton(driverStation, 7);
+	Button dsCargoCargo = new JoystickButton(driverStation, 7);
+	Button dsCargoIn = new JoystickButton(driverStation, 2);
 
 	Button dsHatch1 = new JoystickButton(driverStation, 12);
 	Button dsHatch2 = new JoystickButton(driverStation, 1);
 	Button dsHatch3 = new JoystickButton(driverStation, 11);
-	Button dsHatchIn = new JoystickButton(driverStation, 8);
+	Button dsHatchIn = new JoystickButton(driverStation, 3);
 
-	Button dsClampToggle = new JoystickButton(driverStation, 3);
+	Button dsClampToggle = new JoystickButton(driverStation, 8);
 
 	// Button test2button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 
@@ -121,20 +124,34 @@ public class OI {
 		close_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kClamped)); // a button
 		dsClampToggle.whenPressed(new ToggleClamp());
 
-		// primaryYButton.whenPressed(new SetHatchMech(HatchMechState.kOpen));
-
-		// primaryYButton.whenPressed(new PickupHatch()); // y button
-		// primaryYButton.whenPressed(new DriveDistanceTheSecond(LengthKt.getFeet(6), false)); // y button
-
-		// primaryAButton.whenPressed(new SuperstructureGoToState(SuperStructure.iPosition.HATCH_GRAB_INSIDE)); // a button
-		// test2Button.whenPressed(new PassThrough()); // a button
-		// primaryXButton.whenPressed(new RunIntake(1, 1, 2)); // x button
+		primaryDpadUp.whenPressed(new PickupHatch());
+		primaryDpadDown.whenPressed(new SuperstructureGoToState(
+			new ElevatorState(LengthKt.getInch(26)),
+			new IntakeAngle(
+				new RotatingArmState(RoundRotation2d.getDegree(-94)), 
+				new RotatingArmState(RoundRotation2d.getDegree(-42)))
+		));
 
 		// cargo presets
-		dsCargoIn.whenPressed(new SuperstructureGoToState(LengthKt.getInch(3.5), SuperStructure.iPosition.CARGO_GRAB));
-		dsCargo1.whenPressed(new SuperstructureGoToState(fieldPositions.cargoLowGoal, SuperStructure.iPosition.CARGO_PLACE));
-		dsCargo2.whenPressed(new SuperstructureGoToState(fieldPositions.cargoMiddleGoal, SuperStructure.iPosition.CARGO_PLACE));
-		dsCargo3.whenPressed(new SuperstructureGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE));
+		dsCargoIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
+				Arrays.asList(
+						new SetHatchMech(HatchMechState.kOpen),
+						new SuperstructureGoToState(LengthKt.getInch(3.5), SuperStructure.iPosition.CARGO_GRAB))));
+
+		dsCargo1.whenPressed(SequentialCommandFactory.getSequentialCommands(
+				Arrays.asList(
+						new SetHatchMech(HatchMechState.kClamped),
+						new SuperstructureGoToState(fieldPositions.cargoLowGoal, SuperStructure.iPosition.CARGO_PLACE))));
+
+		dsCargo2.whenPressed(SequentialCommandFactory.getSequentialCommands(
+				Arrays.asList(
+						new SetHatchMech(HatchMechState.kClamped),
+						new SuperstructureGoToState(fieldPositions.cargoMiddleGoal, SuperStructure.iPosition.CARGO_PLACE))));
+
+		dsCargo3.whenPressed(SequentialCommandFactory.getSequentialCommands(
+				Arrays.asList(
+						new SetHatchMech(HatchMechState.kClamped),
+						new SuperstructureGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE))));
 
 		// secondaryDpadRight.whenPressed(new SuperstructureGoToState(fieldPositions.cargoMiddleGoal, SuperStructure.iPosition.CARGO_PLACE));
 		// secondaryDpadUp.whenPressed(new SuperstructureGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE));
@@ -144,7 +161,7 @@ public class OI {
 		dsHatch1.whenPressed(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 		dsHatch2.whenPressed(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
 		dsHatch3.whenPressed(new SuperstructureGoToState(fieldPositions.hatchHighGoal, iPosition.HATCH));
-		
+
 		// primaryDpadRight.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
 		// primaryDpadUp.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
 

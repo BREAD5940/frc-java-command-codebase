@@ -1,20 +1,11 @@
-// package frc.robot.planners;
 
-import java.util.Optional;
+// package frc.robot.planners;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-// import edu.wpi.first.wpilibj.command.Command;
-// import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.SuperStructureConstants;
-// import frc.robot.commands.auto.routines.passthrough.PassThroughForward;
-// import frc.robot.commands.auto.routines.passthrough.PassThroughReverse;
-// import frc.robot.commands.subsystems.superstructure.ArmMove;
-// import frc.robot.commands.subsystems.superstructure.ArmWaitForElevator;
-// import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.lib.Logger;
-import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -66,9 +57,9 @@ public class testableSSMotion /*extends Command*/ {
 	}
 
 	public boolean plan(SuperStructureState gsIn, SuperStructureState currentState) {
-    Logger.log("\t" + "\t" + gsIn.getCSVHeader());
-    Logger.log("INPUT STATE: " + "\t" + currentState.toCSV());
-    Logger.log("GOAL STATE: " + "\t" + gsIn.toCSV());
+		Logger.log("\t" + "\t" + gsIn.getCSVHeader());
+		Logger.log("INPUT STATE: " + "\t" + currentState.toCSV());
+		Logger.log("GOAL STATE: " + "\t" + gsIn.toCSV());
 
 		var goalState = new SuperStructureState(gsIn);
 		//CHECK if the current and goal match
@@ -173,8 +164,8 @@ public class testableSSMotion /*extends Command*/ {
 			Logger.log("queue.addSequential(new ArmMove(SuperStructure.iPosition.STOWED))");
 		}
 
-		Logger.log("queue.addParallel(new ArmWaitForElevator(([ANGLES] " + goalState.getAngle().toString() + "), [ELEHEIGHT] " + goalState.getElevatorHeight().getInch() + ", [TOLERANCE]" + LengthKt.getInch(3).getInch() + ", [ISDESCENDING] " + (goalState.getElevatorHeight().getInch() < currentState.getElevatorHeight().getInch())+ "));");
-    Logger.log("queue.addSequential(new ElevatorMove(" + goalState.getElevator().getHeight().getInch() + "));");
+		Logger.log("queue.addParallel(new ArmWaitForElevator(([ANGLES] " + goalState.getAngle().toString() + "), [ELEHEIGHT] " + goalState.getElevatorHeight().getInch() + ", [TOLERANCE]" + LengthKt.getInch(3).getInch() + ", [ISDESCENDING] " + (goalState.getElevatorHeight().getInch() < currentState.getElevatorHeight().getInch()) + "));");
+		Logger.log("queue.addSequential(new ElevatorMove(" + goalState.getElevator().getHeight().getInch() + "));");
 
 		return true;
 	}

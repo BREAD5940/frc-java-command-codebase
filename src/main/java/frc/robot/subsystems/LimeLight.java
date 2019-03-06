@@ -11,6 +11,8 @@ import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotConfig;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.VisionTarget;
@@ -27,7 +29,7 @@ import frc.robot.lib.obj.factories.VisionTargetFactory;
  * 
  * @author Matthew Morley
  */
-public class LimeLight {
+public class LimeLight extends Subsystem {
 
 	private static LimeLight instance;
 	private static Object mutex = new Object();
@@ -60,7 +62,7 @@ public class LimeLight {
 	private static final double y_focal_length_high = y_resolution_low / (2 * Math.tan(y_fov.getRadian() / 2));
 	boolean isHighRes = false;
 	public PipelinePreset mCurrentPipeline;
-	private static final PipelinePreset kDefaultPreset = PipelinePreset.kCargoClose;
+	private static final PipelinePreset kDefaultPreset = PipelinePreset.k2dVision;
 
 	private static final VisionTarget kRocketCargoSingleTarget = VisionTargetFactory.getRocketCargoSingleTarget();
 	private static final VisionTarget kHatchSingleTarget = VisionTargetFactory.getHatchSingleTarget();
@@ -141,7 +143,7 @@ public class LimeLight {
 	}
 
 	public enum PipelinePreset {
-		kDefault(0), kCargoFar(1), kCargoClose(2), kCargoFarHighRes(3), kCargoCloseHighRes(4);
+		kDefault(2), k2dVision(1), k3dVision(0);
 
 		private int id;
 
@@ -247,6 +249,8 @@ public class LimeLight {
 		return distance;
 	}
 
+	
+
 	public class MeasuredVisionTarget {
 		private double x_, y_, width_, height_, area_;
 
@@ -277,6 +281,55 @@ public class LimeLight {
 		public double getArea() {
 			return area_;
 		}
+	}
+
+	public enum LEDMode {
+		kON, kOFF;
+	}
+
+	public static class SetLEDs extends InstantCommand {
+		private LEDMode mode;
+
+		public SetLEDs(LEDMode mode) {
+			this.mode = mode;
+			setRunWhenDisabled(true);
+		}
+
+		@Override
+		protected void initialize() {
+			if (mode == LEDMode.kON)
+				LimeLight.getInstance().turnOnLED();
+			if (mode == LEDMode.kOFF)
+				LimeLight.getInstance().turnOffLED();
+		}
+
+	}
+
+	public static class setPipeline extends InstantCommand {
+		private PipelinePreset mode;
+
+		public setPipeline(PipelinePreset mode) {
+			this.mode = mode;
+			setRunWhenDisabled(true);
+		}
+
+		@Override
+		protected void initialize() {
+			LimeLight.getInstance().setPipeline(mode);
+		}
+
+	}
+
+	@Override
+	protected void initDefaultCommand() {
+
+	}
+
+	@Override
+	public void periodic() {
+		// var target = VisionTargetFactory.getHatchDualTarget();
+		// var measured = new MeasuredVisionTarget
+		// var distance = getDistance(target, mMeasured)
 	}
 
 }

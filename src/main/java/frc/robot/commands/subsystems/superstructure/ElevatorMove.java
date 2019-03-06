@@ -2,7 +2,6 @@ package frc.robot.commands.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.states.ElevatorState;
-import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class ElevatorMove extends Command {
