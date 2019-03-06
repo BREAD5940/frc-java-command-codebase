@@ -18,7 +18,7 @@ public class AutoMotionStateMachine extends SendableBase {
 	}
 
 	public enum GoalLocation {
-		CARGO_SHIP, ROCKET
+		CARGO_SHIP, ROCKET, LOADING, DEPOT
 	}
 
 	public enum MotionType {
@@ -72,6 +72,63 @@ public class AutoMotionStateMachine extends SendableBase {
 			}
 
 		}
+	}
+
+	protected void updateFromType(){
+		switch (this.goalType){
+			case CARGO_CARGO:
+				this.heldPiece = HeldPiece.CARGO;
+				this.goalPiece = HeldPiece.NONE;
+
+				this.goalHeight = GoalHeight.LOW;
+				this.goalLocation = GoalLocation.CARGO_SHIP;
+				this.motionType = MotionType.PLACE;
+
+			case CARGO_HATCH:
+				this.heldPiece = HeldPiece.HATCH;
+				this.goalPiece = HeldPiece.NONE;
+
+				this.goalHeight = GoalHeight.LOW;
+				this.goalLocation = GoalLocation.CARGO_SHIP;
+				this.motionType = MotionType.PLACE;
+
+			case ROCKET_CARGO:
+				this.heldPiece = HeldPiece.CARGO;
+				this.goalPiece = HeldPiece.NONE;
+
+				//FIXME goal height unknown
+				this.goalLocation = GoalLocation.ROCKET;
+				this.motionType = MotionType.PLACE;
+
+			case ROCKET_HATCH:
+				this.heldPiece = HeldPiece.HATCH;
+				this.goalPiece = HeldPiece.NONE;
+
+				//FIXME goal height unknown
+				this.goalLocation = GoalLocation.ROCKET;
+				this.motionType = MotionType.PLACE;
+
+			case RETRIEVE_CARGO:
+				this.heldPiece = HeldPiece.NONE;
+				this.goalPiece = HeldPiece.CARGO;
+
+				this.goalHeight = GoalHeight.LOW; //yes?
+				this.goalLocation = GoalLocation.DEPOT; //probably
+				this.motionType = MotionType.PICKUP;
+
+			case RETRIEVE_HATCH:
+				this.heldPiece = HeldPiece.NONE;
+				this.goalPiece = HeldPiece.HATCH;
+
+				this.goalHeight = GoalHeight.LOW;
+				this.goalLocation = GoalLocation.LOADING;
+				this.motionType = MotionType.PICKUP;
+		}
+	}
+
+	public void setGoalType(GoalType type){
+		this.goalType = type;
+		updateFromType();
 	}
 
 	public GoalType getGoalType() {
