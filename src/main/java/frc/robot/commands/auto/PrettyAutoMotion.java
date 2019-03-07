@@ -1,11 +1,14 @@
 package frc.robot.commands.auto;
 
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+
 import frc.robot.RobotConfig;
 import frc.robot.RobotConfig.auto;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.lib.AutoCommand;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.MainArmPosition;
 import frc.robot.planners.SuperstructureMotion;
 import frc.robot.states.ElevatorState;
@@ -30,7 +33,7 @@ public class PrettyAutoMotion{
   private AutoCommandGroup genMainMotion(AutoMotionStateMachine machine){
     AutoCommandGroup createdGroup = new AutoCommandGroup();
 
-
+    //TODO do thing
 
     return createdGroup;
   }
@@ -70,12 +73,14 @@ public class PrettyAutoMotion{
             switch(machine.getMainArmPosition()){
               case FRONT:
                 aState = iPosition.CARGO_PLACE;
+                break;
               case IN:
                 aState = iPosition.CARGO_PLACE_INSIDE;
+                break;
               case BACK:
                 aState = iPosition.CARGO_REVERSE;
+                break;
             }
-            aState = iPosition.CARGO_PLACE;
             switch (machine.getGoalHeight()){
               case LOW:
                 eState.setHeight(auto.fieldPositions.cargoLowGoal);
@@ -87,16 +92,8 @@ public class PrettyAutoMotion{
                 eState.setHeight(fieldPositions.cargoHighGoal);
                 break;
             }
+            break;
           case HATCH:
-            switch (machine.getMainArmPosition()){
-              case FRONT:
-                // if(machine.getGoalHeight());
-              case IN:
-
-              case BACK:
-
-            }
-            aState = iPosition.HATCH;
             switch(machine.getGoalHeight()){
               case LOW:
                 eState.setHeight(fieldPositions.hatchLowGoal);
@@ -108,6 +105,24 @@ public class PrettyAutoMotion{
                 eState.setHeight(fieldPositions.hatchHighGoal);
                 break;
             }
+            switch (machine.getMainArmPosition()){
+              case FRONT:
+                if(machine.getGoalHeight()==GoalHeight.LOW){
+                  aState = iPosition.HATCH;
+                }else{
+                  aState = iPosition.HATCH_PITCHED_UP;
+                }
+                break;
+              case IN:
+                eState.setHeight(iPosition.HATCH_SLAM_ROCKET_INSIDE_PREP.getElevatorHeight());
+                aState = iPosition.HATCH_SLAM_ROCKET_INSIDE_PREP.getAngle();
+                break;
+              case BACK:
+                aState = iPosition.HATCH_REVERSE;
+                break;
+            }
+            break;
+            
           case NONE:
             //no
             break;
@@ -115,9 +130,8 @@ public class PrettyAutoMotion{
       case LOADING:
         switch (machine.getGoalPiece()){
           case HATCH:
-            eState.setHeight(fieldPositions.hatchLowGoal);
-            //FIXME see above
-            aState = iPosition.HATCH_PITCHED_UP;
+            eState.setHeight(iPosition.HATCH_GRAB_INSIDE_PREP.getElevatorHeight());
+            aState = iPosition.HATCH_GRAB_INSIDE_PREP.getAngle();
             break;
           case CARGO:
             //TODO this will do a thing eventually
@@ -126,8 +140,10 @@ public class PrettyAutoMotion{
             //no
             break;
         }
+        break;
       case DEPOT:
-        //FIXME honestly I don't think this is actually gonna be a thing
+        eState.setHeight(LengthKt.getInch(2));
+        aState = iPosition.CARGO_GRAB;
         break;
     }
 
