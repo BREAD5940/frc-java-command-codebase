@@ -54,12 +54,6 @@ public class SuperStructureTelop extends Command {
 		mElbowPower = mElbowPower * Math.abs(mElbowPower); // square inputs
 		var kDeadband = 0.05d;
 
-		// check for big wrist discrepincy
-		var cachedWrist = mCachedState.getWrist().angle;
-		var currentWrist = mCurrentState.getWrist().angle;
-		System.out.println("CACHED WRIST: " + cachedWrist + " CURRENT WRIST: " + currentWrist);
-		if(Math.abs(cachedWrist.getDegree() - currentWrist.getDegree()) > 25) mCachedState.jointAngles.wristAngle.angle = currentWrist; 
-
 		// Figure out of the operator is commanding an elevator move. If so, increment the new state and cache the current state - if not, stay at the cached state.
 		if (Math.abs(mElevatorPower) > kDeadband) {
 			mNewState.elevator = new ElevatorState(mCurrentState.getElevatorHeight().plus(LengthKt.getInch(mElevatorPower * ((mElevatorPower > 0) ? 5 : 10))));
@@ -76,9 +70,6 @@ public class SuperStructureTelop extends Command {
 		} else {
 			mNewState.jointAngles.wristAngle = mCachedState.jointAngles.wristAngle;
 		}
-		System.out.println("CACHED wrist move: " + mCachedState.jointAngles.wristAngle.angle.toCSV());
-
-		System.out.println("Requesting wrist move to " + mNewState.jointAngles.wristAngle.angle.toCSV());
 
 		// Figure out of the operator is commanding a elbow move. If so, increment the new state and cache the current state - if not, stay at the cached state.
 		if (Math.abs(mElbowPower) > kDeadband) {
