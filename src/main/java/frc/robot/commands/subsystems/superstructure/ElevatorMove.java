@@ -14,7 +14,7 @@ public class ElevatorMove extends Command {
 	 */
 	public ElevatorMove(ElevatorState goal) {
 		this(goal, "ElevatorMove to " + goal.toString());
-		}
+	}
 
 	public ElevatorMove(ElevatorState goal, String name) {
 		this.mGoal = goal;

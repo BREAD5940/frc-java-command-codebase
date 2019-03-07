@@ -46,7 +46,7 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedLGTrajectories.get("habL" + " to " + "rocketLF"); //current trajectory from hashmap in Trajectorie
 		addParallel(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE_PREP)); // move arm inside to prep state
 		addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kON));
-		addParallel(new LimeLight.setPipeline(PipelinePreset.k3dVision));		
+		addParallel(new LimeLight.setPipeline(PipelinePreset.k3dVision));
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
 		addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
 		// addSequential(new SplineToVisionTarget(/*this.getPoseStorage1(), */LengthKt.getInch(0), LengthKt.getInch(30), 6.5));
@@ -54,17 +54,14 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
 		addSequential(new RunIntake(-1, 0, 1));
 
-
 		// back up 3 feet
 		addParallel(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
 		addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(3), true));
 
-
 		// spline over to the rocket
 		var rocketToLoading = Trajectories.generatedLGTrajectories.get("rocketLF to loadingL");
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
-		addSequential(new PickupHatch());		
-		
+		addSequential(new PickupHatch());
 
 		var loadingToRocketClose = Trajectories.generatedLGTrajectories.get("loadingL to rocketLC");
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
@@ -72,8 +69,6 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
 		addSequential(new FollowVisionTargetTheSecond(5));
 		addSequential(new RunIntake(-1, 0, 1));
-
-
 
 		/* Move from middle of cargo ship to loading station on the same side to pick up a hatch */
 		// cStart = "cargoM" + side;

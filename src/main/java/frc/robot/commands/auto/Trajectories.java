@@ -202,19 +202,18 @@ public class Trajectories {
 						)),
 				true));
 
-
 		// path from loading station to rcket
 		generatedLGTrajectories.put("loadingL to rocketLC", generateTrajectoryLowGear(
-			Arrays.asList(
-					new Pose2d(
-							LengthKt.getFeet(1.447),
-							LengthKt.getFeet(24.894),
-							Rotation2dKt.getDegree(180)),
-					new Pose2d(
-							LengthKt.getFeet(13.013),
-							LengthKt.getFeet(23.055),
-							Rotation2dKt.getDegree(30))),
-			true));
+				Arrays.asList(
+						new Pose2d(
+								LengthKt.getFeet(1.447),
+								LengthKt.getFeet(24.894),
+								Rotation2dKt.getDegree(180)),
+						new Pose2d(
+								LengthKt.getFeet(13.013),
+								LengthKt.getFeet(23.055),
+								Rotation2dKt.getDegree(30))),
+				true));
 
 		generatedLGTrajectories.put("loadingL to cargoL1", generateTrajectoryHighGear(new ArrayList<Pose2d>(Arrays.asList(
 				locations.get("loadingL"), locations.get("cargoL1").plus(

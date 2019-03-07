@@ -77,7 +77,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 	public boolean getInnerStageMinLimit() {
 		return !innerStageMinLimitSwitch.get(); // to invert logic
 	}
-	
+
 	public static synchronized SuperStructure getInstance() {
 		if (instance_ == null) {
 			instance_ = new SuperStructure();

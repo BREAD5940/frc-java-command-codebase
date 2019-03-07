@@ -27,7 +27,7 @@ public class FollowVisionTargetTheSecond extends Command {
 	protected void initialize() {
 		// just in case turn on LEDs
 		LimeLight.getInstance().turnOnLED();
-		
+
 		m_isDone = false;
 		// SuperStructure.getElevator().getMaster().configPeakOutputForward(0);
 		// SuperStructure.getElevator().getMaster().configPeakOutputReverse(0);

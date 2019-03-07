@@ -3,7 +3,6 @@ import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.lib.Logger;
 
 /**
@@ -35,25 +34,25 @@ public class TestableAutoCommandGroup /*extends CommandGroup*/ {
 
 	public final synchronized void addSequentialLoggable(Command command, double timeout, boolean isReal) {
 		// if (isReal)
-			// super.addSequential(command, timeout);
+		// super.addSequential(command, timeout);
 		addSequentialLoggable(command, isReal);
 	}
 
 	public final synchronized void addSequentialLoggable(Command command, boolean isReal) {
 		// if (isReal)
-			// super.addSequential(command);
+		// super.addSequential(command);
 		logCommand(command, "Sequential");
 	}
 
 	public final synchronized void addParallelLoggable(Command command, double timeout, boolean isReal) {
 		// if (isReal)
-			// super.addParallel(command, timeout);
+		// super.addParallel(command, timeout);
 		addParallelLoggable(command, isReal);
 	}
 
 	public final synchronized void addParallelLoggable(Command command, boolean isReal) {
 		// if (isReal)
-			// super.addParallel(command);
+		// super.addParallel(command);
 		logCommand(command, "Parallel");
 	}
 

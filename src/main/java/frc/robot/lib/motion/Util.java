@@ -140,8 +140,10 @@ public class Util {
 
 	public static RoundRotation2d getWorstCase(RoundRotation2d worstCase, RoundRotation2d bound1, RoundRotation2d bound2) {
 		// RoundRotation2d toReturn;
-		if(isWithin(worstCase, bound1, bound2)) return worstCase; 
-		else return min(bound1, bound2);
+		if (isWithin(worstCase, bound1, bound2))
+			return worstCase;
+		else
+			return min(bound1, bound2);
 	}
 
 	public static String toString(Pose2d pose) {
