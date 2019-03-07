@@ -10,7 +10,7 @@ public class ElevatorMove extends Command {
 
 	/**
 	 * Move
-	 * @param goal
+	 * @param goal the goal state of the elevator
 	 */
 	public ElevatorMove(ElevatorState goal) {
 		this.mGoal = goal;

@@ -213,6 +213,19 @@ public class SuperstructureMotion extends Command {
 
 		if(isWithinFramePerimeter) Logger.log("current or goal state is within the frame perimeter!");
 
+		// first, check if trying to move the arms _right now_ would make shit slap
+		var worstCaseStartingPos = worstCaseCarriageToEOI.plus(new Translation2d(currentState.getElevator().height, LengthKt.getInch(0)));
+		if(
+			worstCaseStartingPos.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch()
+		) {
+			Logger.log("gunna slap the electronics plate, gotta move the elevator first");
+
+			// TODO check if the end state is going to hit anything
+
+			queue.addSequentialLoggable(new ElevatorMove(goalState.getElevator()), isReal);
+
+		}
+
 
 
 		//FIND the lowest goal and end points
