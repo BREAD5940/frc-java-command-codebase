@@ -6,17 +6,22 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
+import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
+import frc.robot.commands.auto.groups.PickupHatch;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
-import frc.robot.commands.subsystems.drivetrain.SplineToVisionTarget;
+import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheSecond;
+import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
+import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.LimeLight.PipelinePreset;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
@@ -40,12 +45,35 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		/* Get a trajectory to move to the cargo ship. THE ROBOT IS REVERSED */
 		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedLGTrajectories.get("habL" + " to " + "rocketLF"); //current trajectory from hashmap in Trajectorie
 		addParallel(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE_PREP)); // move arm inside to prep state
-		this.addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
-		// addSequential(new SetTempPoseFromVisionTarget(this, PoseStorage.POSE1, false)); // set this' temp pose from vision target
-		addParallel(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE.elevator.plus(iPosition.kOffsetFromL1toL2), iPosition.HATCH_SLAM_ROCKET_INSIDE.jointAngles));
-		addSequential(new SplineToVisionTarget(/*this.getPoseStorage1(), */LengthKt.getInch(0), LengthKt.getInch(30), 6.5));
-		addSequential(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE), 1);
+		addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kON));
+		addParallel(new LimeLight.setPipeline(PipelinePreset.k3dVision));		
+		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
+		addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
+		// addSequential(new SplineToVisionTarget(/*this.getPoseStorage1(), */LengthKt.getInch(0), LengthKt.getInch(30), 6.5));
+		addSequential(new FollowVisionTargetTheSecond(5));
+		addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
 		addSequential(new RunIntake(-1, 0, 1));
+
+
+		// back up 3 feet
+		addParallel(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
+		addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(3), true));
+
+
+		// spline over to the rocket
+		var rocketToLoading = Trajectories.generatedLGTrajectories.get("rocketLF to loadingL");
+		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
+		addSequential(new PickupHatch());		
+		
+
+		var loadingToRocketClose = Trajectories.generatedLGTrajectories.get("loadingL to rocketLC");
+		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
+		addSequential(new LimeLight.SetLEDs(LimeLight.LEDMode.kON));
+		addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
+		addSequential(new FollowVisionTargetTheSecond(5));
+		addSequential(new RunIntake(-1, 0, 1));
+
+
 
 		/* Move from middle of cargo ship to loading station on the same side to pick up a hatch */
 		// cStart = "cargoM" + side;
