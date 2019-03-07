@@ -264,9 +264,9 @@ public class SuperstructureMotion extends Command {
 		this.queue = new AutoCommandGroup();
 		Logger.log("queue cleared");
 
-		if (GPwrist.getX().getInch() > 0 && SPwrist.getX().getInch() < 0) {
+		if (GPwrist.getX().getInch() > 5 && SPwrist.getX().getInch() < -5) {
 			queue.addSequentialLoggable(new PassThroughReverse(), isReal);
-		} else if (GPwrist.getX().getInch() < 0 && SPwrist.getX().getInch() > 0) {
+		} else if (GPwrist.getX().getInch() < -5 && SPwrist.getX().getInch() > 5) {
 			queue.addSequentialLoggable(new PassThroughForward(), isReal);
 		}
 
