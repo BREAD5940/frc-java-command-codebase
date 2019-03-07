@@ -6,14 +6,20 @@ import frc.robot.RobotConfig;
 import frc.robot.RobotConfig.auto;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
+import frc.robot.commands.subsystems.superstructure.RunIntake;
+import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalLocation;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.MainArmPosition;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.MotionType;
 import frc.robot.planners.SuperstructureMotion;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
+import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
@@ -34,8 +40,42 @@ public class PrettyAutoMotion {
 
 	private AutoCommandGroup genMainMotion(AutoMotionStateMachine machine) {
 		AutoCommandGroup createdGroup = new AutoCommandGroup();
+    if(machine.getMotionType()==MotionType.PICKUP){
+      //CHECK if the location is the loading or not
+      if(machine.getGoalLocation()==GoalLocation.LOADING){
+        //IF getting a hatch
+        if(machine.getGoalPiece()==HeldPiece.HATCH){
+          //CLOSE clamp
+          //FIXME is this command still valid?
+          createdGroup.addSequential(new SetHatchMech(HatchMechState.kClamped));
+          //ALIGN with targets
+          // createdGroup.addSequential(new FollowVisionTarget(1, 5, 10));
+          //RUN intake
+          //RAISE elevator slightly
+          //DRIVE back slightly
+          //RETURN
+        }
+          
+        //ELSE
+          //RUN the intake
+          //RETURN
+      }else{
+        //RUN the intake for 1 second
+        createdGroup.addSequential(new RunIntake(1, 1, 1));
+        return createdGroup;
+      }
+      
 
-		//TODO do thing
+    }else{
+      //IF it's a standard placement
+        //ALIGN with targets, slightly back
+      //IF it's dropped into the cargo
+        //ALIGN with the targets, flush
+      //RUN the intake in reverse
+      //RETURN
+    }
+
+
 
 		return createdGroup;
 	}
