@@ -11,9 +11,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.groups.PickupHatch;
-import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
-import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.commands.subsystems.superstructure.ToggleClamp;
@@ -21,12 +19,14 @@ import frc.robot.lib.DPadButton;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.lib.obj.factories.SequentialCommandFactory;
+import frc.robot.planners.SuperstructureMotion;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
+import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
-import frc.robot.subsystems.superstructure.SuperStructure;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
+import frc.robot.subsystems.superstructure.SuperStructure;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
@@ -133,7 +133,22 @@ public class OI {
 				new RotatingArmState(RoundRotation2d.getDegree(-42)))
 		));
 
-		primaryAButton.whileHeld(new HybridDriverAssist(7));
+		SuperStructureState Start1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(5)),
+			new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
+
+		SuperStructureState Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(10)),
+			new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
+
+		var planned = SuperstructureMotion.getInstance().plan(
+			iPosition.HATCH_GRAB_INSIDE, new SuperStructureState(
+				new ElevatorState(LengthKt.getInch(2)), iPosition.CARGO_GRAB
+			)
+			);
+
+
+		// primaryAButton.whileHeld(new HybridDriverAssist(7));
+		primaryBButton.whenPressed(SuperstructureMotion.getInstance());
+			
 
 		// cargo presets
 		dsCargoIn.whenPressed(SequentialCommandFactory.getSequentialCommands(

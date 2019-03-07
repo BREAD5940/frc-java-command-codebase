@@ -159,11 +159,7 @@ public class SuperstructureTests extends Testable {
 	@Test
 	public void testMotion() {
 
-		SuperStructureState Start1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(5)),
-				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
 
-		SuperStructureState Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(10)),
-				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
 
 		SuperstructureMotion.getInstance().plan(Goal1, Start1);
 	

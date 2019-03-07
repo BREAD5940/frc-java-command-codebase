@@ -45,6 +45,7 @@ public class SuperStructureTelop extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+
 		SuperStructureState mCurrentState = SuperStructure.getInstance().updateState();
 		var mNewState = new SuperStructureState();
 		var mElevatorPower = Robot.m_oi.getElevatorAxis();
@@ -52,6 +53,12 @@ public class SuperStructureTelop extends Command {
 		var mElbowPower = Robot.m_oi.getElbowAxis();
 		mElbowPower = mElbowPower * Math.abs(mElbowPower); // square inputs
 		var kDeadband = 0.05d;
+
+		// check for big wrist discrepincy
+		var cachedWrist = mCachedState.getWrist().angle;
+		var currentWrist = mCurrentState.getWrist().angle;
+		System.out.println("CACHED WRIST: " + cachedWrist + " CURRENT WRIST: " + currentWrist);
+		if(Math.abs(cachedWrist.getDegree() - currentWrist.getDegree()) > 25) mCachedState.jointAngles.wristAngle.angle = currentWrist; 
 
 		// Figure out of the operator is commanding an elevator move. If so, increment the new state and cache the current state - if not, stay at the cached state.
 		if (Math.abs(mElevatorPower) > kDeadband) {
@@ -69,6 +76,9 @@ public class SuperStructureTelop extends Command {
 		} else {
 			mNewState.jointAngles.wristAngle = mCachedState.jointAngles.wristAngle;
 		}
+		System.out.println("CACHED wrist move: " + mCachedState.jointAngles.wristAngle.angle.toCSV());
+
+		System.out.println("Requesting wrist move to " + mNewState.jointAngles.wristAngle.angle.toCSV());
 
 		// Figure out of the operator is commanding a elbow move. If so, increment the new state and cache the current state - if not, stay at the cached state.
 		if (Math.abs(mElbowPower) > kDeadband) {
@@ -78,6 +88,7 @@ public class SuperStructureTelop extends Command {
 			mNewState.jointAngles.elbowAngle = mCachedState.jointAngles.elbowAngle;
 		}
 
+		// System.out.println("requesting move to " + mNewState.toCSV());
 		SuperStructure.getInstance().move(mNewState);
 
 	}

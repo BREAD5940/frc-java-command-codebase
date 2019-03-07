@@ -2,6 +2,7 @@ package frc.robot.planners;
 
 import java.util.Optional;
 
+import org.ghrobotics.lib.mathematics.twodim.geometry.Rectangle2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
@@ -190,12 +191,19 @@ public class SuperstructureMotion extends Command {
 
 	@Override
 	protected void initialize() {
-		queue.start();
+		// queue.start();
+		System.out.println("===================================================================");
+		for(String s : getQueue().getCommandLog()) {
+			System.out.println(s);
+		}
+		System.out.println("===================================================================");
+		
 	}
 
 	@Override
 	protected boolean isFinished() {
-		return queue.isCompleted();
+		// return queue.isCompleted();
+		return true;
 	}
 
 }
