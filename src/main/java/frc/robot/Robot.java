@@ -369,6 +369,9 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putString(SuperStructure.getInstance().getCurrentState().getCSVHeader(), SuperStructure.getInstance().getCurrentState().toCSV());
 
+		// System.out.println(String.format("carriage max %s inner stage min %s", superstructure.getCarriageMaxLimit(), superstructure.getInnerStageMinLimit() ));
+		
+
 		SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
 		SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
 
