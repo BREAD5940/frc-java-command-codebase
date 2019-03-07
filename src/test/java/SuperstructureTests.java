@@ -146,12 +146,18 @@ public class SuperstructureTests extends Testable {
 		SuperStructureState Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(10)),
 				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
 
-		testableSSMotion.getInstance().plan(Goal1, Start1);
+		// testableSSMotion.getInstance().plan(Goal1, Start1);
 
 		Start1 = iPosition.HATCH_GRAB_INSIDE;
 		Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(3.5)), iPosition.CARGO_GRAB);
 		Logger.log("======== testing hatch grab to cargo pickup ========");
-		testableSSMotion.getInstance().plan(Goal1, Start1);
+		
+		var motion = new testableSSMotion(Goal1,Start1);
+		
+		motion.initialize();
+
+		// testableSSMotion.getInstance().plan(Goal1, Start1);
+
 
 		// var planned = testableSSMotion.getInstance().getQueue();
 
