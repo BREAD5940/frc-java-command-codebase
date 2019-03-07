@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.team254.lib.physics.DCMotorTransmission;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -67,6 +68,16 @@ public class SuperStructure extends Subsystem implements Loggable {
 	public static final RoundRotation2d kElbowMin = RoundRotation2d.getDegree(-200); // absolute
 	public static final RoundRotation2d kElbowMax = RoundRotation2d.getDegree(60); // absolute
 
+	private DigitalInput carriageMaxLimitSwitch, innerStageMinLimitSwitch;
+
+	public boolean getCarriageMaxLimit() {
+		return !carriageMaxLimitSwitch.get(); // to invert logic
+	}
+
+	public boolean getInnerStageMinLimit() {
+		return !innerStageMinLimitSwitch.get(); // to invert logic
+	}
+	
 	public static synchronized SuperStructure getInstance() {
 		if (instance_ == null) {
 			instance_ = new SuperStructure();
@@ -113,6 +124,10 @@ public class SuperStructure extends Subsystem implements Loggable {
 				new InvertSettings(true, InvertType.FollowMaster, InvertType.FollowMaster, InvertType.OpposeMaster));
 
 		mElbow.setLimitSwitches();
+
+		carriageMaxLimitSwitch = new DigitalInput(8);
+
+		innerStageMinLimitSwitch = new DigitalInput(9);
 
 		mCurrentState = new SuperStructureState();
 
