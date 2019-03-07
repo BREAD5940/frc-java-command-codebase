@@ -57,10 +57,12 @@ public class RoundRotation2d implements Loggable {
 	}
 
 	public double getCos() {
+		this.cosine = Math.cos(this.getRadian());
 		return this.cosine;
 	}
 
 	public double getSin() {
+		this.sine = Math.sin(this.getRadian());
 		return this.sine;
 	}
 

@@ -1,6 +1,5 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -10,7 +9,6 @@ import frc.robot.SuperStructureConstants;
 import frc.robot.lib.Logger;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
-import frc.robot.planners.SuperstructureMotion;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
@@ -153,13 +151,12 @@ public class SuperstructureTests extends Testable {
 		Start1 = iPosition.HATCH_GRAB_INSIDE;
 		Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(3.5)), iPosition.CARGO_GRAB);
 		Logger.log("======== testing hatch grab to cargo pickup ========");
-		
-		var motion = new testableSSMotion(Goal1,Start1);
-		
+
+		var motion = new testableSSMotion(Goal1, Start1);
+
 		motion.initialize();
 
 		// testableSSMotion.getInstance().plan(Goal1, Start1);
-
 
 		// var planned = testableSSMotion.getInstance().getQueue();
 
@@ -178,7 +175,7 @@ public class SuperstructureTests extends Testable {
 		var iswithin = (Util.isWithin(RoundRotation2d.getDegree(-90), RoundRotation2d.getDegree(-60), RoundRotation2d.getDegree(-80)));
 
 		var worstCaseElbow = (Util.getWorstCase(RoundRotation2d.getDegree(-90), RoundRotation2d.getDegree(-60), RoundRotation2d.getDegree(-80)));
-		
+
 		System.out.println("worst case: " + worstCaseElbow);
 		System.out.println("is within? " + iswithin);
 
@@ -189,7 +186,6 @@ public class SuperstructureTests extends Testable {
 		assertEquals(worstCaseElbow.getDegree(), -90, 0.1);
 		System.out.println("worst case: " + worstCaseElbow);
 
-
 	}
 
 	@Test
@@ -197,16 +193,16 @@ public class SuperstructureTests extends Testable {
 		assertEquals(360, RoundRotation2d.getDegree(360).getDegree(), 0.1);
 	}
 
-	@Test 
-	public void pointsTest(){
+	@Test
+	public void pointsTest() {
 		Translation2d SPelevator = new Translation2d(LengthKt.getInch(0), LengthKt.getInch(20));
 		Translation2d SPwristLong = new Translation2d(LengthKt.getInch(RoundRotation2d.getDegree(30).getCos() * SuperStructureConstants.Elbow.carriageToIntake.getInch()),
 				LengthKt.getInch(RoundRotation2d.getDegree(30).getSin() * SuperStructureConstants.Elbow.carriageToIntake.getInch())).plus(SPelevator);
 
 		Translation2d SPwristShort = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, RoundRotation2d.getDegree(30).toRotation2d()).plus(SPelevator);
 
-		assertEquals(SPwristLong.getX().getInch(), SPwristShort.getX().getInch(), 0.1);
-		assertEquals(SPwristLong.getY().getInch(), SPwristShort.getY().getInch(), 0.1);
+		assertEquals(10.3923, SPwristShort.getX().getInch(), 0.1);
+		assertEquals(10.3923, SPwristLong.getX().getInch(), 0.1);
 
 	}
 
