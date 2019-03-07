@@ -21,6 +21,7 @@ import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
  * Instructions for using this mutant command-thing:
@@ -181,7 +182,44 @@ public class SuperstructureMotion extends Command {
 
 		Logger.log("a r c s i n");
 
-		// figure out if the intake is gunna yeet itself into the bottom. This is done by finding the worst case (intake and stuff as far pitched down as possible)
+
+
+		//FIND the lowest goal and end points
+		Translation2d lowestGP = GPeoi;
+		for (Translation2d current : Arrays.asList(GPelevator, GPwrist, GPeoi,
+				GPeoi.minus(new Translation2d(LengthKt.getInch(0), SuperStructureConstants.Wrist.intakeAbove)))) {
+			lowestGP = (lowestGP.getY().getInch() >= current.getY().getInch()) ? current : lowestGP;
+		}
+
+		Translation2d lowestSP = SPeoi;
+		for (Translation2d current : Arrays.asList(SPelevator, SPwrist, SPeoi,
+				SPeoi.minus(new Translation2d(LengthKt.getInch(0), SuperStructureConstants.Wrist.intakeAbove)))) {
+			lowestSP = (lowestSP.getY().getInch() >= current.getY().getInch()) ? current : lowestSP;
+		}
+
+		Logger.log("lowests");
+
+		//SAFE potential crashes IN BETWEEN states
+		if (lowestGP.getY().getInch() < GPelevator.getY().getInch()) {
+			//FIND how much of the intake is in the way
+
+			//SET the tolerance to that number
+
+		}
+
+		startArmTol = GPelevator.getY().minus(LengthKt.getInch(Math.abs(lowestSP.getY().minus(SPelevator.getY()).getInch())));
+
+		startArmTol = (startArmTol.getInch() > (Math.abs(GPelevator.getY().getInch() - Math.abs(lowestGP.getY().minus(GPelevator.getY()).getInch()))))
+				? startArmTol
+				: (LengthKt.getInch(Math.abs(GPelevator.getY().getInch() - Math.abs(lowestGP.getY().minus(GPelevator.getY()).getInch()))));
+		Logger.log("tolerances");
+		//CLEAR the queue
+		this.queue = new AutoCommandGroup();
+		Logger.log("queue cleared");
+
+
+
+				// figure out if the intake is gunna yeet itself into the bottom. This is done by finding the worst case (intake and stuff as far pitched down as possible)
 		var worstCaseElbow = Util.getWorstCase(RoundRotation2d.getDegree(-90), goalState.getElbowAngle(), currentState.getElbowAngle());
 		var worstCaseWrist = Util.getWorstCase(
 			RoundRotation2d.getDegree(-90), 
@@ -223,46 +261,12 @@ public class SuperstructureMotion extends Command {
 
 			// TODO check if the end state is going to hit anything
 
-			var minUnCrashHeight = new ElevatorState(worstCaseCarriageToEOI.getY().plus(LengthKt.getInch(4)));
+			var minUnCrashHeight = new ElevatorState(worstCaseCarriageToEOI.getY().times(-1).plus(LengthKt.getInch(4)));
 
 			queue.addSequentialLoggable(new ElevatorMove(minUnCrashHeight), isReal);
 
 		}
 
-
-
-		//FIND the lowest goal and end points
-		Translation2d lowestGP = GPeoi;
-		for (Translation2d current : Arrays.asList(GPelevator, GPwrist, GPeoi,
-				GPeoi.minus(new Translation2d(LengthKt.getInch(0), SuperStructureConstants.Wrist.intakeAbove)))) {
-			lowestGP = (lowestGP.getY().getInch() >= current.getY().getInch()) ? current : lowestGP;
-		}
-
-		Translation2d lowestSP = SPeoi;
-		for (Translation2d current : Arrays.asList(SPelevator, SPwrist, SPeoi,
-				SPeoi.minus(new Translation2d(LengthKt.getInch(0), SuperStructureConstants.Wrist.intakeAbove)))) {
-			lowestSP = (lowestSP.getY().getInch() >= current.getY().getInch()) ? current : lowestSP;
-		}
-
-		Logger.log("lowests");
-
-		//SAFE potential crashes IN BETWEEN states
-		if (lowestGP.getY().getInch() < GPelevator.getY().getInch()) {
-			//FIND how much of the intake is in the way
-
-			//SET the tolerance to that number
-
-		}
-
-		startArmTol = GPelevator.getY().minus(LengthKt.getInch(Math.abs(lowestSP.getY().minus(SPelevator.getY()).getInch())));
-
-		startArmTol = (startArmTol.getInch() > (Math.abs(GPelevator.getY().getInch() - Math.abs(lowestGP.getY().minus(GPelevator.getY()).getInch()))))
-				? startArmTol
-				: (LengthKt.getInch(Math.abs(GPelevator.getY().getInch() - Math.abs(lowestGP.getY().minus(GPelevator.getY()).getInch()))));
-		Logger.log("tolerances");
-		//CLEAR the queue
-		this.queue = new AutoCommandGroup();
-		Logger.log("queue cleared");
 
 		if (GPwrist.getX().getInch() > 5 && SPwrist.getX().getInch() < -5) {
 			queue.addSequentialLoggable(new PassThroughReverse(), isReal);
@@ -310,9 +314,11 @@ public class SuperstructureMotion extends Command {
 	@Override
 	protected void initialize() {
 		// queue.start();
-		plan(this.gsIn, SuperStructure.getInstance().updateState());
+		// var current = SuperStructure.getInstance().updateState();
+		var current = new SuperStructureState(new ElevatorState(LengthKt.getInch(3.5)), iPosition.CARGO_GRAB);
+		plan(this.gsIn, current);
 		System.out.println("===================================================================");
-		Logger.log(String.format("Start state (%s) Goal state (%s)", SuperStructure.getInstance().getCurrentState().toString(), gsIn.toString()));
+		Logger.log(String.format("Start state (%s) Goal state (%s)", current.toString(), gsIn.toString()));
 		// Logger.log(getQueue().getCommandLog().get(0));
 		for (String s : getQueue().getCommandLog()) {
 			System.out.println(s);
