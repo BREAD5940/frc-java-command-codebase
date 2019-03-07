@@ -49,17 +49,6 @@ public class Wrist extends RotatingJoint {
 		super.getMaster().set(kDefaultControlMode, normed, DemandType.ArbitraryFeedForward, arbitraryFeedForward);
 	}
 
-<<<<<<< HEAD
-	// @Override
-	// public RoundRotation2d getRotation() {
-	// 	var wrist = getMaster().getRotation2d();
-	// 	var proximal = SuperStructure.getInstance().getElbow().getRotation();
-	// 	var compensatedAngle = wrist.plus(proximal.div(2));
-	// 	return compensatedAngle;
-	// }
-
-=======
->>>>>>> parent of 6d877d3... Make the wrist absolute and fix presets
 	private PIDSettings kDefaultMotionMagicPidSettings = new PIDSettings(.1, 0, 0, 0.1, 1000, 1000);
 
 	@Override
