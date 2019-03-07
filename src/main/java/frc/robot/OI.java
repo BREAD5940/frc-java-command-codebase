@@ -150,7 +150,7 @@ public class OI {
 				iPosition.HATCH_GRAB_INSIDE);
 
 		// primaryAButton.whileHeld(new HybridDriverAssist(7));
-		primaryBButton.whenPressed(SuperstructureMotion.getInstance());
+		primaryBButton.whenPressed(new SuperstructureMotion(new SuperStructureState(new ElevatorState(LengthKt.getInch(2)), iPosition.CARGO_GRAB), iPosition.HATCH_GRAB_INSIDE_PREP));
 		// primaryXButton.whenPressed()
 
 		// cargo presets
