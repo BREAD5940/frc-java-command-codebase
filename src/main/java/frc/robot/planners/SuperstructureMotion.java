@@ -226,7 +226,7 @@ public class SuperstructureMotion extends Command {
 		}
 		
 
-		this.queue.addParallel(new ArmWaitForElevator(goalState.getAngle(), goalState.getElevatorHeight(), startArmTol,
+		this.queue.addParallel(new ArmWaitForElevator(goalState.getAngle(), goalState.getElevatorHeight(), startArmTol.plus(LengthKt.getInch(5)),
 				goalState.getElevatorHeight().getInch() < currentState.getElevatorHeight().getInch()));
 		this.queue.addSequential(new ElevatorMove(goalState.getElevator()));
 
