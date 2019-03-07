@@ -22,18 +22,23 @@ public class PrettyAutoMotion{
 
   private AutoCommandGroup motionCommands;
   private AutoCommandGroup presetCommands;
+  private AutoCommandGroup fullGroup = new AutoCommandGroup();
   private SuperStructureState ssState;
 
   public PrettyAutoMotion(AutoMotionStateMachine machine){
     this.ssState = findSuperStructureState(machine);
     this.presetCommands = genPresetMotion(this.ssState);
     this.motionCommands = genMainMotion(machine);
+    this.fullGroup.addSequential(this.presetCommands);
+    this.fullGroup.addSequential(this.motionCommands);
   }
 
   private AutoCommandGroup genMainMotion(AutoMotionStateMachine machine){
     AutoCommandGroup createdGroup = new AutoCommandGroup();
 
     //TODO do thing
+
+
 
     return createdGroup;
   }
@@ -148,5 +153,33 @@ public class PrettyAutoMotion{
     }
 
     return new SuperStructureState(eState, aState);
+  }
+
+
+  /**
+   * Get the full motion -- preset superstructure motion AND automatic motion
+   * @return
+   *    a sequential group of presetCommands and motionCommands
+   */
+  public AutoCommandGroup getFullMotion(){
+    return this.fullGroup;
+  }
+
+  /**
+   * Get the motion to move the superstructure. This can be used in teleop
+   * @return
+   *    the commands to move ONLY the superstructure to its starting pos
+   */
+  public AutoCommandGroup getPresetCommands(){
+    return this.presetCommands;
+  }
+
+  /**
+   * Get the part of the motion that actually does the thing
+   * @return
+   *    the actual moving part
+   */
+  public AutoCommandGroup getMotionCommands(){
+    return this.motionCommands;
   }
 }
