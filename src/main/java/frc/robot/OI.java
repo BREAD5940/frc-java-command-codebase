@@ -144,13 +144,10 @@ public class OI {
 		// 	)
 		// 	);
 
-		var planned2 = SuperstructureMotion.getInstance().plan(
-				new SuperStructureState(
-						new ElevatorState(LengthKt.getInch(2)), iPosition.CARGO_GRAB),
-				iPosition.HATCH_GRAB_INSIDE);
+		primaryBButton.whenPressed(new SuperstructureMotion(iPosition.HATCH_GRAB_INSIDE));
 
 		// primaryAButton.whileHeld(new HybridDriverAssist(7));
-		primaryBButton.whenPressed(new SuperstructureMotion(new SuperStructureState(new ElevatorState(LengthKt.getInch(2)), iPosition.CARGO_GRAB), iPosition.HATCH_GRAB_INSIDE_PREP));
+		// primaryBButton.whenPressed(new SuperstructureMotion(new SuperStructureState(new ElevatorState(LengthKt.getInch(2)), iPosition.CARGO_GRAB), iPosition.HATCH_GRAB_INSIDE_PREP));
 		// primaryXButton.whenPressed()
 
 		// cargo presets
@@ -280,11 +277,11 @@ public class OI {
 	}
 
 	public double getForwardAxis() {
-		return -1 * primaryJoystick.getRawAxis(1);//RobotConfig.controls.forward_axis);
+		return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis);
 	}
 
 	public double getTurnAxis() {
-		return primaryJoystick.getRawAxis(0);//RobotConfig.controls.turn_axis);
+		return primaryJoystick.getRawAxis(RobotConfig.controls.turn_axis);
 	}
 
 	// public double getIntakeAxis() {
