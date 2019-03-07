@@ -268,6 +268,7 @@ public class SuperstructureMotion extends Command {
 		}
 
 
+		Logger.log("goal pos elbow end x: " + GPwrist.getX().getInch() + " startpoint pos elbow end: " + SPwrist.getX().getInch());
 		if (GPwrist.getX().getInch() > 5 && SPwrist.getX().getInch() < -5) {
 			queue.addSequentialLoggable(new PassThroughReverse(), isReal);
 		} else if (GPwrist.getX().getInch() < -5 && SPwrist.getX().getInch() > 5) {
