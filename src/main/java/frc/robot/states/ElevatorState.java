@@ -93,4 +93,9 @@ public class ElevatorState {
 		return new ElevatorState(this.height.plus(offset));
 	}
 
+	@Override
+	public String toString() {
+		return "Height (inches): " + height.getInch();
+	}
+
 }

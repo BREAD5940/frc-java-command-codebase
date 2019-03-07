@@ -13,8 +13,13 @@ public class ElevatorMove extends Command {
 	 * @param goal the goal state of the elevator
 	 */
 	public ElevatorMove(ElevatorState goal) {
+		this(goal, "ElevatorMove to " + goal.toString());
+		}
+
+	public ElevatorMove(ElevatorState goal, String name) {
 		this.mGoal = goal;
 		requires(SuperStructure.getElevator());
+		setName(name);
 	}
 
 	@Override
