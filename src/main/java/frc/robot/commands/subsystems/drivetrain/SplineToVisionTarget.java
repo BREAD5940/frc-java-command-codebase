@@ -45,7 +45,7 @@ public class SplineToVisionTarget extends CommandGroup {
 	 * @param dsired_end how far away from the vision target to exit at
 	 * @param areaAtWhichToExit the area at which the command will exit, regarless of everything else
 	 */
-	public SplineToVisionTarget(Pose2d currentPose, Length driveStraightDistance, Length desired_end, double areaAtWhichToExit) {
+	public SplineToVisionTarget(/*Pose2d currentPose, */Length driveStraightDistance, Length desired_end, double areaAtWhichToExit) {
 		// this.targetDistance = targetLimelightOffset;
 		this.exitArea = areaAtWhichToExit;
 		// this.initialPose = currentPose;
