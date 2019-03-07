@@ -62,7 +62,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 	private DCMotorTransmission kElbowTransmission, kWristTransmission;
 	public static final Mass kHatchMass = MassKt.getLb(2.4); // FIXME check mass
 	public static final Mass kCargoMass = MassKt.getLb(1); // FIXME check mass
-	public static final RoundRotation2d kWristMin = RoundRotation2d.getDegree(-180); // relative
+	public static final RoundRotation2d kWristMin = RoundRotation2d.getDegree(-270); // relative
 	public static final RoundRotation2d kWristMax = RoundRotation2d.getDegree(90); // relative
 	public static final RoundRotation2d kElbowMin = RoundRotation2d.getDegree(-200); // absolute
 	public static final RoundRotation2d kElbowMax = RoundRotation2d.getDegree(60); // absolute

@@ -169,8 +169,10 @@ public class Robot extends TimedRobot {
 		proximal.getMaster().setSelectedSensorPosition(startingAngleTicks);
 
 		var wrist = SuperStructure.getInstance().getWrist();
-		startingAngleTicks = wrist.getMaster().getTicks(RoundRotation2d.getDegree(-42));
+		startingAngleTicks = wrist.getMaster().getTicks(RoundRotation2d.getDegree(-43));
 		wrist.getMaster().setSelectedSensorPosition(startingAngleTicks);
+
+		
 
 		switch (RobotConfig.auto.auto_gear) {
 		case HIGH:
