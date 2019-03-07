@@ -26,15 +26,30 @@ public class Wrist extends RotatingJoint {
 		super(settings, Arrays.asList(motorPort), sensor, reduction, min, max, invert, armLength, mass);
 	}
 
+
+	public RoundRotation2d getAbsoluteAngle() {
+		var proximal = SuperStructure.getInstance().getElbow().getCurrentState().angle;
+		var current = getCurrentState().angle;
+		var corrected = current.plus(proximal.div(2));
+		return corrected;
+	}
+
+	public RoundRotation2d getRelativeAngle() {
+		var proximal = SuperStructure.getInstance().getElbow().getCurrentState().angle;
+		var corrected = getAbsoluteAngle();
+		var delta = corrected.minus(proximal);
+		return delta;
+	}
+	
 	public void requestAngle(RoundRotation2d reqAngle) {
-		System.out.println("requ angle: " + reqAngle.getDegree());
+		// System.out.println("requ angle: " + reqAngle.getDegree());
 		// RoundRotation2d normed = reqAngle.minus(mCurrent.getElbowAngle());
 		var normed = Util.limit(reqAngle, super.kMinAngle, super.kMaxAngle);
 		super.getMaster().set(kDefaultControlMode, normed);
 	}
 
 	public void requestAngle(ControlMode mode, RoundRotation2d reqAngle, SuperStructureState mCurrent) {
-		System.out.println("requ angle: " + reqAngle.getDegree());
+		// System.out.println("requ angle: " + reqAngle.getDegree());
 
 		// RoundRotation2d normed = reqAngle.minus(mCurrent.getElbowAngle());
 		var normed = Util.limit(reqAngle, super.kMinAngle, super.kMaxAngle);
@@ -42,7 +57,7 @@ public class Wrist extends RotatingJoint {
 	}
 
 	public void requestAngle(RoundRotation2d reqAngle, double arbitraryFeedForward, SuperStructureState mCurrent) {
-		System.out.println("requ angle: " + reqAngle.getDegree());
+		// System.out.println("requ angle: " + reqAngle.getDegree());
 
 		// RoundRotation2d normed = reqAngle.minus(mCurrent.getElbowAngle());
 		var normed = Util.limit(reqAngle, super.kMinAngle, super.kMaxAngle);
