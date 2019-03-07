@@ -2,8 +2,6 @@ package frc.robot.lib.statemachines;
 
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
-import frc.robot.states.IntakeAngle;
-import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 public class AutoMotionStateMachine extends SendableBase {
 
@@ -44,7 +42,7 @@ public class AutoMotionStateMachine extends SendableBase {
 	protected void updateGoalType() {
 		switch (this.motionType) {
 		case PLACE:
-			if(this.goalLocation==GoalLocation.ROCKET) {
+			if (this.goalLocation == GoalLocation.ROCKET) {
 				switch (this.heldPiece) {
 				case HATCH:
 					this.goalType = GoalType.ROCKET_HATCH;
@@ -55,7 +53,7 @@ public class AutoMotionStateMachine extends SendableBase {
 					this.goalType = GoalType.ROCKET_HATCH;
 
 				}
-			}else if(this.goalLocation==GoalLocation.CARGO_SHIP){
+			} else if (this.goalLocation == GoalLocation.CARGO_SHIP) {
 				switch (this.heldPiece) {
 				case HATCH:
 					this.goalType = GoalType.CARGO_HATCH;
@@ -80,65 +78,65 @@ public class AutoMotionStateMachine extends SendableBase {
 		}
 	}
 
-	protected void updateFromType(){
+	protected void updateFromType() {
 		//FIXME do we want this to try and extrapolate the mainArm too?
-		switch (this.goalType){
-			case CARGO_CARGO:
-				this.heldPiece = HeldPiece.CARGO;
-				this.goalPiece = HeldPiece.NONE;
+		switch (this.goalType) {
+		case CARGO_CARGO:
+			this.heldPiece = HeldPiece.CARGO;
+			this.goalPiece = HeldPiece.NONE;
 
-				this.goalHeight = GoalHeight.LOW;
-				this.goalLocation = GoalLocation.CARGO_SHIP;
-				this.motionType = MotionType.PLACE;
+			this.goalHeight = GoalHeight.LOW;
+			this.goalLocation = GoalLocation.CARGO_SHIP;
+			this.motionType = MotionType.PLACE;
 
-			case CARGO_HATCH:
-				this.heldPiece = HeldPiece.HATCH;
-				this.goalPiece = HeldPiece.NONE;
+		case CARGO_HATCH:
+			this.heldPiece = HeldPiece.HATCH;
+			this.goalPiece = HeldPiece.NONE;
 
-				this.goalHeight = GoalHeight.LOW;
-				this.goalLocation = GoalLocation.CARGO_SHIP;
-				this.motionType = MotionType.PLACE;
+			this.goalHeight = GoalHeight.LOW;
+			this.goalLocation = GoalLocation.CARGO_SHIP;
+			this.motionType = MotionType.PLACE;
 
-			case ROCKET_CARGO:
-				this.heldPiece = HeldPiece.CARGO;
-				this.goalPiece = HeldPiece.NONE;
+		case ROCKET_CARGO:
+			this.heldPiece = HeldPiece.CARGO;
+			this.goalPiece = HeldPiece.NONE;
 
-				//FIXME goal height unknown
-				this.goalLocation = GoalLocation.ROCKET;
-				this.motionType = MotionType.PLACE;
+			//FIXME goal height unknown
+			this.goalLocation = GoalLocation.ROCKET;
+			this.motionType = MotionType.PLACE;
 
-			case ROCKET_HATCH:
-				this.heldPiece = HeldPiece.HATCH;
-				this.goalPiece = HeldPiece.NONE;
+		case ROCKET_HATCH:
+			this.heldPiece = HeldPiece.HATCH;
+			this.goalPiece = HeldPiece.NONE;
 
-				//FIXME goal height unknown
-				this.goalLocation = GoalLocation.ROCKET;
-				this.motionType = MotionType.PLACE;
+			//FIXME goal height unknown
+			this.goalLocation = GoalLocation.ROCKET;
+			this.motionType = MotionType.PLACE;
 
-			case RETRIEVE_CARGO:
-				this.heldPiece = HeldPiece.NONE;
-				this.goalPiece = HeldPiece.CARGO;
+		case RETRIEVE_CARGO:
+			this.heldPiece = HeldPiece.NONE;
+			this.goalPiece = HeldPiece.CARGO;
 
-				this.goalHeight = GoalHeight.LOW; //yes?
-				this.goalLocation = GoalLocation.DEPOT; //probably
-				this.motionType = MotionType.PICKUP;
+			this.goalHeight = GoalHeight.LOW; //yes?
+			this.goalLocation = GoalLocation.DEPOT; //probably
+			this.motionType = MotionType.PICKUP;
 
-			case RETRIEVE_HATCH:
-				this.heldPiece = HeldPiece.NONE;
-				this.goalPiece = HeldPiece.HATCH;
+		case RETRIEVE_HATCH:
+			this.heldPiece = HeldPiece.NONE;
+			this.goalPiece = HeldPiece.HATCH;
 
-				this.goalHeight = GoalHeight.LOW;
-				this.goalLocation = GoalLocation.LOADING;
-				this.motionType = MotionType.PICKUP;
+			this.goalHeight = GoalHeight.LOW;
+			this.goalLocation = GoalLocation.LOADING;
+			this.motionType = MotionType.PICKUP;
 		}
 	}
 
-	public void setGoalType(GoalType type){
+	public void setGoalType(GoalType type) {
 		this.goalType = type;
 		updateFromType();
 	}
 
-	public void setGoalType(GoalType type, GoalHeight height){
+	public void setGoalType(GoalType type, GoalHeight height) {
 		this.goalType = type;
 		updateFromType();
 		this.goalHeight = height;
@@ -243,14 +241,13 @@ public class AutoMotionStateMachine extends SendableBase {
 		return this.getMotionType().toString();
 	}
 
-
 	//Passthrough
 
-	public void setMainArmPosition(MainArmPosition armPos){
+	public void setMainArmPosition(MainArmPosition armPos) {
 		this.mainArm = armPos;
 	}
 
-	public MainArmPosition getMainArmPosition(){
+	public MainArmPosition getMainArmPosition() {
 		return this.mainArm;
 	}
 

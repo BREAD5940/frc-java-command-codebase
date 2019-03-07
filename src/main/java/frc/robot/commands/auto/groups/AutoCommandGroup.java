@@ -34,22 +34,26 @@ public class AutoCommandGroup extends CommandGroup {
 	}
 
 	public final synchronized void addSequentialLoggable(Command command, double timeout, boolean isReal) {
-		if(isReal) super.addSequential(command, timeout);
+		if (isReal)
+			super.addSequential(command, timeout);
 		addSequentialLoggable(command, isReal);
 	}
 
 	public final synchronized void addSequentialLoggable(Command command, boolean isReal) {
-		if(isReal) super.addSequential(command);
+		if (isReal)
+			super.addSequential(command);
 		logCommand(command, "Sequential");
 	}
 
 	public final synchronized void addParallelLoggable(Command command, double timeout, boolean isReal) {
-		if(isReal) super.addParallel(command, timeout);
+		if (isReal)
+			super.addParallel(command, timeout);
 		addParallelLoggable(command, isReal);
 	}
 
 	public final synchronized void addParallelLoggable(Command command, boolean isReal) {
-		if(isReal) super.addParallel(command);
+		if (isReal)
+			super.addParallel(command);
 		logCommand(command, "Parallel");
 	}
 

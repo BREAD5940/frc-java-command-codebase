@@ -249,8 +249,6 @@ public class LimeLight extends Subsystem {
 		return distance;
 	}
 
-	
-
 	public class MeasuredVisionTarget {
 		private double x_, y_, width_, height_, area_;
 

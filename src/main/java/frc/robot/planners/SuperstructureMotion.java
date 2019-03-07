@@ -3,15 +3,12 @@ package frc.robot.planners;
 import java.util.Arrays;
 import java.util.Optional;
 
-import org.ghrobotics.lib.mathematics.twodim.geometry.Rectangle2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.SuperStructureConstants;
-import frc.robot.SuperStructureConstants.Wrist;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.routines.passthrough.PassThroughForward;
 import frc.robot.commands.auto.routines.passthrough.PassThroughReverse;
@@ -71,7 +68,7 @@ public class SuperstructureMotion extends Command {
 		return instance_;
 	}
 
-	private static RoundRotation2d getUnDumbWrist(RoundRotation2d dumbWrist, RoundRotation2d relevantProx){
+	private static RoundRotation2d getUnDumbWrist(RoundRotation2d dumbWrist, RoundRotation2d relevantProx) {
 		var compensatedAngle = dumbWrist.plus(relevantProx.div(2));
 		return compensatedAngle;
 	}
@@ -157,19 +154,19 @@ public class SuperstructureMotion extends Command {
 
 		//FIND the lowest goal and end points
 		Translation2d lowestGP = GPeoi;
-		for (Translation2d current : Arrays.asList(GPelevator, GPwrist, GPeoi, 
-					GPeoi.minus(new Translation2d(LengthKt.getInch(0), SuperStructureConstants.Wrist.intakeAbove)))){
+		for (Translation2d current : Arrays.asList(GPelevator, GPwrist, GPeoi,
+				GPeoi.minus(new Translation2d(LengthKt.getInch(0), SuperStructureConstants.Wrist.intakeAbove)))) {
 			lowestGP = (lowestGP.getY().getInch() >= current.getY().getInch()) ? current : lowestGP;
 		}
 
 		Translation2d lowestSP = SPeoi;
 		for (Translation2d current : Arrays.asList(SPelevator, SPwrist, SPeoi,
-					SPeoi.minus(new Translation2d(LengthKt.getInch(0), SuperStructureConstants.Wrist.intakeAbove)))){
+				SPeoi.minus(new Translation2d(LengthKt.getInch(0), SuperStructureConstants.Wrist.intakeAbove)))) {
 			lowestSP = (lowestSP.getY().getInch() >= current.getY().getInch()) ? current : lowestSP;
 		}
 
 		//SAFE potential crashes IN BETWEEN states
-		if(lowestGP.getY().getInch() < GPelevator.getY().getInch()){
+		if (lowestGP.getY().getInch() < GPelevator.getY().getInch()) {
 			//FIND how much of the intake is in the way
 
 			//SET the tolerance to that number
@@ -179,8 +176,8 @@ public class SuperstructureMotion extends Command {
 		startArmTol = GPelevator.getY().minus(LengthKt.getInch(Math.abs(lowestSP.getY().minus(SPelevator.getY()).getInch())));
 
 		startArmTol = (startArmTol.getInch() > (Math.abs(GPelevator.getY().getInch() - Math.abs(lowestGP.getY().minus(GPelevator.getY()).getInch()))))
-										? startArmTol : (LengthKt.getInch(Math.abs(GPelevator.getY().getInch() - Math.abs(lowestGP.getY().minus(GPelevator.getY()).getInch()))));
-
+				? startArmTol
+				: (LengthKt.getInch(Math.abs(GPelevator.getY().getInch() - Math.abs(lowestGP.getY().minus(GPelevator.getY()).getInch()))));
 
 		//CLEAR the queue
 		queue = new AutoCommandGroup();
@@ -224,11 +221,11 @@ public class SuperstructureMotion extends Command {
 	protected void initialize() {
 		// queue.start();
 		System.out.println("===================================================================");
-		for(String s : getQueue().getCommandLog()) {
+		for (String s : getQueue().getCommandLog()) {
 			System.out.println(s);
 		}
 		System.out.println("===================================================================");
-		
+
 	}
 
 	@Override

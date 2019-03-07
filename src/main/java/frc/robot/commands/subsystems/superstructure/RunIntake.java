@@ -45,10 +45,10 @@ public class RunIntake extends TimedCommand {
 
 	// Called once after timeout
 	@Override
-	protected void end() {		
+	protected void end() {
 		SuperStructure.intake.setCargoSpeed(0);
 		SuperStructure.intake.setHatchSpeed(0);
-}
+	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run

@@ -159,12 +159,11 @@ public class SuperstructureTests extends Testable {
 	@Test
 	public void testMotion() {
 
-
 		//FIXME Goal1 and Start1 are undefined
 		// SuperstructureMotion.getInstance().plan(Goal1, Start1);
-	
+
 		System.out.println(SuperstructureMotion.getInstance().getQueue());
-	
+
 	}
 
 	@Test

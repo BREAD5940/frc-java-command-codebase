@@ -25,8 +25,8 @@ import frc.robot.lib.statemachines.AutoMotionStateMachine;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
-import frc.robot.subsystems.LimeLight.LEDMode;
 import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.LimeLight.LEDMode;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 /**
@@ -147,7 +147,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("LIMELIGHT LED ON", new LimeLight.SetLEDs(LEDMode.kON));
 		SmartDashboard.putData("LIMELIGHT LED OFF", new LimeLight.SetLEDs(LEDMode.kOFF));
 
-
 		m_oi = new OI();
 		autoState = new AutoMotionStateMachine();
 
@@ -171,8 +170,6 @@ public class Robot extends TimedRobot {
 		var wrist = SuperStructure.getInstance().getWrist();
 		startingAngleTicks = wrist.getMaster().getTicks(RoundRotation2d.getDegree(-43));
 		wrist.getMaster().setSelectedSensorPosition(startingAngleTicks);
-
-		
 
 		switch (RobotConfig.auto.auto_gear) {
 		case HIGH:
