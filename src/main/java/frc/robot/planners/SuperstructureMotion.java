@@ -142,17 +142,18 @@ public class SuperstructureMotion extends Command {
 					LengthKt.getInch(getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()).getSin() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
 		}
 
-		if (GPeoi.getY().minus(Wrist.intakeAbove).getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch()) {
-			Logger.log("intake still too low");
-			RoundRotation2d tempTheta = getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle());
-			tempTheta = RoundRotation2d.getRadian(
-					Math.asin(
-							(GPeoi.getY().plus(Wrist.intakeAbove).getInch() - GPwrist.getY().getInch())
-									/ SuperStructureConstants.Wrist.intakeOut.getInch()));
-			goalState.getWrist().setAngle(tempTheta);
-			GPeoi = new Translation2d(LengthKt.getInch(tempTheta.getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getX()),
-					LengthKt.getInch(Math.sin(tempTheta.getRadian()) * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
-		}
+		//I really hope we don't actually need this
+		// if (GPeoi.getY().minus(Wrist.intakeAbove).getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch()) {
+		// 	Logger.log("intake still too low");
+		// 	RoundRotation2d tempTheta = getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle());
+		// 	tempTheta = RoundRotation2d.getRadian(
+		// 			Math.asin(
+		// 					(GPeoi.getY().plus(Wrist.intakeAbove).getInch() - GPwrist.getY().getInch())
+		// 							/ SuperStructureConstants.Wrist.intakeOut.getInch()));
+		// 	goalState.getWrist().setAngle(tempTheta);
+		// 	GPeoi = new Translation2d(LengthKt.getInch(tempTheta.getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getX()),
+		// 			LengthKt.getInch(Math.sin(tempTheta.getRadian()) * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
+		// }
 
 		//FIND the lowest goal and end points
 		Translation2d lowestGP = GPeoi;
