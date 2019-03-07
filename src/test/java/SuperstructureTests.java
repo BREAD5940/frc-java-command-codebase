@@ -2,9 +2,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.junit.jupiter.api.Test;
 
+import frc.robot.SuperStructureConstants;
 import frc.robot.lib.Logger;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
@@ -193,6 +195,19 @@ public class SuperstructureTests extends Testable {
 	@Test
 	public void rotation2dTest() {
 		assertEquals(360, RoundRotation2d.getDegree(360).getDegree(), 0.1);
+	}
+
+	@Test 
+	public void pointsTest(){
+		Translation2d SPelevator = new Translation2d(LengthKt.getInch(0), LengthKt.getInch(20));
+		Translation2d SPwristLong = new Translation2d(LengthKt.getInch(RoundRotation2d.getDegree(30).getCos() * SuperStructureConstants.Elbow.carriageToIntake.getInch()),
+				LengthKt.getInch(RoundRotation2d.getDegree(30).getSin() * SuperStructureConstants.Elbow.carriageToIntake.getInch())).plus(SPelevator);
+
+		Translation2d SPwristShort = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, RoundRotation2d.getDegree(30).toRotation2d()).plus(SPelevator);
+
+		assertEquals(SPwristLong.getX().getInch(), SPwristShort.getX().getInch(), 0.1);
+		assertEquals(SPwristLong.getY().getInch(), SPwristShort.getY().getInch(), 0.1);
+
 	}
 
 }
