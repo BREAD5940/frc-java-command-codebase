@@ -291,8 +291,12 @@ public class SuperstructureMotion extends Command {
 		}
 		
 
-		this.queue.addParallelLoggable(new ArmWaitForElevator(goalState.getAngle(), goalState.getElevatorHeight(), startArmTol.plus(LengthKt.getInch(5)),
-				goalState.getElevatorHeight().getInch() < currentState.getElevatorHeight().getInch()), isReal);
+		// this.queue.addSequentialLoggable(new ArmWaitForElevator(goalState.getAngle(), goalState.getElevatorHeight(), startArmTol.plus(LengthKt.getInch(5)),
+				// goalState.getElevatorHeight().getInch() < currentState.getElevatorHeight().getInch()), isReal);
+
+		// ok so by now the elevator should be such that we can safely move stuff?
+		queue.addSequentialLoggable(new ArmMove(goalState.getAngle()), isReal);
+
 		this.queue.addSequentialLoggable(new ElevatorMove(goalState.getElevator()), isReal);
 
 		return true;
