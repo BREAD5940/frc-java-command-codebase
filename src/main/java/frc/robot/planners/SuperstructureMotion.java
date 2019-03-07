@@ -70,6 +70,11 @@ public class SuperstructureMotion extends Command {
 		return instance_;
 	}
 
+	private static RoundRotation2d getUnDumbWrist(RoundRotation2d dumbWrist, RoundRotation2d relevantProx){
+		var compensatedAngle = dumbWrist.plus(relevantProx.div(2));
+		return compensatedAngle;
+	}
+
 	public boolean plan(SuperStructureState gsIn, SuperStructureState currentState) {
 		var goalState = new SuperStructureState(gsIn);
 		Length startArmTol = LengthKt.getInch(3);
@@ -101,15 +106,15 @@ public class SuperstructureMotion extends Command {
 		Translation2d GPelevator = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight()); // TODO maybe change constructor to use a Translation2d fromed from a Length and Rotation2d?
 		Translation2d GPwrist = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, goalState.getElbowAngle().toRotation2d()).plus(GPelevator);
 
-		Translation2d GPeoi = new Translation2d(LengthKt.getInch(goalState.getWristAngle().getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()),
-				LengthKt.getInch(goalState.getWristAngle().getSin() * SuperStructureConstants.Wrist.intakeOut.getInch())).plus(GPwrist);
+		Translation2d GPeoi = new Translation2d(LengthKt.getInch(getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()).getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()),
+				LengthKt.getInch(getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()).getSin() * SuperStructureConstants.Wrist.intakeOut.getInch())).plus(GPwrist);
 
 		//DEFINE the three start points -- elevator, wrist, and end of intake
 		Translation2d SPelevator = new Translation2d(LengthKt.getInch(0), currentState.getElevatorHeight());
 		Translation2d SPwrist = new Translation2d(LengthKt.getInch(currentState.getElbowAngle().getCos() * SuperStructureConstants.Elbow.carriageToIntake.getInch()),
 				LengthKt.getInch(currentState.getElbowAngle().getSin() * SuperStructureConstants.Elbow.carriageToIntake.getInch())).plus(SPelevator);
-		Translation2d SPeoi = new Translation2d(LengthKt.getInch(currentState.getWristAngle().getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()),
-				LengthKt.getInch(currentState.getWristAngle().getSin() * SuperStructureConstants.Wrist.intakeOut.getInch())).plus(SPwrist);
+		Translation2d SPeoi = new Translation2d(LengthKt.getInch(getUnDumbWrist(currentState.getWristAngle(), currentState.getElbowAngle()).getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()),
+				LengthKt.getInch(getUnDumbWrist(currentState.getWristAngle(), currentState.getElbowAngle()).getSin() * SuperStructureConstants.Wrist.intakeOut.getInch())).plus(SPwrist);
 
 		// FIXME so the issue here is that the maximum position of the wrist depends on the proximal (elbow) angle. So we have to measure it somehow yay. Also the sprocket on there means that the wrist will slowly rotate as the proximal joint rotates
 		//FIXME mostly fixed, check math
@@ -132,13 +137,13 @@ public class SuperstructureMotion extends Command {
 			goalState.getElbow().setAngle(tempTheta);
 			GPwrist = new Translation2d(LengthKt.getInch(tempTheta.getCos() * SuperStructureConstants.Elbow.carriageToIntake.getInch()),
 					LengthKt.getInch(Math.sin(tempTheta.getRadian()) * SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(GPelevator.getY()));
-			GPeoi = new Translation2d(LengthKt.getInch(goalState.getWristAngle().getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getX()),
-					LengthKt.getInch(goalState.getWristAngle().getSin() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
+			GPeoi = new Translation2d(LengthKt.getInch(getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()).getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getX()),
+					LengthKt.getInch(getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()).getSin() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
 		}
 
 		if (GPeoi.getY().minus(Wrist.intakeAbove).getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch()) {
 			Logger.log("intake still too low");
-			RoundRotation2d tempTheta = goalState.getWristAngle();
+			RoundRotation2d tempTheta = getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle());
 			tempTheta = RoundRotation2d.getRadian(
 					Math.asin(
 							(GPeoi.getY().plus(Wrist.intakeAbove).getInch() - GPwrist.getY().getInch())
