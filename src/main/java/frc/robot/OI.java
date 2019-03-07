@@ -139,16 +139,22 @@ public class OI {
 		SuperStructureState Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(10)),
 			new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
 
-		var planned = SuperstructureMotion.getInstance().plan(
-			iPosition.HATCH_GRAB_INSIDE, new SuperStructureState(
-				new ElevatorState(LengthKt.getInch(2)), iPosition.CARGO_GRAB
-			)
-			);
+		// var planned = SuperstructureMotion.getInstance().plan(
+		// 	iPosition.HATCH_GRAB_INSIDE, new SuperStructureState(
+		// 		new ElevatorState(LengthKt.getInch(2)), iPosition.CARGO_GRAB
+		// 	)
+		// 	);
+
+			var planned2 = SuperstructureMotion.getInstance().plan(
+				new SuperStructureState(
+					new ElevatorState(LengthKt.getInch(2)), iPosition.CARGO_GRAB
+				), iPosition.HATCH_GRAB_INSIDE
+				);
 
 
 		// primaryAButton.whileHeld(new HybridDriverAssist(7));
 		primaryBButton.whenPressed(SuperstructureMotion.getInstance());
-			
+		// primaryXButton.whenPressed()
 
 		// cargo presets
 		dsCargoIn.whenPressed(SequentialCommandFactory.getSequentialCommands(

@@ -49,13 +49,13 @@ public class Wrist extends RotatingJoint {
 		super.getMaster().set(kDefaultControlMode, normed, DemandType.ArbitraryFeedForward, arbitraryFeedForward);
 	}
 
-	@Override
-	public RoundRotation2d getRotation() {
-		var wrist = getMaster().getRotation2d();
-		var proximal = SuperStructure.getInstance().getElbow().getRotation();
-		var compensatedAngle = wrist.plus(proximal.div(2));
-		return compensatedAngle;
-	}
+	// @Override
+	// public RoundRotation2d getRotation() {
+	// 	var wrist = getMaster().getRotation2d();
+	// 	var proximal = SuperStructure.getInstance().getElbow().getRotation();
+	// 	var compensatedAngle = wrist.plus(proximal.div(2));
+	// 	return compensatedAngle;
+	// }
 
 	private PIDSettings kDefaultMotionMagicPidSettings = new PIDSettings(.1, 0, 0, 0.1, 1000, 1000);
 
