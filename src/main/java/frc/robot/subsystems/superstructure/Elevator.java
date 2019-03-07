@@ -74,8 +74,8 @@ public class Elevator extends HalfBakedSubsystem {
 	}
 
 	// TODO check these quick maths, kTopOfInnerStage is used to switch gravity feedforward
-	public static final Mass kCarriageMass = MassKt.getLb(/*30*/15); // TODO add in the intake and stuff
-	public static final Mass kInnerStageMass = MassKt.getLb(6.5);
+	public static final Mass kCarriageMass = MassKt.getLb(/*30*/20).times(-1); // times negative one because CF springs
+	public static final Mass kInnerStageMass = MassKt.getLb(6.5 + 30);
 
 	public static final Length kTopOfInnerStage = LengthKt.getInch(40);
 
