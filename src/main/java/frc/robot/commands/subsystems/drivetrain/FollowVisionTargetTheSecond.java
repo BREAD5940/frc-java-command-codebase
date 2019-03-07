@@ -10,6 +10,7 @@ package frc.robot.commands.subsystems.drivetrain;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.LimeLight;
 
 public class FollowVisionTargetTheSecond extends Command {
 
@@ -24,6 +25,9 @@ public class FollowVisionTargetTheSecond extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
+		// just in case turn on LEDs
+		LimeLight.getInstance().turnOnLED();
+		
 		m_isDone = false;
 		// SuperStructure.getElevator().getMaster().configPeakOutputForward(0);
 		// SuperStructure.getElevator().getMaster().configPeakOutputReverse(0);
