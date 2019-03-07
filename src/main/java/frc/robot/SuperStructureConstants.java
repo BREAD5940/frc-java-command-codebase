@@ -13,8 +13,9 @@ public class SuperStructureConstants {
 		public static final RoundRotation2d kWristMax = RoundRotation2d.getDegree(90); // relative
 		public static final RoundRotation2d kWristApproachingThreshold = RoundRotation2d.getDegree(6); // FIXME kinda random rn
 		public static final Length intakeOut = LengthKt.getInch(19); //FIXME check
-		public static final Length intakeDown = LengthKt.getInch(6); //FIXME check
-		public static final Length intakeUp = LengthKt.getInch(12); //FIXME check
+		public static final Length intakeDown = intakeOut;
+		public static final Length intakeUp = intakeOut;
+		public static final Length intakeAbove = LengthKt.getInch(5); //FIXME check
 
 	}
 

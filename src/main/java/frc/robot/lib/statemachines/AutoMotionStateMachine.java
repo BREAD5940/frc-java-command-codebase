@@ -2,6 +2,8 @@ package frc.robot.lib.statemachines;
 
 import edu.wpi.first.wpilibj.SendableBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
+import frc.robot.states.IntakeAngle;
+import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 public class AutoMotionStateMachine extends SendableBase {
 
@@ -25,8 +27,13 @@ public class AutoMotionStateMachine extends SendableBase {
 		PICKUP, PLACE
 	}
 
+	public enum MainArmPosition {
+		FRONT, IN, BACK
+	}
+
 	private HeldPiece heldPiece = HeldPiece.NONE;
 	private HeldPiece goalPiece = HeldPiece.NONE;
+	private MainArmPosition mainArm = MainArmPosition.IN; //TODO is this the correct preset?
 	private GoalHeight goalHeight = GoalHeight.LOW;
 	private GoalLocation goalLocation = GoalLocation.ROCKET;
 	private MotionType motionType = MotionType.PICKUP; //FIXME default pickup or place?
@@ -37,8 +44,7 @@ public class AutoMotionStateMachine extends SendableBase {
 	protected void updateGoalType() {
 		switch (this.motionType) {
 		case PLACE:
-			switch (this.goalLocation) {
-			case ROCKET:
+			if(this.goalLocation==GoalLocation.ROCKET) {
 				switch (this.heldPiece) {
 				case HATCH:
 					this.goalType = GoalType.ROCKET_HATCH;
@@ -49,7 +55,7 @@ public class AutoMotionStateMachine extends SendableBase {
 					this.goalType = GoalType.ROCKET_HATCH;
 
 				}
-			case CARGO_SHIP:
+			}else if(this.goalLocation==GoalLocation.CARGO_SHIP){
 				switch (this.heldPiece) {
 				case HATCH:
 					this.goalType = GoalType.CARGO_HATCH;
@@ -75,6 +81,7 @@ public class AutoMotionStateMachine extends SendableBase {
 	}
 
 	protected void updateFromType(){
+		//FIXME do we want this to try and extrapolate the mainArm too?
 		switch (this.goalType){
 			case CARGO_CARGO:
 				this.heldPiece = HeldPiece.CARGO;
@@ -234,6 +241,17 @@ public class AutoMotionStateMachine extends SendableBase {
 
 	public String motionTypeString() {
 		return this.getMotionType().toString();
+	}
+
+
+	//Passthrough
+
+	public void setMainArmPosition(MainArmPosition armPos){
+		this.mainArm = armPos;
+	}
+
+	public MainArmPosition getMainArmPosition(){
+		return this.mainArm;
 	}
 
 	//Sendable
