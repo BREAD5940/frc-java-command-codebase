@@ -280,11 +280,11 @@ public class OI {
 	}
 
 	public double getForwardAxis() {
-		return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis);
+		return -1 * primaryJoystick.getRawAxis(1);//RobotConfig.controls.forward_axis);
 	}
 
 	public double getTurnAxis() {
-		return primaryJoystick.getRawAxis(RobotConfig.controls.turn_axis);
+		return primaryJoystick.getRawAxis(0);//RobotConfig.controls.turn_axis);
 	}
 
 	// public double getIntakeAxis() {
