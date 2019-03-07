@@ -16,7 +16,9 @@ import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.ArmWaitForElevator;
 import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.lib.Logger;
+import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
+import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
@@ -76,6 +78,12 @@ public class SuperstructureMotion extends Command {
 		return instance_;
 	}
 
+	/**
+	 * Get the absolute angle of the wrist given a random angle per encoder and the proximal angle
+	 * @param dumbWrist the wrist angle as the encoder/presets sees it
+	 * @param relevantProx the proximal angle
+	 * @return the absolute angle of the wrist
+	 */
 	private static RoundRotation2d getUnDumbWrist(RoundRotation2d dumbWrist, RoundRotation2d relevantProx) {
 		var compensatedAngle = dumbWrist.plus(relevantProx.div(2));
 		return compensatedAngle;
@@ -90,12 +98,14 @@ public class SuperstructureMotion extends Command {
 			Logger.log("Goal and current states same.");
 			return true;
 		}
+
+		Logger.log("Checking basic mins/maxes");
 		//SAFE illegal inputs
 		if (goalState.getElevatorHeight().getInch() > SuperStructureConstants.Elevator.top.getInch() - SuperStructureConstants.Elevator.carriageHeight.getInch()) {
-			Logger.log("Elevator high");
+			Logger.log("Elevator too high! Safing elevator...");
 			goalState.getElevator().setHeight(SuperStructureConstants.Elevator.top); // constrain elevator to max height
 		} else if (goalState.getElevatorHeight().getInch() < SuperStructureConstants.Elevator.bottom.getInch()) {
-			Logger.log("Elevator low");
+			Logger.log("Elevator too low! Safing elevator");
 			goalState.getElevator().setHeight(SuperStructureConstants.Elevator.bottom); // constrain elevator to min height
 		}
 
@@ -115,19 +125,24 @@ public class SuperstructureMotion extends Command {
 		Translation2d GPelevator = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight()); // TODO maybe change constructor to use a Translation2d fromed from a Length and Rotation2d?
 		Translation2d GPwrist = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, goalState.getElbowAngle().toRotation2d()).plus(GPelevator);
 
+		/** 
+		 * goal point end of intake 
+		 */ 
 		Translation2d GPeoi = new Translation2d(LengthKt.getInch(getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()).getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()),
 				LengthKt.getInch(getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()).getSin() * SuperStructureConstants.Wrist.intakeOut.getInch())).plus(GPwrist);
 
+
 		//DEFINE the three start points -- elevator, wrist, and end of intake
 		Translation2d SPelevator = new Translation2d(LengthKt.getInch(0), currentState.getElevatorHeight());
-		Translation2d SPwrist = new Translation2d(LengthKt.getInch(currentState.getElbowAngle().getCos() * SuperStructureConstants.Elbow.carriageToIntake.getInch()),
-				LengthKt.getInch(currentState.getElbowAngle().getSin() * SuperStructureConstants.Elbow.carriageToIntake.getInch())).plus(SPelevator);
+		// Translation2d SPwrist = new Translation2d(LengthKt.getInch(currentState.getElbowAngle().getCos() * SuperStructureConstants.Elbow.carriageToIntake.getInch()),
+				// LengthKt.getInch(currentState.getElbowAngle().getSin() * SuperStructureConstants.Elbow.carriageToIntake.getInch())).plus(SPelevator);
+		
+		Translation2d SPwrist = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, currentState.getElbowAngle().toRotation2d()).plus(SPelevator);
+
 		Translation2d SPeoi = new Translation2d(LengthKt.getInch(getUnDumbWrist(currentState.getWristAngle(), currentState.getElbowAngle()).getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()),
 				LengthKt.getInch(getUnDumbWrist(currentState.getWristAngle(), currentState.getElbowAngle()).getSin() * SuperStructureConstants.Wrist.intakeOut.getInch())).plus(SPwrist);
 
 		Logger.log("made points");
-		// FIXME so the issue here is that the maximum position of the wrist depends on the proximal (elbow) angle. So we have to measure it somehow yay. Also the sprocket on there means that the wrist will slowly rotate as the proximal joint rotates
-		//FIXME mostly fixed, check math
 		if (Math.atan((GPeoi.getY().getInch() + GPwrist.getY().getInch()) / (GPeoi.getX().getInch() + GPwrist.getX().getInch())) > SuperStructureConstants.Wrist.kWristMax.getRadian()) {
 			Logger.log("Wrist big");
 			goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMax); // constrain wrist to max
@@ -165,6 +180,56 @@ public class SuperstructureMotion extends Command {
 		// }
 
 		Logger.log("a r c s i n");
+
+		// figure out if the intake is gunna yeet itself into the bottom. This is done by finding the worst case (intake and stuff as far pitched down as possible)
+		var worstCaseElbow = Util.getWorstCase(RoundRotation2d.getDegree(-90), goalState.getElbowAngle(), currentState.getElbowAngle());
+		var worstCaseWrist = Util.getWorstCase(
+			RoundRotation2d.getDegree(-90), 
+			getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()), 
+			getUnDumbWrist(currentState.getWristAngle(), currentState.getElbowAngle()));
+
+
+		Logger.log(String.format("WORST CASE ELBOW: (%s) WORST CASE WRIST: (%s)", worstCaseElbow.toString(), worstCaseWrist.toString()));
+
+		// now that we have a worst case angle, apply that to move the superstructure. 
+		// First off, if moving the intake first would cause anything to hit the electronics, move the elevator up.
+		// One exception: if the elbow is beyond the frame perimeter it's fine
+
+		var rawGoalProximal = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, goalState.getElbowAngle().toRotation2d());
+		var rawStartProximal = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, currentState.getElbowAngle().toRotation2d());
+
+		// figure out the worst case of these angles
+		var worstCaseCarriageToEOI = new Translation2d(
+			SuperStructureConstants.Elbow.carriageToIntake,
+			worstCaseElbow.toRotation2d()
+		).plus(
+			new Translation2d(
+				SuperStructureConstants.Wrist.intakeOut, 
+				worstCaseWrist.toRotation2d())
+		);
+
+		var isWithinFramePerimeter = 
+				(rawGoalProximal.getX().getInch() < SuperStructureConstants.kCarriageToFramePerimeter.getInch()) 
+				|| (rawStartProximal.getX().getInch() < SuperStructureConstants.kCarriageToFramePerimeter.getInch());
+
+		if(isWithinFramePerimeter) Logger.log("current or goal state is within the frame perimeter!");
+
+		// first, check if trying to move the arms _right now_ would make shit slap
+		var worstCaseStartingPos = worstCaseCarriageToEOI.plus(new Translation2d(currentState.getElevator().height, LengthKt.getInch(0)));
+		if(
+			worstCaseStartingPos.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch()
+		) {
+			Logger.log("gunna slap the electronics plate, gotta move the elevator first");
+
+			// TODO check if the end state is going to hit anything
+
+			var minUnCrashHeight = new ElevatorState(worstCaseCarriageToEOI.getY().plus(LengthKt.getInch(4)));
+
+			queue.addSequentialLoggable(new ElevatorMove(minUnCrashHeight), isReal);
+
+		}
+
+
 
 		//FIND the lowest goal and end points
 		Translation2d lowestGP = GPeoi;
@@ -226,9 +291,13 @@ public class SuperstructureMotion extends Command {
 		}
 		
 
-		this.queue.addParallel(new ArmWaitForElevator(goalState.getAngle(), goalState.getElevatorHeight(), startArmTol.plus(LengthKt.getInch(5)),
-				goalState.getElevatorHeight().getInch() < currentState.getElevatorHeight().getInch()));
-		this.queue.addSequential(new ElevatorMove(goalState.getElevator()));
+		// this.queue.addSequentialLoggable(new ArmWaitForElevator(goalState.getAngle(), goalState.getElevatorHeight(), startArmTol.plus(LengthKt.getInch(5)),
+				// goalState.getElevatorHeight().getInch() < currentState.getElevatorHeight().getInch()), isReal);
+
+		// ok so by now the elevator should be such that we can safely move stuff?
+		queue.addSequentialLoggable(new ArmMove(goalState.getAngle()), isReal);
+
+		this.queue.addSequentialLoggable(new ElevatorMove(goalState.getElevator()), isReal);
 
 		return true;
 	}
@@ -243,7 +312,8 @@ public class SuperstructureMotion extends Command {
 		// queue.start();
 		plan(this.gsIn, SuperStructure.getInstance().updateState());
 		System.out.println("===================================================================");
-		Logger.log(getQueue().getCommandLog().get(0));
+		Logger.log(String.format("Start state (%s) Goal state (%s)", SuperStructure.getInstance().getCurrentState().toString(), gsIn.toString()));
+		// Logger.log(getQueue().getCommandLog().get(0));
 		for (String s : getQueue().getCommandLog()) {
 			System.out.println(s);
 		}
