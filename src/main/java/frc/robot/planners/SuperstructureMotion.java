@@ -18,6 +18,7 @@ import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.lib.Logger;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
+import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
@@ -222,7 +223,9 @@ public class SuperstructureMotion extends Command {
 
 			// TODO check if the end state is going to hit anything
 
-			queue.addSequentialLoggable(new ElevatorMove(goalState.getElevator()), isReal);
+			var minUnCrashHeight = new ElevatorState(worstCaseCarriageToEOI.getY().plus(LengthKt.getInch(4)));
+
+			queue.addSequentialLoggable(new ElevatorMove(minUnCrashHeight), isReal);
 
 		}
 
