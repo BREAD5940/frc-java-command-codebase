@@ -130,29 +130,29 @@ public class SuperStructure extends Subsystem implements Loggable {
 	}
 
 	public static class iPosition {
-		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(10)), new RotatingArmState(RoundRotation2d.getDegree(-40)));
+		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(10)), new RotatingArmState(RoundRotation2d.getDegree(-45)));
 		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(-50)));
-		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(6)), new RotatingArmState(RoundRotation2d.getDegree(38)));
+		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(6)), new RotatingArmState(RoundRotation2d.getDegree(35)));
 
-		public static final IntakeAngle CARGO_PLACE_INSIDE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(28)));
+		public static final IntakeAngle CARGO_PLACE_INSIDE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(67)));
 
-		public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(148.35)), new RotatingArmState(RoundRotation2d.getDegree(-22)));
-		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(12)), new RotatingArmState(RoundRotation2d.getDegree(8)));
+		public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(148.35)), new RotatingArmState(RoundRotation2d.getDegree(-96.46)));
+		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(12)), new RotatingArmState(RoundRotation2d.getDegree(87.86 - 90 + 5)));
 		public static final IntakeAngle HATCH_PITCHED_UP = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(87.86 - 90 + 15)));
-		public static final IntakeAngle STOWED = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-85)), new RotatingArmState(RoundRotation2d.getDegree(-87.5)));
-		public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-190)), new RotatingArmState(RoundRotation2d.getDegree(-205)));
+		public static final IntakeAngle STOWED = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-85)), new RotatingArmState(RoundRotation2d.getDegree(-45)));
+		public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-190)), new RotatingArmState(RoundRotation2d.getDegree(-110)));
 
 		// grab a hatch by ramming against the loading station. Takes advantage of bumper recesses
 		public static final SuperStructureState HATCH_GRAB_INSIDE = new SuperStructureState(new ElevatorState(LengthKt.getInch(21)),
-				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-115)), new RotatingArmState(RoundRotation2d.getDegree(9))));
+				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-115)), new RotatingArmState(RoundRotation2d.getDegree(67))));
 		public static final SuperStructureState HATCH_GRAB_INSIDE_PREP = new SuperStructureState(new ElevatorState(LengthKt.getInch(16)),
-				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-115)), new RotatingArmState(RoundRotation2d.getDegree(9))));
+				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-115)), new RotatingArmState(RoundRotation2d.getDegree(67))));
 
 		// place a hatch and take advantage of the proximal to slam the hatch into the side.
 		public static final SuperStructureState HATCH_SLAM_ROCKET_INSIDE = new SuperStructureState(new ElevatorState(LengthKt.getInch(21)),
-				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-75)), new RotatingArmState(RoundRotation2d.getDegree(23.5))));
+				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-75)), new RotatingArmState(RoundRotation2d.getDegree(61))));
 		public static final SuperStructureState HATCH_SLAM_ROCKET_INSIDE_PREP = new SuperStructureState(new ElevatorState(LengthKt.getInch(17)),
-				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(8))));
+				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(40 + 7))));
 		public static final Length kOffsetFromL1toL2 = fieldPositions.hatchMiddleGoal.minus(fieldPositions.hatchLowGoal);
 
 		public static final ArrayList<IntakeAngle> presets = new ArrayList<IntakeAngle>(Arrays.asList(CARGO_GRAB, CARGO_DOWN,
