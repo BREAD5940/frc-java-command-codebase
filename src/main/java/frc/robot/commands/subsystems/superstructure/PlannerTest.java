@@ -18,7 +18,7 @@ public class PlannerTest extends Command {
 	@Override
 	protected void initialize() {
 		SuperstructureMotion.getInstance().plan(goal, SuperStructure.getInstance().lastState);
-		SuperstructureMotion.getInstance().start();
+		// SuperstructureMotion.getInstance().start();
 	}
 
 	// Called repeatedly when this Command is scheduled to run

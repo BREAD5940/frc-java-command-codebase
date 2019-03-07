@@ -90,6 +90,10 @@ public class RoundRotation2d implements Loggable {
 		return "" + getDegree();
 	}
 
+	public RoundRotation2d div(double other) {
+		return new RoundRotation2d(value / other);
+	}
+
 	@Override
 	public String toString() {
 		return "Degrees: " + getDegree();

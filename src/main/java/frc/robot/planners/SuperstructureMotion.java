@@ -39,6 +39,8 @@ public class SuperstructureMotion extends Command {
 	  - ArmWaitForElevator
 	 */
 
+	boolean isReal = false;
+
 	private SuperstructureMotion() {
 		requires(SuperStructure.getInstance());
 
@@ -177,9 +179,9 @@ public class SuperstructureMotion extends Command {
 		queue = new AutoCommandGroup();
 
 		if (GPwrist.getX().getInch() > 0 && SPwrist.getX().getInch() < 0) {
-			queue.addSequential(new PassThroughReverse());
+			queue.addSequentialLoggable(new PassThroughReverse(), isReal);
 		} else if (GPwrist.getX().getInch() < 0 && SPwrist.getX().getInch() > 0) {
-			queue.addSequential(new PassThroughForward());
+			queue.addSequentialLoggable(new PassThroughForward(), isReal);
 		}
 
 		//CHECK the position of the intake -- hatch or cargo
@@ -187,7 +189,7 @@ public class SuperstructureMotion extends Command {
 		boolean isLongClimb = Math.abs(goalState.getElevatorHeight().minus(currentState.getElevatorHeight()).getInch()) >= SuperStructureConstants.Elevator.kElevatorLongRaiseDistance.getInch();
 
 		if (isLongClimb) {
-			queue.addParallel(new ArmMove(SuperStructure.iPosition.STOWED));
+			queue.addParallelLoggable(new ArmMove(SuperStructure.iPosition.STOWED), isReal);
 		}
 
 		//CHECK if the elevator point is in proximity to the crossbar - if it is, stow it
@@ -197,7 +199,7 @@ public class SuperstructureMotion extends Command {
 						&& SPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch())
 				|| (GPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.plus(SuperStructureConstants.Elevator.crossbarWidth).getInch()
 						&& GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch())) {
-			queue.addSequential(new ArmMove(SuperStructure.iPosition.STOWED));
+			queue.addSequentialLoggable(new ArmMove(SuperStructure.iPosition.STOWED), isReal);
 		}
 
 		queue.addParallel(new ArmWaitForElevator(goalState.getAngle(), goalState.getElevatorHeight(), startArmTol,
