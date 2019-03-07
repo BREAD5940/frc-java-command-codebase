@@ -1,9 +1,12 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.junit.jupiter.api.Test;
 
 import frc.robot.lib.Logger;
+import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.planners.SuperstructureMotion;
 import frc.robot.states.ElevatorState;
@@ -162,7 +165,22 @@ public class SuperstructureTests extends Testable {
 		//FIXME Goal1 and Start1 are undefined
 		// SuperstructureMotion.getInstance().plan(Goal1, Start1);
 
-		System.out.println(SuperstructureMotion.getInstance().getQueue());
+		// System.out.println(SuperstructureMotion.getInstance().getQueue());
+
+		var iswithin = (Util.isWithin(RoundRotation2d.getDegree(-90), RoundRotation2d.getDegree(-60), RoundRotation2d.getDegree(-80)));
+
+		var worstCaseElbow = (Util.getWorstCase(RoundRotation2d.getDegree(-90), RoundRotation2d.getDegree(-60), RoundRotation2d.getDegree(-80)));
+		
+		System.out.println("worst case: " + worstCaseElbow);
+		System.out.println("is within? " + iswithin);
+
+		assertEquals(worstCaseElbow.getDegree(), -80, 0.1);
+		assertFalse(iswithin);
+
+		worstCaseElbow = (Util.getWorstCase(RoundRotation2d.getDegree(-90), RoundRotation2d.getDegree(-80), RoundRotation2d.getDegree(-130)));
+		assertEquals(worstCaseElbow.getDegree(), -90, 0.1);
+		System.out.println("worst case: " + worstCaseElbow);
+
 
 	}
 

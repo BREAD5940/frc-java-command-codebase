@@ -19,6 +19,8 @@ public class SuperStructureConstants {
 
 	}
 
+	public static final Length kCarriageToFramePerimeter = LengthKt.getInch(14); // Fixme check
+
 	public static class Elbow {
 		public static final RoundRotation2d kElbowMin = RoundRotation2d.getDegree(-180); // absolute
 		public static final RoundRotation2d kElbowMax = RoundRotation2d.getDegree(15); // absolute

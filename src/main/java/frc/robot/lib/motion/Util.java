@@ -114,6 +114,36 @@ public class Util {
 		return v;
 	}
 
+	public static RoundRotation2d min(RoundRotation2d bound1, RoundRotation2d bound2) {
+		var min = RoundRotation2d.getDegree(Math.min(bound1.getDegree(), bound2.getDegree()));
+		return min;
+	}
+
+	public static RoundRotation2d max(RoundRotation2d bound1, RoundRotation2d bound2) {
+		var min = RoundRotation2d.getDegree(Math.max(bound1.getDegree(), bound2.getDegree()));
+		return min;
+	}
+
+	// public static boolean isWithin(RoundRotation2d v, RoundRotation2d min, RoundRotation2d max) {
+	// 	var isBelowMax = v.minus(max).getDegree() < 0;
+	// 	var isAboveMin = min.minus(v).getDegree() < 0;
+	// 	return isBelowMax && isAboveMin;
+	// }
+
+	public static boolean isWithin(RoundRotation2d v, RoundRotation2d bound1, RoundRotation2d bound2) {
+		var max = Math.max(bound1.getDegree(), bound2.getDegree());
+		var min = Math.min(bound1.getDegree(), bound2.getDegree());
+		var isBelowMax = v.getDegree() - max < 0;
+		var isAboveMin = min - v.getDegree() < 0;
+		return isBelowMax && isAboveMin;
+	}
+
+	public static RoundRotation2d getWorstCase(RoundRotation2d worstCase, RoundRotation2d bound1, RoundRotation2d bound2) {
+		// RoundRotation2d toReturn;
+		if(isWithin(worstCase, bound1, bound2)) return worstCase; 
+		else return min(bound1, bound2);
+	}
+
 	public static String toString(Pose2d pose) {
 		return String.format("Pose: (%s, %s) theta: (%s)", pose.getTranslation().getX().getInch(), pose.getTranslation().getY().getInch(), pose.getRotation().getDegree());
 	}
