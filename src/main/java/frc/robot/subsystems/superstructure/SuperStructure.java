@@ -135,7 +135,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(6)), new RotatingArmState(RoundRotation2d.getDegree(35)));
 
 		public static final IntakeAngle CARGO_PLACE_INSIDE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(67)));
-
+		//TODO do we want to be able to place cargo reversed?
 		public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(148.35)), new RotatingArmState(RoundRotation2d.getDegree(-96.46)));
 		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(12)), new RotatingArmState(RoundRotation2d.getDegree(87.86 - 90 + 5)));
 		public static final IntakeAngle HATCH_PITCHED_UP = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(87.86 - 90 + 15)));

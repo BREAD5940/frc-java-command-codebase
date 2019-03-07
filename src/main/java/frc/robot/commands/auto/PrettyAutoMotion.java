@@ -6,6 +6,7 @@ import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.lib.AutoCommand;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
+import frc.robot.lib.statemachines.AutoMotionStateMachine.MainArmPosition;
 import frc.robot.planners.SuperstructureMotion;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
@@ -29,7 +30,7 @@ public class PrettyAutoMotion{
   private AutoCommandGroup genMainMotion(AutoMotionStateMachine machine){
     AutoCommandGroup createdGroup = new AutoCommandGroup();
 
-    //TODO prepare for the never-ending nest of switches
+
 
     return createdGroup;
   }
@@ -53,7 +54,11 @@ public class PrettyAutoMotion{
             break;
           case HATCH:
             eState.setHeight(RobotConfig.auto.fieldPositions.hatchLowGoal);
-            aState = iPosition.HATCH; //FIXME confirm
+            if(machine.getMainArmPosition()==MainArmPosition.BACK){
+              aState = iPosition.HATCH_REVERSE;
+            }else{
+              aState = iPosition.HATCH; //FIXME is it this or HATCH_PITCHED_UP?
+            }
             break;
           case NONE:
             //no
@@ -62,7 +67,14 @@ public class PrettyAutoMotion{
       case ROCKET:
         switch (machine.getHeldPiece()){
           case CARGO:
-            //TODO add a way to pick the specific cargo position to the sm
+            switch(machine.getMainArmPosition()){
+              case FRONT:
+                aState = iPosition.CARGO_PLACE;
+              case IN:
+                aState = iPosition.CARGO_PLACE_INSIDE;
+              case BACK:
+                aState = iPosition.CARGO_REVERSE;
+            }
             aState = iPosition.CARGO_PLACE;
             switch (machine.getGoalHeight()){
               case LOW:
@@ -76,7 +88,14 @@ public class PrettyAutoMotion{
                 break;
             }
           case HATCH:
-            //TODO see above
+            switch (machine.getMainArmPosition()){
+              case FRONT:
+                // if(machine.getGoalHeight());
+              case IN:
+
+              case BACK:
+
+            }
             aState = iPosition.HATCH;
             switch(machine.getGoalHeight()){
               case LOW:
