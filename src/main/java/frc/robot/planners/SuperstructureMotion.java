@@ -10,10 +10,7 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.SuperStructureConstants;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
-import frc.robot.commands.auto.routines.passthrough.PassThroughForward;
-import frc.robot.commands.auto.routines.passthrough.PassThroughReverse;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
-import frc.robot.commands.subsystems.superstructure.ArmWaitForElevator;
 import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.lib.Logger;
 import frc.robot.lib.motion.Util;
@@ -126,7 +123,7 @@ public class SuperstructureMotion extends Command {
 		Translation2d GPelevator = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight()); // TODO maybe change constructor to use a Translation2d fromed from a Length and Rotation2d?
 		Translation2d GPwrist = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, goalState.getElbowAngle().toRotation2d()).plus(GPelevator);
 
-		Logger.log("Goal position: " + goalState.toCSV() + String.format("gpWrist: x %s y %s", GPwrist.getX().getInch(), GPwrist.getY().getInch() ));
+		Logger.log("Goal position: " + goalState.toCSV() + String.format("gpWrist: x %s y %s", GPwrist.getX().getInch(), GPwrist.getY().getInch()));
 
 		/** 
 		 * goal point end of intake 
@@ -145,7 +142,6 @@ public class SuperstructureMotion extends Command {
 				LengthKt.getInch(getUnDumbWrist(currentState.getWristAngle(), currentState.getElbowAngle()).getSin() * SuperStructureConstants.Wrist.intakeOut.getInch())).plus(SPwrist);
 
 		Logger.log("made points");
-
 
 		if (Math.atan((GPeoi.getY().getInch() + GPwrist.getY().getInch()) / (GPeoi.getX().getInch() + GPwrist.getX().getInch())) > SuperStructureConstants.Wrist.kWristMax.getRadian()) {
 			Logger.log("Wrist big");
@@ -226,16 +222,17 @@ public class SuperstructureMotion extends Command {
 						&& SPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch())
 				|| (GPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.plus(SuperStructureConstants.Elevator.crossbarWidth).getInch()
 						&& GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch()) && (
-				
+
 				// check if the elbow is in danger of hitting something, I don't care about the height as long as the intake isn't passed through right now
 				goalState.getElbowAngle().getDegree() < -95 || currentState.getElbowAngle().getDegree() < -95
 
-						)) {
+				)) {
 			// I think this should be one of the first move commands, above anything else
 
 			var doWeNeedToSafeElevatorFirst = (Util.max(GPelevator.getY(), SPelevator.getY()).getInch() < SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar.getInch());
 
-			if(doWeNeedToSafeElevatorFirst) this.queue.addSequential(new ElevatorMove(SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar));
+			if (doWeNeedToSafeElevatorFirst)
+				this.queue.addSequential(new ElevatorMove(SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar));
 			this.queue.addSequentialLoggable(new ArmMove(SuperStructure.iPosition.STOWED), isReal);
 		}
 
@@ -259,10 +256,10 @@ public class SuperstructureMotion extends Command {
 		var worstCaseCarriageToEOI = new Translation2d(
 				SuperStructureConstants.Elbow.carriageToIntake,
 				worstCaseElbow.toRotation2d())
-			.plus(
-				new Translation2d(
-						SuperStructureConstants.Wrist.intakeOut,
-						worstCaseWrist.toRotation2d()));
+						.plus(
+								new Translation2d(
+										SuperStructureConstants.Wrist.intakeOut,
+										worstCaseWrist.toRotation2d()));
 
 		var isWithinFramePerimeter = (rawGoalProximal.getX().getInch() < SuperStructureConstants.kCarriageToFramePerimeter.getInch())
 				|| (rawStartProximal.getX().getInch() < SuperStructureConstants.kCarriageToFramePerimeter.getInch());
@@ -280,7 +277,6 @@ public class SuperstructureMotion extends Command {
 
 			// TODO check if the end state is going to hit anything
 
-
 			queue.addSequentialLoggable(new ElevatorMove(minUnCrashHeight), isReal);
 
 		}
@@ -288,16 +284,16 @@ public class SuperstructureMotion extends Command {
 		// TODO where should passthrough go?
 		// Logger.log("goal pos elbow end x: " + GPwrist.getX().getInch() + " startpoint pos elbow end: " + SPwrist.getX().getInch());
 		// if (GPwrist.getX().getInch() > 8 && SPwrist.getX().getInch() < -8) {
-			// queue.addSequentialLoggable(new PassThroughReverse(), isReal);
+		// queue.addSequentialLoggable(new PassThroughReverse(), isReal);
 		// } else if (GPwrist.getX().getInch() < -8 && SPwrist.getX().getInch() > 8) {
-			// queue.addSequentialLoggable(new PassThroughForward(), isReal);
+		// queue.addSequentialLoggable(new PassThroughForward(), isReal);
 		// }
 
 		// Logger.log("pass");
 
 		//CHECK the position of the intake -- hatch or cargo
 		// IF it's a long climb
-		
+
 		boolean isLongClimb = Math.abs(goalState.getElevatorHeight().minus(currentState.getElevatorHeight()).getInch()) >= SuperStructureConstants.Elevator.kElevatorLongRaiseDistance.getInch();
 
 		if (isLongClimb) {

@@ -104,7 +104,7 @@ public class FollowVisionTargetTheSecond extends Command {
 
 		// try to drive forward until the target area reaches our desired area
 		double drive_cmd = (DESIRED_TARGET_AREA - ta) * DRIVE_K;
-		drive_cmd = drive_cmd + 1d/12d * Math.signum(drive_cmd);
+		drive_cmd = drive_cmd + 1d / 12d * Math.signum(drive_cmd);
 
 		// don't let the robot drive too fast into the goal
 		if (drive_cmd > MAX_DRIVE) {

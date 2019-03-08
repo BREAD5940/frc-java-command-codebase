@@ -17,7 +17,6 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
-import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -82,7 +81,6 @@ public class DriveDistanceToVisionTarget extends CommandGroup {
 		Pose2d end = new Pose2d(new Translation2d(kOffset.minus(kEndOffset), kOffset), Rotation2dKt.getDegree(0));
 
 		System.out.println(String.format("Current pose: %s end poseL: %s", Util.toString(mVisionTargetPose), Util.toString(end)));
-		
 
 		// offset the end by the end offset to make a straight portion
 		// Pose2d splineEnd = end.minus(new Pose2d(kOffset.plus(kEndOffset).minus(straightLength), LengthKt.getInch(0), Rotation2dKt.getDegree(0)));
@@ -107,8 +105,6 @@ public class DriveDistanceToVisionTarget extends CommandGroup {
 		// this.clearRequirements();
 		mFollowerCommand.start();
 		mCommandStarted = true;
-
-
 
 		// addSequential(mFollowerCommand);
 

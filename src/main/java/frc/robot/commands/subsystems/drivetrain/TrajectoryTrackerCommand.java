@@ -10,14 +10,10 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TrajectorySamplePoint;
 import org.ghrobotics.lib.mathematics.units.Length;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 
-import com.team254.lib.physics.DifferentialDrive.DriveDynamics;
-
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.AutoCommand;
@@ -79,14 +75,13 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 
 		LiveDashboard.INSTANCE.setFollowingPath(true);
 
-
 		mUpdateNotifier = new Notifier(() -> {
 			output = trajectoryTracker.nextState(driveBase.getRobotPosition(), TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
 
 			TrajectorySamplePoint<TimedEntry<Pose2dWithCurvature>> referencePoint = trajectoryTracker.getReferencePoint();
 			if (referencePoint != null) {
 				Pose2d referencePose = referencePoint.getState().getState().getPose();
-	
+
 				LiveDashboard.INSTANCE.setPathX(referencePose.getTranslation().getX().getFeet());
 				LiveDashboard.INSTANCE.setPathY(referencePose.getTranslation().getY().getFeet());
 				LiveDashboard.INSTANCE.setPathHeading(referencePose.getRotation().getRadian());

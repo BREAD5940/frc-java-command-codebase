@@ -150,7 +150,6 @@ public class Util {
 		else
 			return min(bound1, bound2);
 	}
-	
 
 	public static String toString(Pose2d pose) {
 		return String.format("Pose: (%s, %s) theta: (%s)", pose.getTranslation().getX().getInch(), pose.getTranslation().getY().getInch(), pose.getRotation().getDegree());

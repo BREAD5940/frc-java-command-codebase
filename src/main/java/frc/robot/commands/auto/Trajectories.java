@@ -186,7 +186,7 @@ public class Trajectories {
 								Rotation2dKt.getDegree(150))),
 				true));
 
-						// Trajectories to the rocket from (REVERSED) on habL. format is rocket[L/R for left/right][C/M/F for close/middle/far]. These are offset to allow for a vision target to yeet into it
+		// Trajectories to the rocket from (REVERSED) on habL. format is rocket[L/R for left/right][C/M/F for close/middle/far]. These are offset to allow for a vision target to yeet into it
 		generatedLGTrajectories.put("habR to rocketRF", generateTrajectoryLowGear(
 				Arrays.asList(
 						locations.get("habR"),
@@ -201,17 +201,17 @@ public class Trajectories {
 				true));
 
 		generatedHGTrajectories.put("habR to rocketRF", generateTrajectoryHighGear(
-			Arrays.asList(
-					locations.get("habR"),
-					new Pose2d(
-							LengthKt.getFeet(19.8),
-							LengthKt.getFeet(5.1),
-							Rotation2dKt.getDegree(140)),
-					new Pose2d(
-							LengthKt.getFeet(23.801),
-							LengthKt.getFeet(3.5),
-							Rotation2dKt.getDegree(-150))),
-			true));
+				Arrays.asList(
+						locations.get("habR"),
+						new Pose2d(
+								LengthKt.getFeet(19.8),
+								LengthKt.getFeet(5.1),
+								Rotation2dKt.getDegree(140)),
+						new Pose2d(
+								LengthKt.getFeet(23.801),
+								LengthKt.getFeet(3.5),
+								Rotation2dKt.getDegree(-150))),
+				true));
 
 		// Trajectories to the rocket. format is rocket[L/R for left/right][C/M/F for close/middle/far]. This one is backed up 3 feet already!!!!!!!!!!!!!!!!!!!!!!!!!!
 		generatedLGTrajectories.put("rocketLF to loadingL", generateTrajectoryLowGear(
