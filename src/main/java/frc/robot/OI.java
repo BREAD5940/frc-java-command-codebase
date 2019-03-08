@@ -149,10 +149,9 @@ public class OI {
 
 		primaryBButton.whenPressed(new SuperstructureMotion(iPosition.HATCH_GRAB_INSIDE));
 
-		// primaryDpadUp.whenPressed(new TwoHatchOneCargo());
+		primaryDpadUp.whenPressed(new TwoHatchOneCargo());
 		// primaryDpadUp.whenPressed(new FollowVisionTargetTheSecond(4.3));
-		
-		primaryDpadUp.whenPressed(new DriveDistanceToVisionTarget(LengthKt.getInch(30), 6));
+		// primaryDpadUp.whenPressed(new DriveDistanceToVisionTarget(LengthKt.getInch(40), 6));
 
 		// primaryAButton.whileHeld(new HybridDriverAssist(7));
 		// primaryBButton.whenPressed(new SuperstructureMotion(new SuperStructureState(new ElevatorState(LengthKt.getInch(2)), iPosition.CARGO_GRAB), iPosition.HATCH_GRAB_INSIDE_PREP));

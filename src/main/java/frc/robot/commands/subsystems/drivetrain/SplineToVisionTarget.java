@@ -68,7 +68,7 @@ public class SplineToVisionTarget extends CommandGroup {
 		double now = Timer.getFPGATimestamp();
 
 		// get the current and target poses in addition to drive straight pose
-		Pose2d mVisionTargetPose = LimeLight.getInstance().getPose(kEndOffset.getInch(), kOffset.getInch());
+		Pose2d mVisionTargetPose = LimeLight.getInstance().getPose(/*kEndOffset.getInch(), */kOffset.getInch());
 		Pose2d end = new Pose2d(new Translation2d(kOffset.plus(kEndOffset), kOffset), Rotation2dKt.getDegree(0));
 		// offset the end by the end offset to make a straight portion
 		Pose2d splineEnd = end.minus(new Pose2d(kOffset.plus(kEndOffset).minus(straightLength), LengthKt.getInch(0), Rotation2dKt.getDegree(0)));

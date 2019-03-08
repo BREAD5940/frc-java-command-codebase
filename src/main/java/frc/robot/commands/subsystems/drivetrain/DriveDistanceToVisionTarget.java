@@ -17,6 +17,7 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -68,9 +69,21 @@ public class DriveDistanceToVisionTarget extends CommandGroup {
 		double now = Timer.getFPGATimestamp();
 
 		// get the current and target poses in addition to drive straight pose
-		Pose2d mVisionTargetPose = LimeLight.getInstance().getPose(kEndOffset.getInch(), kOffset.getInch());
-		mVisionTargetPose = new Pose2d(mVisionTargetPose.getTranslation().getX(), kOffset, mVisionTargetPose.getRotation());
-		Pose2d end = new Pose2d(new Translation2d(kOffset.plus(kEndOffset), kOffset), Rotation2dKt.getDegree(0));
+		Pose2d mVisionTargetPose = LimeLight.getInstance().getPose(kOffset.getInch());
+
+		// var poseAtMeasurement = DriveTrain.getInstance().getLocalization().get(TimeUnitsKt.getSecond(Timer.getFPGATimestamp() - LimeLight.getInstance().getPipelineLatency()));
+		// var currentPose = DriveTrain.getInstance().getLocalization().getRobotPosition();
+
+		// var deltaLen = currentPose.minus(poseAtMeasurement).getTranslation().getNorm();
+		// var deltaAngle = currentPose.getRotation().minus(poseAtMeasurement.getRotation());
+		// var deltaPose = new Pose2d(deltaLen, rotation)
+
+		mVisionTargetPose = new Pose2d(mVisionTargetPose.getTranslation().getX(), kOffset, Rotation2dKt.getDegree(0));
+		Pose2d end = new Pose2d(new Translation2d(kOffset.minus(kEndOffset), kOffset), Rotation2dKt.getDegree(0));
+
+		System.out.println(String.format("Current pose: %s end poseL: %s", Util.toString(mVisionTargetPose), Util.toString(end)));
+		
+
 		// offset the end by the end offset to make a straight portion
 		// Pose2d splineEnd = end.minus(new Pose2d(kOffset.plus(kEndOffset).minus(straightLength), LengthKt.getInch(0), Rotation2dKt.getDegree(0)));
 
@@ -94,6 +107,8 @@ public class DriveDistanceToVisionTarget extends CommandGroup {
 		// this.clearRequirements();
 		mFollowerCommand.start();
 		mCommandStarted = true;
+
+
 
 		// addSequential(mFollowerCommand);
 

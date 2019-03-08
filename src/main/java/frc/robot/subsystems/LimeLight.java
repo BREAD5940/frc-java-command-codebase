@@ -124,7 +124,7 @@ public class LimeLight extends Subsystem {
 	 * @param kOffset how far away the front of the bumpers is from the camera (in inches)
 	 * @param distanceToShiftBy how far to move everything up/right so it shows up on falcon dashboard
 	 */
-	public Pose2d getPose(double kOffset, double distanceToShiftBy) {
+	public Pose2d getPose(double distanceToShiftBy) {
 		double[] camtran = NetworkTableInstance.getDefault().getTable("limelight").getEntry("camtran").getDoubleArray(new double[]{});
 
 		// final double kOffset = 100;
@@ -133,7 +133,7 @@ public class LimeLight extends Subsystem {
 
 		// final double kLimelightForeOffset = 25; //inches from limelight to hatch pannel
 		// forward/backward motion, left/right motion
-		Translation2d mTranToGoal = new Translation2d(LengthKt.getInch((camtran[2]) + distanceToShiftBy + kOffset), LengthKt.getInch((camtran[0] * -1) + distanceToShiftBy));
+		Translation2d mTranToGoal = new Translation2d(LengthKt.getInch((camtran[2]) + distanceToShiftBy), LengthKt.getInch((camtran[0] * -1) + distanceToShiftBy));
 		Rotation2d mRotToGoal = Rotation2dKt.getDegree(camtran[4] * 1);
 		Pose2d mPoseToGoal = new Pose2d(mTranToGoal, mRotToGoal);
 
@@ -208,10 +208,10 @@ public class LimeLight extends Subsystem {
 
 	/**
 	 * Get the latency from camera data to NT entry
-	 * @return pipeline latency contribution
+	 * @return pipeline latency contribution in seconds
 	 */
 	public double getPipelineLatency() {
-		return (table.getEntry("tl")).getDouble(0);
+		return ((table.getEntry("tl")).getDouble(0) / 1000) + 11;
 	}
 
 	/**
