@@ -114,6 +114,10 @@ public class LimeLight extends Subsystem {
 		table.getEntry("ledMode").setNumber(0);
 	}
 
+	public double getTargetXPixels() {
+		return table.getEntry("thor").getDouble(0);
+	}
+
 	/** Turn off the Limelight LED */
 	public void turnOffLED() {
 		table.getEntry("ledMode").setNumber(1);
@@ -171,7 +175,7 @@ public class LimeLight extends Subsystem {
 	public void setPipeline(PipelinePreset req_) {
 		table.getEntry("pipeline").setNumber(req_.getId());
 		this.mCurrentPipeline = req_;
-		if (req_.name().contains("HighRes")) {
+		if (req_.name().contains("3d")) {
 			this.isHighRes = true;
 		} else {
 			this.isHighRes = false;
@@ -246,6 +250,18 @@ public class LimeLight extends Subsystem {
 		Length width = kTarget.getWidth();
 		double focalLen = (isHighRes) ? x_focal_length_high : x_focal_length_low;
 		Length distance = width.times(focalLen).div(mMeasured.getX());
+		return distance;
+	}
+
+	/**
+	 * Get the distance to the target using X axis size estimation
+	 * @return the distance to the target, maybe
+	 */
+	public Length getDistanceToTarget() {
+		double focalLen = (isHighRes) ? x_focal_length_high : x_focal_length_low;
+		Length width = LengthKt.getInch(14.6);
+		double targetSizePx = getTargetXPixels();
+		Length distance = width.times(focalLen).div(targetSizePx);
 		return distance;
 	}
 
