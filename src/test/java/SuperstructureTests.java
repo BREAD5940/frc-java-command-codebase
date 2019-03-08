@@ -206,4 +206,14 @@ public class SuperstructureTests extends Testable {
 
 	}
 
+	@Test
+	public void testPoints() {
+		var goalState = new SuperStructureState(new ElevatorState(), new RotatingArmState(RoundRotation2d.getDegree(-90)), new RotatingArmState(RoundRotation2d.getDegree(0)));
+		Translation2d GPelevator = new Translation2d(LengthKt.getInch(0), LengthKt.getInch(0));
+		Translation2d GPwrist = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, goalState.getElbowAngle().toRotation2d()).plus(GPelevator);
+
+		Logger.log(String.format("GPWrist X %s Y %s", GPwrist.getX().getInch(), GPwrist.getY().getInch()));
+
+	}
+
 }

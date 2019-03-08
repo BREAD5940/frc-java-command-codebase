@@ -125,6 +125,8 @@ public class SuperstructureMotion extends Command {
 		Translation2d GPelevator = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight()); // TODO maybe change constructor to use a Translation2d fromed from a Length and Rotation2d?
 		Translation2d GPwrist = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, goalState.getElbowAngle().toRotation2d()).plus(GPelevator);
 
+		Logger.log("Goal position: " + goalState.toCSV() + String.format("gpWrist: x %s y %s", GPwrist.getX().getInch(), GPwrist.getY().getInch() ));
+
 		/** 
 		 * goal point end of intake 
 		 */
@@ -257,9 +259,9 @@ public class SuperstructureMotion extends Command {
 		}
 
 		Logger.log("goal pos elbow end x: " + GPwrist.getX().getInch() + " startpoint pos elbow end: " + SPwrist.getX().getInch());
-		if (GPwrist.getX().getInch() > 5 && SPwrist.getX().getInch() < -5) {
+		if (GPwrist.getX().getInch() > 8 && SPwrist.getX().getInch() < -8) {
 			queue.addSequentialLoggable(new PassThroughReverse(), isReal);
-		} else if (GPwrist.getX().getInch() < -5 && SPwrist.getX().getInch() > 5) {
+		} else if (GPwrist.getX().getInch() < -8 && SPwrist.getX().getInch() > 8) {
 			queue.addSequentialLoggable(new PassThroughForward(), isReal);
 		}
 
