@@ -364,7 +364,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
-		drivetrain.getLocalization().update(); // TODO put me on a notifier?
 		// long now = System.currentTimeMillis();
 
 		SmartDashboard.putString(SuperStructure.getInstance().getCurrentState().getCSVHeader(), SuperStructure.getInstance().getCurrentState().toCSV());
