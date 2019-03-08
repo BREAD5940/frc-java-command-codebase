@@ -1,5 +1,7 @@
 package frc.robot.commands.subsystems.superstructure;
 
+import org.ghrobotics.lib.mathematics.units.Length;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -14,6 +16,10 @@ public class ElevatorMove extends Command {
 	 */
 	public ElevatorMove(ElevatorState goal) {
 		this(goal, "ElevatorMove to " + goal.toString());
+	}
+
+	public ElevatorMove(Length goal) {
+		this(new ElevatorState(goal));
 	}
 
 	public ElevatorMove(ElevatorState goal, String name) {

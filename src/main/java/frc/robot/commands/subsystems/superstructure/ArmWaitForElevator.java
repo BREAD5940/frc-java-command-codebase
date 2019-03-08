@@ -25,11 +25,12 @@ public class ArmWaitForElevator extends AutoCommandGroup {
 	 * @param tolerence the tolerance about the elevator setpoint
 	 * @param isDescending if the elevator is going down or not
 	 */
-	public ArmWaitForElevator(IntakeAngle desired, Length finalEleHeight, Length tolerence, boolean isDescending) {
+	public ArmWaitForElevator(IntakeAngle desired, Length finalEleHeight, Length tolerence) {
 		elevatorMoved = (() -> {
-			return ((SuperStructure.getElevator().getHeight().getInch() < finalEleHeight.plus(tolerence).getInch() && isDescending)
-					|| (SuperStructure.getElevator().getHeight().getInch() > finalEleHeight.minus(tolerence).getInch()
-							&& !isDescending));
+			// return ((SuperStructure.getElevator().getHeight().getInch() < finalEleHeight.plus(tolerence).getInch() && isDescending)
+			// 		|| (SuperStructure.getElevator().getHeight().getInch() > finalEleHeight.minus(tolerence).getInch()
+			// 				&& !isDescending));
+			return (SuperStructure.getElevator().getHeight().minus(finalEleHeight).getAbsoluteValue().getInch() < tolerence.getInch()); // check if the position error is acceptable
 		}); // this lamda Caller can be read as:
 		// (null) -> [or becomes, turns into] (basically if the elevator is within tolerance)
 		// this Caller is then used by auto wait for condition and polled in isFinished();
