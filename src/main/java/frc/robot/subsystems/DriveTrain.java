@@ -123,6 +123,11 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		purePursuitTracker = new PurePursuitTracker(Constants.kLat, Constants.kLookaheadTime,
 				Constants.kMinLookaheadDistance);
 		feedForwardTracker = new FeedForwardTracker();
+
+		localizationNotifier = new Notifier(() -> {
+			this.getLocalization().update();
+		});
+		localizationNotifier.startPeriodic(0.01);
 	}
 
 	public DifferentialDrive getDifferentialDrive() {
