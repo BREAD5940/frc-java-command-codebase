@@ -13,6 +13,7 @@ import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.PickupHatch;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
 import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheSecond;
+import frc.robot.commands.subsystems.drivetrain.DriveDistanceToVisionTarget;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
@@ -50,14 +51,16 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		boolean doVision = false;
 
 		/* Get a trajectory to move to the cargo ship. THE ROBOT IS REVERSED */
-		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedLGTrajectories.get("habR" + " to " + "rocketRF"); //current trajectory from hashmap in Trajectorie
+		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedLGTrajectories.get("habR" + " to " + "rocketRF"); //current trajectory from hashmap in Trajectories
+
 		if(doIntake) addParallel(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE_PREP)); // move arm inside to prep state
 		addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kON));
 		addParallel(new LimeLight.setPipeline(PipelinePreset.k3dVision));
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.HIGH, true)); //drive to goal
 		if(doIntake) addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
 		// addSequential(new SplineToVisionTarget(/*this.getPoseStorage1(), */LengthKt.getInch(0), LengthKt.getInch(30), 6.5));
-		addSequential(new FollowVisionTargetTheSecond(4.3));
+		// addSequential(new FollowVisionTargetTheSecond(4.3));
+		addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(35), 5));
 		if(doIntake) addSequential(new RunIntake(-1, 0, 1));
 		
 		// back up 3 feet
