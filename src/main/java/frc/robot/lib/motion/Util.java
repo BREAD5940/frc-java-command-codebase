@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
 import frc.robot.lib.obj.RoundRotation2d;
@@ -124,6 +125,10 @@ public class Util {
 		return min;
 	}
 
+	public static Length max(Length arg1, Length arg2) {
+		return LengthKt.getInch(Math.max(arg1.getInch(), arg2.getInch()));
+	}
+
 	// public static boolean isWithin(RoundRotation2d v, RoundRotation2d min, RoundRotation2d max) {
 	// 	var isBelowMax = v.minus(max).getDegree() < 0;
 	// 	var isAboveMin = min.minus(v).getDegree() < 0;
@@ -145,6 +150,7 @@ public class Util {
 		else
 			return min(bound1, bound2);
 	}
+	
 
 	public static String toString(Pose2d pose) {
 		return String.format("Pose: (%s, %s) theta: (%s)", pose.getTranslation().getX().getInch(), pose.getTranslation().getY().getInch(), pose.getRotation().getDegree());

@@ -42,6 +42,7 @@ public class SuperStructureConstants {
 		public static final Length electronicsHeight = LengthKt.getInch(0);
 		public static final Length longClimb = LengthKt.getInch(20); //FIXME actual number, perhaps?
 		public static final Length carriageHeight = LengthKt.getInch(12); //TODO this one is maybe mostly right
+		public static final Length minimumPassThroughAboveCrossbar = LengthKt.getInch(50); // TODO check meeeeeeee
 
 	}
 
