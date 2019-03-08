@@ -9,12 +9,6 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.SuperStructureConstants;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
-// import frc.robot.commands.auto.routines.passthrough.PassThroughForward;
-// import frc.robot.commands.auto.routines.passthrough.PassThroughReverse;
-// import frc.robot.commands.subsystems.superstructure.ArmMove;
-// import frc.robot.commands.subsystems.superstructure.ArmWaitForElevator;
-// import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.lib.Logger;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
@@ -22,7 +16,6 @@ import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
-import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
  * Instructions for using this mutant command-thing:
@@ -42,7 +35,7 @@ public class testableSSMotion /*extends Command*/ {
 	 */
 
 	boolean isReal = false;
-	private SuperStructureState gsIn;
+	private SuperStructureState gsIn, currentState;
 
 	private void requires(Object o) {}
 
@@ -58,10 +51,24 @@ public class testableSSMotion /*extends Command*/ {
 	public testableSSMotion(SuperStructureState gsIn, SuperStructureState current) {
 		System.out.println("ssmotion instan");
 		this.gsIn = gsIn;
+		this.currentState = current;
 		// requires(SuperStructure.getInstance().getWrist());
 		// requires(SuperStructure.getInstance().getElbow());
 		// requires(SuperStructure.getElevator());
 		// requires(SuperStructure.getInstance());
+
+		plan(this.gsIn, currentState);
+		Logger.log(String.format("Start state (%s) Goal state (%s)", currentState.toString(), gsIn.toString()));
+		System.out.println("===================================================================");
+		Logger.log(String.format("Start state (%s)", currentState.toString()));
+
+		// Logger.log(getQueue().getCommandLog().get(0));
+		for (String s : getQueue().getCommandLog()) {
+			System.out.println(s);
+		}
+		Logger.log(String.format("End state (%s)", gsIn.toString()));
+
+		System.out.println("===================================================================");
 	}
 
 	public testableSSMotion(SuperStructureState gsIn) {
@@ -129,13 +136,15 @@ public class testableSSMotion /*extends Command*/ {
 		Translation2d GPelevator = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight()); // TODO maybe change constructor to use a Translation2d fromed from a Length and Rotation2d?
 		Translation2d GPwrist = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, goalState.getElbowAngle().toRotation2d()).plus(GPelevator);
 
-		Logger.log("Goal position: " + goalState.toCSV() + String.format("gpWrist: x %s y %s", GPwrist.getX().getInch(), GPwrist.getY().getInch() ));
+		Logger.log("Goal position: " + goalState.toCSV() + String.format("gpWrist: x %s y %s", GPwrist.getX().getInch(), GPwrist.getY().getInch()));
 
 		/** 
 		 * goal point end of intake 
 		 */
 		Translation2d GPeoi = new Translation2d(LengthKt.getInch(getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()).getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()),
 				LengthKt.getInch(getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()).getSin() * SuperStructureConstants.Wrist.intakeOut.getInch())).plus(GPwrist);
+		// Translation2d GPeoi = new Translation2d(LengthKt.getInch(getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()).getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()),
+		// LengthKt.getInch(getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()).getSin() * SuperStructureConstants.Wrist.intakeOut.getInch())).plus(GPwrist);
 
 		//DEFINE the three start points -- elevator, wrist, and end of intake
 		Translation2d SPelevator = new Translation2d(LengthKt.getInch(0), currentState.getElevatorHeight());
@@ -148,7 +157,6 @@ public class testableSSMotion /*extends Command*/ {
 				LengthKt.getInch(getUnDumbWrist(currentState.getWristAngle(), currentState.getElbowAngle()).getSin() * SuperStructureConstants.Wrist.intakeOut.getInch())).plus(SPwrist);
 
 		Logger.log("made points");
-
 
 		if (Math.atan((GPeoi.getY().getInch() + GPwrist.getY().getInch()) / (GPeoi.getX().getInch() + GPwrist.getX().getInch())) > SuperStructureConstants.Wrist.kWristMax.getRadian()) {
 			Logger.log("Wrist big");
@@ -229,19 +237,31 @@ public class testableSSMotion /*extends Command*/ {
 						&& SPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch())
 				|| (GPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.plus(SuperStructureConstants.Elevator.crossbarWidth).getInch()
 						&& GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch()) && (
-				
+
 				// check if the elbow is in danger of hitting something, I don't care about the height as long as the intake isn't passed through right now
+
 				goalState.getElbowAngle().getDegree() < -95 || currentState.getElbowAngle().getDegree() < -95
 
-						)) {
+				)) {
 			// I think this should be one of the first move commands, above anything else
-
 			var doWeNeedToSafeElevatorFirst = (Util.max(GPelevator.getY(), SPelevator.getY()).getInch() < SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar.getInch());
 
-			if(doWeNeedToSafeElevatorFirst) this.queue.addSequentialLoggable(new ElevatorMove(SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar));
+			if (doWeNeedToSafeElevatorFirst)
+				this.queue.addSequentialLoggable(new ElevatorMove(SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar));
+			if (doWeNeedToSafeElevatorFirst)
+				Logger.log("so if we try to yeet we will hit the crossbar. So let's yeet the elevator up to " + SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar.getInch());
+
+			Logger.log("So apparently the elbow is in danger of hitting the crossbar. So uhh let's stow the arm.");
 			this.queue.addSequentialLoggable(new ArmMove(SuperStructure.iPosition.STOWED));
 		}
 
+		boolean isLongClimb = Math.abs(goalState.getElevatorHeight().minus(currentState.getElevatorHeight()).getInch()) >= SuperStructureConstants.Elevator.kElevatorLongRaiseDistance.getInch();
+
+		if (isLongClimb) {
+			Logger.log("Stowing arm on long climb");
+			// this.queue.addSequentialLoggable(new ArmWaitForElevator(SuperStructure.iPosition.STOWED, minUnCrashHeight.getHeight(), LengthKt.getInch(3)));
+			this.queue.addSequentialLoggable(new ArmMove(SuperStructure.iPosition.STOWED/*, minUnCrashHeight.getHeight(), LengthKt.getInch(3)*/));
+		}
 		// figure out if the intake is gunna yeet itself into the bottom. This is done by finding the worst case (intake and stuff as far pitched down as possible)
 		var worstCaseElbow = Util.getWorstCase(RoundRotation2d.getDegree(-90), goalState.getElbowAngle(), currentState.getElbowAngle());
 		var worstCaseWrist = Util.getWorstCase(
@@ -262,10 +282,10 @@ public class testableSSMotion /*extends Command*/ {
 		var worstCaseCarriageToEOI = new Translation2d(
 				SuperStructureConstants.Elbow.carriageToIntake,
 				worstCaseElbow.toRotation2d())
-			.plus(
-				new Translation2d(
-						SuperStructureConstants.Wrist.intakeOut,
-						worstCaseWrist.toRotation2d()));
+						.plus(
+								new Translation2d(
+										SuperStructureConstants.Wrist.intakeOut,
+										worstCaseWrist.toRotation2d()));
 
 		var isWithinFramePerimeter = (rawGoalProximal.getX().getInch() < SuperStructureConstants.kCarriageToFramePerimeter.getInch())
 				|| (rawStartProximal.getX().getInch() < SuperStructureConstants.kCarriageToFramePerimeter.getInch());
@@ -279,11 +299,10 @@ public class testableSSMotion /*extends Command*/ {
 		var minUnCrashHeight = new ElevatorState(worstCaseCarriageToEOI.getY().times(-1).plus(LengthKt.getInch(4)));
 
 		if (worstCaseStartingPos.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch() || worstCaseGoalPos.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch()) {
-			Logger.log("gunna slap the electronics plate, gotta move the elevator first");
 
 			// TODO check if the end state is going to hit anything
 
-
+			Logger.log("gunna slap the electronics plate, gotta move the elevator first");
 			queue.addSequentialLoggable(new ElevatorMove(minUnCrashHeight));
 
 		}
@@ -291,29 +310,25 @@ public class testableSSMotion /*extends Command*/ {
 		// TODO where should passthrough go?
 		// Logger.log("goal pos elbow end x: " + GPwrist.getX().getInch() + " startpoint pos elbow end: " + SPwrist.getX().getInch());
 		// if (GPwrist.getX().getInch() > 8 && SPwrist.getX().getInch() < -8) {
-			// queue.addSequentialLoggable(new PassThroughReverse());
+		// queue.addSequentialLoggable(new PassThroughReverse());
 		// } else if (GPwrist.getX().getInch() < -8 && SPwrist.getX().getInch() > 8) {
-			// queue.addSequentialLoggable(new PassThroughForward());
+		// queue.addSequentialLoggable(new PassThroughForward());
 		// }
 
 		// Logger.log("pass");
 
 		//CHECK the position of the intake -- hatch or cargo
 		// IF it's a long climb
-		
-		boolean isLongClimb = Math.abs(goalState.getElevatorHeight().minus(currentState.getElevatorHeight()).getInch()) >= SuperStructureConstants.Elevator.kElevatorLongRaiseDistance.getInch();
-
-		if (isLongClimb) {
-			// this.queue.addSequentialLoggable(new ArmWaitForElevator(SuperStructure.iPosition.STOWED, minUnCrashHeight.getHeight(), LengthKt.getInch(3)));
-			this.queue.addSequentialLoggable(new ArmMove(SuperStructure.iPosition.STOWED/*, minUnCrashHeight.getHeight(), LengthKt.getInch(3)*/));
-		}
 
 		// this.queue.addSequentialLoggable(new ArmWaitForElevator(goalState.getAngle(), goalState.getElevatorHeight(), startArmTol.plus(LengthKt.getInch(5)),
 		// goalState.getElevatorHeight().getInch() < currentState.getElevatorHeight().getInch()));
 
 		// ok so by now the elevator should be such that we can safely move stuff?
+		// TODO make both move at same time if safe?
+		Logger.log("Moving arm to final state");
 		queue.addSequentialLoggable(new ArmMove(goalState.getAngle(), "final arm move"));
 
+		Logger.log("moving elevator to final state");
 		this.queue.addSequentialLoggable(new ElevatorMove(goalState.getElevator()));
 
 		return true;
@@ -329,19 +344,7 @@ public class testableSSMotion /*extends Command*/ {
 		// queue.start();
 		// var current = SuperStructure.getInstance().updateState();
 		// var current = new SuperStructureState(new ElevatorState(LengthKt.getInch(3.5)), iPosition.CARGO_GRAB);
-		var current = iPosition.HATCH_GRAB_INSIDE;
-		plan(this.gsIn, current);
-		Logger.log(String.format("Start state (%s) Goal state (%s)", current.toString(), gsIn.toString()));
-		System.out.println("===================================================================");
-		Logger.log(String.format("Start state (%s)", current.toString()));
-
-		// Logger.log(getQueue().getCommandLog().get(0));
-		for (String s : getQueue().getCommandLog()) {
-			System.out.println(s);
-		}
-		Logger.log(String.format("End state (%s)", gsIn.toString()));
-
-		System.out.println("===================================================================");
+		// var current = iPosition.HATCH_GRAB_INSIDE;
 
 	}
 
@@ -353,6 +356,7 @@ public class testableSSMotion /*extends Command*/ {
 
 	abstract class AbstractCommand {
 		String name;
+
 		public void setName(String name) {
 			this.name = name;
 		}
@@ -360,6 +364,7 @@ public class testableSSMotion /*extends Command*/ {
 
 	class ElevatorMove extends AbstractCommand {
 		ElevatorState target;
+
 		public ElevatorMove(ElevatorState target, String name) {
 			this.target = target;
 			super.setName(name);
@@ -381,8 +386,10 @@ public class testableSSMotion /*extends Command*/ {
 
 	class ArmMove extends AbstractCommand {
 		public IntakeAngle angle;
+
 		public ArmMove(IntakeAngle target) {
 			this.angle = target;
+			this.name = "ArmMove to " + target.toString();
 		}
 
 		public ArmMove(IntakeAngle target, String name) {
@@ -408,13 +415,13 @@ public class testableSSMotion /*extends Command*/ {
 		}
 
 		public void addSequentialLoggable(AbstractCommand command) {
-			Logger.log("Commamd" + command.name + " added in sequential mode");//
-			commandLog.add("Commamd" + command.name + " added in sequential mode");
+			Logger.log("Commamd " + command.name + " added in sequential mode");//
+			commandLog.add("Commamd " + command.name + " added in sequential mode");
 		}
 
 		public void addParallelLoggable(AbstractCommand command) {
-			Logger.log("Commamd" + command.name + " added in parallel mode");
-			commandLog.add("Commamd" + command.name + " added in parallel mode");// and does \t" + command.toString());
+			Logger.log("Commamd " + command.name + " added in parallel mode");
+			commandLog.add("Commamd " + command.name + " added in parallel mode");// and does \t" + command.toString());
 		}
 	}
 
