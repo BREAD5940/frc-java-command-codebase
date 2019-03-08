@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.groups.PickupHatch;
+import frc.robot.commands.auto.routines.TwoHatchOneCargo;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
@@ -125,7 +126,7 @@ public class OI {
 		close_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kClamped)); // a button
 		dsClampToggle.whenPressed(new ToggleClamp());
 
-		primaryDpadUp.whenPressed(new PickupHatch());
+		// primaryDpadUp.whenPressed(new PickupHatch());
 		primaryDpadDown.whenPressed(new SuperstructureGoToState(
 				new ElevatorState(LengthKt.getInch(26)),
 				new IntakeAngle(
@@ -145,6 +146,8 @@ public class OI {
 		// 	);
 
 		primaryBButton.whenPressed(new SuperstructureMotion(iPosition.HATCH_GRAB_INSIDE));
+
+		primaryDpadUp.whenPressed(new TwoHatchOneCargo());
 
 		// primaryAButton.whileHeld(new HybridDriverAssist(7));
 		// primaryBButton.whenPressed(new SuperstructureMotion(new SuperStructureState(new ElevatorState(LengthKt.getInch(2)), iPosition.CARGO_GRAB), iPosition.HATCH_GRAB_INSIDE_PREP));

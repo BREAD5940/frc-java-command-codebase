@@ -70,8 +70,8 @@ public class FollowVisionTargetTheSecond extends Command {
 	 */
 	public void Update_Limelight_Tracking() {
 		// These numbers must be tuned for your Robot!  Be careful!
-		double STEER_K = 0.05;                    // how hard to turn toward the target
-		double DRIVE_K = 0.26 * 1.6 * 1.3;                    // how hard to drive fwd toward the target
+		double STEER_K = 0.04;                    // how hard to turn toward the target
+		double DRIVE_K = 0.26 * 1.6 * 1.3 / 1.5;                    // how hard to drive fwd toward the target
 		double DESIRED_TARGET_AREA = this.targetArea;         // Area of the target when the robot reaches the wall
 		double MAX_DRIVE = 0.7;                   // Simple speed limit so we don't drive too fast
 

@@ -32,44 +32,51 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
 	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
 
+	public TwoHatchOneCargo(char arg1, char arg2) {
+		this();
+	}
+
 	/**
 	 * 2-hatch 1-cargo hard-coded auto. ow. This is fine. Everything is fine. 
 	 * @param side to target (L or R)
 	 * @param startPos L M or R on the hab
 	 * @author Matthew Morley
 	 */
-	public TwoHatchOneCargo(char startPos, char side) {
-		HeldPiece cPiece = HeldPiece.HATCH; // we start with a hatch
-		String cStart = "hab" + startPos;
+	public TwoHatchOneCargo(/*char startPos, char side*/) {
+		// HeldPiece cPiece = HeldPiece.HATCH; // we start with a hatch
+		// String cStart = "hab" + startPos;
+
+		boolean doIntake = false;
+		boolean doVision = false;
 
 		/* Get a trajectory to move to the cargo ship. THE ROBOT IS REVERSED */
-		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedLGTrajectories.get("habL" + " to " + "rocketLF"); //current trajectory from hashmap in Trajectorie
-		addParallel(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE_PREP)); // move arm inside to prep state
+		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedLGTrajectories.get("habR" + " to " + "rocketRF"); //current trajectory from hashmap in Trajectorie
+		if(doIntake) addParallel(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE_PREP)); // move arm inside to prep state
 		addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kON));
 		addParallel(new LimeLight.setPipeline(PipelinePreset.k3dVision));
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
-		addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
+		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.HIGH, true)); //drive to goal
+		if(doIntake) addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
 		// addSequential(new SplineToVisionTarget(/*this.getPoseStorage1(), */LengthKt.getInch(0), LengthKt.getInch(30), 6.5));
-		addSequential(new FollowVisionTargetTheSecond(5));
-		addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
-		addSequential(new RunIntake(-1, 0, 1));
-
+		addSequential(new FollowVisionTargetTheSecond(4.3));
+		if(doIntake) addSequential(new RunIntake(-1, 0, 1));
+		
 		// back up 3 feet
-		addParallel(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
+		if(doIntake) addParallel(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
 		addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(3), true));
-
+		
 		// spline over to the rocket
-		var rocketToLoading = Trajectories.generatedLGTrajectories.get("rocketLF to loadingL");
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
-		addSequential(new PickupHatch());
-
-		var loadingToRocketClose = Trajectories.generatedLGTrajectories.get("loadingL to rocketLC");
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
+		// var rocketToLoading = Trajectories.generatedLGTrajectories.get("rocketRF to loadingR");
+		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.HIGH, true)); //drive to goal
+		if(doIntake) addSequential(new PickupHatch());
+		
+		// var loadingToRocketClose = Trajectories.generatedLGTrajectories.get("loadingR to rocketRC");
+		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.HIGH, true)); //drive to goal
 		addSequential(new LimeLight.SetLEDs(LimeLight.LEDMode.kON));
-		addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
-		addSequential(new FollowVisionTargetTheSecond(5));
-		addSequential(new RunIntake(-1, 0, 1));
-
+		if(doIntake) addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
+		if(doVision) addSequential(new FollowVisionTargetTheSecond(5));
+		if(doIntake) addSequential(new RunIntake(-1, 0, 1));
+		
+		addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
 		/* Move from middle of cargo ship to loading station on the same side to pick up a hatch */
 		// cStart = "cargoM" + side;
 		// cPiece = HeldPiece.NONE;
