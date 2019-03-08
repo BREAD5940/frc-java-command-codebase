@@ -120,7 +120,7 @@ public class Robot extends TimedRobot {
 	 * FIXME it's a hack, set the period to 25ms
 	 */
 	public Robot() {
-		super(0.02d);
+		super(0.03d);
 	}
 
 	/**

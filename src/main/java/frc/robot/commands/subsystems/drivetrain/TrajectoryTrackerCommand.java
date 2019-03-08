@@ -16,6 +16,7 @@ import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 
 import com.team254.lib.physics.DifferentialDrive.DriveDynamics;
 
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.commands.auto.Trajectories;
@@ -35,6 +36,8 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 	Length mDesiredRight;
 	double mCurrentLeft;
 	double mCurrentRight;
+
+	Notifier mUpdateNotifier;
 
 	public TrajectoryTrackerCommand(DriveTrain driveBase, Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource) {
 		this(driveBase, trajectorySource, false);
@@ -75,6 +78,23 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 		Logger.log("desired linear, real linear");
 
 		LiveDashboard.INSTANCE.setFollowingPath(true);
+
+
+		mUpdateNotifier = new Notifier(() -> {
+			output = trajectoryTracker.nextState(driveBase.getRobotPosition(), TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
+
+			TrajectorySamplePoint<TimedEntry<Pose2dWithCurvature>> referencePoint = trajectoryTracker.getReferencePoint();
+			if (referencePoint != null) {
+				Pose2d referencePose = referencePoint.getState().getState().getPose();
+	
+				LiveDashboard.INSTANCE.setPathX(referencePose.getTranslation().getX().getFeet());
+				LiveDashboard.INSTANCE.setPathY(referencePose.getTranslation().getY().getFeet());
+				LiveDashboard.INSTANCE.setPathHeading(referencePose.getRotation().getRadian());
+			}
+			// Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
+			driveBase.setOutput(output);
+		});
+		mUpdateNotifier.startPeriodic(0.01);
 	}
 
 	@Override
@@ -82,31 +102,32 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 
 		// long now = System.currentTimeMillis();
 
-		output = trajectoryTracker.nextState(driveBase.getRobotPosition(), TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
+		// output = trajectoryTracker.nextState(driveBase.getRobotPosition(), TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
 
-		TrajectorySamplePoint<TimedEntry<Pose2dWithCurvature>> referencePoint = trajectoryTracker.getReferencePoint();
-		if (referencePoint != null) {
-			Pose2d referencePose = referencePoint.getState().getState().getPose();
+		// TrajectorySamplePoint<TimedEntry<Pose2dWithCurvature>> referencePoint = trajectoryTracker.getReferencePoint();
+		// if (referencePoint != null) {
+		// 	Pose2d referencePose = referencePoint.getState().getState().getPose();
 
-			LiveDashboard.INSTANCE.setPathX(referencePose.getTranslation().getX().getFeet());
-			LiveDashboard.INSTANCE.setPathY(referencePose.getTranslation().getY().getFeet());
-			LiveDashboard.INSTANCE.setPathHeading(referencePose.getRotation().getRadian());
-		}
-		// Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
-		driveBase.setOutput(output);
+		// 	LiveDashboard.INSTANCE.setPathX(referencePose.getTranslation().getX().getFeet());
+		// 	LiveDashboard.INSTANCE.setPathY(referencePose.getTranslation().getY().getFeet());
+		// 	LiveDashboard.INSTANCE.setPathHeading(referencePose.getRotation().getRadian());
+		// }
+		// // Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
+		// driveBase.setOutput(output);
 
-		DriveDynamics desired_vel = driveBase.getDifferentialDrive().solveInverseDynamics(output.getDifferentialDriveVelocity(), output.getDifferentialDriveAcceleration());
+		// DriveDynamics desired_vel = driveBase.getDifferentialDrive().solveInverseDynamics(output.getDifferentialDriveVelocity(), output.getDifferentialDriveAcceleration());
 
-		mDesiredLeft = LengthKt.getFeet(desired_vel.getVoltage().getLeft() * driveBase.getDifferentialDrive().getWheelRadius());
-		mDesiredRight = LengthKt.getFeet(desired_vel.getVoltage().getRight() * driveBase.getDifferentialDrive().getWheelRadius());
-		mCurrentLeft = driveBase.getLeft().getFeetPerSecond();
-		mCurrentRight = driveBase.getRight().getFeetPerSecond();
+		// mDesiredLeft = LengthKt.getFeet(desired_vel.getVoltage().getLeft() * driveBase.getDifferentialDrive().getWheelRadius());
+		// mDesiredRight = LengthKt.getFeet(desired_vel.getVoltage().getRight() * driveBase.getDifferentialDrive().getWheelRadius());
+		// mCurrentLeft = driveBase.getLeft().getFeetPerSecond();
+		// mCurrentRight = driveBase.getRight().getFeetPerSecond();
 
-		SmartDashboard.putNumberArray("trackerInfo", new double[]{mDesiredLeft.getFeet(), mDesiredRight.getFeet(), mCurrentLeft, mCurrentRight});
+		// SmartDashboard.putNumberArray("trackerInfo", new double[]{mDesiredLeft.getFeet(), mDesiredRight.getFeet(), mCurrentLeft, mCurrentRight});
 	}
 
 	@Override
 	protected void end() {
+		mUpdateNotifier.stop();
 		driveBase.stop();
 		LiveDashboard.INSTANCE.setFollowingPath(false);
 	}
