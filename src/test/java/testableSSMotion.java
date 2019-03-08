@@ -11,8 +11,9 @@ import frc.robot.SuperStructureConstants;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.routines.passthrough.PassThroughForward;
 import frc.robot.commands.auto.routines.passthrough.PassThroughReverse;
-import frc.robot.commands.subsystems.superstructure.ArmMove;
+// import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.ArmWaitForElevator;
+import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.lib.Logger;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
@@ -25,7 +26,7 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
  * Instructions for using this mutant command-thing:
  *  - Do NOT call the constructor (unless ur OI)
  *  - Call the planner
- *  - Call SuperstructureMotion.getInstance().start();
+ *  - Call testableSSMotion.getInstance().start();
  *    - This will iterate through the planned commandQueue
  *    - It'll end when it's done
  * 
@@ -41,8 +42,10 @@ public class testableSSMotion /*extends Command*/ {
 	boolean isReal = false;
 	private SuperStructureState gsIn;
 
+	private void requires(Object o) {}
+
 	@Deprecated
-	private SuperstructureMotion() {
+	private testableSSMotion() {
 		requires(SuperStructure.getInstance());
 
 		requires(SuperStructure.getInstance().getWrist());
@@ -50,7 +53,7 @@ public class testableSSMotion /*extends Command*/ {
 		requires(SuperStructure.getElevator());
 	}
 
-	public SuperstructureMotion(SuperStructureState gsIn, SuperStructureState current) {
+	public testableSSMotion(SuperStructureState gsIn, SuperStructureState current) {
 		System.out.println("ssmotion instan");
 		this.gsIn = gsIn;
 		requires(SuperStructure.getInstance().getWrist());
@@ -59,20 +62,20 @@ public class testableSSMotion /*extends Command*/ {
 		requires(SuperStructure.getInstance());
 	}
 
-	public SuperstructureMotion(SuperStructureState gsIn) {
+	public testableSSMotion(SuperStructureState gsIn) {
 		this(gsIn, SuperStructure.getInstance().updateState());
 	}
 
-	private static SuperstructureMotion instance_;
+	private static testableSSMotion instance_;
 	protected AutoCommandGroup queue = new AutoCommandGroup();
 	// protected CommandGroup eleQueue = new CommandGroup();
 	// protected CommandGroup armQueue = new CommandGroup();
 	protected Optional<Command> current;
 
 	@Deprecated
-	public static SuperstructureMotion getInstance() {
+	public static testableSSMotion getInstance() {
 		if (instance_ == null) {
-			instance_ = new SuperstructureMotion();
+			instance_ = new testableSSMotion();
 		}
 		return instance_;
 	}
@@ -319,7 +322,7 @@ public class testableSSMotion /*extends Command*/ {
 		return this.queue;
 	}
 
-	@Override
+	// @Override
 	protected void initialize() {
 		// queue.start();
 		// var current = SuperStructure.getInstance().updateState();
@@ -335,7 +338,7 @@ public class testableSSMotion /*extends Command*/ {
 
 	}
 
-	@Override
+	// @Override
 	protected boolean isFinished() {
 		// return queue.isCompleted();
 		return true;
