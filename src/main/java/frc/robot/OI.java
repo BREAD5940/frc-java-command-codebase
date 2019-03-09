@@ -146,7 +146,6 @@ public class OI {
 
 		primaryBButton.whenPressed(new SuperstructureMotion(iPosition.HATCH_GRAB_INSIDE));
 
-		primaryDpadUp.whenPressed(new TwoHatchOneCargo());
 		// primaryDpadUp.whenPressed(new FollowVisionTargetTheSecond(4.3));
 		// primaryDpadUp.whenPressed(new DriveDistanceToVisionTarget(LengthKt.getInch(40), 6));
 
@@ -186,6 +185,8 @@ public class OI {
 
 		// primaryDpadRight.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
 		// primaryDpadUp.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
+
+		primaryDpadUp.whenPressed(new TwoHatchOneCargo());
 
 		// test3Button.whenPressed(new FollowVisonTargetTheSecond());\
 		// test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button

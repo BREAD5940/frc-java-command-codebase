@@ -56,7 +56,7 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 			addParallel(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE_PREP)); // move arm inside to prep state
 		addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kON));
 		addParallel(new LimeLight.setPipeline(PipelinePreset.k3dVision));
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.HIGH, true)); //drive to goal
+		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
 		if (doIntake)
 			addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
 		// addSequential(new SplineToVisionTarget(/*this.getPoseStorage1(), */LengthKt.getInch(0), LengthKt.getInch(30), 6.5));
