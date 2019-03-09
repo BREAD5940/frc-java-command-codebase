@@ -70,7 +70,9 @@ public class Trajectories {
 	public static final Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
 	public static final Velocity<Length> kDefaultEndVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
 
-	public static final Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(5)); // lowered for vision memes
+	public static final Velocity<Length> kDefaultVelocityLow = VelocityKt.getVelocity(LengthKt.getFeet(5)); // lowered for vision memes
+	public static final Velocity<Length> kDefaultVelocityHigh = VelocityKt.getVelocity(LengthKt.getFeet(9)); // lowered for vision memes
+
 	public static final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(8));
 
 	public static final boolean kOptomizeSplines = true;
@@ -154,7 +156,7 @@ public class Trajectories {
 		generatedHGTrajectories.put("test", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingL"),
 				new Pose2d(LengthKt.getFeet(15.9), LengthKt.getFeet(22.011), Rotation2dKt.getDegree(165)),
 				new Pose2d(LengthKt.getFeet(21.646), LengthKt.getFeet(19.223), Rotation2dKt.getDegree(-90)))),
-				kHighGearConstraints, kDefaultStartVelocity, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, true, kOptomizeSplines));
+				kHighGearConstraints, kDefaultStartVelocity, kDefaultEndVelocity, kDefaultVelocityHigh, kDefaultAcceleration, true, kOptomizeSplines));
 		generatedHGTrajectories.put("test1", generateTrajectoryHighGear(Arrays.asList(new Pose2d(LengthKt.getFeet(21.646), LengthKt.getFeet(19.223), Rotation2dKt.getDegree(-90)),
 				locations.get("cargoL1")), false));
 
@@ -171,6 +173,21 @@ public class Trajectories {
 
 		generatedLGTrajectories.put("depotL to cargoL1", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotL"), locations.get("cargoL1"))), false));
 		generatedLGTrajectories.put("depotR to cargoR1", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("depotR"), locations.get("cargoR1"))), false));
+
+		generatedLGTrajectories.put(
+				"loadingR to rocketRF",
+				generateTrajectoryLowGear(
+						Arrays.asList(
+								locations.get("loadingL"),
+								new Pose2d(
+										LengthKt.getFeet(19.375),
+										LengthKt.getFeet(4.634),
+										Rotation2dKt.getDegree(170)),
+								new Pose2d(
+										LengthKt.getFeet(23.841),
+										LengthKt.getFeet(3.42),
+										Rotation2dKt.getDegree(-150))),
+						true));
 
 		// Trajectories to the rocket from (REVERSED) on habL. format is rocket[L/R for left/right][C/M/F for close/middle/far]. These are offset to allow for a vision target to yeet into it
 		generatedLGTrajectories.put("habL to rocketLF", generateTrajectoryLowGear(
@@ -261,7 +278,7 @@ public class Trajectories {
 		generatedLGTrajectories.put("test", generateTrajectory(new ArrayList<Pose2d>(Arrays.asList(locations.get("loadingL"),
 				new Pose2d(LengthKt.getFeet(15.9), LengthKt.getFeet(22.011), Rotation2dKt.getDegree(165)),
 				new Pose2d(LengthKt.getFeet(21.646), LengthKt.getFeet(19.223), Rotation2dKt.getDegree(-90)))),
-				kLowGearConstraints, kDefaultStartVelocity, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, true, kOptomizeSplines));
+				kLowGearConstraints, kDefaultStartVelocity, kDefaultEndVelocity, kDefaultVelocityLow, kDefaultAcceleration, true, kOptomizeSplines));
 		generatedLGTrajectories.put("test1", generateTrajectoryLowGear(Arrays.asList(new Pose2d(LengthKt.getFeet(21.646), LengthKt.getFeet(19.223), Rotation2dKt.getDegree(-90)),
 				locations.get("cargoL1")), false));
 
@@ -280,7 +297,7 @@ public class Trajectories {
 	 * @return
 	 */
 	public static TimedTrajectory<Pose2dWithCurvature> generateTrajectoryHighGear(List<Pose2d> waypoints, boolean reversed) {
-		return generateTrajectory(waypoints, kHighGearConstraints, kDefaultStartVelocity, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, reversed, kOptomizeSplines);
+		return generateTrajectory(waypoints, kHighGearConstraints, kDefaultStartVelocity, kDefaultEndVelocity, kDefaultVelocityHigh, kDefaultAcceleration, reversed, kOptomizeSplines);
 	}
 
 	/**
@@ -290,7 +307,7 @@ public class Trajectories {
 	* @return
 	*/
 	public static TimedTrajectory<Pose2dWithCurvature> generateTrajectoryLowGear(List<Pose2d> waypoints, boolean reversed) {
-		return generateTrajectory(waypoints, kLowGearConstraints, kDefaultStartVelocity, kDefaultEndVelocity, kDefaultVelocity, kDefaultAcceleration, reversed, kOptomizeSplines);
+		return generateTrajectory(waypoints, kLowGearConstraints, kDefaultStartVelocity, kDefaultEndVelocity, kDefaultVelocityLow, kDefaultAcceleration, reversed, kOptomizeSplines);
 	}
 
 	/**
