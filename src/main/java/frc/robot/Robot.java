@@ -20,6 +20,7 @@ import frc.robot.RobotConfig.elevator;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
+import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
@@ -136,6 +137,7 @@ public class Robot extends TimedRobot {
 
 		Trajectories.generateAllTrajectories();
 
+		autoState = new AutoMotionStateMachine();
 		// logger = Logger.getInstance();
 
 		mGh = new SendableChooser<GoalHeight>();
@@ -147,8 +149,16 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("LIMELIGHT LED ON", new LimeLight.SetLEDs(LEDMode.kON));
 		SmartDashboard.putData("LIMELIGHT LED OFF", new LimeLight.SetLEDs(LEDMode.kOFF));
 
+		SmartDashboard.putData(drivetrain);
+		// SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getMaster().getSensorPosition().getDegree());
+		// SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
+		SmartDashboard.putData(superstructure);
+
+		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
+
+		SmartDashboard.putData(autoState); //TODO test to see if it actually does the thing
+
 		m_oi = new OI();
-		autoState = new AutoMotionStateMachine();
 
 		// SmartDashboard.putData(SuperStructure.intake);
 		// SmartDashboard.putData(shifterDoubleSolenoid);
@@ -164,12 +174,21 @@ public class Robot extends TimedRobot {
 		elevator.getMaster().setSelectedSensorPosition((int) startingHeightTicks);
 
 		var proximal = SuperStructure.getInstance().getElbow();
-		var startingAngleTicks = proximal.getMaster().getTicks(RoundRotation2d.getDegree(-94));
-		proximal.getMaster().setSelectedSensorPosition(startingAngleTicks);
+		// var startingAngleTicks = (int) proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
+		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+		var target = 740;
+		var delta = (tickkkkks - (int) target) * -1;
+		var startingAngleTicks = proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90));
+
+		proximal.getMaster().setSelectedSensorPosition((int) (delta + startingAngleTicks));
 
 		var wrist = SuperStructure.getInstance().getWrist();
-		startingAngleTicks = wrist.getMaster().getTicks(RoundRotation2d.getDegree(-43));
-		wrist.getMaster().setSelectedSensorPosition(startingAngleTicks);
+		var wristStart = (int) wrist.getMaster().getTicks(RoundRotation2d.getDegree(-43));
+		target = (int) 1402;
+		var correctionDelta = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+		var deltaW = (correctionDelta - (int) target) * -1;
+
+		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
 
 		switch (RobotConfig.auto.auto_gear) {
 		case HIGH:
@@ -364,7 +383,11 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
-		// long now = System.currentTimeMillis();
+		// var tickkkkks = (int) superstructure.getWrist().getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
+		// var tickkkkks = (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+		// System.out.println("Wrist absolute pos " + tickkkkks	 );
+		// System.out.println(superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition());
+		// System.out.println(superstructure.getWrist().getMaster().getSensorPosition().getDegree());
 
 		SmartDashboard.putString(SuperStructure.getInstance().getCurrentState().getCSVHeader(), SuperStructure.getInstance().getCurrentState().toCSV());
 
@@ -395,14 +418,7 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
 
-		SmartDashboard.putData(drivetrain);
-		// SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getMaster().getSensorPosition().getDegree());
-		// SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
-		SmartDashboard.putData(superstructure);
 
-		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
-
-		SmartDashboard.putData(autoState); //TODO test to see if it actually does the thing
 		// Limelight stuff
 		// double[] limelightdata = limelight.getData();
 
