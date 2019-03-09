@@ -20,7 +20,6 @@ import frc.robot.RobotConfig.elevator;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
-import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
@@ -417,7 +416,6 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.putNumber("7 feet per second is", drivetrain.getLeft().getModel().toNativeUnitPosition(LengthKt.getFeet(7)).getValue());
 
 		SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
-
 
 		// Limelight stuff
 		// double[] limelightdata = limelight.getData();

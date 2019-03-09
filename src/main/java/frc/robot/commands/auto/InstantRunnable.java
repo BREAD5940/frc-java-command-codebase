@@ -7,21 +7,21 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
  */
 public class InstantRunnable extends InstantCommand {
 
-  Runnable toRun;
+	Runnable toRun;
 
-  public InstantRunnable(Runnable thing) {
-    super();
-    this.toRun = thing;
-  }
+	public InstantRunnable(Runnable thing) {
+		super();
+		this.toRun = thing;
+	}
 
-  // Called once when the command executes
-  @Override
-  protected void initialize() {
-    try {
-      toRun.run();
-    } catch (Exception e) {
-      //TODO: handle exception
-    }
-  }
+	// Called once when the command executes
+	@Override
+	protected void initialize() {
+		try {
+			toRun.run();
+		} catch (Exception e) {
+			//TODO: handle exception
+		}
+	}
 
 }
