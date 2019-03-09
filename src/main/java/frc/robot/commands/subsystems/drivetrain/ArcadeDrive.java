@@ -46,23 +46,23 @@ public class ArcadeDrive extends Command {
 		// Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis(),
 		//   Robot.m_oi.getTurnAxis());
 
-		boolean isQuickTurn = (Math.abs(Robot.m_oi.getForwardAxis()) < 0.08);
+		// boolean isQuickTurn = (Math.abs(Robot.m_oi.getForwardAxis()) < 0.08);
 		// boolean isQuickTurn = (Math.abs(Robot.m_oi.getPrimary().getRawAxis(0)) > 0.75);
 
 		Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis() * 1,
-				Robot.m_oi.getTurnAxis() * 1, false/*, isQuickTurn*/);
+				Robot.m_oi.getTurnAxis() * 1, true/*, isQuickTurn*/);
 
-		if((Robot.m_oi.getPrimary().getRawButton(1)) && (!wasPressed)) {
-			wasPressed = true;
-			var currentGear = Robot.getDrivetrainGear();
-			if(currentGear == Gear.LOW) {
-				DriveTrain.getInstance().setGear(Gear.HIGH);
-			} else {
-				DriveTrain.getInstance().setGear(Gear.LOW);
-		} 
-		} else if (wasPressed && !(Robot.m_oi.getPrimary().getRawButton(1))) {
-			wasPressed = false;
-		}
+		// if((Robot.m_oi.getPrimary().getRawButton(1)) && (!wasPressed)) {
+		// 	wasPressed = true;
+		// 	var currentGear = Robot.getDrivetrainGear();
+		// 	if(currentGear == Gear.LOW) {
+		// 		DriveTrain.getInstance().setGear(Gear.HIGH);
+		// 	} else {
+		// 		DriveTrain.getInstance().setGear(Gear.LOW);
+		// } 
+		// } else if (wasPressed && !(Robot.m_oi.getPrimary().getRawButton(1))) {
+		// 	wasPressed = false;
+		// }
 		
 	}
 
