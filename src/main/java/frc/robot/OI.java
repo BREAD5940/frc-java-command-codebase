@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.InstantRunnable;
+import frc.robot.commands.auto.routines.LoadingToRocketF;
 import frc.robot.commands.auto.routines.TwoHatchOneCargo;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
@@ -65,6 +66,9 @@ public class OI {
 	Button primaryDpadDown = new DPadButton(primaryJoystick, DPadButton.Direction.DOWN);
 	Button primaryDpadLeft = new DPadButton(primaryJoystick, DPadButton.Direction.LEFT);
 	Button primaryDpadRight = new DPadButton(primaryJoystick, DPadButton.Direction.RIGHT);
+
+	Button primaryRightStart = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
+	Button primaryLeftStart = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
 
 	Button dsCargo1 = new JoystickButton(driverStation, 9);
 	Button dsCargo2 = new JoystickButton(driverStation, 6);
@@ -192,6 +196,8 @@ public class OI {
 		secondaryDpadUp.whenPressed(new InstantRunnable(() -> {
 			System.out.println(SuperStructure.getInstance().getWrist().getMaster().getSensorCollection().getPulseWidthPosition());
 		}));
+
+		primaryRightStart.whenPressed(new LoadingToRocketF('R', 'R'));
 
 		// test3Button.whenPressed(new FollowVisonTargetTheSecond());\
 		// test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button

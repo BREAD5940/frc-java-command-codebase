@@ -32,9 +32,9 @@ public class LoadingToRocketF extends VisionCommandGroup {
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
 	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
 
-	public LoadingToRocketF(char arg1, char arg2) {
-		this();
-	}
+	// public LoadingToRocketF(char arg1, char arg2) {
+		// this();
+	// }
 
 	/**
 	 * 2-hatch 1-cargo hard-coded auto. ow. This is fine. Everything is fine.
@@ -43,7 +43,7 @@ public class LoadingToRocketF extends VisionCommandGroup {
 	 * @param startPos L M or R on the hab
 	 * @author Matthew Morley
 	 */
-	public LoadingToRocketF(/* char startPos, char side */) {
+	public LoadingToRocketF(char startPos, char side) {
 		// HeldPiece cPiece = HeldPiece.HATCH; // we start with a hatch
 		// String cStart = "hab" + startPos;
 
@@ -51,7 +51,7 @@ public class LoadingToRocketF extends VisionCommandGroup {
 		boolean doVision = false;
 
 		/* Get a trajectory to move to the cargo ship. THE ROBOT IS REVERSED */
-		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedLGTrajectories.get("habR" + " to " + "rocketRF"); //current trajectory from hashmap in Trajectories
+		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedLGTrajectories.get(String.format("loading%s to rocket%sF", startPos, side)); //current trajectory from hashmap in Trajectories
 
 		// if (doIntake)
 		addParallel(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)); // move arm inside to prep state

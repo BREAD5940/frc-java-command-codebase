@@ -178,7 +178,7 @@ public class Trajectories {
 				"loadingR to rocketRF",
 				generateTrajectoryLowGear(
 						Arrays.asList(
-								locations.get("loadingL"),
+								locations.get("loadingR"),
 								new Pose2d(
 										LengthKt.getFeet(19.375),
 										LengthKt.getFeet(4.634),
