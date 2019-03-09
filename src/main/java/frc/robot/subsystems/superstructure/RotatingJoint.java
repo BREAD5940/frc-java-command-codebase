@@ -157,6 +157,21 @@ public class RotatingJoint extends HalfBakedSubsystem {
 		getMaster().configClearPositionOnLimitF(false, 0);
 	}
 
+	public RoundRotation2d getQuadEncoderAbsolutePos() {
+		int pulseWidth = getMaster().getSensorCollection().getPulseWidthPosition();
+		pulseWidth = pulseWidth & 0xFFF;
+		RoundRotation2d toReturn = getMaster().fromTicks(pulseWidth);
+		return toReturn;
+	}
+
+	public void setQuadEncoderFromAbsolutePos(RoundRotation2d offset) {
+		int pulseWidth = getMaster().getSensorCollection().getPulseWidthPosition();
+		pulseWidth = pulseWidth + getMaster().getTicks(offset);
+		pulseWidth = pulseWidth & 0xFFF;
+
+		getMaster().getSensorCollection().setQuadraturePosition(pulseWidth, 0);
+	}
+
 	public void setClosedLoopGains(int slot, PIDSettings config) {
 		setClosedLoopGains(slot, config.kp, config.ki, config.kd, config.kf, config.iZone, config.maxIAccum, config.minOutput, config.maxOutput);
 	}
