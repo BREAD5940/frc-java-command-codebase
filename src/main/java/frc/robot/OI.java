@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
+import frc.robot.commands.auto.InstantRunnable;
 import frc.robot.commands.auto.routines.TwoHatchOneCargo;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
@@ -157,7 +158,7 @@ public class OI {
 		dsCargoIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
 						new SetHatchMech(HatchMechState.kOpen),
-						new SuperstructureGoToState(LengthKt.getInch(3.5), SuperStructure.iPosition.CARGO_GRAB))));
+						new SuperstructureGoToState(LengthKt.getInch(5), SuperStructure.iPosition.CARGO_GRAB))));
 
 		dsCargo1.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
@@ -178,7 +179,7 @@ public class OI {
 		// secondaryDpadUp.whenPressed(new SuperstructureGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE));
 
 		// hatch presets
-		dsHatchIn.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
+		// dsHatchIn.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
 		dsHatch1.whenPressed(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 		dsHatch2.whenPressed(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
 		dsHatch3.whenPressed(new SuperstructureGoToState(fieldPositions.hatchHighGoal, iPosition.HATCH));
@@ -187,6 +188,10 @@ public class OI {
 		// primaryDpadUp.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
 
 		primaryDpadUp.whenPressed(new TwoHatchOneCargo());
+
+		secondaryDpadUp.whenPressed(new InstantRunnable(() -> {
+			System.out.println(SuperStructure.getInstance().getWrist().getMaster().getSensorCollection().getPulseWidthPosition());
+		}));
 
 		// test3Button.whenPressed(new FollowVisonTargetTheSecond());\
 		// test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button
@@ -282,11 +287,11 @@ public class OI {
 	}
 
 	public double getForwardAxis() {
-		return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis);
+		return -1 * primaryJoystick.getRawAxis(1);//RobotConfig.controls.forward_axis);
 	}
 
 	public double getTurnAxis() {
-		return primaryJoystick.getRawAxis(RobotConfig.controls.turn_axis);
+		return primaryJoystick.getRawAxis(5);//RobotConfig.controls.turn_axis);
 	}
 
 	// public double getIntakeAxis() {
@@ -330,7 +335,7 @@ public class OI {
 	}
 
 	public double getCargoSpeed() {
-		return driverStation.getRawAxis(1);
+		return driverStation.getRawAxis(1) * -1;
 	}
 
 	public double getElevatorAxis() {

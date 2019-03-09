@@ -4,6 +4,8 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrain.Gear;
 
 /**
  * Default drivetrain command. This *should* be called as the default drivetrain
@@ -36,6 +38,8 @@ public class ArcadeDrive extends Command {
 		System.out.println("arcade drive command init");
 	}
 
+	boolean wasPressed = false;
+
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
@@ -46,11 +50,25 @@ public class ArcadeDrive extends Command {
 		// boolean isQuickTurn = (Math.abs(Robot.m_oi.getPrimary().getRawAxis(0)) > 0.75);
 
 		Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis() * 1,
-				Robot.m_oi.getTurnAxis() * 1/*, isQuickTurn*/);
+				Robot.m_oi.getTurnAxis() * 1, false/*, isQuickTurn*/);
+
+		if((Robot.m_oi.getPrimary().getRawButton(1)) && (!wasPressed)) {
+			wasPressed = true;
+			var currentGear = Robot.getDrivetrainGear();
+			if(currentGear == Gear.LOW) {
+				DriveTrain.getInstance().setGear(Gear.HIGH);
+			} else {
+				DriveTrain.getInstance().setGear(Gear.LOW);
+		} 
+		} else if (wasPressed && !(Robot.m_oi.getPrimary().getRawButton(1))) {
+			wasPressed = false;
+		}
+		
+	}
 
 		// Logger.log("forward command: " + Robot.m_oi.getForwardAxis());
 
-	}
+	
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override

@@ -176,7 +176,7 @@ public class Robot extends TimedRobot {
 		var proximal = SuperStructure.getInstance().getElbow();
 		// var startingAngleTicks = (int) proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
 		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-		var target = 740;
+		var target = 740 - 800;
 		var delta = (tickkkkks - (int) target) * -1;
 		var startingAngleTicks = proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90));
 
@@ -184,9 +184,9 @@ public class Robot extends TimedRobot {
 
 		var wrist = SuperStructure.getInstance().getWrist();
 		var wristStart = (int) wrist.getMaster().getTicks(RoundRotation2d.getDegree(-43));
-		target = (int) 1402;
+		target = (int) 300;
 		var correctionDelta = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-		var deltaW = (correctionDelta - (int) target) * -1;
+		var deltaW = (correctionDelta - (int) target) * 1;
 
 		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
 

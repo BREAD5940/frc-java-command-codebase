@@ -83,7 +83,7 @@ public class Elevator extends HalfBakedSubsystem {
 	public static final double KHighGearForcePerVolt = (1500d / 12d /* newtons */ );
 
 	public static final PIDSettings LOW_GEAR_PID = new PIDSettings(0.15, 0.0, 0, 0); // Low speed
-	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.15, 0, 0, 0); // High speed 
+	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.17, 0, 0, 0); // High speed 
 	private static final int kLowGearPIDSlot = 0; // low speed slot
 	private static final int kHighGearPIDSlot = 1; // high gear slot
 	public static final PIDSettings HIGH_GEAR_MOTION_MAGIC = new PIDSettings(0.45, 0, 0, 0.3, 4000, 9500); // High speed 
