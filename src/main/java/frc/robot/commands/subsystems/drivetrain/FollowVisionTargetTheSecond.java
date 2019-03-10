@@ -9,8 +9,10 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.DriveTrain.Gear;
 
 public class FollowVisionTargetTheSecond extends Command {
 
@@ -99,7 +101,30 @@ public class FollowVisionTargetTheSecond extends Command {
 		mHadTarget = true;
 
 		// Start with proportional steering
-		double steer_cmd = tx * STEER_K;
+		// double steer_cmd = tx * STEER_K;
+
+		double closeK, nearK, farK;
+		double steer_cmd;
+		boolean isHighGear = (Robot.getDrivetrainGear() == Gear.HIGH);
+
+		if (isHighGear) {
+			closeK = 0.1;
+			nearK = 0.07;
+			farK = 0.4;
+		} else {
+			closeK = 0.1;
+			nearK = 0.06;
+			farK = 0.55;
+		}
+
+		if (Math.abs(tx) < 5) {
+			steer_cmd = tx * closeK;
+		} else if (Math.abs(tx) < 10) {
+			steer_cmd = tx * nearK;
+		} else {
+			steer_cmd = farK * Math.signum(tx);
+		}
+
 		m_LimelightSteerCommand = steer_cmd;
 
 		// try to drive forward until the target area reaches our desired area
