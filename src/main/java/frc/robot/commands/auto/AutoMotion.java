@@ -7,7 +7,8 @@ import frc.robot.RobotConfig;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.routines.PlaceHatch;
 import frc.robot.commands.subsystems.drivetrain.DriveDistance;
-import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
+import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
+// import frc.robot.commands.subsystems.drivetrain.FollowVisionTarget;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
@@ -83,7 +84,7 @@ public class AutoMotion {
 		} else if (this.gType == GoalType.RETRIEVE_HATCH) {
 			toReturn.addSequential(new PrintCommand("running grab commands!"));
 			//TODO align with vision targets
-			toReturn.addSequential(new FollowVisionTarget(1, 5, 10));
+			toReturn.addSequential(new FollowVisionTargetTheSecond(4));
 			//yeet into loading station
 			// toReturn.addSequential(new DriveDistance());
 			//TODO maybe check the alignment with the center of the hatch with a sensor or some shit?
