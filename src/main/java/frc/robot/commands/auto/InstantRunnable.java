@@ -9,8 +9,9 @@ public class InstantRunnable extends InstantCommand {
 
 	Runnable toRun;
 
-	public InstantRunnable(Runnable thing) {
+	public InstantRunnable(Runnable thing, boolean runWhenDisabled) {
 		super();
+		setRunWhenDisabled(runWhenDisabled);
 		this.toRun = thing;
 	}
 
