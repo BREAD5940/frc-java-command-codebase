@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -20,6 +21,7 @@ import frc.robot.RobotConfig.elevator;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
+import frc.robot.commands.subsystems.superstructure.ZeroElevator;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
@@ -123,12 +125,35 @@ public class Robot extends TimedRobot {
 		super(0.03d);
 	}
 
+	public static enum RobotState {
+		AUTO(1), TELEOP(2), DISABLED(0), TEST(3);
+
+		final int value;
+
+		private RobotState(int value) {
+			this.value = value;
+		}
+	}
+
+	public static RobotState getState() {
+		var ds = DriverStation.getInstance();
+		if (ds.isAutonomous())
+			return RobotState.AUTO;
+		else if (ds.isOperatorControl())
+			return RobotState.TELEOP;
+		else if (ds.isTest())
+			return RobotState.TEST;
+		else
+			return RobotState.DISABLED;
+	}
+
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
+
 		if (drivetrain == null)
 			drivetrain = DriveTrain.getInstance();
 		// FIXME Jocelyn this might mess with auto stuff, will it? (I think no?)
@@ -273,6 +298,8 @@ public class Robot extends TimedRobot {
 
 	}
 
+	public static Command zeroElevatorWhileDisabled = new ZeroElevator(LengthKt.getInch(24.5));
+
 	/**
 	 * This function is called once each time the robot enters Disabled mode. You
 	 * can use it to reset any subsystem information you want to clear when the
@@ -284,6 +311,8 @@ public class Robot extends TimedRobot {
 		SuperStructure.elevator.onDisable();
 		SuperStructure.getInstance().getElbow().onDisable();
 		SuperStructure.getInstance().getWrist().onDisable();
+
+		zeroElevatorWhileDisabled.start();
 
 		try {
 			mResetNotifier.startPeriodic(0.5);
