@@ -173,14 +173,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("LIMELIGHT LED ON", new LimeLight.SetLEDs(LEDMode.kON));
 		SmartDashboard.putData("LIMELIGHT LED OFF", new LimeLight.SetLEDs(LEDMode.kOFF));
 
-		SmartDashboard.putData(drivetrain);
-		// SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getMaster().getSensorPosition().getDegree());
-		// SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
-		SmartDashboard.putData(superstructure);
 
-		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
-
-		SmartDashboard.putData(autoState); //TODO test to see if it actually does the thing
 
 		m_oi = new OI();
 
@@ -445,6 +438,15 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.putNumber("7 feet per second is", drivetrain.getLeft().getModel().toNativeUnitPosition(LengthKt.getFeet(7)).getValue());
 
 		SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
+
+		// SmartDashboard.putData(drivetrain);
+		// SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getMaster().getSensorPosition().getDegree());
+		// SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
+		// SmartDashboard.putData(superstructure);
+
+		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
+
+		SmartDashboard.putData(autoState); //TODO test to see if it actually does the thing
 
 		// Limelight stuff
 		// double[] limelightdata = limelight.getData();

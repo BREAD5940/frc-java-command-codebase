@@ -29,41 +29,28 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 /**
  * 2-hatch 1-cargo auto
  */
-public class TwoHatchOneCargo extends VisionCommandGroup {
+public class TwoHatchCargoShip extends VisionCommandGroup {
 	// private AutoCommandGroup mBigCommandGroup;
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
 	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
 
-	public TwoHatchOneCargo(char arg1, char arg2) {
+	public TwoHatchCargoShip(char arg1, char arg2) {
 		this();
 	}
 
 	/**
-	 * 2-hatch 1-cargo hard-coded auto. ow. This is fine. Everything is fine. 
-	 * @param side to target (L or R)
+	 * 2-hatch 1-cargo hard-coded auto. ow. This is fine. Everything is fine.
+	 * 
+	 * @param side     to target (L or R)
 	 * @param startPos L M or R on the hab
 	 * @author Matthew Morley
 	 */
-	public TwoHatchOneCargo(/*char startPos, char side*/) {
+	public TwoHatchCargoShip(/* char startPos, char side */) {
 		// HeldPiece cPiece = HeldPiece.HATCH; // we start with a hatch
 		// String cStart = "hab" + startPos;
 
-		addSequential(new InstantRunnable(() -> {
-			SuperStructure.getElevator().getMaster().configPeakOutputForward(0);
-			SuperStructure.getElevator().getMaster().configPeakOutputReverse(0);
-
-			SuperStructure.getInstance().getWrist().getMaster().configPeakOutputForward(0);
-			SuperStructure.getInstance().getWrist().getMaster().configPeakOutputReverse(0);
-			
-			SuperStructure.getInstance().getElbow().getMaster().configPeakOutputForward(0);
-			SuperStructure.getInstance().getElbow().getMaster().configPeakOutputReverse(0);
-		}, true));
-
-		boolean doIntake = false;
-		boolean doVision = false;
-
 		/* Get a trajectory to move to the cargo ship. THE ROBOT IS REVERSED */
-		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedLGTrajectories.get("habR" + " to " + "rocketRF"); //current trajectory from hashmap in Trajectories
+		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedLGTrajectories.get("habR" + " to " + "caroMR"); //current trajectory from hashmap in Trajectories
 
 		// addParallel(new SuperstructureGoToState(iPosition.HATCH_SLAM_ROCKET_INSIDE_PREP)); // move arm inside to prep state
 		addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kON));
@@ -75,12 +62,10 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 
 		addSequential(new RunIntake(-1, 0, 1));
 
-		// back up 3 feet
 		// addParallel(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
-		addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(3), true));
-
-		// spline over to the rocket
-		var rocketToLoading = Trajectories.generatedLGTrajectories.get("rocketRF to loadingR");
+		
+		// spline over to the loading
+		var rocketToLoading = Trajectories.generatedLGTrajectories.get("cargoMR to loadingR");
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
 
 		
