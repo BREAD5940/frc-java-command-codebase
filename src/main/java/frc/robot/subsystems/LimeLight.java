@@ -82,6 +82,8 @@ public class LimeLight extends Subsystem {
 					System.out.println("Value changed! it's now " + (int) value.getDouble());
 				},
 				EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
+
+		table.getEntry("stream").setNumber(2);
 	}
 
 	public double[] getData() {
