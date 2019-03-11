@@ -193,7 +193,7 @@ public class Robot extends TimedRobot {
 		var proximal = SuperStructure.getInstance().getElbow();
 		// var startingAngleTicks = (int) proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
 		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-		var target = 740 - 800;
+		var target = 1400;
 		var delta = (tickkkkks - (int) target) * -1;
 		var startingAngleTicks = proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90));
 
@@ -305,7 +305,7 @@ public class Robot extends TimedRobot {
 		SuperStructure.getInstance().getElbow().onDisable();
 		SuperStructure.getInstance().getWrist().onDisable();
 
-		zeroElevatorWhileDisabled.start();
+		// zeroElevatorWhileDisabled.start();
 
 		try {
 			mResetNotifier.startPeriodic(0.5);
@@ -405,10 +405,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotPeriodic() {
 		// var tickkkkks = (int) superstructure.getWrist().getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
-		// var tickkkkks = (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+		// var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		// System.out.println("Wrist absolute pos " + tickkkkks	 );
-		// System.out.println(superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition());
-		// System.out.println(superstructure.getWrist().getMaster().getSensorPosition().getDegree());
+		// System.out.println(superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition());
+		// System.out.println(superstructure.getElbow().getMaster().getSensorPosition().getDegree());
 
 		SmartDashboard.putString(SuperStructure.getInstance().getCurrentState().getCSVHeader(), SuperStructure.getInstance().getCurrentState().toCSV());
 

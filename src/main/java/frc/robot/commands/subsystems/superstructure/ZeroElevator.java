@@ -10,6 +10,7 @@ package frc.robot.commands.subsystems.superstructure;
 import org.ghrobotics.lib.mathematics.units.Length;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.Robot.RobotState;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -26,6 +27,11 @@ public class ZeroElevator extends Command {
 		setRunWhenDisabled(true);
 	}
 
+	@Override
+	protected void initialize() {
+		SmartDashboard.putBoolean("Elevator Zeroed?", false);
+	}
+
 	// Called just before this Command runs the first time
 	@Override
 	protected void execute() {
@@ -34,6 +40,7 @@ public class ZeroElevator extends Command {
 		if (topLimitTriggered && bottomLimitTriggered) {
 			setZero();
 			hasFoundZero = true;
+			SmartDashboard.putBoolean("Elevator Zeroed?", true);
 		}
 	}
 
