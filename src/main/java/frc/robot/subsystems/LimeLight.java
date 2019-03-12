@@ -1,11 +1,15 @@
 package frc.robot.subsystems;
 
+import java.util.concurrent.TimeUnit;
+
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+import org.ghrobotics.lib.mathematics.units.Time;
+import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
@@ -216,8 +220,8 @@ public class LimeLight extends Subsystem {
 	 * Get the latency from camera data to NT entry
 	 * @return pipeline latency contribution in seconds
 	 */
-	public double getPipelineLatency() {
-		return ((table.getEntry("tl")).getDouble(0) / 1000) + 11;
+	public Time getPipelineLatency() {
+		return TimeUnitsKt.getMillisecond((table.getEntry("tl").getDouble(0) / 1000) + 11);
 	}
 
 	/**
