@@ -16,7 +16,7 @@ import frc.robot.commands.auto.routines.TwoHatchOneCargo;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
-import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
+import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.ToggleClamp;
 import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
@@ -134,7 +134,7 @@ public class OI {
 		dsClampToggle.whenPressed(new ToggleClamp());
 
 		// primaryDpadUp.whenPressed(new PickupHatch());
-		primaryDpadDown.whenPressed(new SuperstructureGoToState(
+		primaryDpadDown.whenPressed(new JankyGoToState(
 				new ElevatorState(LengthKt.getInch(26)),
 				new IntakeAngle(
 						new RotatingArmState(RoundRotation2d.getDegree(-94)),
@@ -165,35 +165,35 @@ public class OI {
 		dsCargoIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
 						new SetHatchMech(HatchMechState.kOpen),
-						new SuperstructureGoToState(LengthKt.getInch(5), SuperStructure.iPosition.CARGO_GRAB))));
+						new JankyGoToState(LengthKt.getInch(5), SuperStructure.iPosition.CARGO_GRAB))));
 
 		dsCargo1.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
 						new SetHatchMech(HatchMechState.kClamped),
-						new SuperstructureGoToState(fieldPositions.cargoLowGoal, SuperStructure.iPosition.CARGO_PLACE))));
+						new JankyGoToState(fieldPositions.cargoLowGoal, SuperStructure.iPosition.CARGO_PLACE))));
 
 		dsCargo2.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
 						new SetHatchMech(HatchMechState.kClamped),
-						new SuperstructureGoToState(fieldPositions.cargoMiddleGoal, SuperStructure.iPosition.CARGO_PLACE))));
+						new JankyGoToState(fieldPositions.cargoMiddleGoal, SuperStructure.iPosition.CARGO_PLACE))));
 
 		dsCargo3.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
 						new SetHatchMech(HatchMechState.kClamped),
-						new SuperstructureGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE))));
+						new JankyGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE))));
 
-		// secondaryDpadRight.whenPressed(new SuperstructureGoToState(fieldPositions.cargoMiddleGoal, SuperStructure.iPosition.CARGO_PLACE));
-		// secondaryDpadUp.whenPressed(new SuperstructureGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE));
+		// secondaryDpadRight.whenPressed(new JankyGoToState(fieldPositions.cargoMiddleGoal, SuperStructure.iPosition.CARGO_PLACE));
+		// secondaryDpadUp.whenPressed(new JankyGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE));
 
 		// hatch presets
 		primaryRightAnalogButton.whileHeld(new HybridDriverAssist(5));
 
-		dsHatch1.whenPressed(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-		dsHatch2.whenPressed(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
-		dsHatch3.whenPressed(new SuperstructureGoToState(fieldPositions.hatchHighGoal, iPosition.HATCH));
+		dsHatch1.whenPressed(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		dsHatch2.whenPressed(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
+		dsHatch3.whenPressed(new JankyGoToState(fieldPositions.hatchHighGoal, iPosition.HATCH));
 
-		// primaryDpadRight.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
-		// primaryDpadUp.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
+		// primaryDpadRight.whenPressed(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
+		// primaryDpadUp.whenPressed(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
 
 		primaryDpadUp.whenPressed(new TwoHatchOneCargo());
 

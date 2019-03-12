@@ -44,7 +44,7 @@ public class ElevatorMove extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return Math.abs(SuperStructure.getElevator().getFeet() - mGoal.height.getFeet()) <= 3;
+		return Math.abs(SuperStructure.getElevator().getHeight().getInch() - mGoal.height.getInch()) <= 3;
 	}
 
 }
