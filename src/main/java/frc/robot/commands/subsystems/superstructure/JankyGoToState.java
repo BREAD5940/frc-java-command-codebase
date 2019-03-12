@@ -4,6 +4,8 @@ import org.ghrobotics.lib.mathematics.units.Length;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
+import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
@@ -21,30 +23,37 @@ public class JankyGoToState extends CommandGroup {
 
 	public JankyGoToState(SuperStructureState requ_) {
 
-		addSequential(new ConditionalCommand(new ElevatorThanArm(requ_), new ArmThanElevator(requ_)){
-		
+		requires(SuperStructure.getInstance());
+
+		addSequential(new PrintCommand("requested state: " + requ_.toCSV()));
+
+		addSequential(new ConditionalCommand(new ElevatorThanArm(requ_), new ArmThanElevator(requ_)) {
+
 			@Override
 			protected boolean condition() {
+				var proximalThreshold = -18;
 				var currentState = SuperStructure.getInstance().getCurrentState();
 				var startAboveSafe = requ_.getElevatorHeight().getInch() > 25;
 				var endAboveSafe = currentState.getElevatorHeight().getInch() > 25;
-				var nowOutsideFrame = currentState.getElbowAngle().getDegree() > -50;
-				var willBeOutsideFrame = requ_.getElbowAngle().getDegree() > -50;
+				var nowOutsideFrame = currentState.getElbowAngle().getDegree() > proximalThreshold;
+				var willBeOutsideFrame = requ_.getElbowAngle().getDegree() > proximalThreshold;
 
 				var shouldMoveElevatorFirst = (nowOutsideFrame && !willBeOutsideFrame && !startAboveSafe) || (nowOutsideFrame && willBeOutsideFrame);
+
+				System.out.println("requested state: " + requ_);
+
+				System.out.println(((shouldMoveElevatorFirst) ? "We are moving the elevator first!" : "We are moving the arm first!"));
 
 				return shouldMoveElevatorFirst;
 
 			}
 		});
 
-
 	}
-
 
 	public class ElevatorThanArm extends CommandGroup {
 		public ElevatorThanArm(SuperStructureState requ) {
-			addSequential(new ElevatorMove(requ.getElevator()));			
+			addSequential(new ElevatorMove(requ.getElevator()));
 			addSequential(new ArmMove(requ.getAngle()));
 		}
 	}

@@ -15,8 +15,8 @@ import frc.robot.commands.auto.routines.LoadingToRocketF;
 import frc.robot.commands.auto.routines.TwoHatchOneCargo;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
-import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
+import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.ToggleClamp;
 import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
@@ -165,7 +165,7 @@ public class OI {
 		dsCargoIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
 						new SetHatchMech(HatchMechState.kOpen),
-						new JankyGoToState(LengthKt.getInch(5), SuperStructure.iPosition.CARGO_GRAB))));
+						new JankyGoToState(LengthKt.getInch(7.25), SuperStructure.iPosition.CARGO_GRAB))));
 
 		dsCargo1.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
@@ -191,6 +191,12 @@ public class OI {
 		dsHatch1.whenPressed(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 		dsHatch2.whenPressed(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
 		dsHatch3.whenPressed(new JankyGoToState(fieldPositions.hatchHighGoal, iPosition.HATCH));
+
+		dsHatchIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
+			Arrays.asList(
+					new SetHatchMech(HatchMechState.kClamped),
+					new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));			
+		
 
 		// primaryDpadRight.whenPressed(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
 		// primaryDpadUp.whenPressed(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
