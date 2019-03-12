@@ -199,7 +199,7 @@ public class Robot extends TimedRobot {
 
 		var wrist = SuperStructure.getInstance().getWrist();
 		var wristStart = (int) wrist.getMaster().getTicks(RoundRotation2d.getDegree(-43));
-		target = (int) 300;
+		target = (int) 1800;
 		var correctionDelta = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		var deltaW = (correctionDelta - (int) target) * 1;
 
