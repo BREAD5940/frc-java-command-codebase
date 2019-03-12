@@ -185,7 +185,7 @@ public class Robot extends TimedRobot {
 		// wrist.init();
 		drivetrain.zeroGyro();
 		var elevator = SuperStructure.getElevator();
-		var startingHeightTicks = elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24.5)).getValue();
+		var startingHeightTicks = elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue();
 		elevator.getMaster().setSelectedSensorPosition((int) startingHeightTicks);
 
 		var proximal = SuperStructure.getInstance().getElbow();

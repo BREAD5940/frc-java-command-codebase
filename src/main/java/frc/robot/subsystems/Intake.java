@@ -68,9 +68,10 @@ public class Intake extends Subsystem {
 		cargoTalon = new WPI_TalonSRX(cargoPort);
 		hatchTalon = new WPI_TalonSRX(hatchPort);
 		// talon.configOpenloopRamp(0.15);
-		// talon.configContinuousCurrentLimit(30);
-		// talon.configPeakCurrentLimit(40);
-		// talon.enableCurrentLimit(true);
+		hatchTalon.configContinuousCurrentLimit(20);
+		hatchTalon.configPeakCurrentLimit(40);
+		hatchTalon.configPeakCurrentDuration(100);
+		hatchTalon.enableCurrentLimit(true);
 		// talon.setName("Intake");
 		cargoTalon.configPeakOutputForward(.8);
 		cargoTalon.configPeakOutputReverse(-.8);
