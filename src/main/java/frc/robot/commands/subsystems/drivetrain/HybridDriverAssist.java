@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.DriveTrain.Gear;
+import frc.robot.subsystems.LimeLight;
 
 public class HybridDriverAssist extends Command {
 
@@ -69,7 +69,6 @@ public class HybridDriverAssist extends Command {
 		// store this value again
 		tx = realOffsetNow.getDegree();
 
-		
 		double steer_cmd;// =  (isSmallAngle) ? tx * steerK : 0.5 * Math.signum(tx); 
 
 		boolean isHighGear = (Robot.getDrivetrainGear() == Gear.HIGH);
