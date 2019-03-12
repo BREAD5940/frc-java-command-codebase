@@ -82,6 +82,8 @@ dependencies {
 
 	compile 'com.github.5190GreenHopeRobotics:FalconLibrary:2019.4.1'
 
+  compile 'com.github.Oblarg:Oblog:2.8.1'
+
   testCompile group: 'org.openpnp', name: 'opencv', version: '3.2.0-0'
 
   testCompileOnly(

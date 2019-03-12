@@ -11,12 +11,13 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrain.Gear;
 
 public class HybridDriverAssist extends Command {
 
 	double exitArea;
 	boolean hasTarget, hadTarget;
-	double steerK = 0.05;
+	double steerK = 0.12;
 	double foreCommand, turnCommand;
 
 	/**
@@ -51,7 +52,33 @@ public class HybridDriverAssist extends Command {
 			hadTarget = true;
 		}
 
-		double steer_cmd = tx * steerK;
+		// var isSmallAngle = (Math.abs(tx) < 10);
+
+		double steer_cmd;// =  (isSmallAngle) ? tx * steerK : 0.5 * Math.signum(tx); 
+
+		boolean isHighGear = (Robot.getDrivetrainGear() == Gear.HIGH);
+
+		// System.out.println("IS HIGH GEAR??? " + isHighGear);
+		double closeK, nearK, farK;
+
+		if (isHighGear) {
+			closeK = 0.1;
+			nearK = 0.07;
+			farK = 0.4;
+		} else {
+			closeK = 0.1;
+			nearK = 0.06;
+			farK = 0.55;
+		}
+
+		if (Math.abs(tx) < 5) {
+			steer_cmd = tx * closeK;
+		} else if (Math.abs(tx) < 10) {
+			steer_cmd = tx * nearK;
+		} else {
+			steer_cmd = farK * Math.signum(tx);
+		}
+
 		double fore_cmd = Robot.m_oi.getForwardAxis();
 
 		if (hasTarget) {

@@ -53,10 +53,10 @@ public class SuperstructureGoToState extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		System.out.println("==============================================================");
-		System.out.println("Requested move loc: ");
-		System.out.println(String.format("Elevator (%s) elbow (%s) wrist (%s)", elevatorSetpoint.getInch(), elbowSetpoint.getDegree(), wristSetpoint.getDegree()));
-		System.out.println("==============================================================");
+		//System.out.println("==============================================================");
+		//System.out.println("Requested move loc: ");
+		//System.out.println(String.format("Elevator (%s) elbow (%s) wrist (%s)", elevatorSetpoint.getInch(), elbowSetpoint.getDegree(), wristSetpoint.getDegree()));
+		//System.out.println("==============================================================");
 		SuperStructure.getInstance().move(mRequState);
 		hasSetState = true;
 		// SuperStructure.getInstance().moveSuperstructureCombo(mRequState);
@@ -84,8 +84,8 @@ public class SuperstructureGoToState extends Command {
 		double kTolerence = 5; // degrees
 		var mError = Math.abs(elbowSetpoint.getDegree() - mCurrent.getDegree());
 		boolean isWithin = (Math.abs(mError) < kTolerence);
-		System.out.printf("ELBOW: Current %s Target %s Error %s within Tolerance %s", mCurrent.getDegree(), kWristSetpoint, mError, isWithin);
-		System.out.println("");
+		//System.out.printf("ELBOW: Current %s Target %s Error %s within Tolerance %s", mCurrent.getDegree(), kWristSetpoint, mError, isWithin);
+		//System.out.println("");
 		return isWithin;
 	}
 
@@ -95,8 +95,8 @@ public class SuperstructureGoToState extends Command {
 		double kTolerence = 5; // degrees
 		var mError = Math.abs(wristSetpoint.getDegree() - mCurrent.getDegree());
 		boolean isWithin = (Math.abs(mError) < kTolerence);
-		System.out.printf("WRIST: Current %s Target %s Error %s within Tolerance %s", mCurrent.getDegree(), kWristSetpoint, mError, isWithin);
-		System.out.println("");
+		//System.out.printf("WRIST: Current %s Target %s Error %s within Tolerance %s", mCurrent.getDegree(), kWristSetpoint, mError, isWithin);
+		//System.out.println("");
 		return isWithin;
 	}
 
@@ -106,15 +106,15 @@ public class SuperstructureGoToState extends Command {
 		double kTolerence = 1; // inches
 		double mError = mTarget.minus(mCurrent).getInch();
 		boolean isWithin = (Math.abs(mError) < kTolerence);
-		System.out.printf("ELEVATOR: Current %s Target %s Error %s within Tolerance %s", mCurrent.getInch(), mTarget.getInch(), mError, isWithin);
-		System.out.println("");
+		//System.out.printf("ELEVATOR: Current %s Target %s Error %s within Tolerance %s", mCurrent.getInch(), mTarget.getInch(), mError, isWithin);
+		//System.out.println("");
 		return isWithin;
 	}
 
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-		System.out.println("==============================================================");
+		//System.out.println("==============================================================");
 	}
 
 	// Called when another command which requires one or more of the same

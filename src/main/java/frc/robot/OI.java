@@ -13,15 +13,16 @@ import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.InstantRunnable;
 import frc.robot.commands.auto.routines.LoadingToRocketF;
 import frc.robot.commands.auto.routines.TwoHatchOneCargo;
+import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.commands.subsystems.superstructure.ToggleClamp;
+import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.lib.obj.factories.SequentialCommandFactory;
-import frc.robot.planners.SuperstructureMotion;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
@@ -69,6 +70,8 @@ public class OI {
 
 	Button primaryRightStart = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
 	Button primaryLeftStart = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
+
+	Button primaryRightAnalogButton = new AnalogButton(primaryJoystick, xboxmap.Axis.RIGHT_TRIGGER, .8);
 
 	Button dsCargo1 = new JoystickButton(driverStation, 9);
 	Button dsCargo2 = new JoystickButton(driverStation, 6);
@@ -149,7 +152,7 @@ public class OI {
 		// 	)
 		// 	);
 
-		primaryBButton.whenPressed(new SuperstructureMotion(iPosition.HATCH_GRAB_INSIDE));
+		// primaryBButton.whenPressed(new SuperstructureMotion(iPosition.HATCH_GRAB_INSIDE));
 
 		// primaryDpadUp.whenPressed(new FollowVisionTargetTheSecond(4.3));
 		// primaryDpadUp.whenPressed(new DriveDistanceToVisionTarget(LengthKt.getInch(40), 6));
@@ -183,7 +186,8 @@ public class OI {
 		// secondaryDpadUp.whenPressed(new SuperstructureGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE));
 
 		// hatch presets
-		// dsHatchIn.whenPressed(new SuperstructureGoToState(iPosition.HATCH_GRAB_INSIDE));
+		primaryRightAnalogButton.whileHeld(new HybridDriverAssist(5));
+
 		dsHatch1.whenPressed(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 		dsHatch2.whenPressed(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
 		dsHatch3.whenPressed(new SuperstructureGoToState(fieldPositions.hatchHighGoal, iPosition.HATCH));
@@ -194,8 +198,10 @@ public class OI {
 		primaryDpadUp.whenPressed(new TwoHatchOneCargo());
 
 		secondaryDpadUp.whenPressed(new InstantRunnable(() -> {
-			System.out.println(SuperStructure.getInstance().getWrist().getMaster().getSensorCollection().getPulseWidthPosition());
-		}));
+			var t = SuperStructure.getElevator().getMaster();
+			t.configPeakOutputForward(0);
+			t.configPeakOutputReverse(0);
+		}, true));
 
 		primaryRightStart.whenPressed(new LoadingToRocketF('R', 'R'));
 

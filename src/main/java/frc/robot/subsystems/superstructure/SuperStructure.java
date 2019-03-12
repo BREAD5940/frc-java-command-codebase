@@ -121,7 +121,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 				true /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 
 		elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
-				new InvertSettings(true, InvertType.FollowMaster, InvertType.FollowMaster, InvertType.OpposeMaster));
+				new InvertSettings(true, InvertType.OpposeMaster, InvertType.FollowMaster, InvertType.FollowMaster));
 
 		mElbow.setLimitSwitches();
 

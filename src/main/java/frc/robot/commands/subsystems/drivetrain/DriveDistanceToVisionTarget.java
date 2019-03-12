@@ -36,14 +36,12 @@ public class DriveDistanceToVisionTarget extends CommandGroup {
 	Length kEndOffset, straightLength;
 
 	/**
-	 * Follow a spline shaped trajectory to a vision target. This command gets the vision target pose on first init and will reset the robot odometry.
+	 * Follow a straight trajectory to a vision target. This command gets the vision target pose on first init and will reset the robot odometry.
 	 * 
 	 * @author Matthew Morley
 	 * 
-	 * @param currentPose the current pose of the robot (vision target centric fama)
-	 * @param driveStraightDistance the distance to drive straight for
-	 * @param dsired_end how far away from the vision target to exit at
-	 * @param areaAtWhichToExit the area at which the command will exit, regarless of everything else
+	 * @param desired_end how far away to end at
+	 * @param areaAtWhichToExit how far away to end this command at regardless of tracker state
 	 */
 	public DriveDistanceToVisionTarget(/*Pose2d currentPose, */Length desired_end, double areaAtWhichToExit) {
 		// this.targetDistance = targetLimelightOffset;

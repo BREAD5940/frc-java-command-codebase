@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -20,6 +21,7 @@ import frc.robot.RobotConfig.elevator;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
+import frc.robot.commands.subsystems.superstructure.ZeroElevator;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
@@ -123,12 +125,35 @@ public class Robot extends TimedRobot {
 		super(0.03d);
 	}
 
+	public static enum RobotState {
+		AUTO(1), TELEOP(2), DISABLED(0), TEST(3);
+
+		final int value;
+
+		private RobotState(int value) {
+			this.value = value;
+		}
+	}
+
+	public static RobotState getState() {
+		var ds = DriverStation.getInstance();
+		if (ds.isAutonomous())
+			return RobotState.AUTO;
+		else if (ds.isOperatorControl())
+			return RobotState.TELEOP;
+		else if (ds.isTest())
+			return RobotState.TEST;
+		else
+			return RobotState.DISABLED;
+	}
+
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
 	 */
 	@Override
 	public void robotInit() {
+
 		if (drivetrain == null)
 			drivetrain = DriveTrain.getInstance();
 		// FIXME Jocelyn this might mess with auto stuff, will it? (I think no?)
@@ -148,15 +173,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("LIMELIGHT LED ON", new LimeLight.SetLEDs(LEDMode.kON));
 		SmartDashboard.putData("LIMELIGHT LED OFF", new LimeLight.SetLEDs(LEDMode.kOFF));
 
-		SmartDashboard.putData(drivetrain);
-		// SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getMaster().getSensorPosition().getDegree());
-		// SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
-		SmartDashboard.putData(superstructure);
-
-		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
-
-		SmartDashboard.putData(autoState); //TODO test to see if it actually does the thing
-
 		m_oi = new OI();
 
 		// SmartDashboard.putData(SuperStructure.intake);
@@ -175,7 +191,7 @@ public class Robot extends TimedRobot {
 		var proximal = SuperStructure.getInstance().getElbow();
 		// var startingAngleTicks = (int) proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
 		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-		var target = 740 - 800;
+		var target = 1400;
 		var delta = (tickkkkks - (int) target) * -1;
 		var startingAngleTicks = proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90));
 
@@ -273,6 +289,8 @@ public class Robot extends TimedRobot {
 
 	}
 
+	public static Command zeroElevatorWhileDisabled = new ZeroElevator(LengthKt.getInch(24.5));
+
 	/**
 	 * This function is called once each time the robot enters Disabled mode. You
 	 * can use it to reset any subsystem information you want to clear when the
@@ -284,6 +302,8 @@ public class Robot extends TimedRobot {
 		SuperStructure.elevator.onDisable();
 		SuperStructure.getInstance().getElbow().onDisable();
 		SuperStructure.getInstance().getWrist().onDisable();
+
+		// zeroElevatorWhileDisabled.start();
 
 		try {
 			mResetNotifier.startPeriodic(0.5);
@@ -383,10 +403,10 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotPeriodic() {
 		// var tickkkkks = (int) superstructure.getWrist().getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
-		// var tickkkkks = (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+		// var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		// System.out.println("Wrist absolute pos " + tickkkkks	 );
-		// System.out.println(superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition());
-		// System.out.println(superstructure.getWrist().getMaster().getSensorPosition().getDegree());
+		// System.out.println(superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition());
+		// System.out.println(superstructure.getElbow().getMaster().getSensorPosition().getDegree());
 
 		SmartDashboard.putString(SuperStructure.getInstance().getCurrentState().getCSVHeader(), SuperStructure.getInstance().getCurrentState().toCSV());
 
@@ -416,6 +436,15 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.putNumber("7 feet per second is", drivetrain.getLeft().getModel().toNativeUnitPosition(LengthKt.getFeet(7)).getValue());
 
 		SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
+
+		// SmartDashboard.putData(drivetrain);
+		// SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getMaster().getSensorPosition().getDegree());
+		// SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
+		// SmartDashboard.putData(superstructure);
+
+		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
+
+		SmartDashboard.putData(autoState); //TODO test to see if it actually does the thing
 
 		// Limelight stuff
 		// double[] limelightdata = limelight.getData();

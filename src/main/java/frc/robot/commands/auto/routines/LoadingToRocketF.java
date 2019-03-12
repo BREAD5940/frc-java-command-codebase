@@ -4,18 +4,12 @@ import java.util.ArrayList;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
-import frc.robot.commands.auto.groups.PickupHatch;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
-import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheSecond;
-import frc.robot.commands.subsystems.drivetrain.DriveDistanceToVisionTarget;
-import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
-import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
@@ -33,7 +27,7 @@ public class LoadingToRocketF extends VisionCommandGroup {
 	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
 
 	// public LoadingToRocketF(char arg1, char arg2) {
-		// this();
+	// this();
 	// }
 
 	/**
@@ -63,7 +57,7 @@ public class LoadingToRocketF extends VisionCommandGroup {
 		// addSequential(new SplineToVisionTarget(/*this.getPoseStorage1(), */LengthKt.getInch(0), LengthKt.getInch(30), 6.5));
 		// addSequential(new FollowVisionTargetTheSecond(4.3));
 		// addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(35), 5));
-	
+
 		// addSequential(new RunIntake(-1, 0, 1));
 
 		/* Move from middle of cargo ship to loading station on the same side to pick up a hatch */
