@@ -11,8 +11,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.DriveTrain.Gear;
+import frc.robot.subsystems.LimeLight;
 
 public class FollowVisionTargetTheSecond extends Command {
 

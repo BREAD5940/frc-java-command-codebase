@@ -167,13 +167,13 @@ public class Trajectories {
 
 		generatedLGTrajectories.put("cargoML to loadingL", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoML"), locations.get("loadingL"))), false));
 		generatedLGTrajectories.put("cargoMR to loadingR", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(
-			new Pose2d(locations.get("cargoMR").getTranslation(), Rotation2dKt.getDegree(180)),
-		 
-			new Pose2d(LengthKt.getFeet(9.6), LengthKt.getFeet(6.7), Rotation2dKt.getDegree(50)),
+				new Pose2d(locations.get("cargoMR").getTranslation(), Rotation2dKt.getDegree(180)),
 
-			locations.get("loadingR").plus(
-				new Pose2d(LengthKt.getFeet(3), LengthKt.getFeet(0), Rotation2dKt.getDegree(0))
-		))), false));
+				new Pose2d(LengthKt.getFeet(9.6), LengthKt.getFeet(6.7), Rotation2dKt.getDegree(50)),
+
+				locations.get("loadingR").plus(
+						new Pose2d(LengthKt.getFeet(3), LengthKt.getFeet(0), Rotation2dKt.getDegree(0))))),
+				false));
 
 		generatedLGTrajectories.put("cargoL1 to depotL", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoL1"), locations.get("depotL"))), true));
 		generatedLGTrajectories.put("cargoR1 to depotR", generateTrajectoryLowGear(new ArrayList<Pose2d>(Arrays.asList(locations.get("cargoR1"), locations.get("depotR"))), true));
@@ -253,21 +253,21 @@ public class Trajectories {
 						)),
 				true));
 
-						// Trajectories to the rocket. format is rocket[L/R for left/right][C/M/F for close/middle/far]. This one is backed up 3 feet already!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// Trajectories to the rocket. format is rocket[L/R for left/right][C/M/F for close/middle/far]. This one is backed up 3 feet already!!!!!!!!!!!!!!!!!!!!!!!!!!
 		generatedLGTrajectories.put("rocketRF to loadingR", generateTrajectoryLowGear(
-			Arrays.asList(
-					new Pose2d(
-							LengthKt.getFeet(23.92),
-							LengthKt.getFeet(27 - 23.28),
-							Rotation2dKt.getDegree(-33)),
-					new Pose2d(
-							LengthKt.getFeet(19.5),
-							LengthKt.getFeet(4.5),
-							Rotation2dKt.getDegree(0)),
-					locations.get("loadingR").plus(
-							new Pose2d(LengthKt.getFeet(3), LengthKt.getFeet(0), Rotation2dKt.getDegree(180)) // offset by 3 feet to allow the vision spline to kick in a bit
-					)),
-			true));
+				Arrays.asList(
+						new Pose2d(
+								LengthKt.getFeet(23.92),
+								LengthKt.getFeet(27 - 23.28),
+								Rotation2dKt.getDegree(-33)),
+						new Pose2d(
+								LengthKt.getFeet(19.5),
+								LengthKt.getFeet(4.5),
+								Rotation2dKt.getDegree(0)),
+						locations.get("loadingR").plus(
+								new Pose2d(LengthKt.getFeet(3), LengthKt.getFeet(0), Rotation2dKt.getDegree(180)) // offset by 3 feet to allow the vision spline to kick in a bit
+						)),
+				true));
 
 		// path from loading station to rcket
 		generatedLGTrajectories.put("loadingL to rocketLC", generateTrajectoryLowGear(

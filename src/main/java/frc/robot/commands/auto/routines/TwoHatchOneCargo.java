@@ -6,25 +6,20 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.InstantRunnable;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
-import frc.robot.commands.auto.groups.PickupHatch;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
 import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheSecond;
-import frc.robot.commands.subsystems.drivetrain.DriveDistanceToVisionTarget;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
-import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.LimeLight.PipelinePreset;
 import frc.robot.subsystems.superstructure.SuperStructure;
-import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
  * 2-hatch 1-cargo auto
@@ -54,7 +49,7 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 
 			SuperStructure.getInstance().getWrist().getMaster().configPeakOutputForward(0);
 			SuperStructure.getInstance().getWrist().getMaster().configPeakOutputReverse(0);
-			
+
 			SuperStructure.getInstance().getElbow().getMaster().configPeakOutputForward(0);
 			SuperStructure.getInstance().getElbow().getMaster().configPeakOutputReverse(0);
 		}, true));
@@ -83,27 +78,23 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		var rocketToLoading = Trajectories.generatedLGTrajectories.get("rocketRF to loadingR");
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
 
-		
 		// addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
-		
+
 		addSequential(new FollowVisionTargetTheSecond(5));
-		
+
 		addSequential(new RunIntake(-1, 0, 1));
-		
+
 		// addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
 		var loadingToRocketFar = Trajectories.generatedLGTrajectories.get("loadingR to rocketRF");
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
 		addSequential(new FollowVisionTargetTheSecond(4.3));
-		
-		
-		
 
 		addSequential(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
-		
+
 	}
-	
+
 	// id functions
-	
+
 	/**
 	 * identification function
 	 * @return

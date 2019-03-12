@@ -173,8 +173,6 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("LIMELIGHT LED ON", new LimeLight.SetLEDs(LEDMode.kON));
 		SmartDashboard.putData("LIMELIGHT LED OFF", new LimeLight.SetLEDs(LEDMode.kOFF));
 
-
-
 		m_oi = new OI();
 
 		// SmartDashboard.putData(SuperStructure.intake);
