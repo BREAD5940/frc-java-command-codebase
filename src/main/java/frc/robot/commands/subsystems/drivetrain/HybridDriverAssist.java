@@ -7,7 +7,13 @@
 
 package frc.robot.commands.subsystems.drivetrain;
 
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+import org.ghrobotics.lib.mathematics.units.Time;
+import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
+
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
@@ -51,6 +57,17 @@ public class HybridDriverAssist extends Command {
 			hasTarget = true;
 			hadTarget = true;
 		}
+
+		Rotation2d oldTargetYaw = Rotation2dKt.getDegree(tx).times(-1); // TODO check signs!
+		Time measurementTime = TimeUnitsKt.getSecond(Timer.getFPGATimestamp()).minus(TimeUnitsKt.getMillisecond(NetworkTableInstance.getDefault().getTable("limelight").getEntry("tl").getDouble(0)));
+		Rotation2d robotYawAtMeasurementTime = DriveTrain.getInstance().getLocalization().get(measurementTime).getRotation();
+		Rotation2d measuredTargetGlobalYaw = robotYawAtMeasurementTime.plus(oldTargetYaw); // TODO check sign!
+		Rotation2d currentRobotYaw = DriveTrain.getInstance().getLocalization().getRobotPosition().getRotation();
+		Rotation2d realOffsetNow = measuredTargetGlobalYaw.minus(currentRobotYaw); // TODO check sign
+
+		// store this value again
+		tx = realOffsetNow.getDegree();
+
 
 		// var isSmallAngle = (Math.abs(tx) < 10);
 
