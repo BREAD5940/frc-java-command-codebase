@@ -21,7 +21,7 @@ import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 
-public class DriveDistanceTheSecond extends CommandGroup {
+public class DriveDistanceTheSecond extends Command {
 
 	private static Velocity<Length> kCruiseVel = VelocityKt.getVelocity(LengthKt.getFeet(4));
 	private static Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(8));
@@ -47,7 +47,15 @@ public class DriveDistanceTheSecond extends CommandGroup {
 		// this.distance = distance;
 		// this.vel = vel;
 		// this.reversed = reversed;
+		this.distance = distance;
+		this.vel = vel;
+		this.reversed = reversed;
+		requires(DriveTrain.getInstance());
+	}
 
+	@Override
+	protected void initialize() {
+		
 
 		var currentPose = DriveTrain.getInstance().getLocalization().getRobotPosition();
 		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX().getInch() + "," + currentPose.getTranslation().getY().getInch());
@@ -79,10 +87,12 @@ public class DriveDistanceTheSecond extends CommandGroup {
 
 	mCommand = DriveTrain.getInstance().followTrajectory(trajectory, TrajectoryTrackerMode.RAMSETE, false);
 
-	addSequential(mCommand);
+	// addSequential(mCommand);
+	clearRequirements();
+	mCommand.start();
 
 	// mCommand.start();
-	// commandStarted = true;
+	commandStarted = true;
 
 	}
 
@@ -96,11 +106,11 @@ public class DriveDistanceTheSecond extends CommandGroup {
 // 	@Override
 // 	protected void execute() {}
 
-// 	// Make this return true when this Command no longer needs to run execute()
-// 	@Override
-// 	protected boolean isFinished() {
-// 		return mCommand.isCompleted() && commandStarted;
-// 	}
+	// Make this return true when this Command no longer needs to run execute()
+	@Override
+	protected boolean isFinished() {
+		return  mCommand.isCompleted() && commandStarted;
+	}
 
 // 	// Called once after isFinished returns true
 // 	@Override
