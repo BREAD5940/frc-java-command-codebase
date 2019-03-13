@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.DriveTrain.Gear;
 
 /**
  * Default drivetrain command. This *should* be called as the default drivetrain
@@ -47,8 +48,15 @@ public class ArcadeDrive extends Command {
 		// boolean isQuickTurn = (Math.abs(Robot.m_oi.getForwardAxis()) < 0.08);
 		// boolean isQuickTurn = (Math.abs(Robot.m_oi.getPrimary().getRawAxis(0)) > 0.75);
 
-		Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis() * 1,
-				Robot.m_oi.getTurnAxis() * 1, true/*, isQuickTurn*/);
+		boolean isHighGear = (Robot.getDrivetrainGear() == Gear.HIGH);
+
+		if(isHighGear) {
+			Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis() * 1,
+			Robot.m_oi.getTurnAxis() * 0.7, false/*, isQuickTurn*/);
+		} else {
+			Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis() * 1,
+			Robot.m_oi.getTurnAxis() * 1, true/*, isQuickTurn*/);
+		}
 
 		// if((Robot.m_oi.getPrimary().getRawButton(1)) && (!wasPressed)) {
 		// 	wasPressed = true;

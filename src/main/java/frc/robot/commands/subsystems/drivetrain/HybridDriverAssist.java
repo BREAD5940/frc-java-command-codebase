@@ -46,6 +46,7 @@ public class HybridDriverAssist extends Command {
 		if (tv < 1.0) {
 			hasTarget = false;
 			turnCommand = 0.0;
+			DriveTrain.getInstance().arcadeDrive(Robot.m_oi.getForwardAxis(), Robot.m_oi.getTurnAxis());
 			return;
 		} else {
 			hasTarget = true;

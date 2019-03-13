@@ -31,7 +31,6 @@ import frc.robot.lib.Logger;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.InvertSettings;
-import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
 
@@ -77,7 +76,7 @@ public class Elevator extends HalfBakedSubsystem {
 	public static final Mass kCarriageMass = MassKt.getLb(/*30*/20).times(-1); // times negative one because CF springs
 	public static final Mass kInnerStageMass = MassKt.getLb(6.5 + 30);
 
-	public static final Length kTopOfInnerStage = LengthKt.getInch(40);
+	public static final Length kTopOfInnerStage = LengthKt.getInch(22);
 
 	public static final double KLowGearForcePerVolt = (512d / 12d /* newtons */) * 1.5;
 	public static final double KHighGearForcePerVolt = (1500d / 12d /* newtons */ );
@@ -306,19 +305,28 @@ public class Elevator extends HalfBakedSubsystem {
 	 * @return mass accounting for game piece and inner stage
 	 */
 	public static double getVoltage(SuperStructureState state) {
-		Mass total = MassKt.getLb(kCarriageMass.getLb());
-
-		if (state.getHeldPiece() == HeldPiece.HATCH) {
-			total = total.plus(SuperStructure.kHatchMass);
-		}
-		if (state.getHeldPiece() == HeldPiece.CARGO) {
-			total = total.plus(SuperStructure.kCargoMass);
-		}
+		double voltage;
 		if (state.getElevatorHeight().getInch() >= kTopOfInnerStage.getInch()) {
-			total = total.plus(kInnerStageMass);
+			voltage = 0.1;
+		} else {
+			voltage = -0.05;
 		}
-		double totalF = total.getKilogram() * 9.81 /* g */;
-		return (mCurrentGear == ElevatorGear.LOW) ? totalF / KLowGearForcePerVolt : totalF / KHighGearForcePerVolt;
+
+		return voltage * 12;
+
+		// Mass total = MassKt.getLb(kCarriageMass.getLb());
+
+		// if (state.getHeldPiece() == HeldPiece.HATCH) {
+		// 	total = total.plus(SuperStructure.kHatchMass);
+		// }
+		// if (state.getHeldPiece() == HeldPiece.CARGO) {
+		// 	total = total.plus(SuperStructure.kCargoMass);
+		// }
+		// if (state.getElevatorHeight().getInch() >= kTopOfInnerStage.getInch()) {
+		// 	total = total.plus(kInnerStageMass);
+		// }
+		// double totalF = total.getKilogram() * 9.81 /* g */;
+		// return (mCurrentGear == ElevatorGear.LOW) ? totalF / KLowGearForcePerVolt : totalF / KHighGearForcePerVolt;
 	}
 
 	public ElevatorState getCurrentState() {

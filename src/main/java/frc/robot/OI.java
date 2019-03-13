@@ -165,7 +165,7 @@ public class OI {
 		dsCargoIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
 						new SetHatchMech(HatchMechState.kOpen),
-						new JankyGoToState(LengthKt.getInch(7.25), SuperStructure.iPosition.CARGO_GRAB))));
+						new JankyGoToState(LengthKt.getInch(6.4), SuperStructure.iPosition.CARGO_GRAB))));
 
 		dsCargo1.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
@@ -180,7 +180,7 @@ public class OI {
 		dsCargo3.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
 						new SetHatchMech(HatchMechState.kClamped),
-						new JankyGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE))));
+						new JankyGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE_PITCHED_UP))));
 
 		// secondaryDpadRight.whenPressed(new JankyGoToState(fieldPositions.cargoMiddleGoal, SuperStructure.iPosition.CARGO_PLACE));
 		// secondaryDpadUp.whenPressed(new JankyGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE));
@@ -188,15 +188,27 @@ public class OI {
 		// hatch presets
 		primaryRightAnalogButton.whileHeld(new HybridDriverAssist(5));
 
-		dsHatch1.whenPressed(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-		dsHatch2.whenPressed(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
-		dsHatch3.whenPressed(new JankyGoToState(fieldPositions.hatchHighGoal, iPosition.HATCH));
+		dsHatch1.whenPressed(SequentialCommandFactory.getSequentialCommands(
+				Arrays.asList(
+						new SetHatchMech(HatchMechState.kClamped),
+						new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH))));
+
+		dsHatch2.whenPressed(SequentialCommandFactory.getSequentialCommands(
+				Arrays.asList(
+						new SetHatchMech(HatchMechState.kClamped),
+						new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH))));
+		dsHatch3.whenPressed(SequentialCommandFactory.getSequentialCommands(
+				Arrays.asList(
+						new SetHatchMech(HatchMechState.kClamped),
+						new JankyGoToState(fieldPositions.hatchHighGoal, iPosition.HATCH_PITCHED_UP))));
+
+		// dsHatch2.whenPressed(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
+		// dsHatch3.whenPressed(new JankyGoToState(fieldPositions.hatchHighGoal, iPosition.HATCH_PITCHED_UP));
 
 		dsHatchIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
-			Arrays.asList(
-					new SetHatchMech(HatchMechState.kClamped),
-					new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));			
-		
+				Arrays.asList(
+						new SetHatchMech(HatchMechState.kClamped),
+						new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));
 
 		// primaryDpadRight.whenPressed(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
 		// primaryDpadUp.whenPressed(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));

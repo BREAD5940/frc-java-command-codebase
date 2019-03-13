@@ -4,7 +4,6 @@ import org.ghrobotics.lib.mathematics.units.Length;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
-import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
@@ -24,6 +23,8 @@ public class JankyGoToState extends CommandGroup {
 	public JankyGoToState(SuperStructureState requ_) {
 
 		requires(SuperStructure.getInstance());
+
+		setInterruptible(false);
 
 		addSequential(new PrintCommand("requested state: " + requ_.toCSV()));
 

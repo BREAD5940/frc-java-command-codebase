@@ -186,7 +186,14 @@ public class Robot extends TimedRobot {
 		drivetrain.zeroGyro();
 		var elevator = SuperStructure.getElevator();
 		var startingHeightTicks = elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue();
-		elevator.getMaster().setSelectedSensorPosition((int) startingHeightTicks);
+		// 600 is the boiiii
+		var target_ = 600;
+		var tickkkkks_ = (SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+		var delta_ = (tickkkkks_ - (int) target_) * -1;
+		// var startingAngleTicks_ = elevator.getMaster().getTicks(RoundRotation2d.getDegree(-90));
+
+		// var delta = 
+		elevator.getMaster().setSelectedSensorPosition((int) (startingHeightTicks + delta_));
 
 		var proximal = SuperStructure.getInstance().getElbow();
 		// var startingAngleTicks = (int) proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
@@ -409,6 +416,9 @@ public class Robot extends TimedRobot {
 		// System.out.println(superstructure.getElbow().getMaster().getSensorPosition().getDegree());
 
 		SmartDashboard.putString(SuperStructure.getInstance().getCurrentState().getCSVHeader(), SuperStructure.getInstance().getCurrentState().toCSV());
+
+		// var elevatorAbsTicks = SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 1024;
+		// System.out.println(elevatorAbsTicks);
 
 		// System.out.println(String.format("carriage max %s inner stage min %s", superstructure.getCarriageMaxLimit(), superstructure.getInnerStageMinLimit() ));
 
