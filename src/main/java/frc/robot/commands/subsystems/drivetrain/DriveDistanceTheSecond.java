@@ -72,7 +72,7 @@ public class DriveDistanceTheSecond extends CommandGroup {
 
 	System.out.println("FIRST POSE: " + Util.toString(trajectory.getFirstState().getState().getPose()) + " LAST POSE: " + Util.toString(trajectory.getLastState().getState().getPose()));
 
-	mCommand = DriveTrain.getInstance().followTrajectory(trajectory, TrajectoryTrackerMode.RAMSETE, true);
+	mCommand = DriveTrain.getInstance().followTrajectory(trajectory, TrajectoryTrackerMode.RAMSETE, false);
 
 	addSequential(mCommand);
 

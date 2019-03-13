@@ -97,7 +97,7 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 
 		// // spline over to the rocket
 		var rocketToLoading = Trajectories.generatedLGTrajectories.get("rocketRF to loadingR");
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(rocketToLoading, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
+		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(rocketToLoading, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); //drive to goal
 
 		// // addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
 
@@ -110,7 +110,7 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		// // addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
 		addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)); // move arm inside to prep state
 		var loadingToRocketFar = Trajectories.generatedLGTrajectories.get("loadingR to rocketRF");
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(loadingToRocketFar, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
+		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(loadingToRocketFar, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); //drive to goal
 		addSequential(new FollowVisionTargetTheSecond(4.5));
 		addSequential(new RunIntake(-1, 0, 1));
 
