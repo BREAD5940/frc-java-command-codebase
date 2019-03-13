@@ -13,6 +13,7 @@ import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.InstantRunnable;
 import frc.robot.commands.auto.routines.LoadingToRocketF;
 import frc.robot.commands.auto.routines.TwoHatchOneCargo;
+import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheSecond;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
@@ -214,6 +215,8 @@ public class OI {
 		// primaryDpadUp.whenPressed(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
 
 		primaryDpadUp.whenPressed(new TwoHatchOneCargo());
+
+		primaryDpadDown.whenPressed(new DriveDistanceTheSecond(LengthKt.getFeet(3), true));
 
 		secondaryDpadUp.whenPressed(new InstantRunnable(() -> {
 			var t = SuperStructure.getElevator().getMaster();

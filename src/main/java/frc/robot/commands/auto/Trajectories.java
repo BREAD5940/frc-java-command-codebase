@@ -69,7 +69,7 @@ public class Trajectories {
 	public static final Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
 	public static final Velocity<Length> kDefaultEndVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
 
-	public static final Velocity<Length> kDefaultVelocityLow = VelocityKt.getVelocity(LengthKt.getFeet(5));
+	public static final Velocity<Length> kDefaultVelocityLow = VelocityKt.getVelocity(LengthKt.getFeet(3));
 	public static final Velocity<Length> kDefaultVelocityHigh = VelocityKt.getVelocity(LengthKt.getFeet(9));
 
 	public static final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(8));
@@ -204,27 +204,27 @@ public class Trajectories {
 				Arrays.asList(
 						locations.get("habR"),
 						new Pose2d(
-								LengthKt.getFeet(19.8),
-								LengthKt.getFeet(5.1),
+								LengthKt.getFeet(20.33),
+								LengthKt.getFeet(5.2),
 								Rotation2dKt.getDegree(140)),
 						new Pose2d(
-								LengthKt.getFeet(23.801),
-								LengthKt.getFeet(3.5),
+								LengthKt.getFeet(25.001),
+								LengthKt.getFeet(4.1),
 								Rotation2dKt.getDegree(-150))),
 				true));
 
-		generatedHGTrajectories.put("habR to rocketRF", generateTrajectoryHighGear(
-				Arrays.asList(
-						locations.get("habR"),
-						new Pose2d(
-								LengthKt.getFeet(19.8),
-								LengthKt.getFeet(5.1),
-								Rotation2dKt.getDegree(140)),
-						new Pose2d(
-								LengthKt.getFeet(23.801),
-								LengthKt.getFeet(3.5),
-								Rotation2dKt.getDegree(-150))),
-				true));
+		// generatedHGTrajectories.put("habR to rocketRF", generateTrajectoryHighGear(
+		// 		Arrays.asList(
+		// 				locations.get("habR"),
+		// 				new Pose2d(
+		// 						LengthKt.getFeet(19.8),
+		// 						LengthKt.getFeet(5.1),
+		// 						Rotation2dKt.getDegree(140)),
+		// 				new Pose2d(
+		// 						LengthKt.getFeet(23.801),
+		// 						LengthKt.getFeet(3.5),
+		// 						Rotation2dKt.getDegree(-150))),
+		// 		true));
 
 		// Trajectories to the rocket. format is rocket[L/R for left/right][C/M/F for close/middle/far]. This one is backed up 3 feet already!!!!!!!!!!!!!!!!!!!!!!!!!!
 		generatedLGTrajectories.put("rocketLF to loadingL", generateTrajectoryLowGear(
