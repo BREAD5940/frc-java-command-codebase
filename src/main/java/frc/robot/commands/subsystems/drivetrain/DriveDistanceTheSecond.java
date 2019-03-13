@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
@@ -47,12 +48,25 @@ public class DriveDistanceTheSecond extends CommandGroup {
 		// this.vel = vel;
 		// this.reversed = reversed;
 
-		List<Pose2d> waypoints = (!reversed) ? Arrays.asList(
-			new Pose2d(LengthKt.getInch(0), LengthKt.getInch(30), Rotation2dKt.getDegree(0)),
-			new Pose2d(distance, LengthKt.getInch(30), Rotation2dKt.getDegree(0)))
-			: Arrays.asList(
-					new Pose2d(LengthKt.getInch(0), LengthKt.getInch(30), Rotation2dKt.getDegree(0)),
-					new Pose2d(distance.times(-1), LengthKt.getInch(30), Rotation2dKt.getDegree(0)));
+		var currentPose = DriveTrain.getInstance().getRobotPosition();
+		Translation2d offsetTrans;
+		if(!reversed) {
+			offsetTrans = new Translation2d(distance, currentPose.getRotation());
+		} else {
+			offsetTrans = new Translation2d(distance.times(-1), currentPose.getRotation());
+		}
+		var offsetPose = new Pose2d(offsetTrans, currentPose.getRotation());
+
+		var waypoints = Arrays.asList(
+			currentPose, offsetPose
+		);
+
+		// List<Pose2d> waypoints = (!reversed) ? Arrays.asList(
+		// 	new Pose2d(LengthKt.getInch(0), LengthKt.getInch(30), Rotation2dKt.getDegree(0)),
+		// 	new Pose2d(distance, LengthKt.getInch(30), Rotation2dKt.getDegree(0)))
+		// 	: Arrays.asList(
+		// 			new Pose2d(LengthKt.getInch(0), LengthKt.getInch(30), Rotation2dKt.getDegree(0)),
+		// 			new Pose2d(distance.times(-1), LengthKt.getInch(30), Rotation2dKt.getDegree(0)));
 
 	var trajectory = Trajectories.generateTrajectoryLowGear(waypoints, reversed);
 
