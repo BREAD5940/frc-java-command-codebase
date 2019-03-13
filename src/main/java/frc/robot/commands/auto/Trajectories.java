@@ -248,15 +248,17 @@ public class Trajectories {
 						new Pose2d(
 								LengthKt.getFeet(23.92),
 								LengthKt.getFeet(27 - 23.28),
-								Rotation2dKt.getDegree(-33)),
+								Rotation2dKt.getDegree(-147)),
 						new Pose2d(
 								LengthKt.getFeet(19.5),
 								LengthKt.getFeet(4.5),
-								Rotation2dKt.getDegree(0)),
-						locations.get("loadingR").plus(
-								new Pose2d(LengthKt.getFeet(3), LengthKt.getFeet(0), Rotation2dKt.getDegree(180)) // offset by 3 feet to allow the vision spline to kick in a bit
-						)),
-				true));
+								Rotation2dKt.getDegree(180)),
+						new Pose2d(
+							LengthKt.getFeet(4.3),
+							LengthKt.getFeet(2.3),
+							Rotation2dKt.getDegree(180))
+						),
+				false));
 
 		// path from loading station to rcket
 		generatedLGTrajectories.put("loadingL to rocketLC", generateTrajectoryLowGear(

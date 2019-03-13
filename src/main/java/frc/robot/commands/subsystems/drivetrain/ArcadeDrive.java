@@ -50,12 +50,12 @@ public class ArcadeDrive extends Command {
 
 		boolean isHighGear = (Robot.getDrivetrainGear() == Gear.HIGH);
 
-		if(isHighGear) {
+		if (isHighGear) {
 			Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis() * 1,
-			Robot.m_oi.getTurnAxis() * 0.7, false/*, isQuickTurn*/);
+					Robot.m_oi.getTurnAxis() * 0.7, false/*, isQuickTurn*/);
 		} else {
 			Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis() * 1,
-			Robot.m_oi.getTurnAxis() * 1, true/*, isQuickTurn*/);
+					Robot.m_oi.getTurnAxis() * 1, true/*, isQuickTurn*/);
 		}
 
 		// if((Robot.m_oi.getPrimary().getRawButton(1)) && (!wasPressed)) {
