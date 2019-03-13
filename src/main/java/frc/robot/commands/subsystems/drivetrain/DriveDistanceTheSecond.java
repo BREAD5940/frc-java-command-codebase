@@ -48,14 +48,19 @@ public class DriveDistanceTheSecond extends CommandGroup {
 		// this.vel = vel;
 		// this.reversed = reversed;
 
-		var currentPose = DriveTrain.getInstance().getRobotPosition();
+
+		var currentPose = DriveTrain.getInstance().getLocalization().getRobotPosition();
+		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX().getInch() + "," + currentPose.getTranslation().getY().getInch());
 		Translation2d offsetTrans;
 		if(!reversed) {
 			offsetTrans = new Translation2d(distance, currentPose.getRotation());
 		} else {
-			offsetTrans = new Translation2d(distance.times(-1), currentPose.getRotation());
+			offsetTrans = new Translation2d(distance, currentPose.getRotation().plus(Rotation2dKt.getDegree(180)));
 		}
 		var offsetPose = new Pose2d(offsetTrans, currentPose.getRotation());
+
+		System.out.println("OFFSET POSE: " + offsetPose.getTranslation().getX().getInch() + "," + offsetPose.getTranslation().getY().getInch());
+
 
 		var waypoints = Arrays.asList(
 			currentPose, offsetPose

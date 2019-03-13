@@ -10,6 +10,7 @@ package frc.robot.commands.subsystems.drivetrain;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotConfig.auto.followVisionTarget;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
@@ -18,10 +19,17 @@ public class FollowVisionTargetTheSecond extends Command {
 
 	double targetArea;
 	boolean mHadTarget = false;
+	double offset = 0;
 
 	public FollowVisionTargetTheSecond(double targetArea) {
 		requires(DriveTrain.getInstance());
 		this.targetArea = targetArea;
+	}
+
+	public FollowVisionTargetTheSecond(double targetArea, double angleOffset) {
+		requires(DriveTrain.getInstance());
+		this.targetArea = targetArea;
+		this.offset = angleOffset;
 	}
 
 	// Called just before this Command runs the first time
@@ -73,12 +81,12 @@ public class FollowVisionTargetTheSecond extends Command {
 	public void Update_Limelight_Tracking() {
 		// These numbers must be tuned for your Robot!  Be careful!
 		double STEER_K = 0.04;                    // how hard to turn toward the target
-		double DRIVE_K = 0.26 * 1.6 * 1.3 / 1.4;                    // how hard to drive fwd toward the target
+		double DRIVE_K = 0.26 * 1.6 * 1.3 / 1.1;                    // how hard to drive fwd toward the target
 		double DESIRED_TARGET_AREA = this.targetArea;         // Area of the target when the robot reaches the wall
 		double MAX_DRIVE = 0.7;                   // Simple speed limit so we don't drive too fast
 
 		double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
-		double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+		double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0) - offset;
 		double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
 		double ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
 

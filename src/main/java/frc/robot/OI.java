@@ -135,11 +135,11 @@ public class OI {
 		dsClampToggle.whenPressed(new ToggleClamp());
 
 		// primaryDpadUp.whenPressed(new PickupHatch());
-		primaryDpadDown.whenPressed(new JankyGoToState(
-				new ElevatorState(LengthKt.getInch(26)),
-				new IntakeAngle(
-						new RotatingArmState(RoundRotation2d.getDegree(-94)),
-						new RotatingArmState(RoundRotation2d.getDegree(-42)))));
+		// primaryDpadDown.whenPressed(new JankyGoToState(
+		// 		new ElevatorState(LengthKt.getInch(26)),
+		// 		new IntakeAngle(
+		// 				new RotatingArmState(RoundRotation2d.getDegree(-94)),
+		// 				new RotatingArmState(RoundRotation2d.getDegree(-42)))));
 
 		SuperStructureState Start1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(5)),
 				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
@@ -216,7 +216,7 @@ public class OI {
 
 		primaryDpadUp.whenPressed(new TwoHatchOneCargo());
 
-		primaryDpadDown.whenPressed(new DriveDistanceTheSecond(LengthKt.getFeet(3), true));
+		primaryDpadDown.whenPressed(new DriveDistanceTheSecond(LengthKt.getFeet(3), false));
 
 		secondaryDpadUp.whenPressed(new InstantRunnable(() -> {
 			var t = SuperStructure.getElevator().getMaster();

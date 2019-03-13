@@ -26,8 +26,8 @@ public class SequentialCommandFactory {
 
 	public static CommandGroup levelOneHatch() {
 		CommandGroup toReturn = new CommandGroup();
-		toReturn.addSequential(new SuperstructureGoToState(iPosition.HATCH), 3);
-		toReturn.addSequential(new SuperstructureGoToState(new ElevatorState(fieldPositions.hatchLowGoal)), 3);
+		toReturn.addSequential(new SuperstructureGoToState(iPosition.HATCH));
+		toReturn.addSequential(new SuperstructureGoToState(new ElevatorState(fieldPositions.hatchLowGoal)));
 
 		return toReturn;
 
@@ -40,5 +40,6 @@ public class SequentialCommandFactory {
 		}
 		return toReturn;
 	}
+
 
 }

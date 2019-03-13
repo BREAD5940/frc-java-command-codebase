@@ -73,9 +73,9 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
 
 		// addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
-		addSequential(new FollowVisionTargetTheSecond(4.5));
+		addSequential(new FollowVisionTargetTheSecond(3.8));
 
-		addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(1.2), false));
+		// addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(0.4), false));
 
 		// addSequential(new PrintCommand("GOT TO RUN INTAKE"));
 
@@ -96,25 +96,25 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		// addSequential(new PrintCommand("GOT TO next spline"));
 
 		// // spline over to the rocket
-		var rocketToLoading = Trajectories.generatedLGTrajectories.get("rocketRF to loadingR");
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(rocketToLoading, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); //drive to goal
+		// var rocketToLoading = Trajectories.generatedLGTrajectories.get("rocketRF to loadingR");
+		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(rocketToLoading, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); //drive to goal
 
-		// // addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
+		// // // addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
 
-		addSequential(new FollowVisionTargetTheSecond(4.5));
+		// addSequential(new FollowVisionTargetTheSecond(4.5));
 
-		addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(1.5), false));
+		// addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(1.5), false));
 
-		addSequential(new RunIntake(1, 0, 1));
+		// addSequential(new RunIntake(1, 0, 1));
 
-		// // addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
-		addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)); // move arm inside to prep state
-		var loadingToRocketFar = Trajectories.generatedLGTrajectories.get("loadingR to rocketRF");
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(loadingToRocketFar, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); //drive to goal
-		addSequential(new FollowVisionTargetTheSecond(4.5));
-		addSequential(new RunIntake(-1, 0, 1));
+		// // // addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
+		// addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)); // move arm inside to prep state
+		// var loadingToRocketFar = Trajectories.generatedLGTrajectories.get("loadingR to rocketRF");
+		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(loadingToRocketFar, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); //drive to goal
+		// addSequential(new FollowVisionTargetTheSecond(4.5));
+		// addSequential(new RunIntake(-1, 0, 1));
 
-		// // addSequential(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
+		// // // addSequential(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
 
 	}
 
