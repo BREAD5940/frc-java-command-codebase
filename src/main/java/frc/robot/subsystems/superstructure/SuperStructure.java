@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotConfig.auto.fieldPositions;
+import frc.robot.commands.subsystems.superstructure.JustElevatorTeleop;
 import frc.robot.commands.subsystems.superstructure.SuperStructureTelop;
 import frc.robot.lib.Loggable;
 import frc.robot.lib.PIDSettings;
@@ -250,7 +251,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 		// Actually yeah all that you really need is the buttons
 		// well also jogging with joysticks but eehhhh
 		// actually that should be the default command, hot prank
-		setDefaultCommand(new SuperStructureTelop());
+		setDefaultCommand(new JustElevatorTeleop());
 	}
 
 	public SuperStructureState updateState() {

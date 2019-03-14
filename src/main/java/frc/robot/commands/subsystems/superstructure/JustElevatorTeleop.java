@@ -48,7 +48,7 @@ public class JustElevatorTeleop extends Command {
 
 		SuperStructureState mCurrentState = SuperStructure.getInstance().updateState();
 		var mNewState = mCachedState;
-		var mElevatorPower = Robot.m_oi.getElevatorAxis();
+		var mElevatorPower = Robot.m_oi.getElevatorDS();
 		// var mWristPower = Robot.m_oi.getWristAxis();
 		// var mElbowPower = Robot.m_oi.getElbowAxis();
 		// mElbowPower = mElbowPower * Math.abs(mElbowPower); // square inputs

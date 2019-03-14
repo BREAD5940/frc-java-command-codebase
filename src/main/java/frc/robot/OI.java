@@ -380,6 +380,12 @@ public class OI {
 		return secondaryJoystick.getRawAxis(RobotConfig.controls.xbox_elevator_axis) * -1;
 	}
 
+	public double getElevatorDS() {
+		var upPower = driverStation.getRawButton(9) ? 1 : -1;
+		var downPower = driverStation.getRawButton(10) ? 1 : -1;
+		return upPower - downPower;
+	}
+
 	public double getThrottleAxis() {
 		return 0;
 	}//secondaryJoystick.getRawAxis(RobotConfig.controls.throttle_elevator_axis); }
