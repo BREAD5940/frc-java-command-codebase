@@ -8,6 +8,7 @@ import java.util.List;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Rectangle2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.TrajectoryGeneratorKt;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.CentripetalAccelerationConstraint;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.DifferentialDriveDynamicsConstraint;
@@ -173,17 +174,36 @@ public class Trajectories {
 		generatedLGTrajectories.put(
 				"loadingR to rocketRF",
 				generateTrajectoryLowGear(
+						// Arrays.asList(
+						// 		locations.get("loadingR").plus(new Pose2d(
+						// 			new Translation2d(), Rotation2dKt.getDegree(180))),
+						// 		new Pose2d(
+						// 				LengthKt.getFeet(19.375),
+						// 				LengthKt.getFeet(4.634),
+						// 				Rotation2dKt.getDegree(170)),
+						// 		new Pose2d(
+						// 				LengthKt.getFeet(23.841),
+						// 				LengthKt.getFeet(3.42),
+						// 				Rotation2dKt.getDegree(-150))),
+						// true));
+
 						Arrays.asList(
-								locations.get("loadingR"),
-								new Pose2d(
-										LengthKt.getFeet(19.375),
-										LengthKt.getFeet(4.634),
-										Rotation2dKt.getDegree(170)),
-								new Pose2d(
-										LengthKt.getFeet(23.841),
-										LengthKt.getFeet(3.42),
-										Rotation2dKt.getDegree(-150))),
-						true));
+							new Pose2d(
+								LengthKt.getFeet(1.8),
+								LengthKt.getFeet(2.2),
+								Rotation2dKt.getDegree(180)),
+							new Pose2d(
+								LengthKt.getFeet(19.5),
+								LengthKt.getFeet(4.5),
+								Rotation2dKt.getDegree(180)),
+
+							new Pose2d(
+								LengthKt.getFeet(23.92),
+								LengthKt.getFeet(3.5),
+								Rotation2dKt.getDegree(-147))
+
+							),
+					false));
 
 		// Trajectories to the rocket from (REVERSED) on habL. format is rocket[L/R for left/right][C/M/F for close/middle/far]. These are offset to allow for a vision target to yeet into it
 		generatedLGTrajectories.put("habL to rocketLF", generateTrajectoryLowGear(

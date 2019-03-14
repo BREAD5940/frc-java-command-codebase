@@ -42,6 +42,9 @@ public class DriveDistanceTheThird extends AutoCommand {
 	Length mDesiredRight;
 	double mCurrentLeft;
 	double mCurrentRight;
+	boolean itDed = false;
+	TimedTrajectory<Pose2dWithCurvature> trajectory;
+
 
 	Notifier mUpdateNotifier;
 
@@ -84,15 +87,31 @@ public class DriveDistanceTheThird extends AutoCommand {
 		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX().getInch() + "," + currentPose.getTranslation().getY().getInch() + "," + currentPose.getRotation().getDegree());
 		Translation2d offsetTrans;
 		if(!reversed) {
-			offsetTrans = new Translation2d(distance, currentPose.getRotation().plus(Rotation2dKt.getDegree(-0)));
-			// offsetTrans = new Translation2d(distance.times(currentPose.getRotation().plus(Rotation2dKt.getDegree(90)).getCos()), distance.times(currentPose.getRotation().plus(Rotation2dKt.getDegree(90)).getSin()));
+		// offsetTrans = new Translation2d(distance, currentPose.getRotation().plus(Rotation2dKt.getDegree(-0)));
+			offsetTrans = new Translation2d(distance.times(currentPose.getRotation().plus(Rotation2dKt.getDegree(90)).getCos()), distance.times(currentPose.getRotation().plus(Rotation2dKt.getDegree(90)).getSin()));
 		} else {
-			offsetTrans = new Translation2d(distance, currentPose.getRotation().plus(Rotation2dKt.getDegree(-0)));
+			offsetTrans = new Translation2d(distance, currentPose.getRotation().plus(Rotation2dKt.getDegree(180)));
 		}
 		
 		System.out.println("Calculated offset is " + offsetTrans.getX().getInch() + "," + offsetTrans.getY().getInch());
 
-		var offsetPose = currentPose.plus(new Pose2d(offsetTrans, Rotation2dKt.getDegree(0)));
+		// var offsetPose = currentPose.plus(new Pose2d(offsetTrans, Rotation2dKt.getDegree(0)));
+		Pose2d offsetPose;//
+		offsetPose = new Pose2d(
+			currentPose.getTranslation().getX().plus(offsetTrans.getX()), 
+			currentPose.getTranslation().getY().plus(offsetTrans.getY()), 
+			currentPose.getRotation());
+		// if(!reversed) {
+		// 	offsetPose = new Pose2d(
+		// 		currentPose.getTranslation().getX().plus(offsetTrans.getX()), 
+		// 		currentPose.getTranslation().getY().plus(offsetTrans.getY()), 
+		// 		currentPose.getRotation());
+		// } else {
+		// 	offsetPose = new Pose2d(
+		// 		currentPose.getTranslation().getX().minus(offsetTrans.getX()), 
+		// 		currentPose.getTranslation().getY().minus(offsetTrans.getY()), 
+		// 		currentPose.getRotation());
+		// }
 
 		System.out.println("OFFSET POSE: " + offsetPose.getTranslation().getX().getInch() + "," + offsetPose.getTranslation().getY().getInch() + "," + offsetPose.getRotation().getDegree());
 
@@ -108,8 +127,13 @@ public class DriveDistanceTheThird extends AutoCommand {
 		// 			new Pose2d(LengthKt.getInch(0), LengthKt.getInch(30), Rotation2dKt.getDegree(0)),
 		// 			new Pose2d(distance.times(-1), LengthKt.getInch(30), Rotation2dKt.getDegree(0)));
 
-	var trajectory = Trajectories.generateTrajectoryLowGear(waypoints, reversed);		
+	try {
+		trajectory = Trajectories.generateTrajectoryLowGear(waypoints, reversed);		
+	} catch (RuntimeException e) {
+		itDed = true;
+	}
 
+	if(trajectory != null) {
 
 
 
@@ -153,6 +177,8 @@ public class DriveDistanceTheThird extends AutoCommand {
 		mUpdateNotifier.startPeriodic(0.01);
 	}
 
+}
+
 	@Override
 	protected void execute() {
 
@@ -190,7 +216,7 @@ public class DriveDistanceTheThird extends AutoCommand {
 
 	@Override
 	protected boolean isFinished() {
-		return trajectoryTracker.isFinished();
+		return trajectoryTracker.isFinished() || itDed;
 	}
 
 	public TimedTrajectory<Pose2dWithCurvature> getTrajectory() {

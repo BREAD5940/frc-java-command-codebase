@@ -217,7 +217,7 @@ public class OI {
 
 		primaryDpadUp.whenPressed(new TwoHatchOneCargo());
 
-		primaryDpadDown.whenPressed(new DriveDistanceTheThird(LengthKt.getFeet(3), false));
+		primaryDpadDown.whenPressed(new DriveDistanceTheThird(LengthKt.getFeet(3), true));
 
 		secondaryDpadUp.whenPressed(new InstantRunnable(() -> {
 			var t = SuperStructure.getElevator().getMaster();

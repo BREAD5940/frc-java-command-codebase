@@ -8,13 +8,15 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.command.PrintCommand;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
-import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheSecond;
+import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheThird;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
+import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
@@ -75,7 +77,7 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		// addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
 		addSequential(new FollowVisionTargetTheSecond(3.8));
 
-		// addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(0.4), false));
+		// addSequential(new DriveDistanceTheThird(LengthKt.getFeet(0.4), false));
 
 		// addSequential(new PrintCommand("GOT TO RUN INTAKE"));
 
@@ -85,36 +87,48 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 
 		// back up 3 feet
 		// addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE_PREP)); // TODO fix this broken logic!
-		addParallel(SequentialCommandFactory.getSequentialCommands(
+
+		
+		addParallel(new DriveDistanceTheThird(LengthKt.getFeet(3), true));
+
+		addSequential(SequentialCommandFactory.getSequentialCommands(
 			Arrays.asList(
 				new ElevatorMove(iPosition.HATCH_GRAB_INSIDE.getElevator()),
 				new JankyGoToState(iPosition.HATCH_GRAB_INSIDE)
 			)
 		));
-		addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(3), true));
 
 		addSequential(new PrintCommand("GOT TO next spline"));
 
-		// spline over to the rocket
+		// // spline over to the rocket
 		var rocketToLoading = Trajectories.generatedLGTrajectories.get("rocketRF to loadingR");
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(rocketToLoading, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); //drive to goal
 
-		// // addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
+		// // // addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
 
 		addSequential(new FollowVisionTargetTheSecond(4.5));
-
-		addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(1.5), false));
 
 		addSequential(new RunIntake(1, 0, 1));
 
-		// // addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
-		addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)); // move arm inside to prep state
+		// addSequential(new DriveDistanceTheThird(LengthKt.getFeet(1), false));
+
+
+		addParallel(SequentialCommandFactory.getSequentialCommands(
+			Arrays.asList(
+				new WaitCommand("Wait for clearance", 2),
+				new ArmMove(iPosition.HATCH),
+				new ElevatorMove(fieldPositions.hatchMiddleGoal)
+			)
+		));
+
+		// // // addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
+		// addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)); // move arm inside to prep state
 		var loadingToRocketFar = Trajectories.generatedLGTrajectories.get("loadingR to rocketRF");
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(loadingToRocketFar, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); //drive to goal
-		addSequential(new FollowVisionTargetTheSecond(4.5));
+		addSequential(new FollowVisionTargetTheSecond(3.8));
 		addSequential(new RunIntake(-1, 0, 1));
 
-		// // addSequential(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
+		// // // addSequential(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
 
 	}
 
