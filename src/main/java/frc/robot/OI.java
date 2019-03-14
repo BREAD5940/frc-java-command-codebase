@@ -78,15 +78,15 @@ public class OI {
 	Button dsCargo1 = new JoystickButton(driverStation, 7);
 	Button dsCargo2 = new JoystickButton(driverStation, 6);
 	Button dsCargo3 = new JoystickButton(driverStation, 5);
-	Button dsCargoCargo = new JoystickButton(driverStation, 16);
+	// Button dsCargoCargo = new JoystickButton(driverStation, 16);
 	Button dsCargoIn = new JoystickButton(driverStation, 12);
 
 	Button dsHatch1 = new JoystickButton(driverStation, 3);
-	Button dsHatch2 = new JoystickButton(driverStation, 2)
+	Button dsHatch2 = new JoystickButton(driverStation, 2);
 	Button dsHatch3 = new JoystickButton(driverStation, 1);
 	Button dsHatchIn = new JoystickButton(driverStation, 10);
 
-	Button dsClampToggle = new JoystickButton(driverStation, 15);
+	// Button dsClampToggle = new JoystickButton(driverStation, 15);
 
 	// Button test2button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 
@@ -133,7 +133,7 @@ public class OI {
 		shift_down_button.whenPressed(new SetGearCommand(Gear.LOW));
 		open_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kOpen)); // y button
 		close_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kClamped)); // a button
-		dsClampToggle.whenPressed(new ToggleClamp());
+		// dsClampToggle.whenPressed(new ToggleClamp());
 
 		// primaryDpadUp.whenPressed(new PickupHatch());
 		// primaryDpadDown.whenPressed(new JankyGoToState(
@@ -329,7 +329,10 @@ public class OI {
 	}
 
 	// public double getIntakeAxis() {
-	// 	return (secondaryJoystick.getRawButton(xboxmap.Buttons.RB_BUTTON)) ? 1 * 1 : 0;
+	// 	// return (secondaryJoystick.getRawButton(xboxmap.Buttons.RB_BUTTON)) ? 1 * 1 : 0;\
+	// 	var inVal = driverStation.getRawButton(9) ? 1 : -1;
+	// 	var outVal = driverStation.getRawButton(11) ? 1 : -1;
+	// 	return inVal - outVal;
 	// }
 
 	// public double getCargoOuttake() {
@@ -365,11 +368,11 @@ public class OI {
 	 */
 	public double getHatchSpeed() {
 		// System.out.println("HATCH SPEED: " + driverStation.getRawAxis(0));
-		return driverStation.getRawAxis(0);
+		return driverStation.getRawAxis(1);
 	}
 
 	public double getCargoSpeed() {
-		return driverStation.getRawAxis(1) * -1;
+		return driverStation.getRawAxis(0) * -1;
 	}
 
 	public double getElevatorAxis() {
