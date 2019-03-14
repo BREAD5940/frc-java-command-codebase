@@ -75,18 +75,18 @@ public class OI {
 
 	Button primaryRightAnalogButton = new AnalogButton(primaryJoystick, xboxmap.Axis.RIGHT_TRIGGER, .8);
 
-	Button dsCargo1 = new JoystickButton(driverStation, 9);
+	Button dsCargo1 = new JoystickButton(driverStation, 7);
 	Button dsCargo2 = new JoystickButton(driverStation, 6);
-	Button dsCargo3 = new JoystickButton(driverStation, 10);
-	Button dsCargoCargo = new JoystickButton(driverStation, 7);
-	Button dsCargoIn = new JoystickButton(driverStation, 2);
+	Button dsCargo3 = new JoystickButton(driverStation, 5);
+	Button dsCargoCargo = new JoystickButton(driverStation, 16);
+	Button dsCargoIn = new JoystickButton(driverStation, 12);
 
-	Button dsHatch1 = new JoystickButton(driverStation, 12);
-	Button dsHatch2 = new JoystickButton(driverStation, 1);
-	Button dsHatch3 = new JoystickButton(driverStation, 11);
-	Button dsHatchIn = new JoystickButton(driverStation, 3);
+	Button dsHatch1 = new JoystickButton(driverStation, 3);
+	Button dsHatch2 = new JoystickButton(driverStation, 2)
+	Button dsHatch3 = new JoystickButton(driverStation, 1);
+	Button dsHatchIn = new JoystickButton(driverStation, 10);
 
-	Button dsClampToggle = new JoystickButton(driverStation, 8);
+	Button dsClampToggle = new JoystickButton(driverStation, 15);
 
 	// Button test2button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 
