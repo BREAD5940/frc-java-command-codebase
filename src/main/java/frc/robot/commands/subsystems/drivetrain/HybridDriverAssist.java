@@ -102,7 +102,7 @@ public class HybridDriverAssist extends Command {
 	@Override
 	protected boolean isFinished() {
 		var ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
-		return (Math.abs(exitArea - ta) < 0.3) || (hadTarget && !hasTarget);
+		return /*(Math.abs(exitArea - ta) < 0.3) ||*/ (hadTarget && !hasTarget);
 	}
 
 	// Called once after isFinished returns true
