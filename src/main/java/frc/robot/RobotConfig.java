@@ -103,7 +103,7 @@ public class RobotConfig {
 			public static final int s_left_talon_port = 2;
 			public static final boolean m_left_inverted = false;
 			// sets kp, ki, kd and kf terms for master left in velocity mode 
-			public static final double velocity_kp_low = 0.35;
+			public static final double velocity_kp_low = 0.45;
 			public static final double velocity_ki_low = 0.0;
 			public static final double velocity_kd_low = velocity_kp_low * 20f;
 			public static final double velocity_kf_low = 0.0;

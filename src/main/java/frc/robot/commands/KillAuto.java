@@ -30,10 +30,10 @@ public class KillAuto extends InstantCommand {
 	// Called once when the command executes
 	@Override
 	protected void initialize() {
-    SuperStructure.getInstance().getCurrentCommand().cancel();
+		SuperStructure.getInstance().getCurrentCommand().cancel();
 		SuperStructure.getInstance().getWrist().getCurrentCommand().cancel();
 		SuperStructure.getInstance().getElbow().getCurrentCommand().cancel();
 		SuperStructure.getElevator().getCurrentCommand().cancel();
-  }
+	}
 
 }

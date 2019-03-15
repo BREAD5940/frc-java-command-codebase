@@ -347,8 +347,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		arcadeDrive(linear, rotation, true);
 	}
 
-	public void 
-	arcadeDrive(double linearPercent, double rotationPercent, boolean squareInputs) {
+	public void arcadeDrive(double linearPercent, double rotationPercent, boolean squareInputs) {
 		linearPercent = Util.limit(linearPercent, 1);
 		linearPercent = Util.deadband(linearPercent, 0.07);
 
@@ -455,20 +454,20 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 			isFirstRun = false;
 		}
 
+		if (isHighGear) {
+			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearHigh / Robot.mPeriod,
+					mCachedChassisState.getLinear() + maxAccelLinearHigh / Robot.mPeriod));
 
-		if(isHighGear) {
-			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearHigh / Robot.mPeriod, 
-						mCachedChassisState.getLinear() + maxAccelLinearHigh / Robot.mPeriod));
+			if (mVelocity.getLinear() < Util.toMeters(5))
+				highGearTurn = Util.toMeters(12);
 
-			if(mVelocity.getLinear() < Util.toMeters(5)) highGearTurn = Util.toMeters(12);
-
-			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), mCachedChassisState.getAngular() - maxAccelAngularHigh / Robot.mPeriod, 
-						mCachedChassisState.getAngular() + maxAccelAngularHigh / Robot.mPeriod));
+			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), mCachedChassisState.getAngular() - maxAccelAngularHigh / Robot.mPeriod,
+					mCachedChassisState.getAngular() + maxAccelAngularHigh / Robot.mPeriod));
 
 			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), highGearForward));
 			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), highGearTurn));
 		} else {
-			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearLow / Robot.mPeriod, 
+			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearLow / Robot.mPeriod,
 					mCachedChassisState.getLinear() + maxAccelLinearLow / Robot.mPeriod));
 			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), lowGearForward));
 			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), lowGearTurn));
