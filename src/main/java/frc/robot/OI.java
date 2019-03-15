@@ -19,6 +19,7 @@ import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.PIDDriveDistance;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
+import frc.robot.commands.subsystems.superstructure.JogElevator;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
@@ -86,82 +87,14 @@ public class OI {
 	Button dsHatch3 = new JoystickButton(driverStation, 1);
 	Button dsHatchIn = new JoystickButton(driverStation, 10);
 
-	// Button dsClampToggle = new JoystickButton(driverStation, 15);
+	Button dsJogUp = new JoystickButton(driverStation, 9);
+	Button dsJogDown = new JoystickButton(driverStation, 10);
 
-	// Button test2button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
-
-	// Button test1Button = new JoystickButton(primaryJoystick, xboxmap.Buttons.Y_BUTTON);
-	// Button test2Button = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
-	// Button test3Button = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
-	// Button test4Button = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
-	// private Button plzNoDieElevator = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
-	// private Button plzNoDieDriveTrain = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
-	// Button secondaryTest1 = new JoystickButton(secondaryJoystick, xboxmap.Buttons.B_BUTTON);
-	// Button secondaryTest2 = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
-
-	//TODO is the location for each button logical?
-
-	//toggle which heldpiece we have
-	// private Button toggleHP = new JoystickButton(secondaryJoystick, xboxmap.Buttons.B_BUTTON);
-	//aim for the next highest goal
-	// private Button goalUp = new DPadButton(secondaryJoystick, DPadButton.Direction.UP);
-	//aim for the next lowest goal
-	// private Button goalDown = new DPadButton(secondaryJoystick, DPadButton.Direction.DOWN);
-	//pickup vs placement
-	// private Button togglePickup = new JoystickButton(secondaryJoystick, xboxmap.Buttons.Y_BUTTON);
-	//cargo ship vs rocket
-	// private Button toggleGoal = new JoystickButton(secondaryJoystick, xboxmap.Buttons.A_BUTTON);
-	//actually use the automotion vs just presets
-	// private Button secondaryDpadLeft = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
-	//use the full automotion
-	// private Button secondaryDpadLeft = new DPadButton(secondaryJoystick, Direction.LEFT);
-	// private Button usePreset = new DPadButton(secondaryJoystick, Direction.RIGHT);
 
 	public OI() {
 
-		// toggleHP.toggleWhenPressed(new SetPieceToggle());
-		// togglePickup.toggleWhenPressed(new PickupToggle());
-		// toggleGoal.toggleWhenPressed(new LocationToggle());
-
-		// goalUp.whenPressed(new ChangeGoalHeight(true));
-		// goalDown.whenPressed(new ChangeGoalHeight(false));
-
-		// useMotion.whenPressed(new PrettyRunAuto(Robot.autoState, false));
-		// usePreset.whenPressed(new PrettyRunAuto(Robot.autoState, true));
-
 		shift_up_button.whenPressed(new SetGearCommand(Gear.HIGH));
 		shift_down_button.whenPressed(new SetGearCommand(Gear.LOW));
-		// open_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kOpen)); // y button
-		// close_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kClamped)); // a button
-		// dsClampToggle.whenPressed(new ToggleClamp());
-
-		// primaryDpadUp.whenPressed(new PickupHatch());
-		// primaryDpadDown.whenPressed(new JankyGoToState(
-		// 		new ElevatorState(LengthKt.getInch(26)),
-		// 		new IntakeAngle(
-		// 				new RotatingArmState(RoundRotation2d.getDegree(-94)),
-		// 				new RotatingArmState(RoundRotation2d.getDegree(-42)))));
-
-		SuperStructureState Start1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(5)),
-				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
-
-		SuperStructureState Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(10)),
-				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
-
-		// var planned = SuperstructureMotion.getInstance().plan(
-		// 	iPosition.HATCH_GRAB_INSIDE, new SuperStructureState(
-		// 		new ElevatorState(LengthKt.getInch(2)), iPosition.CARGO_GRAB
-		// 	)
-		// 	);
-
-		// primaryBButton.whenPressed(new SuperstructureMotion(iPosition.HATCH_GRAB_INSIDE));
-
-		// primaryDpadUp.whenPressed(new FollowVisionTargetTheSecond(4.3));
-		// primaryDpadUp.whenPressed(new DriveDistanceToVisionTarget(LengthKt.getInch(40), 6));
-
-		// primaryAButton.whileHeld(new HybridDriverAssist(7));
-		// primaryBButton.whenPressed(new SuperstructureMotion(new SuperStructureState(new ElevatorState(LengthKt.getInch(2)), iPosition.CARGO_GRAB), iPosition.HATCH_GRAB_INSIDE_PREP));
-		// primaryXButton.whenPressed()
 
 		// cargo presets
 		dsCargoIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
@@ -184,9 +117,6 @@ public class OI {
 						new SetHatchMech(HatchMechState.kClamped),
 						new JankyGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE_PITCHED_UP))));
 
-		// secondaryDpadRight.whenPressed(new JankyGoToState(fieldPositions.cargoMiddleGoal, SuperStructure.iPosition.CARGO_PLACE));
-		// secondaryDpadUp.whenPressed(new JankyGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE));
-
 		// hatch presets
 		primaryRightAnalogButton.whileHeld(new HybridDriverAssist(5));
 
@@ -204,16 +134,10 @@ public class OI {
 						new SetHatchMech(HatchMechState.kClamped),
 						new JankyGoToState(fieldPositions.hatchHighGoal, iPosition.HATCH_PITCHED_UP))));
 
-		// dsHatch2.whenPressed(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
-		// dsHatch3.whenPressed(new JankyGoToState(fieldPositions.hatchHighGoal, iPosition.HATCH_PITCHED_UP));
-
 		dsHatchIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
 						new SetHatchMech(HatchMechState.kClamped),
 						new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));
-
-		// primaryDpadRight.whenPressed(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
-		// primaryDpadUp.whenPressed(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
 
 		primaryDpadUp.whenPressed(new TwoHatchOneCargo());
 
@@ -221,72 +145,12 @@ public class OI {
 
 		primaryDpadLeft.whenPressed(new PIDDriveDistance(LengthKt.getFeet(7), 12));
 
-		// secondaryDpadUp.whenPressed(new InstantRunnable(() -> {
-		// 	var t = SuperStructure.getElevator().getMaster();
-		// 	t.configPeakOutputForward(0);
-		// 	t.configPeakOutputReverse(0);
-		// }, true));
-
 		primaryRightStart.whenPressed(new LoadingToRocketF('R', 'R'));
 
-		// test3Button.whenPressed(new FollowVisonTargetTheSecond());\
-		// test4Button.whenPressed(new PlannerTest(new SuperStructureState(new ElevatorState(LengthKt.getInch(10)), iPosition.HATCH_REVERSE))); // x button
-		// primaryBButton.whenPressed(new visionTest()); // b button
-		// test4Button.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW)); // b button - used now for dealy
+		dsJogUp.whenPressed(new JogElevator(LengthKt.getInch(0.5), true));
+		dsJogDown.whenPressed(new JogElevator(LengthKt.getInch(0.5), false));
 
-		// cargoOverButton.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.OVER));
-		// cargo1Button.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.LOW));
-		// cargo2Button.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.MIDDLE));
-		// cargo3Button.whenPressed(new RunAuto(HeldPiece.CARGO, GoalHeight.HIGH));
 
-		// hatch1Button.whenPressed(new RunAuto(HeldPiece.HATCH, GoalHeight.LOW));
-		// hatch2Button.whenPressed(new RunAuto(HeldPiece.HATCH, GoalHeight.MIDDLE));
-		// hatch3Button.whenPressed(new RunAuto(HeldPiece.HATCH, GoalHeight.HIGH));
-
-		// hatchPickupButton.whenPressed(new RunAuto(GoalType.RETRIEVE_HATCH, GoalHeight.LOW));
-		// intakeButton.whileHeld(new RunIntake(1,5));
-		// outtakeButton.whileHeld(new RunIntake(-1,5));
-
-		// yeetInACircleButton.whenPressed(DriveTrain.getInstance().followTrajectory(Trajectories.forward20Feet, true));
-		// yeetInACircleButton.whenPressed(new TurnInPlace(Rotation2dKt.getDegree(180), false));
-
-		// TODO why does this throw a null pointer
-		// auto_place_cargo_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_CARGO, Robot.mGh.getSelected()));
-		// auto_place_hatch_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_HATCH, Robot.mGh.getSelected()));
-		// auto_place_cargo_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_CARGO, Robot.mGh.getSelected()));
-		// auto_place_hatch_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_HATCH, Robot.mGh.getSelected()));
-		// auto_grab_hatch_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_HATCH, Robot.mGh.getSelected()));
-		// auto_grab_cargo_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_CARGO, Robot.mGh.getSelected()));
-
-		// auto_grab_cargo_button.whenPressed(new SetElevatorHeight(9.316859344380049 - 1.5 ) );
-		// auto_grab_hatch_button.whenPressed(new SetElevatorHeight(30));
-		// auto_place_hatch_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_HATCH, AutoMotion.mGoalHeight.LOW));
-		// auto_place_cargo_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_CARGO, AutoMotion.mGoalHeight.LOW));
-		// auto_place_hatch_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_HATCH, AutoMotion.mGoalHeight.LOW));
-		// auto_grab_hatch_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_HATCH, AutoMotion.mGoalHeight.LOW));
-		// auto_grab_cargo_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_CARGO, AutoMotion.mGoalHeight.LOW));
-		// turnAutoButton.whenPressed(new PurePursuitPathCommand());
-		// autobutton2.whenPressed(new RamsetePathFollower("filePath"));
-		// autobutton3.whenPressed(new DriveTrajectoryPathfinder("mFile"));
-		// open_clamp_button.whenPressed(new OpenClamp());
-		// close_clamp_button.whenPressed(new CloseClamp());
-		// auto_place_cargo_cargo_button.whenPressed(new SetElevatorHeight(9.316859344380049 - 1.5 ) );
-		// auto_place_hatch_cargo_button.whenPressed(new SetElevatorHeight(30));
-
-		// auto_place_cargo_rocket_button.whenPressed(new visionTest());
-		// auto_place_hatch_rocket_button.whenPressed(new RunDriveMotionPlanner(  pftraj ) );
-
-		// auto_place_hatch_cargo_button.whenPressed(new RunAuto(mGoalType.CARGO_HATCH, AutoMotion.mGoalHeight.LOW));
-		// auto_place_cargo_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_CARGO, AutoMotion.mGoalHeight.LOW));
-		// auto_place_hatch_rocket_button.whenPressed(new RunAuto(mGoalType.ROCKET_HATCH, AutoMotion.mGoalHeight.LOW));
-		// auto_grab_hatch_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_HATCH, AutoMotion.mGoalHeight.LOW));
-		// auto_grab_cargo_button.whenPressed(new RunAuto(mGoalType.RETRIEVE_CARGO, AutoMotion.mGoalHeight.LOW));
-		// turnAutoButton.whenPressed(new PurePursuitPathCommand());
-		// autobutton2.whenPressed(new RamsetePathFollower("filePath"));
-		// autobutton3.whenPressed(new ForwardFiveMeters()  );
-		// open_clamp_button.whenPressed(new OpenClamp());
-		// close_clamp_button.whenPressed(new CloseClamp());
-		// open_clamp_button.whenPressed(new PurePursuit());
 	}
 
 	public boolean getWaiterButton() {
