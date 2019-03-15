@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 
 /**
@@ -35,6 +36,7 @@ public class ArcadeDrive extends Command {
 		Robot.drivetrain.getRight().getMaster().configOpenloopRamp(0.1);
 		Robot.drivetrain.arcadeDrive(0, 0);
 		System.out.println("arcade drive command init");
+		DriveTrain.getInstance().isFirstRun = true;
 	}
 
 	boolean wasPressed = false;
@@ -48,14 +50,14 @@ public class ArcadeDrive extends Command {
 		// boolean isQuickTurn = (Math.abs(Robot.m_oi.getForwardAxis()) < 0.08);
 		// boolean isQuickTurn = (Math.abs(Robot.m_oi.getPrimary().getRawAxis(0)) > 0.75);
 
-		boolean isHighGear = (Robot.getDrivetrainGear() == Gear.HIGH);
+		boolean isHighGear = (DriveTrain.getInstance().getCachedGear() == Gear.HIGH);
 
 		if (isHighGear) {
 			Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis() * 1,
-					Robot.m_oi.getTurnAxis() * 0.7, false/*, isQuickTurn*/);
+					Robot.m_oi.getTurnAxis(), true/*, isQuickTurn*/);
 		} else {
 			Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis() * 1,
-					Robot.m_oi.getTurnAxis() * 1, true/*, isQuickTurn*/);
+					Robot.m_oi.getTurnAxis(), true/*, isQuickTurn*/);
 		}
 
 		// if((Robot.m_oi.getPrimary().getRawButton(1)) && (!wasPressed)) {

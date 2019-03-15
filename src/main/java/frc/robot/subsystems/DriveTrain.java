@@ -13,8 +13,10 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.subsystems.drive.DifferentialTrackerDriveBase;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
@@ -82,7 +84,11 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		LOW, HIGH;
 	}
 
-	Gear mCurrentGear;
+	private Gear mCurrentGear;
+
+	public Gear getCachedGear() {
+		return mCurrentGear;
+	}
 
 	Notifier localizationNotifier; // TODO maybe make me do stuff?
 
@@ -346,10 +352,10 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 	public void arcadeDrive(double linearPercent, double rotationPercent, boolean squareInputs) {
 		linearPercent = Util.limit(linearPercent, 1);
-		linearPercent = Util.deadband(linearPercent, 0.02);
+		linearPercent = Util.deadband(linearPercent, 0.07);
 
 		rotationPercent = Util.limit(rotationPercent, 1);
-		rotationPercent = Util.deadband(rotationPercent, 0.02);
+		rotationPercent = Util.deadband(rotationPercent, 0.07);
 
 		// Square the inputs (while preserving the sign) to increase fine control
 		// while permitting full power.
@@ -387,19 +393,47 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		// Logger.log("left motor output " + leftMotorOutput + " right motor output " +
 		// rightMotorOutput);
 
-		ChassisState mTarget = new ChassisState(linearPercent * 6, -1 * rotationPercent * 6);
+		var isHighGear = getCachedGear() == Gear.HIGH;
 
-		WheelState mCalced = getDifferentialDrive().solveInverseKinematics(mTarget);
+		final double lowGearForward = Util.toMeters(5);
+		final double lowGearTurn = Util.toMeters(6);
+		final double highGearForward = Util.toMeters(10);
+		final double highGearTurn = Util.toMeters(6);
 
-		double left = mCalced.get(true);
+		double forwardSpeed = linearPercent * ((isHighGear) ? highGearForward : lowGearForward);
+		double turnSpeed = -1 * rotationPercent * ((isHighGear) ? highGearTurn : lowGearTurn);
 
-		double right = mCalced.get(false);
+		ChassisState mVelocity = new ChassisState(forwardSpeed, turnSpeed);
+		if(isFirstRun) {
+			mCachedChassisState = new ChassisState();
+			isFirstRun = false;
+		}
+		
+		ChassisState mAcceleration = new ChassisState(
+			mVelocity.getLinear() - mCachedChassisState.getLinear(), 
+			mVelocity.getAngular() - mCachedChassisState.getAngular()
+		);
+
+		// var kinematics = getDifferentialDrive();
+		// mAcceleration = new ChassisState(
+		// 	Math.max(mAcceleration.getLinear(),
+		// 		kinematics.
+		// 	))
+		// );
+
+		this.setOutputFromDynamics(mVelocity, mAcceleration);
+		
+		
+		mCachedChassisState = mVelocity;
 
 		// tankDrive(left/12, right/12);
 
-		tankDrive(leftMotorOutput, rightMotorOutput);
+		// tankDrive(leftMotorOutput, rightMotorOutput);
 		// tankDrive(0.2, 0.2);
 	}
+
+	private ChassisState mCachedChassisState;
+	public boolean isFirstRun = true;
 
 	public void curvatureDrive(double linearPercent, double curvaturePercent, boolean isQuickTurn) {
 		double angularPower;
