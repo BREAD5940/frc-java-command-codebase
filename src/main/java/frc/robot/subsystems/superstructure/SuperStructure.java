@@ -146,7 +146,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 	}
 
 	public static class iPosition {
-		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-5)), new RotatingArmState(RoundRotation2d.getDegree(-48)));
+		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-5)), new RotatingArmState(RoundRotation2d.getDegree(-45)));
 		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(-50)));
 		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(6)), new RotatingArmState(RoundRotation2d.getDegree(16)));
 		public static final IntakeAngle CARGO_PLACE_PITCHED_UP = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(9)), new RotatingArmState(RoundRotation2d.getDegree(20)));
@@ -154,7 +154,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 		public static final IntakeAngle CARGO_PLACE_INSIDE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-78)), new RotatingArmState(RoundRotation2d.getDegree(67)));
 
 		public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(148.35)), new RotatingArmState(RoundRotation2d.getDegree(-96.46)));
-		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(4)), new RotatingArmState(RoundRotation2d.getDegree(4)));
+		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(5)), new RotatingArmState(RoundRotation2d.getDegree(4)));
 		public static final IntakeAngle HATCH_PITCHED_UP = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(9)), new RotatingArmState(RoundRotation2d.getDegree(15)));
 		public static final IntakeAngle STOWED = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-85)), new RotatingArmState(RoundRotation2d.getDegree(-45)));
 		public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-190)), new RotatingArmState(RoundRotation2d.getDegree(-110)));

@@ -167,7 +167,7 @@ public class OI {
 		dsCargoIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
 						new SetHatchMech(HatchMechState.kOpen),
-						new JankyGoToState(LengthKt.getInch(6.4), SuperStructure.iPosition.CARGO_GRAB))));
+						new JankyGoToState(LengthKt.getInch(7), SuperStructure.iPosition.CARGO_GRAB))));
 
 		dsCargo1.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
@@ -372,7 +372,7 @@ public class OI {
 	}
 
 	public double getCargoSpeed() {
-		return driverStation.getRawAxis(0) * -1;
+		return driverStation.getRawAxis(0) * 1;
 	}
 
 	// public double getElevatorAxis() {

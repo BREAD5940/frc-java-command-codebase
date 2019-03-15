@@ -440,9 +440,11 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		final double lowGearForward = Util.toMeters(7.5);
 		final double lowGearTurn = Util.toMeters(12);
 		final double highGearForward = Util.toMeters(11);
-		final double highGearTurn = Util.toMeters(18);
+		double highGearTurn = Util.toMeters(18);
 		final double maxAccelLinearLow = Util.toMeters(12);
-		final double maxAccelLinearHigh = Util.toMeters(8);
+		final double maxAccelLinearHigh = Util.toMeters(18);
+		final double maxAccelAngularLow = Util.toMeters(12);
+		final double maxAccelAngularHigh = Util.toMeters(13);
 
 		double forwardSpeed = linearPercent * ((isHighGear) ? highGearForward : lowGearForward);
 		double turnSpeed = -1 * rotationPercent * ((isHighGear) ? highGearTurn : lowGearTurn);
@@ -454,17 +456,22 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 			mCachedChassisState = new ChassisState();
 			isFirstRun = false;
 		}
-		
 
 
 		if(isHighGear) {
-			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearHigh * Robot.mPeriod, 
-						mCachedChassisState.getLinear() + maxAccelLinearHigh * Robot.mPeriod));
+			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearHigh / Robot.mPeriod, 
+						mCachedChassisState.getLinear() + maxAccelLinearHigh / Robot.mPeriod));
+
+			if(mVelocity.getLinear() < Util.toMeters(5)) highGearTurn = Util.toMeters(12);
+
+			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), mCachedChassisState.getAngular() - maxAccelAngularHigh / Robot.mPeriod, 
+						mCachedChassisState.getAngular() + maxAccelAngularHigh / Robot.mPeriod));
+
 			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), highGearForward));
 			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), highGearTurn));
 		} else {
-			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearLow * Robot.mPeriod, 
-					mCachedChassisState.getLinear() + maxAccelLinearLow * Robot.mPeriod));
+			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearLow / Robot.mPeriod, 
+					mCachedChassisState.getLinear() + maxAccelLinearLow / Robot.mPeriod));
 			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), lowGearForward));
 			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), lowGearTurn));
 		}
@@ -474,7 +481,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 			(mVelocity.getAngular() - mCachedChassisState.getAngular()) / Robot.mPeriod
 		);
 
-		System.out.println("mVelocity: " + mVelocity.getLinear() + " mAccel: " + mAcceleration.getLinear());
+		// System.out.println("mVelocity: " + mVelocity.getLinear() + " mAccel: " + mAcceleration.getLinear());
 
 		this.setOutputFromDynamics(mVelocity, mAcceleration);
 		

@@ -32,8 +32,8 @@ public class ArcadeDrive extends Command {
 	@Override
 	protected void initialize() {
 		Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
-		Robot.drivetrain.getLeft().getMaster().configOpenloopRamp(0.1);
-		Robot.drivetrain.getRight().getMaster().configOpenloopRamp(0.1);
+		Robot.drivetrain.getLeft().getMaster().configClosedloopRamp(0.1);
+		Robot.drivetrain.getRight().getMaster().configClosedloopRamp(0.1);
 		Robot.drivetrain.arcadeDrive(0, 0);
 		System.out.println("arcade drive command init");
 		DriveTrain.getInstance().isFirstRun = true;
@@ -91,12 +91,14 @@ public class ArcadeDrive extends Command {
 	protected void end() {
 		Robot.drivetrain.arcadeDrive(0, 0);
 		System.out.println("arcade end called");
+		Robot.drivetrain.getLeft().getMaster().configClosedloopRamp(0.0);
+		Robot.drivetrain.getRight().getMaster().configClosedloopRamp(0.0);
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-		Robot.drivetrain.arcadeDrive(0, 0);
+		end();	
 	}
 }
