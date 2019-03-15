@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
+import frc.robot.commands.auto.routines.CargoShipLeft;
+import frc.robot.commands.auto.routines.CloseSideRocketL;
+import frc.robot.commands.auto.routines.FarSideRocketL;
 import frc.robot.commands.auto.routines.LoadingToRocketF;
 import frc.robot.commands.auto.routines.PlaceCargoFrontL;
 import frc.robot.commands.auto.routines.TwoHatchOneCargo;
@@ -131,13 +134,9 @@ public class OI {
 						new SetHatchMech(HatchMechState.kClamped),
 						new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));
 
-		primaryDpadUp.whenPressed(new TwoHatchOneCargo());
-
-		primaryDpadDown.whenPressed(new PlaceCargoFrontL());
-
-		primaryDpadLeft.whenPressed(new PIDDriveDistance(LengthKt.getFeet(7), 12));
-
-		primaryRightStart.whenPressed(new LoadingToRocketF('R', 'R'));
+		primaryDpadUp.whenPressed(new FarSideRocketL());
+		primaryDpadLeft.whenPressed(new CloseSideRocketL());
+		primaryDpadDown.whenPressed(new CargoShipLeft());
 
 		// dsJogUp.whenPressed(new JogElevator(LengthKt.getInch(0.5), true));
 		// dsJogDown.whenPressed(new JogElevator(LengthKt.getInch(0.5), false));
