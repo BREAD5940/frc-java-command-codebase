@@ -382,6 +382,7 @@ public class Trajectories {
 					 point.getState().getPose().getTranslation().getY()), 
 				new Rotation2d(point.getState().getPose().getRotation().getRadian()*-1))); 
 		}
+
 		return TrajectoryGeneratorKt.getDefaultTrajectoryGenerator().generateTrajectory(
 			newWaypoints, 
 			kLowGearConstraints, //FIXME find gear of other traject
