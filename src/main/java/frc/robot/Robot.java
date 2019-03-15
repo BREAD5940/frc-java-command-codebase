@@ -120,9 +120,9 @@ public class Robot extends TimedRobot {
 
 	public static double mPeriod = 0.025d;
 
-		/**
-	 * FIXME it's a hack, set the period to 25ms
-	 */
+	/**
+	* FIXME it's a hack, set the period to 25ms
+	*/
 	public Robot() {
 		super(mPeriod);
 	}

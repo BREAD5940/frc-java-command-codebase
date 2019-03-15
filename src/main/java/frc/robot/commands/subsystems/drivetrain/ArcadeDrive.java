@@ -5,7 +5,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DriveTrain.Gear;
 
 /**
  * Default drivetrain command. This *should* be called as the default drivetrain
@@ -73,7 +72,6 @@ public class ArcadeDrive extends Command {
 		// 	wasPressed = false;
 		// }
 
-		
 	}
 
 	// Logger.log("forward command: " + Robot.m_oi.getForwardAxis());

@@ -1,7 +1,6 @@
 package frc.robot;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
@@ -10,16 +9,13 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.auto.InstantRunnable;
 import frc.robot.commands.auto.routines.LoadingToRocketF;
 import frc.robot.commands.auto.routines.TwoHatchOneCargo;
-import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheSecond;
 import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheThird;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
-import frc.robot.commands.subsystems.superstructure.ToggleClamp;
 import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
 import frc.robot.lib.motion.Util;
@@ -296,11 +292,11 @@ public class OI {
 	}
 
 	// public Joystick getSecondary() {
-		// return secondaryJoystick;
+	// return secondaryJoystick;
 	// }
 
 	// public List<Joystick> getAllSticks() {
-		// return Arrays.asList(getPrimary(), getSecondary());
+	// return Arrays.asList(getPrimary(), getSecondary());
 	// }
 
 	public enum OperatorControllers {
@@ -348,11 +344,11 @@ public class OI {
 	// }
 
 	// public double getWristAxis() {
-		// return secondaryJoystick.getRawAxis(5);
+	// return secondaryJoystick.getRawAxis(5);
 	// }
 
 	// public double getElbowAxis() {
-		// return (secondaryJoystick.getRawAxis(2) - secondaryJoystick.getRawAxis(3)) * -1; // triggers
+	// return (secondaryJoystick.getRawAxis(2) - secondaryJoystick.getRawAxis(3)) * -1; // triggers
 	// }
 
 	public double getDSElbowAxis() {
@@ -376,8 +372,8 @@ public class OI {
 	}
 
 	// public double getElevatorAxis() {
-		// return 0;
-		// return secondaryJoystick.getRawAxis(RobotConfig.controls.xbox_elevator_axis) * -1;
+	// return 0;
+	// return secondaryJoystick.getRawAxis(RobotConfig.controls.xbox_elevator_axis) * -1;
 	// }
 
 	public double getElevatorDS() {
@@ -387,7 +383,7 @@ public class OI {
 	}
 
 	// public double getThrottleAxis() {
-		// return 0;
+	// return 0;
 	// }//secondaryJoystick.getRawAxis(RobotConfig.controls.throttle_elevator_axis); }
 
 	// There are a few additional built in buttons you can use. Additionally,

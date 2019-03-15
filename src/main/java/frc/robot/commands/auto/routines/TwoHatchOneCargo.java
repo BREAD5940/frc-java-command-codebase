@@ -20,7 +20,6 @@ import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
-import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.lib.obj.factories.SequentialCommandFactory;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
@@ -88,15 +87,12 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 		// back up 3 feet
 		// addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE_PREP)); // TODO fix this broken logic!
 
-		
 		addParallel(new DriveDistanceTheThird(LengthKt.getFeet(3), true));
 
 		addSequential(SequentialCommandFactory.getSequentialCommands(
-			Arrays.asList(
-				new ElevatorMove(iPosition.HATCH_GRAB_INSIDE.getElevator()),
-				new JankyGoToState(iPosition.HATCH_GRAB_INSIDE)
-			)
-		));
+				Arrays.asList(
+						new ElevatorMove(iPosition.HATCH_GRAB_INSIDE.getElevator()),
+						new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));
 
 		addSequential(new PrintCommand("GOT TO next spline"));
 
@@ -112,14 +108,11 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 
 		// addSequential(new DriveDistanceTheThird(LengthKt.getFeet(1), false));
 
-
 		addParallel(SequentialCommandFactory.getSequentialCommands(
-			Arrays.asList(
-				new WaitCommand("Wait for clearance", 2),
-				new ArmMove(iPosition.HATCH),
-				new ElevatorMove(fieldPositions.hatchMiddleGoal)
-			)
-		));
+				Arrays.asList(
+						new WaitCommand("Wait for clearance", 2),
+						new ArmMove(iPosition.HATCH),
+						new ElevatorMove(fieldPositions.hatchMiddleGoal))));
 
 		// // // addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
 		// addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)); // move arm inside to prep state

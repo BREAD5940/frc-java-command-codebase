@@ -13,10 +13,8 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.subsystems.drive.DifferentialTrackerDriveBase;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
@@ -26,7 +24,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
 import com.team254.lib.physics.DifferentialDrive;
 import com.team254.lib.physics.DifferentialDrive.ChassisState;
-import com.team254.lib.physics.DifferentialDrive.WheelState;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
@@ -450,35 +447,31 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		// forwardSpeed = Util.limit(forwardSpeed, forwardSpeed-(maxAccelLinearLow * Robot.mPeriod), forwardSpeed+(maxAccelLinearLow * Robot.mPeriod))
 
 		ChassisState mVelocity = new ChassisState(forwardSpeed, turnSpeed);
-		if(isFirstRun) {
+		if (isFirstRun) {
 			mCachedChassisState = new ChassisState();
 			isFirstRun = false;
 		}
-		
 
-
-		if(isHighGear) {
-			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearHigh * Robot.mPeriod, 
-						mCachedChassisState.getLinear() + maxAccelLinearHigh * Robot.mPeriod));
+		if (isHighGear) {
+			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearHigh * Robot.mPeriod,
+					mCachedChassisState.getLinear() + maxAccelLinearHigh * Robot.mPeriod));
 			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), highGearForward));
 			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), highGearTurn));
 		} else {
-			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearLow * Robot.mPeriod, 
+			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearLow * Robot.mPeriod,
 					mCachedChassisState.getLinear() + maxAccelLinearLow * Robot.mPeriod));
 			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), lowGearForward));
 			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), lowGearTurn));
 		}
 
 		ChassisState mAcceleration = new ChassisState(
-			(mVelocity.getLinear() - mCachedChassisState.getLinear()) / Robot.mPeriod, 
-			(mVelocity.getAngular() - mCachedChassisState.getAngular()) / Robot.mPeriod
-		);
+				(mVelocity.getLinear() - mCachedChassisState.getLinear()) / Robot.mPeriod,
+				(mVelocity.getAngular() - mCachedChassisState.getAngular()) / Robot.mPeriod);
 
 		System.out.println("mVelocity: " + mVelocity.getLinear() + " mAccel: " + mAcceleration.getLinear());
 
 		this.setOutputFromDynamics(mVelocity, mAcceleration);
-		
-		
+
 		mCachedChassisState = mVelocity;
 
 		// tankDrive(left/12, right/12);

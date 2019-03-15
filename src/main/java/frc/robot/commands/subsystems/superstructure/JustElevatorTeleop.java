@@ -5,11 +5,9 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
-import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.Elevator;
-import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class JustElevatorTeleop extends Command {
@@ -60,7 +58,7 @@ public class JustElevatorTeleop extends Command {
 			mCachedState.elevator = mNewState.elevator;
 		} //else {
 			// mNewState.elevator = mCachedState.elevator;
-		// }
+			// }
 
 		// Figure out of the operator is commandi
 		SuperStructure.getInstance().move(mNewState);
