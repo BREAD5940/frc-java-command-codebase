@@ -157,17 +157,16 @@ public class Util {
 		return String.format("Pose: (%s, %s) theta: (%s)", pose.getTranslation().getX().getInch(), pose.getTranslation().getY().getInch(), pose.getRotation().getDegree());
 	}
 
-
-	public static Pose2d reflectWaypoint(Pose2d waypoint){
+	public static Pose2d reflectWaypoint(Pose2d waypoint) {
 		return (new Pose2d(
-				new Translation2d(LengthKt.getFeet(((13.5-waypoint.getTranslation().getY().getFeet())*-1)+13.5),
-					 waypoint.getTranslation().getY()), 
-				new Rotation2d(waypoint.getRotation().getRadian()*-1)));
+				new Translation2d(LengthKt.getFeet(((13.5 - waypoint.getTranslation().getY().getFeet()) * -1) + 13.5),
+						waypoint.getTranslation().getY()),
+				new Rotation2d(waypoint.getRotation().getRadian() * -1)));
 	}
 
 	public static List<Pose2d> reflectTrajectory(List<Pose2d> old_) {
 		List<Pose2d> new_ = Arrays.asList();
-		for(Pose2d pose : old_) {
+		for (Pose2d pose : old_) {
 			new_.add(reflectWaypoint(pose));
 		}
 		return new_;
