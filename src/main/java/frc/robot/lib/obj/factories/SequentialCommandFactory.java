@@ -41,5 +41,4 @@ public class SequentialCommandFactory {
 		return toReturn;
 	}
 
-
 }
