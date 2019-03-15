@@ -194,7 +194,7 @@ public class RobotConfig {
 			public static final Length cargoMiddleGoal = LengthKt.getInch(35.5);
 			public static final Length cargoHighGoal = LengthKt.getInch(53);
 
-			public static final Length hatchLowGoal = LengthKt.getInch(5.5);
+			public static final Length hatchLowGoal = LengthKt.getInch(6.25);
 			public static final Length hatchMiddleGoal = LengthKt.getInch(34);
 			public static final Length hatchHighGoal = LengthKt.getInch(54);
 

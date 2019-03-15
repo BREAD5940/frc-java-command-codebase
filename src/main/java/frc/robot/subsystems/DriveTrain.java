@@ -350,7 +350,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		arcadeDrive(linear, rotation, true);
 	}
 
-	public void arcadeDrive(double linearPercent, double rotationPercent, boolean squareInputs) {
+	public void 
+	arcadeDrive(double linearPercent, double rotationPercent, boolean squareInputs) {
 		linearPercent = Util.limit(linearPercent, 1);
 		linearPercent = Util.deadband(linearPercent, 0.07);
 

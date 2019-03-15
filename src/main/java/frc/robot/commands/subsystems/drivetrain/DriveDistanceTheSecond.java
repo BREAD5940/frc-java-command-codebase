@@ -57,7 +57,7 @@ public class DriveDistanceTheSecond extends Command {
 	protected void initialize() {
 		
 
-		var currentPose = DriveTrain.getInstance().getLocalization().getRobotPosition();
+		var currentPose = new Pose2d();
 		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX().getInch() + "," + currentPose.getTranslation().getY().getInch());
 		Translation2d offsetTrans;
 		if(!reversed) {
@@ -81,11 +81,13 @@ public class DriveDistanceTheSecond extends Command {
 		// 			new Pose2d(LengthKt.getInch(0), LengthKt.getInch(30), Rotation2dKt.getDegree(0)),
 		// 			new Pose2d(distance.times(-1), LengthKt.getInch(30), Rotation2dKt.getDegree(0)));
 
-	var trajectory = Trajectories.generateTrajectoryLowGear(waypoints, reversed);
+	var trajectory = Trajectories.generateTrajectoryHighGear(waypoints, reversed);
 
 	System.out.println("FIRST POSE: " + Util.toString(trajectory.getFirstState().getState().getPose()) + " LAST POSE: " + Util.toString(trajectory.getLastState().getState().getPose()));
 
-	mCommand = DriveTrain.getInstance().followTrajectory(trajectory, TrajectoryTrackerMode.RAMSETE, false);
+	clearRequirements();
+
+	mCommand = DriveTrain.getInstance().followTrajectory(trajectory, TrajectoryTrackerMode.RAMSETE, true);
 
 	// addSequential(mCommand);
 	clearRequirements();

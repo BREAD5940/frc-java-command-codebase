@@ -30,7 +30,7 @@ public class DriveDistance extends Command {
 	double right_speed_raw;
 
 	// Make a pid class instance
-	TerriblePID forwardPID = new TerriblePID(RobotConfig.auto.driveStraight.forward_kp,
+	TerriblePID forwardPID = new TerriblePID(6,
 			RobotConfig.auto.drive_auto_forward_velocity_max);
 
 	/**
