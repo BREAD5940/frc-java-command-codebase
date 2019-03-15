@@ -95,9 +95,9 @@ public class FarSideRocketL extends VisionCommandGroup {
 				new Pose2d(
 						LengthKt.getFeet(9.403),
 						LengthKt.getFeet(19.827),
-						Rotation2dKt.getDegree(-90)));
+						Rotation2dKt.getDegree(90)));
 
-		List<Pose2d> p_toLoadingStatinnL = Arrays.asList(
+		List<Pose2d> p_toLoadingStationL = Arrays.asList(
 				new Pose2d(
 						LengthKt.getFeet(9.403),
 						LengthKt.getFeet(19.827),
@@ -119,7 +119,7 @@ public class FarSideRocketL extends VisionCommandGroup {
 		var t_halfWayToLoadingStationL = Trajectories.generateTrajectory(p_halfWayToLoadingStationL, Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0)), VelocityKt.getVelocity(LengthKt.getFeet(7)), kDefaultAcceleration, false, true);
 
-		var t_toLoadingStationL = Trajectories.generateTrajectory(p_toLoadingStatinnL, Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(0)),
+		var t_toLoadingStationL = Trajectories.generateTrajectory(p_toLoadingStationL, Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0)), VelocityKt.getVelocity(LengthKt.getFeet(7)), kDefaultAcceleration, false, true);
 
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_fallOffHab, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // fall off the hab
