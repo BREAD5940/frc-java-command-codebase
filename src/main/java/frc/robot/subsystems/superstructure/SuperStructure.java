@@ -21,9 +21,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.subsystems.superstructure.JustElevatorTeleop;
+import frc.robot.lib.HalfBakedSubsystem;
 import frc.robot.lib.Loggable;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.PIDSettings.FeedbackMode;
+import frc.robot.lib.obj.HalfBakedRotatingSRX;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
@@ -43,7 +45,7 @@ import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
  * 
  * @author Jocelyn McHugo
  */
-public class SuperStructure extends Subsystem implements Loggable {
+public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 
 	private static SuperStructure instance_;
 	private static double currentDTVelocity; //in ft/sec
@@ -82,6 +84,10 @@ public class SuperStructure extends Subsystem implements Loggable {
 
 	public void setElbowTrim(RoundRotation2d new_) {
 		this.elbowTrim = new_;
+	}
+
+	public void resetElbowTrim() {
+		setElbowTrim(RoundRotation2d.getDegree(0));
 	}
 
 	public void jogElbowTrim(RoundRotation2d delta) {
@@ -420,5 +426,10 @@ public class SuperStructure extends Subsystem implements Loggable {
 	@Override
 	public String toCSV() {
 		return getCurrentState().toCSV();
+	}
+
+	@Override
+	public void onDisable() {
+		resetElbowTrim();
 	}
 }

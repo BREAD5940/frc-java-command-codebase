@@ -16,6 +16,7 @@ import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.PIDDriveDistance;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
+import frc.robot.commands.subsystems.superstructure.JogElbow;
 import frc.robot.commands.subsystems.superstructure.JogElevator;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
@@ -144,8 +145,11 @@ public class OI {
 
 		primaryRightStart.whenPressed(new LoadingToRocketF('R', 'R'));
 
-		dsJogUp.whenPressed(new JogElevator(LengthKt.getInch(0.5), true));
-		dsJogDown.whenPressed(new JogElevator(LengthKt.getInch(0.5), false));
+		// dsJogUp.whenPressed(new JogElevator(LengthKt.getInch(0.5), true));
+		// dsJogDown.whenPressed(new JogElevator(LengthKt.getInch(0.5), false));
+
+		dsJogUp.whenPressed(new JogElbow(RoundRotation2d.getDegree(2)));
+		dsJogDown.whenPressed(new JogElbow(RoundRotation2d.getDegree(-2)));
 
 
 	}
