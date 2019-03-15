@@ -132,10 +132,10 @@ public class FarSideRocketL extends VisionCommandGroup {
 		addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_halfWayToLoadingStationL, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // nyoom off to the side
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_toLoadingStationL, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); // go to the loading station
-		addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		// addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 		addSequential(new FollowVisionTargetTheSecond(4.5));
 		addSequential(new PIDDriveDistance(0.5, 4, /* timeout */ 0.5));
-		addSequential(new RunIntake(-1, 0, 1));
+		addSequential(new RunIntake(1, 0, 1));
 		addSequential(new PIDDriveDistance(-3, 12, /* timeout */ 1));
 
 	}
