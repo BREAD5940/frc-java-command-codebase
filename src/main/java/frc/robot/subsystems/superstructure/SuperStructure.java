@@ -78,6 +78,16 @@ public class SuperStructure extends Subsystem implements Loggable {
 		return !innerStageMinLimitSwitch.get(); // to invert logic
 	}
 
+	public RoundRotation2d elbowTrim;
+
+	public void setElbowTrim(RoundRotation2d new_) {
+		this.elbowTrim = new_;
+	}
+
+	public void jogElbowTrim(RoundRotation2d delta) {
+		setElbowTrim(elbowTrim.plus(delta));
+	}
+
 	public static synchronized SuperStructure getInstance() {
 		if (instance_ == null) {
 			instance_ = new SuperStructure();
@@ -321,7 +331,7 @@ public class SuperStructure extends Subsystem implements Loggable {
 		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
 		// SuperStructureState stateSetpoint = plan(requState);
 
-		getWrist().requestAngle(ControlMode.MotionMagic, requState.getWrist().angle, getCurrentState());
+		getWrist().requestAngle(ControlMode.MotionMagic, requState.getWrist().angle.plus(elbowTrim), getCurrentState());
 		getElbow().requestAngle(ControlMode.MotionMagic, requState.getElbow().angle);
 		// getElevator().getMaster().set(ControlMode.MotionMagic, requState.getElevator().height, DemandType.ArbitraryFeedForward, elevatorPercentVbusGravity);
 		getElevator().setPositionSetpoint(requState);
