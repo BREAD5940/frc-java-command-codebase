@@ -13,6 +13,7 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.CentripetalA
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.DifferentialDriveDynamicsConstraint;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.TimingConstraint;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.VelocityLimitRegionConstraint;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -363,6 +364,27 @@ public class Trajectories {
 				maxVelocity,
 				maxAcceleration,
 				reversed, reversed);
+	}
+
+
+	public static TimedTrajectory<Pose2dWithCurvature> reflect(TimedTrajectory<Pose2dWithCurvature> unReflected){
+		List<Pose2d> newWaypoints = new ArrayList<>();
+		Velocity<Length> maxVelocity = VelocityKt.getVelocity(LengthKt.getInch(0));
+		Acceleration<Length> maxAccel = AccelerationKt.getAcceleration(LengthKt.getInch(0));
+		for(TimedEntry<Pose2dWithCurvature> point : unReflected.getPoints()){
+			maxVelocity = (point.getVelocity().getValue() > maxVelocity.getValue()) ? point.getVelocity() : maxVelocity;
+			maxAccel = (point.getAcceleration().getValue() > maxAccel.getValue()) ? point.getAcceleration() : maxAccel;
+			newWaypoints.add(point.getState().getPose()); //FIXME find the actual transformation of the reflection
+		}
+		return TrajectoryGeneratorKt.getDefaultTrajectoryGenerator().generateTrajectory(
+			newWaypoints, 
+			kLowGearConstraints, //FIXME find gear of other traject
+			unReflected.getFirstState().getVelocity(), //FIXME i think this does what I want it to
+			unReflected.getLastState().getVelocity(),
+			maxVelocity, 
+			maxAccel, 
+			unReflected.getReversed(), 
+			unReflected.getReversed());
 	}
 
 }
