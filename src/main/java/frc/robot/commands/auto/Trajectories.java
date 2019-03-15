@@ -8,6 +8,7 @@ import java.util.List;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Rectangle2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.TrajectoryGeneratorKt;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.CentripetalAccelerationConstraint;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.DifferentialDriveDynamicsConstraint;
@@ -17,6 +18,7 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
 import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
@@ -374,7 +376,11 @@ public class Trajectories {
 		for(TimedEntry<Pose2dWithCurvature> point : unReflected.getPoints()){
 			maxVelocity = (point.getVelocity().getValue() > maxVelocity.getValue()) ? point.getVelocity() : maxVelocity;
 			maxAccel = (point.getAcceleration().getValue() > maxAccel.getValue()) ? point.getAcceleration() : maxAccel;
-			newWaypoints.add(point.getState().getPose()); //FIXME find the actual transformation of the reflection
+			double centerOffset = (13.5-point.getState().getPose().getTranslation().getY().getFeet())*-1;
+			newWaypoints.add(new Pose2d(
+				new Translation2d(LengthKt.getFeet(centerOffset+13.5),
+					 point.getState().getPose().getTranslation().getY()), 
+				new Rotation2d(point.getState().getPose().getRotation().getRadian()*-1))); 
 		}
 		return TrajectoryGeneratorKt.getDefaultTrajectoryGenerator().generateTrajectory(
 			newWaypoints, 
