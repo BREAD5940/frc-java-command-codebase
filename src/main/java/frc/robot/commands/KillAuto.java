@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 /**
@@ -25,6 +26,7 @@ public class KillAuto extends InstantCommand {
 		requires(SuperStructure.getInstance().getWrist());
 		requires(SuperStructure.getInstance().getElbow());
 		requires(SuperStructure.getElevator());
+		requires(DriveTrain.getInstance());
 	}
 
 	// Called once when the command executes
@@ -34,6 +36,10 @@ public class KillAuto extends InstantCommand {
 		SuperStructure.getInstance().getWrist().getCurrentCommand().cancel();
 		SuperStructure.getInstance().getElbow().getCurrentCommand().cancel();
 		SuperStructure.getElevator().getCurrentCommand().cancel();
+		DriveTrain.getInstance().getCurrentCommand().cancel();
+		DriveTrain.getInstance().stop();
+		var currentState = SuperStructure.getInstance().getCurrentState();
+		SuperStructure.getInstance().move(currentState);
 	}
 
 }
