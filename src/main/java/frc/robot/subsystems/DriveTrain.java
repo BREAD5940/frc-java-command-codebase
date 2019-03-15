@@ -388,6 +388,48 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 				rightMotorOutput = linearPercent - rotationPercent;
 			}
 		}
+
+		tankDrive(leftMotorOutput, rightMotorOutput);
+	}
+
+	public void closedLoopArcadeDrive(double linearPercent, double rotationPercent, boolean squareInputs) {
+		linearPercent = Util.limit(linearPercent, 1);
+		linearPercent = Util.deadband(linearPercent, 0.07);
+
+		rotationPercent = Util.limit(rotationPercent, 1);
+		rotationPercent = Util.deadband(rotationPercent, 0.1);
+
+		// Square the inputs (while preserving the sign) to increase fine control
+		// while permitting full power.
+		if (squareInputs) {
+			linearPercent = Math.copySign(linearPercent * linearPercent, linearPercent);
+			rotationPercent = Math.copySign(rotationPercent * rotationPercent, rotationPercent);
+		}
+
+		double leftMotorOutput;
+		double rightMotorOutput;
+
+		double maxInput = Math.copySign(Math.max(Math.abs(linearPercent), Math.abs(rotationPercent)), linearPercent);
+
+		if (linearPercent >= 0.0) {
+			// First quadrant, else second quadrant
+			if (rotationPercent >= 0.0) {
+				leftMotorOutput = maxInput;
+				rightMotorOutput = linearPercent - rotationPercent;
+			} else {
+				leftMotorOutput = linearPercent + rotationPercent;
+				rightMotorOutput = maxInput;
+			}
+		} else {
+			// Third quadrant, else fourth quadrant
+			if (rotationPercent >= 0.0) {
+				leftMotorOutput = linearPercent + rotationPercent;
+				rightMotorOutput = maxInput;
+			} else {
+				leftMotorOutput = maxInput;
+				rightMotorOutput = linearPercent - rotationPercent;
+			}
+		}
 		// Logger.log("Linear input " + linearPercent + " turn input " +
 		// rotationPercent);
 		// Logger.log("left motor output " + leftMotorOutput + " right motor output " +
@@ -395,13 +437,17 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 		var isHighGear = getCachedGear() == Gear.HIGH;
 
-		final double lowGearForward = Util.toMeters(5);
-		final double lowGearTurn = Util.toMeters(6);
-		final double highGearForward = Util.toMeters(10);
-		final double highGearTurn = Util.toMeters(6);
+		final double lowGearForward = Util.toMeters(7.5);
+		final double lowGearTurn = Util.toMeters(12);
+		final double highGearForward = Util.toMeters(11);
+		final double highGearTurn = Util.toMeters(18);
+		final double maxAccelLinearLow = Util.toMeters(12);
+		final double maxAccelLinearHigh = Util.toMeters(8);
 
 		double forwardSpeed = linearPercent * ((isHighGear) ? highGearForward : lowGearForward);
 		double turnSpeed = -1 * rotationPercent * ((isHighGear) ? highGearTurn : lowGearTurn);
+
+		// forwardSpeed = Util.limit(forwardSpeed, forwardSpeed-(maxAccelLinearLow * Robot.mPeriod), forwardSpeed+(maxAccelLinearLow * Robot.mPeriod))
 
 		ChassisState mVelocity = new ChassisState(forwardSpeed, turnSpeed);
 		if(isFirstRun) {
@@ -409,17 +455,26 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 			isFirstRun = false;
 		}
 		
+
+
+		if(isHighGear) {
+			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearHigh * Robot.mPeriod, 
+						mCachedChassisState.getLinear() + maxAccelLinearHigh * Robot.mPeriod));
+			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), highGearForward));
+			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), highGearTurn));
+		} else {
+			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearLow * Robot.mPeriod, 
+					mCachedChassisState.getLinear() + maxAccelLinearLow * Robot.mPeriod));
+			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), lowGearForward));
+			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), lowGearTurn));
+		}
+
 		ChassisState mAcceleration = new ChassisState(
-			mVelocity.getLinear() - mCachedChassisState.getLinear(), 
-			mVelocity.getAngular() - mCachedChassisState.getAngular()
+			(mVelocity.getLinear() - mCachedChassisState.getLinear()) / Robot.mPeriod, 
+			(mVelocity.getAngular() - mCachedChassisState.getAngular()) / Robot.mPeriod
 		);
 
-		// var kinematics = getDifferentialDrive();
-		// mAcceleration = new ChassisState(
-		// 	Math.max(mAcceleration.getLinear(),
-		// 		kinematics.
-		// 	))
-		// );
+		System.out.println("mVelocity: " + mVelocity.getLinear() + " mAccel: " + mAcceleration.getLinear());
 
 		this.setOutputFromDynamics(mVelocity, mAcceleration);
 		

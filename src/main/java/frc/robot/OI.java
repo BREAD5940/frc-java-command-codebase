@@ -45,13 +45,13 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 public class OI {
 
 	private Joystick primaryJoystick = new Joystick(RobotConfig.controls.primary_joystick_port);
-	private Joystick secondaryJoystick = new Joystick(RobotConfig.controls.secondary_joystick_port);
+	// private Joystick secondaryJoystick = new Joystick(RobotConfig.controls.secondary_joystick_port);
 	private Joystick driverStation = new Joystick(5); //TODO make a constant
 
 	private Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
 	private Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
-	private Button open_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.Y_BUTTON);
-	private Button close_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.A_BUTTON);
+	// private Button open_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.Y_BUTTON);
+	// private Button close_clamp_button = new JoystickButton(secondaryJoystick, xboxmap.Buttons.A_BUTTON);
 
 	// TODO change these to a button console once created
 
@@ -60,10 +60,10 @@ public class OI {
 	Button primaryXButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
 	Button primaryBButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
 
-	Button secondaryDpadUp = new DPadButton(secondaryJoystick, DPadButton.Direction.UP);
-	Button secondaryDpadDown = new DPadButton(secondaryJoystick, DPadButton.Direction.DOWN);
-	Button secondaryDpadLeft = new DPadButton(secondaryJoystick, DPadButton.Direction.LEFT);
-	Button secondaryDpadRight = new DPadButton(secondaryJoystick, DPadButton.Direction.RIGHT);
+	// Button secondaryDpadUp = new DPadButton(secondaryJoystick, DPadButton.Direction.UP);
+	// Button secondaryDpadDown = new DPadButton(secondaryJoystick, DPadButton.Direction.DOWN);
+	// Button secondaryDpadLeft = new DPadButton(secondaryJoystick, DPadButton.Direction.LEFT);
+	// Button secondaryDpadRight = new DPadButton(secondaryJoystick, DPadButton.Direction.RIGHT);
 
 	Button primaryDpadUp = new DPadButton(primaryJoystick, DPadButton.Direction.UP);
 	Button primaryDpadDown = new DPadButton(primaryJoystick, DPadButton.Direction.DOWN);
@@ -102,15 +102,15 @@ public class OI {
 	//TODO is the location for each button logical?
 
 	//toggle which heldpiece we have
-	private Button toggleHP = new JoystickButton(secondaryJoystick, xboxmap.Buttons.B_BUTTON);
+	// private Button toggleHP = new JoystickButton(secondaryJoystick, xboxmap.Buttons.B_BUTTON);
 	//aim for the next highest goal
-	private Button goalUp = new DPadButton(secondaryJoystick, DPadButton.Direction.UP);
+	// private Button goalUp = new DPadButton(secondaryJoystick, DPadButton.Direction.UP);
 	//aim for the next lowest goal
-	private Button goalDown = new DPadButton(secondaryJoystick, DPadButton.Direction.DOWN);
+	// private Button goalDown = new DPadButton(secondaryJoystick, DPadButton.Direction.DOWN);
 	//pickup vs placement
-	private Button togglePickup = new JoystickButton(secondaryJoystick, xboxmap.Buttons.Y_BUTTON);
+	// private Button togglePickup = new JoystickButton(secondaryJoystick, xboxmap.Buttons.Y_BUTTON);
 	//cargo ship vs rocket
-	private Button toggleGoal = new JoystickButton(secondaryJoystick, xboxmap.Buttons.A_BUTTON);
+	// private Button toggleGoal = new JoystickButton(secondaryJoystick, xboxmap.Buttons.A_BUTTON);
 	//actually use the automotion vs just presets
 	// private Button secondaryDpadLeft = new JoystickButton(secondaryJoystick, xboxmap.Buttons.X_BUTTON);
 	//use the full automotion
@@ -131,8 +131,8 @@ public class OI {
 
 		shift_up_button.whenPressed(new SetGearCommand(Gear.HIGH));
 		shift_down_button.whenPressed(new SetGearCommand(Gear.LOW));
-		open_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kOpen)); // y button
-		close_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kClamped)); // a button
+		// open_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kOpen)); // y button
+		// close_clamp_button.whenPressed(new SetHatchMech(HatchMechState.kClamped)); // a button
 		// dsClampToggle.whenPressed(new ToggleClamp());
 
 		// primaryDpadUp.whenPressed(new PickupHatch());
@@ -219,11 +219,11 @@ public class OI {
 
 		primaryDpadDown.whenPressed(new DriveDistanceTheThird(LengthKt.getFeet(3), true));
 
-		secondaryDpadUp.whenPressed(new InstantRunnable(() -> {
-			var t = SuperStructure.getElevator().getMaster();
-			t.configPeakOutputForward(0);
-			t.configPeakOutputReverse(0);
-		}, true));
+		// secondaryDpadUp.whenPressed(new InstantRunnable(() -> {
+		// 	var t = SuperStructure.getElevator().getMaster();
+		// 	t.configPeakOutputForward(0);
+		// 	t.configPeakOutputReverse(0);
+		// }, true));
 
 		primaryRightStart.whenPressed(new LoadingToRocketF('R', 'R'));
 
@@ -383,7 +383,7 @@ public class OI {
 	public double getElevatorDS() {
 		var upPower = driverStation.getRawButton(9) ? 1 : -1;
 		var downPower = driverStation.getRawButton(10) ? 1 : -1;
-		return upPower - downPower;
+		return (upPower - downPower) * 0.06;
 	}
 
 	// public double getThrottleAxis() {

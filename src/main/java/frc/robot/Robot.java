@@ -118,11 +118,13 @@ public class Robot extends TimedRobot {
 		elevatorShifterDoubleSolenoid.set(value); // FIXME it's a hack
 	}
 
-	/**
+	public static double mPeriod = 0.025d;
+
+		/**
 	 * FIXME it's a hack, set the period to 25ms
 	 */
 	public Robot() {
-		super(0.03d);
+		super(mPeriod);
 	}
 
 	public static enum RobotState {
