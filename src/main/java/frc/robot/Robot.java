@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotConfig.elevator;
 import frc.robot.commands.auto.AutoMotion;
+import frc.robot.commands.auto.TerribleAutoChooser;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
 import frc.robot.commands.subsystems.superstructure.ZeroElevator;
@@ -52,7 +53,8 @@ public class Robot extends TimedRobot {
 	public static DoubleSolenoid intakeDoubleSolenoid;
 	public static DoubleSolenoid elevatorShifterDoubleSolenoid;
 	public static AutoMotion m_auto;
-	SendableChooser<Command> m_chooser = new SendableChooser<Command>();
+	// SendableChooser<Command> m_chooser = new SendableChooser<Command>();
+	TerribleAutoChooser mAutoChooser;
 	public static Compressor compressor = new Compressor(9);
 
 	private Notifier mResetNotifier;
@@ -155,6 +157,9 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+
+		mAutoChooser = new TerribleAutoChooser();
+		mAutoChooser.addOptions();
 
 		if (drivetrain == null)
 			drivetrain = DriveTrain.getInstance();
@@ -294,7 +299,7 @@ public class Robot extends TimedRobot {
 
 		});
 
-		mResetNotifier.startPeriodic(0.5);
+		// mResetNotifier.startPeriodic(0.5);
 
 	}
 
@@ -346,7 +351,9 @@ public class Robot extends TimedRobot {
 		// meme.start();
 
 		// drivetrain.gyro.reset(); // Reset the current gyro heading to zero
-		drivetrain.zeroEncoders();
+		// drivetrain.zeroEncoders();
+
+		mAutoChooser.getSelection().start();
 
 		if (RobotConfig.auto.auto_gear == Gear.LOW) {
 			drivetrain.setLowGear();
