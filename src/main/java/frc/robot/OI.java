@@ -295,13 +295,13 @@ public class OI {
 		return primaryJoystick;
 	}
 
-	public Joystick getSecondary() {
-		return secondaryJoystick;
-	}
+	// public Joystick getSecondary() {
+		// return secondaryJoystick;
+	// }
 
-	public List<Joystick> getAllSticks() {
-		return Arrays.asList(getPrimary(), getSecondary());
-	}
+	// public List<Joystick> getAllSticks() {
+		// return Arrays.asList(getPrimary(), getSecondary());
+	// }
 
 	public enum OperatorControllers {
 		PRIMARY, SECONDARY;
@@ -314,10 +314,10 @@ public class OI {
 
 	public void setAllRumble(double value) {
 		setRumble(RumbleType.kLeftRumble, getPrimary(), value);
-		setRumble(RumbleType.kLeftRumble, getSecondary(), value);
+		// setRumble(RumbleType.kLeftRumble, getSecondary(), value);
 
 		setRumble(RumbleType.kRightRumble, getPrimary(), value);
-		setRumble(RumbleType.kRightRumble, getSecondary(), value);
+		// setRumble(RumbleType.kRightRumble, getSecondary(), value);
 	}
 
 	public double getForwardAxis() {
@@ -347,13 +347,13 @@ public class OI {
 	// 	return (secondaryJoystick.getRawButton(xboxmap.Buttons.LB_BUTTON)) ? 1 * 1 : 0;
 	// }
 
-	public double getWristAxis() {
-		return secondaryJoystick.getRawAxis(5);
-	}
+	// public double getWristAxis() {
+		// return secondaryJoystick.getRawAxis(5);
+	// }
 
-	public double getElbowAxis() {
-		return (secondaryJoystick.getRawAxis(2) - secondaryJoystick.getRawAxis(3)) * -1; // triggers
-	}
+	// public double getElbowAxis() {
+		// return (secondaryJoystick.getRawAxis(2) - secondaryJoystick.getRawAxis(3)) * -1; // triggers
+	// }
 
 	public double getDSElbowAxis() {
 		return 0;//(driverStation.getRawAxis(DriverstationMap.Axes.elbowStick));
@@ -375,10 +375,10 @@ public class OI {
 		return driverStation.getRawAxis(0) * -1;
 	}
 
-	public double getElevatorAxis() {
+	// public double getElevatorAxis() {
 		// return 0;
-		return secondaryJoystick.getRawAxis(RobotConfig.controls.xbox_elevator_axis) * -1;
-	}
+		// return secondaryJoystick.getRawAxis(RobotConfig.controls.xbox_elevator_axis) * -1;
+	// }
 
 	public double getElevatorDS() {
 		var upPower = driverStation.getRawButton(9) ? 1 : -1;
@@ -386,9 +386,9 @@ public class OI {
 		return upPower - downPower;
 	}
 
-	public double getThrottleAxis() {
-		return 0;
-	}//secondaryJoystick.getRawAxis(RobotConfig.controls.throttle_elevator_axis); }
+	// public double getThrottleAxis() {
+		// return 0;
+	// }//secondaryJoystick.getRawAxis(RobotConfig.controls.throttle_elevator_axis); }
 
 	// There are a few additional built in buttons you can use. Additionally,
 	// by subclassing Button you can create custom triggers and bind those to

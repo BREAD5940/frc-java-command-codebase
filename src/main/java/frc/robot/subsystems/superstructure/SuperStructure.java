@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.subsystems.superstructure.JustElevatorTeleop;
-import frc.robot.commands.subsystems.superstructure.SuperStructureTelop;
+// import frc.robot.commands.subsystems.superstructure.SuperStructureTelop;
 import frc.robot.lib.Loggable;
 import frc.robot.lib.PIDSettings;
 import frc.robot.lib.PIDSettings.FeedbackMode;
