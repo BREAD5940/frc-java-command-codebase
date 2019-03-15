@@ -16,27 +16,28 @@ import frc.robot.subsystems.superstructure.SuperStructure;
  * Add your docs here.
  */
 public class JogElevator extends InstantCommand {
-  Length deltaLength;
-  boolean isUpwards;
-  /**
-   * Add your docs here.
-   */
-  public JogElevator(Length delta, boolean isUp) {
-    super();
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(SuperStructure.getInstance());
-    requires(SuperStructure.getElevator());
-    deltaLength = delta.getAbsoluteValue();
-    isUpwards = isUp;
-  }
+	Length deltaLength;
+	boolean isUpwards;
 
-  // Called once when the command executes
-  @Override
-  protected void initialize() {
-    var cachedState = SuperStructure.getInstance().getCurrentState();
-    SuperStructure.getElevator().jogHeightTrim(deltaLength, isUpwards);
-    SuperStructure.getInstance().move(cachedState);
-  }
+	/**
+	 * Add your docs here.
+	 */
+	public JogElevator(Length delta, boolean isUp) {
+		super();
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		requires(SuperStructure.getInstance());
+		requires(SuperStructure.getElevator());
+		deltaLength = delta.getAbsoluteValue();
+		isUpwards = isUp;
+	}
+
+	// Called once when the command executes
+	@Override
+	protected void initialize() {
+		var cachedState = SuperStructure.getInstance().getCurrentState();
+		SuperStructure.getElevator().jogHeightTrim(deltaLength, isUpwards);
+		SuperStructure.getInstance().move(cachedState);
+	}
 
 }

@@ -20,10 +20,8 @@ import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
-import frc.robot.commands.subsystems.drivetrain.DrivePower;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
 import frc.robot.commands.subsystems.drivetrain.PIDDriveDistance;
-import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.subsystems.DriveTrain;
@@ -139,7 +137,6 @@ public class FarSideRocketL extends VisionCommandGroup {
 		addSequential(new PIDDriveDistance(0.5, 4, /* timeout */ 0.5));
 		addSequential(new RunIntake(-1, 0, 1));
 		addSequential(new PIDDriveDistance(-3, 12, /* timeout */ 1));
-
 
 	}
 

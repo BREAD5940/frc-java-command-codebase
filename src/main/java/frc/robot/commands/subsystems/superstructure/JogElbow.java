@@ -7,8 +7,6 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
-import org.ghrobotics.lib.mathematics.units.Length;
-
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -17,27 +15,28 @@ import frc.robot.subsystems.superstructure.SuperStructure;
  * Add your docs here.
  */
 public class JogElbow extends InstantCommand {
-  RoundRotation2d deltaAngle;
-  boolean isUpwards;
-  /**
-   * Add your docs here.
-   */
-  public JogElbow(RoundRotation2d delta) {
-    super();
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(SuperStructure.getInstance());
-    requires(SuperStructure.getInstance().getElbow());
-    deltaAngle = delta;
-    // isUpwards = isUp;
-  }
+	RoundRotation2d deltaAngle;
+	boolean isUpwards;
 
-  // Called once when the command executes
-  @Override
-  protected void initialize() {
-    var cachedState = SuperStructure.getInstance().getCurrentState();
-    SuperStructure.getInstance().jogElbowTrim(deltaAngle);
-    SuperStructure.getInstance().move(cachedState);
-  }
+	/**
+	 * Add your docs here.
+	 */
+	public JogElbow(RoundRotation2d delta) {
+		super();
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		requires(SuperStructure.getInstance());
+		requires(SuperStructure.getInstance().getElbow());
+		deltaAngle = delta;
+		// isUpwards = isUp;
+	}
+
+	// Called once when the command executes
+	@Override
+	protected void initialize() {
+		var cachedState = SuperStructure.getInstance().getCurrentState();
+		SuperStructure.getInstance().jogElbowTrim(deltaAngle);
+		SuperStructure.getInstance().move(cachedState);
+	}
 
 }

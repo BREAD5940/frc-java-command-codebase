@@ -41,7 +41,7 @@ public class PIDDriveDistance extends Command {
 		requires(DriveTrain.getInstance());
 		this.rawDelta = distance;
 		setTimeout(timeout);
-    this.maxSpeed = maxSpeedFt;
+		this.maxSpeed = maxSpeedFt;
 	}
 
 	// Called just before this Command runs the first time

@@ -89,6 +89,7 @@ public class Elevator extends HalfBakedSubsystem {
 	private static final int kHighGearMotionMagicPIDSlot = 3; // low speed slot
 
 	protected Length m_heightTrim = LengthKt.getInch(0);
+
 	public Length getHeightTrim() {
 		return m_heightTrim;
 	}
@@ -99,7 +100,7 @@ public class Elevator extends HalfBakedSubsystem {
 
 	public void jogHeightTrim(Length offset, boolean isUpwards) {
 		var oldTrim = getHeightTrim();
-		if(isUpwards) {
+		if (isUpwards) {
 			setHeightTrim(oldTrim.plus(offset));
 		} else {
 			setHeightTrim(oldTrim.minus(offset));

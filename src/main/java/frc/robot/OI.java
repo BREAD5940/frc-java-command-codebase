@@ -17,19 +17,14 @@ import frc.robot.commands.subsystems.drivetrain.PIDDriveDistance;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.JogElbow;
-import frc.robot.commands.subsystems.superstructure.JogElevator;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.lib.obj.factories.SequentialCommandFactory;
-import frc.robot.states.ElevatorState;
-import frc.robot.states.IntakeAngle;
-import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
-import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
@@ -87,7 +82,6 @@ public class OI {
 
 	Button dsJogUp = new JoystickButton(driverStation, 9);
 	Button dsJogDown = new JoystickButton(driverStation, 10);
-
 
 	public OI() {
 
@@ -150,7 +144,6 @@ public class OI {
 
 		dsJogUp.whenPressed(new JogElbow(RoundRotation2d.getDegree(2)));
 		dsJogDown.whenPressed(new JogElbow(RoundRotation2d.getDegree(-2)));
-
 
 	}
 
