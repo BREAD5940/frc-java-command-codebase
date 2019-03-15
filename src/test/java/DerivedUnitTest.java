@@ -1,5 +1,7 @@
 import static org.junit.Assert.assertEquals;
 
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
 import org.junit.jupiter.api.Test;
@@ -17,6 +19,12 @@ public class DerivedUnitTest {
 		Mass kMult = kEnd.times(3);
 		assertEquals(MassKt.getLb(30).getKilogram(), kMult.getKilogram(), 0.01);
 		Logger.log("Calc-ed mass: " + kMult.getLb()); // the more units the better
+	}
+
+	@Test
+	public void testNegative() {
+		Length yes = LengthKt.getInch(-5);
+		System.out.println("YEs: " + yes.getInch());
 	}
 
 }
