@@ -97,7 +97,6 @@ public class CloseSideRocketL extends VisionCommandGroup {
 		var t_toPlaceHatch = Trajectories.generateTrajectory(p_toHatchPlace, Trajectories.kLowGearConstraints, kDefaultStartVelocity,
 				kDefaultEndVelocity, kDefaultVelocityLow, kDefaultAcceleration, true, true);
 
-
 		var t_halfWayToLoadingStationL = Trajectories.generateTrajectory(p_halfWayToLoadingStationL, Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0)), VelocityKt.getVelocity(LengthKt.getFeet(7)), kDefaultAcceleration, false, true);
 
