@@ -5,6 +5,7 @@ import java.math.RoundingMode;
 import java.util.List;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
@@ -153,6 +154,14 @@ public class Util {
 
 	public static String toString(Pose2d pose) {
 		return String.format("Pose: (%s, %s) theta: (%s)", pose.getTranslation().getX().getInch(), pose.getTranslation().getY().getInch(), pose.getRotation().getDegree());
+	}
+
+
+	public static Pose2d reflectWaypoint(Pose2d waypoint){
+		return (new Pose2d(
+				new Translation2d(LengthKt.getFeet(((13.5-waypoint.getTranslation().getY().getFeet())*-1)+13.5),
+					 waypoint.getTranslation().getY()), 
+				new Rotation2d(waypoint.getRotation().getRadian()*-1)));
 	}
 
 }

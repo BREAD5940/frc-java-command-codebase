@@ -8,14 +8,17 @@ import java.util.List;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Rectangle2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.TrajectoryGeneratorKt;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.CentripetalAccelerationConstraint;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.DifferentialDriveDynamicsConstraint;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.TimingConstraint;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.VelocityLimitRegionConstraint;
+import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
 import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
@@ -363,6 +366,31 @@ public class Trajectories {
 				maxVelocity,
 				maxAcceleration,
 				reversed, reversed);
+	}
+
+
+	public static TimedTrajectory<Pose2dWithCurvature> reflect(TimedTrajectory<Pose2dWithCurvature> unReflected){
+		List<Pose2d> newWaypoints = new ArrayList<>();
+		Velocity<Length> maxVelocity = VelocityKt.getVelocity(LengthKt.getInch(0));
+		Acceleration<Length> maxAccel = AccelerationKt.getAcceleration(LengthKt.getInch(0));
+		for(TimedEntry<Pose2dWithCurvature> point : unReflected.getPoints()){
+			maxVelocity = (point.getVelocity().getValue() > maxVelocity.getValue()) ? point.getVelocity() : maxVelocity;
+			maxAccel = (point.getAcceleration().getValue() > maxAccel.getValue()) ? point.getAcceleration() : maxAccel;
+			double centerOffset = (13.5-point.getState().getPose().getTranslation().getY().getFeet())*-1;
+			newWaypoints.add(new Pose2d(
+				new Translation2d(LengthKt.getFeet(centerOffset+13.5),
+					 point.getState().getPose().getTranslation().getY()), 
+				new Rotation2d(point.getState().getPose().getRotation().getRadian()*-1))); 
+		}
+		return TrajectoryGeneratorKt.getDefaultTrajectoryGenerator().generateTrajectory(
+			newWaypoints, 
+			kLowGearConstraints, //FIXME find gear of other traject
+			unReflected.getFirstState().getVelocity(), //FIXME i think this does what I want it to
+			unReflected.getLastState().getVelocity(),
+			maxVelocity, 
+			maxAccel, 
+			unReflected.getReversed(), 
+			unReflected.getReversed());
 	}
 
 }
