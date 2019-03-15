@@ -88,6 +88,24 @@ public class Elevator extends HalfBakedSubsystem {
 	public static final PIDSettings HIGH_GEAR_MOTION_MAGIC = new PIDSettings(0.45, 0, 0, 0.3, 4000, 9500); // High speed 
 	private static final int kHighGearMotionMagicPIDSlot = 3; // low speed slot
 
+	protected Length m_heightTrim = LengthKt.getInch(0);
+	public Length getHeightTrim() {
+		return m_heightTrim;
+	}
+
+	public void setHeightTrim(Length new_) {
+		this.m_heightTrim = new_;
+	}
+
+	public void jogHeightTrim(Length offset, boolean isUpwards) {
+		var oldTrim = getHeightTrim();
+		if(isUpwards) {
+			setHeightTrim(oldTrim.plus(offset));
+		} else {
+			setHeightTrim(oldTrim.minus(offset));
+		}
+	}
+
 	private FalconSRX<Length> mMaster;
 
 	private FalconSRX<Length> mSlave1, mSlave2, mSlave3;
@@ -295,8 +313,10 @@ public class Elevator extends HalfBakedSubsystem {
 
 	@Override
 	public void periodic() {
-		var feedForwardVoltage = getVoltage(requState);
-		setMMArbitraryFeedForward(requState.getElevatorHeight(), feedForwardVoltage / 12d);
+		var temp = requState;
+		temp.elevator.height = temp.elevator.height.plus(getHeightTrim()); // offset by trim
+		var feedForwardVoltage = getVoltage(temp);
+		setMMArbitraryFeedForward(temp.getElevatorHeight(), feedForwardVoltage / 12d);
 	}
 
 	/**
@@ -343,6 +363,8 @@ public class Elevator extends HalfBakedSubsystem {
 
 	@Override
 	public void onDisable() {
-		getMaster().set(ControlMode.PercentOutput, 0);
+		getMaster().set(ControlMode.PercentOutput, 10);
+		getMaster().set(ControlMode.PercentOutput, 10);
+		setHeightTrim(LengthKt.getInch(0));
 	}
 }
