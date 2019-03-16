@@ -78,7 +78,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		return !innerStageMinLimitSwitch.get(); // to invert logic
 	}
 
-	public RoundRotation2d elbowTrim;
+	public RoundRotation2d elbowTrim = RoundRotation2d.getDegree(0);
 
 	public void setElbowTrim(RoundRotation2d new_) {
 		this.elbowTrim = new_;

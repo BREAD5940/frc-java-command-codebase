@@ -27,6 +27,9 @@ public class JogElbow extends InstantCommand {
 		// eg. requires(chassis);
 		requires(SuperStructure.getInstance());
 		requires(SuperStructure.getInstance().getElbow());
+		requires(SuperStructure.getInstance().getWrist());
+		requires(SuperStructure.getElevator());
+		
 		deltaAngle = delta;
 		// isUpwards = isUp;
 	}

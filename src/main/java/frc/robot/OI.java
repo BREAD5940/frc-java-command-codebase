@@ -81,7 +81,7 @@ public class OI {
 	Button dsHatchIn = new JoystickButton(driverStation, 10);
 
 	Button dsJogUp = new JoystickButton(driverStation, 9);
-	Button dsJogDown = new JoystickButton(driverStation, 10);
+	Button dsJogDown = new JoystickButton(driverStation, 11);
 
 	public OI() {
 

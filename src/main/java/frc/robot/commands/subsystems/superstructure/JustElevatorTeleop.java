@@ -61,7 +61,8 @@ public class JustElevatorTeleop extends Command {
 			// }
 
 		// Figure out of the operator is commandi
-		if(mNewState != null) SuperStructure.getInstance().move(mNewState);
+		// if(mNewState != null && mNewState.getAngle() != null && mNewState.getWristAngle() != null && mNewState.getElbowAngle() != null) SuperStructure.getInstance().move(mNewState);
+		SuperStructure.getInstance().move(mNewState);
 
 	}
 
