@@ -2,6 +2,7 @@ package frc.robot.lib.motion;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -154,22 +155,32 @@ public class Util {
 	}
 
 	public static String toString(Pose2d pose) {
-		return String.format("Pose: (%s, %s) theta: (%s)", pose.getTranslation().getX().getInch(), pose.getTranslation().getY().getInch(), pose.getRotation().getDegree());
+		return String.format("Pose: (%s, %s) theta: (%s)", pose.getTranslation().getX().getFeet(), pose.getTranslation().getY().getFeet(), pose.getRotation().getDegree());
 	}
 
 	public static Pose2d reflectWaypoint(Pose2d waypoint) {
-		return (new Pose2d(
-				new Translation2d(LengthKt.getFeet(((13.5 - waypoint.getTranslation().getY().getFeet()) * -1) + 13.5),
-						waypoint.getTranslation().getY()),
-				new Rotation2d(waypoint.getRotation().getRadian() * -1)));
+		var toReturn = new Pose2d(
+				// new Translation2d(LengthKt.getFeet(((13.5 - waypoint.getTranslation().getY().getFeet()) * -1) + 13.5),
+						// waypoint.getTranslation().getY()),
+				waypoint.getTranslation().getX(),
+				LengthKt.getFeet(27).minus(waypoint.getTranslation().getY()),
+				new Rotation2d(waypoint.getRotation().getRadian() * -1));
+
+		return toReturn;
+
+		// return new Pose2d();
 	}
 
 	public static List<Pose2d> reflectTrajectory(List<Pose2d> old_) {
-		List<Pose2d> new_ = Arrays.asList();
+		ArrayList<Pose2d> new_ = new ArrayList<>();
 		for (Pose2d pose : old_) {
-			new_.add(reflectWaypoint(pose));
+			Pose2d reflected = reflectWaypoint(pose);
+			// new_.add(reflectWaypoint(pose));
+			new_.add(reflected);
+			// System.out.println(toString(reflected));
 		}
-		return new_;
+		// return new_;
+		return new_.subList(0, new_.size());
 	}
 
 }
