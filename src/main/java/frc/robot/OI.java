@@ -15,6 +15,8 @@ import frc.robot.commands.auto.routines.FarSideRocket;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
+import frc.robot.commands.subsystems.superstructure.RunIntake;
+import frc.robot.commands.subsystems.superstructure.SetElevatorGear;
 // import frc.robot.commands.subsystems.superstructure.JogElbow;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
@@ -25,6 +27,7 @@ import frc.robot.lib.obj.factories.SequentialCommandFactory;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import frc.robot.subsystems.superstructure.Elevator.ElevatorGear;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
@@ -71,7 +74,7 @@ public class OI {
 	Button dsCargo1 = new JoystickButton(driverStation, 7);
 	Button dsCargo2 = new JoystickButton(driverStation, 6);
 	Button dsCargo3 = new JoystickButton(driverStation, 5);
-	// Button dsCargoCargo = new JoystickButton(driverStation, 16);
+	Button dsCargoShip = new JoystickButton(driverStation, 8);
 	Button dsCargoIn = new JoystickButton(driverStation, 12);
 
 	Button dsHatch1 = new JoystickButton(driverStation, 3);
@@ -107,6 +110,11 @@ public class OI {
 				Arrays.asList(
 						new SetHatchMech(HatchMechState.kClamped),
 						new JankyGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE_PITCHED_UP))));
+
+		dsCargoShip.whenPressed(SequentialCommandFactory.getSequentialCommands(
+			Arrays.asList(
+					new SetHatchMech(HatchMechState.kClamped),
+					new JankyGoToState(fieldPositions.cargoMiddleGoal.plus(LengthKt.getInch(10)), SuperStructure.iPosition.CARGO_DOWN))));
 
 		// hatch presets
 		primaryRightAnalogButton.whileHeld(new HybridDriverAssist(5));
