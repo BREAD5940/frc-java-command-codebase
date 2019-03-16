@@ -78,19 +78,20 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		return !innerStageMinLimitSwitch.get(); // to invert logic
 	}
 
-	public RoundRotation2d elbowTrim = RoundRotation2d.getDegree(0);
+	// public RoundRotation2d elbowTrim = RoundRotation2d.getDegree(0);
 
-	public void setElbowTrim(RoundRotation2d new_) {
-		this.elbowTrim = new_;
-	}
+	// public void setElbowTrim(RoundRotation2d new_) {
+	// 	this.elbowTrim = new_;
+	// }
 
-	public void resetElbowTrim() {
-		setElbowTrim(RoundRotation2d.getDegree(0));
-	}
+	// public void resetElbowTrim() {
+	// 	setElbowTrim(RoundRotation2d.getDegree(0));
+	// }
 
-	public void jogElbowTrim(RoundRotation2d delta) {
-		setElbowTrim(elbowTrim.plus(delta));
-	}
+	// public void jogElbowTrim(RoundRotation2d delta) {
+	// 	setElbowTrim(elbowTrim.plus(delta));
+	// 	System.out.println("new offset is " + elbowTrim.getDegree());
+	// }
 
 	public static synchronized SuperStructure getInstance() {
 		if (instance_ == null) {
@@ -335,7 +336,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
 		// SuperStructureState stateSetpoint = plan(requState);
 
-		getWrist().requestAngle(ControlMode.MotionMagic, requState.getWrist().angle.plus(elbowTrim), getCurrentState());
+		getWrist().requestAngle(ControlMode.MotionMagic, requState.getWrist().angle, getCurrentState());
 		getElbow().requestAngle(ControlMode.MotionMagic, requState.getElbow().angle);
 		// getElevator().getMaster().set(ControlMode.MotionMagic, requState.getElevator().height, DemandType.ArbitraryFeedForward, elevatorPercentVbusGravity);
 		getElevator().setPositionSetpoint(requState);
@@ -428,6 +429,6 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 
 	@Override
 	public void onDisable() {
-		resetElbowTrim();
+		// resetElbowTrim();
 	}
 }

@@ -3,11 +3,9 @@ package frc.robot.lib.motion;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
-import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
@@ -161,7 +159,7 @@ public class Util {
 	public static Pose2d reflectWaypoint(Pose2d waypoint) {
 		var toReturn = new Pose2d(
 				// new Translation2d(LengthKt.getFeet(((13.5 - waypoint.getTranslation().getY().getFeet()) * -1) + 13.5),
-						// waypoint.getTranslation().getY()),
+				// waypoint.getTranslation().getY()),
 				waypoint.getTranslation().getX(),
 				LengthKt.getFeet(27).minus(waypoint.getTranslation().getY()),
 				new Rotation2d(waypoint.getRotation().getRadian() * -1));

@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotConfig.elevator;
@@ -160,6 +162,9 @@ public class Robot extends TimedRobot {
 
 		mAutoChooser = new TerribleAutoChooser();
 		mAutoChooser.addOptions();
+		System.out.println("Auto chooser sent!");
+
+		Shuffleboard.getTab("Auto").getLayout("Path selection", BuiltInLayouts.kList).add(mAutoChooser.getChooser()).withSize(2, 5).withPosition(0, 0);
 
 		if (drivetrain == null)
 			drivetrain = DriveTrain.getInstance();
@@ -355,13 +360,13 @@ public class Robot extends TimedRobot {
 
 		mAutoChooser.getSelection().start();
 
-		if (RobotConfig.auto.auto_gear == Gear.LOW) {
-			drivetrain.setLowGear();
-		} else if (RobotConfig.auto.auto_gear == Gear.HIGH) {
-			drivetrain.setHighGear();
-		} else {
-			System.out.println("default auto gear " + RobotConfig.auto.auto_gear + " is not a valid choice!");
-		}
+		// 	if (RobotConfig.auto.auto_gear == Gear.LOW) {
+		// 		drivetrain.setLowGear();
+		// 	} else if (RobotConfig.auto.auto_gear == Gear.HIGH) {
+		// 		drivetrain.setHighGear();
+		// 	} else {
+		// 		System.out.println("default auto gear " + RobotConfig.auto.auto_gear + " is not a valid choice!");
+		// 	}
 	}
 
 	/**
@@ -421,17 +426,15 @@ public class Robot extends TimedRobot {
 		// var tickkkkks = (int) superstructure.getWrist().getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
 		// var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-		SmartDashboard.putNumber("Elbow absolute pos " , tickkkkks	 );
+		SmartDashboard.putNumber("Elbow absolute pos ", tickkkkks);
 
 		var tickks = (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 
-		SmartDashboard.putNumber("wrist absolute pos " , tickks	 );
+		SmartDashboard.putNumber("wrist absolute pos ", tickks);
 
 		var ticcccks = (SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 
-		SmartDashboard.putNumber("Elevator absolute pos " , tickks	 );
-
-
+		SmartDashboard.putNumber("Elevator absolute pos ", tickks);
 
 		// System.out.println(superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition());
 		// System.out.println(superstructure.getElbow().getMaster().getSensorPosition().getDegree());

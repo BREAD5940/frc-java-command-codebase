@@ -179,11 +179,14 @@ public class RotatingJoint extends HalfBakedSubsystem {
 	}
 
 	public void requestAngle(RoundRotation2d reqAngle) {
+		// reqAngle = reqAngle.plus(SuperStructure.getInstance().elbowTrim);
 		reqAngle = Util.limit(reqAngle, kMinAngle, kMaxAngle);
 		getMaster().set(kDefaultControlMode, reqAngle);
 	}
 
 	public void requestAngle(ControlMode mode, RoundRotation2d reqAngle) {
+		// reqAngle = reqAngle.plus(SuperStructure.getInstance().elbowTrim);
+
 		reqAngle = Util.limit(reqAngle, kMinAngle, kMaxAngle);
 		getMaster().set(mode, reqAngle);
 	}
