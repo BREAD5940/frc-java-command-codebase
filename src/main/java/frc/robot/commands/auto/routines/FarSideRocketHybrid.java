@@ -59,52 +59,38 @@ public class FarSideRocketHybrid extends VisionCommandGroup {
 
 		final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(6));
 
-		List<Pose2d> p_fallOffHab = Arrays.asList(
-				new Pose2d(
-						LengthKt.getFeet(5.25),
-						LengthKt.getFeet(17.65),
-						Rotation2dKt.getDegree(180)),
-				new Pose2d(
-						LengthKt.getFeet(11),
-						LengthKt.getFeet(17.65),
-						Rotation2dKt.getDegree(180)));
-
-		List<Pose2d> p_farSideRocketL = Arrays.asList(
-				new Pose2d(
-						LengthKt.getFeet(11),
-						LengthKt.getFeet(17.65),
-						Rotation2dKt.getDegree(180)),
-
-				new Pose2d(
-						LengthKt.getFeet(19.787),
-						LengthKt.getFeet(21.655),
-						Rotation2dKt.getDegree(-140)),
-
-				new Pose2d(
-						LengthKt.getFeet(24.118),
-						LengthKt.getFeet(23.658),
-						Rotation2dKt.getDegree(150.0)));
+		var p_toFarSide = Arrays.asList(
+			new Pose2d(LengthKt.getFeet(5.227),
+				LengthKt.getFeet(17.7),
+				Rotation2dKt.getDegree(180)),
+			new Pose2d(LengthKt.getFeet(9.975),
+				LengthKt.getFeet(17.7),
+				Rotation2dKt.getDegree(180)),
+			new Pose2d(LengthKt.getFeet(19.837),
+				LengthKt.getFeet(22.322),
+				Rotation2dKt.getDegree(-139.374)),
+			new Pose2d(LengthKt.getFeet(23.46),
+				LengthKt.getFeet(23.979),
+				Rotation2dKt.getDegree(150))
+		);
 
 		if (!isLeft) {
-			p_fallOffHab = Util.reflectTrajectory(p_fallOffHab);
-			p_farSideRocketL = Util.reflectTrajectory(p_farSideRocketL);
+			p_toFarSide = Util.reflectTrajectory(p_toFarSide);
+			// p_farSideRocketL = Util.reflectTrajectory(p_farSideRocketL);
 
 		}
 
 		// public static TimedTrajectory<Pose2dWithCurvature> generateTrajectory(List<Pose2d> waypoints,
 		// List<? extends TimingConstraint<Pose2dWithCurvature>> constraints_, Velocity<Length> startVelocity, Velocity<Length> endVelocity, Velocity<Length> maxVelocity, Acceleration<Length> maxAcceleration, boolean reversed, boolean optomizeSplines) {
 
-		var t_fallOffHab = Trajectories.generateTrajectory(p_fallOffHab, Trajectories.kLowGearConstraints, kDefaultStartVelocity,
-				VelocityKt.getVelocity(LengthKt.getFeet(4)), kDefaultVelocityLow, kDefaultAcceleration, true, true);
+		var t_toFarSide = Trajectories.generateTrajectory(p_toFarSide, Trajectories.kLowGearConstraints, kDefaultStartVelocity,
+				VelocityKt.getVelocity(LengthKt.getFeet(6)), kDefaultVelocityLow, kDefaultAcceleration, true, true);
 
-		var t_farSideRocketL = Trajectories.generateTrajectory(p_farSideRocketL, Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(4)),
-				VelocityKt.getVelocity(LengthKt.getFeet(0)), VelocityKt.getVelocity(LengthKt.getFeet(7)), kDefaultAcceleration, true, true);
 
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_fallOffHab, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // fall off the hab
-		addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_farSideRocketL, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // keep going over to the far side of the rocket
+		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_toFarSide, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // fall off the hab
+		addSequential(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
 		addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-		addSequential(new FollowVisionTargetTheSecond(3.5));
+		// addSequential(new FollowVisionTargetTheSecond(3.5));
 
 	}
 
