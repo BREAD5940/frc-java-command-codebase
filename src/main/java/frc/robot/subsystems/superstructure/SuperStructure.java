@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotConfig.auto.fieldPositions;
+import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.JustElevatorTeleop;
 import frc.robot.lib.HalfBakedSubsystem;
 import frc.robot.lib.Loggable;
@@ -116,11 +117,14 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 
 		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
 
-		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, false /* FIXME check inverting! */,
+		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
 				Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
 		mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
-				false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+				true /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+
+		mElbow.getMaster().setSensorPhase(false);
+		getWrist().getMaster().setSensorPhase(true);
 
 		elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
 				new InvertSettings(true, InvertType.OpposeMaster, InvertType.FollowMaster, InvertType.FollowMaster));
@@ -143,12 +147,13 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	private SuperStructureState mCurrentState;
 
 	public SuperStructureState getCurrentState() {
+		updateState();
 		return mCurrentState;
 	}
 
 	public static class iPosition {
 		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-5)), new RotatingArmState(RoundRotation2d.getDegree(-45)));
-		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0.001)), new RotatingArmState(RoundRotation2d.getDegree(-50)));
+		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-5)), new RotatingArmState(RoundRotation2d.getDegree(-50)));
 		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(6)), new RotatingArmState(RoundRotation2d.getDegree(16)));
 		public static final IntakeAngle CARGO_PLACE_PITCHED_UP = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(9)), new RotatingArmState(RoundRotation2d.getDegree(20)));
 
@@ -252,7 +257,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		// Actually yeah all that you really need is the buttons
 		// well also jogging with joysticks but eehhhh
 		// actually that should be the default command, hot prank
-		// setDefaultCommand(new JustElevatorTeleop());
+		setDefaultCommand(new JustElevatorTeleop());
 	}
 
 	public SuperStructureState updateState() {
@@ -273,20 +278,17 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 			mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
 					Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
-		// 		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
-		// 		Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
-
-		// mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
-		// 		false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
-
+					mWrist.getMaster().setSensorPhase(true);
 		return mWrist;
 	}
 
 	public RotatingJoint getElbow() {
 		if (mElbow == null)
 			mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
-					false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
-		return mElbow;
+					true /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+					mElbow.getMaster().setSensorPhase(false);
+
+					return mElbow;
 	}
 
 	public DCMotorTransmission getWTransmission() {

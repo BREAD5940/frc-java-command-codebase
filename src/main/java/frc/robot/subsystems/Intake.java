@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -68,10 +69,13 @@ public class Intake extends Subsystem {
 		cargoTalon = new WPI_TalonSRX(cargoPort);
 		hatchTalon = new WPI_TalonSRX(hatchPort);
 		hatchTalon.setInverted(true);
+		cargoTalon.setInverted(true);
+		cargoTalon.setNeutralMode(NeutralMode.Brake);
+		hatchTalon.setNeutralMode(NeutralMode.Brake);
 		// talon.configOpenloopRamp(0.15);
 		hatchTalon.configContinuousCurrentLimit(20);
 		hatchTalon.configPeakCurrentLimit(40);
-		hatchTalon.configPeakCurrentDuration(400);
+		hatchTalon.configPeakCurrentDuration(200);
 		hatchTalon.enableCurrentLimit(true);
 		// talon.setName("Intake");
 		cargoTalon.configPeakOutputForward(.8);

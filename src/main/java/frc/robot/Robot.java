@@ -200,31 +200,37 @@ public class Robot extends TimedRobot {
 		var elevator = SuperStructure.getElevator();
 		var startingHeightTicks = elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue();
 		// 600 is the boiiii
-		var target_ = 600;
-		var target_COMP = 0;
+		var target_ = 650;
+		var target_COMP = 650;
 		var tickkkkks_ = (SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		var delta_ = (tickkkkks_ - (int) target_COMP) * -1;
 
 		elevator.getMaster().setSelectedSensorPosition((int) (startingHeightTicks + delta_));
+		// elevator.getMaster().setSelectedSensorPosition((int) (startingHeightTicks));
+
 
 		var proximal = SuperStructure.getInstance().getElbow();
 		// var startingAngleTicks = (int) proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
 		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		var target = 1400;
-		var targetProximal_COMP = 0;
+		var targetProximal_COMP = 1900;
 		var delta = (tickkkkks - (int) targetProximal_COMP) * -1;
-		var startingAngleTicks = proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90));
+		var startingAngleTicks = proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90 - 2));
 
 		proximal.getMaster().setSelectedSensorPosition((int) (delta + startingAngleTicks));
+		// proximal.getMaster().setSelectedSensorPosition((int) (startingAngleTicks));
+
 
 		var wrist = SuperStructure.getInstance().getWrist();
-		var wristStart = (int) wrist.getMaster().getTicks(RoundRotation2d.getDegree(-43 + 4));
-		target = (int) 1800;
-		var targetWristComp = 0;
+		var wristStart = (int) wrist.getMaster().getTicks(RoundRotation2d.getDegree(-43 + 4 - 4));
+		target = (int) 1500;
+		var targetWristComp = 1500;
 		var correctionDelta = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		var deltaW = (correctionDelta - (int) targetWristComp) * 1;
 
 		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
+		// wrist.getMaster().setSelectedSensorPosition((int) (wristStart));
+
 
 		switch (RobotConfig.auto.auto_gear) {
 		case HIGH:
@@ -360,7 +366,7 @@ public class Robot extends TimedRobot {
 		// drivetrain.gyro.reset(); // Reset the current gyro heading to zero
 		// drivetrain.zeroEncoders();
 
-8		// mAutoChooser.getSelection().start();
+		// mAutoChooser.getSelection().start(); // So this needs a defaut option
 
 		// 	if (RobotConfig.auto.auto_gear == Gear.LOW) {
 		// 		drivetrain.setLowGear();
@@ -379,16 +385,16 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 	}
 
-	public void disableTheSuperStructure() {
-		superstructure.getElevator().getMaster().configPeakOutputForward(0);
-		superstructure.getElevator().getMaster().configPeakOutputReverse(0);
+	// public void disableTheSuperStructure() {
+	// 	superstructure.getElevator().getMaster().configPeakOutputForward(0);
+	// 	superstructure.getElevator().getMaster().configPeakOutputReverse(0);
 
-		superstructure.getInstance().getElbow().getMaster().configPeakOutputForward(0);
-		superstructure.getInstance().getElbow().getMaster().configPeakOutputReverse(0);
+	// 	superstructure.getInstance().getElbow().getMaster().configPeakOutputForward(0);
+	// 	superstructure.getInstance().getElbow().getMaster().configPeakOutputReverse(0);
 
-		superstructure.getInstance().getWrist().getMaster().configPeakOutputForward(0);
-		superstructure.getInstance().getWrist().getMaster().configPeakOutputReverse(0);
-	}
+	// 	superstructure.getInstance().getWrist().getMaster().configPeakOutputForward(0);
+	// 	superstructure.getInstance().getWrist().getMaster().configPeakOutputReverse(0);
+	// }
 
 	@Override
 	public void teleopInit() {
@@ -417,8 +423,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		
-		SuperStructure.getElevator().getMaster().set(ControlMode.PercentOutput, 0);
-
 		Scheduler.getInstance().run();
 	}
 
@@ -440,8 +444,13 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotPeriodic() {
 
-		disableTheSuperStructure();
+		// System.out.println("current superstructure state: " + superstructure.getCurrentState());
 
+		// disableTheSuperStructure();
+
+		final boolean postTicks = true;
+
+		if(postTicks) {
 		// var tickkkkks = (int) superstructure.getWrist().getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
 		// var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
@@ -460,6 +469,8 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putString(SuperStructure.getInstance().getCurrentState().getCSVHeader(), SuperStructure.getInstance().getCurrentState().toCSV());
 
+		}
+		
 		// var elevatorAbsTicks = SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 1024;
 		// System.out.println(elevatorAbsTicks);
 

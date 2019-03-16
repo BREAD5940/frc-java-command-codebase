@@ -9,9 +9,11 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
+import frc.robot.commands.KillAuto;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
+import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.SetElevatorGear;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
@@ -19,6 +21,7 @@ import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.factories.SequentialCommandFactory;
+import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.Elevator.ElevatorGear;
@@ -89,7 +92,7 @@ public class OI {
 		dsCargoIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
 						new SetHatchMech(HatchMechState.kOpen),
-						new JankyGoToState(LengthKt.getInch(7), SuperStructure.iPosition.CARGO_GRAB))));
+						new JankyGoToState(LengthKt.getInch(5.5), SuperStructure.iPosition.CARGO_GRAB))));
 
 		dsCargo1.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
@@ -109,7 +112,7 @@ public class OI {
 		dsCargoShip.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
 						new SetHatchMech(HatchMechState.kClamped),
-						new JankyGoToState(fieldPositions.cargoMiddleGoal.plus(LengthKt.getInch(10)), SuperStructure.iPosition.CARGO_DOWN))));
+						new JankyGoToState(fieldPositions.cargoMiddleGoal.plus(LengthKt.getInch(2)), SuperStructure.iPosition.CARGO_DOWN))));
 
 		// hatch presets
 		primaryRightAnalogButton.whileHeld(new HybridDriverAssist(5));
@@ -133,11 +136,14 @@ public class OI {
 						new SetHatchMech(HatchMechState.kClamped),
 						new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));
 
-		// primaryDpadUp.whenPressed(new FarSideRocket('L'));
+		primaryDpadUp.whenPressed(new KillAuto());
 		// primaryDpadLeft.whenPressed(new CloseSideRocket('L'));
-		primaryDpadDown.whenPressed(new ArmMove(iPosition.HATCH));
+		// primaryDpadDown.whenPressed(new ArmMove(iPosition.HATCH));
 
-						
+		// primaryDpadUp.whenPressed(new ElevatorMove(new ElevatorState(LengthKt.getInch(35))));
+
+
+
 		
 			// 			primaryDpadUp.whenPressed(SequentialCommandFactory.getSequentialCommands(
 			// Arrays.asList(

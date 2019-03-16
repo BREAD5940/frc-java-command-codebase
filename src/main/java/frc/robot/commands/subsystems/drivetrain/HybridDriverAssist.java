@@ -72,7 +72,7 @@ public class HybridDriverAssist extends Command {
 
 		if (isHighGear) {
 			closeK = 0.1;
-			nearK = 0.07;
+			nearK = 0.05;
 			farK = 0.4;
 		} else {
 			closeK = 0.1;

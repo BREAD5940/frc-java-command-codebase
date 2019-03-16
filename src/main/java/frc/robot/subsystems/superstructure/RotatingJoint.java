@@ -299,6 +299,7 @@ public class RotatingJoint extends HalfBakedSubsystem {
 	}
 
 	public RotatingArmState getCurrentState() {
+		// System.out.println("this objects rotation angle is " + getRotation().getDegree());
 		return new RotatingArmState(getRotation(), getAngularVelocity());
 	}
 
