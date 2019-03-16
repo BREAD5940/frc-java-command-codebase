@@ -39,7 +39,7 @@ public class CloseSideRocket extends VisionCommandGroup {
 	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
 
 	// public CloseSideRocket(char arg1, char arg2) {
-		// this();
+	// this();
 	// }
 
 	/**

@@ -39,7 +39,7 @@ public class CargoShip1 extends VisionCommandGroup {
 	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
 
 	// public CargoShip1(char arg1, char arg2) {
-		// this();
+	// this();
 	// }
 
 	/**
@@ -75,12 +75,12 @@ public class CargoShip1 extends VisionCommandGroup {
 				new Pose2d(LengthKt.getFeet(9.801), LengthKt.getFeet(20.523), Rotation2dKt.getDegree(120)),
 				new Pose2d(LengthKt.getFeet(3.986), LengthKt.getFeet(24.816), Rotation2dKt.getDegree(180)));
 
-				if (!isLeft) {
-					// p_fallOffHab = Util.reflectTrajectory(p_fallOffHab);
-					p_toLeft1 = Util.reflectTrajectory(p_toLeft1);
-					p_halfWayToLoadingStationL = Util.reflectTrajectory(p_halfWayToLoadingStationL);
-					p_toLoadingStation = Util.reflectTrajectory(p_toLoadingStation);
-				}
+		if (!isLeft) {
+			// p_fallOffHab = Util.reflectTrajectory(p_fallOffHab);
+			p_toLeft1 = Util.reflectTrajectory(p_toLeft1);
+			p_halfWayToLoadingStationL = Util.reflectTrajectory(p_halfWayToLoadingStationL);
+			p_toLoadingStation = Util.reflectTrajectory(p_toLoadingStation);
+		}
 
 		var t_farSideRocket = Trajectories.generateTrajectory(p_toLoadingStation, Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0)), VelocityKt.getVelocity(LengthKt.getFeet(6)), kDefaultAcceleration, true, true);

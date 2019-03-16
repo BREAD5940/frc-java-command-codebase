@@ -365,7 +365,7 @@ public class Trajectories {
 				endVelocity,
 				maxVelocity,
 				maxAcceleration,
-				reversed, reversed);
+				reversed, optomizeSplines);
 	}
 
 	public static TimedTrajectory<Pose2dWithCurvature> reflect(TimedTrajectory<Pose2dWithCurvature> unReflected) {

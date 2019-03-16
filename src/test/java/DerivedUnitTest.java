@@ -35,17 +35,18 @@ public class DerivedUnitTest {
 	@Test
 	public void testReflection() {
 		var old_ = Arrays.asList(
-			new Pose2d(LengthKt.getFeet(5.2), LengthKt.getFeet(17.6), Rotation2dKt.getDegree(0)),
-			new Pose2d(LengthKt.getFeet(9.802), LengthKt.getFeet(17.564), Rotation2dKt.getDegree(0)),
-			new Pose2d(LengthKt.getFeet(17.376), LengthKt.getFeet(21.539), Rotation2dKt.getDegree(25.868)),
-			new Pose2d(LengthKt.getFeet(21.7), LengthKt.getFeet(18.847), Rotation2dKt.getDegree(-90)),
-			new Pose2d(LengthKt.getFeet(21.7), LengthKt.getFeet(16.619), Rotation2dKt.getDegree(-90)));
+				new Pose2d(LengthKt.getFeet(5.2), LengthKt.getFeet(17.6), Rotation2dKt.getDegree(0)),
+				new Pose2d(LengthKt.getFeet(9.802), LengthKt.getFeet(17.564), Rotation2dKt.getDegree(0)),
+				new Pose2d(LengthKt.getFeet(17.376), LengthKt.getFeet(21.539), Rotation2dKt.getDegree(25.868)),
+				new Pose2d(LengthKt.getFeet(21.7), LengthKt.getFeet(18.847), Rotation2dKt.getDegree(-90)),
+				new Pose2d(LengthKt.getFeet(21.7), LengthKt.getFeet(16.619), Rotation2dKt.getDegree(-90)));
 
-			for(Pose2d pose : old_) System.out.println("start pose: " + Util.toString(pose));
-
+		for (Pose2d pose : old_)
+			System.out.println("start pose: " + Util.toString(pose));
 
 		var new_ = Util.reflectTrajectory(old_);
-		for(Pose2d pose : new_) System.out.println("reflected pose: " + Util.toString(pose));
+		for (Pose2d pose : new_)
+			System.out.println("reflected pose: " + Util.toString(pose));
 
 	}
 
