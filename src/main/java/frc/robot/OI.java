@@ -58,7 +58,7 @@ public class OI {
 	// Button secondaryDpadLeft = new DPadButton(secondaryJoystick, DPadButton.Direction.LEFT);
 	// Button secondaryDpadRight = new DPadButton(secondaryJoystick, DPadButton.Direction.RIGHT);
 
-	Button primaryDpadUp = new DPadButton(primaryJoystick, DPadButton.Direction.UP);
+	public Button primaryDpadUp = new DPadButton(primaryJoystick, DPadButton.Direction.UP);
 	Button primaryDpadDown = new DPadButton(primaryJoystick, DPadButton.Direction.DOWN);
 	Button primaryDpadLeft = new DPadButton(primaryJoystick, DPadButton.Direction.LEFT);
 	Button primaryDpadRight = new DPadButton(primaryJoystick, DPadButton.Direction.RIGHT);
@@ -130,9 +130,9 @@ public class OI {
 						new SetHatchMech(HatchMechState.kClamped),
 						new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));
 
-		primaryDpadUp.whenPressed(new FarSideRocket('L'));
-		primaryDpadLeft.whenPressed(new CloseSideRocket('L'));
-		primaryDpadDown.whenPressed(new CargoShip1('L'));
+		// primaryDpadUp.whenPressed(new FarSideRocket('L'));
+		// primaryDpadLeft.whenPressed(new CloseSideRocket('L'));
+		// primaryDpadDown.whenPressed(new CargoShip1('L'));
 
 		// dsJogUp.whenPressed(new JogElevator(LengthKt.getInch(0.5), true));
 		// dsJogDown.whenPressed(new JogElevator(LengthKt.getInch(0.5), false));

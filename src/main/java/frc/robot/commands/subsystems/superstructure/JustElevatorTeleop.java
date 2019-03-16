@@ -44,7 +44,7 @@ public class JustElevatorTeleop extends Command {
 	@Override
 	protected void execute() {
 
-		SuperStructureState mCurrentState = SuperStructure.getInstance().updateState();
+		// SuperStructureState mCurrentState = SuperStructure.getInstance().updateState();
 		var mNewState = mCachedState;
 		var mElevatorPower = Robot.m_oi.getElevatorDS();
 		// var mWristPower = Robot.m_oi.getWristAxis();
@@ -54,15 +54,19 @@ public class JustElevatorTeleop extends Command {
 
 		// Figure out of the operator is commanding an elevator move. If so, increment the new state and cache the current state - if not, stay at the cached state.
 		if (Math.abs(mElevatorPower) > kDeadband) {
-			mNewState.elevator = new ElevatorState(mCurrentState.getElevatorHeight().plus(LengthKt.getInch(mElevatorPower * ((mElevatorPower > 0) ? 5 : 10))));
-			mCachedState.elevator = mNewState.elevator;
+			// mNewState.elevator = new ElevatorState(mCurrentState.getElevatorHeight().plus(LengthKt.getInch(mElevatorPower * ((mElevatorPower > 0) ? 5 : 10))));
+			SuperStructure.getInstance().elevatorTrim = SuperStructure.getInstance().elevatorTrim.plus(LengthKt.getInch(0.1)); // TODO check jog speed
+			// mCachedState.elevator = new ElevatorState(mCachedState.getElevatorHeight().plus(LengthKt.getInch(mElevatorPower * ((mElevatorPower > 0) ? 5 : 10))));
+
 		} //else {
 			// mNewState.elevator = mCachedState.elevator;
 			// }
 
+			mNewState.elevator.height = mCachedState.elevator.height.plus(SuperStructure.getInstance().elevatorTrim);
 		// Figure out of the operator is commandi
 		// if(mNewState != null && mNewState.getAngle() != null && mNewState.getWristAngle() != null && mNewState.getElbowAngle() != null) SuperStructure.getInstance().move(mNewState);
 		SuperStructure.getInstance().move(mNewState);
+		// todo check meeeeeeeeeee FIXME logic is bad
 
 	}
 

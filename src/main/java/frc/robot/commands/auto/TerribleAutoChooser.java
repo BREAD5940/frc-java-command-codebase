@@ -6,6 +6,7 @@ import frc.robot.commands.auto.routines.Baseline;
 import frc.robot.commands.auto.routines.CargoShip1;
 import frc.robot.commands.auto.routines.CloseSideRocket;
 import frc.robot.commands.auto.routines.FarSideRocket;
+import frc.robot.commands.auto.routines.FarSideRocketHybrid;
 
 /**
  * Literally just a sendable chooser
@@ -31,6 +32,8 @@ public class TerribleAutoChooser implements iAutoChooser {
 		addChoice("HabL to cargoL1", new CargoShip1('L'));
 		addChoice("HabR to cargoR1", new CloseSideRocket('R'));
 		addChoice("Baseline", new Baseline());
+		addChoice("Hybrid far side left", new FarSideRocketHybrid('L'));
+		addChoice("Hybrid far side right", new FarSideRocketHybrid('R'));
 	}
 
 	@Override

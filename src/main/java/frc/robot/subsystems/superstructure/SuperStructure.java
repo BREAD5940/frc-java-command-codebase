@@ -78,20 +78,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		return !innerStageMinLimitSwitch.get(); // to invert logic
 	}
 
-	// public RoundRotation2d elbowTrim = RoundRotation2d.getDegree(0);
-
-	// public void setElbowTrim(RoundRotation2d new_) {
-	// 	this.elbowTrim = new_;
-	// }
-
-	// public void resetElbowTrim() {
-	// 	setElbowTrim(RoundRotation2d.getDegree(0));
-	// }
-
-	// public void jogElbowTrim(RoundRotation2d delta) {
-	// 	setElbowTrim(elbowTrim.plus(delta));
-	// 	System.out.println("new offset is " + elbowTrim.getDegree());
-	// }
+	public Length elevatorTrim = LengthKt.getInch(0);
 
 	public static synchronized SuperStructure getInstance() {
 		if (instance_ == null) {
