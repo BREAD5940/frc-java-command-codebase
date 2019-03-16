@@ -140,7 +140,12 @@ public class OI {
 
 		// primaryDpadUp.whenPressed(new FarSideRocket('L'));
 		// primaryDpadLeft.whenPressed(new CloseSideRocket('L'));
-		// primaryDpadDown.whenPressed(new CargoShip1('L'));
+		primaryDpadDown.whenPressed(SequentialCommandFactory.getSequentialCommands(
+			Arrays.asList(
+				new SetHatchMech(HatchMechState.kClamped),
+				new SetGearCommand(Gear.LOW),
+				new SetElevatorGear(ElevatorGear.HIGH)
+			)));
 
 		// dsJogUp.whenPressed(new JogElevator(LengthKt.getInch(0.5), true));
 		// dsJogDown.whenPressed(new JogElevator(LengthKt.getInch(0.5), false));
