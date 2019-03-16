@@ -200,8 +200,9 @@ public class Robot extends TimedRobot {
 		var startingHeightTicks = elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue();
 		// 600 is the boiiii
 		var target_ = 600;
+		var target_COMP = 0;
 		var tickkkkks_ = (SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-		var delta_ = (tickkkkks_ - (int) target_) * -1;
+		var delta_ = (tickkkkks_ - (int) target_COMP) * -1;
 		// var startingAngleTicks_ = elevator.getMaster().getTicks(RoundRotation2d.getDegree(-90));
 
 		// var delta = 
@@ -211,7 +212,8 @@ public class Robot extends TimedRobot {
 		// var startingAngleTicks = (int) proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
 		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		var target = 1400;
-		var delta = (tickkkkks - (int) target) * -1;
+		var targetProximal_COMP = 0;
+		var delta = (tickkkkks - (int) targetProximal_COMP) * -1;
 		var startingAngleTicks = proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90));
 
 		proximal.getMaster().setSelectedSensorPosition((int) (delta + startingAngleTicks));
@@ -219,8 +221,9 @@ public class Robot extends TimedRobot {
 		var wrist = SuperStructure.getInstance().getWrist();
 		var wristStart = (int) wrist.getMaster().getTicks(RoundRotation2d.getDegree(-43 + 4));
 		target = (int) 1800;
+		var targetWristComp = 0;
 		var correctionDelta = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-		var deltaW = (correctionDelta - (int) target) * 1;
+		var deltaW = (correctionDelta - (int) targetWristComp) * 1;
 
 		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
 
