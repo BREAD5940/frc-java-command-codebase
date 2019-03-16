@@ -420,7 +420,19 @@ public class Robot extends TimedRobot {
 	public void robotPeriodic() {
 		// var tickkkkks = (int) superstructure.getWrist().getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
 		// var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-		// System.out.println("Wrist absolute pos " + tickkkkks	 );
+		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+		SmartDashboard.putNumber("Elbow absolute pos " , tickkkkks	 );
+
+		var tickks = (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+
+		SmartDashboard.putNumber("wrist absolute pos " , tickks	 );
+
+		var ticcccks = (SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+
+		SmartDashboard.putNumber("Elevator absolute pos " , tickks	 );
+
+
+
 		// System.out.println(superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition());
 		// System.out.println(superstructure.getElbow().getMaster().getSensorPosition().getDegree());
 
