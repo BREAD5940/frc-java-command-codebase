@@ -2,12 +2,11 @@ package frc.robot.commands.auto.actions;
 
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.Robot;
 
 public class WaitForOI extends Command {
 	Command toRun;
 	Button toPoll;
+
 	public WaitForOI(Command toRunWhileWaiting, Button toPoll) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);

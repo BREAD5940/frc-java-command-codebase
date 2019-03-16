@@ -13,10 +13,7 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import frc.robot.Robot;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.AutoCommand;
@@ -35,7 +32,7 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 	Length mDesiredRight;
 	double mCurrentLeft;
 	double mCurrentRight;
-	
+
 	// private NetworkTableEntry refVelEntry = Shuffleboard.getTab("Auto").getLayout("List", "Pathing info").add("Reference Velocity", 0).getEntry();
 	// private NetworkTableEntry currentVelEntry = Shuffleboard.getTab("Auto").getLayout("List", "Pathing info").add("Current Velocity", 0).getEntry();
 
@@ -81,8 +78,6 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 
 		LiveDashboard.INSTANCE.setFollowingPath(true);
 
-
-
 		mUpdateNotifier = new Notifier(() -> {
 			output = trajectoryTracker.nextState(driveBase.getRobotPosition(), TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
 
@@ -95,8 +90,7 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 				LiveDashboard.INSTANCE.setPathHeading(referencePose.getRotation().getRadian());
 
 				// Shuffleboard.getTab("Auto").getLayout("Pathing", BuiltInLayouts.kList).
-				
-				
+
 				// refVelEntry.setDouble(referencePoint.getState().getVelocity().getType$FalconLibrary().getFeet());
 				// currentVelEntry.setDouble(driveBase.getLeft().getFeetPerSecond());
 

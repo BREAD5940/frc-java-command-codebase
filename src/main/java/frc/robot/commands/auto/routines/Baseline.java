@@ -9,7 +9,6 @@ package frc.robot.commands.auto.routines;
 
 import java.util.Arrays;
 
-import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.CentripetalAccelerationConstraint;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -48,7 +47,7 @@ public class Baseline extends CommandGroup {
 				false,
 				true);
 
-        addSequential(DriveTrain.getInstance().followTrajectory(baseline, TrajectoryTrackerMode.RAMSETE, true));
+		addSequential(DriveTrain.getInstance().followTrajectory(baseline, TrajectoryTrackerMode.RAMSETE, true));
 
 	}
 }

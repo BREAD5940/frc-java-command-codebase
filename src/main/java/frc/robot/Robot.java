@@ -203,9 +203,7 @@ public class Robot extends TimedRobot {
 		var target_COMP = 0;
 		var tickkkkks_ = (SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		var delta_ = (tickkkkks_ - (int) target_COMP) * -1;
-		// var startingAngleTicks_ = elevator.getMaster().getTicks(RoundRotation2d.getDegree(-90));
 
-		// var delta = 
 		elevator.getMaster().setSelectedSensorPosition((int) (startingHeightTicks + delta_));
 
 		var proximal = SuperStructure.getInstance().getElbow();
