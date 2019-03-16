@@ -120,7 +120,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 				Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
 		mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
-				true /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+				false /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
 
 		elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
 				new InvertSettings(true, InvertType.OpposeMaster, InvertType.FollowMaster, InvertType.FollowMaster));
@@ -252,7 +252,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		// Actually yeah all that you really need is the buttons
 		// well also jogging with joysticks but eehhhh
 		// actually that should be the default command, hot prank
-		setDefaultCommand(new JustElevatorTeleop());
+		// setDefaultCommand(new JustElevatorTeleop());
 	}
 
 	public SuperStructureState updateState() {
@@ -300,7 +300,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	public static Elevator getElevator() {
 		if (elevator == null)
 			elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
-					new InvertSettings(false, InvertType.FollowMaster, InvertType.OpposeMaster, InvertType.OpposeMaster));
+					new InvertSettings(true, InvertType.FollowMaster, InvertType.OpposeMaster, InvertType.OpposeMaster));
 		return elevator;
 	}
 

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
+import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.SetElevatorGear;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
@@ -134,11 +135,15 @@ public class OI {
 
 		// primaryDpadUp.whenPressed(new FarSideRocket('L'));
 		// primaryDpadLeft.whenPressed(new CloseSideRocket('L'));
-		primaryDpadDown.whenPressed(SequentialCommandFactory.getSequentialCommands(
-				Arrays.asList(
-						new SetHatchMech(HatchMechState.kClamped),
-						new SetGearCommand(Gear.LOW),
-						new SetElevatorGear(ElevatorGear.HIGH))));
+		primaryDpadDown.whenPressed(new ArmMove(iPosition.HATCH));
+
+						
+		
+			// 			primaryDpadUp.whenPressed(SequentialCommandFactory.getSequentialCommands(
+			// Arrays.asList(
+			// 		new SetHatchMech(HatchMechState.kOpen),
+			// 		new SetGearCommand(Gear.HIGH),
+			// 		new SetElevatorGear(ElevatorGear.LOW))));
 
 		// dsJogUp.whenPressed(new JogElevator(LengthKt.getInch(0.5), true));
 		// dsJogDown.whenPressed(new JogElevator(LengthKt.getInch(0.5), false));

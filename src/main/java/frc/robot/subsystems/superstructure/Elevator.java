@@ -18,6 +18,7 @@ import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 
@@ -132,7 +133,7 @@ public class Elevator extends HalfBakedSubsystem {
 		if (mode == EncoderMode.CTRE_MagEncoder_Relative) {
 			mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
 			mMaster.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 30);
-			mMaster.setSensorPhase(false);
+			mMaster.setSensorPhase(true);
 		}
 
 		mSlave1.set(ControlMode.Follower, mMaster.getDeviceID());
@@ -146,10 +147,13 @@ public class Elevator extends HalfBakedSubsystem {
 
 		mMaster.setSelectedSensorPosition(0);
 
-		mMaster.setInverted(settings.masterInverted);
-		mSlave1.setInverted(settings.slave1FollowerMode);
-		mSlave2.setInverted(settings.slave2FollowerMode);
-		mSlave3.setInverted(settings.slave3FollowerMode);
+		mMaster.setInverted(false);
+		mSlave1.setInverted(InvertType.OpposeMaster);
+		mSlave2.setInverted(InvertType.FollowMaster);
+		mSlave3.setInverted(InvertType.FollowMaster);
+
+		// mSlave2.setInverted(settings.slave2FollowerMode);
+		// mSlave3.setInverted(settings.slave3FollowerMode);
 
 		// mMaster.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, normalOpenOrClose);
 

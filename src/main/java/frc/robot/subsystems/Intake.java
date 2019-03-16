@@ -67,10 +67,11 @@ public class Intake extends Subsystem {
 	private Intake(int cargoPort, int hatchPort) {
 		cargoTalon = new WPI_TalonSRX(cargoPort);
 		hatchTalon = new WPI_TalonSRX(hatchPort);
+		hatchTalon.setInverted(true);
 		// talon.configOpenloopRamp(0.15);
 		hatchTalon.configContinuousCurrentLimit(20);
 		hatchTalon.configPeakCurrentLimit(40);
-		hatchTalon.configPeakCurrentDuration(100);
+		hatchTalon.configPeakCurrentDuration(400);
 		hatchTalon.enableCurrentLimit(true);
 		// talon.setName("Intake");
 		cargoTalon.configPeakOutputForward(.8);
@@ -78,7 +79,7 @@ public class Intake extends Subsystem {
 	}
 
 	private Intake() {
-		this(35, 34);
+		this(34, 35);
 	}
 
 	/**

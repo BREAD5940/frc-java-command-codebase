@@ -5,6 +5,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -76,19 +77,19 @@ public class Robot extends TimedRobot {
 
 	public static DoubleSolenoid getShifterSolenoid() {
 		if (shifterDoubleSolenoid == null)
-			shifterDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
+			shifterDoubleSolenoid = new DoubleSolenoid(9, 4, 5);
 		return shifterDoubleSolenoid;
 	}
 
 	public static DoubleSolenoid getIntakeSolenoidInstance() {
 		if (intakeDoubleSolenoid == null)
-			intakeDoubleSolenoid = new DoubleSolenoid(9, 6, 7);
+			intakeDoubleSolenoid = new DoubleSolenoid(9, 0, 1);
 		return intakeDoubleSolenoid;
 	}
 
 	public static DoubleSolenoid getElevatorShifter() {
 		if (elevatorShifterDoubleSolenoid == null) {
-			elevatorShifterDoubleSolenoid = new DoubleSolenoid(9, 4, 5);
+			elevatorShifterDoubleSolenoid = new DoubleSolenoid(9, 2, 3);
 		}
 		return elevatorShifterDoubleSolenoid;
 	}
@@ -116,7 +117,7 @@ public class Robot extends TimedRobot {
 	public static void setElevatorShifter(boolean isKForward) {
 		DoubleSolenoid.Value value = (isKForward) ? Value.kForward : Value.kReverse;
 		if (elevatorShifterDoubleSolenoid == null)
-			elevatorShifterDoubleSolenoid = new DoubleSolenoid(9, 4, 5);
+			elevatorShifterDoubleSolenoid = new DoubleSolenoid(9, 2, 3);
 		if (value == null)
 			value = DoubleSolenoid.Value.kForward; // TODO hack
 		elevatorShifterDoubleSolenoid.set(value); // FIXME it's a hack
@@ -325,11 +326,11 @@ public class Robot extends TimedRobot {
 
 		// zeroElevatorWhileDisabled.start();
 
-		try {
-			mResetNotifier.startPeriodic(0.5);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		// try {
+			// mResetNotifier.startPeriodic(0.5);
+		// } catch (Exception e) {
+			// e.printStackTrace();
+		// }
 
 		if (RobotConfig.auto.auto_gear == Gear.LOW) {
 			drivetrain.setLowGear();
@@ -359,7 +360,7 @@ public class Robot extends TimedRobot {
 		// drivetrain.gyro.reset(); // Reset the current gyro heading to zero
 		// drivetrain.zeroEncoders();
 
-		mAutoChooser.getSelection().start();
+8		// mAutoChooser.getSelection().start();
 
 		// 	if (RobotConfig.auto.auto_gear == Gear.LOW) {
 		// 		drivetrain.setLowGear();
@@ -376,6 +377,17 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+	}
+
+	public void disableTheSuperStructure() {
+		superstructure.getElevator().getMaster().configPeakOutputForward(0);
+		superstructure.getElevator().getMaster().configPeakOutputReverse(0);
+
+		superstructure.getInstance().getElbow().getMaster().configPeakOutputForward(0);
+		superstructure.getInstance().getElbow().getMaster().configPeakOutputReverse(0);
+
+		superstructure.getInstance().getWrist().getMaster().configPeakOutputForward(0);
+		superstructure.getInstance().getWrist().getMaster().configPeakOutputReverse(0);
 	}
 
 	@Override
@@ -404,6 +416,9 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		
+		SuperStructure.getElevator().getMaster().set(ControlMode.PercentOutput, 0);
+
 		Scheduler.getInstance().run();
 	}
 
@@ -424,6 +439,9 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
+
+		disableTheSuperStructure();
+
 		// var tickkkkks = (int) superstructure.getWrist().getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
 		// var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
