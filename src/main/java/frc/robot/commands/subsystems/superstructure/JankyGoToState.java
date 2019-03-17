@@ -28,7 +28,7 @@ public class JankyGoToState extends CommandGroup {
 
 		addSequential(new PrintCommand("requested state: " + requ_.toCSV()));
 
-		addSequential(new ConditionalCommand(new ElevatorThanArm(requ_), new ArmThanElevator(requ_)) {
+		var safeMove = new ConditionalCommand(new ElevatorThanArm(requ_), new ArmThanElevator(requ_)) {
 
 			@Override
 			protected boolean condition() {
@@ -48,7 +48,26 @@ public class JankyGoToState extends CommandGroup {
 				return shouldMoveElevatorFirst;
 
 			}
-		});
+		};
+
+	var choosePath = new ConditionalCommand(new SuperstructureGoToState(requ_), safeMove){
+	
+		@Override
+		protected boolean condition() {
+			var proximalThreshold = -10;
+			var currentState = SuperStructure.getInstance().getCurrentState();
+			var nowOutsideFrame = currentState.getElbowAngle().getDegree() > proximalThreshold;
+			var willBeOutsideFrame = requ_.getElbowAngle().getDegree() > proximalThreshold;
+
+			var safeToMoveSynced = nowOutsideFrame && willBeOutsideFrame;
+
+			System.out.println("Safe to move synced? " + safeToMoveSynced);
+
+			return safeToMoveSynced;
+		}
+	};
+
+	addSequential(choosePath);
 
 	}
 
