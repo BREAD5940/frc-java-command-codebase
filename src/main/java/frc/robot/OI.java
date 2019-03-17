@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.KillAuto;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
+import frc.robot.commands.subsystems.drivetrain.HybridKinematicDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
@@ -110,7 +111,9 @@ public class OI {
 						new JankyGoToState(fieldPositions.cargoMiddleGoal.plus(LengthKt.getInch(2)), SuperStructure.iPosition.CARGO_DOWN))));
 
 		// hatch presets
-		primaryRightAnalogButton.whileHeld(new HybridDriverAssist(5));
+		// primaryRightAnalogButton.whileHeld(new HybridDriverAssist(5));
+		primaryRightAnalogButton.whileHeld(new HybridKinematicDriverAssist());
+
 
 		dsHatch1.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
