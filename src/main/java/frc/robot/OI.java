@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.KillAuto;
+import frc.robot.commands.auto.routines.CloseSideRocket;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.HybridKinematicDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
@@ -114,7 +115,6 @@ public class OI {
 		// primaryRightAnalogButton.whileHeld(new HybridDriverAssist(5));
 		primaryRightAnalogButton.whileHeld(new HybridKinematicDriverAssist());
 
-
 		dsHatch1.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
 						new SetHatchMech(HatchMechState.kClamped),
@@ -135,6 +135,9 @@ public class OI {
 						new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));
 
 		primaryDpadUp.whenPressed(new KillAuto());
+
+		primaryDpadDown.whenPressed(new CloseSideRocket('L'));
+
 		// primaryDpadLeft.whenPressed(new CloseSideRocket('L'));
 		// primaryDpadDown.whenPressed(new ArmMove(iPosition.HATCH));
 

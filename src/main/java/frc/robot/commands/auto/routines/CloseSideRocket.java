@@ -15,11 +15,14 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
+import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheThird;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
 import frc.robot.commands.subsystems.drivetrain.PIDDriveDistance;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
@@ -70,8 +73,8 @@ public class CloseSideRocket extends VisionCommandGroup {
 						LengthKt.getFeet(22),
 						Rotation2dKt.getDegree(90)),
 				new Pose2d(
-						LengthKt.getFeet(14.8),
-						LengthKt.getFeet(24),
+						LengthKt.getFeet(14),
+						LengthKt.getFeet(23.5),
 						Rotation2dKt.getDegree(30)));
 
 		List<Pose2d> p_halfWayToLoadingStationL = Arrays.asList(
@@ -94,40 +97,49 @@ public class CloseSideRocket extends VisionCommandGroup {
 						LengthKt.getFeet(24.85),
 						Rotation2dKt.getDegree(180)));
 
-		if (!isLeft) {
-			// p_fallOffHab = Util.reflectTrajectory(p_fallOffHab);
-			p_toHatchPlace = Util.reflectTrajectory(p_toHatchPlace);
-			p_halfWayToLoadingStationL = Util.reflectTrajectory(p_halfWayToLoadingStationL);
-			p_toLoadingStation = Util.reflectTrajectory(p_toLoadingStation);
-		}
+		// if (!isLeft) {
+		// 	// p_fallOffHab = Util.reflectTrajectory(p_fallOffHab);
+		// 	p_toHatchPlace = Util.reflectTrajectory(p_toHatchPlace);
+		// 	p_halfWayToLoadingStationL = Util.reflectTrajectory(p_halfWayToLoadingStationL);
+		// 	p_toLoadingStation = Util.reflectTrajectory(p_toLoadingStation);
+		// }
 
 		// public static TimedTrajectory<Pose2dWithCurvature> generateTrajectory(List<Pose2d> waypoints,
 		// List<? extends TimingConstraint<Pose2dWithCurvature>> constraints_, Velocity<Length> startVelocity, Velocity<Length> endVelocity, Velocity<Length> maxVelocity, Acceleration<Length> maxAcceleration, boolean reversed, boolean optomizeSplines) {
 
 		var t_toPlaceHatch = Trajectories.generateTrajectory(p_toHatchPlace, Trajectories.kLowGearConstraints, kDefaultStartVelocity,
-				kDefaultEndVelocity, VelocityKt.getVelocity(LengthKt.getFeet(7)), kDefaultAcceleration, true, true);
+				kDefaultEndVelocity, VelocityKt.getVelocity(LengthKt.getFeet(/*7*/ 6)), kDefaultAcceleration, false, true);
 
 		var t_halfWayToLoadingStationL = Trajectories.generateTrajectory(p_halfWayToLoadingStationL, Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(0)),
-				VelocityKt.getVelocity(LengthKt.getFeet(0)), VelocityKt.getVelocity(LengthKt.getFeet(6)), kDefaultAcceleration, false, true);
+				VelocityKt.getVelocity(LengthKt.getFeet(0)), VelocityKt.getVelocity(LengthKt.getFeet(6)), kDefaultAcceleration, true, true);
 
 		var t_toLoadingStation = Trajectories.generateTrajectory(p_toLoadingStation, Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0)), VelocityKt.getVelocity(LengthKt.getFeet(6)), kDefaultAcceleration, false, true);
 
 		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_fallOffHab, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // fall off the hab
-		addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
+		// addSequential(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_toPlaceHatch, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // keep going over to the far side of the rocket
+		// addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		// CommandGroup waitForABit = new CommandGroup();
+		// waitForABit.addSequential(new WaitCommand("yes", 4));
+		// waitForABit.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		// addSequential(waitForABit);
 		addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		
+
+
 		addSequential(new FollowVisionTargetTheSecond(3.8));
+		// addSequential(new DriveDistanceTheThird(LengthKt.getInch(6), false));
 		addSequential(new RunIntake(-1, 0, 1));
 
-		addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_halfWayToLoadingStationL, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // nyoom off to the side
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_toLoadingStation, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); // go to the loading station
-		// addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-		addSequential(new FollowVisionTargetTheSecond(4.5));
-		addSequential(new PIDDriveDistance(0.5, 4, /* timeout */ 0.5));
-		addSequential(new RunIntake(1, 0, 1));
-		addSequential(new PIDDriveDistance(-5, 12, /* timeout */ 1));
+		// addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
+		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_halfWayToLoadingStationL, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // nyoom off to the side
+		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_toLoadingStation, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); // go to the loading station
+		// // addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		// addSequential(new FollowVisionTargetTheSecond(4.5));
+		// addSequential(new PIDDriveDistance(0.5, 4, /* timeout */ 0.5));
+		// addSequential(new RunIntake(1, 0, 1));
+		// addSequential(new PIDDriveDistance(-5, 12, /* timeout */ 1));
 
 	}
 
