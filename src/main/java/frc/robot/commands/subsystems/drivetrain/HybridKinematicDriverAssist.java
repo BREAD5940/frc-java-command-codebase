@@ -42,6 +42,7 @@ public class HybridKinematicDriverAssist extends Command {
 	double lastTx = 0;
 	double lastGyroAngle = 0;
 	double lastDistanceToTurn = 0;
+	final boolean doGyroCompensation = true; // FIXME make me off if you wanna kill it
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
@@ -55,7 +56,7 @@ public class HybridKinematicDriverAssist extends Command {
 		var mGyroAngle = DriveTrain.getInstance().getGyro();
 		var distToTurn = comped_tx;
 
-		if(tx == lastTx) { // if same use gyro
+		if(tx == lastTx && doGyroCompensation) { // if same use gyro
 			distToTurn = lastTx + (lastTx - tx) - (Robot.m_oi.getTurnAxis() * 15);
 		}
 
