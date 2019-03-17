@@ -166,7 +166,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-190)), new RotatingArmState(RoundRotation2d.getDegree(-110)));
 
 		// grab a hatch by ramming against the loading station. Takes advantage of bumper recesses
-		public static final SuperStructureState HATCH_GRAB_INSIDE = new SuperStructureState(new ElevatorState(LengthKt.getInch(20)),
+		public static final SuperStructureState HATCH_GRAB_INSIDE = new SuperStructureState(new ElevatorState(LengthKt.getInch(21)),
 				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-89)), new RotatingArmState(RoundRotation2d.getDegree(48))));
 		public static final SuperStructureState HATCH_GRAB_INSIDE_PREP = new SuperStructureState(new ElevatorState(LengthKt.getInch(18)),
 				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-89)), new RotatingArmState(RoundRotation2d.getDegree(48))));
