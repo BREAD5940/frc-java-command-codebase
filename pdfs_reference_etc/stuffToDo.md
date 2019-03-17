@@ -12,3 +12,6 @@ Calibrate PWM absolute encoder offset on wrist
 Wire in cargo ship presets - 12
 Fix cargo ship preset binding (currently 8) - 4
 Test new elevator trim impl - 10
+
+
+invert master

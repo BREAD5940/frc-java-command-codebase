@@ -112,8 +112,8 @@ public class OI {
 						new JankyGoToState(fieldPositions.cargoMiddleGoal.plus(LengthKt.getInch(2)), SuperStructure.iPosition.CARGO_DOWN))));
 
 		// hatch presets
-		// primaryRightAnalogButton.whileHeld(new HybridDriverAssist(5));
-		primaryRightAnalogButton.whileHeld(new HybridKinematicDriverAssist());
+		primaryRightAnalogButton.whileHeld(new HybridDriverAssist(5));
+		// primaryRightAnalogButton.whileHeld(new HybridKinematicDriverAssist());
 
 		dsHatch1.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(

@@ -63,14 +63,30 @@ public class CloseSideRocket extends VisionCommandGroup {
 
 		final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(6));
 
-		List<Pose2d> p_toHatchPlace = Arrays.asList(
+		List<Pose2d> p_hab = Arrays.asList(
 				new Pose2d(
 						LengthKt.getFeet(5.2),
 						LengthKt.getFeet(17.6),
 						Rotation2dKt.getDegree(90)),
 				new Pose2d(
 						LengthKt.getFeet(5.5),
-						LengthKt.getFeet(22),
+						LengthKt.getFeet(21.5),
+						Rotation2dKt.getDegree(90))
+				// new Pose2d(
+						// LengthKt.getFeet(14),
+						// LengthKt.getFeet(23.5),
+						// Rotation2dKt.getDegree(30)));
+
+		);
+
+		List<Pose2d> p_toHatchPlace = Arrays.asList(
+				// new Pose2d(
+						// LengthKt.getFeet(5.2),
+						// LengthKt.getFeet(17.6),
+						// Rotation2dKt.getDegree(90)),
+				new Pose2d(
+						LengthKt.getFeet(5.5),
+						LengthKt.getFeet(21.5),
 						Rotation2dKt.getDegree(90)),
 				new Pose2d(
 						LengthKt.getFeet(14),
@@ -97,18 +113,22 @@ public class CloseSideRocket extends VisionCommandGroup {
 						LengthKt.getFeet(24.85),
 						Rotation2dKt.getDegree(180)));
 
-		// if (!isLeft) {
-		// 	// p_fallOffHab = Util.reflectTrajectory(p_fallOffHab);
-		// 	p_toHatchPlace = Util.reflectTrajectory(p_toHatchPlace);
-		// 	p_halfWayToLoadingStationL = Util.reflectTrajectory(p_halfWayToLoadingStationL);
-		// 	p_toLoadingStation = Util.reflectTrajectory(p_toLoadingStation);
-		// }
+		if (!isLeft) {
+			// p_fallOffHab = Util.reflectTrajectory(p_fallOffHab);
+			p_toHatchPlace = Util.reflectTrajectory(p_toHatchPlace);
+			p_halfWayToLoadingStationL = Util.reflectTrajectory(p_halfWayToLoadingStationL);
+			p_toLoadingStation = Util.reflectTrajectory(p_toLoadingStation);
+		}
 
 		// public static TimedTrajectory<Pose2dWithCurvature> generateTrajectory(List<Pose2d> waypoints,
 		// List<? extends TimingConstraint<Pose2dWithCurvature>> constraints_, Velocity<Length> startVelocity, Velocity<Length> endVelocity, Velocity<Length> maxVelocity, Acceleration<Length> maxAcceleration, boolean reversed, boolean optomizeSplines) {
 
-		var t_toPlaceHatch = Trajectories.generateTrajectory(p_toHatchPlace, Trajectories.kLowGearConstraints, kDefaultStartVelocity,
-				kDefaultEndVelocity, VelocityKt.getVelocity(LengthKt.getFeet(/*7*/ 6)), kDefaultAcceleration, false, true);
+			var t_hab = Trajectories.generateTrajectory(p_hab, Trajectories.kLowGearConstraints, kDefaultStartVelocity,
+			VelocityKt.getVelocity(LengthKt.getFeet(/*7*/ 4)), VelocityKt.getVelocity(LengthKt.getFeet(/*7*/ 6)), kDefaultAcceleration, false, true);
+
+
+		var t_toPlaceHatch = Trajectories.generateTrajectory(p_toHatchPlace, Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(/*7*/ 4)),
+				kDefaultEndVelocity, VelocityKt.getVelocity(LengthKt.getFeet(/*7*/ 5)), kDefaultAcceleration, false, true);
 
 		var t_halfWayToLoadingStationL = Trajectories.generateTrajectory(p_halfWayToLoadingStationL, Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0)), VelocityKt.getVelocity(LengthKt.getFeet(6)), kDefaultAcceleration, true, true);
@@ -118,19 +138,22 @@ public class CloseSideRocket extends VisionCommandGroup {
 
 		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_fallOffHab, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // fall off the hab
 		// addSequential(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_toPlaceHatch, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // keep going over to the far side of the rocket
+
+		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_hab, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // keep going over to the far side of the rocket
+		addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+
+		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_toPlaceHatch, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); // keep going over to the far side of the rocket
 		// addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 		// CommandGroup waitForABit = new CommandGroup();
 		// waitForABit.addSequential(new WaitCommand("yes", 4));
 		// waitForABit.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-		// addSequential(waitForABit);
-		addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		// addParallel(waitForABit);
 		
+		// addSequential(new WaitCommand(0.2));
 
-
-		addSequential(new FollowVisionTargetTheSecond(3.8));
+		// addSequential(new FollowVisionTargetTheSecond(3.5));
 		// addSequential(new DriveDistanceTheThird(LengthKt.getInch(6), false));
-		addSequential(new RunIntake(-1, 0, 1));
+		// addSequential(new RunIntake(-1, 0, 1));
 
 		// addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
 		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_halfWayToLoadingStationL, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // nyoom off to the side

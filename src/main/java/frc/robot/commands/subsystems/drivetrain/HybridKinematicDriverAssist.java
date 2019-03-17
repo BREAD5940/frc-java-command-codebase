@@ -55,9 +55,9 @@ public class HybridKinematicDriverAssist extends Command {
 		var mGyroAngle = DriveTrain.getInstance().getGyro();
 		var distToTurn = comped_tx;
 
-		if (tx == lastTx && doGyroCompensation) { // if same use gyro
-			distToTurn = lastTx + (lastTx - tx) - (Robot.m_oi.getTurnAxis() * 15);
-		}
+		// if (tx == lastTx && doGyroCompensation) { // if same use gyro
+			// distToTurn = lastTx + (lastTx - tx) - (Robot.m_oi.getTurnAxis() * 15);
+		// }
 
 		if (tv < 1.0) {
 			hasTarget = false;
@@ -74,11 +74,13 @@ public class HybridKinematicDriverAssist extends Command {
 		final double foreMaxSpeed = Util.toMeters(6); // meters
 		final double turnMaxSpeed = 4; // ft
 
-		final double turn_kp = 0.04;
+		final double turn_kp = 0.03;
 		double turn_cmd = Util.toMeters(distToTurn * turn_kp * turnMaxSpeed);
 
 		ChassisState mCalcedState = new ChassisState(fore_cmd * foreMaxSpeed, turn_cmd);
 		// DriveTrain.getInstance().getDifferentialDrive().solveInverseKinematics(mCalcedState);
+
+		System.out.println("desired state: " + mCalcedState.getLinear() + "," + mCalcedState.getAngular());
 
 		if (hasTarget) {
 			DriveTrain.getInstance().setOutputFromKinematics(mCalcedState);
