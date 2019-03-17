@@ -136,11 +136,12 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	public DifferentialDrive getDifferentialDrive() {
 		// String mes = (mCurrentGear == Gear.LOW) ? "lowGearDifferentialDrive" : "highGearDifferentialDrive"; 
 		SmartDashboard.putString("current drive model", (mCurrentGear == Gear.LOW) ? "lowGearDifferentialDrive" : "highGearDifferentialDrive");
+
 		return (mCurrentGear == Gear.LOW) ? lowGearDifferentialDrive : highGearDifferentialDrive;
 	}
 
 	// public double mCurrentSolenoidValue = Robot.shifterso
-
+	
 	// public DCMotorTransmission getTransmissionModel() {
 	//   return mTransmissionModel;
 	// }
@@ -256,6 +257,11 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	public void stop() {
 		getLeft().stop();
 		getRight().stop();
+	}
+
+	public void coast() {
+		getLeft().getMaster().neutralOutput();
+		getRight().getMaster().neutralOutput();
 	}
 
 	// /**
