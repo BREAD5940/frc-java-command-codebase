@@ -12,19 +12,14 @@ import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.KillAuto;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
-import frc.robot.commands.subsystems.superstructure.ArmMove;
-import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
-import frc.robot.commands.subsystems.superstructure.SetElevatorGear;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.factories.SequentialCommandFactory;
-import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
-import frc.robot.subsystems.superstructure.Elevator.ElevatorGear;
 import frc.robot.subsystems.superstructure.SuperStructure;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
@@ -142,14 +137,11 @@ public class OI {
 
 		// primaryDpadUp.whenPressed(new ElevatorMove(new ElevatorState(LengthKt.getInch(35))));
 
-
-
-		
-			// 			primaryDpadUp.whenPressed(SequentialCommandFactory.getSequentialCommands(
-			// Arrays.asList(
-			// 		new SetHatchMech(HatchMechState.kOpen),
-			// 		new SetGearCommand(Gear.HIGH),
-			// 		new SetElevatorGear(ElevatorGear.LOW))));
+		// 			primaryDpadUp.whenPressed(SequentialCommandFactory.getSequentialCommands(
+		// Arrays.asList(
+		// 		new SetHatchMech(HatchMechState.kOpen),
+		// 		new SetGearCommand(Gear.HIGH),
+		// 		new SetElevatorGear(ElevatorGear.LOW))));
 
 		// dsJogUp.whenPressed(new JogElevator(LengthKt.getInch(0.5), true));
 		// dsJogDown.whenPressed(new JogElevator(LengthKt.getInch(0.5), false));

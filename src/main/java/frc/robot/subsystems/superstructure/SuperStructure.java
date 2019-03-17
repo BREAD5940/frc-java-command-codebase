@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.JustElevatorTeleop;
 import frc.robot.lib.HalfBakedSubsystem;
 import frc.robot.lib.Loggable;
@@ -278,7 +277,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 			mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
 					Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
-					mWrist.getMaster().setSensorPhase(true);
+		mWrist.getMaster().setSensorPhase(true);
 		return mWrist;
 	}
 
@@ -286,9 +285,9 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		if (mElbow == null)
 			mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
 					true /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
-					mElbow.getMaster().setSensorPhase(false);
+		mElbow.getMaster().setSensorPhase(false);
 
-					return mElbow;
+		return mElbow;
 	}
 
 	public DCMotorTransmission getWTransmission() {

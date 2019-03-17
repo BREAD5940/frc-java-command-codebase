@@ -5,7 +5,6 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -208,7 +207,6 @@ public class Robot extends TimedRobot {
 		elevator.getMaster().setSelectedSensorPosition((int) (startingHeightTicks + delta_));
 		// elevator.getMaster().setSelectedSensorPosition((int) (startingHeightTicks));
 
-
 		var proximal = SuperStructure.getInstance().getElbow();
 		// var startingAngleTicks = (int) proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
 		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
@@ -220,7 +218,6 @@ public class Robot extends TimedRobot {
 		proximal.getMaster().setSelectedSensorPosition((int) (delta + startingAngleTicks));
 		// proximal.getMaster().setSelectedSensorPosition((int) (startingAngleTicks));
 
-
 		var wrist = SuperStructure.getInstance().getWrist();
 		var wristStart = (int) wrist.getMaster().getTicks(RoundRotation2d.getDegree(-43 + 4 - 4));
 		target = (int) 1500;
@@ -230,7 +227,6 @@ public class Robot extends TimedRobot {
 
 		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
 		// wrist.getMaster().setSelectedSensorPosition((int) (wristStart));
-
 
 		switch (RobotConfig.auto.auto_gear) {
 		case HIGH:
@@ -333,9 +329,9 @@ public class Robot extends TimedRobot {
 		// zeroElevatorWhileDisabled.start();
 
 		// try {
-			// mResetNotifier.startPeriodic(0.5);
+		// mResetNotifier.startPeriodic(0.5);
 		// } catch (Exception e) {
-			// e.printStackTrace();
+		// e.printStackTrace();
 		// }
 
 		if (RobotConfig.auto.auto_gear == Gear.LOW) {
@@ -422,7 +418,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		
+
 		Scheduler.getInstance().run();
 	}
 
@@ -450,27 +446,27 @@ public class Robot extends TimedRobot {
 
 		final boolean postTicks = true;
 
-		if(postTicks) {
-		// var tickkkkks = (int) superstructure.getWrist().getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
-		// var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-		SmartDashboard.putNumber("Elbow absolute pos ", tickkkkks);
+		if (postTicks) {
+			// var tickkkkks = (int) superstructure.getWrist().getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
+			// var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+			var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+			SmartDashboard.putNumber("Elbow absolute pos ", tickkkkks);
 
-		var tickks = (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+			var tickks = (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 
-		SmartDashboard.putNumber("wrist absolute pos ", tickks);
+			SmartDashboard.putNumber("wrist absolute pos ", tickks);
 
-		var ticcccks = (SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+			var ticcccks = (SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 
-		SmartDashboard.putNumber("Elevator absolute pos ", tickks);
+			SmartDashboard.putNumber("Elevator absolute pos ", tickks);
 
-		// System.out.println(superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition());
-		// System.out.println(superstructure.getElbow().getMaster().getSensorPosition().getDegree());
+			// System.out.println(superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition());
+			// System.out.println(superstructure.getElbow().getMaster().getSensorPosition().getDegree());
 
-		SmartDashboard.putString(SuperStructure.getInstance().getCurrentState().getCSVHeader(), SuperStructure.getInstance().getCurrentState().toCSV());
+			SmartDashboard.putString(SuperStructure.getInstance().getCurrentState().getCSVHeader(), SuperStructure.getInstance().getCurrentState().toCSV());
 
 		}
-		
+
 		// var elevatorAbsTicks = SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 1024;
 		// System.out.println(elevatorAbsTicks);
 

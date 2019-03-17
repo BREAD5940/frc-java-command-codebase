@@ -141,7 +141,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	}
 
 	// public double mCurrentSolenoidValue = Robot.shifterso
-	
+
 	// public DCMotorTransmission getTransmissionModel() {
 	//   return mTransmissionModel;
 	// }

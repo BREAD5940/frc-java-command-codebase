@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.DriveTrain.Gear;
 
 public class HybridKinematicDriverAssist extends Command {
 
@@ -56,7 +55,7 @@ public class HybridKinematicDriverAssist extends Command {
 		var mGyroAngle = DriveTrain.getInstance().getGyro();
 		var distToTurn = comped_tx;
 
-		if(tx == lastTx && doGyroCompensation) { // if same use gyro
+		if (tx == lastTx && doGyroCompensation) { // if same use gyro
 			distToTurn = lastTx + (lastTx - tx) - (Robot.m_oi.getTurnAxis() * 15);
 		}
 
@@ -71,7 +70,6 @@ public class HybridKinematicDriverAssist extends Command {
 		}
 
 		double fore_cmd = Robot.m_oi.getForwardAxis();
-
 
 		final double foreMaxSpeed = Util.toMeters(6); // meters
 		final double turnMaxSpeed = 4; // ft
