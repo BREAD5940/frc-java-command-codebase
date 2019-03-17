@@ -43,6 +43,8 @@ public class HybridDriverAssist extends Command {
 		double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
 		double ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
 
+		tx = tx + (Robot.m_oi.getTurnAxis() * 15); // TODO tune, to offset allignment
+
 		if (tv < 1.0) {
 			hasTarget = false;
 			turnCommand = 0.0;
