@@ -74,7 +74,8 @@ public class Transmission {
 
 	public Length getDistance() {
 		var rawDistance = NativeUnitKt.getNativeUnits(mEncoder.getDistance());
-		var toReturn = 
+		var toReturn = lengthModel.fromNativeUnitPosition(rawDistance);
+		return toReturn;
 	}
 
 	public Velocity<Length> getVelocity() {
@@ -107,6 +108,11 @@ public class Transmission {
 		// mMaster.config_kF(0, kf, 0);
 		mMaster.getController().setIZone((int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getMeter(iZone)).getValue()), 30);
 		// mMaster.configMaxIntegralAccumulator(0, maxIntegral, 0);
+	}
+
+	public void zeroEncoder() {
+		mEncoder.reset();
+		mMaster.getEncoder().setPosition(0);
 	}
 
 }
