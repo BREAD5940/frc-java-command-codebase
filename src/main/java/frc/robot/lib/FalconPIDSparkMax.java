@@ -1,7 +1,6 @@
 package frc.robot.lib;
 
 import org.ghrobotics.lib.mathematics.units.Length;
-import org.ghrobotics.lib.mathematics.units.SIUnit;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
@@ -14,7 +13,6 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.PWMSpeedController;
 
 public abstract class FalconPIDSparkMax extends CANSparkMax implements FalconMotor<Length> {
 
@@ -32,7 +30,7 @@ public abstract class FalconPIDSparkMax extends CANSparkMax implements FalconMot
 		controller = new PIDController(settings.kp, settings.ki, settings.kd, encoder, this, 0.01);
 
 		this.model = model;
-		
+
 		setNeutral();
 		setSmartCurrentLimit(FalconSparkMax.kDefaultStallCurrent, FalconSparkMax.kFreeCurrent);
 	}

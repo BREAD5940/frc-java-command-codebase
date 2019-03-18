@@ -7,7 +7,6 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Volt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VoltKt;
 import org.ghrobotics.lib.wrappers.FalconMotor;
 
-import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;

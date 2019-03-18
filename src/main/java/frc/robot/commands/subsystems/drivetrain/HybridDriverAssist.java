@@ -84,8 +84,8 @@ public class HybridDriverAssist extends Command {
 		}
 
 		// if (Math.abs(tx) < 5) {
-			steer_cmd = tx * closeK;
-			steer_cmd = Util.limit(steer_cmd, 0.4);
+		steer_cmd = tx * closeK;
+		steer_cmd = Util.limit(steer_cmd, 0.4);
 		// // } else if (Math.abs(tx) < 10) {
 		// // 	steer_cmd = tx * nearK;
 		// } else {

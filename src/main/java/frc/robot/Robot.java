@@ -5,7 +5,6 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.Compressor;
@@ -446,20 +445,16 @@ public class Robot extends TimedRobot {
 		// disableTheSuperStructure();
 
 		System.out.println(
-			"Left can encoder distance (inches) " + drivetrain.getLeft().getMaster().getDistance().getInch()
-		);
+				"Left can encoder distance (inches) " + drivetrain.getLeft().getMaster().getDistance().getInch());
 
 		System.out.println(
-			"Right can encoder distance (inches) " + drivetrain.getRight().getMaster().getDistance().getInch()
-		);
+				"Right can encoder distance (inches) " + drivetrain.getRight().getMaster().getDistance().getInch());
 
 		System.out.println(
-			"Left RoboRIO encoder distance (inches) " + drivetrain.getLeft().getDistance().getInch()
-		);
+				"Left RoboRIO encoder distance (inches) " + drivetrain.getLeft().getDistance().getInch());
 
 		System.out.println(
-			"Right RoboRIO encoder distance (inches) " + drivetrain.getRight().getDistance().getInch()
-		);
+				"Right RoboRIO encoder distance (inches) " + drivetrain.getRight().getDistance().getInch());
 
 		final boolean postTicks = true;
 

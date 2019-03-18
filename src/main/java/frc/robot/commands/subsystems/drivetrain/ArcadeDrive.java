@@ -1,6 +1,5 @@
 package frc.robot.commands.subsystems.drivetrain;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.command.Command;

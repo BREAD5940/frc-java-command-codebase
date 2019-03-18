@@ -3,14 +3,6 @@ package frc.robot.subsystems;
 import java.util.Arrays;
 import java.util.List;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.team254.lib.physics.DifferentialDrive;
-import com.team254.lib.physics.DifferentialDrive.ChassisState;
-
 import org.ghrobotics.lib.localization.Localization;
 import org.ghrobotics.lib.localization.TankEncoderLocalization;
 import org.ghrobotics.lib.mathematics.twodim.control.FeedForwardTracker;
@@ -23,15 +15,19 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
 import org.ghrobotics.lib.subsystems.drive.DifferentialTrackerDriveBase;
 import org.ghrobotics.lib.wrappers.FalconMotor;
 
+import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.team254.lib.physics.DifferentialDrive;
+import com.team254.lib.physics.DifferentialDrive.ChassisState;
+
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -113,16 +109,15 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	Encoder leftEncoder = new Encoder(Constants.kLeftEncoderA, Constants.kLeftEncoderB, Constants.kLeftEncoderInvert, EncodingType.k4X);
 	NativeUnitLengthModel leftModel = RobotConfig.driveTrain.LEFT_NATIVE_UNIT_LENGTH_MODEL;
 
-
 	Encoder rightEncoder = new Encoder(Constants.kRightEncoderA, Constants.kRightEncoderB, Constants.kRightEncoderInvert, EncodingType.k4X);
 	NativeUnitLengthModel rightModel = RobotConfig.driveTrain.RIGHT_NATIVE_UNIT_LENGTH_MODEL;
 
 	private DriveTrain() {
 		leftTransmission = new Transmission(RobotConfig.driveTrain.leftTalons.m_left_talon_port,
-				RobotConfig.driveTrain.leftTalons.s_left_talon_port,  
+				RobotConfig.driveTrain.leftTalons.s_left_talon_port,
 				leftModel, leftEncoder, TransmissionSide.LEFT, true);
 		rightTransmission = new Transmission(RobotConfig.driveTrain.rightTalons.m_right_talon_port,
-				RobotConfig.driveTrain.rightTalons.s_right_talon_port, 
+				RobotConfig.driveTrain.rightTalons.s_right_talon_port,
 				rightModel, rightEncoder, TransmissionSide.RIGHT, false);
 
 		/* Create a localization object because lamda expressions are fun */

@@ -91,14 +91,14 @@ public class FalconSparkMax extends CANSparkMax implements FalconMotor<Length> {
 	@Override
 	public void setPercentOutput(double arg0) {
 		super.set(arg0);
-		
+
 	}
 
 	@Override
 
 	public void setVelocity(Velocity<Length> arg0) {
 		var ticksPerSec = mModel.toNativeUnitVelocity(arg0.getValue());
-		System.out.println("Setting Spark max PID Controller to " +ticksPerSec + " ticks per sec!");
+		System.out.println("Setting Spark max PID Controller to " + ticksPerSec + " ticks per sec!");
 		controller.setReference(ticksPerSec, ControlType.kVelocity);
 	}
 

@@ -3,16 +3,16 @@ package frc.robot.subsystems;
 import java.util.Arrays;
 import java.util.List;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -49,7 +49,7 @@ public class Transmission {
 		mMaster = new FalconSparkMax(masterPort, MotorType.kBrushless, lengthModel);
 		mSlave = new FalconFollowerSparkMax(slavePort, MotorType.kBrushless, mMaster, false);
 		this.side = side;
-		
+
 		mMaster.enableVoltageCompensation(12);
 		mSlave.enableVoltageCompensation(12);
 
@@ -70,7 +70,6 @@ public class Transmission {
 		return Arrays.asList(
 				mMaster, mSlave);
 	}
-
 
 	public Length getDistance() {
 		var rawDistance = NativeUnitKt.getNativeUnits(mEncoder.getDistance());
