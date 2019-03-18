@@ -3,33 +3,21 @@ package frc.robot.subsystems;
 import java.util.Arrays;
 import java.util.List;
 
-import org.ghrobotics.lib.mathematics.units.Length;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
-import org.ghrobotics.lib.wrappers.FalconMotor;
-import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.FollowerType;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RobotConfig.driveTrain;
 import frc.robot.lib.FalconFollowerSparkMax;
-import frc.robot.lib.FalconPIDSparkMax;
 import frc.robot.lib.FalconSparkMax;
-import frc.robot.lib.PIDSettings;
 import frc.robot.lib.enums.TransmissionSide;
 
 public class Transmission {
@@ -39,21 +27,26 @@ public class Transmission {
 
 	// private FalconSRX<Length> mMaster;
 
-	private FalconPIDSparkMax mMaster;
+	private FalconSparkMax mMaster;
 	private FalconFollowerSparkMax mSlave;
 
 	// private FalconSRX<Length> mSlave;
 
 	private TransmissionSide side;
+	private Encoder mEncoder;
 
-	NativeUnitLengthModel lengthModel = driveTrain.LEFT_NATIVE_UNIT_LENGTH_MODEL;
+	NativeUnitLengthModel lengthModel;// = driveTrain.LEFT_NATIVE_UNIT_LENGTH_MODEL;
 
-	public Transmission(int masterPort, int slavePort, NativeUnitLengthModel lengthModel, Encoder encoder, TransmissionSide side, boolean isInverted) {
+	public Transmission(int masterPort, int slavePort, NativeUnitLengthModel lengthModel, Encoder encoder,
+			TransmissionSide side, boolean isInverted) {
 
-		// mMaster = new FalconSRX<Length>(masterPort, lengthModel, TimeUnitsKt.getMillisecond(10));
-		// mSlave = new FalconSRX<Length>(slavePort, lengthModel, TimeUnitsKt.getMillisecond(10));
-
-		mMaster = new FalconPIDSparkMax(masterPort, MotorType.kBrushless, lengthModel, encoder, new PIDSettings());
+		// mMaster = new FalconSRX<Length>(masterPort, lengthModel,
+		// TimeUnitsKt.getMillisecond(10));
+		// mSlave = new FalconSRX<Length>(slavePort, lengthModel,
+		// TimeUnitsKt.getMillisecond(10));
+		mEncoder = encoder;
+		this.lengthModel = lengthModel;
+		mMaster = new FalconSparkMax(masterPort, MotorType.kBrushless, lengthModel);
 		mSlave = new FalconFollowerSparkMax(slavePort, MotorType.kBrushless, mMaster, false);
 		this.side = side;
 		
@@ -69,7 +62,7 @@ public class Transmission {
 		// }
 	}
 
-	public FalconPIDSparkMax getMaster() {
+	public FalconSparkMax getMaster() {
 		return mMaster;
 	}
 
@@ -80,7 +73,8 @@ public class Transmission {
 
 
 	public Length getDistance() {
-		return mMaster.getDistance();
+		var rawDistance = NativeUnitKt.getNativeUnits(mEncoder.getDistance());
+		var toReturn = 
 	}
 
 	public Velocity<Length> getVelocity() {
@@ -95,11 +89,6 @@ public class Transmission {
 		return getDistance().getFeet();
 	}
 
-
-	public void zeroEncoder() {
-		
-	}
-
 	public void setNeutralMode(IdleMode mode) {
 		for (var motor : getAll()) {
 			motor.setIdleMode(mode);
@@ -111,11 +100,12 @@ public class Transmission {
 	}
 
 	public void setClosedLoopGains(double kp, double ki, double kd, double kf, double iZone, double maxIntegral) {
-		mMaster.setKp(kp);
-		mMaster.setKi(ki);
-		mMaster.setKd(kd);
+		mMaster.getController().setP(kp);
+		mMaster.getController().setI(ki);
+		mMaster.getController().setD(kd);
+		// mMaster.getController().setIZone(IZone)
 		// mMaster.config_kF(0, kf, 0);
-		// mMaster.config_IntegralZone(0, (int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getMeter(iZone)).getValue()), 30);
+		mMaster.getController().setIZone((int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getMeter(iZone)).getValue()), 30);
 		// mMaster.configMaxIntegralAccumulator(0, maxIntegral, 0);
 	}
 

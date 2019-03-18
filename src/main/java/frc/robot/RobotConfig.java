@@ -86,10 +86,14 @@ public class RobotConfig {
 		// public static final double VELOCITY_PULSES_PER_ROTATION = 409.6f;
 		public static final double POSITION_PULSES_PER_ROTATION = 4096;
 
-		public static final NativeUnit kDriveSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
+		public static final NativeUnit kDriveSensorUnitsPerRotation = NativeUnitKt.getNativeUnits(4096);
 
 		public static final NativeUnitLengthModel LEFT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, left_radius);
 		public static final NativeUnitLengthModel RIGHT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, right_radius);
+
+		public static final NativeUnitLengthModel NEO_LEFT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(NativeUnitKt.getNativeUnits(1), left_radius);
+		public static final NativeUnitLengthModel NEO_RIGHT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(NativeUnitKt.getNativeUnits(1), right_radius);
+
 
 		// Pathfinder shit
 		public static final double left_static_kv = 0.05; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
