@@ -445,6 +445,22 @@ public class Robot extends TimedRobot {
 
 		// disableTheSuperStructure();
 
+		System.out.println(
+			"Left can encoder distance (inches) " + drivetrain.getLeft().getMaster().getDistance().getInch()
+		);
+
+		System.out.println(
+			"Right can encoder distance (inches) " + drivetrain.getRight().getMaster().getDistance().getInch()
+		);
+
+		System.out.println(
+			"Left RoboRIO encoder distance (inches) " + drivetrain.getLeft().getDistance().getInch()
+		);
+
+		System.out.println(
+			"Right RoboRIO encoder distance (inches) " + drivetrain.getRight().getDistance().getInch()
+		);
+
 		final boolean postTicks = true;
 
 		if (postTicks) {
