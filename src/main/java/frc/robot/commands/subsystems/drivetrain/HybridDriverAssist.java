@@ -10,6 +10,7 @@ package frc.robot.commands.subsystems.drivetrain;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 
@@ -77,22 +78,23 @@ public class HybridDriverAssist extends Command {
 		double threshold = 8;
 
 		if (isHighGear) {
-			nearK = 0.05;
-			farK = 0.5;
-			closeK = farK / threshold;
+			closeK = 0.1;
+			// nearK = 0.05;
+			// farK = 0.4;
 		} else {
 			closeK = 0.1;
 			nearK = 0.06;
 			farK = 0.55;
 		}
 
-		if (Math.abs(tx) < 6) {
+		// if (Math.abs(tx) < 5) {
 			steer_cmd = tx * closeK;
-		// } else if (Math.abs(tx) < 10) {
-			// steer_cmd = tx * nearK;
-		} else {
-			steer_cmd = farK * Math.signum(tx);
-		}
+			steer_cmd = Util.limit(steer_cmd, 0.4);
+		// // } else if (Math.abs(tx) < 10) {
+		// // 	steer_cmd = tx * nearK;
+		// } else {
+		// 	steer_cmd = farK * Math.signum(tx);
+		// }
 
 		double fore_cmd = Robot.m_oi.getForwardAxis();
 
