@@ -249,7 +249,7 @@ public class OI {
 
 	public double getElevatorDS() {
 		var upPower = driverStation.getRawButton(9) ? 1 : -1;
-		var downPower = driverStation.getRawButton(10) ? 1 : -1;
+		var downPower = driverStation.getRawButton(11) ? 1 : -1;
 		return (upPower - downPower) * 0.06;
 	}
 
