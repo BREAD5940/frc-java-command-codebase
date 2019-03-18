@@ -3,6 +3,14 @@ package frc.robot.subsystems;
 import java.util.Arrays;
 import java.util.List;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.team254.lib.physics.DifferentialDrive;
+import com.team254.lib.physics.DifferentialDrive.ChassisState;
+
 import org.ghrobotics.lib.localization.Localization;
 import org.ghrobotics.lib.localization.TankEncoderLocalization;
 import org.ghrobotics.lib.mathematics.twodim.control.FeedForwardTracker;
@@ -15,16 +23,12 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
 import org.ghrobotics.lib.subsystems.drive.DifferentialTrackerDriveBase;
-import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
+import org.ghrobotics.lib.wrappers.FalconMotor;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.kauailabs.navx.frc.AHRS;
-import com.team254.lib.physics.DifferentialDrive;
-import com.team254.lib.physics.DifferentialDrive.ChassisState;
-
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.command.Command;
@@ -105,9 +109,15 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 	private TrajectoryTrackerMode kDefaulTrajectoryTrackerMode = TrajectoryTrackerMode.RAMSETE;
 
+	Encoder leftEncoder = new Encoder(Constants.kLeftEncoderA, Constants.kLeftEncoderB, Constants.kLeftEncoderInvert);
+	NativeUnitLengthModel leftModel = RobotConfig.driveTrain.LEFT_NATIVE_UNIT_LENGTH_MODEL;
+
+	Encoder rightEncoder = new Encoder(Constants.kRightEncoderA, Constants.kRightEncoderB, Constants.kRightEncoderInvert);
+	NativeUnitLengthModel rightModel = RobotConfig.driveTrain.RIGHT_NATIVE_UNIT_LENGTH_MODEL;
+
 	private DriveTrain() {
 		leftTransmission = new Transmission(RobotConfig.driveTrain.leftTalons.m_left_talon_port,
-				RobotConfig.driveTrain.leftTalons.s_left_talon_port, Transmission.EncoderMode.CTRE_MagEncoder_Relative,
+				RobotConfig.driveTrain.leftTalons.s_left_talon_port, 
 				TransmissionSide.LEFT, true);
 		rightTransmission = new Transmission(RobotConfig.driveTrain.rightTalons.m_right_talon_port,
 				RobotConfig.driveTrain.rightTalons.s_right_talon_port, Transmission.EncoderMode.CTRE_MagEncoder_Relative,
@@ -146,11 +156,11 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	//   return mTransmissionModel;
 	// }
 
-	public FalconSRX<Length> getLeftMotor() {
+	public FalconMotor<Length> getLeftMotor() {
 		return getLeft().getMaster();
 	}
 
-	public FalconSRX<Length> getRightMotor() {
+	public FalconMotor<Length> getRightMotor() {
 		return getRight().getMaster();
 	}
 
@@ -233,9 +243,9 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		}
 	}
 
-	public void setNeutralMode(NeutralMode mode) {
-		getLeft().getMaster().setNeutralMode(mode);
-		getRight().getMaster().setNeutralMode(mode);
+	public void setNeutralMode(IdleMode mode) {
+		getLeft().getMaster().setIdleMode(mode);
+		getRight().getMaster().setIdleMode(mode);
 	}
 
 	public Transmission getLeft() {
@@ -260,8 +270,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	}
 
 	public void coast() {
-		getLeft().getMaster().neutralOutput();
-		getRight().getMaster().neutralOutput();
+		getLeft().getMaster().setNeutral();
+		getRight().getMaster().setNeutral();
 	}
 
 	// /**
@@ -290,8 +300,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	 * @param right_voltage
 	 */
 	public void setVoltages(double left_voltage, double right_voltage) {
-		getLeft().getMaster().set(ControlMode.PercentOutput, left_voltage / 12);
-		getRight().getMaster().set(ControlMode.PercentOutput, right_voltage / 12);
+		getLeft().getMaster().set(left_voltage / 12);
+		getRight().getMaster().set(right_voltage / 12);
 	}
 
 	public void setClosedLoop(DriveSignal signal) {
@@ -319,17 +329,6 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	}
 
 	/**
-	 * Set the raw speeds of the talons. Use setClosedLoop() instead.
-	 * 
-	 * @deprecated
-	 */
-	@Deprecated
-	public void setRawSpeeds(double leftRaw, double rightRaw) {
-		getLeftMotor().set(ControlMode.Velocity, leftRaw);
-		getRightMotor().set(ControlMode.Velocity, rightRaw);
-	}
-
-	/**
 	 * setPowers is an even more lazy version of set speeds. This will literally set
 	 * the throttle of the left and right talons (from -1 to 1 ofc, like normal)
 	 * 
@@ -337,8 +336,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	 * @param right_power
 	 */
 	public void setPowers(double left_power, double right_power) {
-		leftTransmission.getMaster().set(ControlMode.PercentOutput, left_power);
-		rightTransmission.getMaster().set(ControlMode.PercentOutput, right_power);
+		leftTransmission.getMaster().set(left_power);
+		rightTransmission.getMaster().set(right_power);
 	}
 
 	public Pose2d getRobotPosition() {
@@ -569,8 +568,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		if (rightPercent < 0.06 && rightPercent > -0.06)
 			rightPercent = 0.0;
 
-		getLeft().getMaster().set(ControlMode.PercentOutput, leftPercent); // because C O M P E N S A T I O N
-		getRight().getMaster().set(ControlMode.PercentOutput, rightPercent);
+		getLeft().getMaster().set(leftPercent); // because C O M P E N S A T I O N
+		getRight().getMaster().set(rightPercent);
 
 		// 2.1 meters per second in low gear
 		//

@@ -7,12 +7,13 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Volt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VoltKt;
 import org.ghrobotics.lib.wrappers.FalconMotor;
 
+import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 
-public class FalconSparkMax extends CANSparkMax implements FalconMotor<Length> {
+public class FalconFollowerSparkMax extends CANSparkMax implements FalconMotor {
 
 	// NativeUnitLengthModel model;
 	CANEncoder neoEncoder;
@@ -21,20 +22,10 @@ public class FalconSparkMax extends CANSparkMax implements FalconMotor<Length> {
 	CANPIDController controller;
 	int m_currentPIDSlot = 0;
 
-	public static final int kDefaultStallCurrent = 30;
-	public static final int kFreeCurrent = 60;
-
-	public FalconSparkMax(int port, MotorType type, Length wheelDiameter, double reduction) {
+	public FalconFollowerSparkMax(int port, MotorType type, CANSparkMax leader, boolean followInvert) {
 		super(port, type);
-		neoEncoder = new CANEncoder(this);
-		controller = super.getPIDController();
-		this.reduction = reduction;
-
-		setSmartCurrentLimit(kDefaultStallCurrent, kFreeCurrent);
-	}
-
-	public CANPIDController getController() {
-		return controller;
+		follow(leader, followInvert);
+		setSmartCurrentLimit(FalconSparkMax.kDefaultStallCurrent, FalconSparkMax.kFreeCurrent);
 	}
 
 	public void setClosedLoopGains(int slot, PIDSettings settings) {
@@ -82,7 +73,7 @@ public class FalconSparkMax extends CANSparkMax implements FalconMotor<Length> {
 	}
 
 	@Override
-	public void setVelocityAndArbitraryFeedForward(Velocity<Length> arg0, double arg1) {
+	public void setVelocityAndArbitraryFeedForward(Velocity arg0, double arg1) {
 		double setpoint = arg0.getValue();
 		controller.setReference(setpoint, ControlType.kVelocity, m_currentPIDSlot, arg1);
 	}

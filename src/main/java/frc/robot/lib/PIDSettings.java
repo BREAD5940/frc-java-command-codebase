@@ -13,6 +13,8 @@ public class PIDSettings {
 		this(kp_, ki_, kd_, kf_, -1, 1, 0, 0, FeedbackMode.LINEAR);
 	}
 
+	public PIDSettings() {}
+
 	// TODO make this use rotation2d or length
 	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double minOutput_, double maxOutput_, double iZone_, double maxIAccum_, FeedbackMode mode_) {
 		kp = kp_;

@@ -86,4 +86,14 @@ public class Constants {
 	public static final double kElbowTorquePerVolt = 55; // Newton meters per volt, stall
 	public static final double kElbowStaticFrictionVoltage = 0; // volts, TODO tune
 
+	
+	public static final int kLeftEncoderA = 0;
+	public static final int kLeftEncoderB = 1;
+	public static final int kRightEncoderA = 2;
+	public static final int kRightEncoderB = 3;
+
+	public static final boolean kLeftEncoderInvert = false;
+	public static final boolean kRightEncoderInvert = false;
+
+	
 }
