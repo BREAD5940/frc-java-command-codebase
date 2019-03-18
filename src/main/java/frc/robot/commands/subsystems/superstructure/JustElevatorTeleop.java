@@ -50,7 +50,7 @@ public class JustElevatorTeleop extends Command {
 		// var mWristPower = Robot.m_oi.getWristAxis();
 		// var mElbowPower = Robot.m_oi.getElbowAxis();
 		// mElbowPower = mElbowPower * Math.abs(mElbowPower); // square inputs
-		var kDeadband = 0.05d;
+		var kDeadband = 0.15d;
 
 		// Figure out of the operator is commanding an elevator move. If so, increment the new state and cache the current state - if not, stay at the cached state.
 		if (Math.abs(mElevatorPower) > kDeadband) {
