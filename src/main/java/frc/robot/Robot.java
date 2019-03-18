@@ -6,6 +6,7 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -342,7 +343,7 @@ public class Robot extends TimedRobot {
 			System.out.println("default auto gear " + RobotConfig.auto.auto_gear + " is not a valid choice!");
 		}
 
-		drivetrain.setNeutralMode(NeutralMode.Coast);
+		drivetrain.setNeutralMode(IdleMode.kCoast);
 		SuperStructure.lastSH = LengthKt.getInch(0);
 
 	}

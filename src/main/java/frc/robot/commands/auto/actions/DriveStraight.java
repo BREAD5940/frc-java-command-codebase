@@ -1,11 +1,15 @@
 package frc.robot.commands.auto.actions;
 
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 import frc.robot.lib.TerriblePID;
+import frc.robot.lib.obj.DriveSignal;
 
 /**
  * Drive straight ahead. The target angle is set based on the current robot angle.
@@ -103,12 +107,14 @@ public class DriveStraight extends Command {
 		turn_speed = turnPID.update(Robot.drivetrain.getGyro());
 		SmartDashboard.putNumber("TurnPID output", turnPID.update(Robot.drivetrain.getGyro()));
 
-		left_speed_raw = EncoderLib.distanceToRaw(forward_speed + turn_speed, RobotConfig.driveTrain.left_wheel_effective_diameter / 12,
-				RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
-		right_speed_raw = EncoderLib.distanceToRaw(forward_speed - turn_speed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12,
-				RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
+		// left_speed_raw = EncoderLib.distanceToRaw(forward_speed + turn_speed, RobotConfig.driveTrain.left_wheel_effective_diameter / 12,
+		// 		RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
+		// right_speed_raw = EncoderLib.distanceToRaw(forward_speed - turn_speed, RobotConfig.driveTrain.right_wheel_effective_diameter / 12,
+		// 		RobotConfig.driveTrain.POSITION_setRawSpeedsPULSES_PER_ROTATION) / 10;
 
-		Robot.drivetrain.setRawSpeeds(left_speed_raw, right_speed_raw);
+		// Robot.drivetrain.(left_speed_raw, right_speed_raw);
+
+		Robot.drivetrain.setClosedLoop(new DriveSignal(VelocityKt.getVelocity(LengthKt.getFeet(forward_speed + turn_speed)), VelocityKt.getVelocity(LengthKt.getFeet(forward_speed - turn_speed))));
 
 		// System.out.println("FORWARD PID: Setpoint: " + forwardPID.getSetpoint() + " Measured: " + Robot.drivetrain.getLeft().getFeet() +
 		// " Error: " + forwardPID.getError() + " OUTPUT VELOCITY (ft/s): " + forwardPID.getOutput());

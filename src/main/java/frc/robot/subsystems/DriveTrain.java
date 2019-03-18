@@ -31,6 +31,7 @@ import org.ghrobotics.lib.wrappers.FalconMotor;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -109,19 +110,20 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 	private TrajectoryTrackerMode kDefaulTrajectoryTrackerMode = TrajectoryTrackerMode.RAMSETE;
 
-	Encoder leftEncoder = new Encoder(Constants.kLeftEncoderA, Constants.kLeftEncoderB, Constants.kLeftEncoderInvert);
+	Encoder leftEncoder = new Encoder(Constants.kLeftEncoderA, Constants.kLeftEncoderB, Constants.kLeftEncoderInvert, EncodingType.k4X);
 	NativeUnitLengthModel leftModel = RobotConfig.driveTrain.LEFT_NATIVE_UNIT_LENGTH_MODEL;
 
-	Encoder rightEncoder = new Encoder(Constants.kRightEncoderA, Constants.kRightEncoderB, Constants.kRightEncoderInvert);
+
+	Encoder rightEncoder = new Encoder(Constants.kRightEncoderA, Constants.kRightEncoderB, Constants.kRightEncoderInvert, EncodingType.k4X);
 	NativeUnitLengthModel rightModel = RobotConfig.driveTrain.RIGHT_NATIVE_UNIT_LENGTH_MODEL;
 
 	private DriveTrain() {
 		leftTransmission = new Transmission(RobotConfig.driveTrain.leftTalons.m_left_talon_port,
-				RobotConfig.driveTrain.leftTalons.s_left_talon_port, 
-				TransmissionSide.LEFT, true);
+				RobotConfig.driveTrain.leftTalons.s_left_talon_port,  
+				leftModel, leftEncoder, TransmissionSide.LEFT, true);
 		rightTransmission = new Transmission(RobotConfig.driveTrain.rightTalons.m_right_talon_port,
-				RobotConfig.driveTrain.rightTalons.s_right_talon_port, Transmission.EncoderMode.CTRE_MagEncoder_Relative,
-				TransmissionSide.RIGHT, false);
+				RobotConfig.driveTrain.rightTalons.s_right_talon_port, 
+				rightModel, rightEncoder, TransmissionSide.RIGHT, false);
 
 		/* Create a localization object because lamda expressions are fun */
 		localization = new TankEncoderLocalization(() -> Rotation2dKt.getDegree(getGyro(true)),
@@ -305,7 +307,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	}
 
 	public void setClosedLoop(DriveSignal signal) {
-		setCLosedLoop(signal.getLeft(), signal.getRight(), signal.getLeftPercent(), signal.getRightPercent(),
+		setClosedLoop(signal.getLeft(), signal.getRight(), signal.getLeftPercent(), signal.getRightPercent(),
 				signal.getBrakeMode());
 	}
 
@@ -317,15 +319,15 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	 * @param left  velocity in a Velocity<Length> Falconlib object
 	 * @param right velocity in a Velocity<Length> Falconlib object
 	 */
-	public void setCLosedLoop(Velocity<Length> left, Velocity<Length> right, double leftPercent, double rightPercent,
+	public void setClosedLoop(Velocity<Length> left, Velocity<Length> right, double leftPercent, double rightPercent,
 			boolean brakeMode) {
-		setNeutralMode((brakeMode) ? NeutralMode.Brake : NeutralMode.Coast);
-		getLeft().getMaster().set(ControlMode.Velocity, left, DemandType.ArbitraryFeedForward, leftPercent);
-		getRight().getMaster().set(ControlMode.Velocity, right, DemandType.ArbitraryFeedForward, rightPercent);
+		setNeutralMode((brakeMode) ? IdleMode.kBrake : IdleMode.kCoast);
+		getLeft().getMaster().setVelocityAndArbitraryFeedForward(left, leftPercent);
+		getRight().getMaster().setVelocityAndArbitraryFeedForward(right, rightPercent);
 	}
 
 	public void setClosedLoop(Velocity<Length> left, Velocity<Length> right) {
-		setCLosedLoop(left, right, 0, 0, false);
+		setClosedLoop(left, right, 0, 0, false);
 	}
 
 	/**

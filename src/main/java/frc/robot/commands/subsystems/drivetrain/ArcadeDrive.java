@@ -1,6 +1,7 @@
 package frc.robot.commands.subsystems.drivetrain;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
@@ -30,7 +31,7 @@ public class ArcadeDrive extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
+		Robot.drivetrain.setNeutralMode(IdleMode.kBrake);
 		Robot.drivetrain.getLeft().getMaster().setClosedLoopRampRate(0.15);
 		Robot.drivetrain.getRight().getMaster().setClosedLoopRampRate(0.15);
 		Robot.drivetrain.getLeft().getMaster().setOpenLoopRampRate(0.15);
