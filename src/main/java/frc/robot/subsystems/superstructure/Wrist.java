@@ -69,7 +69,7 @@ public class Wrist extends RotatingJoint {
 	public void setMotionMagicGains() {
 		// Elevator elev = SuperStructure.getElevator();
 		this.getMaster().configMotionAcceleration((int) (3500));
-		this.getMaster().configMotionCruiseVelocity(1000); // about 3500 theoretical max
+		this.getMaster().configMotionCruiseVelocity(2000); // about 3500 theoretical max
 		this.getMaster().configMotionSCurveStrength(0);
 		this.getMaster().config_kP(3, 3.5, 0);
 		this.getMaster().config_kI(3, 0.001, 0);

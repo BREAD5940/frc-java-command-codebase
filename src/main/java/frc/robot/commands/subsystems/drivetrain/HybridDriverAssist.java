@@ -69,23 +69,27 @@ public class HybridDriverAssist extends Command {
 
 		boolean isHighGear = (Robot.getDrivetrainGear() == Gear.HIGH);
 
+		System.out.println("Is high gear? " + isHighGear);
+
 		// System.out.println("IS HIGH GEAR??? " + isHighGear);
 		double closeK, nearK, farK;
 
+		double threshold = 8;
+
 		if (isHighGear) {
-			closeK = 0.1;
 			nearK = 0.05;
-			farK = 0.4;
+			farK = 0.5;
+			closeK = farK / threshold;
 		} else {
 			closeK = 0.1;
 			nearK = 0.06;
 			farK = 0.55;
 		}
 
-		if (Math.abs(tx) < 5) {
+		if (Math.abs(tx) < 6) {
 			steer_cmd = tx * closeK;
-		} else if (Math.abs(tx) < 10) {
-			steer_cmd = tx * nearK;
+		// } else if (Math.abs(tx) < 10) {
+			// steer_cmd = tx * nearK;
 		} else {
 			steer_cmd = farK * Math.signum(tx);
 		}

@@ -51,7 +51,7 @@ public class HybridKinematicDriverAssist extends Command {
 		double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
 		double ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
 
-		var comped_tx = tx - (Robot.m_oi.getTurnAxis() * 15); // TODO tune, to offset allignment
+		var comped_tx = tx - (Robot.m_oi.getTurnAxis() * 8); // TODO tune, to offset allignment
 		var mGyroAngle = DriveTrain.getInstance().getGyro();
 		var distToTurn = comped_tx;
 
@@ -74,13 +74,13 @@ public class HybridKinematicDriverAssist extends Command {
 		final double foreMaxSpeed = Util.toMeters(6); // meters
 		final double turnMaxSpeed = 4; // ft
 
-		final double turn_kp = 0.03;
-		double turn_cmd = Util.toMeters(distToTurn * turn_kp * turnMaxSpeed);
+		final double turn_kp = 0.04;
+		double turn_cmd = Util.toMeters(distToTurn * turn_kp * turnMaxSpeed * -1);
 
 		ChassisState mCalcedState = new ChassisState(fore_cmd * foreMaxSpeed, turn_cmd);
 		// DriveTrain.getInstance().getDifferentialDrive().solveInverseKinematics(mCalcedState);
 
-		System.out.println("desired state: " + mCalcedState.getLinear() + "," + mCalcedState.getAngular());
+		System.out.println("desired chassis state: " + mCalcedState.getLinear() + "," + mCalcedState.getAngular());
 
 		if (hasTarget) {
 			DriveTrain.getInstance().setOutputFromKinematics(mCalcedState);

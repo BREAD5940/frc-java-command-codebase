@@ -134,9 +134,11 @@ public class OI {
 						new SetHatchMech(HatchMechState.kClamped),
 						new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));
 
-		primaryDpadUp.whenPressed(new KillAuto());
+		// primaryDpadUp.whenPressed(new KillAuto());
 
 		primaryDpadDown.whenPressed(new CloseSideRocket('L'));
+
+		primaryDpadUp.whenPressed(new CloseSideRocket('R'));
 
 		// primaryDpadLeft.whenPressed(new CloseSideRocket('L'));
 		// primaryDpadDown.whenPressed(new ArmMove(iPosition.HATCH));
