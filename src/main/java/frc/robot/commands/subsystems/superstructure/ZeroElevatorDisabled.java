@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
@@ -78,7 +79,7 @@ public class ZeroElevatorDisabled extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return (mCurrentState == ZeroingState.ZEROED);
+    return (mCurrentState == ZeroingState.ZEROED) || !DriverStation.getInstance().isDisabled();
   }
 
   // Called once after isFinished returns true
