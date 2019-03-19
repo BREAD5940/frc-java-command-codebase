@@ -7,12 +7,17 @@
 
 package frc.robot.commands.subsystems.drivetrain;
 
+import java.util.TreeMap;
+
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.lib.InterpolatableLut;
+import frc.robot.lib.InterpolatableLutEntry;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
+import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class HybridDriverAssist extends Command {
 
@@ -21,15 +26,34 @@ public class HybridDriverAssist extends Command {
 	double steerK = 0.12;
 	double foreCommand, turnCommand;
 
+	InterpolatableLut mDeployedLookupTable, mStowedLookupTable;
+
 	/**
 	 * Line up left/right and allow the driver to drive forward/back.
 	 * @param areaToExitAt when to exit the command (i.e. can't see the vision target anymore)
 	 */
-	public HybridDriverAssist(double areaToExitAt) {
-		this.exitArea = areaToExitAt;
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+	public HybridDriverAssist() {
 		requires(DriveTrain.getInstance());
+
+		var deployedMap = new TreeMap<Double, InterpolatableLutEntry>();
+		var stowedMap = new TreeMap<Double, InterpolatableLutEntry>();
+
+		// map is a key-value pair. First key is the target skew, the second key is the angle to offset the limelight by.
+		deployedMap.put(Double.valueOf(0), new InterpolatableLutEntry(0));
+		deployedMap.put(Double.valueOf(10), new InterpolatableLutEntry(-5));
+		deployedMap.put(Double.valueOf(30), new InterpolatableLutEntry(-10));
+		deployedMap.put(Double.valueOf(-10), new InterpolatableLutEntry(5));
+		deployedMap.put(Double.valueOf(-30), new InterpolatableLutEntry(10));
+
+		stowedMap.put(Double.valueOf(0), new InterpolatableLutEntry(0));
+		stowedMap.put(Double.valueOf(10), new InterpolatableLutEntry(-5));
+		stowedMap.put(Double.valueOf(30), new InterpolatableLutEntry(-10));
+		stowedMap.put(Double.valueOf(-10), new InterpolatableLutEntry(5));
+		stowedMap.put(Double.valueOf(-30), new InterpolatableLutEntry(10));
+
+		mDeployedLookupTable = new InterpolatableLut(deployedMap);
+		mStowedLookupTable = new InterpolatableLut(stowedMap);
+
 	}
 
 	// Called just before this Command runs the first time
@@ -41,10 +65,23 @@ public class HybridDriverAssist extends Command {
 	protected void execute() {
 		double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
 		double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
-		double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
+		// double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
 		double ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
+		double ts = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
+
 
 		tx = tx + (Robot.m_oi.getTurnAxis() * 10); // TODO tune, to offset allignment
+
+		InterpolatableLut lut;
+
+		if(SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() > -30) {
+			// deployed
+			lut = mDeployedLookupTable;
+		} else {
+			lut = mStowedLookupTable;
+		}
+
+		tx = tx + lut.interpolate(ts).doubleValue(); // Use the LUT to interpolate
 
 		if (tv < 1.0) {
 			hasTarget = false;
@@ -109,7 +146,7 @@ public class HybridDriverAssist extends Command {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
-		var ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
+		// var ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
 		return /*(Math.abs(exitArea - ta) < 0.3) || (hadTarget && !hasTarget)*/ false;
 	}
 
