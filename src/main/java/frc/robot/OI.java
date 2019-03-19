@@ -15,6 +15,7 @@ import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.HybridKinematicDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
+import frc.robot.commands.subsystems.superstructure.JogElevator;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
@@ -151,8 +152,8 @@ public class OI {
 		// 		new SetGearCommand(Gear.HIGH),
 		// 		new SetElevatorGear(ElevatorGear.LOW))));
 
-		// dsJogUp.whenPressed(new JogElevator(LengthKt.getInch(0.5), true));
-		// dsJogDown.whenPressed(new JogElevator(LengthKt.getInch(0.5), false));
+		dsJogUp.whenPressed(new JogElevator(LengthKt.getInch(0.5), true));
+		dsJogDown.whenPressed(new JogElevator(LengthKt.getInch(0.5), false));
 
 		// dsJogUp.whenPressed(new JogElbow(RoundRotation2d.getDegree(2)));
 		// dsJogDown.whenPressed(new JogElbow(RoundRotation2d.getDegree(-2)));
