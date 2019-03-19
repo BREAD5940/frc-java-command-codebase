@@ -24,7 +24,6 @@ import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.TerribleAutoChooser;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
-import frc.robot.commands.subsystems.superstructure.ZeroElevator;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
@@ -33,6 +32,7 @@ import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.LimeLight.LEDMode;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import frc.robot.commands.subsystems.superstructure.ZeroElevatorDisabled;
 
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly init
@@ -312,7 +312,7 @@ public class Robot extends TimedRobot {
 
 	}
 
-	public static Command zeroElevatorWhileDisabled = new ZeroElevator(LengthKt.getInch(24.5));
+	public static Command zeroElevatorWhileDisabled = new ZeroElevatorDisabled(LengthKt.getInch(24.5));
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode. You
@@ -326,7 +326,7 @@ public class Robot extends TimedRobot {
 		SuperStructure.getInstance().getElbow().onDisable();
 		SuperStructure.getInstance().getWrist().onDisable();
 
-		// zeroElevatorWhileDisabled.start();
+		zeroElevatorWhileDisabled.start();
 
 		// try {
 		// mResetNotifier.startPeriodic(0.5);
