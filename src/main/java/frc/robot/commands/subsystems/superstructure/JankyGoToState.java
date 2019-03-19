@@ -50,24 +50,24 @@ public class JankyGoToState extends CommandGroup {
 			}
 		};
 
-	var choosePath = new ConditionalCommand(new SuperstructureGoToState(requ_), safeMove){
-	
-		@Override
-		protected boolean condition() {
-			var proximalThreshold = -10;
-			var currentState = SuperStructure.getInstance().getCurrentState();
-			var nowOutsideFrame = currentState.getElbowAngle().getDegree() > proximalThreshold;
-			var willBeOutsideFrame = requ_.getElbowAngle().getDegree() > proximalThreshold;
+		var choosePath = new ConditionalCommand(new SuperstructureGoToState(requ_), safeMove) {
 
-			var safeToMoveSynced = nowOutsideFrame && willBeOutsideFrame;
+			@Override
+			protected boolean condition() {
+				var proximalThreshold = -10;
+				var currentState = SuperStructure.getInstance().getCurrentState();
+				var nowOutsideFrame = currentState.getElbowAngle().getDegree() > proximalThreshold;
+				var willBeOutsideFrame = requ_.getElbowAngle().getDegree() > proximalThreshold;
 
-			System.out.println("Safe to move synced? " + safeToMoveSynced);
+				var safeToMoveSynced = nowOutsideFrame && willBeOutsideFrame;
 
-			return safeToMoveSynced;
-		}
-	};
+				System.out.println("Safe to move synced? " + safeToMoveSynced);
 
-	addSequential(choosePath);
+				return safeToMoveSynced;
+			}
+		};
+
+		addSequential(choosePath);
 
 	}
 

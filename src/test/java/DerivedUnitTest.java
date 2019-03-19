@@ -1,5 +1,4 @@
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -56,93 +55,90 @@ public class DerivedUnitTest {
 
 	}
 
-
 	public List<Pose2d> testLeftRight(char side) {
 		// public CloseSideRocket(char side) {
 
-			boolean isLeft = side == 'L' || side == 'l';
-	
-			final Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
-			final Velocity<Length> kDefaultEndVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
-	
-			final Velocity<Length> kDefaultVelocityLow = VelocityKt.getVelocity(LengthKt.getFeet(5));
-			final Velocity<Length> kDefaultVelocityHigh = VelocityKt.getVelocity(LengthKt.getFeet(9));
-	
-			final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(6));
-	
-			List<Pose2d> p_hab = Arrays.asList(
-					new Pose2d(
-							LengthKt.getFeet(5.2),
-							LengthKt.getFeet(17.6),
-							Rotation2dKt.getDegree(90)),
-					new Pose2d(
-							LengthKt.getFeet(5.5),
-							LengthKt.getFeet(21.5),
-							Rotation2dKt.getDegree(90))
-					// new Pose2d(
-							// LengthKt.getFeet(14),
-							// LengthKt.getFeet(23.5),
-							// Rotation2dKt.getDegree(30)));
-	
-			);
-	
-			List<Pose2d> p_toHatchPlace = Arrays.asList(
-					// new Pose2d(
-							// LengthKt.getFeet(5.2),
-							// LengthKt.getFeet(17.6),
-							// Rotation2dKt.getDegree(90)),
-					new Pose2d(
-							LengthKt.getFeet(5.5),
-							LengthKt.getFeet(21.5),
-							Rotation2dKt.getDegree(90)),
-					new Pose2d(
-							LengthKt.getFeet(14),
-							LengthKt.getFeet(23.5),
-							Rotation2dKt.getDegree(30)));
-	
-			List<Pose2d> p_halfWayToLoadingStationL = Arrays.asList(
-					new Pose2d(
-							LengthKt.getFeet(15.75),
-							LengthKt.getFeet(24.4),
-							Rotation2dKt.getDegree(30)),
-					new Pose2d(
-							LengthKt.getFeet(9.403),
-							LengthKt.getFeet(19.827),
-							Rotation2dKt.getDegree(90)));
-	
-			List<Pose2d> p_toLoadingStation = Arrays.asList(
-					new Pose2d(
-							LengthKt.getFeet(9.403),
-							LengthKt.getFeet(19.827),
-							Rotation2dKt.getDegree(90)),
-					new Pose2d(
-							LengthKt.getFeet(4.17),
-							LengthKt.getFeet(24.85),
-							Rotation2dKt.getDegree(180)));
-	
-			if (!isLeft) {
-				p_hab = Util.reflectTrajectory(p_hab);
-				p_toHatchPlace = Util.reflectTrajectory(p_toHatchPlace);
-				p_halfWayToLoadingStationL = Util.reflectTrajectory(p_halfWayToLoadingStationL);
-				p_toLoadingStation = Util.reflectTrajectory(p_toLoadingStation);
-			}
-	
-			return p_hab;
+		boolean isLeft = side == 'L' || side == 'l';
+
+		final Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
+		final Velocity<Length> kDefaultEndVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
+
+		final Velocity<Length> kDefaultVelocityLow = VelocityKt.getVelocity(LengthKt.getFeet(5));
+		final Velocity<Length> kDefaultVelocityHigh = VelocityKt.getVelocity(LengthKt.getFeet(9));
+
+		final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(6));
+
+		List<Pose2d> p_hab = Arrays.asList(
+				new Pose2d(
+						LengthKt.getFeet(5.2),
+						LengthKt.getFeet(17.6),
+						Rotation2dKt.getDegree(90)),
+				new Pose2d(
+						LengthKt.getFeet(5.5),
+						LengthKt.getFeet(21.5),
+						Rotation2dKt.getDegree(90))
+		// new Pose2d(
+		// LengthKt.getFeet(14),
+		// LengthKt.getFeet(23.5),
+		// Rotation2dKt.getDegree(30)));
+
+		);
+
+		List<Pose2d> p_toHatchPlace = Arrays.asList(
+				// new Pose2d(
+				// LengthKt.getFeet(5.2),
+				// LengthKt.getFeet(17.6),
+				// Rotation2dKt.getDegree(90)),
+				new Pose2d(
+						LengthKt.getFeet(5.5),
+						LengthKt.getFeet(21.5),
+						Rotation2dKt.getDegree(90)),
+				new Pose2d(
+						LengthKt.getFeet(14),
+						LengthKt.getFeet(23.5),
+						Rotation2dKt.getDegree(30)));
+
+		List<Pose2d> p_halfWayToLoadingStationL = Arrays.asList(
+				new Pose2d(
+						LengthKt.getFeet(15.75),
+						LengthKt.getFeet(24.4),
+						Rotation2dKt.getDegree(30)),
+				new Pose2d(
+						LengthKt.getFeet(9.403),
+						LengthKt.getFeet(19.827),
+						Rotation2dKt.getDegree(90)));
+
+		List<Pose2d> p_toLoadingStation = Arrays.asList(
+				new Pose2d(
+						LengthKt.getFeet(9.403),
+						LengthKt.getFeet(19.827),
+						Rotation2dKt.getDegree(90)),
+				new Pose2d(
+						LengthKt.getFeet(4.17),
+						LengthKt.getFeet(24.85),
+						Rotation2dKt.getDegree(180)));
+
+		if (!isLeft) {
+			p_hab = Util.reflectTrajectory(p_hab);
+			p_toHatchPlace = Util.reflectTrajectory(p_toHatchPlace);
+			p_halfWayToLoadingStationL = Util.reflectTrajectory(p_halfWayToLoadingStationL);
+			p_toLoadingStation = Util.reflectTrajectory(p_toLoadingStation);
+		}
+
+		return p_hab;
 
 	}
 
 	@Test
 	public void testReflectionMeme() {
 		System.out.println("testing reflecction of a trajeccctory");
-		for(Pose2d pose : testLeftRight('L')) {
+		for (Pose2d pose : testLeftRight('L')) {
 			System.out.println(Util.toString(pose));
 		}
 
-		for(Pose2d pose : testLeftRight('R')) {
+		for (Pose2d pose : testLeftRight('R')) {
 			System.out.println(Util.toString(pose));
 		}
-
-
 
 		// assertTrue(false);
 	}

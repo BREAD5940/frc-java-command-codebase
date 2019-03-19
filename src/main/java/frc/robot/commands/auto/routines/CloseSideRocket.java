@@ -15,18 +15,12 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
-import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheThird;
-import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
-import frc.robot.commands.subsystems.drivetrain.PIDDriveDistance;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
-import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
@@ -72,18 +66,18 @@ public class CloseSideRocket extends VisionCommandGroup {
 						LengthKt.getFeet(5.5),
 						LengthKt.getFeet(21.5),
 						Rotation2dKt.getDegree(90))
-				// new Pose2d(
-						// LengthKt.getFeet(14),
-						// LengthKt.getFeet(23.5),
-						// Rotation2dKt.getDegree(30)));
+		// new Pose2d(
+		// LengthKt.getFeet(14),
+		// LengthKt.getFeet(23.5),
+		// Rotation2dKt.getDegree(30)));
 
 		);
 
 		List<Pose2d> p_toHatchPlace = Arrays.asList(
 				// new Pose2d(
-						// LengthKt.getFeet(5.2),
-						// LengthKt.getFeet(17.6),
-						// Rotation2dKt.getDegree(90)),
+				// LengthKt.getFeet(5.2),
+				// LengthKt.getFeet(17.6),
+				// Rotation2dKt.getDegree(90)),
 				new Pose2d(
 						LengthKt.getFeet(5.5),
 						LengthKt.getFeet(21.5),
@@ -123,9 +117,8 @@ public class CloseSideRocket extends VisionCommandGroup {
 		// public static TimedTrajectory<Pose2dWithCurvature> generateTrajectory(List<Pose2d> waypoints,
 		// List<? extends TimingConstraint<Pose2dWithCurvature>> constraints_, Velocity<Length> startVelocity, Velocity<Length> endVelocity, Velocity<Length> maxVelocity, Acceleration<Length> maxAcceleration, boolean reversed, boolean optomizeSplines) {
 
-			var t_hab = Trajectories.generateTrajectory(p_hab, Trajectories.kLowGearConstraints, kDefaultStartVelocity,
-			VelocityKt.getVelocity(LengthKt.getFeet(/*7*/ 4)), VelocityKt.getVelocity(LengthKt.getFeet(/*7*/ 6)), kDefaultAcceleration, false, true);
-
+		var t_hab = Trajectories.generateTrajectory(p_hab, Trajectories.kLowGearConstraints, kDefaultStartVelocity,
+				VelocityKt.getVelocity(LengthKt.getFeet(/*7*/ 4)), VelocityKt.getVelocity(LengthKt.getFeet(/*7*/ 6)), kDefaultAcceleration, false, true);
 
 		var t_toPlaceHatch = Trajectories.generateTrajectory(p_toHatchPlace, Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(/*7*/ 4)),
 				kDefaultEndVelocity, VelocityKt.getVelocity(LengthKt.getFeet(/*7*/ 5)), kDefaultAcceleration, false, true);
@@ -148,7 +141,7 @@ public class CloseSideRocket extends VisionCommandGroup {
 		// waitForABit.addSequential(new WaitCommand("yes", 4));
 		// waitForABit.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 		// addParallel(waitForABit);
-		
+
 		// addSequential(new WaitCommand(0.2));
 
 		// addSequential(new FollowVisionTargetTheSecond(3.5));

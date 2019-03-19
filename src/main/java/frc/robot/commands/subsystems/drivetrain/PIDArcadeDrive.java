@@ -18,37 +18,36 @@ import frc.robot.subsystems.DriveTrain.Gear;
 
 public class PIDArcadeDrive extends Command {
 
-
 	private ChassisState mCachedChassisState;
 	public boolean isFirstRun = true;
 
-  private boolean squareInputs;
+	private boolean squareInputs;
 
-  public PIDArcadeDrive(boolean square) {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(DriveTrain.getInstance());
-    this.squareInputs = square;
-  }
+	public PIDArcadeDrive(boolean square) {
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		requires(DriveTrain.getInstance());
+		this.squareInputs = square;
+	}
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-    DriveTrain.getInstance().setNeutralMode(NeutralMode.Coast);
+	// Called just before this Command runs the first time
+	@Override
+	protected void initialize() {
+		DriveTrain.getInstance().setNeutralMode(NeutralMode.Coast);
 		DriveTrain.getInstance().getLeft().getMaster().configClosedloopRamp(0.2);
 		DriveTrain.getInstance().getRight().getMaster().configClosedloopRamp(0.2);
 		DriveTrain.getInstance().getLeft().getMaster().configOpenloopRamp(0.2);
 		DriveTrain.getInstance().getRight().getMaster().configOpenloopRamp(0.2);
-  }
+	}
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
+	// Called repeatedly when this Command is scheduled to run
+	@Override
+	protected void execute() {
 
-    var linearPercent = Robot.m_oi.getForwardAxis();
-    var rotationPercent = Robot.m_oi.getTurnAxis();
+		var linearPercent = Robot.m_oi.getForwardAxis();
+		var rotationPercent = Robot.m_oi.getTurnAxis();
 
-    linearPercent = Util.limit(linearPercent, 1);
+		linearPercent = Util.limit(linearPercent, 1);
 		linearPercent = Util.deadband(linearPercent, 0.07);
 
 		rotationPercent = Util.limit(rotationPercent, 1);
@@ -96,8 +95,8 @@ public class PIDArcadeDrive extends Command {
 		final double highGearForward = Util.toMeters(11);
 		double lowGearTurn = Util.toMeters(12);
 		double highGearTurn = Util.toMeters(18);
-    
-    final double maxAccelLinearLow = Util.toMeters(12);
+
+		final double maxAccelLinearLow = Util.toMeters(12);
 		final double maxAccelLinearHigh = Util.toMeters(18);
 		final double maxAccelAngularLow = Util.toMeters(12);
 		final double maxAccelAngularHigh = Util.toMeters(13);
@@ -141,22 +140,20 @@ public class PIDArcadeDrive extends Command {
 		DriveTrain.getInstance().setOutputFromDynamics(mVelocity, mAcceleration);
 
 		mCachedChassisState = mVelocity;
-  }
+	}
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
+	// Make this return true when this Command no longer needs to run execute()
+	@Override
+	protected boolean isFinished() {
+		return false;
+	}
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
+	// Called once after isFinished returns true
+	@Override
+	protected void end() {}
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	@Override
+	protected void interrupted() {}
 }

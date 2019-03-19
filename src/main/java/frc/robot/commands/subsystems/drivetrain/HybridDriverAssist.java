@@ -69,12 +69,11 @@ public class HybridDriverAssist extends Command {
 		double ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
 		double ts = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
 
-
 		tx = tx + (Robot.m_oi.getTurnAxis() * 10); // TODO tune, to offset allignment
 
 		InterpolatableLut lut;
 
-		if(SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() > -30) {
+		if (SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() > -30) {
 			// deployed
 			lut = mDeployedLookupTable;
 		} else {
@@ -125,8 +124,8 @@ public class HybridDriverAssist extends Command {
 		}
 
 		// if (Math.abs(tx) < 5) {
-			steer_cmd = tx * closeK;
-			steer_cmd = Util.limit(steer_cmd, 0.4);
+		steer_cmd = tx * closeK;
+		steer_cmd = Util.limit(steer_cmd, 0.4);
 		// // } else if (Math.abs(tx) < 10) {
 		// // 	steer_cmd = tx * nearK;
 		// } else {

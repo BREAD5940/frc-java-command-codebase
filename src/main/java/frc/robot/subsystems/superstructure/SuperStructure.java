@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.subsystems.superstructure.JustElevatorTeleop;
 import frc.robot.lib.HalfBakedSubsystem;
 import frc.robot.lib.Loggable;
 import frc.robot.lib.PIDSettings;

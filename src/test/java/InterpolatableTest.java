@@ -37,11 +37,9 @@ public class InterpolatableTest {
 
 		assertEquals(60, interpolatingTable.interpolate(Double.valueOf(20)), 0.1);
 
-    assertEquals(40, interpolatingTable.interpolate(Double.valueOf(15)), 0.1);
+		assertEquals(40, interpolatingTable.interpolate(Double.valueOf(15)), 0.1);
 
-    
-    assertEquals(60, interpolatingTable.interpolate(Double.valueOf(100000)), 0.1);
-
+		assertEquals(60, interpolatingTable.interpolate(Double.valueOf(100000)), 0.1);
 
 		// assertTrue(() -> {
 		// 	return false;

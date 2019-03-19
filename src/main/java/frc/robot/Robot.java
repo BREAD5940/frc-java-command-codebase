@@ -24,6 +24,7 @@ import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.TerribleAutoChooser;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
+import frc.robot.commands.subsystems.superstructure.ZeroElevatorDisabled;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
@@ -32,9 +33,6 @@ import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.LimeLight.LEDMode;
 import frc.robot.subsystems.superstructure.SuperStructure;
-
-import frc.robot.commands.subsystems.superstructure.ZeroElevatorDisabled;
-
 
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly init

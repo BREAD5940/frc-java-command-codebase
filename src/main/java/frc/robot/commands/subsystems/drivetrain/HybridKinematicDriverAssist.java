@@ -56,7 +56,7 @@ public class HybridKinematicDriverAssist extends Command {
 		var distToTurn = comped_tx;
 
 		// if (tx == lastTx && doGyroCompensation) { // if same use gyro
-			// distToTurn = lastTx + (lastTx - tx) - (Robot.m_oi.getTurnAxis() * 15);
+		// distToTurn = lastTx + (lastTx - tx) - (Robot.m_oi.getTurnAxis() * 15);
 		// }
 
 		if (tv < 1.0) {
