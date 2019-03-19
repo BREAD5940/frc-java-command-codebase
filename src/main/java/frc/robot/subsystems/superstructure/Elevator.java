@@ -323,6 +323,9 @@ public class Elevator extends HalfBakedSubsystem {
 		var temp = requState;
 		temp.elevator.height = temp.elevator.height.plus(getHeightTrim()); // offset by trim
 		var feedForwardVoltage = getVoltage(temp);
+
+		System.out.println("requ state: " + requState.getElevatorHeight().getInch() + " trim value: " + getHeightTrim().getInch() + " overall requ height: " + temp.getElevatorHeight().getInch());
+
 		setMMArbitraryFeedForward(temp.getElevatorHeight(), feedForwardVoltage / 12d);
 	}
 
