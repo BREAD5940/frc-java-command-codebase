@@ -50,6 +50,7 @@ public class ZeroElevatorDisabled extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if(!DriverStation.getInstance().isDisabled()) return;
     // switch to observe desired behavior
     switch(mCurrentState){
       case IDLE:
