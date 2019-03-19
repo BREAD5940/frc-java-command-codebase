@@ -256,7 +256,6 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		// well also jogging with joysticks but eehhhh
 		// actually that should be the default command, hot prank
 		// setDefaultCommand(new JustElevatorTeleop());
-		// setDefaultCommand(new jot)
 	}
 
 	public SuperStructureState updateState() {
