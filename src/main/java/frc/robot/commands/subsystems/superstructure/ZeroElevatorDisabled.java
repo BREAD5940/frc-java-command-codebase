@@ -56,7 +56,7 @@ public class ZeroElevatorDisabled extends Command {
 	@Override
 	protected void execute() {
 
-		var limitTriggered = SuperStructure.getInnerStageMinLimit();
+		var limitTriggered = SuperStructure.getInstance().getInnerStageMinLimit();
 
 		SmartDashboard.putString("Zeroing state", mCurrentState.name());
 		SmartDashboard.putBoolean("Elevator limit switch", limitTriggered);
@@ -66,18 +66,18 @@ public class ZeroElevatorDisabled extends Command {
 		// switch to observe desired behavior
 		
 			if(mCurrentState == ZeroingState.IDLE) {
-				System.out.println("in idle state");
+				// System.out.println("in idle state");
 				// var limitTriggered = limitStatus;
 				if (!limitTriggered) {
 					mCurrentState = ZeroingState.WAITING_FOR_TRIGGER;
-					System.out.println("limit switch is off, waiting for retrigger");
+					// System.out.println("limit switch is off, waiting for retrigger");
 					// break;
 				}}
 			else if (mCurrentState == ZeroingState.WAITING_FOR_TRIGGER) {
 			System.out.println("waiting for trigger");
 				// limitTriggered = limitStatus;
 				if (limitTriggered) {
-					System.out.println("observing elevator zeroed");
+					// System.out.println("observing elevator zeroed");
 					observeELevatorZeroed();
 					mCurrentState = ZeroingState.ZEROED;
 					// break;
@@ -100,10 +100,15 @@ public class ZeroElevatorDisabled extends Command {
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
+	protected void end() {
+		SuperStructure.elevator.elevatorZeroed = true;
+		SmartDashboard.putString("Zeroing state", mCurrentState.name());
+	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
-	protected void interrupted() {}
+	protected void interrupted() {
+		SmartDashboard.putString("Zeroing state", mCurrentState.name());
+	}
 }

@@ -160,6 +160,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 
+		SmartDashboard.putData(zeroElevatorWhileDisabled);
+
 		mAutoChooser = new TerribleAutoChooser();
 		mAutoChooser.addOptions();
 		System.out.println("Auto chooser sent!");
@@ -202,17 +204,17 @@ public class Robot extends TimedRobot {
 		var target_ = 650;
 		var target_COMP = 650;
 		var tickkkkks_ = (SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-		var delta_ = (tickkkkks_ - (int) target_COMP) * -1;
+		var delta_ = (tickkkkks_ - (int) target_) * -1;
 
-		elevator.getMaster().setSelectedSensorPosition((int) (startingHeightTicks + delta_));
+		// elevator.getMaster().setSelectedSensorPosition((int) (startingHeightTicks + delta_));
 		// elevator.getMaster().setSelectedSensorPosition((int) (startingHeightTicks));
 
 		var proximal = SuperStructure.getInstance().getElbow();
 		// var startingAngleTicks = (int) proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
 		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-		var target = 1400;
+		var targetProximal_ = 1400;
 		var targetProximal_COMP = 1900;
-		var delta = (tickkkkks - (int) targetProximal_COMP) * -1;
+		var delta = (tickkkkks - (int) targetProximal_) * -1;
 		var startingAngleTicks = proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90 - 2));
 
 		proximal.getMaster().setSelectedSensorPosition((int) (delta + startingAngleTicks));
@@ -220,13 +222,17 @@ public class Robot extends TimedRobot {
 
 		var wrist = SuperStructure.getInstance().getWrist();
 		var wristStart = (int) wrist.getMaster().getTicks(RoundRotation2d.getDegree(-43 + 4 - 4));
-		target = (int) 1500;
+		var targetWrist = (int) 1500;
 		var targetWristComp = 1500;
 		var correctionDelta = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-		var deltaW = (correctionDelta - (int) targetWristComp) * 1;
+		var deltaW = (correctionDelta - (int) targetWrist) * 1;
 
 		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
 		// wrist.getMaster().setSelectedSensorPosition((int) (wristStart));
+
+		elevator.getMaster().setSelectedSensorPosition((int) (elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue())); // just to be super sure the elevator is safe-ishhhh
+		var cmd = zeroElevatorWhileDisabled;
+		cmd.start();
 
 		switch (RobotConfig.auto.auto_gear) {
 		case HIGH:
@@ -325,8 +331,6 @@ public class Robot extends TimedRobot {
 		SuperStructure.elevator.onDisable();
 		SuperStructure.getInstance().getElbow().onDisable();
 		SuperStructure.getInstance().getWrist().onDisable();
-
-		zeroElevatorWhileDisabled.start();
 
 		// try {
 		// mResetNotifier.startPeriodic(0.5);
@@ -448,7 +452,7 @@ public class Robot extends TimedRobot {
 
 		if (postTicks) {
 
-			SmartDashboard.putBoolean("Elevator limit switch", SuperStructure.getInnerStageMinLimit());
+			SmartDashboard.putBoolean("Elevator limit switch", SuperStructure.getInstance().getInnerStageMinLimit());
 
 			// var tickkkkks = (int) superstructure.getWrist().getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
 			// var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);

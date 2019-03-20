@@ -150,8 +150,8 @@ public class OI {
 		// 		new SetGearCommand(Gear.HIGH),
 		// 		new SetElevatorGear(ElevatorGear.LOW))));
 
-		dsJogUp.whenPressed(new JogElevator(LengthKt.getInch(0.5), true));
-		dsJogDown.whenPressed(new JogElevator(LengthKt.getInch(0.5), false));
+		// dsJogUp.whenPressed(new JogElevator(LengthKt.getInch(0.5), true));
+		// dsJogDown.whenPressed(new JogElevator(LengthKt.getInch(0.5), false));
 
 		// dsJogUp.whenPressed(new JogElbow(RoundRotation2d.getDegree(2)));
 		// dsJogDown.whenPressed(new JogElbow(RoundRotation2d.getDegree(-2)));
