@@ -447,6 +447,9 @@ public class Robot extends TimedRobot {
 		final boolean postTicks = true;
 
 		if (postTicks) {
+
+			SmartDashboard.putBoolean("Elevator limit switch", SuperStructure.getInnerStageMinLimit());
+
 			// var tickkkkks = (int) superstructure.getWrist().getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
 			// var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 			var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);

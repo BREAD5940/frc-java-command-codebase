@@ -1,7 +1,10 @@
 package frc.robot.lib;
 
+import java.util.Enumeration;
+
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * basically just a CommandGroup but with the done() method and time tracking.
