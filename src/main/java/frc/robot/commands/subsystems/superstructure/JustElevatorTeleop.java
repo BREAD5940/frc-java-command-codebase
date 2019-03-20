@@ -58,19 +58,12 @@ public class JustElevatorTeleop extends Command {
 		var kDeadband = 0.15d;
 
 		// Figure out of the operator is commanding an elevator move. If so, increment the new state and cache the current state - if not, stay at the cached state.
-		// if (Math.abs(mElevatorPower) > kDeadband) {
-			// mNewState.elevator = new ElevatorState(mCurrentState.getElevatorHeight().plus(LengthKt.getInch(mElevatorPower * ((mElevatorPower > 0) ? 5 : 10))));
-			// mCachedState.elevator = mNewState.elevator;
-			SuperStructure.getElevator().setHeightTrim(SuperStructure.getElevator().getHeightTrim().plus(LengthKt.getInch(mElevatorPower * 0.02)));
-		// } //else {
+		if (Math.abs(mElevatorPower) > kDeadband) {
+			mNewState.elevator = new ElevatorState(mCurrentState.getElevatorHeight().plus(LengthKt.getInch(mElevatorPower * ((mElevatorPower > 0) ? 5 : 10))));
+			mCachedState.elevator = mNewState.elevator;
+		} //else {
 			// mNewState.elevator = mCachedState.elevator;
 			// }
-
-			mNewState.elevator = new ElevatorState(mNewState.getElevatorHeight().plus(SuperStructure.elevator.getHeightTrim()));
-
-			System.out.println("elevator power is " + mElevatorPower);
-
-			System.out.println("trim is " + SuperStructure.elevator.getHeightTrim().getInch());
 
 		// Figure out of the operator is commandi
 		SuperStructure.getInstance().move(mNewState);
