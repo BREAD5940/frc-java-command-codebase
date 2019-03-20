@@ -74,7 +74,7 @@ public class ZeroElevatorDisabled extends Command {
 					// break;
 				}}
 			else if (mCurrentState == ZeroingState.WAITING_FOR_TRIGGER) {
-			System.out.println("waiting for trigger");
+			// System.out.println("waiting for trigger");
 				// limitTriggered = limitStatus;
 				if (limitTriggered) {
 					// System.out.println("observing elevator zeroed");

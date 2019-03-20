@@ -253,8 +253,12 @@ public class OI {
 
 	public double getElevatorDS() {
 		var upPower = driverStation.getRawButton(9) ? 1 : -1;
-		var downPower = driverStation.getRawButton(11) ? 1 : -1;
-		return (upPower - downPower) * 0.06;
+		var downPower = (driverStation.getRawButton(11) ? 1 : -1) * -1;
+
+		var toReturn = (upPower + downPower);
+		
+		System.out.println(toReturn);
+		return toReturn;
 	}
 
 	// public double getThrottleAxis() {
