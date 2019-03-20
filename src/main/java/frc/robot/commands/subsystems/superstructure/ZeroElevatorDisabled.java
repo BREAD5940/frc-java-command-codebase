@@ -14,6 +14,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class ZeroElevatorDisabled extends Command {
@@ -45,36 +46,48 @@ public class ZeroElevatorDisabled extends Command {
 	@Override
 	protected void initialize() {
 		mCurrentState = ZeroingState.IDLE;
+
+		SmartDashboard.putBoolean("Elevator zeroed", false);
+
+		SmartDashboard.putData(this);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
+
+		var limitTriggered = SuperStructure.getInnerStageMinLimit();
+
+		SmartDashboard.putString("Zeroing state", mCurrentState.name());
+		SmartDashboard.putBoolean("Elevator limit switch", limitTriggered);
+
 		if (!DriverStation.getInstance().isDisabled())
 			return;
 		// switch to observe desired behavior
-		switch (mCurrentState) {
-		case IDLE:
-			var limitTriggered = SuperStructure.getInstance().getInnerStageMinLimit();
-			if (!limitTriggered) {
-				mCurrentState = ZeroingState.WAITING_FOR_TRIGGER;
-				break;
-			}
-		case WAITING_FOR_TRIGGER:
-			limitTriggered = SuperStructure.getInstance().getInnerStageMinLimit();
-			if (limitTriggered) {
-				observeELevatorZeroed();
-				mCurrentState = ZeroingState.ZEROED;
-				break;
-			}
-		case ZEROED:
-			break;
-		default:
-			break;
+		
+			if(mCurrentState == ZeroingState.IDLE) {
+				System.out.println("in idle state");
+				// var limitTriggered = limitStatus;
+				if (!limitTriggered) {
+					mCurrentState = ZeroingState.WAITING_FOR_TRIGGER;
+					System.out.println("limit switch is off, waiting for retrigger");
+					// break;
+				}}
+			else if (mCurrentState == ZeroingState.WAITING_FOR_TRIGGER) {
+			System.out.println("waiting for trigger");
+				// limitTriggered = limitStatus;
+				if (limitTriggered) {
+					System.out.println("observing elevator zeroed");
+					observeELevatorZeroed();
+					mCurrentState = ZeroingState.ZEROED;
+					// break;
+				}}
+			// else return;
 		}
-	}
+	// }
 
 	protected void observeELevatorZeroed() {
+		SmartDashboard.putBoolean("Elevator zeroed", true);
 		SuperStructure.getElevator().getMaster().set(ControlMode.PercentOutput, 0);
 		SuperStructure.getElevator().getMaster().setSensorPosition(mZeroHeight);
 	}
