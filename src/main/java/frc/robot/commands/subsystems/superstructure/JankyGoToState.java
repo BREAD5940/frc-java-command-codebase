@@ -39,7 +39,7 @@ public class JankyGoToState extends CommandGroup {
 				var nowOutsideFrame = currentState.getElbowAngle().getDegree() > proximalThreshold;
 				var willBeOutsideFrame = requ_.getElbowAngle().getDegree() > proximalThreshold;
 
-				var shouldMoveElevatorFirst = (nowOutsideFrame && !willBeOutsideFrame && !startAboveSafe) || (nowOutsideFrame && willBeOutsideFrame);
+				var shouldMoveElevatorFirst = (nowOutsideFrame && !willBeOutsideFrame && !startAboveSafe) || (nowOutsideFrame && willBeOutsideFrame) || ((-35 >= currentState.getElbowAngle().getDegree() && currentState.getElbowAngle().getDegree() >= -90) && (-50 >= requ_.getElbowAngle().getDegree() && requ_.getElbowAngle().getDegree() >= -100));
 
 				System.out.println("requested state: " + requ_);
 

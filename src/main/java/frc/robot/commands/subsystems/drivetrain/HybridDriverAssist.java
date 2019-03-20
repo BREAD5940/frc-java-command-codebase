@@ -40,16 +40,16 @@ public class HybridDriverAssist extends Command {
 
 		// map is a key-value pair. First key is the target skew, the second key is the angle to offset the limelight by.
 		deployedMap.put(Double.valueOf(0), new InterpolatableLutEntry(0));
-		deployedMap.put(Double.valueOf(10), new InterpolatableLutEntry(-5));
-		deployedMap.put(Double.valueOf(30), new InterpolatableLutEntry(-10));
-		deployedMap.put(Double.valueOf(-10), new InterpolatableLutEntry(5));
-		deployedMap.put(Double.valueOf(-30), new InterpolatableLutEntry(10));
+		deployedMap.put(Double.valueOf(10), new InterpolatableLutEntry(0));
+		deployedMap.put(Double.valueOf(30), new InterpolatableLutEntry(0));
+		deployedMap.put(Double.valueOf(-10), new InterpolatableLutEntry(0));
+		deployedMap.put(Double.valueOf(-30), new InterpolatableLutEntry(0));
 
 		stowedMap.put(Double.valueOf(0), new InterpolatableLutEntry(0));
-		stowedMap.put(Double.valueOf(10), new InterpolatableLutEntry(-5));
-		stowedMap.put(Double.valueOf(30), new InterpolatableLutEntry(-10));
-		stowedMap.put(Double.valueOf(-10), new InterpolatableLutEntry(5));
-		stowedMap.put(Double.valueOf(-30), new InterpolatableLutEntry(10));
+		stowedMap.put(Double.valueOf(10), new InterpolatableLutEntry(0));
+		stowedMap.put(Double.valueOf(30), new InterpolatableLutEntry(0));
+		stowedMap.put(Double.valueOf(-10), new InterpolatableLutEntry(0));
+		stowedMap.put(Double.valueOf(-30), new InterpolatableLutEntry(0));
 
 		mDeployedLookupTable = new InterpolatableLut(deployedMap);
 		mStowedLookupTable = new InterpolatableLut(stowedMap);
