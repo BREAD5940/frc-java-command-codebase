@@ -59,7 +59,12 @@ public class JankyGoToState extends CommandGroup {
 				var nowOutsideFrame = currentState.getElbowAngle().getDegree() > proximalThreshold;
 				var willBeOutsideFrame = requ_.getElbowAngle().getDegree() > proximalThreshold;
 
-				var safeToMoveSynced = nowOutsideFrame && willBeOutsideFrame;
+				var proximalStartSafe = currentState.getElbowAngle().getDegree() > -80;
+				var proximalEndSafe = requ_.getElbowAngle().getDegree() > -80;
+				var startHighEnough = currentState.getElevatorHeight().getInch() > 18;
+				var endHighEnough = requ_.getElevatorHeight().getInch() > 20;
+
+				var safeToMoveSynced = (nowOutsideFrame && willBeOutsideFrame) || (proximalStartSafe && proximalEndSafe && startHighEnough && endHighEnough);
 
 				System.out.println("Safe to move synced? " + safeToMoveSynced);
 
