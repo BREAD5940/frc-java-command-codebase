@@ -162,7 +162,12 @@ public class PIDArcadeDrive extends Command {
 		// System.out.println("mVelocity: " + mVelocity.getLinear() + " mAccel: " + mAcceleration.getLinear());
 
     // DriveTrain.getInstance().setOutputFromDynamics(mVelocity, mAcceleration);
-    DriveTrain.getInstance().setOutputFromKinematics(mVelocity);
+    // DriveTrain.getInstance().setOutputFromKinematics(mVelocity);
+
+    var wheelVelocities = DriveTrain.getInstance().getDifferentialDrive().solveInverseKinematics(mVelocity);
+    var feedForwardVoltages = DriveTrain.getInstance().getDifferentialDrive().getVoltagesFromkV(wheelVelocities);
+    DriveTrain.getInstance().tankDrive(feedForwardVoltages.getLeft() / 12, feedForwardVoltages.getRight() / 12);
+
 
 		mCachedChassisState = mVelocity;
 	}
