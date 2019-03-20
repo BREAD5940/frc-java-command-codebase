@@ -19,6 +19,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 
@@ -155,7 +157,9 @@ public class Elevator extends HalfBakedSubsystem {
 		// mSlave2.setInverted(settings.slave2FollowerMode);
 		// mSlave3.setInverted(settings.slave3FollowerMode);
 
-		// mMaster.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, normalOpenOrClose);
+		mMaster.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+		// mMaster.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+
 
 		// setup PID gains
 		setClosedLoopGains(kLowGearPIDSlot, LOW_GEAR_PID);
@@ -324,7 +328,7 @@ public class Elevator extends HalfBakedSubsystem {
 		temp.elevator.height = temp.elevator.height.plus(getHeightTrim()); // offset by trim
 		var feedForwardVoltage = getVoltage(temp);
 
-		System.out.println("requ state: " + requState.getElevatorHeight().getInch() + " trim value: " + getHeightTrim().getInch() + " overall requ height: " + temp.getElevatorHeight().getInch());
+		// System.out.println("requ state: " + requState.getElevatorHeight().getInch() + " trim value: " + getHeightTrim().getInch() + " overall requ height: " + temp.getElevatorHeight().getInch());
 
 		setMMArbitraryFeedForward(temp.getElevatorHeight(), feedForwardVoltage / 12d);
 	}
