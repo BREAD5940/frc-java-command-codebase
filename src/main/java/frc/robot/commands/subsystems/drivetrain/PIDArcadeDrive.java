@@ -37,8 +37,8 @@ public class PIDArcadeDrive extends Command {
     
     var highGearMap = new TreeMap<Double, InterpolatableLutEntry>();
     highGearMap.put(Double.valueOf(0), new InterpolatableLutEntry(8));
-    highGearMap.put(Double.valueOf(5), new InterpolatableLutEntry(10));
-    highGearMap.put(Double.valueOf(15), new InterpolatableLutEntry(20));
+    highGearMap.put(Double.valueOf(5), new InterpolatableLutEntry(8));
+    highGearMap.put(Double.valueOf(15), new InterpolatableLutEntry(16));
     highGearAngularLUT = new InterpolatableLut(highGearMap);
 
     var lowGearMap = new TreeMap<Double, InterpolatableLutEntry>();
@@ -52,10 +52,10 @@ public class PIDArcadeDrive extends Command {
 	@Override
 	protected void initialize() {
 		DriveTrain.getInstance().setNeutralMode(NeutralMode.Coast);
-		DriveTrain.getInstance().getLeft().getMaster().configClosedloopRamp(0.2);
-		DriveTrain.getInstance().getRight().getMaster().configClosedloopRamp(0.2);
-		DriveTrain.getInstance().getLeft().getMaster().configOpenloopRamp(0.2);
-		DriveTrain.getInstance().getRight().getMaster().configOpenloopRamp(0.2);
+		DriveTrain.getInstance().getLeft().getMaster().configClosedloopRamp(0.12);
+		DriveTrain.getInstance().getRight().getMaster().configClosedloopRamp(0.12);
+		DriveTrain.getInstance().getLeft().getMaster().configOpenloopRamp(0.12);
+		DriveTrain.getInstance().getRight().getMaster().configOpenloopRamp(0.12);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -112,7 +112,7 @@ public class PIDArcadeDrive extends Command {
 		final double lowGearForward = Util.toMeters(7.5);
 		final double highGearForward = Util.toMeters(11);
 		double lowGearTurn = Util.toMeters(12);
-		double highGearTurn;// = Util.toMeters(18);
+		double highGearTurn = Util.toMeters(18);
 
 		final double maxAccelLinearLow = Util.toMeters(12);
 		final double maxAccelLinearHigh = Util.toMeters(18);
@@ -124,7 +124,7 @@ public class PIDArcadeDrive extends Command {
     // double turnSpeed = 
     // interpolate turn speed based on forward speed
 
-    double turnSpeed = -1 * rotationPercent * ((isHighGear) ? highGearAngularLUT.interpolate(Util.toFeet(forwardSpeed)) : lowGearAngularLUT.interpolate(Util.toFeet(forwardSpeed)));
+    double turnSpeed = -1 * rotationPercent * ((isHighGear) ? highGearTurn : lowGearTurn);
 
 		// forwardSpeed = Util.limit(forwardSpeed, forwardSpeed-(maxAccelLinearLow * Robot.mPeriod), forwardSpeed+(maxAccelLinearLow * Robot.mPeriod))
 
@@ -162,11 +162,12 @@ public class PIDArcadeDrive extends Command {
 		// System.out.println("mVelocity: " + mVelocity.getLinear() + " mAccel: " + mAcceleration.getLinear());
 
     // DriveTrain.getInstance().setOutputFromDynamics(mVelocity, mAcceleration);
-    // DriveTrain.getInstance().setOutputFromKinematics(mVelocity);
+    DriveTrain.getInstance().setOutputFromKinematics(mVelocity);
 
-    var wheelVelocities = DriveTrain.getInstance().getDifferentialDrive().solveInverseKinematics(mVelocity);
-    var feedForwardVoltages = DriveTrain.getInstance().getDifferentialDrive().getVoltagesFromkV(wheelVelocities);
-    DriveTrain.getInstance().tankDrive(feedForwardVoltages.getLeft() / 12, feedForwardVoltages.getRight() / 12);
+    // var wheelVelocities = DriveTrain.getInstance().getDifferentialDrive().solveInverseKinematics(mVelocity);
+		// var feedForwardVoltages = DriveTrain.getInstance().getDifferentialDrive().getVoltagesFromkV(wheelVelocities);
+		
+    // DriveTrain.getInstance().tankDrive(feedForwardVoltages.getLeft() / 12, feedForwardVoltages.getRight() / 12);
 
 
 		mCachedChassisState = mVelocity;
