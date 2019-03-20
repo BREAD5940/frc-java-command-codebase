@@ -1,5 +1,6 @@
 package frc.robot.commands.subsystems.superstructure;
 
+import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -14,6 +15,8 @@ public class JustElevatorTeleop extends Command {
 	private OI mOI = Robot.m_oi;
 
 	SuperStructureState mCachedState;
+
+	private static Length mOffset = LengthKt.getInch(0);
 
 	/**
 	 * Jog the superstructure using an xbox controller. Mainly used for testing.
