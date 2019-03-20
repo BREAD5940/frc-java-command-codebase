@@ -88,10 +88,12 @@ public class Elevator extends HalfBakedSubsystem {
 	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.17, 0, 0, 0); // High speed 
 	private static final int kLowGearPIDSlot = 0; // low speed slot
 	private static final int kHighGearPIDSlot = 1; // high gear slot
-	public static final PIDSettings HIGH_GEAR_MOTION_MAGIC = new PIDSettings(0.45 * 1.2, 0, 0, 0.3, 6500, 12000); // High speed  // theoretical max is 8000 and 14000
+	public static final PIDSettings HIGH_GEAR_MOTION_MAGIC = new PIDSettings(0.45 * 1.2, 0, 0, 0.3, 4500, 8000); // High speed  // theoretical max is 8000 and 14000
 	private static final int kHighGearMotionMagicPIDSlot = 3; // low speed slot
 
 	protected Length m_heightTrim = LengthKt.getInch(0);
+
+	public boolean elevatorZeroed = false;;
 
 	public Length getHeightTrim() {
 		return m_heightTrim;
@@ -147,7 +149,7 @@ public class Elevator extends HalfBakedSubsystem {
 		mMaster.configPeakOutputForward(+0.3, 0);
 		mMaster.configPeakOutputReverse(-0.3, 0);
 
-		mMaster.setSelectedSensorPosition(0);
+		mMaster.setSelectedSensorPosition(23000);
 
 		mMaster.setInverted(false);
 		mSlave1.setInverted(InvertType.OpposeMaster);
@@ -157,7 +159,7 @@ public class Elevator extends HalfBakedSubsystem {
 		// mSlave2.setInverted(settings.slave2FollowerMode);
 		// mSlave3.setInverted(settings.slave3FollowerMode);
 
-		mMaster.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+		// mMaster.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
 		// mMaster.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
 
 
@@ -325,12 +327,12 @@ public class Elevator extends HalfBakedSubsystem {
 	@Override
 	public void periodic() {
 		var temp = requState;
-		temp.elevator.height = temp.elevator.height.plus(getHeightTrim()); // offset by trim
+		// temp.elevator.height = temp.elevator.height.plus(getHeightTrim()); // offset by trim
 		var feedForwardVoltage = getVoltage(temp);
 
 		// System.out.println("requ state: " + requState.getElevatorHeight().getInch() + " trim value: " + getHeightTrim().getInch() + " overall requ height: " + temp.getElevatorHeight().getInch());
 
-		setMMArbitraryFeedForward(temp.getElevatorHeight(), feedForwardVoltage / 12d);
+		setMMArbitraryFeedForward(temp.getElevatorHeight(), feedForwardVoltage / 12);
 	}
 
 	/**

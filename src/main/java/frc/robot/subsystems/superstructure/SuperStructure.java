@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotConfig.auto.fieldPositions;
+import frc.robot.commands.subsystems.superstructure.JustElevatorTeleop;
 import frc.robot.lib.HalfBakedSubsystem;
 import frc.robot.lib.Loggable;
 import frc.robot.lib.PIDSettings;
@@ -73,9 +74,9 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		return !carriageMaxLimitSwitch.get(); // to invert logic
 	}
 
-	public static boolean getInnerStageMinLimit() {
-		// return getElevator().getMaster().getSensorCollection().isRevLimitSwitchClosed();
-		return getElevator().getMaster().getSensorCollection().isFwdLimitSwitchClosed();
+	public boolean getInnerStageMinLimit() {
+		return !innerStageMinLimitSwitch.get();
+		// return getElevator().getMaster().getSensorCollection().isFwdLimitSwitchClosed();
 	}
 
 	public Length elevatorTrim = LengthKt.getInch(0);
@@ -132,7 +133,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 
 		carriageMaxLimitSwitch = new DigitalInput(8);
 
-		innerStageMinLimitSwitch = new DigitalInput(9);
+		innerStageMinLimitSwitch = new DigitalInput(0);
 
 		mCurrentState = new SuperStructureState();
 
@@ -256,7 +257,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		// Actually yeah all that you really need is the buttons
 		// well also jogging with joysticks but eehhhh
 		// actually that should be the default command, hot prank
-		// setDefaultCommand(new JustElevatorTeleop());
+		setDefaultCommand(new JustElevatorTeleop());
 	}
 
 	public SuperStructureState updateState() {
