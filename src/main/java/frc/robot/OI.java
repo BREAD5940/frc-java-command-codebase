@@ -13,7 +13,7 @@ import frc.robot.commands.auto.routines.CloseSideRocket;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
-import frc.robot.commands.subsystems.superstructure.JogElevator;
+// import frc.robot.commands.subsystems.superstructure.JogElevator;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
@@ -76,8 +76,8 @@ public class OI {
 	Button dsHatch3 = new JoystickButton(driverStation, 1);
 	Button dsHatchIn = new JoystickButton(driverStation, 10);
 
-	Button dsJogUp = new JoystickButton(driverStation, 9);
-	Button dsJogDown = new JoystickButton(driverStation, 11);
+	// Button dsJogUp = new JoystickButton(driverStation, 9);
+	// Button dsJogDown = new JoystickButton(driverStation, 11);
 
 	public OI() {
 
@@ -88,7 +88,7 @@ public class OI {
 		dsCargoIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
 						new SetHatchMech(HatchMechState.kOpen),
-						new JankyGoToState(LengthKt.getInch(5.5), SuperStructure.iPosition.CARGO_GRAB))));
+						new JankyGoToState(LengthKt.getInch(14), SuperStructure.iPosition.CARGO_GRAB))));
 
 		dsCargo1.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
@@ -255,7 +255,7 @@ public class OI {
 		var upPower = driverStation.getRawButton(9) ? 1 : -1;
 		var downPower = (driverStation.getRawButton(11) ? 1 : -1) * -1;
 
-		var toReturn = (upPower + downPower);
+		var toReturn = (upPower + downPower) * 0.15;
 		
 		System.out.println(toReturn);
 		return toReturn;

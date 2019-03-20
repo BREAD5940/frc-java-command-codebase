@@ -152,7 +152,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	}
 
 	public static class iPosition {
-		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-5)), new RotatingArmState(RoundRotation2d.getDegree(-45)));
+		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-44)), new RotatingArmState(RoundRotation2d.getDegree(-20)));
 		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-5)), new RotatingArmState(RoundRotation2d.getDegree(-50)));
 		public static final IntakeAngle CARGO_PLACE = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(6)), new RotatingArmState(RoundRotation2d.getDegree(16)));
 		public static final IntakeAngle CARGO_PLACE_PITCHED_UP = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(9)), new RotatingArmState(RoundRotation2d.getDegree(20)));

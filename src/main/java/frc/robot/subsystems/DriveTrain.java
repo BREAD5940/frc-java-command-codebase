@@ -35,6 +35,7 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.commands.subsystems.drivetrain.ArcadeDrive;
+import frc.robot.commands.subsystems.drivetrain.PIDArcadeDrive;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.drivetrain.TrajectoryTrackerCommand;
 import frc.robot.lib.enums.TransmissionSide;
@@ -662,7 +663,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	@Override
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
-		setDefaultCommand(new ArcadeDrive());
+		// setDefaultCommand(new ArcadeDrive());
+		setDefaultCommand(new PIDArcadeDrive(true));
 		// setDefaultCommand(new auto_action_DRIVE(5, "high", 5, 30));
 	}
 
