@@ -73,8 +73,9 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		return !carriageMaxLimitSwitch.get(); // to invert logic
 	}
 
-	public boolean getInnerStageMinLimit() {
-		return !innerStageMinLimitSwitch.get(); // to invert logic
+	public static boolean getInnerStageMinLimit() {
+		// return getElevator().getMaster().getSensorCollection().isRevLimitSwitchClosed();
+		return getElevator().getMaster().getSensorCollection().isFwdLimitSwitchClosed();
 	}
 
 	public Length elevatorTrim = LengthKt.getInch(0);
