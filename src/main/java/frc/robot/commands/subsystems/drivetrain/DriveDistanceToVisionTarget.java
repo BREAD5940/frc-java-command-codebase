@@ -1,8 +1,81 @@
 package frc.robot.commands.subsystems.drivetrain;
 
+import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
+import java.util.function.Supplier;
+
+import com.team254.lib.physics.DifferentialDrive.ChassisState;
+
+import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
+import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.lib.motion.Util;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.LimeLight;
 
 public class DriveDistanceToVisionTarget extends Command {
+
+	private final Length finalDistance;
+	// private final Velocity<Length> 
+
+	private Supplier<Length> targetDistance;
+	private Supplier<Rotation2d> targetYaw;
+	boolean isWithinDelta = false;
+
+	private final double ticksToMax = 3;
+	double lastFwdCmd = 0;
+
+	private Velocity<Length> velocity;
+
+
+	public DriveDistanceToVisionTarget(Length endDistance, Velocity<Length> speed) {
+
+		this.finalDistance = endDistance;
+
+		this.velocity = speed;
+
+		targetDistance = () -> {return LimeLight.getInstance().getPose(0).getTranslation().getX();};
+		targetYaw = () -> {return LimeLight.getInstance().getDx();};
+
+	}
+
+	@Override
+	protected void execute() {
+		var distanceToGo = targetDistance.get().minus(finalDistance);
+
+		final double fwdKp = 6;
+		final double yawKp = 0.2; // TODO tuneme
+		final double maxYawSpeed = 4; //feet per sec
+
+		var fwdPower = Util.limit(distanceToGo.getFeet() * fwdKp, velocity.getType$FalconLibrary().getFeet());
+		fwdPower = Util.limit(fwdPower, lastFwdCmd - (1 / ticksToMax), lastFwdCmd + (1 / ticksToMax));
+		
+		var steer_cmd = targetYaw.get().getDegree() * yawKp;
+		steer_cmd = Util.limit(steer_cmd, maxYawSpeed);
+		
+		lastFwdCmd = fwdPower;
+
+		var commandedChassisState = new ChassisState(
+			Util.toMeters(fwdPower),
+			Util.toMeters(steer_cmd) // ah shit i can't believe you've done this
+		);
+
+		DriveTrain.getInstance().setOutputFromKinematics(commandedChassisState);
+
+		isWithinDelta = Math.abs(distanceToGo.getFeet()) < (2f / 12f) && (Math.abs(targetYaw.get().getDegree()) < 3);
+	}
+
+
+
+	@Override
+	protected boolean isFinished() {
+		return isWithinDelta;
+	}
 
 
 
