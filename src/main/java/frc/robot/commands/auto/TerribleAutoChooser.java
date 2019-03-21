@@ -30,7 +30,7 @@ public class TerribleAutoChooser implements iAutoChooser {
 		addChoice("HabL to rocketLC", new CloseSideRocket('L'));
 		addChoice("HabR to rocketRC", new CloseSideRocket('R'));
 		addChoice("HabL to cargoL1", new CargoShip1('L'));
-		addChoice("HabR to cargoR1", new CloseSideRocket('R'));
+		addChoice("HabR to cargoR1", new CargoShip1('R'));
 		addChoice("HabL to TWO HATCH AUTO", new CloseThenFarRocket('L'));
 		addChoice("HabR to TWO HATCH AUTO", new CloseThenFarRocket('R'));
 		addChoice("Baseline", new Baseline());
