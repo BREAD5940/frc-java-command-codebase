@@ -145,12 +145,12 @@ public class CloseThenFarRocket extends CommandGroup {
 		addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(20), VelocityKt.getVelocity(LengthKt.getFeet(3))));
 		addParallel(new RunIntake(1, 0, 1));
 		addSequential(new DrivePower(0.3, 1));
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_loadingToRocketF, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false));
+		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_loadingToRocketF, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
 		addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 		addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(30), VelocityKt.getVelocity(LengthKt.getFeet(3))));
     addParallel(new RunIntake(-1, 0, 1));
     addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
-    addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_rocketFtoLoading, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false));
+    addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_rocketFtoLoading, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
 
 
 	}
