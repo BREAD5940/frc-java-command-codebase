@@ -7,21 +7,21 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class ParallelRaceGroup extends CommandGroup {
 
-  Supplier<Boolean> m_condition;
+	Supplier<Boolean> m_condition;
 
-  public ParallelRaceGroup(Supplier<Boolean> condition, Command... commands) {
+	public ParallelRaceGroup(Supplier<Boolean> condition, Command... commands) {
 
-    m_condition = condition;
+		m_condition = condition;
 
-    for(Command command : commands) {
-      super.addParallel(command);
-    }
-    
-  }
+		for (Command command : commands) {
+			super.addParallel(command);
+		}
 
-  @Override
-  protected boolean isFinished() {
-    return super.isFinished() || m_condition.get().booleanValue();
-  }
+	}
+
+	@Override
+	protected boolean isFinished() {
+		return super.isFinished() || m_condition.get().booleanValue();
+	}
 
 }
