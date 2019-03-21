@@ -47,6 +47,7 @@ public class FollowVisionTargetTheSecond extends Command {
 	protected void execute() {
 		Update_Limelight_Tracking();
 		if (m_LimelightHasValidTarget) {
+			// System.out.println(m_LimelightDriveCommand);
 			DriveTrain.getInstance().arcadeDrive(m_LimelightDriveCommand, m_LimelightSteerCommand);
 		} else {
 			DriveTrain.getInstance().stop();
@@ -79,10 +80,10 @@ public class FollowVisionTargetTheSecond extends Command {
 	 */
 	public void Update_Limelight_Tracking() {
 		// These numbers must be tuned for your Robot!  Be careful!
-		double STEER_K = 0.04;                    // how hard to turn toward the target
-		double DRIVE_K = 0.26 * 1.6 * 1.3 / 1.1;                    // how hard to drive fwd toward the target
+		double STEER_K = 0.4;                    // how hard to turn toward the target
+		double DRIVE_K = 0.26 * 1.6 * 1.3 / 1;                    // how hard to drive fwd toward the target
 		double DESIRED_TARGET_AREA = this.targetArea;         // Area of the target when the robot reaches the wall
-		double MAX_DRIVE = 0.7;                   // Simple speed limit so we don't drive too fast
+		double MAX_DRIVE = 0.45;                   // Simple speed limit so we don't drive too fast
 
 		double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
 		double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0) - offset;
@@ -94,7 +95,7 @@ public class FollowVisionTargetTheSecond extends Command {
 			m_isDone = true;
 		}
 
-		System.out.println("DESIRED_TARGET_AREA - ta: " + (DESIRED_TARGET_AREA - ta));
+		// System.out.println("DESIRED_TARGET_AREA - ta: " + (DESIRED_TARGET_AREA - ta));
 
 		if (tv < 1.0) {
 			m_LimelightHasValidTarget = false;
