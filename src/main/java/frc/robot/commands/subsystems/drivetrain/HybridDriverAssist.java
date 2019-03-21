@@ -114,7 +114,7 @@ public class HybridDriverAssist extends Command {
 		double threshold = 8;
 
 		if (isHighGear) {
-			closeK = 0.1;
+			closeK = 0.13;
 			// nearK = 0.05;
 			// farK = 0.4;
 		} else {
