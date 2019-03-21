@@ -90,6 +90,9 @@ public class FollowVisionTargetTheSecond extends Command {
 		double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
 		double ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
 
+		if (ta < 1)
+			MAX_DRIVE = .7; // TOOD tune
+
 		if (Math.abs(DESIRED_TARGET_AREA - ta) < 0.3) {
 			System.out.println("WE DONE BOIS");
 			m_isDone = true;
