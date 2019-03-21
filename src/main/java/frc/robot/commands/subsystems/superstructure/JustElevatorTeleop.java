@@ -40,7 +40,7 @@ public class JustElevatorTeleop extends Command {
 		SuperStructure.getElevator().getMaster().selectProfileSlot(3, 0);
 		// SuperStructure.getInstance().getElbow().getMaster().selectProfileSlot(3, 0);
 
-		if(SuperStructure.elevator.elevatorZeroed == false) {
+		if (SuperStructure.elevator.elevatorZeroed == false) {
 			System.out.println("ELEVATOR NOT ZEROED REEEEEEEEEEEEEEEEE");
 			this.cancel();
 		}

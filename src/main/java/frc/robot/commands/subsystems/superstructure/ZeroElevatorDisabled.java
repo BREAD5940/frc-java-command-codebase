@@ -64,26 +64,27 @@ public class ZeroElevatorDisabled extends Command {
 		if (!DriverStation.getInstance().isDisabled())
 			return;
 		// switch to observe desired behavior
-		
-			if(mCurrentState == ZeroingState.IDLE) {
-				// System.out.println("in idle state");
-				// var limitTriggered = limitStatus;
-				if (!limitTriggered) {
-					mCurrentState = ZeroingState.WAITING_FOR_TRIGGER;
-					// System.out.println("limit switch is off, waiting for retrigger");
-					// break;
-				}}
-			else if (mCurrentState == ZeroingState.WAITING_FOR_TRIGGER) {
+
+		if (mCurrentState == ZeroingState.IDLE) {
+			// System.out.println("in idle state");
+			// var limitTriggered = limitStatus;
+			if (!limitTriggered) {
+				mCurrentState = ZeroingState.WAITING_FOR_TRIGGER;
+				// System.out.println("limit switch is off, waiting for retrigger");
+				// break;
+			}
+		} else if (mCurrentState == ZeroingState.WAITING_FOR_TRIGGER) {
 			// System.out.println("waiting for trigger");
-				// limitTriggered = limitStatus;
-				if (limitTriggered) {
-					// System.out.println("observing elevator zeroed");
-					observeELevatorZeroed();
-					mCurrentState = ZeroingState.ZEROED;
-					// break;
-				}}
-			// else return;
+			// limitTriggered = limitStatus;
+			if (limitTriggered) {
+				// System.out.println("observing elevator zeroed");
+				observeELevatorZeroed();
+				mCurrentState = ZeroingState.ZEROED;
+				// break;
+			}
 		}
+		// else return;
+	}
 	// }
 
 	protected void observeELevatorZeroed() {

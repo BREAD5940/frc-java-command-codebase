@@ -13,7 +13,6 @@ import frc.robot.commands.auto.routines.CloseSideRocket;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
-// import frc.robot.commands.subsystems.superstructure.JogElevator;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
@@ -256,7 +255,7 @@ public class OI {
 		var downPower = (driverStation.getRawButton(11) ? 1 : -1) * -1;
 
 		var toReturn = (upPower + downPower) * 0.15;
-		
+
 		System.out.println(toReturn);
 		return toReturn;
 	}

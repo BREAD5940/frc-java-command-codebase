@@ -25,7 +25,7 @@ public class PIDArcadeDrive extends Command {
 	private ChassisState mCachedChassisState;
 	public boolean isFirstRun = true;
 
-  private InterpolatableLut highGearAngularLUT, lowGearAngularLUT;
+	private InterpolatableLut highGearAngularLUT, lowGearAngularLUT;
 
 	private boolean squareInputs;
 
@@ -33,19 +33,19 @@ public class PIDArcadeDrive extends Command {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
 		requires(DriveTrain.getInstance());
-    this.squareInputs = square;
-    
-    var highGearMap = new TreeMap<Double, InterpolatableLutEntry>();
-    highGearMap.put(Double.valueOf(0), new InterpolatableLutEntry(8));
-    highGearMap.put(Double.valueOf(5), new InterpolatableLutEntry(8));
-    highGearMap.put(Double.valueOf(15), new InterpolatableLutEntry(16));
-    highGearAngularLUT = new InterpolatableLut(highGearMap);
+		this.squareInputs = square;
 
-    var lowGearMap = new TreeMap<Double, InterpolatableLutEntry>();
-    lowGearMap.put(Double.valueOf(0), new InterpolatableLutEntry(10));
-    lowGearMap.put(Double.valueOf(5), new InterpolatableLutEntry(10));
-    lowGearMap.put(Double.valueOf(10), new InterpolatableLutEntry(15));
-    lowGearAngularLUT = new InterpolatableLut(lowGearMap);
+		var highGearMap = new TreeMap<Double, InterpolatableLutEntry>();
+		highGearMap.put(Double.valueOf(0), new InterpolatableLutEntry(8));
+		highGearMap.put(Double.valueOf(5), new InterpolatableLutEntry(8));
+		highGearMap.put(Double.valueOf(15), new InterpolatableLutEntry(16));
+		highGearAngularLUT = new InterpolatableLut(highGearMap);
+
+		var lowGearMap = new TreeMap<Double, InterpolatableLutEntry>();
+		lowGearMap.put(Double.valueOf(0), new InterpolatableLutEntry(10));
+		lowGearMap.put(Double.valueOf(5), new InterpolatableLutEntry(10));
+		lowGearMap.put(Double.valueOf(10), new InterpolatableLutEntry(15));
+		lowGearAngularLUT = new InterpolatableLut(lowGearMap);
 	}
 
 	// Called just before this Command runs the first time
@@ -121,10 +121,10 @@ public class PIDArcadeDrive extends Command {
 
 		double forwardSpeed = linearPercent * ((isHighGear) ? highGearForward : lowGearForward);
 
-    // double turnSpeed = 
-    // interpolate turn speed based on forward speed
+		// double turnSpeed = 
+		// interpolate turn speed based on forward speed
 
-    double turnSpeed = -1 * rotationPercent * ((isHighGear) ? highGearTurn : lowGearTurn);
+		double turnSpeed = -1 * rotationPercent * ((isHighGear) ? highGearTurn : lowGearTurn);
 
 		// forwardSpeed = Util.limit(forwardSpeed, forwardSpeed-(maxAccelLinearLow * Robot.mPeriod), forwardSpeed+(maxAccelLinearLow * Robot.mPeriod))
 
@@ -135,40 +135,39 @@ public class PIDArcadeDrive extends Command {
 		}
 
 		if (isHighGear) {
-      // limit limear acceleration
+			// limit limear acceleration
 			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearHigh / Robot.mPeriod,
 					mCachedChassisState.getLinear() + maxAccelLinearHigh / Robot.mPeriod));
 
-      // limit the angular acceleration
+			// limit the angular acceleration
 			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), mCachedChassisState.getAngular() - maxAccelAngularHigh / Robot.mPeriod,
-        mCachedChassisState.getAngular() + maxAccelAngularHigh / Robot.mPeriod));
-      
-      mVelocity.setLinear(Util.limit(mVelocity.getLinear(), highGearForward)); // constrain linear velocity just in case
-      // calculate the max turn speed based on the linear speed
-      highGearTurn = highGearAngularLUT.interpolate(Util.toFeet(mVelocity.getLinear()));
+					mCachedChassisState.getAngular() + maxAccelAngularHigh / Robot.mPeriod));
+
+			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), highGearForward)); // constrain linear velocity just in case
+			// calculate the max turn speed based on the linear speed
+			highGearTurn = highGearAngularLUT.interpolate(Util.toFeet(mVelocity.getLinear()));
 			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), highGearTurn)); // limit angular velocity based on calculated max speed
 		} else {
 			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearLow / Robot.mPeriod,
 					mCachedChassisState.getLinear() + maxAccelLinearLow / Robot.mPeriod));
-      mVelocity.setLinear(Util.limit(mVelocity.getLinear(), lowGearForward));
-      lowGearTurn = lowGearAngularLUT.interpolate(Util.toFeet(mVelocity.getLinear()));
+			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), lowGearForward));
+			lowGearTurn = lowGearAngularLUT.interpolate(Util.toFeet(mVelocity.getLinear()));
 			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), lowGearTurn));
 		}
 
 		// ChassisState mAcceleration = new ChassisState(
-				// (mVelocity.getLinear() - mCachedChassisState.getLinear()) / Robot.mPeriod,
-				// (mVelocity.getAngular() - mCachedChassisState.getAngular()) / Robot.mPeriod);
+		// (mVelocity.getLinear() - mCachedChassisState.getLinear()) / Robot.mPeriod,
+		// (mVelocity.getAngular() - mCachedChassisState.getAngular()) / Robot.mPeriod);
 
 		// System.out.println("mVelocity: " + mVelocity.getLinear() + " mAccel: " + mAcceleration.getLinear());
 
-    // DriveTrain.getInstance().setOutputFromDynamics(mVelocity, mAcceleration);
-    DriveTrain.getInstance().setOutputFromKinematics(mVelocity);
+		// DriveTrain.getInstance().setOutputFromDynamics(mVelocity, mAcceleration);
+		DriveTrain.getInstance().setOutputFromKinematics(mVelocity);
 
-    // var wheelVelocities = DriveTrain.getInstance().getDifferentialDrive().solveInverseKinematics(mVelocity);
+		// var wheelVelocities = DriveTrain.getInstance().getDifferentialDrive().solveInverseKinematics(mVelocity);
 		// var feedForwardVoltages = DriveTrain.getInstance().getDifferentialDrive().getVoltagesFromkV(wheelVelocities);
-		
-    // DriveTrain.getInstance().tankDrive(feedForwardVoltages.getLeft() / 12, feedForwardVoltages.getRight() / 12);
 
+		// DriveTrain.getInstance().tankDrive(feedForwardVoltages.getLeft() / 12, feedForwardVoltages.getRight() / 12);
 
 		mCachedChassisState = mVelocity;
 	}
@@ -182,13 +181,13 @@ public class PIDArcadeDrive extends Command {
 	// Called once after isFinished returns true
 	@Override
 	protected void end() {
-    DriveTrain.getInstance().stop();
-  }
+		DriveTrain.getInstance().stop();
+	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
 	@Override
 	protected void interrupted() {
-    DriveTrain.getInstance().stop();
-  }
+		DriveTrain.getInstance().stop();
+	}
 }

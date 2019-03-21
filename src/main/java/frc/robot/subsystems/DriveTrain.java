@@ -34,7 +34,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
-import frc.robot.commands.subsystems.drivetrain.ArcadeDrive;
 import frc.robot.commands.subsystems.drivetrain.PIDArcadeDrive;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.drivetrain.TrajectoryTrackerCommand;
