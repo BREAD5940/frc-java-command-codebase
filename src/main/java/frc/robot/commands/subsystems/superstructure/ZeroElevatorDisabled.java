@@ -15,6 +15,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class ZeroElevatorDisabled extends Command {
@@ -39,7 +40,7 @@ public class ZeroElevatorDisabled extends Command {
 	}
 
 	private ZeroingState mCurrentState;
-	private static final Length kZeroHeight = LengthKt.getInch(26);
+	private static final Length kZeroHeight = LengthKt.getInch(23.25);
 	private Length mZeroHeight;
 
 	// Called just before this Command runs the first time
@@ -48,6 +49,10 @@ public class ZeroElevatorDisabled extends Command {
 		mCurrentState = ZeroingState.IDLE;
 
 		SmartDashboard.putBoolean("Elevator zeroed", false);
+
+		SmartDashboard.putBoolean("Proximal zeroed", false);
+
+		SmartDashboard.putBoolean("Wrist zeroed", false);
 
 		SmartDashboard.putData(this);
 	}
@@ -88,7 +93,34 @@ public class ZeroElevatorDisabled extends Command {
 	// }
 
 	protected void observeELevatorZeroed() {
+
+		SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.PercentOutput, 0);
+		SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.PercentOutput, 0);
+
 		SmartDashboard.putBoolean("Elevator zeroed", true);
+
+		SmartDashboard.putBoolean("Proximal zeroed", true);
+
+		SmartDashboard.putBoolean("Wrist zeroed", true);
+
+		var proximal = SuperStructure.getInstance().getElbow();
+		// var startingAngleTicks = (int) proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
+		var tickkkkks = (SuperStructure.getInstance().getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getInstance().getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+		var targetProximal_ = 1400;
+		var targetProximal_COMP = 1900;
+		var delta = (tickkkkks - (int) targetProximal_COMP) * -1;
+		var startingAngleTicks = proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90 - 2));
+
+		proximal.getMaster().setSelectedSensorPosition((int) (delta + startingAngleTicks));
+		// proximal.getMaster().setSelectedSensorPosition((int) (startingAngleTicks));
+
+		var wrist = SuperStructure.getInstance().getWrist();
+		var wristStart = (int) wrist.getMaster().getTicks(RoundRotation2d.getDegree(-43 + 4 - 4));
+		var targetWrist = (int) 1000;
+		var targetWristComp = 1500;
+		var correctionDelta = (SuperStructure.getInstance().getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getInstance().getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+		var deltaW = (correctionDelta - (int) targetWristComp) * 1;
+
 		SuperStructure.getElevator().getMaster().set(ControlMode.PercentOutput, 0);
 		SuperStructure.getElevator().getMaster().setSensorPosition(mZeroHeight);
 	}
