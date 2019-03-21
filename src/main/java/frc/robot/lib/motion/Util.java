@@ -9,6 +9,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 
 import frc.robot.lib.obj.RoundRotation2d;
 
@@ -41,6 +42,18 @@ public class Util {
 		if (v.getDegree() < min.getDegree())
 			v = min;
 		return v;
+	}
+
+	public static Velocity<Length> limit(Velocity<Length> v, Velocity<Length> min, Velocity<Length> max) {
+		if (v.getValue() > max.getValue())
+			v = max;
+		if (v.getValue() < min.getValue())
+			v = min;
+		return v;
+	}
+
+	public static Velocity<Length> limit(Velocity<Length> v, Velocity<Length> max) {
+		return limit(v, max.times(-1), max);
 	}
 
 	public static double deadband(double v, double deadband) {
