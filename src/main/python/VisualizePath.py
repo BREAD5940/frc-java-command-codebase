@@ -51,13 +51,17 @@ def main():
     ax1.scatter(data[:,0], data[:,1], color='m', s=5)
     plt.show()
 
+    ax1.clear()
+    ax1.imshow(img, extent=[ toFeet(-217), toFeet(1592-216), toFeet(-40), toFeet(656-40) ])
+    ax1.scatter(data[:,0], data[:,1], color='m', s=5)
+    plt.show()
 
 
 def animate(i):
 #   i = i + 1
   ax1.clear()
   ax1.imshow(img, extent=[ toFeet(-217), toFeet(1592-216), toFeet(-40), toFeet(656-40) ])
-  multi = 8
+  multi = 5
   if i > len(x)/multi - 1:
     return
   # print(data[0:i,0])

@@ -19,6 +19,7 @@ import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
+import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.lib.motion.Util;
@@ -83,7 +84,7 @@ public class CloseSideRocket extends VisionCommandGroup {
 						LengthKt.getFeet(21.5),
 						Rotation2dKt.getDegree(90)),
 				new Pose2d(
-						LengthKt.getFeet(14),
+						LengthKt.getFeet(13),
 						LengthKt.getFeet(23.5),
 						Rotation2dKt.getDegree(30)));
 
@@ -129,13 +130,12 @@ public class CloseSideRocket extends VisionCommandGroup {
 		var t_toLoadingStation = Trajectories.generateTrajectory(p_toLoadingStation, Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0)), VelocityKt.getVelocity(LengthKt.getFeet(6)), kDefaultAcceleration, false, true);
 
-		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_fallOffHab, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // fall off the hab
-		// addSequential(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
-
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_hab, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // keep going over to the far side of the rocket
 		addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_toPlaceHatch, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); // keep going over to the far side of the rocket
+
+		addSequential(new PlaceHatch());
+
 		// addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 		// CommandGroup waitForABit = new CommandGroup();
 		// waitForABit.addSequential(new WaitCommand("yes", 4));
