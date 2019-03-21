@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.commands.auto.routines.Baseline;
 import frc.robot.commands.auto.routines.CargoShip1;
 import frc.robot.commands.auto.routines.CloseSideRocket;
+import frc.robot.commands.auto.routines.CloseThenFarRocket;
 import frc.robot.commands.auto.routines.FarSideRocket;
 
 /**
@@ -30,6 +31,8 @@ public class TerribleAutoChooser implements iAutoChooser {
 		addChoice("HabR to rocketRC", new CloseSideRocket('R'));
 		addChoice("HabL to cargoL1", new CargoShip1('L'));
 		addChoice("HabR to cargoR1", new CloseSideRocket('R'));
+		addChoice("HabL to TWO HATCH AUTO", new CloseThenFarRocket('L'));
+		addChoice("HabR to TWO HATCH AUTO", new CloseThenFarRocket('R'));
 		addChoice("Baseline", new Baseline());
 	}
 
