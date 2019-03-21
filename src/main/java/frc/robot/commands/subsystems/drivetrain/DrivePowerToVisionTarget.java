@@ -7,18 +7,12 @@
 
 package frc.robot.commands.subsystems.drivetrain;
 
-import java.util.TreeMap;
-
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.Robot;
-import frc.robot.lib.InterpolatableLut;
-import frc.robot.lib.InterpolatableLutEntry;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
-import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class DrivePowerToVisionTarget extends TimedCommand {
 
@@ -62,10 +56,10 @@ public class DrivePowerToVisionTarget extends TimedCommand {
 		// InterpolatableLut lut;
 
 		// if (SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() > -30) {
-			// deployed
-			// lut = mDeployedLookupTable;
+		// deployed
+		// lut = mDeployedLookupTable;
 		// } else {
-			// lut = mStowedLookupTable;
+		// lut = mStowedLookupTable;
 		// }
 
 		// tx = tx + lut.interpolate(ts).doubleValue(); // Use the LUT to interpolate
@@ -123,6 +117,7 @@ public class DrivePowerToVisionTarget extends TimedCommand {
 		double fore_cmd = power;
 
 		if (hasTarget) {
+			System.out.println("CommandP: " + fore_cmd + "," + steer_cmd);
 			DriveTrain.getInstance().arcadeDrive(fore_cmd, steer_cmd);
 		} else {
 			DriveTrain.getInstance().stop();
@@ -131,11 +126,11 @@ public class DrivePowerToVisionTarget extends TimedCommand {
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
-	@Override
-	protected boolean isFinished() {
-		// var ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
-		return /*(Math.abs(exitArea - ta) < 0.3) || (hadTarget && !hasTarget)*/ false;
-	}
+	// @Override
+	// protected boolean isFinished() {
+	// var ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
+	// return /*(Math.abs(exitArea - ta) < 0.3) || (hadTarget && !hasTarget)*/ isTimedOut();
+	// }
 
 	// Called once after isFinished returns true
 	@Override
