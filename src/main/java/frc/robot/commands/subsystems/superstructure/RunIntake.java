@@ -8,7 +8,7 @@
 package frc.robot.commands.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj.command.TimedCommand;
-import frc.robot.subsystems.superstructure.SuperStructure;
+import frc.robot.subsystems.Intake;
 
 /**
  * Add your docs here.
@@ -23,7 +23,7 @@ public class RunIntake extends TimedCommand {
 		super(timeout);
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);
-		requires(SuperStructure.intake);
+		requires(Intake.getInstance());
 		this.hatch = hatchSpeed;
 		this.cargo = cargoSpeed;
 	}
@@ -31,23 +31,23 @@ public class RunIntake extends TimedCommand {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		SuperStructure.intake.setCargoSpeed(cargo);
-		SuperStructure.intake.setHatchSpeed(hatch);
+		Intake.getInstance().setCargoSpeed(cargo);
+		Intake.getInstance().setHatchSpeed(hatch);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		SuperStructure.intake.setCargoSpeed(cargo);
-		SuperStructure.intake.setHatchSpeed(hatch);
+		Intake.getInstance().setCargoSpeed(cargo);
+		Intake.getInstance().setHatchSpeed(hatch);
 
 	}
 
 	// Called once after timeout
 	@Override
 	protected void end() {
-		SuperStructure.intake.setCargoSpeed(0);
-		SuperStructure.intake.setHatchSpeed(0);
+		Intake.getInstance().setCargoSpeed(0);
+		Intake.getInstance().setHatchSpeed(0);
 	}
 
 	// Called when another command which requires one or more of the same

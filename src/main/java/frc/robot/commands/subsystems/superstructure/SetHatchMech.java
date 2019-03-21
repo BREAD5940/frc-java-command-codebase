@@ -9,8 +9,8 @@ package frc.robot.commands.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.lib.Logger;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Intake.HatchMechState;
-import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class SetHatchMech extends Command {
 
@@ -27,7 +27,7 @@ public class SetHatchMech extends Command {
 	// Called just before this Command runs the first time
 	@Override
 	protected void initialize() {
-		SuperStructure.intake.setHatchMech(mReq);
+		Intake.getInstance().setHatchMech(mReq);
 	}
 
 	// Called repeatedly when this Command is scheduled to run

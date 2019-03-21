@@ -8,8 +8,8 @@
 package frc.robot.commands.subsystems.superstructure;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Intake.HatchMechState;
-import frc.robot.subsystems.superstructure.SuperStructure;
 
 /**
  * Add your docs here.
@@ -27,10 +27,10 @@ public class ToggleClamp extends InstantCommand {
 	// Called once when the command executes
 	@Override
 	protected void initialize() {
-		var currentState = SuperStructure.intake.getHatchMechState();
+		var currentState = Intake.getInstance().getHatchMechState();
 		var newState = (currentState == HatchMechState.kClamped) ? HatchMechState.kOpen : HatchMechState.kClamped;
 		System.out.println("OLD STATE: " + currentState.name() + " NEW STATE: " + newState.name());
-		SuperStructure.intake.setHatchMech(newState);
+		Intake.getInstance().setHatchMech(newState);
 	}
 
 }

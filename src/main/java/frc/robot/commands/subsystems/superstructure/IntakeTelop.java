@@ -10,12 +10,12 @@ package frc.robot.commands.subsystems.superstructure;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.lib.motion.Util;
-import frc.robot.subsystems.superstructure.SuperStructure;
+import frc.robot.subsystems.Intake;
 
 public class IntakeTelop extends Command {
 	public IntakeTelop() {
 		// Use requires() here to declare subsystem dependencies
-		requires(SuperStructure.intake);
+		requires(Intake.getInstance());
 	}
 
 	// Called just before this Command runs the first time
@@ -26,9 +26,9 @@ public class IntakeTelop extends Command {
 	@Override
 	protected void execute() {
 		if (Math.abs(Robot.m_oi.getCargoSpeed()) > 0.2) {
-			SuperStructure.intake.setSpeed(-1 * Robot.m_oi.getCargoSpeed(), Robot.m_oi.getCargoSpeed());
+			Intake.getInstance().setSpeed(-1 * Robot.m_oi.getCargoSpeed(), Robot.m_oi.getCargoSpeed());
 		} else {
-			SuperStructure.intake.setSpeed(Robot.m_oi.getHatchSpeed(), 0);
+			Intake.getInstance().setSpeed(Robot.m_oi.getHatchSpeed(), 0);
 		}
 		var oi = Robot.m_oi;
 		oi.setAllRumble(Util.limit(Math.max(Robot.m_oi.getCargoSpeed(), Robot.m_oi.getHatchSpeed()), 0, 0.9));

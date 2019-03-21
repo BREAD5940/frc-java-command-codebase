@@ -165,6 +165,7 @@ public class Robot extends TimedRobot {
 		mAutoChooser = new TerribleAutoChooser();
 		mAutoChooser.addOptions();
 		System.out.println("Auto chooser sent!");
+		Trajectories.generateAllTrajectories();
 
 		Shuffleboard.getTab("Auto").getLayout("Path selection", BuiltInLayouts.kList).add(mAutoChooser.getChooser()).withSize(2, 5).withPosition(0, 0);
 
@@ -172,8 +173,6 @@ public class Robot extends TimedRobot {
 			drivetrain = DriveTrain.getInstance();
 		// FIXME Jocelyn this might mess with auto stuff, will it? (I think no?)
 		drivetrain.getLocalization().reset(new Pose2d(LengthKt.getFeet(5.5), LengthKt.getFeet(17), new Rotation2d(0f, 0f, false)));
-
-		Trajectories.generateAllTrajectories();
 
 		autoState = new AutoMotionStateMachine();
 		// logger = Logger.getInstance();
@@ -189,7 +188,7 @@ public class Robot extends TimedRobot {
 
 		m_oi = new OI();
 
-		// SmartDashboard.putData(SuperStructure.intake);
+		// SmartDashboard.putData(Intake.getInstance());
 		// SmartDashboard.putData(shifterDoubleSolenoid);
 
 		compressor.setClosedLoopControl(true);
@@ -204,7 +203,7 @@ public class Robot extends TimedRobot {
 		var target_ = 650;
 		var target_COMP = 650;
 		var tickkkkks_ = (SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-		var delta_ = (tickkkkks_ - (int) target_) * -1;
+		var delta_ = (tickkkkks_ - (int) target_COMP) * -1;
 
 		// elevator.getMaster().setSelectedSensorPosition((int) (startingHeightTicks + delta_));
 		// elevator.getMaster().setSelectedSensorPosition((int) (startingHeightTicks));
@@ -214,7 +213,7 @@ public class Robot extends TimedRobot {
 		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		var targetProximal_ = 1400;
 		var targetProximal_COMP = 1900;
-		var delta = (tickkkkks - (int) targetProximal_) * -1;
+		var delta = (tickkkkks - (int) targetProximal_COMP) * -1;
 		var startingAngleTicks = proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90 - 2));
 
 		proximal.getMaster().setSelectedSensorPosition((int) (delta + startingAngleTicks));
@@ -225,7 +224,7 @@ public class Robot extends TimedRobot {
 		var targetWrist = (int) 1000;
 		var targetWristComp = 1500;
 		var correctionDelta = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-		var deltaW = (correctionDelta - (int) targetWrist) * 1;
+		var deltaW = (correctionDelta - (int) targetWristComp) * 1;
 
 		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
 		// wrist.getMaster().setSelectedSensorPosition((int) (wristStart));
