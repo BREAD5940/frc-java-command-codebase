@@ -106,7 +106,7 @@ public class CloseThenFarRocket extends CommandGroup {
 
 				VelocityKt.getVelocity(LengthKt.getFeet(5.0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(1.0)),
-				VelocityKt.getVelocity(LengthKt.getFeet(6.0)),
+				VelocityKt.getVelocity(LengthKt.getFeet(3.0)),
 				AccelerationKt.getAcceleration(LengthKt.getFeet(8.0)),
 				false,
 				true);
@@ -115,7 +115,7 @@ public class CloseThenFarRocket extends CommandGroup {
 
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
-				VelocityKt.getVelocity(LengthKt.getFeet(6.0)),
+				VelocityKt.getVelocity(LengthKt.getFeet(3.0)),
 				AccelerationKt.getAcceleration(LengthKt.getFeet(8.0)),
 				true,
 				true);
@@ -124,7 +124,7 @@ public class CloseThenFarRocket extends CommandGroup {
 
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
-				VelocityKt.getVelocity(LengthKt.getFeet(7.0)),
+				VelocityKt.getVelocity(LengthKt.getFeet(3.0)),
 				AccelerationKt.getAcceleration(LengthKt.getFeet(8.0)),
 				true,
 				true);
@@ -133,7 +133,7 @@ public class CloseThenFarRocket extends CommandGroup {
 
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
-				VelocityKt.getVelocity(LengthKt.getFeet(7.0)),
+				VelocityKt.getVelocity(LengthKt.getFeet(3.0)),
 				AccelerationKt.getAcceleration(LengthKt.getFeet(8.0)),
 				true,
 				true);
