@@ -25,6 +25,7 @@ import frc.robot.commands.auto.TerribleAutoChooser;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
 import frc.robot.commands.subsystems.superstructure.ZeroElevatorDisabled;
+import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
@@ -159,6 +160,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+
+		Logger.clearLog();
 
 		SmartDashboard.putData(zeroElevatorWhileDisabled);
 
@@ -317,7 +320,7 @@ public class Robot extends TimedRobot {
 
 	}
 
-	public static Command zeroElevatorWhileDisabled = new ZeroElevatorDisabled(LengthKt.getInch(24.5));
+	public static Command zeroElevatorWhileDisabled = new ZeroElevatorDisabled();
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode. You
@@ -442,6 +445,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
+		drivetrain.logPeriodicIO();
 
 		// System.out.println("current superstructure state: " + superstructure.getCurrentState());
 
