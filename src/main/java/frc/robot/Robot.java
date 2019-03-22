@@ -365,7 +365,7 @@ public class Robot extends TimedRobot {
 		// drivetrain.gyro.reset(); // Reset the current gyro heading to zero
 		// drivetrain.zeroEncoders();
 
-		// mAutoChooser.getSelection().start(); // So this needs a defaut option
+		mAutoChooser.getSelection().start(); // So this needs a defaut option
 
 		// 	if (RobotConfig.auto.auto_gear == Gear.LOW) {
 		// 		drivetrain.setLowGear();
