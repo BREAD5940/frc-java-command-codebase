@@ -38,7 +38,7 @@ public class CloseThenFarRocket extends CommandGroup {
 
 		);
 
-		var floorToRocketF = Arrays.asList(
+		var floorToRocketC = Arrays.asList(
 				new Pose2d(LengthKt.getFeet(8.0),
 						LengthKt.getFeet(18.5),
 						Rotation2dKt.getDegree(40)),
@@ -87,7 +87,7 @@ public class CloseThenFarRocket extends CommandGroup {
 
 		if (!isLeft) {
 			fallOFfHab = Util.reflectTrajectory(fallOFfHab);
-			floorToRocketF = Util.reflectTrajectory(floorToRocketF);
+			floorToRocketC = Util.reflectTrajectory(floorToRocketC);
 			rocketCToLoading = Util.reflectTrajectory(rocketCToLoading);
 			loadingToRocketF = Util.reflectTrajectory(loadingToRocketF);
 			rocketFtoLoading = Util.reflectTrajectory(rocketFtoLoading);
@@ -102,10 +102,10 @@ public class CloseThenFarRocket extends CommandGroup {
 				false,
 				true);
 
-		var t_floorToRocketC = Trajectories.generateTrajectory(floorToRocketF, Trajectories.kLowGearConstraints,
+		var t_floorToRocketC = Trajectories.generateTrajectory(floorToRocketC, Trajectories.kLowGearConstraints,
 
 				VelocityKt.getVelocity(LengthKt.getFeet(5.0)),
-				VelocityKt.getVelocity(LengthKt.getFeet(3.0)),
+				VelocityKt.getVelocity(LengthKt.getFeet(1.0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(6.0)),
 				AccelerationKt.getAcceleration(LengthKt.getFeet(8.0)),
 				false,
