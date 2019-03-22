@@ -10,12 +10,14 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.subsystems.drivetrain.*;
+import frc.robot.commands.auto.routines.TeleopCommands;
+import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
+import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
-import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
+import frc.robot.lib.ParallelRaceGroup;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.factories.SequentialCommandFactory;
 import frc.robot.subsystems.DriveTrain.Gear;
@@ -87,7 +89,7 @@ public class OI {
 		dsCargoIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
 						new SetHatchMech(HatchMechState.kOpen),
-						new JankyGoToState(LengthKt.getInch(14), SuperStructure.iPosition.CARGO_GRAB))));
+						new JankyGoToState(LengthKt.getInch(13.25), SuperStructure.iPosition.CARGO_GRAB))));
 
 		dsCargo1.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(
@@ -136,26 +138,33 @@ public class OI {
 
 		// primaryDpadDown.whenPressed(new CloseSideRocket('L'));
 
-		var grabHatch = new CommandGroup();
-		// yes.addSequential(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
-		grabHatch.addSequential(new SetHatchMech(HatchMechState.kClamped));
-		// yes.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-		grabHatch.addSequential(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
-		grabHatch.addSequential(new FollowVisionTargetTheSecond(5.9));
-		// new DrivePowerToVisionTarget(.3, 0.5),
-		// yes.addParallel(new RunIntake(1, 0, 1));
-		grabHatch.addSequential(new DrivePowerAndIntake(0.4, -1, 0.8));
-		grabHatch.addSequential(new DrivePower(-.4, 0.7));
+		// var grabHatch = new CommandGroup();
+		// // yes.addSequential(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
+		// grabHatch.addSequential(new SetHatchMech(HatchMechState.kClamped));
+		// // yes.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		// grabHatch.addSequential(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
+		// grabHatch.addSequential(new FollowVisionTargetTheSecond(5.9));
+		// // new DrivePowerToVisionTarget(.3, 0.5),
+		// // yes.addParallel(new RunIntake(1, 0, 1));
+		// grabHatch.addSequential(new DrivePowerAndIntake(0.4, -1, 0.8));
+		// grabHatch.addSequential(new DrivePower(-.4, 0.7));
 
-		var placeHatch = new CommandGroup();
-		placeHatch.addSequential(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
-		placeHatch.addSequential(new FollowVisionTargetTheSecond(4.4));
-		placeHatch.addSequential(new DrivePower(0.4, 0.5));
-		placeHatch.addParallel(new RunIntake(1, 0, 0.5));
-		placeHatch.addSequential(new DrivePower(-.4, 0.5));
+		// var placeHatch = new CommandGroup();
+		// placeHatch.addSequential(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
+		// placeHatch.addSequential(new FollowVisionTargetTheSecond(4.4));
+		// placeHatch.addSequential(new DrivePower(0.4, 0.5));
+		// placeHatch.addParallel(new RunIntake(1, 0, 0.5));
+		// placeHatch.addSequential(new DrivePower(-.4, 0.5));
 
-		primaryDpadDown.whenPressed(placeHatch);
-		primaryDpadUp.whenPressed(grabHatch);
+		// primaryDpadDown.whenPressed(placeHatch);
+		// primaryDpadUp.whenPressed(grabHatch);
+
+		var testMeme = new CommandGroup();
+		testMeme.addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
+		testMeme.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+
+		primaryDpadDown.whenPressed(testMeme);
+
 
 		// primaryDpadDown.whenPressed(new DrivePowerAndIntake(0.5, 1, 2));
 
