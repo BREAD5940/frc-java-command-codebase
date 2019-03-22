@@ -54,17 +54,19 @@ public class JankyGoToState extends CommandGroup {
 
 			@Override
 			protected boolean condition() {
-				var proximalThreshold = -10;
+				var proximalThreshold = -68;
 				var currentState = SuperStructure.getInstance().getCurrentState();
-				var nowOutsideFrame = currentState.getElbowAngle().getDegree() > proximalThreshold;
-				var willBeOutsideFrame = requ_.getElbowAngle().getDegree() > proximalThreshold;
+				var nowOutsideCrossbar = currentState.getElbowAngle().getDegree() > proximalThreshold;
+				var willBeOutsideCrossbar = requ_.getElbowAngle().getDegree() > proximalThreshold;
+
+				var mightHitElectronics = (requ_.getElevatorHeight().getInch() < 15 && requ_.getElbowAngle().getDegree() > 45) || (requ_.getElevatorHeight().getInch() < 20 && requ_.getElbowAngle().getDegree() < 45); // TODO check angles?
 
 				var proximalStartSafe = currentState.getElbowAngle().getDegree() > -80;
 				var proximalEndSafe = requ_.getElbowAngle().getDegree() > -80;
 				var startHighEnough = currentState.getElevatorHeight().getInch() > 18;
 				var endHighEnough = requ_.getElevatorHeight().getInch() > 20;
 
-				var safeToMoveSynced = (nowOutsideFrame && willBeOutsideFrame) || (proximalStartSafe && proximalEndSafe && startHighEnough && endHighEnough);
+				var safeToMoveSynced = (nowOutsideCrossbar && willBeOutsideCrossbar && !mightHitElectronics) || (proximalStartSafe && proximalEndSafe && startHighEnough && endHighEnough);
 
 				System.out.println("Safe to move synced? " + safeToMoveSynced);
 
