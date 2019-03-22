@@ -86,7 +86,7 @@ public class Elevator extends HalfBakedSubsystem {
 	public static final PIDSettings HIGH_GEAR_PID = new PIDSettings(0.17, 0, 0, 0); // High speed 
 	private static final int kLowGearPIDSlot = 0; // low speed slot
 	private static final int kHighGearPIDSlot = 1; // high gear slot
-	public static final PIDSettings HIGH_GEAR_MOTION_MAGIC = new PIDSettings(0.45 * 1.2, 0, 0, 0.3, 6500, 10000); // High speed  // theoretical max is 8000 and 14000
+	public static final PIDSettings HIGH_GEAR_MOTION_MAGIC = new PIDSettings(0.45 * 1.2, 0, 0, 0.3, 5500, 10000); // High speed  // theoretical max is 8000 and 14000
 	private static final int kHighGearMotionMagicPIDSlot = 3; // low speed slot
 
 	protected Length m_heightTrim = LengthKt.getInch(0);
