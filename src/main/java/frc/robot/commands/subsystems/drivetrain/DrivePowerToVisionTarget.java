@@ -88,7 +88,7 @@ public class DrivePowerToVisionTarget extends TimedCommand {
 
 		boolean isHighGear = (Robot.getDrivetrainGear() == Gear.HIGH);
 
-		System.out.println("Is high gear? " + isHighGear);
+		// System.out.println("Is high gear? " + isHighGear);
 
 		// System.out.println("IS HIGH GEAR??? " + isHighGear);
 		double closeK;//, nearK, farK;
