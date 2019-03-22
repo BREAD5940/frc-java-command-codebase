@@ -30,7 +30,7 @@ public class AutoPathingCSVGenerator {
 	@Test
 	public void twoHatchLLtest() {
 
-		var side = 'l';
+		var side = 'r';
 
 		boolean isLeft = (side == 'L' || side == 'l');
 
