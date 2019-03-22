@@ -37,6 +37,8 @@ import frc.robot.RobotConfig;
 import frc.robot.commands.subsystems.drivetrain.PIDArcadeDrive;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.drivetrain.TrajectoryTrackerCommand;
+import frc.robot.lib.LoggableSubsystem;
+import frc.robot.lib.Logger;
 import frc.robot.lib.enums.TransmissionSide;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.DriveSignal;
@@ -53,7 +55,7 @@ import kotlin.ranges.RangesKt;
  * 
  * @author Matthew Morley
  */
-public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBase {
+public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBase, LoggableSubsystem {
 
 	private static DriveTrain instance;
 
@@ -665,6 +667,15 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		// setDefaultCommand(new ArcadeDrive());
 		setDefaultCommand(new PIDArcadeDrive(true));
 		// setDefaultCommand(new auto_action_DRIVE(5, "high", 5, 30));
+	}
+
+	@Override
+	public void logPeriodicIO() {
+		Logger.log("Bus voltage", getLeftMotor().getBusVoltage());
+		Logger.log("Forward joystick command", Robot.m_oi.getForwardAxis());
+		Logger.log("Turn joystick command", Robot.m_oi.getTurnAxis());
+		Logger.log("Left talon output voltage", getLeftMotor().getMotorOutputVoltage());
+		Logger.log("Right talon output voltage", getRightMotor().getMotorOutputVoltage());
 	}
 
 }
