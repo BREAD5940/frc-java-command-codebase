@@ -2,6 +2,7 @@ package frc.robot.commands.auto.routines;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.function.Supplier;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
@@ -14,18 +15,22 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
+import frc.robot.Robot;
+import frc.robot.xboxmap;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
-import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
+import frc.robot.commands.subsystems.drivetrain.DrivePower;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
+import frc.robot.lib.ParallelRaceGroup;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
+import frc.robot.commands.auto.routines.TeleopCommands;
 
 /**
  * 2-hatch 1-cargo auto
@@ -93,8 +98,7 @@ public class CloseSideRocket extends VisionCommandGroup {
 						LengthKt.getFeet(24.407),
 						Rotation2dKt.getDegree(30)));
 
-		if (!isLeft)
-			rocketC = Util.reflectTrajectory(rocketC);
+		if (!isLeft) rocketCPart2 = Util.reflectTrajectory(rocketCPart2);
 
 		var p_rocketCPart2 = Trajectories.generateTrajectory(
 				rocketCPart2,
@@ -124,8 +128,17 @@ public class CloseSideRocket extends VisionCommandGroup {
 		// 		VelocityKt.getVelocity(LengthKt.getFeet(0)), VelocityKt.getVelocity(LengthKt.getFeet(6)), kDefaultAcceleration, false, true);
 
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_rocketC, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // keep going over to the far side of the rocket
-		addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		addParallel(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_rocketCPart2, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); // keep going over to the far side of the rocket
+
+		Supplier<Boolean> checker = (() -> (Boolean.valueOf(Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON))));
+
+		addSequential(new ParallelRaceGroup(checker, new TeleopCommands()));
+
+		// addSequential(new DrivePower(-0.4, 0.5));
+
+		addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
+
 
 		// addSequential(new PlaceHatch());
 

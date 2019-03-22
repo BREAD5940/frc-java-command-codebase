@@ -9,12 +9,13 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.robot.Robot;
+import frc.robot.RobotMap;
+import frc.robot.xboxmap;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.auto.groups.GrabHatch;
-import frc.robot.commands.auto.groups.PlaceHatch;
-import frc.robot.commands.subsystems.drivetrain.DriveDistanceToVisionTarget;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
+import frc.robot.lib.ParallelRaceGroup;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
@@ -43,7 +44,7 @@ public class CloseThenFarRocket extends CommandGroup {
 						LengthKt.getFeet(18.5),
 						Rotation2dKt.getDegree(40)),
 				new Pose2d(LengthKt.getFeet(14.14),
-						LengthKt.getFeet(25.422),
+						LengthKt.getFeet(24.5),
 						Rotation2dKt.getDegree(27)));
 
 		var rocketCToLoading = Arrays.asList(
@@ -60,37 +61,37 @@ public class CloseThenFarRocket extends CommandGroup {
 						LengthKt.getFeet(24.882),
 						Rotation2dKt.getDegree(180)));
 
-		var loadingToRocketF = Arrays.asList(
-				new Pose2d(LengthKt.getFeet(1.465),
-						LengthKt.getFeet(24.871),
-						Rotation2dKt.getDegree(180)),
-				new Pose2d(LengthKt.getFeet(19.871),
-						LengthKt.getFeet(22.601),
-						Rotation2dKt.getDegree(-154.855)),
-				new Pose2d(LengthKt.getFeet(23.772),
-						LengthKt.getFeet(23.551),
-						Rotation2dKt.getDegree(148)));
+		// var loadingToRocketF = Arrays.asList(
+		// 		new Pose2d(LengthKt.getFeet(1.465),
+		// 				LengthKt.getFeet(24.871),
+		// 				Rotation2dKt.getDegree(180)),
+		// 		new Pose2d(LengthKt.getFeet(19.871),
+		// 				LengthKt.getFeet(22.601),
+		// 				Rotation2dKt.getDegree(-154.855)),
+		// 		new Pose2d(LengthKt.getFeet(23.772),
+		// 				LengthKt.getFeet(23.551),
+		// 				Rotation2dKt.getDegree(148)));
 
-		var rocketFtoLoading = Arrays.asList(
-				new Pose2d(LengthKt.getFeet(22.438),
-						LengthKt.getFeet(24.194),
-						Rotation2dKt.getDegree(148)),
-				new Pose2d(LengthKt.getFeet(21.338),
-						LengthKt.getFeet(22.673),
-						Rotation2dKt.getDegree(0)),
-				new Pose2d(LengthKt.getFeet(6.023),
-						LengthKt.getFeet(22.892),
-						Rotation2dKt.getDegree(-4)),
-				new Pose2d(LengthKt.getFeet(4.5),
-						LengthKt.getFeet(24.8),
-						Rotation2dKt.getDegree(180)));
+		// var rocketFtoLoading = Arrays.asList(
+		// 		new Pose2d(LengthKt.getFeet(22.438),
+		// 				LengthKt.getFeet(24.194),
+		// 				Rotation2dKt.getDegree(148)),
+		// 		new Pose2d(LengthKt.getFeet(21.338),
+		// 				LengthKt.getFeet(22.673),
+		// 				Rotation2dKt.getDegree(0)),
+		// 		new Pose2d(LengthKt.getFeet(6.023),
+		// 				LengthKt.getFeet(22.892),
+		// 				Rotation2dKt.getDegree(-4)),
+		// 		new Pose2d(LengthKt.getFeet(4.5),
+		// 				LengthKt.getFeet(24.8),
+		// 				Rotation2dKt.getDegree(180)));
 
 		if (!isLeft) {
 			fallOFfHab = Util.reflectTrajectory(fallOFfHab);
 			floorToRocketC = Util.reflectTrajectory(floorToRocketC);
-			rocketCToLoading = Util.reflectTrajectory(rocketCToLoading);
-			loadingToRocketF = Util.reflectTrajectory(loadingToRocketF);
-			rocketFtoLoading = Util.reflectTrajectory(rocketFtoLoading);
+			// rocketCToLoading = Util.reflectTrajectory(rocketCToLoading);
+			// loadingToRocketF = Util.reflectTrajectory(loadingToRocketF);
+			// rocketFtoLoading = Util.reflectTrajectory(rocketFtoLoading);
 		}
 
 		var t_fallOFfHab = Trajectories.generateTrajectory(fallOFfHab, Trajectories.kLowGearConstraints,
@@ -105,35 +106,101 @@ public class CloseThenFarRocket extends CommandGroup {
 		var t_floorToRocketC = Trajectories.generateTrajectory(floorToRocketC, Trajectories.kLowGearConstraints,
 
 				VelocityKt.getVelocity(LengthKt.getFeet(5.0)),
-				VelocityKt.getVelocity(LengthKt.getFeet(1.0)),
+				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(5.0)),
 				AccelerationKt.getAcceleration(LengthKt.getFeet(8.0)),
 				false,
 				true);
 
-		var t_rocketCToLoading = Trajectories.generateTrajectory(rocketCToLoading, Trajectories.kLowGearConstraints,
+		var rocketCtoTurn = Arrays.asList(
+				new Pose2d(LengthKt.getFeet(15.435),
+						LengthKt.getFeet(24.426),
+						Rotation2dKt.getDegree(25.933)),
+				new Pose2d(LengthKt.getFeet(11.136),
+						LengthKt.getFeet(20),
+						Rotation2dKt.getDegree(90)));
 
+		if (!isLeft)
+			rocketCtoTurn = Util.reflectTrajectory(rocketCtoTurn);
+
+		var p_rocketCtoTurn = Trajectories.generateTrajectory(
+				rocketCtoTurn,
+				Trajectories.kLowGearConstraints,
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
-				VelocityKt.getVelocity(LengthKt.getFeet(3.0)),
+				VelocityKt.getVelocity(LengthKt.getFeet(6.0)),
 				AccelerationKt.getAcceleration(LengthKt.getFeet(8.0)),
 				true,
 				true);
 
-		var t_loadingToRocketF = Trajectories.generateTrajectory(loadingToRocketF, Trajectories.kLowGearConstraints,
+		var turnToLoading = Arrays.asList(
+				new Pose2d(LengthKt.getFeet(11.136),
+						LengthKt.getFeet(20),
+						Rotation2dKt.getDegree(90)),
+				new Pose2d(LengthKt.getFeet(4.7),
+						LengthKt.getFeet(24.782),
+						Rotation2dKt.getDegree(180)));
 
+		if (!isLeft)
+			turnToLoading = Util.reflectTrajectory(turnToLoading);
+
+		var p_turnToLoading = Trajectories.generateTrajectory(
+				turnToLoading,
+				Trajectories.kLowGearConstraints,
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
-				VelocityKt.getVelocity(LengthKt.getFeet(3.0)),
+				VelocityKt.getVelocity(LengthKt.getFeet(6.0)),
+				AccelerationKt.getAcceleration(LengthKt.getFeet(8.0)),
+				false,
+				true);
+
+		var loadingToRocketF = Arrays.asList(
+				new Pose2d(LengthKt.getFeet(1.811),
+						LengthKt.getFeet(24.925),
+						Rotation2dKt.getDegree(180)),
+				new Pose2d(LengthKt.getFeet(15.141),
+						LengthKt.getFeet(23.855),
+						Rotation2dKt.getDegree(168.462)),
+				new Pose2d(LengthKt.getFeet(19.456),
+						LengthKt.getFeet(22.946),
+						Rotation2dKt.getDegree(-174.87)),
+				new Pose2d(LengthKt.getFeet(23.685),
+						LengthKt.getFeet(23.748),
+						Rotation2dKt.getDegree(147.752)));
+
+		if (!isLeft)
+			loadingToRocketF = Util.reflectTrajectory(loadingToRocketF);
+
+		var p_loadingToRocketF = Trajectories.generateTrajectory(
+				turnToLoading,
+				Trajectories.kLowGearConstraints,
+				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
+				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
+				VelocityKt.getVelocity(LengthKt.getFeet(6.0)),
 				AccelerationKt.getAcceleration(LengthKt.getFeet(8.0)),
 				true,
 				true);
 
-		var t_rocketFtoLoading = Trajectories.generateTrajectory(rocketFtoLoading, Trajectories.kLowGearConstraints,
+		var rocketFToLoadingIsh = Arrays.asList(
+				new Pose2d(LengthKt.getFeet(22.351),
+						LengthKt.getFeet(24.46),
+						Rotation2dKt.getDegree(148)),
+				new Pose2d(LengthKt.getFeet(5.78),
+						LengthKt.getFeet(22.678),
+						Rotation2dKt.getDegree(-21.852)),
+				new Pose2d(LengthKt.getFeet(9.074),
+						LengthKt.getFeet(24.835),
+						Rotation2dKt.getDegree(180)));
 
+		if (!isLeft)
+			rocketFToLoadingIsh = Util.reflectTrajectory(rocketFToLoadingIsh);
+
+		var p_rocketFToLoadingIsh = Trajectories.generateTrajectory(
+				rocketFToLoadingIsh,
+				Trajectories.kLowGearConstraints,
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
-				VelocityKt.getVelocity(LengthKt.getFeet(3.0)),
+				VelocityKt.getVelocity(LengthKt.getFeet(6.0)),
 				AccelerationKt.getAcceleration(LengthKt.getFeet(8.0)),
 				true,
 				true);
@@ -142,21 +209,34 @@ public class CloseThenFarRocket extends CommandGroup {
 		addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_floorToRocketC, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false));
 
-		addSequential(new PlaceHatch());
+		addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
 
 		addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_rocketCToLoading, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false));
-		addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(20), VelocityKt.getVelocity(LengthKt.getFeet(3))));
 
-		addSequential(new GrabHatch());
+		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_rocketCtoTurn, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
 
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_loadingToRocketF, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
-		addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_turnToLoading, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false));
 
-		addSequential(new PlaceHatch());
+		// addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
 
-		addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_rocketFtoLoading, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
+		
+		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_loadingToRocketF, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
+		
+		// addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+
+		// addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
+
+		// addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(20), VelocityKt.getVelocity(LengthKt.getFeet(3))));
+
+		// addSequential(new GrabHatch());
+
+		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_loadingToRocketF, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
+		// addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+
+		// addSequential(new PlaceHatch());
+
+		// addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
+		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_rocketFtoLoading, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
 
 	}
 }
