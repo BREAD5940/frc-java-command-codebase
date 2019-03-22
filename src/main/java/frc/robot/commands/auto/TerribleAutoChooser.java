@@ -1,6 +1,7 @@
 package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.commands.auto.routines.Baseline;
 import frc.robot.commands.auto.routines.CargoShip1;
@@ -34,6 +35,7 @@ public class TerribleAutoChooser implements iAutoChooser {
 		addChoice("HabL to TWO HATCH AUTO", new CloseThenFarRocket('L'));
 		addChoice("HabR to TWO HATCH AUTO", new CloseThenFarRocket('R'));
 		addChoice("Baseline", new Baseline());
+		setDefaultChoice("Do nothing", new CommandGroup("nothing"));
 	}
 
 	@Override
