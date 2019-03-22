@@ -40,7 +40,7 @@ public class ZeroElevatorDisabled extends Command {
 	}
 
 	private ZeroingState mCurrentState;
-	private static final Length kZeroHeight = LengthKt.getInch(23.25);
+	private static final Length kZeroHeight = LengthKt.getInch(21.5);
 	private Length mZeroHeight;
 
 	// Called just before this Command runs the first time
