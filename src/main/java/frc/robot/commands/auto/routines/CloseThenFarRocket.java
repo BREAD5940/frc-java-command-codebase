@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.subsystems.drivetrain.DriveDistanceToVisionTarget;
 import frc.robot.commands.subsystems.drivetrain.TurnToFaceVisionTarget;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.lib.ParallelRaceGroup;
@@ -210,6 +211,8 @@ public class CloseThenFarRocket extends CommandGroup {
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_floorToRocketC, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false));
 
 		addSequential(new TurnToFaceVisionTarget());
+
+		addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(30), VelocityKt.getVelocity(LengthKt.getFeet(2))));
 
 		addSequential(new TeleopCommands());
 
