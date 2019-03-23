@@ -161,11 +161,10 @@ public class OI {
 		// primaryDpadUp.whenPressed(grabHatch);
 
 		var testMeme = new CommandGroup();
-		testMeme.addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
+		testMeme.addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)), new TeleopCommands()));
 		testMeme.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 
 		primaryDpadDown.whenPressed(testMeme);
-
 
 		// primaryDpadDown.whenPressed(new DrivePowerAndIntake(0.5, 1, 2));
 

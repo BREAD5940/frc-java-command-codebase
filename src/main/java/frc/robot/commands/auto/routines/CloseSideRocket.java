@@ -16,13 +16,11 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import frc.robot.Robot;
-import frc.robot.xboxmap;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
-import frc.robot.commands.subsystems.drivetrain.DrivePower;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.lib.ParallelRaceGroup;
 import frc.robot.lib.motion.Util;
@@ -30,7 +28,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
-import frc.robot.commands.auto.routines.TeleopCommands;
+import frc.robot.xboxmap;
 
 /**
  * 2-hatch 1-cargo auto
@@ -98,7 +96,8 @@ public class CloseSideRocket extends VisionCommandGroup {
 						LengthKt.getFeet(24.407),
 						Rotation2dKt.getDegree(30)));
 
-		if (!isLeft) rocketCPart2 = Util.reflectTrajectory(rocketCPart2);
+		if (!isLeft)
+			rocketCPart2 = Util.reflectTrajectory(rocketCPart2);
 
 		var p_rocketCPart2 = Trajectories.generateTrajectory(
 				rocketCPart2,
@@ -138,7 +137,6 @@ public class CloseSideRocket extends VisionCommandGroup {
 		// addSequential(new DrivePower(-0.4, 0.5));
 
 		addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
-
 
 		// addSequential(new PlaceHatch());
 

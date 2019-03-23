@@ -16,7 +16,6 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import frc.robot.Robot;
-import frc.robot.xboxmap;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
@@ -29,6 +28,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
+import frc.robot.xboxmap;
 
 /**
  * 2-hatch 1-cargo auto
@@ -137,8 +137,7 @@ public class FarSideRocket extends VisionCommandGroup {
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_farSideRocketL, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); // keep going over to the far side of the rocket
 		addSequential(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
 
-		addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
-
+		addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)), new TeleopCommands()));
 
 		// addSequential(new FollowVisionTargetTheSecond(3.8));
 		// addSequential(new RunIntake(-1, 0, 1));

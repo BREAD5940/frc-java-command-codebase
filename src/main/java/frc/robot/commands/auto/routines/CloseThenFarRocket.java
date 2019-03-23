@@ -10,8 +10,6 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
-import frc.robot.xboxmap;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.TurnToFaceVisionTarget;
@@ -21,6 +19,7 @@ import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
+import frc.robot.xboxmap;
 
 public class CloseThenFarRocket extends CommandGroup {
 	/**
@@ -214,7 +213,7 @@ public class CloseThenFarRocket extends CommandGroup {
 
 		addSequential(new TeleopCommands());
 
-		addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
+		addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)), new TeleopCommands()));
 
 		addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
 
@@ -224,9 +223,8 @@ public class CloseThenFarRocket extends CommandGroup {
 
 		// addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
 
-		
 		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_loadingToRocketF, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
-		
+
 		// addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 
 		// addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
