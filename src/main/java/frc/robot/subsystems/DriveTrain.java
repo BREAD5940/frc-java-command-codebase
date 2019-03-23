@@ -13,8 +13,10 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
+import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.subsystems.drive.DifferentialTrackerDriveBase;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
@@ -24,6 +26,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
 import com.team254.lib.physics.DifferentialDrive;
 import com.team254.lib.physics.DifferentialDrive.ChassisState;
+import com.team254.lib.physics.DifferentialDrive.WheelState;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
@@ -34,6 +37,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
+import frc.robot.commands.subsystems.drivetrain.ArcadeDrive;
+import frc.robot.commands.subsystems.drivetrain.ClosedLoopDriveTheSecond;
 import frc.robot.commands.subsystems.drivetrain.PIDArcadeDrive;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.drivetrain.TrajectoryTrackerCommand;
@@ -133,6 +138,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 			this.getLocalization().update();
 		});
 		localizationNotifier.startPeriodic(0.01);
+
 	}
 
 	public DifferentialDrive getDifferentialDrive() {
@@ -500,6 +506,44 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	private ChassisState mCachedChassisState;
 	public boolean isFirstRun = true;
 
+	public class CurvatureDrive extends Command {
+
+		static final boolean squared = true;
+
+		public CurvatureDrive() {
+			requires(DriveTrain.getInstance());
+		}
+
+		@Override
+		protected void initialize() {
+			DriveTrain.getInstance().setNeutralMode(NeutralMode.Brake);
+			DriveTrain.getInstance().getLeft().getMaster().configClosedloopRamp(0.16);
+			DriveTrain.getInstance().getRight().getMaster().configClosedloopRamp(0.16);
+			DriveTrain.getInstance().getLeft().getMaster().configOpenloopRamp(0.16);
+			DriveTrain.getInstance().getRight().getMaster().configOpenloopRamp(0.16);
+		}
+
+		@Override
+		protected void execute() {
+
+			double forwardSpeed = Robot.m_oi.getForwardAxis();
+			double turnSpeed = Robot.m_oi.getTurnAxis();
+
+			forwardSpeed = Util.deadband(forwardSpeed, 0.07) * ((getCachedGear() == Gear.HIGH) ? 0.8 : 1);
+			turnSpeed = Util.deadband(turnSpeed, 0.07);
+
+			// System.out.println("forward speed: " + forwardSpeed + " turn speed: " + turnSpeed);
+
+			curvatureDrive(forwardSpeed, turnSpeed, Math.abs(Robot.m_oi.getForwardAxis()) < 0.08);
+		}
+
+		@Override
+		protected boolean isFinished() {
+			return false;
+		}
+
+	}
+
 	public void curvatureDrive(double linearPercent, double curvaturePercent, boolean isQuickTurn) {
 		double angularPower;
 		boolean overPower;
@@ -552,7 +596,31 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 			rightMotorOutput /= maxMagnitude;
 		}
 
+		// System.out.println("Linear percent: " + linearPercent + " Angular percent: " + angularPower + " left motor: " + leftMotorOutput + " right motor: " + rightMotorOutput);
+
 		tankDrive(leftMotorOutput, rightMotorOutput);
+
+		// var state = new WheelState(Util.toMeters(leftMotorOutput * 13), Util.toMeters(rightMotorOutput * 13));
+		// var ff = getDifferentialDrive().getVoltagesFromkV(state);
+		// var leftVel = VelocityKt.getVelocity(LengthKt.getMeter(state.getLeft()));
+		// var rightVel = VelocityKt.getVelocity(LengthKt.getMeter(state.getRight()));
+
+		// getLeftMotor().setVelocityAndArbitraryFeedForward(leftVel, ff.getLeft() / 12);
+		// getRightMotor().setVelocityAndArbitraryFeedForward(rightVel, ff.getRight() / 12);
+
+		// var isHighGear = getCachedGear() == Gear.HIGH;
+		// var maxSpeed = Util.toMeters(((isHighGear) ? 13 : 8));
+
+		// maxSpeed = Util.toFeet(maxSpeed);
+
+		// var state = new DifferentialDrive.WheelState(leftMotorOutput * maxSpeed, rightMotorOutput * maxSpeed);
+
+		// var ff = getDifferentialDrive().getVoltagesFromkV(state);
+
+		// System.out.println("state left: " + state.getLeft() + " state right: " + state.getRight() + " ff left: " + ff.getLeft() + " ff right: " + ff.getRight());
+
+		// setOutput(state, ff);
+
 	}
 
 	public void tankDrive(double leftPercent, double rightPercent) {
@@ -665,7 +733,9 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new ArcadeDrive());
-		setDefaultCommand(new PIDArcadeDrive(true));
+		// setDefaultCommand(new PIDArcadeDrive(true));
+		setDefaultCommand(new CurvatureDrive());
+		// setDefaultCommand(new ClosedLoopDriveTheSecond(true));
 		// setDefaultCommand(new auto_action_DRIVE(5, "high", 5, 30));
 	}
 
