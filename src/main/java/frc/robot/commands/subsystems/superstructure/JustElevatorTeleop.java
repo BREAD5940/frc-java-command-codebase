@@ -68,7 +68,9 @@ public class JustElevatorTeleop extends Command {
 		} //else {
 			// mNewState.elevator = mCachedState.elevator;
 			// }
-			mNewState.elevator = new ElevatorState(mCachedState.getElevatorHeight().plus(mOffset));
+			if(SuperStructure.getInstance().getCurrentState().getElevatorHeight().getInch() < 40)	{mNewState.elevator = new ElevatorState(mCachedState.getElevatorHeight().plus(mOffset));}
+			else {	mNewState.elevator = new ElevatorState(mCachedState.getElevatorHeight());}
+
 
 		// Figure out of the operator is commandi
 		SuperStructure.getInstance().move(mNewState);
