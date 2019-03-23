@@ -46,7 +46,7 @@ public class CloseThenFarRocket extends CommandGroup {
 						Rotation2dKt.getDegree(40)),
 				new Pose2d(LengthKt.getFeet(14.14),
 						LengthKt.getFeet(24.5),
-						Rotation2dKt.getDegree(27)));
+						Rotation2dKt.getDegree(20)));
 
 		var rocketCToLoading = Arrays.asList(
 				new Pose2d(LengthKt.getFeet(15.7),
@@ -212,17 +212,15 @@ public class CloseThenFarRocket extends CommandGroup {
 
 		addSequential(new TurnToFaceVisionTarget());
 
-		addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(35), VelocityKt.getVelocity(LengthKt.getFeet(2))));
+		// addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(35), VelocityKt.getVelocity(LengthKt.getFeet(2))));
 
-		addSequential(new TeleopCommands());
+		// addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)), new TeleopCommands()));
 
-		addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)), new TeleopCommands()));
+		// addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
 
-		addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
+		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_rocketCtoTurn, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
 
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_rocketCtoTurn, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
-
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_turnToLoading, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false));
+		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_turnToLoading, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false));
 
 		// addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
 
