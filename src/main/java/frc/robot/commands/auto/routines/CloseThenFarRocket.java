@@ -115,7 +115,7 @@ public class CloseThenFarRocket extends CommandGroup {
 		var rocketCtoTurn = Arrays.asList(
 				new Pose2d(LengthKt.getFeet(15.435),
 						LengthKt.getFeet(24.426),
-						Rotation2dKt.getDegree(25.933)),
+						Rotation2dKt.getDegree(30)),
 				new Pose2d(LengthKt.getFeet(11.136),
 						LengthKt.getFeet(20),
 						Rotation2dKt.getDegree(90)));
@@ -137,7 +137,7 @@ public class CloseThenFarRocket extends CommandGroup {
 				new Pose2d(LengthKt.getFeet(11.136),
 						LengthKt.getFeet(20),
 						Rotation2dKt.getDegree(90)),
-				new Pose2d(LengthKt.getFeet(4.7),
+				new Pose2d(LengthKt.getFeet(5),
 						LengthKt.getFeet(24.782),
 						Rotation2dKt.getDegree(180)));
 
