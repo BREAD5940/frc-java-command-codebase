@@ -63,6 +63,12 @@ public class Transmission {
 		// Logger.log("Making this inverted");
 		mMaster.setInverted(isInverted);
 		mSlave.setInverted(InvertType.FollowMaster);
+
+		mMaster.configVoltageCompSaturation(12);
+		mMaster.enableVoltageCompensation(true);
+
+		mSlave.configVoltageCompSaturation(12);
+		mSlave.enableVoltageCompensation(true);
 		// }
 	}
 
