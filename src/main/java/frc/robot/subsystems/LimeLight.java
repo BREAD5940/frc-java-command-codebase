@@ -343,6 +343,20 @@ public class LimeLight extends Subsystem {
 
 	}
 
+	public Length estimateDistanceFromAngle() {
+		final Rotation2d cameraAngle = Rotation2dKt.getDegree(-29);
+		final Length cameraHeight = LengthKt.getInch(30); // TODO check me
+		final Length visionTargetHeight = LengthKt.getInch(30); // ????? for hatches only
+
+		Rotation2d targetAngle = getDy().plus(cameraAngle);
+
+		var distance = (visionTargetHeight.minus(cameraHeight)).div(Math.tan(targetAngle.getRadian()));
+
+		return distance;
+
+	}
+
+
 	@Override
 	public void periodic() {
 		// var target = VisionTargetFactory.getHatchDualTarget();

@@ -34,7 +34,8 @@ public class DriveDistanceToVisionTarget extends Command {
 		this.velocity = speed;
 
 		targetDistance = () -> {
-			return LimeLight.getInstance().getPose(0).getTranslation().getX();
+			// return LimeLight.getInstance().getPose(0).getTranslation().getX();
+			return LimeLight.getInstance().estimateDistanceFromAngle();
 		};
 		targetYaw = () -> {
 			return LimeLight.getInstance().getDx();
