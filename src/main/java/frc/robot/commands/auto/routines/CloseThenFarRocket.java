@@ -212,7 +212,7 @@ public class CloseThenFarRocket extends CommandGroup {
 
 		addSequential(new TurnToFaceVisionTarget());
 
-		addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(30), VelocityKt.getVelocity(LengthKt.getFeet(2))));
+		addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(35), VelocityKt.getVelocity(LengthKt.getFeet(2))));
 
 		addSequential(new TeleopCommands());
 

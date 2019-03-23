@@ -447,6 +447,8 @@ public class Robot extends TimedRobot {
 	public void robotPeriodic() {
 		drivetrain.logPeriodicIO();
 
+		SmartDashboard.putNumber("Limelight estimated distance with angle", LimeLight.getInstance().estimateDistanceFromAngle().getInch());
+
 		// System.out.println("current superstructure state: " + superstructure.getCurrentState());
 
 		// disableTheSuperStructure();

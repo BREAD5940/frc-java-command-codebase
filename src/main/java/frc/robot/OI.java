@@ -139,7 +139,7 @@ public class OI {
 		yes.addSequential(new TurnToFaceVisionTarget());
 
 		yes.addSequential(
-				new DriveDistanceToVisionTarget(LengthKt.getInch(30), VelocityKt.getVelocity(LengthKt.getFeet(2))));
+				new DriveDistanceToVisionTarget(LengthKt.getInch(35), VelocityKt.getVelocity(LengthKt.getFeet(2))));
 
 		yes.addSequential(new TeleopCommands());
 

@@ -52,7 +52,7 @@ public class JustElevatorTeleop extends Command {
 	@Override
 	protected void execute() {
 
-		// SuperStructureState mCurrentState = SuperStructure.getInstance().updateState();
+		SuperStructureState mCurrentState = SuperStructure.getInstance().updateState();
 		var mNewState = mCachedState;
 		var mElevatorPower = Robot.m_oi.getElevatorDS();
 		// var mWristPower = Robot.m_oi.getWristAxis();
@@ -62,15 +62,11 @@ public class JustElevatorTeleop extends Command {
 
 		// Figure out of the operator is commanding an elevator move. If so, increment the new state and cache the current state - if not, stay at the cached state.
 		if (Math.abs(mElevatorPower) > 0.01) {
-			mOffset = mOffset.plus(LengthKt.getInch(mElevatorPower * 2));
-
-			// mCachedState.elevator = mNewState.elevator;
+			mNewState.elevator = new ElevatorState(mCurrentState.getElevatorHeight().plus(LengthKt.getInch(mElevatorPower * ((mElevatorPower > 0) ? 2 : 2))));
+			mCachedState.elevator = mNewState.elevator;
 		} //else {
 			// mNewState.elevator = mCachedState.elevator;
 			// }
-			if(SuperStructure.getInstance().getCurrentState().getElevatorHeight().getInch() < 40)	{mNewState.elevator = new ElevatorState(mCachedState.getElevatorHeight().plus(mOffset));}
-			else {	mNewState.elevator = new ElevatorState(mCachedState.getElevatorHeight());}
-
 
 		// Figure out of the operator is commandi
 		SuperStructure.getInstance().move(mNewState);
