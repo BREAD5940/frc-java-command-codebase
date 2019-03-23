@@ -13,6 +13,7 @@ import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.routines.TeleopCommands;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
+import frc.robot.commands.subsystems.drivetrain.TurnToFaceVisionTarget;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
@@ -136,7 +137,7 @@ public class OI {
 
 		// primaryDpadUp.whenPressed(new KillAuto());
 
-		// primaryDpadDown.whenPressed(new CloseSideRocket('L'));
+		primaryDpadDown.whenPressed(new TurnToFaceVisionTarget());
 
 		// var grabHatch = new CommandGroup();
 		// // yes.addSequential(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
