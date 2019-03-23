@@ -14,6 +14,7 @@ import frc.robot.RobotMap;
 import frc.robot.xboxmap;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.subsystems.drivetrain.TurnToFaceVisionTarget;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.lib.ParallelRaceGroup;
 import frc.robot.lib.motion.Util;
@@ -97,17 +98,17 @@ public class CloseThenFarRocket extends CommandGroup {
 		var t_fallOFfHab = Trajectories.generateTrajectory(fallOFfHab, Trajectories.kLowGearConstraints,
 
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
-				VelocityKt.getVelocity(LengthKt.getFeet(5.0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(6.0)),
+				VelocityKt.getVelocity(LengthKt.getFeet(7.0)),
 				AccelerationKt.getAcceleration(LengthKt.getFeet(8.0)),
 				false,
 				true);
 
 		var t_floorToRocketC = Trajectories.generateTrajectory(floorToRocketC, Trajectories.kLowGearConstraints,
 
-				VelocityKt.getVelocity(LengthKt.getFeet(5.0)),
+				VelocityKt.getVelocity(LengthKt.getFeet(7.0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
-				VelocityKt.getVelocity(LengthKt.getFeet(5.0)),
+				VelocityKt.getVelocity(LengthKt.getFeet(6.5)),
 				AccelerationKt.getAcceleration(LengthKt.getFeet(8.0)),
 				false,
 				true);
@@ -208,6 +209,10 @@ public class CloseThenFarRocket extends CommandGroup {
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_fallOFfHab, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
 		addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_floorToRocketC, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false));
+
+		addSequential(new TurnToFaceVisionTarget());
+
+		addSequential(new TeleopCommands());
 
 		addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
 
