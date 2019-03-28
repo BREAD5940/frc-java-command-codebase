@@ -358,7 +358,6 @@ public class LimeLight extends Subsystem {
 
 	}
 
-
 	@Override
 	public void periodic() {
 		// var target = VisionTargetFactory.getHatchDualTarget();

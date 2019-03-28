@@ -79,7 +79,6 @@ public class RotatingJoint extends HalfBakedSubsystem {
 
 		super("literally a rotating joint");
 
-
 		kMinAngle = min;
 		kMaxAngle = max;
 
@@ -116,7 +115,7 @@ public class RotatingJoint extends HalfBakedSubsystem {
 		getMaster().configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
 		setMotionMagicGains();
 
-		for(HalfBakedRotatingSRX motor : getAllMotors()) {
+		for (HalfBakedRotatingSRX motor : getAllMotors()) {
 			motor.configContinuousCurrentLimit(35);
 			motor.enableCurrentLimit(true);
 		}

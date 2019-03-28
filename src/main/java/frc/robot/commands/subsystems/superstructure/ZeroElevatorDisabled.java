@@ -105,10 +105,10 @@ public class ZeroElevatorDisabled extends Command {
 
 		var proximal = SuperStructure.getInstance().getElbow();
 		// var startingAngleTicks = (int) proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
-		var tickkkkks = (SuperStructure.getInstance().getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getInstance().getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-		var targetProximal_ = 1400;
-		var targetProximal_COMP = 1900;
-		var delta = (tickkkkks - (int) targetProximal_COMP) * -1;
+		// var tickkkkks = (SuperStructure.getInstance().getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getInstance().getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+		// var targetProximal_ = 1400;
+		// var targetProximal_COMP = 1900;
+		// var delta = (tickkkkks - (int) targetProximal_COMP) * -1;
 		var startingAngleTicks = proximal.getMaster().getTicks(RoundRotation2d.getDegree(-78));
 
 		proximal.getMaster().setSelectedSensorPosition((int) (0 + startingAngleTicks));
@@ -120,6 +120,8 @@ public class ZeroElevatorDisabled extends Command {
 		var targetWristComp = 1500 + 150;
 		var correctionDelta = (SuperStructure.getInstance().getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getInstance().getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		var deltaW = (correctionDelta - (int) targetWristComp) * 1;
+
+		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
 
 		SuperStructure.getElevator().getMaster().set(ControlMode.PercentOutput, 0);
 		SuperStructure.getElevator().getMaster().setSensorPosition(mZeroHeight);
