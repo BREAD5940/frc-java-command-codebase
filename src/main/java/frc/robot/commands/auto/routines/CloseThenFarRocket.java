@@ -9,18 +9,14 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.Robot;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.subsystems.drivetrain.DriveDistanceToVisionTarget;
 import frc.robot.commands.subsystems.drivetrain.TurnToFaceVisionTarget;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
-import frc.robot.lib.ParallelRaceGroup;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
-import frc.robot.xboxmap;
 
 public class CloseThenFarRocket extends CommandGroup {
 	/**
