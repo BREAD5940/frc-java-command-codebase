@@ -117,7 +117,7 @@ public class ZeroElevatorDisabled extends Command {
 		var wrist = SuperStructure.getInstance().getWrist();
 		var wristStart = (int) wrist.getMaster().getTicks(RoundRotation2d.getDegree(-43 + 4 - 9));
 		var targetWrist = (int) 1000;
-		var targetWristComp = 1500 + 50;
+		var targetWristComp = 1500 + 150;
 		var correctionDelta = (SuperStructure.getInstance().getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getInstance().getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		var deltaW = (correctionDelta - (int) targetWristComp) * 1;
 
