@@ -14,6 +14,7 @@ import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.AutoCommand;
@@ -79,7 +80,7 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 		LiveDashboard.INSTANCE.setFollowingPath(true);
 
 		mUpdateNotifier = new Notifier(() -> {
-			output = trajectoryTracker.nextState(driveBase.getRobotPosition(), TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
+			output = trajectoryTracker.nextState(driveBase.getRobotPosition(), TimeUnitsKt.getSecond(Timer.getFPGATimestamp()));
 
 			TrajectorySamplePoint<TimedEntry<Pose2dWithCurvature>> referencePoint = trajectoryTracker.getReferencePoint();
 			if (referencePoint != null) {
