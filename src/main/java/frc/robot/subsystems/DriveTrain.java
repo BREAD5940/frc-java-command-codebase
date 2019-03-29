@@ -526,9 +526,6 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 			forwardSpeed = Util.deadband(forwardSpeed, 0.07) * ((getCachedGear() == Gear.HIGH) ? 0.8 : 1);
 			turnSpeed = Util.deadband(turnSpeed, 0.07);
 
-			forwardSpeed = forwardSpeed * Math.signum(forwardSpeed);
-			turnSpeed = turnSpeed * Math.signum(turnSpeed);
-
 			// System.out.println("forward speed: " + forwardSpeed + " turn speed: " + turnSpeed);
 
 			curvatureDrive(forwardSpeed, turnSpeed, Math.abs(Robot.m_oi.getForwardAxis()) < 0.08);
