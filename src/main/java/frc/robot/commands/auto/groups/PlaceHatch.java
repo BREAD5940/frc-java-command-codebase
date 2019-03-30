@@ -19,10 +19,15 @@ public class PlaceHatch extends SequentialCommandGroup {
 	 * @author Matthew Morley
 	 */
 	public PlaceHatch() {
-		this.addSequential(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
-		this.addSequential(new FollowVisionTargetTheSecond(4.4));
-		this.addSequential(new DrivePower(0.4, 0.5));
-		this.addParallel(new RunIntake(1, 0, 0.5));
-		this.addSequential(new DrivePower(-.4, 0.5));
+
+		addCommands(
+			(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH)),
+			(new FollowVisionTargetTheSecond(4.4));
+			(new DrivePower(0.4, 0.5));
+			this.addParallel(new RunIntake(1, 0, 0.5));
+			(new DrivePower(-.4, 0.5));
+			
+		);
+
 	}
 }
