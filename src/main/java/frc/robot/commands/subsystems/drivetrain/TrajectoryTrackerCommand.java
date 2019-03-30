@@ -11,6 +11,7 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TrajectorySamplePoint;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
+import org.ghrobotics.lib.subsystems.drive.DifferentialTrackerDriveBase;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 
 import edu.wpi.first.wpilibj.Notifier;
@@ -98,6 +99,7 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 			}
 			// Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
 			driveBase.setOutput(output);
+
 		});
 		mUpdateNotifier.startPeriodic(0.01);
 	}

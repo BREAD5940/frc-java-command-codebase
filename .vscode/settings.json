@@ -14,7 +14,7 @@
     "**/.settings": true,
     "**/.factorypath": true
   },
-  "workbench.colorTheme": "Solarized Light",
+  "workbench.colorTheme": "Monokai",
   "wpilib.online": true,
   "editor.tabSize": 2
 }
