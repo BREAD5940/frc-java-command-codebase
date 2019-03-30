@@ -1,6 +1,6 @@
 // package frc.robot.commands.auto.actions;
 
-// import edu.wpi.first.wpilibj.command.Command;
+// import org.team5940.pantry.experimental.command.SendableCommandBase;
 // import frc.robot.Robot;
 // import frc.robot.RobotConfig;
 // import frc.robot.lib.Logger;
@@ -13,7 +13,7 @@
 //  * 
 //  * @author Matthew Morley
 //  */
-// public class FollowVisionTarget extends Command {
+// public class FollowVisionTarget extends SendableCommandBase {
 // 	double timeout,
 // 			targetSpeed,
 // 			targetPercentOfFrame,

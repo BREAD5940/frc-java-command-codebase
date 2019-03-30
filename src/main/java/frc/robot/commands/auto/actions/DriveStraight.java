@@ -1,6 +1,6 @@
 package frc.robot.commands.auto.actions;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
@@ -16,7 +16,7 @@ import frc.robot.lib.TerriblePID;
  *
  * @author Matthew Morley
  */
-public class DriveStraight extends Command {
+public class DriveStraight extends SendableCommandBase {
 	double distance;
 	double actionMaxSpeed;
 	double timeout = 15;

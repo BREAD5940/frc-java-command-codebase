@@ -7,7 +7,7 @@
 
 // package frc.robot.commands.subsystems.superstructure;
 
-// import edu.wpi.first.wpilibj.command.Command;
+// import org.team5940.pantry.experimental.command.SendableCommandBase;
 // import edu.wpi.first.wpilibj.command.InstantCommand;
 // import frc.robot.lib.obj.RoundRotation2d;
 // import frc.robot.states.SuperStructureState;
@@ -16,7 +16,7 @@
 // /**
 //  * Add your docs here.
 //  */
-// public class JogElbow extends Command {
+// public class JogElbow extends SendableCommandBase {
 // 	RoundRotation2d deltaAngle;
 // 	boolean isUpwards;
 // 	Command moveCommand;

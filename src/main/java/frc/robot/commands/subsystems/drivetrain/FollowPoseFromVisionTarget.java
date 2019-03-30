@@ -1,9 +1,9 @@
 package frc.robot.commands.subsystems.drivetrain;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.Robot;
 
-public class FollowPoseFromVisionTarget extends Command {
+public class FollowPoseFromVisionTarget extends SendableCommandBase {
 
 	boolean hadTarget;
 

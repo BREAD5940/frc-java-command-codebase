@@ -10,7 +10,7 @@ import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class JankyGoToState extends CommandGroup {
+public class JankyGoToState extends SendableCommandBaseGroup {
 
 	public JankyGoToState(Length height, IntakeAngle angles) {
 		this(new SuperStructureState(new ElevatorState(height), angles));
@@ -78,14 +78,14 @@ public class JankyGoToState extends CommandGroup {
 
 	}
 
-	public class ElevatorThanArm extends CommandGroup {
+	public class ElevatorThanArm extends SendableCommandBaseGroup {
 		public ElevatorThanArm(SuperStructureState requ) {
 			addSequential(new ElevatorMove(requ.getElevator()));
 			addSequential(new ArmMove(requ.getAngle()));
 		}
 	}
 
-	public class ArmThanElevator extends CommandGroup {
+	public class ArmThanElevator extends SendableCommandBaseGroup {
 		public ArmThanElevator(SuperStructureState requ) {
 			addSequential(new ArmMove(requ.getAngle()));
 			addSequential(new ElevatorMove(requ.getElevator()));

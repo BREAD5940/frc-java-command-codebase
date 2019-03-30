@@ -1,6 +1,6 @@
 package frc.robot.lib.statemachines;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.MotionType;
 
@@ -9,7 +9,7 @@ import frc.robot.lib.statemachines.AutoMotionStateMachine.MotionType;
  * 
  * @author jocleyn McHugo
  */
-public class PickupToggle extends Command {
+public class PickupToggle extends SendableCommandBase {
 	public PickupToggle() {}
 
 	@Override

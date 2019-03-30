@@ -1,11 +1,11 @@
 package frc.robot.commands.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.IntakeAngle;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class ArmMove extends Command {
+public class ArmMove extends SendableCommandBase {
 
 	IntakeAngle mDesired;
 

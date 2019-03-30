@@ -4,6 +4,7 @@ import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.team5940.pantry.experimental.command.CommandScheduler;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
@@ -13,7 +14,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -356,7 +357,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledPeriodic() {
 
-		Scheduler.getInstance().run();
+		
 	}
 
 	@Override
@@ -384,7 +385,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
+		
 	}
 
 	// public void disableTheSuperStructure() {
@@ -425,7 +426,7 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 
-		Scheduler.getInstance().run();
+		
 	}
 
 	/**
@@ -445,6 +446,9 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
+
+		CommandScheduler.getInstance().run();
+
 		drivetrain.logPeriodicIO();
 
 		// SmartDashboard.putNumber("Limelight estimated distance with angle", LimeLight.getInstance().estimateDistanceFromAngle().getInch());

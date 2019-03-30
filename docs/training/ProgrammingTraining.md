@@ -1153,7 +1153,7 @@ needs only one: the constructor.]{.c3}
 []{#t.08dc130679a152a7a7791495722ff4ce87487144}[]{#t.21}
 
 +-----------------------------------------------------------------------+
-| [p]{.c14}[ublic class]{.c14}[ MyCommandGroup extends CommandGroup {\  |
+| [p]{.c14}[ublic class]{.c14}[ MyCommandGroup extends SendableCommandBaseGroup {\  |
 |         ]{.c9}[public]{.c14}[ ]{.c9}[MyCommandGroup]{.c24 .c18}[ ()   |
 | {\                                                                    |
 |                 ]{.c9}[// Put constructor code here]{.c10 .c38}[\     |

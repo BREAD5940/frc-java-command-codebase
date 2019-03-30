@@ -3,14 +3,14 @@ package frc.robot.commands.auto.groups;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.lib.Logger;
 
 /**
  * basically just a CommandGroup but with the done() method and time tracking.
  */
-public class AutoCommandGroup extends CommandGroup {
+public class AutoCommandGroup extends SendableCommandBaseGroup {
 
 	double start = 0;
 

@@ -3,7 +3,7 @@ package frc.robot.commands.subsystems.drivetrain;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
@@ -13,7 +13,7 @@ import frc.robot.lib.TerriblePID;
  * auto_DriveDistance is a basic auto action. It should drive in a straight-ish line, as it uses 
  * nested PID loops to correct for errors caused by differing coefficients of friction. 
  */
-public class DriveDistance extends Command {
+public class DriveDistance extends SendableCommandBase {
 	double targetDistance;
 	double targetSpeed = RobotConfig.auto.default_speed;
 	boolean isDone = false;

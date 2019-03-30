@@ -1,13 +1,10 @@
 package frc.robot.lib;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import org.team5940.pantry.experimental.command.SendableSubsystemBase;
 
-public abstract class HalfBakedSubsystem extends Subsystem {
 
-	public HalfBakedSubsystem(String string) {
-		super(string);
-	}
-
+public abstract class HalfBakedSubsystem extends SendableSubsystemBase {
+	
 	public abstract void onDisable();
 
 }

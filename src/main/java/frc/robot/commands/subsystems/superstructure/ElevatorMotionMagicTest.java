@@ -6,14 +6,14 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class ElevatorMotionMagicTest extends Command {
+public class ElevatorMotionMagicTest extends SendableCommandBase {
 
 	SuperStructureState mCurrent;
 	private final double kDefaultTimeout = 5;

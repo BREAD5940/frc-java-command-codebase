@@ -11,14 +11,14 @@ import java.util.TreeMap;
 
 import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.lib.InterpolatableLut;
 import frc.robot.lib.InterpolatableLutEntry;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LimeLight;
 
-public class TurnToFaceVisionTarget extends Command {
+public class TurnToFaceVisionTarget extends SendableCommandBase {
 
 	private InterpolatableLut skewCorrection;
 

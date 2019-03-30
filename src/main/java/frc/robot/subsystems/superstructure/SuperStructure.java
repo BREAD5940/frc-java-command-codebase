@@ -7,6 +7,7 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
+import org.team5940.pantry.experimental.command.Command;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -112,7 +113,10 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	}
 
 	private SuperStructure() {
-		super("SuperStructure");
+		// super("SuperStructure");
+
+		setDefaultCommand(new JustElevatorTeleop());
+
 		kElbowTransmission = new DCMotorTransmission(Constants.kElbowSpeedPerVolt, Constants.kElbowTorquePerVolt, Constants.kElbowStaticFrictionVoltage);
 
 		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
@@ -251,14 +255,14 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		this.moveSuperstructureCombo(mReqState.getElevator(), intakeState);
 	}
 
-	@Override
-	protected void initDefaultCommand() {
-		// pretty sure it doesn't need a default command, so leaving this empty
-		// Actually yeah all that you really need is the buttons
-		// well also jogging with joysticks but eehhhh
-		// actually that should be the default command, hot prank
-		setDefaultCommand(new JustElevatorTeleop());
-	}
+	// @Override
+	// protected void setdef() {
+	// 	// pretty sure it doesn't need a default command, so leaving this empty
+	// 	// Actually yeah all that you really need is the buttons
+	// 	// well also jogging with joysticks but eehhhh
+	// 	// actually that should be the default command, hot prank
+	// 	setDefaultCommand(new JustElevatorTeleop());
+	// }
 
 	public SuperStructureState updateState() {
 		var mNewWrist = getWrist().getCurrentState();

@@ -11,12 +11,12 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 
-public class PIDDriveDistance extends Command {
+public class PIDDriveDistance extends SendableCommandBase {
 	double targetEnd;
 	double rawDelta;
 	double maxSpeed;

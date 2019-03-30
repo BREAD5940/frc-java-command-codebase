@@ -27,7 +27,12 @@ import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.command.Command;
+
+import org.team5940.pantry.experimental.command.Command;
+import org.team5940.pantry.experimental.command.RunCommand;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.experimental.command.SendableSubsystemBase;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -54,7 +59,7 @@ import kotlin.ranges.RangesKt;
  * 
  * @author Matthew Morley
  */
-public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBase, LoggableSubsystem {
+public class DriveTrain extends SendableSubsystemBase implements DifferentialTrackerDriveBase, LoggableSubsystem {
 
 	private static DriveTrain instance;
 
@@ -107,6 +112,10 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	private TrajectoryTrackerMode kDefaulTrajectoryTrackerMode = TrajectoryTrackerMode.RAMSETE;
 
 	private DriveTrain() {
+
+		setDefaultCommand(kCurvatureDriveCommand);
+
+
 		leftTransmission = new Transmission(RobotConfig.driveTrain.leftTalons.m_left_talon_port,
 				RobotConfig.driveTrain.leftTalons.s_left_talon_port, Transmission.EncoderMode.CTRE_MagEncoder_Relative,
 				TransmissionSide.LEFT, true);
@@ -500,43 +509,21 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	private ChassisState mCachedChassisState;
 	public boolean isFirstRun = true;
 
-	public class CurvatureDrive extends Command {
-
-		static final boolean squared = true;
-
-		public CurvatureDrive() {
-			requires(DriveTrain.getInstance());
-		}
-
-		@Override
-		protected void initialize() {
+	public static final Command kCurvatureDriveCommand = new RunCommand(() -> {
+			double forwardSpeed = Robot.m_oi.getForwardAxis();
+			double turnSpeed = Robot.m_oi.getTurnAxis();
+			forwardSpeed = Util.deadband(forwardSpeed, 0.07) * ((DriveTrain.getInstance().getCachedGear() == Gear.HIGH) ? 0.8 : 1);
+			turnSpeed = Util.deadband(turnSpeed, 0.07);
+			DriveTrain.getInstance().curvatureDrive(forwardSpeed, turnSpeed, Math.abs(Robot.m_oi.getForwardAxis()) < 0.08);
+	}, DriveTrain.getInstance()).beforeStarting(() -> {
 			DriveTrain.getInstance().setNeutralMode(NeutralMode.Brake);
 			DriveTrain.getInstance().getLeft().getMaster().configClosedloopRamp(0.16);
 			DriveTrain.getInstance().getRight().getMaster().configClosedloopRamp(0.16);
 			DriveTrain.getInstance().getLeft().getMaster().configOpenloopRamp(0.16);
 			DriveTrain.getInstance().getRight().getMaster().configOpenloopRamp(0.16);
-		}
+	});
 
-		@Override
-		protected void execute() {
 
-			double forwardSpeed = Robot.m_oi.getForwardAxis();
-			double turnSpeed = Robot.m_oi.getTurnAxis();
-
-			forwardSpeed = Util.deadband(forwardSpeed, 0.07) * ((getCachedGear() == Gear.HIGH) ? 0.8 : 1);
-			turnSpeed = Util.deadband(turnSpeed, 0.07);
-
-			// System.out.println("forward speed: " + forwardSpeed + " turn speed: " + turnSpeed);
-
-			curvatureDrive(forwardSpeed, turnSpeed, Math.abs(Robot.m_oi.getForwardAxis()) < 0.08);
-		}
-
-		@Override
-		protected boolean isFinished() {
-			return false;
-		}
-
-	}
 
 	public void curvatureDrive(double linearPercent, double curvaturePercent, boolean isQuickTurn) {
 		double angularPower;
@@ -723,15 +710,15 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		gyroZero = gyro.getAngle();
 	}
 
-	@Override
-	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
-		// setDefaultCommand(new ArcadeDrive());
-		// setDefaultCommand(new PIDArcadeDrive(true));
-		setDefaultCommand(new CurvatureDrive());
-		// setDefaultCommand(new ClosedLoopDriveTheSecond(true));
-		// setDefaultCommand(new auto_action_DRIVE(5, "high", 5, 30));
-	}
+	// @Override
+	// public void initDefaultCommand() {
+	// 	// Set the default command for a subsystem here.
+	// 	// setDefaultCommand(new ArcadeDrive());
+	// 	// setDefaultCommand(new PIDArcadeDrive(true));
+	// 	setDefaultCommand(new CurvatureDrive());
+	// 	// setDefaultCommand(new ClosedLoopDriveTheSecond(true));
+	// 	// setDefaultCommand(new auto_action_DRIVE(5, "high", 5, 30));
+	// }
 
 	@Override
 	public void logPeriodicIO() {

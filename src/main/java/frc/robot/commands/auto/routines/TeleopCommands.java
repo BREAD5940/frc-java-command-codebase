@@ -12,7 +12,7 @@ import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.superstructure.IntakeTelop;
 import frc.robot.commands.subsystems.superstructure.JustElevatorTeleop;
 
-public class TeleopCommands extends CommandGroup {
+public class TeleopCommands extends SendableCommandBaseGroup {
 	/**
 	 * Add your docs here.
 	 */

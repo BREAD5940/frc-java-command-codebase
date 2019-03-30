@@ -4,7 +4,7 @@ import java.util.concurrent.Callable;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.lib.AutoWaitForCondition;
 import frc.robot.states.IntakeAngle;

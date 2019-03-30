@@ -7,12 +7,12 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.Intake;
 
-public class IntakeTelop extends Command {
+public class IntakeTelop extends SendableCommandBase {
 	public IntakeTelop() {
 		// Use requires() here to declare subsystem dependencies
 		requires(Intake.getInstance());

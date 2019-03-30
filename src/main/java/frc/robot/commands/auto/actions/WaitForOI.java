@@ -1,9 +1,9 @@
 package frc.robot.commands.auto.actions;
 
 import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 
-public class WaitForOI extends Command {
+public class WaitForOI extends SendableCommandBase {
 	Command toRun;
 	Button toPoll;
 

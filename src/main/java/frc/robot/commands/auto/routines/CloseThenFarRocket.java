@@ -18,7 +18,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
-public class CloseThenFarRocket extends CommandGroup {
+public class CloseThenFarRocket extends SendableCommandBaseGroup {
 	/**
 	 * Semi-auto routine for placing on the far rocet followed by the close one; 
 	 */

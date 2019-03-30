@@ -1,6 +1,6 @@
 // package frc.robot.commands.subsystems.drivetrain;
 
-// import edu.wpi.first.wpilibj.command.Command;
+// import org.team5940.pantry.experimental.command.SendableCommandBase;
 // import frc.robot.Robot;
 // import frc.robot.RobotConfig;
 // import frc.robot.lib.TerriblePID;
@@ -9,7 +9,7 @@
 // /**
 //  * Follow a vision target tracked by a limelight
 //  */
-// public class FollowVisionTarget extends Command {
+// public class FollowVisionTarget extends SendableCommandBase {
 // 	double timeout,
 // 			targetSpeed,
 // 			targetPercentOfFrame,

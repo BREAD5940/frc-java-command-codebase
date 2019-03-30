@@ -7,10 +7,12 @@
 
 package frc.robot.commands.subsystems.drivetrain;
 
+import org.team5940.pantry.experimental.command.SendableCommandBase;
+
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.subsystems.DriveTrain;
 
-public class DrivePower extends TimedCommand {
+public class DrivePower extends SendableCommandBase {
 	double power, time, reqEndTime;
 
 	/**
@@ -21,12 +23,13 @@ public class DrivePower extends TimedCommand {
 	 * @author Matthew Morley
 	 */
 	public DrivePower(double power, double time) {
-		super(time);
+		// super(time);
 		// Use requires() here to declare subsystem dependencies
-		requires(DriveTrain.getInstance());
+		// requires(DriveTrain.getInstance());
 		this.power = power;
 		this.time = time;
 		// setTimeout(time);
+		addRequirements(DriveTrain.getInstance());
 	}
 
 	// Called repeatedly when this Command is scheduled to run

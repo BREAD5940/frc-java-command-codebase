@@ -1,12 +1,12 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.planners.SuperstructureMotion;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class PlannerTest extends Command {
+public class PlannerTest extends SendableCommandBase {
 	SuperStructureState goal;
 
 	public PlannerTest(SuperStructureState goal) {

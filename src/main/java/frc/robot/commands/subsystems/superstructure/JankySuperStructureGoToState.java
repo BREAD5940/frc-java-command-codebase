@@ -5,7 +5,7 @@
 // import org.ghrobotics.lib.mathematics.units.Length;
 // import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-// import edu.wpi.first.wpilibj.command.Command;
+// import org.team5940.pantry.experimental.command.SendableCommandBase;
 // import edu.wpi.first.wpilibj.command.CommandGroup;
 // import edu.wpi.first.wpilibj.command.ConditionalCommand;
 // import edu.wpi.first.wpilibj.command.InstantCommand;
@@ -16,7 +16,7 @@
 // import frc.robot.states.SuperStructureState;
 // import frc.robot.subsystems.superstructure.SuperStructure;
 
-// public class SuperstructureGoToState extends CommandGroup {
+// public class SuperstructureGoToState extends SendableCommandBaseGroup {
 // 	private static final double kDefaultTimeout = 4;
 
 // 	public SuperstructureGoToState(SuperStructureState requState) {
@@ -107,7 +107,7 @@
 
 // 	}
 
-// 	class StateMovementCommand extends Command {
+// 	class StateMovementCommand extends SendableCommandBase {
 // 		SuperStructureState mRequState;
 // 		double kWristSetpoint, kElbowSetpoint;
 // 		private boolean hasSetState = false;
@@ -327,7 +327,7 @@
 // 		}
 // 	}
 
-// 	abstract class WaitSubCommand extends Command {
+// 	abstract class WaitSubCommand extends SendableCommandBase {
 // 		SuperStructureState mEndState, currentState;
 // 		public Length mHeightThreshold = LengthKt.getInch(1.0);
 // 		public RoundRotation2d mElbowThreshold = RoundRotation2d.getDegree(5.0);

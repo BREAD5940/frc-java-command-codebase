@@ -2,7 +2,7 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
@@ -11,7 +11,7 @@ import frc.robot.lib.TerriblePID;
 /**
  * Literally just pivot in place by a desired amount
  */
-public class TurnInPlace extends Command {
+public class TurnInPlace extends SendableCommandBase {
 
 	double starting_angle;
 	double target_angle_relative;

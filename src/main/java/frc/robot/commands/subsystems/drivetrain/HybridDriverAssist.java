@@ -10,7 +10,7 @@ package frc.robot.commands.subsystems.drivetrain;
 import java.util.TreeMap;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.lib.InterpolatableLut;
 import frc.robot.lib.InterpolatableLutEntry;
@@ -19,7 +19,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class HybridDriverAssist extends Command {
+public class HybridDriverAssist extends SendableCommandBase {
 
 	double exitArea;
 	boolean hasTarget, hadTarget;

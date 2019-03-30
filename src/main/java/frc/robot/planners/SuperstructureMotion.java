@@ -7,7 +7,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.SuperStructureConstants;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
@@ -30,7 +30,7 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
  * 
  * @author Jocelyn McHugo
  */
-public class SuperstructureMotion extends Command {
+public class SuperstructureMotion extends SendableCommandBase {
 	/* RELEVANT COMMANDS:
 	  - ElevatorMove
 	  - ArmMove

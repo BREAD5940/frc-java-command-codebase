@@ -1,6 +1,6 @@
 package frc.robot.lib.statemachines;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.Robot;
 
 /**
@@ -8,7 +8,7 @@ import frc.robot.Robot;
  * 
  * @author jocleyn McHugo
  */
-public class ChangeGoalHeight extends Command {
+public class ChangeGoalHeight extends SendableCommandBase {
 	private boolean up = true;
 
 	public ChangeGoalHeight(boolean up) {

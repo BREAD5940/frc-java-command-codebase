@@ -7,12 +7,12 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.lib.Logger;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Intake.HatchMechState;
 
-public class SetHatchMech extends Command {
+public class SetHatchMech extends SendableCommandBase {
 
 	private HatchMechState mReq;
 

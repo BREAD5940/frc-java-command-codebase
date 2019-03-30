@@ -1,10 +1,10 @@
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
 
-public class PrettyRunAuto extends Command {
+public class PrettyRunAuto extends SendableCommandBase {
 
 	protected final AutoMotionStateMachine machine;
 	protected boolean onlyPreset;

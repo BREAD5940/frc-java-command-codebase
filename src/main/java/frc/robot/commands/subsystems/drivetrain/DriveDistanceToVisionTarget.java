@@ -8,12 +8,12 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 
 import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LimeLight;
 
-public class DriveDistanceToVisionTarget extends Command {
+public class DriveDistanceToVisionTarget extends SendableCommandBase {
 
 	private final Length finalDistance;
 	// private final Velocity<Length> 

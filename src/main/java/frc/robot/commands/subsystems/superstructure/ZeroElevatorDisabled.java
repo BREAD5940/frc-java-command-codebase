@@ -13,12 +13,12 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class ZeroElevatorDisabled extends Command {
+public class ZeroElevatorDisabled extends SendableCommandBase {
 	public ZeroElevatorDisabled(Length height) {
 		// Use requires() here to declare subsystem dependencies
 		// eg. requires(chassis);

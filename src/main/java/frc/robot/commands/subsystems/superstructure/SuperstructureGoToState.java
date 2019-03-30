@@ -2,14 +2,14 @@ package frc.robot.commands.subsystems.superstructure;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class SuperstructureGoToState extends Command {
+public class SuperstructureGoToState extends SendableCommandBase {
 	SuperStructureState mRequState;
 	double kWristSetpoint, kElbowSetpoint;
 	private static final double kDefaultTimeout = 4;

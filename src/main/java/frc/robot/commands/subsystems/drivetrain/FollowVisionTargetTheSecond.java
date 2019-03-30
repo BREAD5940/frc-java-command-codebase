@@ -8,13 +8,13 @@
 package frc.robot.commands.subsystems.drivetrain;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
 
-public class FollowVisionTargetTheSecond extends Command {
+public class FollowVisionTargetTheSecond extends SendableCommandBase {
 
 	double targetArea;
 	boolean mHadTarget = false;

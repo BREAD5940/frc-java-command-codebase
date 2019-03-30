@@ -3,7 +3,7 @@ package frc.robot.commands.auto.groups;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 
-public class DropCargo extends CommandGroup {
+public class DropCargo extends SendableCommandBaseGroup {
 	/**
 	 * drops cargo. 
 	 * if it's being shot through a hatch/port, it outtakes forward. otherwise it outtakes downward

@@ -1,6 +1,6 @@
 package frc.robot.commands.subsystems.drivetrain;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.SuperStructureConstants;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
@@ -8,7 +8,7 @@ import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class ZeroSuperStructure extends Command {
+public class ZeroSuperStructure extends SendableCommandBase {
 	String p;
 	SuperStructure struc;
 	SuperStructureState old;

@@ -9,7 +9,7 @@ package frc.robot.lib.obj.factories;
 
 import java.util.List;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;

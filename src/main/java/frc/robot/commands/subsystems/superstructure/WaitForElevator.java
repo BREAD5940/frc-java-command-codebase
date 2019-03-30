@@ -1,8 +1,8 @@
 package frc.robot.commands.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 
-public class WaitForElevator extends Command {
+public class WaitForElevator extends SendableCommandBase {
 
 	double demand;
 

@@ -7,12 +7,12 @@
 
 package frc.robot.commands.auto.routines.passthrough;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class PassThrough extends CommandGroup {
+public class PassThrough extends SendableCommandBaseGroup {
 	/**
 	 * Add your docs here.
 	 */

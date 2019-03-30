@@ -21,7 +21,7 @@ import frc.robot.commands.auto.Trajectories;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 
-public class Baseline extends CommandGroup {
+public class Baseline extends SendableCommandBaseGroup {
 	/**
 	 * Add your docs here.
 	 */

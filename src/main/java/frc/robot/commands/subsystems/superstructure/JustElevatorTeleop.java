@@ -2,8 +2,9 @@ package frc.robot.commands.subsystems.superstructure;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.states.ElevatorState;
@@ -11,7 +12,7 @@ import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class JustElevatorTeleop extends Command {
+public class JustElevatorTeleop extends SendableCommandBase {
 	private OI mOI = Robot.m_oi;
 
 	SuperStructureState mCachedState;

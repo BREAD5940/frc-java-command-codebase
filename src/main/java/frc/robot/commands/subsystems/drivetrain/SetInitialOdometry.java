@@ -3,10 +3,10 @@ package frc.robot.commands.subsystems.drivetrain;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.Robot;
 
-public class SetInitialOdometry extends Command {
+public class SetInitialOdometry extends SendableCommandBase {
 
 	Pose2dWithCurvature initialPose;
 

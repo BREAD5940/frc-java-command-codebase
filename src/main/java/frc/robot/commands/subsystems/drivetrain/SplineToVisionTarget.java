@@ -20,7 +20,7 @@ import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.motion.Util;
@@ -29,7 +29,7 @@ import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 import frc.robot.subsystems.LimeLight;
 
-public class SplineToVisionTarget extends CommandGroup {
+public class SplineToVisionTarget extends SendableCommandBaseGroup {
 	double targetDistance, exitArea;
 
 	// final Pose2d initialPose;

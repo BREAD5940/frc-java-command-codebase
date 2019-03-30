@@ -10,14 +10,14 @@ package frc.robot.commands.subsystems.drivetrain;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.lib.TerriblePID;
 import frc.robot.lib.obj.DriveSignal;
 import frc.robot.subsystems.DifferentialUltrasonicSensor;
 import frc.robot.subsystems.DifferentialUltrasonicSensor.RangeMode;
 
-public class DriveUltrasonic extends Command {
+public class DriveUltrasonic extends SendableCommandBase {
 
 	double targetAngle = 0;
 

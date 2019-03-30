@@ -2,7 +2,7 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 
@@ -14,7 +14,7 @@ import frc.robot.subsystems.DriveTrain;
  * 
  * @author Matthew Morley
  */
-public class ArcadeDrive extends Command {
+public class ArcadeDrive extends SendableCommandBase {
 
 	// System.out.println("im an arcade drive command!");
 	/**

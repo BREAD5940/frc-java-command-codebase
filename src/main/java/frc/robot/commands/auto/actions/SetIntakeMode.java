@@ -1,13 +1,13 @@
 package frc.robot.commands.auto.actions;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 
 /**
  * SetIntakeMode sets the wrist to either cargo or hatch 'mode', then either 
  * switches to pointing down to drop/grab cargo or... doesn't
  */
-public class SetIntakeMode extends Command {
+public class SetIntakeMode extends SendableCommandBase {
 	HeldPiece intakeType;
 	boolean isDown = false;
 	boolean rev = false;
