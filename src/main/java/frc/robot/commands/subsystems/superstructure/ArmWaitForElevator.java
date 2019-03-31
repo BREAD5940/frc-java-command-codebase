@@ -3,8 +3,6 @@ package frc.robot.commands.subsystems.superstructure;
 import java.util.concurrent.Callable;
 
 import org.ghrobotics.lib.mathematics.units.Length;
-
-import org.team5940.pantry.experimental.command.SendableCommandBase;
 import org.team5940.pantry.experimental.command.SequentialCommandGroup;
 
 import frc.robot.lib.AutoWaitForCondition;
@@ -40,8 +38,7 @@ public class ArmWaitForElevator extends SequentialCommandGroup {
 		// addSequential(new ArmMove(desired));
 
 		addCommands(
-			new AutoWaitForCondition(elevatorMoved).andThen(new ArmMove(desired))
-		);
+				new AutoWaitForCondition(elevatorMoved).andThen(new ArmMove(desired)));
 	}
 
 	@Override

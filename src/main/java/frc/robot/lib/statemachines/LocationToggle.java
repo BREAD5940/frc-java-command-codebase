@@ -17,7 +17,7 @@ public class LocationToggle extends SendableCommandBase {
 	public void initialize() {
 		Robot.autoState.setGoalLocation(GoalLocation.CARGO_SHIP);
 	}
-	
+
 	@Override
 	public void end(boolean interrupted) {
 		Robot.autoState.setGoalLocation(GoalLocation.ROCKET);

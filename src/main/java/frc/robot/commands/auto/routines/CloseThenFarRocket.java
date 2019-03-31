@@ -9,7 +9,6 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.team5940.pantry.experimental.command.SequentialCommandGroup;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.TurnToFaceVisionTarget;
@@ -203,16 +202,13 @@ public class CloseThenFarRocket extends SequentialCommandGroup {
 				true,
 				true);
 		addCommands(
-			
 
-		
-			/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(t_fallOFfHab, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true)).alongWith(
-			/*addParallel*/(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH))),
-			/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(t_floorToRocketC, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false)),
-			/*addSequential*/(new TurnToFaceVisionTarget())
+				/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(t_fallOFfHab, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true)).alongWith(
+						/*addParallel*/(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH))),
+				/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(t_floorToRocketC, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false)),
+				/*addSequential*/(new TurnToFaceVisionTarget())
 
 		);
-
 
 		// /*addSequential*/(new DriveDistanceToVisionTarget(LengthKt.getInch(35), VelocityKt.getVelocity(LengthKt.getFeet(2))));
 

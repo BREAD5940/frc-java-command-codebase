@@ -47,13 +47,13 @@ public class LoadingToRocketF extends VisionCommandGroup {
 
 		addCommands(
 
-		// if (doIntake)
-		/*addParallel*/(new LimeLight.SetLEDs(LimeLight.LEDMode.kON)),
-		/*addParallel*/(new LimeLight.setPipeline(PipelinePreset.k3dVision)),
-		/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)).alongWith(
-					/*addParallel*/(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)) // move arm inside to prep state
-		), //drive to goal
-		/*addParallel*/(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH)));
+				// if (doIntake)
+				/*addParallel*/(new LimeLight.SetLEDs(LimeLight.LEDMode.kON)),
+				/*addParallel*/(new LimeLight.setPipeline(PipelinePreset.k3dVision)),
+				/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)).alongWith(
+						/*addParallel*/(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)) // move arm inside to prep state
+				), //drive to goal
+				/*addParallel*/(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH)));
 
 		// );
 

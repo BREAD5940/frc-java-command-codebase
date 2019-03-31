@@ -7,11 +7,9 @@
 
 package frc.robot.commands.subsystems.drivetrain;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
 import org.team5940.pantry.experimental.command.WaitCommand;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.Robot;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
@@ -34,7 +32,6 @@ public class DrivePowerToVisionTarget extends WaitCommand {
 	 */
 	public DrivePowerToVisionTarget(double power, double time) {
 		super(time);
-
 		addRequirements(DriveTrain.getInstance());
 
 		this.power = power;

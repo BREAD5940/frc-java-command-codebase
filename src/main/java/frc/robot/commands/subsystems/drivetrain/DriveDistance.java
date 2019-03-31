@@ -2,8 +2,8 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
-
 import org.team5940.pantry.experimental.command.SendableCommandBase;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
@@ -98,8 +98,7 @@ public class DriveDistance extends SendableCommandBase {
 		if (((Math.abs(Robot.drivetrain.getRight().getFeet() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence)
 				&& (Math.abs(Robot.drivetrain.getLeft().getFeet() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence)
 				&& (Math.abs(Robot.drivetrain.getLeft().getFeet()) < RobotConfig.auto.tolerences.velocity_tolerence)
-				&& (Math.abs(Robot.drivetrain.getRight().getFeet()) < RobotConfig.auto.tolerences.velocity_tolerence)))
- {
+				&& (Math.abs(Robot.drivetrain.getRight().getFeet()) < RobotConfig.auto.tolerences.velocity_tolerence))) {
 			return true;
 		} else {
 			return false;

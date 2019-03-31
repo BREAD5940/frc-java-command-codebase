@@ -5,10 +5,9 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.team5940.pantry.experimental.command.CommandScheduler;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-
-import org.team5940.pantry.experimental.command.SendableCommandBase;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -35,7 +34,6 @@ import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.LimeLight.LEDMode;
 import frc.robot.subsystems.superstructure.SuperStructure;
-import org.team5940.pantry.experimental.command.Command;
 
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly init
@@ -235,7 +233,7 @@ public class Robot extends TimedRobot {
 		// wrist.getMaster().setSelectedSensorPosition((int) (wristStart));
 
 		elevator.getMaster().setSelectedSensorPosition((int) (elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue())); // just to be super sure the elevator is safe-ishhhh
-		
+
 		var cmd = zeroElevatorWhileDisabled;
 		cmd.schedule();
 

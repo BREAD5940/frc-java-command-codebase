@@ -50,19 +50,17 @@ public class PlaceCargoFrontL extends VisionCommandGroup {
 
 		addCommands(
 
+				// /*addSequential*/(new SetGearCommand(Gear.LOW)),
+				new InstantCommand(DriveTrain.getInstance()::setLowGear),
+				/*addSequential*/(new PIDDriveDistance(LengthKt.getFeet(5), 6)).alongWith(
+						/*addParallel*/(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))), // move arm inside to prep state
+				/*addSequential*/(new LimeLight.SetLEDs(LimeLight.LEDMode.kON)),
+				/*addSequential*/(new LimeLight.setPipeline(PipelinePreset.k3dVision)),
+				/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)), //drive to goal
+				/*addSequential*/(new FollowVisionTargetTheSecond(5)),
+				/*addSequential*/(new RunIntake(-1, 0, 1)),
+				/*addSequential*/(new PIDDriveDistance(-3, 12, /* timeout */ 0.5))
 
-		// /*addSequential*/(new SetGearCommand(Gear.LOW)),
-		new InstantCommand(DriveTrain.getInstance()::setLowGear),
-		/*addSequential*/(new PIDDriveDistance(LengthKt.getFeet(5), 6)).alongWith(
-			/*addParallel*/(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))), // move arm inside to prep state
-		/*addSequential*/(new LimeLight.SetLEDs(LimeLight.LEDMode.kON)),
-		/*addSequential*/(new LimeLight.setPipeline(PipelinePreset.k3dVision)),
-		/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)), //drive to goal
-		/*addSequential*/(new FollowVisionTargetTheSecond(5)),
-		/*addSequential*/(new RunIntake(-1, 0, 1)),
-		/*addSequential*/(new PIDDriveDistance(-3, 12, /* timeout */ 0.5))
-
-			
 		);
 
 	}

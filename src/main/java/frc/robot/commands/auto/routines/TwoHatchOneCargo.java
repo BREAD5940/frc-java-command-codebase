@@ -1,7 +1,6 @@
 package frc.robot.commands.auto.routines;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
@@ -13,7 +12,6 @@ import org.team5940.pantry.experimental.command.WaitCommand;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.auto.groups.VisionCommandGroup;
 import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheThird;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
@@ -54,47 +52,43 @@ public class TwoHatchOneCargo extends SequentialCommandGroup {
 
 		addCommands(
 
+				/*addSequential*/(new LimeLight.SetLEDs(LimeLight.LEDMode.kON)),
+				/*addSequential*/(new LimeLight.setPipeline(PipelinePreset.k3dVision)),
+				/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)).alongWith(
+						/*addParallel*/(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)) // move arm inside to prep state
+				), //drive to goal
 
-			/*addSequential*/(new LimeLight.SetLEDs(LimeLight.LEDMode.kON)),
-			/*addSequential*/(new LimeLight.setPipeline(PipelinePreset.k3dVision)),
-			/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)).alongWith(
-							/*addParallel*/(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)) // move arm inside to prep state
-			), //drive to goal
+				/*addSequential*/(new FollowVisionTargetTheSecond(3.8)),
 
-			/*addSequential*/(new FollowVisionTargetTheSecond(3.8)),
+				/*addSequential*/(new RunIntake(-1, 0, 1.5)),
 
-			/*addSequential*/(new RunIntake(-1, 0, 1.5)),
+				/*addParallel*/(new DriveDistanceTheThird(LengthKt.getFeet(3), true)),
 
-			/*addParallel*/(new DriveDistanceTheThird(LengthKt.getFeet(3), true)),
+				// /*addSequential*/(SequentialCommandFactory.getSequentialCommands(
+				// Arrays.asList(
+				new ElevatorMove(iPosition.HATCH_GRAB_INSIDE.getElevator()),
+				new JankyGoToState(iPosition.HATCH_GRAB_INSIDE),
 
-			// /*addSequential*/(SequentialCommandFactory.getSequentialCommands(
-					// Arrays.asList(
-							new ElevatorMove(iPosition.HATCH_GRAB_INSIDE.getElevator()),
-							new JankyGoToState(iPosition.HATCH_GRAB_INSIDE),
+				/*addSequential*/(new PrintCommand("GOT TO next spline")),
 
-			/*addSequential*/(new PrintCommand("GOT TO next spline")),
+				// spline over to the rocket
+				/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(rocketToLoading, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)), //drive to goal
 
-			// spline over to the rocket
-			/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(rocketToLoading, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)), //drive to goal
+				/*addSequential*/(new FollowVisionTargetTheSecond(4.5)),
 
+				/*addSequential*/(new RunIntake(1, 0, 1)),
 
-			/*addSequential*/(new FollowVisionTargetTheSecond(4.5)),
+				// /*addParallel*/(SequentialCommandFactory.getSequentialCommands(
+				// Arrays.asList(
 
-			/*addSequential*/(new RunIntake(1, 0, 1)),
+				/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(loadingToRocketFar, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)).alongWith(
+						(new WaitCommand(2)).andThen(
+								new ArmMove(iPosition.HATCH)).andThen(
+										new ElevatorMove(fieldPositions.hatchMiddleGoal))
 
-
-			// /*addParallel*/(SequentialCommandFactory.getSequentialCommands(
-					// Arrays.asList(
-
-
-			/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(loadingToRocketFar, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)).alongWith(
-				(new WaitCommand(2)).andThen(
-				new ArmMove(iPosition.HATCH)).andThen(
-				new ElevatorMove(fieldPositions.hatchMiddleGoal))
-
-			), //drive to goal
-			/*addSequential*/(new FollowVisionTargetTheSecond(3.8)),
-			/*addSequential*/(new RunIntake(-1, 0, 1))
+				), //drive to goal
+				/*addSequential*/(new FollowVisionTargetTheSecond(3.8)),
+				/*addSequential*/(new RunIntake(-1, 0, 1))
 
 		// // // /*addSequential*/(new LimeLight.SetLEDs(LimeLight.LEDMode.kOFF));
 		);

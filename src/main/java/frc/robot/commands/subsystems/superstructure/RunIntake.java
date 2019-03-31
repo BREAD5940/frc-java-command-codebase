@@ -32,6 +32,8 @@ public class RunIntake extends WaitCommand {
 	// Called just before this Command runs the first time
 	@Override
 	public void initialize() {
+		super.initialize();
+
 		Intake.getInstance().setCargoSpeed(cargo);
 		Intake.getInstance().setHatchSpeed(hatch);
 	}
@@ -41,7 +43,6 @@ public class RunIntake extends WaitCommand {
 	public void execute() {
 		Intake.getInstance().setCargoSpeed(cargo);
 		Intake.getInstance().setHatchSpeed(hatch);
-
 	}
 
 	// Called once after timeout

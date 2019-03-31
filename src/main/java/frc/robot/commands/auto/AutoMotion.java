@@ -10,7 +10,6 @@
 // import static frc.robot.RobotConfig.auto.fieldPositions.*;
 // import static frc.robot.subsystems.superstructure.SuperStructure.iPosition.*;
 
-
 // import frc.robot.RobotConfig;
 // import frc.robot.commands.auto.groups.PlaceHatch;
 // import frc.robot.commands.subsystems.drivetrain.DriveDistance;
@@ -89,8 +88,6 @@
 // 	private Command genGrabCommands() {
 // 		Command toReturn;// = new Command();
 
-
-
 // 		if (this.gType == GoalType.RETRIEVE_CARGO) {
 // 			//TODO target cargo
 // 			toReturn = (new RunIntake(0.75d, .75d, 1));
@@ -98,7 +95,7 @@
 // 		} else if (this.gType == GoalType.RETRIEVE_HATCH) {
 
 // 			toReturn = new SequentialCommandGroup(
-			
+
 // 			new PrintCommand("running grab commands!"),
 // 				new FollowVisionTargetTheSecond(4),
 // 			//TODO align with vision targets
@@ -126,13 +123,12 @@
 // 		Command toReturn;// = new Command();
 
 // 		toReturn = new SequentialCommandGroup(
-			
+
 // 		// new ConditionalCommand(
 // 		// 	new PIDDriveDistance(0.5 + 0.43, 4), 
 // 		// 	new PIDDriveDistance(0.5, 4), 
 // 		// 	() -> (this.gType == GoalType.CARGO_CARGO)
 // 		// );
-
 
 // 		((this.gType == GoalType.CARGO_CARGO) ? new JankyGoToState(cargoMiddleGoal.plus(LengthKt.getInch(2)), CARGO_DOWN).andThen(new PIDDriveDistance(LengthKt.getFeet(0.5 + 0.43), 4)) : new PIDDriveDistance(LengthKt.getFeet(0.5), 4)),
 
@@ -152,14 +148,12 @@
 // 		// } else if (this.piece == HeldPiece.HATCH) {
 // 		// 	/*toReturn.addSequential*/(new PlaceHatch()); // TODO so we need to pass in the goal lol
 // 		// }
-	
+
 // 		(this.piece == HeldPiece.CARGO) ? new RunIntake(-1, -1, 0.5) : new PlaceHatch()
 
 // 		);
 
 // 		this.endPiece = HeldPiece.NONE;
-
-
 
 // 		return toReturn;
 

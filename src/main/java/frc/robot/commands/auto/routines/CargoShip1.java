@@ -86,9 +86,8 @@ public class CargoShip1 extends VisionCommandGroup {
 				true);
 
 		addCommands(
-			DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, true),
-			(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH))
-		);
+				DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, true),
+				(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)));
 
 		// this.addSequential(DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, true));
 		// addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
@@ -96,10 +95,10 @@ public class CargoShip1 extends VisionCommandGroup {
 		// addSequential(new PlaceHatch());
 
 		addCommands(
-			DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, true),
-			(DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, false)).alongWith(
-				new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)),
-			new PlaceHatch());
+				DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, true),
+				(DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, false)).alongWith(
+						new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)),
+				new PlaceHatch());
 
 	}
 }

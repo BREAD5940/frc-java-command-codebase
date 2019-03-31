@@ -31,7 +31,6 @@ import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -504,7 +503,7 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	private ChassisState mCachedChassisState;
 	public boolean isFirstRun = true;
 
-	public static final Command kCurvatureDriveCommand = new RunCommand(() -> {
+	private Command kCurvatureDriveCommand = new RunCommand(() -> {
 		double forwardSpeed = Robot.m_oi.getForwardAxis();
 		double turnSpeed = Robot.m_oi.getTurnAxis();
 		forwardSpeed = Util.deadband(forwardSpeed, 0.07) * ((DriveTrain.getInstance().getCachedGear() == Gear.HIGH) ? 0.8 : 1);
@@ -673,7 +672,9 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 		// mCommandGroup.addParallel(new SetGearCommand(gear));
 		// mCommandGroup.addSequential(followTrajectory(trajectory, mode, resetPose));
 		// return mCommandGroup;
-		return new InstantCommand(() -> {this.setGear(gear);}).andThen(followTrajectory(trajectory, mode, resetPose));
+		return new InstantCommand(() -> {
+			this.setGear(gear);
+		}).andThen(followTrajectory(trajectory, mode, resetPose));
 	}
 
 	/**

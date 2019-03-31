@@ -3,7 +3,6 @@ package frc.robot.commands.auto.routines;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
@@ -20,7 +19,6 @@ import org.team5940.pantry.experimental.command.SequentialCommandGroup;
 import frc.robot.Robot;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.auto.groups.VisionCommandGroup;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
@@ -108,16 +106,15 @@ public class CloseSideRocket extends SequentialCommandGroup {
 				false,
 				true);
 
-				BooleanSupplier checker = (() -> (Boolean.valueOf(Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON))));
+		BooleanSupplier checker = (() -> (Boolean.valueOf(Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON))));
 
-				addCommands(
+		addCommands(
 
-		/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(p_rocketC, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)), // keep going over to the far side of the rocket
-		/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(p_rocketCPart2, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)).alongWith( // keep going over to the far side of the rocket
-			/*addParallel*/(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH))),
-			(new TeleopCommands()).interruptOn(checker),
-		/*addParallel*/(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))
-				);
+				/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(p_rocketC, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)), // keep going over to the far side of the rocket
+				/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(p_rocketCPart2, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)).alongWith( // keep going over to the far side of the rocket
+						/*addParallel*/(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH))),
+				(new TeleopCommands()).interruptOn(checker),
+				/*addParallel*/(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE)));
 
 		// /*addSequential*/(new PlaceHatch());
 

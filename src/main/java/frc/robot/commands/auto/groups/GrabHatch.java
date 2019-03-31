@@ -34,7 +34,9 @@ public class GrabHatch extends SequentialCommandGroup {
 				// yes.addParallel(new RunIntake(1, 0, 1));
 				new DrivePowerAndIntake(0.4, -1, 0.8),
 				// new DrivePower(-.4, 0.3));
-				new StartEndCommand(() -> {DriveTrain.getInstance().arcadeDrive(-0.4, 0, false);}, DriveTrain.getInstance()::stop, DriveTrain.getInstance()));
+				new StartEndCommand(() -> {
+					DriveTrain.getInstance().arcadeDrive(-0.4, 0, false);
+				}, DriveTrain.getInstance()::stop, DriveTrain.getInstance()));
 
 	}
 }

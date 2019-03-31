@@ -8,12 +8,12 @@ import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.Time;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
+import org.team5940.pantry.experimental.command.InstantCommand;
 
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import org.team5940.pantry.experimental.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotConfig;
 import frc.robot.lib.motion.Util;

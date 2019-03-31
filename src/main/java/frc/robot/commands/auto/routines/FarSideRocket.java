@@ -19,7 +19,6 @@ import org.team5940.pantry.experimental.command.SequentialCommandGroup;
 import frc.robot.Robot;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.auto.groups.VisionCommandGroup;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
@@ -132,13 +131,12 @@ public class FarSideRocket extends SequentialCommandGroup {
 
 		addCommands(
 
-			/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(t_fallOffHab, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)), // fall off the hab
-			/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(t_farSideRocketL, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)).alongWith(
-							/*addParallel*/(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE_PREP))
-			), // keep going over to the far side of the rocket
-			/*addSequential*/(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH)),
-			(new TeleopCommands()).interruptOn(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)))
-		
+				/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(t_fallOffHab, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)), // fall off the hab
+				/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(t_farSideRocketL, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)).alongWith(
+						/*addParallel*/(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE_PREP))), // keep going over to the far side of the rocket
+				/*addSequential*/(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH)),
+				(new TeleopCommands()).interruptOn(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)))
+
 		);
 
 		// /*addSequential*/(new FollowVisionTargetTheSecond(3.8));

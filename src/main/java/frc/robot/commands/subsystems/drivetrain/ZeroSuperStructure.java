@@ -1,6 +1,7 @@
 package frc.robot.commands.subsystems.drivetrain;
 
 import org.team5940.pantry.experimental.command.SendableCommandBase;
+
 import frc.robot.SuperStructureConstants;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
@@ -77,13 +78,12 @@ public class ZeroSuperStructure extends SendableCommandBase {
 		return true;
 	}
 
-
 	@Override
 	public void end(boolean interrupted) {
 		struc.getDefaultCommand().cancel();
 		System.out.println("Restarting the default command");
 		struc.move(old);
-		struc.getDefaultCommand().schedule();	
+		struc.getDefaultCommand().schedule();
 	}
 
 }
