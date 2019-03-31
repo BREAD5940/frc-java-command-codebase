@@ -7,18 +7,23 @@
 
 package frc.robot.commands.auto.routines;
 
+import org.team5940.pantry.experimental.command.ParallelCommandGroup;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.superstructure.IntakeTelop;
 import frc.robot.commands.subsystems.superstructure.JustElevatorTeleop;
 
-public class TeleopCommands extends SendableCommandBaseGroup {
+public class TeleopCommands extends ParallelCommandGroup {
 	/**
 	 * Add your docs here.
 	 */
 	public TeleopCommands() {
-		addParallel(new HybridDriverAssist());
-		addParallel(new IntakeTelop());
-		addParallel(new JustElevatorTeleop());
+
+		addCommands(
+			new HybridDriverAssist(),
+			new IntakeTelop(),
+			new JustElevatorTeleop()
+		);
 	}
 }

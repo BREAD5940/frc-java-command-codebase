@@ -14,15 +14,14 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
 import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.team5940.pantry.experimental.command.SequentialCommandGroup;
 
 import frc.robot.Robot;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
-import frc.robot.lib.ParallelRaceGroup;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
@@ -33,7 +32,7 @@ import frc.robot.xboxmap;
 /**
  * 2-hatch 1-cargo auto
  */
-public class FarSideRocket extends VisionCommandGroup {
+public class FarSideRocket extends SequentialCommandGroup {
 	// private AutoCommandGroup mBigCommandGroup;
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
 	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
@@ -132,38 +131,29 @@ public class FarSideRocket extends VisionCommandGroup {
 		var t_toLoadingStationL = Trajectories.generateTrajectory(p_toLoadingStation, Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0)), VelocityKt.getVelocity(LengthKt.getFeet(7)), kDefaultAcceleration, false, true);
 
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_fallOffHab, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // fall off the hab
-		addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_farSideRocketL, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); // keep going over to the far side of the rocket
-		addSequential(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
+		addCommands(
 
-		addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)), new TeleopCommands()));
+			/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(t_fallOffHab, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)), // fall off the hab
+			/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(t_farSideRocketL, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)).alongWith(
+							/*addParallel*/(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE_PREP))
+			), // keep going over to the far side of the rocket
+			/*addSequential*/(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH)),
+			(new TeleopCommands()).interruptOn(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)))
+		
+		);
 
-		// addSequential(new FollowVisionTargetTheSecond(3.8));
-		// addSequential(new RunIntake(-1, 0, 1));
+		// /*addSequential*/(new FollowVisionTargetTheSecond(3.8));
+		// /*addSequential*/(new RunIntake(-1, 0, 1));
 
-		// addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
-		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_halfWayToLoadingStationL, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // nyoom off to the side
-		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_toLoadingStationL, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); // go to the loading station
-		// addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-		// addSequential(new FollowVisionTargetTheSecond(4.5));
-		// addSequential(new PIDDriveDistance(0.5, 4, /* timeout */ 0.5));
-		// addSequential(new RunIntake(1, 0, 1));
-		// addSequential(new PIDDriveDistance(-3, 12, /* timeout */ 1));
+		// /*addParallel*/(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE_PREP));
+		// /*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(t_halfWayToLoadingStationL, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // nyoom off to the side
+		// /*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(t_toLoadingStationL, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); // go to the loading station
+		// /*addSequential*/(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		// /*addSequential*/(new FollowVisionTargetTheSecond(4.5));
+		// /*addSequential*/(new PIDDriveDistance(0.5, 4, /* timeout */ 0.5));
+		// /*addSequential*/(new RunIntake(1, 0, 1));
+		// /*addSequential*/(new PIDDriveDistance(-3, 12, /* timeout */ 1));
 
 	}
-
-	// id functions
-
-	/**
-	 * identification function
-	 * @return
-	 *  the mBigCommandGroup of the function
-	 */
-	public AutoCommandGroup getBigCommandGroup() {
-		return this;
-	}
-
-	//not id functions
 
 }

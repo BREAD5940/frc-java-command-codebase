@@ -1,6 +1,7 @@
 package frc.robot.commands.auto.groups;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+import org.team5940.pantry.experimental.command.SequentialCommandGroup;
 
 /**
  * Contains getters and settetrs in adition to local variables for tracking robot pose and stuff.
@@ -8,7 +9,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
  * 
  * @author Matthew Morley
  */
-public class VisionCommandGroup extends AutoCommandGroup {
+public class VisionCommandGroup extends SequentialCommandGroup {
 
 	public VisionCommandGroup() {
 		super();

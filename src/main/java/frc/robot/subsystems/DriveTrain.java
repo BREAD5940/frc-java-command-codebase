@@ -17,6 +17,10 @@ import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.subsystems.drive.DifferentialTrackerDriveBase;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
+import org.team5940.pantry.experimental.command.Command;
+import org.team5940.pantry.experimental.command.InstantCommand;
+import org.team5940.pantry.experimental.command.RunCommand;
+import org.team5940.pantry.experimental.command.SendableSubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
@@ -27,19 +31,11 @@ import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
-
-import org.team5940.pantry.experimental.command.Command;
-import org.team5940.pantry.experimental.command.RunCommand;
-import org.team5940.pantry.experimental.command.SendableCommandBase;
-import org.team5940.pantry.experimental.command.SendableSubsystemBase;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
-import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.drivetrain.TrajectoryTrackerCommand;
 import frc.robot.lib.LoggableSubsystem;
 import frc.robot.lib.Logger;
@@ -114,7 +110,6 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	private DriveTrain() {
 
 		setDefaultCommand(kCurvatureDriveCommand);
-
 
 		leftTransmission = new Transmission(RobotConfig.driveTrain.leftTalons.m_left_talon_port,
 				RobotConfig.driveTrain.leftTalons.s_left_talon_port, Transmission.EncoderMode.CTRE_MagEncoder_Relative,
@@ -510,20 +505,18 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	public boolean isFirstRun = true;
 
 	public static final Command kCurvatureDriveCommand = new RunCommand(() -> {
-			double forwardSpeed = Robot.m_oi.getForwardAxis();
-			double turnSpeed = Robot.m_oi.getTurnAxis();
-			forwardSpeed = Util.deadband(forwardSpeed, 0.07) * ((DriveTrain.getInstance().getCachedGear() == Gear.HIGH) ? 0.8 : 1);
-			turnSpeed = Util.deadband(turnSpeed, 0.07);
-			DriveTrain.getInstance().curvatureDrive(forwardSpeed, turnSpeed, Math.abs(Robot.m_oi.getForwardAxis()) < 0.08);
+		double forwardSpeed = Robot.m_oi.getForwardAxis();
+		double turnSpeed = Robot.m_oi.getTurnAxis();
+		forwardSpeed = Util.deadband(forwardSpeed, 0.07) * ((DriveTrain.getInstance().getCachedGear() == Gear.HIGH) ? 0.8 : 1);
+		turnSpeed = Util.deadband(turnSpeed, 0.07);
+		DriveTrain.getInstance().curvatureDrive(forwardSpeed, turnSpeed, Math.abs(Robot.m_oi.getForwardAxis()) < 0.08);
 	}, DriveTrain.getInstance()).beforeStarting(() -> {
-			DriveTrain.getInstance().setNeutralMode(NeutralMode.Brake);
-			DriveTrain.getInstance().getLeft().getMaster().configClosedloopRamp(0.16);
-			DriveTrain.getInstance().getRight().getMaster().configClosedloopRamp(0.16);
-			DriveTrain.getInstance().getLeft().getMaster().configOpenloopRamp(0.16);
-			DriveTrain.getInstance().getRight().getMaster().configOpenloopRamp(0.16);
+		DriveTrain.getInstance().setNeutralMode(NeutralMode.Brake);
+		DriveTrain.getInstance().getLeft().getMaster().configClosedloopRamp(0.16);
+		DriveTrain.getInstance().getRight().getMaster().configClosedloopRamp(0.16);
+		DriveTrain.getInstance().getLeft().getMaster().configOpenloopRamp(0.16);
+		DriveTrain.getInstance().getRight().getMaster().configOpenloopRamp(0.16);
 	});
-
-
 
 	public void curvatureDrive(double linearPercent, double curvaturePercent, boolean isQuickTurn) {
 		double angularPower;
@@ -676,10 +669,11 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	public Command followTrajectoryWithGear(TimedTrajectory<Pose2dWithCurvature> trajectory,
 			TrajectoryTrackerMode mode, Gear gear, boolean resetPose) {
 		mCurrentGear = gear;
-		CommandGroup mCommandGroup = new CommandGroup();
-		mCommandGroup.addParallel(new SetGearCommand(gear));
-		mCommandGroup.addSequential(followTrajectory(trajectory, mode, resetPose));
-		return mCommandGroup;
+		// CommandGroup mCommandGroup = new CommandGroup();
+		// mCommandGroup.addParallel(new SetGearCommand(gear));
+		// mCommandGroup.addSequential(followTrajectory(trajectory, mode, resetPose));
+		// return mCommandGroup;
+		return new InstantCommand(() -> {this.setGear(gear);}).andThen(followTrajectory(trajectory, mode, resetPose));
 	}
 
 	/**

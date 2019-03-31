@@ -29,14 +29,14 @@ public class HybridKinematicDriverAssist extends SendableCommandBase {
 	 *                     target anymore)
 	 */
 	public HybridKinematicDriverAssist() {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		requires(DriveTrain.getInstance());
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
+		addRequirements(DriveTrain.getInstance());
 	}
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {}
+	public void initialize() {}
 
 	double lastTx = 0;
 	double lastGyroAngle = 0;
@@ -45,7 +45,7 @@ public class HybridKinematicDriverAssist extends SendableCommandBase {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
 		double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
 		double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
@@ -96,20 +96,14 @@ public class HybridKinematicDriverAssist extends SendableCommandBase {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return /*(Math.abs(exitArea - ta) < 0.3) || (hadTarget && !hasTarget)*/ false;
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		DriveTrain.getInstance().stop();
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		end();
-	}
 }

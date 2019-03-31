@@ -15,13 +15,13 @@ public class ZeroSuperStructure extends SendableCommandBase {
 
 	public ZeroSuperStructure(String piece) {
 		this.p = piece;
-		// requires(SuperStructure.getInstance());
-		setInterruptible(false);
+		// addRequirements(SuperStructure.getInstance());
+		// setInterruptible(false);
 		struc = SuperStructure.getInstance();
-		requires(SuperStructure.getInstance());
-		requires(SuperStructure.getElevator());
-		requires(SuperStructure.getInstance().getElbow());
-		requires(SuperStructure.getInstance().getWrist());
+		addRequirements(SuperStructure.getInstance());
+		addRequirements(SuperStructure.getElevator());
+		addRequirements(SuperStructure.getInstance().getElbow());
+		addRequirements(SuperStructure.getInstance().getWrist());
 		// Command comm = struc.getCurrentCommand();
 		// if (comm != null)
 		// comm.cancel();
@@ -77,16 +77,13 @@ public class ZeroSuperStructure extends SendableCommandBase {
 		return true;
 	}
 
+
 	@Override
-	public void end() {
+	public void end(boolean interrupted) {
 		struc.getDefaultCommand().cancel();
 		System.out.println("Restarting the default command");
 		struc.move(old);
-		struc.getDefaultCommand().start();
+		struc.getDefaultCommand().schedule();	
 	}
 
-	@Override
-	public void interrupted() {
-
-	}
 }

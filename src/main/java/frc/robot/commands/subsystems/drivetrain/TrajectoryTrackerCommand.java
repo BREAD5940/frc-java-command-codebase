@@ -13,17 +13,17 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.subsystems.drive.DifferentialTrackerDriveBase;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.lib.AutoCommand;
 import frc.robot.lib.Logger;
 import frc.robot.subsystems.DriveTrain;
 
 // @SuppressWarnings({"WeakerAccess", "unused"})
-public class TrajectoryTrackerCommand extends AutoCommand {
+public class TrajectoryTrackerCommand extends SendableCommandBase {
 	private TrajectoryTracker trajectoryTracker;
 	private Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource;
 	private DriveTrain driveBase;
@@ -49,7 +49,7 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 	}
 
 	public TrajectoryTrackerCommand(DriveTrain driveBase, TrajectoryTracker trajectoryTracker, Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource, boolean reset) {
-		requires(driveBase);
+		addRequirements(driveBase);
 		this.driveBase = driveBase;
 		this.trajectoryTracker = trajectoryTracker;
 		this.trajectorySource = trajectorySource;
@@ -58,7 +58,7 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		LiveDashboard.INSTANCE.setFollowingPath(false);
 
 		if (trajectorySource == null) {
@@ -105,7 +105,7 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 	}
 
 	@Override
-	protected void execute() {
+	public void execute() {
 
 		// long now = System.currentTimeMillis();
 
@@ -133,14 +133,14 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 	}
 
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		mUpdateNotifier.stop();
 		driveBase.stop();
 		LiveDashboard.INSTANCE.setFollowingPath(false);
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return trajectoryTracker.isFinished();
 	}
 

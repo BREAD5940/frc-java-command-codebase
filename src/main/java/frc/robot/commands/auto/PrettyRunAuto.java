@@ -1,7 +1,7 @@
 package frc.robot.commands.auto;
 
 import org.team5940.pantry.experimental.command.SendableCommandBase;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
+
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
 
 public class PrettyRunAuto extends SendableCommandBase {
@@ -23,12 +23,12 @@ public class PrettyRunAuto extends SendableCommandBase {
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		ssCommand.start();
 	}
 
 	@Override
-	protected void execute() {
+	public void execute() {
 		System.out.printf("Done? %b\n", ssCommand.done());
 
 		if (ssCommand.done() && !mainBegun && !onlyPreset) {
@@ -38,7 +38,7 @@ public class PrettyRunAuto extends SendableCommandBase {
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		if (onlyPreset) {
 			return ssCommand.done();
 		} else {

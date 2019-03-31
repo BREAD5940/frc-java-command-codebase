@@ -5,18 +5,19 @@ import java.util.concurrent.Callable;
 import org.ghrobotics.lib.mathematics.units.Length;
 
 import org.team5940.pantry.experimental.command.SendableCommandBase;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
+import org.team5940.pantry.experimental.command.SequentialCommandGroup;
+
 import frc.robot.lib.AutoWaitForCondition;
 import frc.robot.states.IntakeAngle;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class ArmWaitForElevator extends AutoCommandGroup {
+public class ArmWaitForElevator extends SequentialCommandGroup {
 
 	IntakeAngle desired;
 	Length finalEleHeight, tolerence;
 	boolean isDescending;
 	Callable<Boolean> elevatorMoved;
-	Command mDelayedCommand;
+	// Command mDelayedCommand;
 
 	/**
 	 * Move the arm after waiting for the elevator to attain a desired state. This assumes that the elevator setpoint has already been set!
@@ -35,12 +36,16 @@ public class ArmWaitForElevator extends AutoCommandGroup {
 		// (null) -> [or becomes, turns into] (basically if the elevator is within tolerance)
 		// this Caller is then used by auto wait for condition and polled in isFinished();
 
-		addSequential(new AutoWaitForCondition(elevatorMoved));
-		addSequential(new ArmMove(desired));
+		// addSequential(new AutoWaitForCondition(elevatorMoved));
+		// addSequential(new ArmMove(desired));
+
+		addCommands(
+			new AutoWaitForCondition(elevatorMoved).andThen(new ArmMove(desired))
+		);
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return Math.abs(desired.wristAngle.angle.getDegree() - SuperStructure.getInstance().getWrist().getDegrees()) <= 2
 				|| Math.abs(desired.elbowAngle.angle.getDegree() - SuperStructure.getInstance().getElbow().getDegrees()) <= 2;
 	}

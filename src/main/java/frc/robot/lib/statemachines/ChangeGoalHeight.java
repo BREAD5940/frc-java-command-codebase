@@ -1,6 +1,7 @@
 package frc.robot.lib.statemachines;
 
 import org.team5940.pantry.experimental.command.SendableCommandBase;
+
 import frc.robot.Robot;
 
 /**
@@ -16,7 +17,7 @@ public class ChangeGoalHeight extends SendableCommandBase {
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		if (up) {
 			Robot.autoState.goalHeightUp();
 		} else {
@@ -25,7 +26,7 @@ public class ChangeGoalHeight extends SendableCommandBase {
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return true;
 	}
 }

@@ -41,25 +41,12 @@ public class DriveDistance extends SendableCommandBase {
 	 * @param targetSpeed
 	 * @param timeout
 	 */
-	public DriveDistance(double distance, double targetSpeed, double timeout) {
+	public DriveDistance(double distance, double targetSpeed) {
 		this.targetDistance = distance;
 		this.targetSpeed = targetSpeed;
-		this.timeout = timeout;
+		// this.timeout = timeout;
 		this.forwardPID.setMaxOutput(targetSpeed);
-		requires(Robot.drivetrain);
-	}
-
-	/**
-	 * auto_action_DRIVE is a basic auto action. It should drive in a straight-ish line, as it uses 
-	 * nested PID loops to correct for errors caused by differing coefficients of friction. The
-	 * targetSpeed is set by the defaultAutoSpeed in Robot.java
-	 * @param distance
-	 * @param timeout
-	 */
-	public DriveDistance(double distance, double timeout) {
-		this.targetDistance = distance;
-		this.timeout = timeout;
-		requires(Robot.drivetrain);
+		addRequirements(Robot.drivetrain);
 	}
 
 	/**
@@ -70,14 +57,14 @@ public class DriveDistance extends SendableCommandBase {
 	 */
 	public DriveDistance(double distance) {
 		this.targetDistance = distance;
-		requires(Robot.drivetrain);
+		addRequirements(Robot.drivetrain);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		forwardPID.setSetpoint(targetDistance);
-		setTimeout(timeout); // set the timeout
+		// setTimeout(timeout); // set the timeout
 		System.out.println("Auto action drive init!");
 	}
 
@@ -107,12 +94,12 @@ public class DriveDistance extends SendableCommandBase {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		if (((Math.abs(Robot.drivetrain.getRight().getFeet() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence)
 				&& (Math.abs(Robot.drivetrain.getLeft().getFeet() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence)
 				&& (Math.abs(Robot.drivetrain.getLeft().getFeet()) < RobotConfig.auto.tolerences.velocity_tolerence)
-				&& (Math.abs(Robot.drivetrain.getRight().getFeet()) < RobotConfig.auto.tolerences.velocity_tolerence))
-				|| (isTimedOut())) {
+				&& (Math.abs(Robot.drivetrain.getRight().getFeet()) < RobotConfig.auto.tolerences.velocity_tolerence)))
+ {
 			return true;
 		} else {
 			return false;
@@ -121,14 +108,7 @@ public class DriveDistance extends SendableCommandBase {
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
-		Robot.drivetrain.stop();
-	}
-
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
+	public void end(boolean interupted) {
 		Robot.drivetrain.stop();
 	}
 }

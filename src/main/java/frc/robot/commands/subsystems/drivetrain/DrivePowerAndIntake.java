@@ -7,12 +7,14 @@
 
 package frc.robot.commands.subsystems.drivetrain;
 
+import org.team5940.pantry.experimental.command.SendableCommandBase;
+
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 
-public class DrivePowerAndIntake extends TimedCommand {
-	double power, time, reqEndTime, intake;
+public class DrivePowerAndIntake extends SendableCommandBase {
+	double power, reqEndTime, intake;
 
 	/**
 	 * So I fear no man. But this, this scares me. Literally drive forward for a couple seconds.
@@ -22,19 +24,19 @@ public class DrivePowerAndIntake extends TimedCommand {
 	 * @author Matthew Morley
 	 */
 	public DrivePowerAndIntake(double drive, double intake, double time) {
-		super(time);
-		// Use requires() here to declare subsystem dependencies
-		requires(DriveTrain.getInstance());
-		requires(Intake.getInstance());
+		// super(time);
+		// Use addRequirements() here to declare subsystem dependencies
+		addRequirements(DriveTrain.getInstance());
+		addRequirements(Intake.getInstance());
 		this.power = drive;
 		this.intake = intake;
-		this.time = time;
+		// this.time = time;
 		// setTimeout(time);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		// System.out.println("hi!");
 		DriveTrain.getInstance().arcadeDrive(power, 0, false);
 		Intake.getInstance().setHatchSpeed(intake);
@@ -42,15 +44,9 @@ public class DrivePowerAndIntake extends TimedCommand {
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		DriveTrain.getInstance().stop();
 		Intake.getInstance().setHatchSpeed(0);
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		end();
-	}
 }

@@ -6,10 +6,9 @@ import java.util.Optional;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
-
 import org.team5940.pantry.experimental.command.SendableCommandBase;
+
 import frc.robot.SuperStructureConstants;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.lib.Logger;
@@ -42,20 +41,20 @@ public class SuperstructureMotion extends SendableCommandBase {
 
 	@Deprecated
 	private SuperstructureMotion() {
-		requires(SuperStructure.getInstance());
+		addRequirements(SuperStructure.getInstance());
 
-		requires(SuperStructure.getInstance().getWrist());
-		requires(SuperStructure.getInstance().getElbow());
-		requires(SuperStructure.getElevator());
+		addRequirements(SuperStructure.getInstance().getWrist());
+		addRequirements(SuperStructure.getInstance().getElbow());
+		addRequirements(SuperStructure.getElevator());
 	}
 
 	public SuperstructureMotion(SuperStructureState gsIn, SuperStructureState current) {
 		System.out.println("ssmotion instan");
 		this.gsIn = gsIn;
-		requires(SuperStructure.getInstance().getWrist());
-		requires(SuperStructure.getInstance().getElbow());
-		requires(SuperStructure.getElevator());
-		requires(SuperStructure.getInstance());
+		addRequirements(SuperStructure.getInstance().getWrist());
+		addRequirements(SuperStructure.getInstance().getElbow());
+		addRequirements(SuperStructure.getElevator());
+		addRequirements(SuperStructure.getInstance());
 	}
 
 	public SuperstructureMotion(SuperStructureState gsIn) {
@@ -318,7 +317,7 @@ public class SuperstructureMotion extends SendableCommandBase {
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		// queue.start();
 		// var current = SuperStructure.getInstance().updateState();
 		var current = new SuperStructureState(new ElevatorState(LengthKt.getInch(3.5)), iPosition.CARGO_GRAB);
@@ -334,7 +333,7 @@ public class SuperstructureMotion extends SendableCommandBase {
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		// return queue.isCompleted();
 		return true;
 	}

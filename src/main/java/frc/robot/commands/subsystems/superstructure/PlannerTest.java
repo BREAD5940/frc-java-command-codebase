@@ -10,34 +10,30 @@ public class PlannerTest extends SendableCommandBase {
 	SuperStructureState goal;
 
 	public PlannerTest(SuperStructureState goal) {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		SuperstructureMotion.getInstance().plan(goal, SuperStructure.getInstance().lastState);
 		// SuperstructureMotion.getInstance().start();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {}
+	public void execute() {}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return true; // are you sure about that....
 		// if this command exits will superstructureteleop do an oof?
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
+	public void end(boolean interrupted) {}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
 }

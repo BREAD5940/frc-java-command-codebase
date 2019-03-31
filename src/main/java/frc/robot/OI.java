@@ -4,29 +4,30 @@ import java.util.Arrays;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.team5940.pantry.experimental.buttons.Button;
+import org.team5940.pantry.experimental.buttons.JoystickButton;
+import org.team5940.pantry.experimental.command.RunCommand;
+import org.team5940.pantry.experimental.command.SequentialCommandGroup;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.RobotConfig.auto.fieldPositions;
+import static frc.robot.RobotConfig.auto.fieldPositions.*;
 import frc.robot.commands.auto.routines.TeleopCommands;
 import frc.robot.commands.subsystems.drivetrain.DriveDistanceToVisionTarget;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
-import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.drivetrain.TurnToFaceVisionTarget;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
-import frc.robot.lib.ParallelRaceGroup;
 import frc.robot.lib.motion.Util;
-import frc.robot.lib.obj.factories.SequentialCommandFactory;
 import frc.robot.subsystems.DriveTrain.Gear;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.SuperStructure;
-import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
+import static frc.robot.subsystems.superstructure.SuperStructure.iPosition.*;
 
 /**
  * Operator Input not Out-In This class is the glue that binds the controls on
@@ -91,69 +92,87 @@ public class OI {
 
 	public OI() {
 
-		shift_up_button.whenPressed(new SetGearCommand(Gear.HIGH));
-		shift_down_button.whenPressed(new SetGearCommand(Gear.LOW));
+		shift_up_button.whenPressed(
+				new RunCommand(
+						() -> {
+							DriveTrain.getInstance().setGear(Gear.HIGH);
+						}));
+
+		shift_down_button.whenPressed(
+			new RunCommand(
+				() -> {
+					DriveTrain.getInstance().setGear(Gear.LOW);
+				}));
 
 		// cargo presets
 		dsCargoIn.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kOpen),
-						new JankyGoToState(LengthKt.getInch(13.25), SuperStructure.iPosition.CARGO_GRAB))));
+				new RunCommand(Intake.getInstance()::clamp, Intake.getInstance()).andThen(
+						new JankyGoToState(LengthKt.getInch(13.25), CARGO_GRAB)));
 
 		dsCargo1.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
-						new JankyGoToState(fieldPositions.cargoLowGoal, SuperStructure.iPosition.CARGO_PLACE))));
+				new RunCommand(Intake.getInstance()::clamp, Intake.getInstance()).andThen(
+						new JankyGoToState(cargoLowGoal, CARGO_PLACE)));
 
 		dsCargo2.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
-						new JankyGoToState(fieldPositions.cargoMiddleGoal, SuperStructure.iPosition.CARGO_PLACE))));
+				new RunCommand(Intake.getInstance()::clamp, Intake.getInstance()).andThen(
+						new JankyGoToState(cargoMiddleGoal, CARGO_PLACE)));
+
+		// SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
+		// new JankyGoToState(cargoMiddleGoal, CARGO_PLACE))));
 
 		dsCargo3.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
-						new JankyGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE_PITCHED_UP))));
+			new RunCommand(Intake.getInstance()::clamp, Intake.getInstance()).andThen(
+				new JankyGoToState(cargoHighGoal, CARGO_PLACE_PITCHED_UP)));
 
-		dsCargoShip.whenPressed(SequentialCommandFactory
-				.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(
-						fieldPositions.cargoMiddleGoal.plus(LengthKt.getInch(2)), SuperStructure.iPosition.CARGO_DOWN))));
+
+				// SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
+						// new JankyGoToState(cargoHighGoal, CARGO_PLACE_PITCHED_UP)))
+
+		dsCargoShip.whenPressed(
+			new RunCommand(Intake.getInstance()::clamp, Intake.getInstance()).andThen(
+				new JankyGoToState(cargoMiddleGoal.plus(LengthKt.getInch(2)), CARGO_DOWN)));
+
+				// .getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(
+						// cargoMiddleGoal.plus(LengthKt.getInch(2)), CARGO_DOWN))));
 
 		// hatch presets
 		primaryRightAnalogButton.whileHeld(new HybridDriverAssist());
 		// primaryRightAnalogButton.whileHeld(new HybridKinematicDriverAssist());
 
-		dsHatch1.whenPressed(SequentialCommandFactory.getSequentialCommands(Arrays.asList(
-				new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH))));
+		dsHatch1.whenPressed(new SetHatchMech(HatchMechState.kClamped).andThen(new JankyGoToState(hatchLowGoal, HATCH)));
 
-		dsHatch2.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
-						new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH))));
-		dsHatch3.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
-						new JankyGoToState(fieldPositions.hatchHighGoal, iPosition.HATCH_PITCHED_UP))));
+		dsHatch2.whenPressed(new SetHatchMech(HatchMechState.kClamped).andThen(new JankyGoToState(hatchMiddleGoal, HATCH)));
+				// SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
+						// new JankyGoToState(hatchMiddleGoal, HATCH))));
+		dsHatch3.whenPressed(new SetHatchMech(HatchMechState.kClamped).andThen(new JankyGoToState(hatchHighGoal, HATCH_PITCHED_UP)));
+				// SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
+						// new JankyGoToState(hatchHighGoal, HATCH_PITCHED_UP))));
 
-		dsHatchIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
-				Arrays.asList(new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));
+		dsHatchIn.whenPressed(new SetHatchMech(HatchMechState.kClamped).andThen(new JankyGoToState(HATCH_GRAB_INSIDE)));
+			// SequentialCommandFactory.getSequentialCommands(
+				// Arrays.asList(new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(HATCH_GRAB_INSIDE))));
 
 		// primaryDpadUp.whenPressed(new KillAuto());
 
-		var yes = new CommandGroup();
+		var yes = new SequentialCommandGroup(
+			/*addSequential*/(new TurnToFaceVisionTarget()),
+			/*addSequential*/(new DriveDistanceToVisionTarget(LengthKt.getInch(35), VelocityKt.getVelocity(LengthKt.getFeet(2)))),
+			/*addSequential*/(new TeleopCommands())
+		);
 
-		yes.addSequential(new TurnToFaceVisionTarget());
 
-		yes.addSequential(
-				new DriveDistanceToVisionTarget(LengthKt.getInch(35), VelocityKt.getVelocity(LengthKt.getFeet(2))));
-
-		yes.addSequential(new TeleopCommands());
 
 		primaryDpadUp.whenPressed(yes);
 
 		primaryDpadDown.whenPressed(new TurnToFaceVisionTarget());
 
 		// var grabHatch = new CommandGroup();
-		// // yes.addSequential(new JankyGoToState(fieldPositions.hatchMiddleGoal,
-		// iPosition.HATCH));
+		// // /*addParallel*/(new JankyGoToState(hatchMiddleGoal,
+		// HATCH));
 		// grabHatch.addSequential(new SetHatchMech(HatchMechState.kClamped));
-		// // yes.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal,
-		// iPosition.HATCH));
-		// grabHatch.addSequential(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
+		// // /*addParallel*/(new JankyGoToState(hatchLowGoal,
+		// HATCH));
+		// grabHatch.addSequential(new JankyGoToState(HATCH_GRAB_INSIDE));
 		// grabHatch.addSequential(new FollowVisionTargetTheSecond(5.9));
 		// // new DrivePowerToVisionTarget(.3, 0.5),
 		// // yes.addParallel(new RunIntake(1, 0, 1));
@@ -161,8 +180,8 @@ public class OI {
 		// grabHatch.addSequential(new DrivePower(-.4, 0.7));
 
 		// var placeHatch = new CommandGroup();
-		// placeHatch.addSequential(new JankyGoToState(fieldPositions.hatchMiddleGoal,
-		// iPosition.HATCH));
+		// placeHatch.addSequential(new JankyGoToState(hatchMiddleGoal,
+		// HATCH));
 		// placeHatch.addSequential(new FollowVisionTargetTheSecond(4.4));
 		// placeHatch.addSequential(new DrivePower(0.4, 0.5));
 		// placeHatch.addParallel(new RunIntake(1, 0, 0.5));
@@ -171,10 +190,10 @@ public class OI {
 		// primaryDpadDown.whenPressed(placeHatch);
 		// primaryDpadUp.whenPressed(grabHatch);
 
-		var testMeme = new CommandGroup();
-		testMeme.addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)),
-				new TeleopCommands()));
-		testMeme.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		var testMeme = new SequentialCommandGroup(
+			((new TeleopCommands()).interruptOn(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)))),
+			(new JankyGoToState(hatchLowGoal, HATCH))
+		);
 
 		primaryDpadDown.whenPressed(testMeme);
 
@@ -183,7 +202,7 @@ public class OI {
 		// primaryDpadUp.whenPressed(new CloseSideRocket('R'));
 
 		// primaryDpadLeft.whenPressed(new CloseSideRocket('L'));
-		// primaryDpadDown.whenPressed(new ArmMove(iPosition.HATCH));
+		// primaryDpadDown.whenPressed(new ArmMove(HATCH));
 
 		// primaryDpadUp.whenPressed(new ElevatorMove(new
 		// ElevatorState(LengthKt.getInch(35))));

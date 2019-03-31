@@ -7,6 +7,7 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.team5940.pantry.experimental.command.SequentialCommandGroup;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig.auto.fieldPositions;
@@ -18,7 +19,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
-public class CloseThenFarRocket extends SendableCommandBaseGroup {
+public class CloseThenFarRocket extends SequentialCommandGroup {
 	/**
 	 * Semi-auto routine for placing on the far rocet followed by the close one; 
 	 */
@@ -201,42 +202,47 @@ public class CloseThenFarRocket extends SendableCommandBaseGroup {
 				AccelerationKt.getAcceleration(LengthKt.getFeet(8.0)),
 				true,
 				true);
+		addCommands(
+			
 
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_fallOFfHab, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
-		addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_floorToRocketC, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false));
+		
+			/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(t_fallOFfHab, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true)).alongWith(
+			/*addParallel*/(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH))),
+			/*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(t_floorToRocketC, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false)),
+			/*addSequential*/(new TurnToFaceVisionTarget())
 
-		addSequential(new TurnToFaceVisionTarget());
+		);
 
-		// addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(35), VelocityKt.getVelocity(LengthKt.getFeet(2))));
 
-		// addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)), new TeleopCommands()));
+		// /*addSequential*/(new DriveDistanceToVisionTarget(LengthKt.getInch(35), VelocityKt.getVelocity(LengthKt.getFeet(2))));
 
-		// addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
+		// /*addSequential*/(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)), new TeleopCommands()));
 
-		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_rocketCtoTurn, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
+		// /*addParallel*/(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
 
-		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_turnToLoading, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false));
+		// /*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(p_rocketCtoTurn, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
 
-		// addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
+		// /*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(p_turnToLoading, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false));
 
-		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_loadingToRocketF, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
+		// /*addSequential*/(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
 
-		// addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		// /*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(p_loadingToRocketF, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
 
-		// addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
+		// /*addSequential*/(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 
-		// addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(20), VelocityKt.getVelocity(LengthKt.getFeet(3))));
+		// /*addSequential*/(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
 
-		// addSequential(new GrabHatch());
+		// /*addSequential*/(new DriveDistanceToVisionTarget(LengthKt.getInch(20), VelocityKt.getVelocity(LengthKt.getFeet(3))));
 
-		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_loadingToRocketF, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
-		// addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		// /*addSequential*/(new GrabHatch());
 
-		// addSequential(new PlaceHatch());
+		// /*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(t_loadingToRocketF, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
+		// /*addSequential*/(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 
-		// addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
-		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_rocketFtoLoading, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
+		// /*addSequential*/(new PlaceHatch());
+
+		// /*addParallel*/(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
+		// /*addSequential*/(DriveTrain.getInstance().followTrajectoryWithGear(t_rocketFtoLoading, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
 
 	}
 }

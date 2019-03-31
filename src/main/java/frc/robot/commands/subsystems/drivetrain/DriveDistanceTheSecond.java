@@ -12,7 +12,7 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
-
+import org.team5940.pantry.experimental.command.Command;
 import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.motion.Util;
@@ -48,11 +48,11 @@ public class DriveDistanceTheSecond extends SendableCommandBase {
 		this.distance = distance;
 		this.vel = vel;
 		this.reversed = reversed;
-		requires(DriveTrain.getInstance());
+		// addRequirements(DriveTrain.getInstance());
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 
 		var currentPose = new Pose2d();
 		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX().getInch() + "," + currentPose.getTranslation().getY().getInch());
@@ -80,13 +80,13 @@ public class DriveDistanceTheSecond extends SendableCommandBase {
 
 		System.out.println("FIRST POSE: " + Util.toString(trajectory.getFirstState().getState().getPose()) + " LAST POSE: " + Util.toString(trajectory.getLastState().getState().getPose()));
 
-		clearRequirements();
+		// clearRequirements();
 
 		mCommand = DriveTrain.getInstance().followTrajectory(trajectory, TrajectoryTrackerMode.RAMSETE, true);
 
 		// addSequential(mCommand);
-		clearRequirements();
-		mCommand.start();
+		// clearRequirements();
+		mCommand.schedule();
 
 		// mCommand.start();
 		commandStarted = true;
@@ -95,23 +95,23 @@ public class DriveDistanceTheSecond extends SendableCommandBase {
 
 	// 	// Called just before this Command runs the first time
 	// 	@Override
-	// 	protected void initialize() {
+	// 	public void initialize() {
 
 	// 	}
 
 	// 	// Called repeatedly when this Command is scheduled to run
 	// 	@Override
-	// 	protected void execute() {}
+	// 	public void execute() {}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
-		return mCommand.isCompleted() && commandStarted;
+	public boolean isFinished() {
+		return mCommand.isFinished() && commandStarted;
 	}
 
 	// 	// Called once after isFinished returns true
 	// 	@Override
-	// 	protected void end() {}
+	// 	public void end(boolean interrupted) {}
 
 	// 	// Called when another command which requires one or more of the same
 	// 	// subsystems is scheduled to run

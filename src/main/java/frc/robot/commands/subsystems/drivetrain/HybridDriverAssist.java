@@ -33,7 +33,7 @@ public class HybridDriverAssist extends SendableCommandBase {
 	 * @param areaToExitAt when to exit the command (i.e. can't see the vision target anymore)
 	 */
 	public HybridDriverAssist() {
-		requires(DriveTrain.getInstance());
+		addRequirements(DriveTrain.getInstance());
 
 		var deployedMap = new TreeMap<Double, InterpolatableLutEntry>();
 		var stowedMap = new TreeMap<Double, InterpolatableLutEntry>();
@@ -58,11 +58,11 @@ public class HybridDriverAssist extends SendableCommandBase {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {}
+	public void initialize() {}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
 		double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
 		// double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
@@ -144,21 +144,15 @@ public class HybridDriverAssist extends SendableCommandBase {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		// var ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
 		return /*(Math.abs(exitArea - ta) < 0.3) || (hadTarget && !hasTarget)*/ false;
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		DriveTrain.getInstance().stop();
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		end();
-	}
 }

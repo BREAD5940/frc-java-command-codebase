@@ -30,9 +30,9 @@ public class PIDArcadeDrive extends SendableCommandBase {
 	private boolean squareInputs;
 
 	public PIDArcadeDrive(boolean square) {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		requires(DriveTrain.getInstance());
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
+		addRequirements(DriveTrain.getInstance());
 		this.squareInputs = square;
 
 		var highGearMap = new TreeMap<Double, InterpolatableLutEntry>();
@@ -50,7 +50,7 @@ public class PIDArcadeDrive extends SendableCommandBase {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		DriveTrain.getInstance().setNeutralMode(NeutralMode.Coast);
 		DriveTrain.getInstance().getLeft().getMaster().configClosedloopRamp(0.16);
 		DriveTrain.getInstance().getRight().getMaster().configClosedloopRamp(0.16);
@@ -60,7 +60,7 @@ public class PIDArcadeDrive extends SendableCommandBase {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 
 		var linearPercent = Robot.m_oi.getForwardAxis();
 		var rotationPercent = Robot.m_oi.getTurnAxis();
@@ -174,20 +174,14 @@ public class PIDArcadeDrive extends SendableCommandBase {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return false;
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		DriveTrain.getInstance().stop();
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		DriveTrain.getInstance().stop();
-	}
 }

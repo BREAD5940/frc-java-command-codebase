@@ -17,7 +17,7 @@ public class AutoWaitForCondition extends SendableCommandBase {
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		boolean isDone;
 		try {
 			isDone = mCaller.call().booleanValue();
@@ -28,7 +28,7 @@ public class AutoWaitForCondition extends SendableCommandBase {
 	}
 
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		System.out.println("===== auto wait for condition command is complete! =====");
 	}
 

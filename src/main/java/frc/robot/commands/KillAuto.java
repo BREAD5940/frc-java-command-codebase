@@ -7,7 +7,8 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import org.team5940.pantry.experimental.command.InstantCommand;
+
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
@@ -20,18 +21,18 @@ public class KillAuto extends InstantCommand {
 	 */
 	public KillAuto() {
 		super();
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		requires(SuperStructure.getInstance());
-		requires(SuperStructure.getInstance().getWrist());
-		requires(SuperStructure.getInstance().getElbow());
-		requires(SuperStructure.getElevator());
-		requires(DriveTrain.getInstance());
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
+		addRequirements(SuperStructure.getInstance());
+		addRequirements(SuperStructure.getInstance().getWrist());
+		addRequirements(SuperStructure.getInstance().getElbow());
+		addRequirements(SuperStructure.getElevator());
+		addRequirements(DriveTrain.getInstance());
 	}
 
 	// Called once when the command executes
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		SuperStructure.getInstance().getCurrentCommand().cancel();
 		SuperStructure.getInstance().getWrist().getCurrentCommand().cancel();
 		SuperStructure.getInstance().getElbow().getCurrentCommand().cancel();

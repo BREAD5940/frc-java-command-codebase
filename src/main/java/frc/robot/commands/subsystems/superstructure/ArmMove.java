@@ -15,18 +15,18 @@ public class ArmMove extends SendableCommandBase {
 	 */
 	public ArmMove(IntakeAngle state) {
 		this.mDesired = state;
-		requires(SuperStructure.getInstance().getWrist());
-		requires(SuperStructure.getInstance().getElbow());
+		addRequirements(SuperStructure.getInstance().getWrist());
+		addRequirements(SuperStructure.getInstance().getElbow());
 	}
 
 	@Override
-	protected void execute() {
+	public void execute() {
 		SuperStructure.getInstance().getWrist().requestAngle(mDesired.getWrist().angle);
 		SuperStructure.getInstance().getElbow().requestAngle(mDesired.getElbow().angle);
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return SuperStructure.getInstance().getWrist().isWithinTolerance(RoundRotation2d.getDegree(5), mDesired.getWrist().angle)
 				&& SuperStructure.getInstance().getElbow().isWithinTolerance(RoundRotation2d.getDegree(5), mDesired.getElbow().angle);
 	}

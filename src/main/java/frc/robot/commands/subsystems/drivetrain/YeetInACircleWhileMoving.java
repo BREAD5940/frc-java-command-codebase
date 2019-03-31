@@ -1,80 +1,82 @@
-package frc.robot.commands.subsystems.drivetrain;
+// package frc.robot.commands.subsystems.drivetrain;
 
-import edu.wpi.first.wpilibj.command.PIDCommand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
-import frc.robot.lib.Logger;
-import frc.robot.lib.PIDSettings;
-import frc.robot.lib.PIDSettings.FeedbackMode;
-import frc.robot.lib.motion.Util;
+// import org.team5940.pantry.experimental.controller.SynchronousControllerRunner;
 
-public class YeetInACircleWhileMoving extends PIDCommand {
-	private final double target;
-	double currentAngle;
+// import edu.wpi.first.wpilibj.command.PIDCommand;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import frc.robot.Robot;
+// import frc.robot.lib.Logger;
+// import frc.robot.lib.PIDSettings;
+// import frc.robot.lib.PIDSettings.FeedbackMode;
+// import frc.robot.lib.motion.Util;
 
-	private static final PIDSettings kDefaultPIDGains = new PIDSettings(0.01, 0, 1, 0, FeedbackMode.ANGULAR);
+// public class YeetInACircleWhileMoving extends SynchronousC {
+// 	private final double target;
+// 	double currentAngle;
 
-	private static final double kDefaultPeriod = 0.01d;
+// 	private static final PIDSettings kDefaultPIDGains = new PIDSettings(0.01, 0, 1, 0, FeedbackMode.ANGULAR);
 
-	private static final double maxTurnSpeed = 0.5;
+// 	private static final double kDefaultPeriod = 0.01d;
 
-	private static final double angleTolerence = 10; // Degrees
+// 	private static final double maxTurnSpeed = 0.5;
 
-	private final int direction;
+// 	private static final double angleTolerence = 10; // Degrees
 
-	/**
-	 * Turn to a target absolute angle whole yeeting in a circle 
-	 * @param targetAbsoluteAngle
-	 */
-	public YeetInACircleWhileMoving(double targetAbsoluteAngle, PIDSettings settings, double period, boolean isCloclwise) {
-		super(settings.kp, settings.ki, settings.kd, period);
-		setInputRange(-180, 180);
-		super.getPIDController().setContinuous(true);
-		requires(Robot.drivetrain);
-		target = targetAbsoluteAngle;
-		direction = (isCloclwise) ? 1 : -1;
-		setSetpoint(target);
+// 	private final int direction;
 
-		SmartDashboard.putData(this); // TODO does this break evertyhing
-	}
+// 	/**
+// 	 * Turn to a target absolute angle whole yeeting in a circle 
+// 	 * @param targetAbsoluteAngle
+// 	 */
+// 	public YeetInACircleWhileMoving(double targetAbsoluteAngle, PIDSettings settings, double period, boolean isCloclwise) {
+// 		super(settings.kp, settings.ki, settings.kd, period);
+// 		setInputRange(-180, 180);
+// 		super.getPIDController().setContinuous(true);
+// 		addRequirements(Robot.drivetrain);
+// 		target = targetAbsoluteAngle;
+// 		direction = (isCloclwise) ? 1 : -1;
+// 		setSetpoint(target);
 
-	public YeetInACircleWhileMoving(boolean is180Turn) {
-		this(Robot.drivetrain.getGyro() + 180f);
-	}
+// 		SmartDashboard.putData(this); // TODO does this break evertyhing
+// 	}
 
-	public YeetInACircleWhileMoving(double targetAbsoluteAngle) {
-		this(targetAbsoluteAngle, kDefaultPIDGains, kDefaultPeriod, true);
-	}
+// 	public YeetInACircleWhileMoving(boolean is180Turn) {
+// 		this(Robot.drivetrain.getGyro() + 180f);
+// 	}
 
-	@Override
-	protected double returnPIDInput() {
-		return Robot.drivetrain.getGyro();
-	}
+// 	public YeetInACircleWhileMoving(double targetAbsoluteAngle) {
+// 		this(targetAbsoluteAngle, kDefaultPIDGains, kDefaultPeriod, true);
+// 	}
 
-	@Override
-	protected void usePIDOutput(double output) {
-		output = Util.limit(output, -0.1, 0.1);
-		Robot.drivetrain.setPowers(output * this.direction, -output * this.direction);
-	}
+// 	@Override
+// 	protected double returnPIDInput() {
+// 		return Robot.drivetrain.getGyro();
+// 	}
 
-	@Override
-	protected void initialize() {}
+// 	@Override
+// 	protected void usePIDOutput(double output) {
+// 		output = Util.limit(output, -0.1, 0.1);
+// 		Robot.drivetrain.setPowers(output * this.direction, -output * this.direction);
+// 	}
 
-	@Override
-	protected void execute() {
-		Logger.log("Setpoint: " + getSetpoint() + " current: " + returnPIDInput() + " error: " + super.getPIDController().getError());
-	}
+// 	@Override
+// 	public void initialize() {}
 
-	@Override
-	protected boolean isFinished() {
-		return (Math.abs(getPIDController().getError()) < angleTolerence
-				|| (direction == 1 /* is clockwise */ && getPosition() > getSetpoint())
-				|| (direction == -1 /* is clockwise */ && getPosition() < getSetpoint()));
-	}
+// 	@Override
+// 	public void execute() {
+// 		Logger.log("Setpoint: " + getSetpoint() + " current: " + returnPIDInput() + " error: " + super.getPIDController().getError());
+// 	}
 
-	@Override
-	protected void end() {}
+// 	@Override
+// 	public boolean isFinished() {
+// 		return (Math.abs(getPIDController().getError()) < angleTolerence
+// 				|| (direction == 1 /* is clockwise */ && getPosition() > getSetpoint())
+// 				|| (direction == -1 /* is clockwise */ && getPosition() < getSetpoint()));
+// 	}
 
-	@Override
-	protected void interrupted() {}
-}
+// 	@Override
+// 	public void end(boolean interrupted) {}
+
+// 	@Override
+// 	protected void interrupted() {}
+// }

@@ -24,17 +24,17 @@
 // 	 */
 // 	public JogElevator(Length delta, boolean isUp) {
 // 		super();
-// 		// Use requires() here to declare subsystem dependencies
-// 		// eg. requires(chassis);
-// 		requires(SuperStructure.getInstance());
-// 		requires(SuperStructure.getElevator());
+// 		// Use addRequirements() here to declare subsystem dependencies
+// 		// eg. addRequirements(chassis);
+// 		addRequirements(SuperStructure.getInstance());
+// 		addRequirements(SuperStructure.getElevator());
 // 		deltaLength = delta.getAbsoluteValue();
 // 		isUpwards = isUp;
 // 	}
 
 // 	// Called once when the command executes
 // 	@Override
-// 	protected void initialize() {
+// 	public void initialize() {
 // 		var cachedState = SuperStructure.getInstance().getCurrentState();
 // 		SuperStructure.getElevator().jogHeightTrim(deltaLength, isUpwards);
 // 		SuperStructure.getInstance().move(cachedState);

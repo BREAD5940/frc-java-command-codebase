@@ -20,15 +20,20 @@ import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class ZeroElevatorDisabled extends SendableCommandBase {
 	public ZeroElevatorDisabled(Length height) {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		requires(SuperStructure.getInstance());
-		requires(SuperStructure.getElevator());
-		requires(SuperStructure.getInstance().getWrist());
-		requires(SuperStructure.getInstance().getElbow());
-		setInterruptible(true);
-		setRunWhenDisabled(true);
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
+		addRequirements(SuperStructure.getInstance());
+		addRequirements(SuperStructure.getElevator());
+		addRequirements(SuperStructure.getInstance().getWrist());
+		addRequirements(SuperStructure.getInstance().getElbow());
+		// setInterruptible(true);
+		// setRunWhenDisabled(true);
 		this.mZeroHeight = height;
+	}
+
+	@Override
+	public boolean runsWhenDisabled() {
+		return true;
 	}
 
 	public ZeroElevatorDisabled() {
@@ -45,7 +50,7 @@ public class ZeroElevatorDisabled extends SendableCommandBase {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		mCurrentState = ZeroingState.IDLE;
 
 		SmartDashboard.putBoolean("Elevator zeroed", false);
@@ -59,7 +64,7 @@ public class ZeroElevatorDisabled extends SendableCommandBase {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 
 		var limitTriggered = SuperStructure.getInstance().getInnerStageMinLimit();
 
@@ -129,21 +134,15 @@ public class ZeroElevatorDisabled extends SendableCommandBase {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return (mCurrentState == ZeroingState.ZEROED) || !DriverStation.getInstance().isDisabled();
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		SuperStructure.elevator.elevatorZeroed = true;
 		SmartDashboard.putString("Zeroing state", mCurrentState.name());
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		SmartDashboard.putString("Zeroing state", mCurrentState.name());
-	}
 }

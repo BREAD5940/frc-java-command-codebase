@@ -15,13 +15,15 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.experimental.command.SequentialCommandGroup;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 
-public class Baseline extends SendableCommandBaseGroup {
+public class Baseline extends SequentialCommandGroup {
 	/**
 	 * Add your docs here.
 	 */
@@ -47,7 +49,7 @@ public class Baseline extends SendableCommandBaseGroup {
 				false,
 				true);
 
-		addSequential(DriveTrain.getInstance().followTrajectory(baseline, TrajectoryTrackerMode.RAMSETE, true));
+		addCommands(DriveTrain.getInstance().followTrajectory(baseline, TrajectoryTrackerMode.RAMSETE, true));
 
 	}
 }

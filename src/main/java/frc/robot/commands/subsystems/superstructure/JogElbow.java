@@ -26,12 +26,12 @@
 // 	 */
 // 	public JogElbow(RoundRotation2d delta) {
 // 		super();
-// 		// Use requires() here to declare subsystem dependencies
-// 		// eg. requires(chassis);
-// 		requires(SuperStructure.getInstance());
-// 		requires(SuperStructure.getInstance().getElbow());
-// 		requires(SuperStructure.getInstance().getWrist());
-// 		requires(SuperStructure.getElevator());
+// 		// Use addRequirements() here to declare subsystem dependencies
+// 		// eg. addRequirements(chassis);
+// 		addRequirements(SuperStructure.getInstance());
+// 		addRequirements(SuperStructure.getInstance().getElbow());
+// 		addRequirements(SuperStructure.getInstance().getWrist());
+// 		addRequirements(SuperStructure.getElevator());
 
 // 		deltaAngle = delta;
 // 		// isUpwards = isUp;
@@ -39,7 +39,7 @@
 
 // 	// Called once when the command executes
 // 	@Override
-// 	protected void initialize() {
+// 	public void initialize() {
 // 		SuperStructureState currentProximalAngle = SuperStructure.getInstance().getCurrentState();
 // 		var newAngle = currentProximalAngle.getElbowAngle().plus(deltaAngle);
 
@@ -56,7 +56,7 @@
 // 	}
 
 // 	@Override
-// 	protected boolean isFinished() {
+// 	public boolean isFinished() {
 // 		if(moveCommand == null) return true;
 // 		return moveCommand.isCompleted();
 // 	}

@@ -3,13 +3,15 @@ package frc.robot.commands.subsystems.superstructure;
 import org.ghrobotics.lib.mathematics.units.Length;
 
 import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.experimental.command.WaitCommand;
+
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class SuperstructureGoToState extends SendableCommandBase {
+public class SuperstructureGoToState extends WaitCommand {
 	SuperStructureState mRequState;
 	double kWristSetpoint, kElbowSetpoint;
 	private static final double kDefaultTimeout = 4;
@@ -38,12 +40,13 @@ public class SuperstructureGoToState extends SendableCommandBase {
 	}
 
 	public SuperstructureGoToState(SuperStructureState requState, double timeout) {
-		requires(SuperStructure.getInstance());
-		requires(SuperStructure.getInstance().getWrist());
-		requires(SuperStructure.getInstance().getElbow());
-		requires(SuperStructure.getElevator());
+		super(timeout);
+		addRequirements(SuperStructure.getInstance());
+		addRequirements(SuperStructure.getInstance().getWrist());
+		addRequirements(SuperStructure.getInstance().getElbow());
+		addRequirements(SuperStructure.getElevator());
 		mRequState = requState;
-		setTimeout(timeout);
+		// setTimeout(timeout);
 
 		this.elevatorSetpoint = requState.getElevatorHeight();
 		this.wristSetpoint = requState.getWristAngle();
@@ -52,7 +55,7 @@ public class SuperstructureGoToState extends SendableCommandBase {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		//System.out.println("==============================================================");
 		//System.out.println("Requested move loc: ");
 		//System.out.println(String.format("Elevator (%s) elbow (%s) wrist (%s)", elevatorSetpoint.getInch(), elbowSetpoint.getDegree(), wristSetpoint.getDegree()));
@@ -64,7 +67,7 @@ public class SuperstructureGoToState extends SendableCommandBase {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		SuperStructure.getInstance().move(mRequState);
 		hasSetState = true;
 		// System.out.println("target state: " + mRequState.toCSV());
@@ -72,10 +75,10 @@ public class SuperstructureGoToState extends SendableCommandBase {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		if (!hasSetState)
 			execute();
-		return (checkElbow() && checkWrist() && checkElevator()) || isTimedOut();
+		return (checkElbow() && checkWrist() && checkElevator()) || super.isFinished();
 	}
 
 	private boolean checkElbow() {
@@ -113,12 +116,8 @@ public class SuperstructureGoToState extends SendableCommandBase {
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		//System.out.println("==============================================================");
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
 }

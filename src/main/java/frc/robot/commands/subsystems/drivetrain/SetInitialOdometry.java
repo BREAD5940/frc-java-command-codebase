@@ -11,32 +11,28 @@ public class SetInitialOdometry extends SendableCommandBase {
 	Pose2dWithCurvature initialPose;
 
 	public SetInitialOdometry(TimedTrajectory<Pose2dWithCurvature> trajectory) {
-		requires(Robot.drivetrain);
+		addRequirements(Robot.drivetrain);
 		initialPose = trajectory.getFirstState().getState();
 	}
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		// Robot.drivetrain.getLocalization().reset(initialPose.getPose());
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {}
+	public void execute() {}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return true;
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
+	public void end(boolean interrupted) {}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
 }

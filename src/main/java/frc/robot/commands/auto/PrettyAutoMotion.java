@@ -5,7 +5,6 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import frc.robot.RobotConfig;
 import frc.robot.RobotConfig.auto;
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;

@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
-
+import org.team5940.pantry.experimental.command.Command;
 import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.SuperStructureConstants;
 import frc.robot.lib.Logger;
@@ -37,25 +37,25 @@ public class testableSSMotion /*extends SendableCommandBase*/ {
 	boolean isReal = false;
 	private SuperStructureState gsIn, currentState;
 
-	private void requires(Object o) {}
+	private void addRequirements(Object o) {}
 
 	@Deprecated
 	private testableSSMotion() {
-		// requires(SuperStructure.getInstance());
+		// addRequirements(SuperStructure.getInstance());
 
-		// requires(SuperStructure.getInstance().getWrist());
-		// requires(SuperStructure.getInstance().getElbow());
-		// requires(SuperStructure.getElevator());
+		// addRequirements(SuperStructure.getInstance().getWrist());
+		// addRequirements(SuperStructure.getInstance().getElbow());
+		// addRequirements(SuperStructure.getElevator());
 	}
 
 	public testableSSMotion(SuperStructureState gsIn, SuperStructureState current) {
 		System.out.println("ssmotion instan");
 		this.gsIn = gsIn;
 		this.currentState = current;
-		// requires(SuperStructure.getInstance().getWrist());
-		// requires(SuperStructure.getInstance().getElbow());
-		// requires(SuperStructure.getElevator());
-		// requires(SuperStructure.getInstance());
+		// addRequirements(SuperStructure.getInstance().getWrist());
+		// addRequirements(SuperStructure.getInstance().getElbow());
+		// addRequirements(SuperStructure.getElevator());
+		// addRequirements(SuperStructure.getInstance());
 
 		plan(this.gsIn, currentState);
 		Logger.log(String.format("Start state (%s) Goal state (%s)", currentState.toString(), gsIn.toString()));
@@ -340,7 +340,7 @@ public class testableSSMotion /*extends SendableCommandBase*/ {
 	}
 
 	// @Override
-	protected void initialize() {
+	public void initialize() {
 		// queue.start();
 		// var current = SuperStructure.getInstance().updateState();
 		// var current = new SuperStructureState(new ElevatorState(LengthKt.getInch(3.5)), iPosition.CARGO_GRAB);
@@ -349,7 +349,7 @@ public class testableSSMotion /*extends SendableCommandBase*/ {
 	}
 
 	// @Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		// return queue.isCompleted();
 		return true;
 	}

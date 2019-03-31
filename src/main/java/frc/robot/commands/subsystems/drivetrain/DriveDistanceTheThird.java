@@ -21,16 +21,16 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 
 import edu.wpi.first.wpilibj.Notifier;
 import frc.robot.Robot;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.lib.AutoCommand;
 import frc.robot.lib.Logger;
 import frc.robot.subsystems.DriveTrain;
 
 // @SuppressWarnings({"WeakerAccess", "unused"})
-public class DriveDistanceTheThird extends AutoCommand {
+public class DriveDistanceTheThird extends SendableCommandBase {
 	private TrajectoryTracker trajectoryTracker;
 	private Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource;
 	private DriveTrain driveBase;
@@ -76,11 +76,11 @@ public class DriveDistanceTheThird extends AutoCommand {
 		this.distance = distance;
 		this.vel = vel;
 		this.reversed = reversed;
-		requires(DriveTrain.getInstance());
+		addRequirements(DriveTrain.getInstance());
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 
 		var currentPose = DriveTrain.getInstance().getLocalization().getRobotPosition();
 		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX().getInch() + "," + currentPose.getTranslation().getY().getInch() + "," + currentPose.getRotation().getDegree());
@@ -175,7 +175,7 @@ public class DriveDistanceTheThird extends AutoCommand {
 	}
 
 	@Override
-	protected void execute() {
+	public void execute() {
 
 		// long now = System.currentTimeMillis();
 
@@ -203,14 +203,14 @@ public class DriveDistanceTheThird extends AutoCommand {
 	}
 
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		mUpdateNotifier.stop();
 		driveBase.stop();
 		LiveDashboard.INSTANCE.setFollowingPath(false);
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return trajectoryTracker.isFinished() || itDed;
 	}
 

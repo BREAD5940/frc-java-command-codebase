@@ -4,7 +4,6 @@ import org.ghrobotics.lib.mathematics.units.Length;
 
 import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.RobotConfig;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.subsystems.drivetrain.DriveDistance;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;

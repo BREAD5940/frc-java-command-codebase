@@ -1,7 +1,8 @@
 package frc.robot.commands.auto;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.team5940.pantry.experimental.command.Command;
+import org.team5940.pantry.experimental.command.InstantCommand;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.commands.auto.routines.Baseline;
 import frc.robot.commands.auto.routines.CargoShip1;
@@ -35,7 +36,7 @@ public class TerribleAutoChooser implements iAutoChooser {
 		addChoice("HabL to TWO HATCH AUTO", new CloseThenFarRocket('L'));
 		addChoice("HabR to TWO HATCH AUTO", new CloseThenFarRocket('R'));
 		addChoice("Baseline", new Baseline());
-		setDefaultChoice("Do nothing", new CommandGroup("nothing"));
+		setDefaultChoice("Do nothing", new InstantCommand());
 	}
 
 	@Override
@@ -45,7 +46,7 @@ public class TerribleAutoChooser implements iAutoChooser {
 
 	@Override
 	public void startSelected() {
-		getSelection().start();
+		getSelection().schedule();
 	}
 
 	@Override

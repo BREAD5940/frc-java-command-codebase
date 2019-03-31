@@ -44,7 +44,7 @@ public class DriveDistanceToVisionTarget extends SendableCommandBase {
 	}
 
 	@Override
-	protected void execute() {
+	public void execute() {
 		var distanceToGo = targetDistance.get().minus(finalDistance);
 
 		final double fwdKp = 6;
@@ -70,7 +70,7 @@ public class DriveDistanceToVisionTarget extends SendableCommandBase {
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return isWithinDelta;
 	}
 

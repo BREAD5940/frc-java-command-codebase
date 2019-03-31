@@ -1,6 +1,6 @@
 package frc.robot.commands.auto;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.experimental.command.Command;
 
 /**
  * an interface for an auto mode chooser

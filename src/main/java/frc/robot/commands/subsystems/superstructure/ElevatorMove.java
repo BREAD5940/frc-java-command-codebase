@@ -24,15 +24,15 @@ public class ElevatorMove extends SendableCommandBase {
 
 	public ElevatorMove(ElevatorState goal, String name) {
 		this.mGoal = goal;
-		requires(SuperStructure.getElevator());
+		addRequirements(SuperStructure.getElevator());
 		setName(name);
 	}
 
 	@Override
-	protected void initialize() {}
+	public void initialize() {}
 
 	@Override
-	protected void execute() {
+	public void execute() {
 		// como se dice "how should we do dis because elevator gravity feed forward sucks" en espa~nol?\
 		// yo no sé, pero lo haré de todos modos
 		// solución: periodic() otra vez 
@@ -43,7 +43,7 @@ public class ElevatorMove extends SendableCommandBase {
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return Math.abs(SuperStructure.getElevator().getHeight().getInch() - mGoal.height.getInch()) <= 3;
 	}
 

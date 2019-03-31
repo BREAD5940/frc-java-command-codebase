@@ -14,7 +14,6 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
@@ -87,24 +86,21 @@ public class CargoShip1 extends VisionCommandGroup {
 				false,
 				true);
 
-		this.addSequential(DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, true));
-		addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-		this.addSequential(DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, false));
-		addSequential(new PlaceHatch());
+		addCommands(
+			DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, true),
+			(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH))
+		);
+
+		// this.addSequential(DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, true));
+		// addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		// this.addSequential(DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, false));
+		// addSequential(new PlaceHatch());
+
+		addCommands(
+			DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, true),
+			(DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, false)).alongWith(
+				new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)),
+			new PlaceHatch());
 
 	}
-
-	// id functions
-
-	/**
-	 * identification function
-	 * @return
-	 *  the mBigCommandGroup of the function
-	 */
-	public AutoCommandGroup getBigCommandGroup() {
-		return this;
-	}
-
-	//not id functions
-
 }

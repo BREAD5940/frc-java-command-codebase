@@ -52,8 +52,8 @@ public class TurnInPlace extends SendableCommandBase {
 	 * @param target_angle
 	 */
 	public TurnInPlace(Rotation2d target_angle) {
-		// Use requires() here to declare subsystem dependencies
-		requires(Robot.drivetrain);
+		// Use addRequirements() here to declare subsystem dependencies
+		addRequirements(Robot.drivetrain);
 		this.target_angle = target_angle.getDegree();
 	}
 
@@ -66,14 +66,14 @@ public class TurnInPlace extends SendableCommandBase {
 	 */
 	public TurnInPlace(Rotation2d target_angle, boolean isAbsolute) {
 		this.isAbsolute = isAbsolute;
-		// Use requires() here to declare subsystem dependencies
-		requires(Robot.drivetrain);
+		// Use addRequirements() here to declare subsystem dependencies
+		addRequirements(Robot.drivetrain);
 		this.target_angle = target_angle.getDegree();
 	}
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		starting_angle = Robot.drivetrain.getGyro();
 
 		// If the angle is relative (which it should not be), setup target angle.
@@ -89,7 +89,7 @@ public class TurnInPlace extends SendableCommandBase {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		output = turnPID.update(Robot.drivetrain.getGyro() % 360);
 		raw_left = EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.left_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
 		raw_right = (-1) * EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.right_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
@@ -99,7 +99,7 @@ public class TurnInPlace extends SendableCommandBase {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		// if ( (Math.abs(Robot.gyro.getRate() ) < RobotConfig.turn_auto_angular_velocity_tolerence)
 		//   && (Math.abs(Robot.drivetrain.getGyro()) < RobotConfig.turn_auto_angle_tolerence)) {
 		//     return true;
@@ -113,10 +113,12 @@ public class TurnInPlace extends SendableCommandBase {
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
+	public void end(boolean interrupted) {
+		Robot.drivetrain.stop();
+	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
+	// @Override
+	// protected void interrupted() {}
 }
