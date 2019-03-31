@@ -12,7 +12,6 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
@@ -28,7 +27,7 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 public class CargoShip1 extends VisionCommandGroup {
 	// private AutoCommandGroup mBigCommandGroup;
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
-	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
+	// public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
 
 	// public CargoShip1(char arg1, char arg2) {
 	// this();

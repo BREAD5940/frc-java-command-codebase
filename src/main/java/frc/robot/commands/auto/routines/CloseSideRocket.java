@@ -19,7 +19,6 @@ import org.team5940.pantry.experimental.command.SequentialCommandGroup;
 
 import frc.robot.Robot;
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.auto.groups.VisionCommandGroup;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
