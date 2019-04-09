@@ -54,7 +54,7 @@ import kotlin.ranges.RangesKt;
  * 
  * @author Matthew Morley
  */
-public class DriveTrain extends SendableSubsystemBase implements DifferentialTrackerDriveBase, LoggableSubsystem {
+public class DriveTrain extends SendableSubsystemBase implements DifferentialTrackerDriveBase, LoggableSubsystem, IDriveTrain {
 
 	private static DriveTrain instance;
 

@@ -84,6 +84,8 @@ dependencies {
 
   compile 'com.github.mcm001:pantrycommon:587caa1eab'
 
+  testCompile group: 'org.knowm.xchart', name: 'xchart', version: '3.5.4'
+
   compile 'com.github.Oblarg:Oblog:2.8.1'
 
   // testCompile group: 'org.openpnp', name: 'opencv', version: '3.2.0-0'
