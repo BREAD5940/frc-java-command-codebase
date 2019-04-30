@@ -56,7 +56,7 @@ public class DriveDistanceTheSecond extends SendableCommandBase {
 	public void initialize() {
 
 		var currentPose = new Pose2d();
-		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX().getInch() + "," + currentPose.getTranslation().getY().getInch());
+		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX() + "," + currentPose.getTranslation().getY());
 		Translation2d offsetTrans;
 		if (!reversed) {
 			offsetTrans = new Translation2d(distance, currentPose.getRotation());
@@ -65,7 +65,7 @@ public class DriveDistanceTheSecond extends SendableCommandBase {
 		}
 		var offsetPose = currentPose.plus(new Pose2d(offsetTrans, Rotation2dKt.getDegree(0)));
 
-		System.out.println("OFFSET POSE: " + offsetPose.getTranslation().getX().getInch() + "," + offsetPose.getTranslation().getY().getInch());
+		System.out.println("OFFSET POSE: " + offsetPose.getTranslation().getX() + "," + offsetPose.getTranslation().getY());
 
 		var waypoints = Arrays.asList(
 				currentPose, offsetPose);

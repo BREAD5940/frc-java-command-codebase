@@ -1,72 +1,158 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="77574e4c-f439-4205-ad4f-55f16159170f" name="Default Changelist" comment="">
+    <list default="true" id="6df16bf3-55b6-4f23-ad71-661c2df6fe77" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/bin/.gitconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/.kotlin-for-frc/kotlin-frc-preferences.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/.vscode/launch.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/.vscode/settings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/.vscode/tasks.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/.wpilib/wpilib_preferences.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/ArduinoController/UnoJoy.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/ArduinoController/UnoJoyArduinoSample.ino" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/GHRepo.url" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/PathWeaver/pathweaver.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/azure-pipelines.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/buildDeploy.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/buildDeploy.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/config/checkstyle/checkstyle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/config/spotless/eclipseformat.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/config/spotless/importorder" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/gradle.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/index.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/ProgrammingTraining.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/ProgrammingTraining.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image10.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image11.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image12.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image13.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image14.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image15.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image16.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image17.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image18.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image19.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image20.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image21.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image22.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image23.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image24.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image25.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image26.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image27.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image28.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image29.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image30.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image5.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image6.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image7.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image8.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image9.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/genPath" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/genPath.ps1" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/java_style.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/15inAway" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/2ftAway" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/3ftAway" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/4ftAway" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/5ftAway" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/A_primer_on_Odometry.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/FRC2019_DualTargetModel.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/MattsOdometryStuff.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/Pure_Pursuit_Implementation.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/Vision.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/WCP Spartan Board - User Guide.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/auto timing thonk.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/default_limelight_settings.PNG" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/default_pipeline.vpr" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/dual_target_default_hsv.vpr" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/frc-pdr.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/limelightTargetPos.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/localization.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/more_space_state.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/motor_characterization.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/onlyLeftModel.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/pathfinder.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/pathweaver.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/pure-pursuit-2-link.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/state-space-guide.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/weirdNullPointer.log.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/deploy/GripPipeline.ll" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/deploy/example.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/deploy/paths/Unnamed_0.left.pf1.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/deploy/paths/Unnamed_0.pf1.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/deploy/paths/Unnamed_0.right.pf1.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/deploy/paths/test.left.pf1.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/deploy/paths/test.pf1.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/deploy/paths/test.right.pf1.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/python/10.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/python/11.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/python/2019-field.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/python/5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/python/6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/python/VisualizeBot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/python/VisualizePath.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/python/angles.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/python/calibration.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/python/calibresult.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/python/get-pip.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/python/solvePNP.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/main/python/twoHatchLLtestSuper.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/src/test/java/safingTestOut.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/vendordeps/Phoenix.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/vendordeps/navx_frc.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/math/CoordinateSystems.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/math/Pose2d.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/math/Rotation2d.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/math/Translation2d.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/math/Twist2d.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/math/Util.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/OI.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/Robot.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/RobotConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/RobotMap.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/auto/AutoMotion.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/auto/RunAuto.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/auto/actions/AutoIntake.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/auto/actions/CommandOnCondition.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/auto/actions/DriveDistance.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/auto/actions/DriveStraight.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/auto/actions/DriveTrajectoryPathfinder.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/auto/actions/FollowMotionProfile.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/auto/actions/SetIntakeMode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/auto/actions/TurnInPlace.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/auto/groups/AutoCommandGroup.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/auto/groups/GrabCargo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/auto/groups/GrabHatch.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/auto/groups/PlaceHatch.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/subsystems/drivetrain/ArcadeDrive.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveShiftHigh.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveShiftLow.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/subsystems/drivetrain/FollowVisionTarget.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/subsystems/intake/CloseClamp.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/subsystems/intake/GrabHatch.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/subsystems/intake/IntakeTelop.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/subsystems/intake/OpenClamp.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/subsystems/superstructure/elevator/ElevatorTelop.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/subsystems/superstructure/elevator/SetElevatorHeight.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/commands/subsystems/superstructure/wrist/SetWrist.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/lib/$.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/lib/AbstractRotatingArm.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/lib/Colors.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/lib/EncoderLib.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/lib/Logger.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/lib/LoopingSubsystem.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/lib/MotionProfileLib.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/lib/Odometry.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/lib/Odometry2.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/lib/PIDSettings.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/lib/SuperstructurePlannerOLD.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/lib/TerriblePID.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/states/IntakeAngle.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/states/SuperstructureState.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/subsystems/DriveTrain.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/subsystems/Intake.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/subsystems/LimeLight.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/subsystems/superstructure/Elbow.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/subsystems/superstructure/Elevator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/subsystems/superstructure/Superstructure.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/subsystems/superstructure/Wrist.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/main/java/frc/robot/xboxmap.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/test/java/MathTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/src/test/java/SuperstructureTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/RobotConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/RobotConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/lib/SuperstructurePlannerOLD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/lib/SuperstructurePlannerOLD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/Robot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/Robot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/FieldConstraints.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/FieldConstraints.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/PrettyAutoMotion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/PrettyAutoMotion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/PrettyRunAuto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/PrettyRunAuto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/Trajectories.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/Trajectories.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/CloseSideRocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/CloseSideRocket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/FarSideRocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/FarSideRocket.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/LoadingToRocketF.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/LoadingToRocketF.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/PlaceCargoFrontL.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/PlaceCargoFrontL.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/TwoHatchOneCargo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/TwoHatchOneCargo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheSecond.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheSecond.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheThird.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheThird.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/PIDArcadeDrive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/PIDArcadeDrive.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/TrajectoryTrackerCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/TrajectoryTrackerCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/lib/motion/Util.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/lib/motion/Util.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/planners/SuperstructureMotion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/planners/SuperstructureMotion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/planners/SuperstructurePlannerOLD.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/planners/SuperstructurePlannerOLD.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/states/ElevatorState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/states/ElevatorState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/DriveTrain.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/DriveTrain.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/Transmission.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/Transmission.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/superstructure/SuperStructure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/superstructure/SuperStructure.java" afterDir="false" />
     </list>
+    <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -80,61 +166,112 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CompilerWorkspaceConfiguration">
-    <option name="CLEAR_OUTPUT_DIRECTORY" value="false" />
     <option name="MAKE_PROJECT_ON_SAVE" value="true" />
+    <option name="PARALLEL_COMPILATION" value="true" />
+  </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="isMigrated" value="true" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
   </component>
-  <component name="ExternalProjectsManager">
-    <system id="GRADLE">
-      <state>
-        <task path="$PROJECT_DIR$">
-          <activation />
-        </task>
-        <projects_view>
-          <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="command-codebase" type="f1a62948:ProjectNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="command-codebase" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-              </path>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="command-codebase" type="f1a62948:ProjectNode" />
-                <item name="Tasks" type="e4a08cd1:TasksNode" />
-                <item name="build" type="c8890929:TasksNode$1" />
-              </path>
-            </expand>
-            <select />
-          </tree_state>
-        </projects_view>
-      </state>
-    </system>
-  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/subsystems/superstructure/SuperStructure.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="214">
-              <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
+            <state relative-caret-position="180">
+              <caret line="253" column="12" selection-start-line="253" selection-start-column="12" selection-end-line="253" selection-end-column="12" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Robot.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="190">
+              <caret line="494" column="145" selection-start-line="494" selection-start-column="145" selection-end-line="494" selection-end-column="145" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/PIDArcadeDrive.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="300">
+              <caret line="58" column="103" selection-start-line="58" selection-start-column="103" selection-end-line="58" selection-end-column="103" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheSecond.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="58" column="81" selection-start-line="58" selection-start-column="81" selection-end-line="58" selection-end-column="81" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/Trajectories.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="215">
+              <caret line="374" column="94" selection-start-line="374" selection-start-column="94" selection-end-line="374" selection-end-column="94" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/FieldConstraints.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="8" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/lib/SuperstructurePlannerOLD.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/lib/motion/Util.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="31" column="18" lean-forward="true" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
+            <state relative-caret-position="207">
+              <caret line="182" column="83" selection-start-line="182" selection-start-column="83" selection-end-line="182" selection-end-column="83" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheThird.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="130">
+              <caret line="143" column="97" selection-start-line="143" selection-start-column="97" selection-end-line="143" selection-end-column="97" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/planners/SuperstructureMotion.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="411">
+              <caret line="337" selection-start-line="337" selection-end-line="337" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/ElevatorMove.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="198">
+              <caret line="16" column="11" selection-start-line="16" selection-start-column="11" selection-end-line="16" selection-end-column="11" />
+              <folding>
+                <element signature="e#477#478#0" expanded="true" />
+                <element signature="e#532#533#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -143,17 +280,28 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>talonsrx</find>
-      <find>falconmot</find>
-      <find>falco</find>
-      <find>_high</find>
-      <find>controlmode.velocity</find>
-      <find>brakemode</find>
-      <find>neutralmode</find>
-      <find>brake</find>
+      <find>getprep</find>
+      <find>falconlibrary</find>
+      <find>falconlib</find>
+      <find>wrappers.</find>
+      <find>feedback</find>
+      <find>setvel</find>
+      <find>setVelocity</find>
+      <find>dutycycle</find>
+      <find>voltage</find>
+      <find>setNeutralMode</find>
+      <find>.getInch()</find>
+      <find>configselectedfeedbacksensor</find>
+      <find>return mslave</find>
+      <find>mMaster.getMotorController().</find>
+      <find>inverttype</find>
+      <find>.getFeet();</find>
+      <find>planner</find>
     </findStrings>
     <replaceStrings>
-      <replace>_low</replace>
+      <replace>.getMeter()</replace>
+      <replace>/ SILengthConstants.kFeetToMeter;</replace>
+      <replace>mTalon.</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -162,120 +310,109 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/lib/motion/DifferentialDrive.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/RunDriveMotionPlanner.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/TwoHatchOneCargo.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/PlaceCargoFrontL.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/FarSideRocket.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/LoadingToRocketF.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/CloseSideRocket.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/PrettyRunAuto.java" />
+        <option value="$PROJECT_DIR$/settings.gradle" />
         <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/motors/FalconMotor.kt" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/PrettyAutoMotion.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/planners/SuperstructurePlannerOLD.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/DriveTrain.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/lib/obj/DriveSignal.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/RobotConfig.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/lib/SuperstructurePlannerOLD.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/Transmission.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/TrajectoryTrackerCommand.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/states/ElevatorState.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/PIDArcadeDrive.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheSecond.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/Trajectories.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/FieldConstraints.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheThird.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/superstructure/SuperStructure.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/planners/SuperstructureMotion.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/Robot.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/lib/motion/Util.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="85" />
-    <option name="y" value="25" />
-    <option name="width" value="1750" />
-    <option name="height" value="980" />
+    <option name="x" value="260" />
+    <option name="y" value="20" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator currentView="Scope" currentSubView="Scope 'Problems'; set:Problems; class com.intellij.psi.search.scope.ProblemsScope" proportions="" version="1">
+    <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane">
+      <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="command-codebase" type="58d84e3e:PackageViewProjectNode" />
-              <item name="command-codebase" type="eaaa3913:PackageViewModuleGroupNode" />
+              <item name="frc-java-command-codebase" type="b2602c69:ProjectViewProjectNode" />
+              <item name="frc-java-command-codebase" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
-              <item name="command-codebase" type="58d84e3e:PackageViewProjectNode" />
-              <item name="command-codebase" type="eaaa3913:PackageViewModuleGroupNode" />
-              <item name="command-codebase.main" type="616d4139:PackageViewModuleNode" />
+              <item name="frc-java-command-codebase" type="b2602c69:ProjectViewProjectNode" />
+              <item name="frc-java-command-codebase" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="command-codebase" type="58d84e3e:PackageViewProjectNode" />
-              <item name="command-codebase" type="eaaa3913:PackageViewModuleGroupNode" />
-              <item name="command-codebase.main" type="616d4139:PackageViewModuleNode" />
-              <item name="frc" type="1f31426a:PackageElementNode" />
+              <item name="frc-java-command-codebase" type="b2602c69:ProjectViewProjectNode" />
+              <item name="frc-java-command-codebase" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
-              <item name="command-codebase" type="58d84e3e:PackageViewProjectNode" />
-              <item name="command-codebase" type="eaaa3913:PackageViewModuleGroupNode" />
-              <item name="command-codebase.main" type="616d4139:PackageViewModuleNode" />
-              <item name="frc" type="1f31426a:PackageElementNode" />
-              <item name="robot" type="1f31426a:PackageElementNode" />
+              <item name="frc-java-command-codebase" type="b2602c69:ProjectViewProjectNode" />
+              <item name="frc-java-command-codebase" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="command-codebase" type="58d84e3e:PackageViewProjectNode" />
-              <item name="command-codebase" type="eaaa3913:PackageViewModuleGroupNode" />
-              <item name="command-codebase.main" type="616d4139:PackageViewModuleNode" />
-              <item name="frc" type="1f31426a:PackageElementNode" />
-              <item name="robot" type="1f31426a:PackageElementNode" />
-              <item name="subsystems" type="1f31426a:PackageElementNode" />
+              <item name="frc-java-command-codebase" type="b2602c69:ProjectViewProjectNode" />
+              <item name="frc-java-command-codebase" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="frc" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="frc-java-command-codebase" type="b2602c69:ProjectViewProjectNode" />
+              <item name="frc-java-command-codebase" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="frc" type="462c0819:PsiDirectoryNode" />
+              <item name="robot" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="frc-java-command-codebase" type="b2602c69:ProjectViewProjectNode" />
+              <item name="frc-java-command-codebase" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="frc" type="462c0819:PsiDirectoryNode" />
+              <item name="robot" type="462c0819:PsiDirectoryNode" />
+              <item name="planners" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope">
-        <subPane subId="Scope 'Problems'; set:Problems; class com.intellij.psi.search.scope.ProblemsScope">
-          <expand>
-            <path>
-              <item name="command-codebase" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="command-codebase" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-            </path>
-            <path>
-              <item name="command-codebase" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="command-codebase" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="main" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-            </path>
-            <path>
-              <item name="command-codebase" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="command-codebase" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="main" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="command-codebase" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="command-codebase" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="main" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="frc" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="command-codebase" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="command-codebase" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="main" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="frc" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="robot" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-            <path>
-              <item name="command-codebase" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
-              <item name="command-codebase" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="main" type="2674bda8:ScopeViewTreeModel$GroupNode" />
-              <item name="java" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="frc" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="robot" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-              <item name="lib" type="9f88c78c:ScopeViewTreeModel$FileNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="ProjectPane" />
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549039809943" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../FalconLibrary" />
-    <property name="settings.editor.selected.configurable" value="Errors" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/build.gradle" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.completion" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -289,171 +426,418 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
-    <configuration name="frc-java-command-codebase [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="build" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <GradleScriptDebugEnabled>true</GradleScriptDebugEnabled>
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Gradle.frc-java-command-codebase [build]" />
-      </list>
-    </recent_temporary>
-  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="77574e4c-f439-4205-ad4f-55f16159170f" name="Default Changelist" comment="" />
-      <created>1548204624038</created>
+      <changelist id="6df16bf3-55b6-4f23-ad71-661c2df6fe77" name="Default Changelist" comment="" />
+      <created>1556590432372</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1548204624038</updated>
+      <updated>1556590432372</updated>
     </task>
     <servers />
   </component>
-  <component name="TodoView" selected-index="1">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-  </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Structure" order="0" side_tool="true" weight="0.24966443" />
-      <window_info id="Image Layers" order="1" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24307036" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
-      <window_info id="Capture Tool" order="3" />
+      <window_info id="Image Layers" order="3" />
       <window_info id="UI Designer" order="4" />
       <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info id="Capture Tool" order="6" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32941177" />
+      <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" weight="0.32941177" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32887402" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5013423" side_tool="true" weight="0.32647058" />
-      <window_info anchor="bottom" id="Version Control" order="9" weight="0.32941177" />
-      <window_info anchor="bottom" id="Build" order="10" sideWeight="0.4986577" weight="0.32647058" />
-      <window_info anchor="bottom" id="Problems" order="11" weight="0.32941177" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Build" order="7" weight="0.32936078" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Problems" order="10" weight="0.32936078" />
+      <window_info anchor="bottom" id="Version Control" order="11" />
+      <window_info active="true" anchor="bottom" id="Messages" order="12" visible="true" weight="0.32936078" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.24966443" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Maven" order="4" />
-      <window_info anchor="right" id="Gradle" order="5" weight="0.3295302" />
-      <window_info anchor="right" id="Theme Preview" order="6" />
-      <window_info anchor="right" id="Capture Analysis" order="7" />
+      <window_info anchor="right" id="Maven" order="3" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="right" id="Capture Analysis" order="5" />
+      <window_info anchor="right" x="0" y="0" width="434" height="856" id="Documentation" order="6" side_tool="true" visible="true" weight="0.0836887" />
+      <window_info anchor="right" id="Gradle" order="7" />
       <window_info anchor="right" id="Palette&#9;" order="8" />
-      <window_info active="true" anchor="right" content_ui="combo" id="Project" order="9" visible="true" weight="0.25704697" />
+      <window_info anchor="right" id="Theme Preview" order="9" />
     </layout>
   </component>
-  <component name="VcsManagerConfiguration">
-    <ignored-roots>
-      <path value="$PROJECT_DIR$/../FalconLibrary" />
-    </ignored-roots>
-  </component>
-  <component name="antWorkspaceConfiguration">
-    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
-    <option name="FILTER_TARGETS" value="false" />
-  </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/lib/motion/planners/DriveMotionPlanner.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/RunDriveMotionPlanner.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/lib/motion/DifferentialDrive.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Constants.java" />
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ctre.phoenix/api-java/5.12.0/aca8d84775394631caa2992da07e3b11f14bc513/api-java-5.12.0-sources.jar!/com/ctre/phoenix/motorcontrol/can/BaseMotorController.java" />
-    <entry file="file://$PROJECT_DIR$/build.gradle">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/lib/statemachines/AutoMotionStateMachine.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="76" selection-start-line="76" selection-end-line="76" />
+        <state relative-caret-position="68">
+          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Robot.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/ArmMove.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4050">
-          <caret line="283" column="3" selection-start-line="283" selection-start-column="3" selection-end-line="283" selection-end-column="3" />
+        <state relative-caret-position="198">
+          <caret line="16" column="11" selection-start-line="16" selection-start-column="11" selection-end-line="16" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/TwoHatchOneCargo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="40" column="77" selection-start-line="40" selection-start-column="77" selection-end-line="40" selection-end-column="77" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1527#1539#0" expanded="true" />
-            <element signature="e#1805#1814#0" expanded="true" />
-            <element signature="e#2154#2155#0" expanded="true" />
-            <element signature="e#2220#2221#0" expanded="true" />
-            <element signature="e#2267#2268#0" expanded="true" />
-            <element signature="e#2333#2334#0" expanded="true" />
-            <element signature="e#2372#2373#0" expanded="true" />
-            <element signature="e#2437#2438#0" expanded="true" />
-            <element signature="e#2475#2476#0" expanded="true" />
-            <element signature="e#2540#2541#0" expanded="true" />
-            <element signature="e#6098#6099#0" expanded="true" />
-            <element signature="e#6137#6138#0" expanded="true" />
-            <element signature="e#6812#6813#0" expanded="true" />
-            <element signature="e#6851#6852#0" expanded="true" />
-            <element signature="e#7441#7442#0" expanded="true" />
-            <element signature="e#7480#7481#0" expanded="true" />
+            <element signature="e#1659#1677#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.5190GreenHopeRobotics/FalconLibrary/2019.1.19/636c592a60c760f8e68973350b0d927ba4511bbe/FalconLibrary-2019.1.19.jar!/org/ghrobotics/lib/wrappers/FalconMotorKt.class">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/PlaceCargoFrontL.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="5" column="46" lean-forward="true" selection-start-line="5" selection-start-column="46" selection-end-line="5" selection-end-column="46" />
+        <state relative-caret-position="170">
+          <caret line="32" column="63" selection-start-line="32" selection-start-column="63" selection-end-line="32" selection-end-column="63" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/lib/obj/DriveSignal.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/FarSideRocket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="45" selection-start-line="45" selection-end-line="45" />
+          <folding>
+            <element signature="e#1686#1704#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/LoadingToRocketF.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="30" column="79" selection-start-line="30" selection-start-column="79" selection-end-line="30" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/PrettyRunAuto.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.mcm001/pantrycommon/587caa1eab/1161347fba5667da97f3eefb52ed0ab3e7e5dd86/pantrycommon-587caa1eab-sources.jar!/org/team5940/pantry/experimental/command/Command.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3706">
+          <caret line="233" column="17" selection-start-line="233" selection-start-column="17" selection-end-line="233" selection-end-column="17" />
+          <folding>
+            <element signature="e#9934#9935#0" expanded="true" />
+            <element signature="e#9955#9956#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/settings.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/xboxmap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/CloseSideRocket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="36" column="63" selection-start-line="36" selection-start-column="63" selection-end-line="36" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="245">
+          <caret line="84" lean-forward="true" selection-start-line="84" selection-end-line="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.mcm001/pantrycommon/2d570ea774/712c6a86a742239e0798bc506ff1ebae21841728/pantrycommon-2d570ea774.jar!/com/ctre/phoenix/motorcontrol/IFollower.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="8" column="9" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/localization/TankEncoderLocalization.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="7" column="29" selection-start-line="7" selection-start-column="29" selection-end-line="7" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/PrettyAutoMotion.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="39" column="25" selection-start-line="39" selection-start-column="25" selection-end-line="39" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/planners/SuperstructurePlannerOLD.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="47" selection-start-line="2" selection-start-column="47" selection-end-line="2" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/mathematics/twodim/geometry/Translation2d.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="40" column="4" selection-start-line="40" selection-start-column="4" selection-end-line="40" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/mathematics/twodim/geometry/Pose2d.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="31" column="4" selection-start-line="31" selection-start-column="4" selection-end-line="31" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/motors/ctre/FalconSRX.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="11" column="22" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.mcm001/pantrycommon/2d570ea774/712c6a86a742239e0798bc506ff1ebae21841728/pantrycommon-2d570ea774.jar!/com/ctre/phoenix/motorcontrol/IMotorController.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.mcm001/pantrycommon/2d570ea774/712c6a86a742239e0798bc506ff1ebae21841728/pantrycommon-2d570ea774.jar!/com/ctre/phoenix/motorcontrol/can/BaseMotorController.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="34" column="64" selection-start-line="34" selection-start-column="64" selection-end-line="34" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.mcm001/pantrycommon/2d570ea774/712c6a86a742239e0798bc506ff1ebae21841728/pantrycommon-2d570ea774.jar!/com/ctre/phoenix/motorcontrol/IMotorControllerEnhanced.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.mcm001/pantrycommon/2d570ea774/712c6a86a742239e0798bc506ff1ebae21841728/pantrycommon-2d570ea774.jar!/com/ctre/phoenix/motorcontrol/can/TalonSRX.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="19" column="71" selection-start-line="19" selection-start-column="71" selection-end-line="19" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.mcm001/pantrycommon/587caa1eab/1161347fba5667da97f3eefb52ed0ab3e7e5dd86/pantrycommon-587caa1eab-sources.jar!/com/team254/drivers/TalonSRXFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="69" column="27" selection-start-line="69" selection-start-column="27" selection-end-line="69" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/motors/FalconMotor.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="55" column="8" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/subsystems/DriveTrain.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6272">
-          <caret line="512" selection-start-line="512" selection-end-line="512" />
+        <state relative-caret-position="88">
+          <caret line="309" selection-start-line="309" selection-end-line="309" />
+          <folding>
+            <element signature="e#3476#3477#0" expanded="true" />
+            <element signature="e#3494#3495#0" expanded="true" />
+            <element signature="e#3562#3563#0" expanded="true" />
+            <element signature="e#3580#3581#0" expanded="true" />
+            <element signature="e#11895#11896#0" expanded="true" />
+            <element signature="e#12667#12668#0" expanded="true" />
+            <element signature="e#12753#12754#0" expanded="true" />
+            <element signature="e#12855#12856#0" expanded="true" />
+            <element signature="e#25668#25669#0" expanded="true" />
+            <element signature="e#26086#26087#0" expanded="true" />
+            <marker date="1556599591743" expanded="true" signature="11896:12198" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/motors/ctre/FalconCTRE.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="81" column="17" selection-start-line="81" selection-start-column="17" selection-end-line="81" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.mcm001/pantrycommon/587caa1eab/3b2c3f0c6324cb682b87043d780cef1348404bcc/pantrycommon-587caa1eab.jar!/com/ctre/phoenix/motorcontrol/IMotorController.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="25" column="9" selection-start-line="25" selection-start-column="9" selection-end-line="25" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/subsystems/Transmission.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="133" column="60" selection-start-line="133" selection-start-column="60" selection-end-line="133" selection-end-column="60" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2650#2651#0" expanded="true" />
+            <element signature="e#2671#2672#0" expanded="true" />
+            <element signature="e#2968#2969#0" expanded="true" />
+            <element signature="e#3034#3035#0" expanded="true" />
+            <element signature="e#3659#3660#0" expanded="true" />
+            <element signature="e#3703#3704#0" expanded="true" />
+            <element signature="e#3889#3890#0" expanded="true" />
+            <element signature="e#3912#3913#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/mathematics/units/Length.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="38" column="14" selection-start-line="38" selection-start-column="14" selection-end-line="38" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/planners/TrajectoryPlanner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="41" lean-forward="true" selection-start-line="15" selection-start-column="40" selection-end-line="24" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/TrajectoryTrackerCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="89" column="100" selection-start-line="89" selection-start-column="88" selection-end-line="89" selection-end-column="100" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/states/ElevatorState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="487">
+          <caret line="62" column="5" lean-forward="true" selection-start-line="62" selection-start-column="5" selection-end-line="62" selection-end-column="5" />
+          <folding>
+            <element signature="e#2306#2307#0" expanded="true" />
+            <element signature="e#2318#2319#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/ElevatorMove.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="16" column="11" selection-start-line="16" selection-start-column="11" selection-end-line="16" selection-end-column="11" />
+          <folding>
+            <element signature="e#477#478#0" expanded="true" />
+            <element signature="e#532#533#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/PIDArcadeDrive.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="58" column="103" selection-start-line="58" selection-start-column="103" selection-end-line="58" selection-end-column="103" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheSecond.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="58" column="81" selection-start-line="58" selection-start-column="81" selection-end-line="58" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/Trajectories.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="374" column="94" selection-start-line="374" selection-start-column="94" selection-end-line="374" selection-end-column="94" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/FieldConstraints.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="8" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheThird.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="143" column="97" selection-start-line="143" selection-start-column="97" selection-end-line="143" selection-end-column="97" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/subsystems/superstructure/SuperStructure.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
+        <state relative-caret-position="180">
+          <caret line="253" column="12" selection-start-line="253" selection-start-column="12" selection-end-line="253" selection-end-column="12" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/RobotConfig.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/planners/SuperstructureMotion.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="310" column="54" lean-forward="true" selection-start-line="310" selection-end-line="311" />
+        <state relative-caret-position="411">
+          <caret line="337" selection-start-line="337" selection-end-line="337" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/lib/SuperstructurePlannerOLD.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/Robot.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="31" column="18" lean-forward="true" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
+        <state relative-caret-position="190">
+          <caret line="494" column="145" selection-start-line="494" selection-start-column="145" selection-end-line="494" selection-end-column="145" />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/lib/motion/Util.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="182" column="83" selection-start-line="182" selection-start-column="83" selection-end-line="182" selection-end-column="83" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>

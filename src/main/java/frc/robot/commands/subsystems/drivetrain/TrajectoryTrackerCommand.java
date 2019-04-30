@@ -9,8 +9,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TrajectorySamplePoint;
-import org.ghrobotics.lib.mathematics.units.Length;
-import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
+import org.ghrobotics.lib.mathematics.units.*;
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 import org.team5940.pantry.experimental.command.SendableCommandBase;
 
@@ -20,6 +19,8 @@ import frc.robot.Robot;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.Logger;
 import frc.robot.subsystems.DriveTrain;
+
+import static org.ghrobotics.lib.mathematics.units.SILengthConstants.kFeetToMeter;
 
 // @SuppressWarnings({"WeakerAccess", "unused"})
 public class TrajectoryTrackerCommand extends SendableCommandBase {
@@ -65,11 +66,11 @@ public class TrajectoryTrackerCommand extends SendableCommandBase {
 			Trajectories.generateAllTrajectories();
 		}
 
-		Logger.log("get: " + trajectorySource.get().getFirstState().getState().getCurvature().toString());
+		Logger.log("get: " + trajectorySource.get().getFirstState().getState().getCurvature());
 
 		trajectoryTracker.reset(this.trajectorySource.get());
 
-		Logger.log("first pose: " + trajectorySource.get().getFirstState().getState().getPose().getTranslation().getX().getFeet());
+		Logger.log("first pose: " + trajectorySource.get().getFirstState().getState().getPose().getTranslation().getX());
 
 		if (reset == true) {
 			Robot.drivetrain.getLocalization().reset(trajectorySource.get().getFirstState().getState().getPose());
@@ -86,8 +87,8 @@ public class TrajectoryTrackerCommand extends SendableCommandBase {
 			if (referencePoint != null) {
 				Pose2d referencePose = referencePoint.getState().getState().getPose();
 
-				LiveDashboard.INSTANCE.setPathX(referencePose.getTranslation().getX().getFeet());
-				LiveDashboard.INSTANCE.setPathY(referencePose.getTranslation().getY().getFeet());
+				LiveDashboard.INSTANCE.setPathX(referencePose.getTranslation().getX() / kFeetToMeter);
+				LiveDashboard.INSTANCE.setPathY(referencePose.getTranslation().getY() / kFeetToMeter);
 				LiveDashboard.INSTANCE.setPathHeading(referencePose.getRotation().getRadian());
 
 				// Shuffleboard.getTab("Auto").getLayout("Pathing", BuiltInLayouts.kList).

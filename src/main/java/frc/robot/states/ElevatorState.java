@@ -58,6 +58,10 @@ public class ElevatorState {
 				TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
 	}
 
+	public ElevatorState(double height) {
+		this(LengthKt.getMeter(height));
+	}
+
 	public ElevatorState(Length height, boolean simulate) {
 		this(height, VelocityKt.getVelocity(LengthKt.getFeet(0)), AccelerationKt.getAcceleration(LengthKt.getFeet(0)),
 				TimeUnitsKt.getMillisecond(System.currentTimeMillis()));

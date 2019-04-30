@@ -1,9 +1,11 @@
 package frc.robot;
 
+import frc.robot.commands.auto.PrettyAutoMotion;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.SILengthConstants;
 import org.team5940.pantry.experimental.command.CommandScheduler;
 import org.team5940.pantry.experimental.command.SendableCommandBase;
 
@@ -55,7 +57,7 @@ public class Robot extends TimedRobot {
 	public static DoubleSolenoid shifterDoubleSolenoid;
 	public static DoubleSolenoid intakeDoubleSolenoid;
 	public static DoubleSolenoid elevatorShifterDoubleSolenoid;
-	public static AutoMotion m_auto;
+	public static PrettyAutoMotion m_auto;
 	// SendableChooser<Command> m_chooser = new SendableChooser<Command>();
 	TerribleAutoChooser mAutoChooser;
 	public static Compressor compressor = new Compressor(9);
@@ -409,7 +411,7 @@ public class Robot extends TimedRobot {
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
 		if (m_auto != null) {
-			m_auto.getBigCommandGroup().cancel();
+			m_auto.getMotionCommands().cancel();
 		}
 		// TODO reset subsystems on teleop init?
 
@@ -486,11 +488,11 @@ public class Robot extends TimedRobot {
 
 		// System.out.println(String.format("carriage max %s inner stage min %s", superstructure.getCarriageMaxLimit(), superstructure.getInnerStageMinLimit() ));
 
-		SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
-		SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
+		SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX() / SILengthConstants.kFeetToMeter);
+		SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY() / SILengthConstants.kFeetToMeter);
 
-		LiveDashboard.INSTANCE.setRobotX(drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
-		LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
+		LiveDashboard.INSTANCE.setRobotX(drivetrain.getLocalization().getRobotPosition().getTranslation().getX() / SILengthConstants.kFeetToMeter);
+		LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY() / SILengthConstants.kFeetToMeter);
 		LiveDashboard.INSTANCE.setRobotHeading(drivetrain.getLocalization().getRobotPosition().getRotation().getRadian());
 
 		// SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getFeetPerSecond());

@@ -2,6 +2,7 @@ package frc.robot.commands.auto.routines;
 
 import java.util.ArrayList;
 
+import frc.robot.commands.auto.PrettyAutoMotion;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -10,7 +11,6 @@ import org.team5940.pantry.experimental.command.SequentialCommandGroup;
 import org.team5940.pantry.experimental.command.WaitCommand;
 
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheThird;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
@@ -31,16 +31,14 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 public class TwoHatchOneCargo extends SequentialCommandGroup {
 	// private AutoCommandGroup mBigCommandGroup;
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
-	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
+	public ArrayList<PrettyAutoMotion> motions = new ArrayList<PrettyAutoMotion>();
 
 	public TwoHatchOneCargo(char arg1, char arg2) {
 		this();
 	}
 
 	/**
-	 * 2-hatch 1-cargo hard-coded auto. ow. This is fine. Everything is fine. 
-	 * @param side to target (L or R)
-	 * @param startPos L M or R on the hab
+	 * 2-hatch 1-cargo hard-coded auto. ow. This is fine. Everything is fine.
 	 * @author Matthew Morley
 	 */
 	public TwoHatchOneCargo(/*char startPos, char side*/) {

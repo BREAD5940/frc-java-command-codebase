@@ -16,10 +16,7 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.TimingConstr
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.VelocityLimitRegionConstraint;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
-import org.ghrobotics.lib.mathematics.units.Length;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.Rotation2d;
-import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+import org.ghrobotics.lib.mathematics.units.*;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
 import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
@@ -375,9 +372,9 @@ public class Trajectories {
 		for (TimedEntry<Pose2dWithCurvature> point : unReflected.getPoints()) {
 			maxVelocity = (point.getVelocity().getValue() > maxVelocity.getValue()) ? point.getVelocity() : maxVelocity;
 			maxAccel = (point.getAcceleration().getValue() > maxAccel.getValue()) ? point.getAcceleration() : maxAccel;
-			double centerOffset = (13.5 - point.getState().getPose().getTranslation().getY().getFeet()) * -1;
+			double centerOffset = (13.5 - point.getState().getPose().getTranslation().getY() / SILengthConstants.kFeetToMeter) * -1;
 			newWaypoints.add(new Pose2d(
-					new Translation2d(LengthKt.getFeet(centerOffset + 13.5),
+					new Translation2d(LengthKt.getFeet(centerOffset + 13.5).getValue(),
 							point.getState().getPose().getTranslation().getY()),
 					new Rotation2d(point.getState().getPose().getRotation().getRadian() * -1)));
 		}

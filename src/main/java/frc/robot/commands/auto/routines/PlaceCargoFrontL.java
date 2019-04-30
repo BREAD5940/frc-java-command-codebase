@@ -3,6 +3,7 @@ package frc.robot.commands.auto.routines;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import frc.robot.commands.auto.PrettyAutoMotion;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
@@ -29,16 +30,14 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 public class PlaceCargoFrontL extends VisionCommandGroup {
 	// private AutoCommandGroup mBigCommandGroup;
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
-	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
+	public ArrayList<PrettyAutoMotion> motions = new ArrayList<PrettyAutoMotion>();
 
 	public PlaceCargoFrontL(char arg1, char arg2) {
 		this();
 	}
 
 	/**
-	 * 2-hatch 1-cargo hard-coded auto. ow. This is fine. Everything is fine. 
-	 * @param side to target (L or R)
-	 * @param startPos L M or R on the hab
+	 * 2-hatch 1-cargo hard-coded auto. ow. This is fine. Everything is fine.
 	 * @author Matthew Morley
 	 */
 	public PlaceCargoFrontL(/* char startPos, char side */) {

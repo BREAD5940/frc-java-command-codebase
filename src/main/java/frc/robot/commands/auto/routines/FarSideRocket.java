@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import frc.robot.commands.auto.PrettyAutoMotion;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
@@ -33,7 +34,7 @@ import frc.robot.xboxmap;
 public class FarSideRocket extends SequentialCommandGroup {
 	// private AutoCommandGroup mBigCommandGroup;
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
-	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
+	public ArrayList<PrettyAutoMotion> motions = new ArrayList<PrettyAutoMotion>();
 
 	// public FarSideRocket(char arg1, char arg2) {
 	// this();
@@ -42,7 +43,6 @@ public class FarSideRocket extends SequentialCommandGroup {
 	/**
 	 * 2-hatch 1-cargo hard-coded auto. ow. This is fine. Everything is fine. 
 	 * @param side to target (L or R)
-	 * @param startPos L M or R on the hab
 	 * @author Matthew Morley
 	 */
 	public FarSideRocket(char side) {

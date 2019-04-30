@@ -2,6 +2,10 @@ package frc.robot.commands.auto.routines;
 
 import java.util.ArrayList;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import frc.robot.commands.auto.PrettyAutoMotion;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 
@@ -16,13 +20,15 @@ import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.LimeLight.PipelinePreset;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
+import org.ghrobotics.lib.wrappers.FalconMotor;
+
 /**
  * 2-hatch 1-cargo auto
  */
 public class LoadingToRocketF extends VisionCommandGroup {
 	// private AutoCommandGroup mBigCommandGroup;
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
-	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
+	public ArrayList<PrettyAutoMotion> motions = new ArrayList<PrettyAutoMotion>();
 
 	// public LoadingToRocketF(char arg1, char arg2) {
 	// this();
