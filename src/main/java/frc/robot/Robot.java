@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -24,16 +25,20 @@ import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.TerribleAutoChooser;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
+import frc.robot.commands.subsystems.superstructure.PassThrough.SyncedMove;
+import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.ZeroElevatorDisabled;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
+import frc.robot.states.IntakeAngle;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.LimeLight.LEDMode;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly init
@@ -318,6 +323,20 @@ public class Robot extends TimedRobot {
 
 		// mResetNotifier.startPeriodic(0.5);
 
+		var frontBack = new CommandGroup();
+		frontBack.addSequential(new SyncedMove(Math.toRadians(-180), true, superstructure));
+		// frontBack.addSequential(new ArmMove(new IntakeAngle(
+		// 	new RotatingArmState(RoundRotation2d.getDegree(-210)),
+		// 	new RotatingArmState(RoundRotation2d.getDegree(-180))
+		// 	)));
+
+		var backFront = new CommandGroup();
+		backFront.addSequential(new SyncedMove(Math.toRadians(0), true, superstructure));
+
+
+		SmartDashboard.putData("front to back passthrough", frontBack);
+		SmartDashboard.putData("back to front passthrough", backFront);
+
 	}
 
 	public static Command zeroElevatorWhileDisabled = new ZeroElevatorDisabled();
@@ -356,7 +375,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void disabledPeriodic() {
 
-		Scheduler.getInstance().run();
 	}
 
 	@Override
@@ -383,9 +401,7 @@ public class Robot extends TimedRobot {
 	 * This function is called periodically during autonomous.
 	 */
 	@Override
-	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
-	}
+	public void autonomousPeriodic() {}
 
 	// public void disableTheSuperStructure() {
 	// 	superstructure.getElevator().getMaster().configPeakOutputForward(0);
@@ -425,7 +441,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 
-		Scheduler.getInstance().run();
 	}
 
 	/**
@@ -445,6 +460,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
+		Scheduler.getInstance().run();
+
 		drivetrain.logPeriodicIO();
 
 		// SmartDashboard.putNumber("Limelight estimated distance with angle", LimeLight.getInstance().estimateDistanceFromAngle().getInch());

@@ -3,7 +3,6 @@ package frc.robot;
 import java.util.Arrays;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
@@ -12,10 +11,8 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.routines.TeleopCommands;
-import frc.robot.commands.subsystems.drivetrain.DriveDistanceToVisionTarget;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
-import frc.robot.commands.subsystems.drivetrain.TurnToFaceVisionTarget;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
@@ -116,7 +113,7 @@ public class OI {
 						fieldPositions.cargoMiddleGoal.plus(LengthKt.getInch(2)), SuperStructure.iPosition.CARGO_DOWN))));
 
 		// hatch presets
-		primaryRightAnalogButton.whileHeld(new HybridDriverAssist());
+		primaryBButton.whileHeld(new HybridDriverAssist());
 		// primaryRightAnalogButton.whileHeld(new HybridKinematicDriverAssist());
 
 		dsHatch1.whenPressed(SequentialCommandFactory.getSequentialCommands(Arrays.asList(
@@ -134,18 +131,18 @@ public class OI {
 
 		// primaryDpadUp.whenPressed(new KillAuto());
 
-		var yes = new CommandGroup();
+		// var yes = new CommandGroup();
 
-		yes.addSequential(new TurnToFaceVisionTarget());
+		// yes.addSequential(new TurnToFaceVisionTarget());
 
-		yes.addSequential(
-				new DriveDistanceToVisionTarget(LengthKt.getInch(35), VelocityKt.getVelocity(LengthKt.getFeet(2))));
+		// yes.addSequential(
+		// 		new DriveDistanceToVisionTarget(LengthKt.getInch(35), VelocityKt.getVelocity(LengthKt.getFeet(2))));
 
-		yes.addSequential(new TeleopCommands());
+		// yes.addSequential(new TeleopCommands());
 
-		primaryDpadUp.whenPressed(yes);
+		// primaryDpadUp.whenPressed(yes);
 
-		primaryDpadDown.whenPressed(new TurnToFaceVisionTarget());
+		// primaryDpadDown.whenPressed(new TurnToFaceVisionTarget());
 
 		// var grabHatch = new CommandGroup();
 		// // yes.addSequential(new JankyGoToState(fieldPositions.hatchMiddleGoal,
@@ -236,11 +233,12 @@ public class OI {
 	}
 
 	public double getForwardAxis() {
-		return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis);
+		// return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis);
+		return getPrimary().getRawAxis(3) - getPrimary().getRawAxis(2);
 	}
 
 	public double getTurnAxis() {
-		return primaryJoystick.getRawAxis(RobotConfig.controls.turn_axis);
+		return primaryJoystick.getRawAxis(0);
 	}
 
 	// public double getIntakeAxis() {

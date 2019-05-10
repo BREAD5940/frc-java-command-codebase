@@ -1,24 +1,21 @@
 package frc.robot.commands.subsystems.superstructure;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.function.Supplier;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.team5940.pantry.experimental.command.Command;
-import org.team5940.pantry.experimental.command.SelectCommand;
-import org.team5940.pantry.experimental.command.SendableCommandBase;
-import org.team5940.pantry.experimental.command.SequentialCommandGroup;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class PassThrough extends SelectCommand<Boolean> {
+public class PassThrough extends ConditionalCommand {
 
-	private static final double kProximalMaxVel = 100d / 360d * 2 * Math.PI;
-	private static final double kWristMaxVel = 100d / 360d * 2 * Math.PI;
+	private static final double kProximalMaxVel = 150d / 360d * 2 * Math.PI;
+	private static final double kWristMaxVel = 150d / 360d * 2 * Math.PI;
 
 	private static RoundRotation2d getUnDumbWrist(RoundRotation2d dumbWrist, RoundRotation2d relevantProx) {
 		var compensatedAngle = dumbWrist.plus(relevantProx.div(2));
@@ -26,14 +23,16 @@ public class PassThrough extends SelectCommand<Boolean> {
 	}
 
 	private static RoundRotation2d getDumbWrist(RoundRotation2d smartWrist, RoundRotation2d relevantProx) {
-		var unCompensatedAngle = relevantProx.div(2).minus(smartWrist);
+		var unCompensatedAngle = smartWrist.minus(relevantProx.div(2));
 		return unCompensatedAngle;
 	}
 
-	private static class SyncedMove extends SendableCommandBase {
+	public static class SyncedMove extends Command {
 
 		private final double goal;
+		private final double goalWrist;
 		private final RoundRotation2d goalRotation2d;
+		private final RoundRotation2d goalWristRotation2d;
 		private final boolean isFrontToBack;
 		private final SuperStructure structure;
 		private RoundRotation2d lastCommandedProximal;
@@ -42,15 +41,17 @@ public class PassThrough extends SelectCommand<Boolean> {
 		private boolean moveIteratorFinished = false;
 		private SuperStructureState lastObservedState = new SuperStructureState();
 
-		private SyncedMove(double goalAngle, double proximalMaxVel, double wristMaxVel, boolean isFrontToBack, SuperStructure structure) {
-			this.goal = goalAngle;
+		public SyncedMove(double goalAngle, double proximalMaxVel, double wristMaxVel, boolean isFrontToBack, SuperStructure structure) {
+			this.goal = goalAngle + (isFrontToBack ? -30 : 0);
+			this.goalWrist = goalAngle;
+			this.goalWristRotation2d = RoundRotation2d.getRadian(goalWrist);
+			this.goalRotation2d = RoundRotation2d.getRadian(goal);
 			this.structure = structure;
 			this.isFrontToBack = isFrontToBack;
-			this.proximalVelocity = Math.abs((proximalMaxVel < wristMaxVel) ? proximalMaxVel * 0.8 : wristMaxVel * 0.8) * (isFrontToBack ? -1 : 1);
-			this.goalRotation2d = RoundRotation2d.getRadian(goal);
+			this.proximalVelocity = Math.abs(Math.min(Math.abs(proximalMaxVel), Math.abs(wristMaxVel))) * 0.8 * (isFrontToBack ? -1 : 1);
 		}
 
-		private SyncedMove(double goalAngle, boolean isFrontToBack, SuperStructure structure) {
+		public SyncedMove(double goalAngle, boolean isFrontToBack, SuperStructure structure) {
 			this(goalAngle, kProximalMaxVel, kWristMaxVel, isFrontToBack, structure);
 		}
 
@@ -71,7 +72,7 @@ public class PassThrough extends SelectCommand<Boolean> {
 			var currentState = structure.getCurrentState();
 			this.lastObservedState = currentState;
 
-			var nextProximal = this.lastCommandedProximal.plus(RoundRotation2d.getRadian(proximalVelocity / dt));
+			var nextProximal = this.lastCommandedProximal.plus(RoundRotation2d.getRadian(proximalVelocity * dt));
 
 			if (isFrontToBack) {
 				if (nextProximal.getRadian() < goal)
@@ -89,7 +90,10 @@ public class PassThrough extends SelectCommand<Boolean> {
 				this.moveIteratorFinished = true;
 			}
 
-			var nextWrist = getDumbWrist(nextProximal, currentState.getElbowAngle());
+			var nextWrist = getDumbWrist(currentState.getElbowAngle(), currentState.getElbowAngle());
+
+			System.out.println("next elbow " + nextProximal);
+			System.out.println("next wrist " + nextWrist);
 
 			structure.getWrist().requestAngle(nextWrist);
 			structure.getElbow().requestAngle(nextProximal);
@@ -112,28 +116,54 @@ public class PassThrough extends SelectCommand<Boolean> {
 
 	public PassThrough(SuperStructure structure, Supplier<Boolean> isFrontToBack) {
 
-		super(setupConstructor(structure), isFrontToBack);
+		// super(setupConstructor(structure), isFrontToBack);
+
+		super(getPassThroughFrontToBack(structure), getPassThroughBackToFront(structure));
 
 		this.structure = structure;
+		this.isFrontToBack = isFrontToBack;
 
 	}
 
-	public static Map<Boolean, Command> setupConstructor(SuperStructure structure) {
+	private Supplier<Boolean> isFrontToBack;
 
-		// create possible command groups
-		var frontToBackGroup = new SequentialCommandGroup(
-				new ElevatorMove(LengthKt.getInch(30)), //todo check height
-				new SyncedMove(Math.toRadians(-180), true, structure));
-
-		var backToFrontGroup = new SequentialCommandGroup(
-				new ElevatorMove(LengthKt.getInch(30)), //todo check height
-				new SyncedMove(Math.toRadians(180), false, structure));
-
-		var map = new HashMap<Boolean, Command>();
-		map.put(true, frontToBackGroup);
-		map.put(false, backToFrontGroup);
-
-		return map;
+	@Override
+	protected boolean condition() {
+		return isFrontToBack.get();
 	}
+
+	private static Command getPassThroughFrontToBack(SuperStructure structure) {
+		var group = new CommandGroup();
+		group.addSequential(new ElevatorMove(LengthKt.getInch(30))); //todo check height
+		group.addSequential(new SyncedMove(Math.toRadians(-180), true, structure));
+		return group;
+	}
+
+	private static Command getPassThroughBackToFront(SuperStructure structure) {
+		var group = new CommandGroup();
+		group.addSequential(new ElevatorMove(LengthKt.getInch(30))); //todo check height
+		group.addSequential(new SyncedMove(Math.toRadians(180), false, structure));
+		return group;
+	}
+
+	// public static Map<Boolean, Command> setupConstructor(SuperStructure structure) {
+
+	// 	// create possible command groups
+	// 	var frontToBackGroup = new CommandGroup();
+
+	// 	frontToBackGroup.addSequential(new ElevatorMove(LengthKt.getInch(30))); //todo check height
+	// 	frontToBackGroup.addSequential(new SyncedMove(Math.toRadians(-180), true, structure));
+
+	// 	var backToFrontGroup = new CommandGroup();
+
+	// 	backToFrontGroup.addSequential(new ElevatorMove(LengthKt.getInch(30))); //todo check height
+	// 	backToFrontGroup.addSequential(new SyncedMove(Math.toRadians(180), false, structure));
+
+	// 	var map = new HashMap<Boolean, Command>();
+	// 	map.put(true, frontToBackGroup);
+	// 	map.put(false, backToFrontGroup);
+
+	// 	return map;
+	// }
 
 }

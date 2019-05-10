@@ -520,15 +520,31 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		@Override
 		protected void execute() {
 
+			var isQuickTurn = Robot.m_oi.getPrimary().getRawButton(3);
+
 			double forwardSpeed = Robot.m_oi.getForwardAxis();
 			double turnSpeed = Robot.m_oi.getTurnAxis();
 
-			forwardSpeed = Util.deadband(forwardSpeed, 0.07) * ((getCachedGear() == Gear.HIGH) ? 0.8 : 1);
-			turnSpeed = Util.deadband(turnSpeed, 0.07);
+			if (!isQuickTurn) {
 
-			// System.out.println("forward speed: " + forwardSpeed + " turn speed: " + turnSpeed);
+				if (forwardSpeed < -0.05)
+					turnSpeed *= -1;
+				forwardSpeed *= Math.abs(forwardSpeed);
 
-			curvatureDrive(forwardSpeed, turnSpeed, Math.abs(Robot.m_oi.getForwardAxis()) < 0.08);
+				System.out.println("forward " + forwardSpeed);
+
+				forwardSpeed = Util.deadband(forwardSpeed, 0.07) * ((getCachedGear() == Gear.HIGH) ? 0.8 : 1);
+				turnSpeed = Util.deadband(turnSpeed, 0.07);
+
+				// System.out.println("forward speed: " + forwardSpeed + " turn speed: " + turnSpeed);
+
+				// curvatureDrive(forwardSpeed, turnSpeed, Robot.m_oi.getPrimary().getRawButton(6));
+				curvatureDrive(forwardSpeed, turnSpeed, false);
+
+			} else {
+				curvatureDrive(forwardSpeed * Math.abs(forwardSpeed), turnSpeed, true);
+			}
+
 		}
 
 		@Override
@@ -728,7 +744,12 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		// Set the default command for a subsystem here.
 		// setDefaultCommand(new ArcadeDrive());
 		// setDefaultCommand(new PIDArcadeDrive(true));
-		setDefaultCommand(new CurvatureDrive());
+
+		System.out.println("setting drivetrain default commands");
+
+		var curveyBoi = new CurvatureDrive();
+		setDefaultCommand(curveyBoi);
+		SmartDashboard.putData(curveyBoi);
 		// setDefaultCommand(new ClosedLoopDriveTheSecond(true));
 		// setDefaultCommand(new auto_action_DRIVE(5, "high", 5, 30));
 	}
