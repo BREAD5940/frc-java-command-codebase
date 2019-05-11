@@ -7,6 +7,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+import org.ghrobotics.lib.mathematics.units.SILengthConstants;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
 import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
@@ -55,7 +56,7 @@ public class DriveDistanceTheSecond extends Command {
 	protected void initialize() {
 
 		var currentPose = new Pose2d();
-		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX().getInch() + "," + currentPose.getTranslation().getY().getInch());
+		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX() / SILengthConstants.kInchToMeter + "," + currentPose.getTranslation().getY() / SILengthConstants.kInchToMeter);
 		Translation2d offsetTrans;
 		if (!reversed) {
 			offsetTrans = new Translation2d(distance, currentPose.getRotation());
@@ -64,7 +65,7 @@ public class DriveDistanceTheSecond extends Command {
 		}
 		var offsetPose = currentPose.plus(new Pose2d(offsetTrans, Rotation2dKt.getDegree(0)));
 
-		System.out.println("OFFSET POSE: " + offsetPose.getTranslation().getX().getInch() + "," + offsetPose.getTranslation().getY().getInch());
+		System.out.println("OFFSET POSE: " + offsetPose.getTranslation().getX() / SILengthConstants.kInchToMeter + "," + offsetPose.getTranslation().getY() / SILengthConstants.kInchToMeter);
 
 		var waypoints = Arrays.asList(
 				currentPose, offsetPose);

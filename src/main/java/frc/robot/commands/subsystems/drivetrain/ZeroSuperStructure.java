@@ -46,7 +46,7 @@ public class ZeroSuperStructure extends Command {
 			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(0));
 			old.getWrist().setAngle(new RoundRotation2d());
 		} else if (p.equals("maxElevator")) {
-			SuperStructure.getElevator().getMaster().setSensorPosition(SuperStructureConstants.Elevator.top);
+			SuperStructure.getElevator().getMaster().getEncoder().resetPosition(SuperStructureConstants.Elevator.top.getMeter());
 			old.getElevator().setHeight(SuperStructureConstants.Elevator.top);
 		} else if (p.equals("maxWrist")) {
 			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(SuperStructureConstants.Wrist.kWristMax);

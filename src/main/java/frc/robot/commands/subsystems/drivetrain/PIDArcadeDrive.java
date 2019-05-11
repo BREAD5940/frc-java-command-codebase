@@ -52,10 +52,10 @@ public class PIDArcadeDrive extends Command {
 	@Override
 	protected void initialize() {
 		DriveTrain.getInstance().setNeutralMode(NeutralMode.Coast);
-		DriveTrain.getInstance().getLeft().getMaster().configClosedloopRamp(0.16);
-		DriveTrain.getInstance().getRight().getMaster().configClosedloopRamp(0.16);
-		DriveTrain.getInstance().getLeft().getMaster().configOpenloopRamp(0.16);
-		DriveTrain.getInstance().getRight().getMaster().configOpenloopRamp(0.16);
+		DriveTrain.getInstance().getLeft().getMaster().getMotorController().configClosedloopRamp(0.16, 0);
+		DriveTrain.getInstance().getRight().getMaster().getMotorController().configClosedloopRamp(0.16, 0);
+		DriveTrain.getInstance().getLeft().getMaster().getMotorController().configOpenloopRamp(0.16, 0);
+		DriveTrain.getInstance().getRight().getMaster().getMotorController().configOpenloopRamp(0.16, 0);
 	}
 
 	// Called repeatedly when this Command is scheduled to run

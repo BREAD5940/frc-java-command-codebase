@@ -85,7 +85,7 @@ public class HybridKinematicDriverAssist extends Command {
 		if (hasTarget) {
 			DriveTrain.getInstance().setOutputFromKinematics(mCalcedState);
 		} else {
-			DriveTrain.getInstance().coast();
+			DriveTrain.getInstance().stop();
 		}
 
 		lastTx = tx;

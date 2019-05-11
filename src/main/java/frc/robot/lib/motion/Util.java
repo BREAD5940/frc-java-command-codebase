@@ -9,6 +9,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.SILengthConstants;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 
 import frc.robot.lib.obj.RoundRotation2d;
@@ -166,15 +167,16 @@ public class Util {
 	}
 
 	public static String toString(Pose2d pose) {
-		return String.format("Pose: (%s, %s) theta: (%s)", pose.getTranslation().getX().getFeet(), pose.getTranslation().getY().getFeet(), pose.getRotation().getDegree());
+		return String.format("Pose: (%s, %s) theta: (%s)", pose.getTranslation().getX() / SILengthConstants.kFeetToMeter,
+				pose.getTranslation().getY() / SILengthConstants.kFeetToMeter, pose.getRotation().getDegree());
 	}
 
 	public static Pose2d reflectWaypoint(Pose2d waypoint) {
 		var toReturn = new Pose2d(
 				// new Translation2d(LengthKt.getFeet(((13.5 - waypoint.getTranslation().getY().getFeet()) * -1) + 13.5),
 				// waypoint.getTranslation().getY()),
-				waypoint.getTranslation().getX(),
-				LengthKt.getFeet(27).minus(waypoint.getTranslation().getY()),
+				LengthKt.getMeter(waypoint.getTranslation().getX()),
+				LengthKt.getFeet(27).minus(LengthKt.getMeter(waypoint.getTranslation().getY())),
 				new Rotation2d(waypoint.getRotation().getRadian() * -1));
 
 		return toReturn;

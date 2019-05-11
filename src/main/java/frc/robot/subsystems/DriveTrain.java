@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.ghrobotics.lib.localization.Localization;
 import org.ghrobotics.lib.localization.TankEncoderLocalization;
+import org.ghrobotics.lib.localization.TimeInterpolatableBuffer;
 import org.ghrobotics.lib.mathematics.twodim.control.FeedForwardTracker;
 import org.ghrobotics.lib.mathematics.twodim.control.PurePursuitTracker;
 import org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker;
@@ -15,8 +16,8 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
+import org.ghrobotics.lib.motors.ctre.FalconSRX;
 import org.ghrobotics.lib.subsystems.drive.DifferentialTrackerDriveBase;
-import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
@@ -115,8 +116,11 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 				TransmissionSide.RIGHT, false);
 
 		/* Create a localization object because lamda expressions are fun */
-		localization = new TankEncoderLocalization(() -> Rotation2dKt.getDegree(getGyro(true)),
-				() -> getLeft().getDistance(), () -> getRight().getDistance());
+		localization = new TankEncoderLocalization(
+				() -> Rotation2dKt.getDegree(getGyro(true)),
+				() -> getLeft().getDistance().getMeter(),
+				() -> getRight().getDistance().getMeter(),
+				new TimeInterpolatableBuffer<>());
 		/* set the robot pose to 0,0,0 */
 		localization.reset(new Pose2d());
 
@@ -236,8 +240,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	}
 
 	public void setNeutralMode(NeutralMode mode) {
-		getLeft().getMaster().setNeutralMode(mode);
-		getRight().getMaster().setNeutralMode(mode);
+		getLeft().getMaster().getMotorController().setNeutralMode(mode);
+		getRight().getMaster().getMotorController().setNeutralMode(mode);
 	}
 
 	public Transmission getLeft() {
@@ -259,11 +263,6 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	public void stop() {
 		getLeft().stop();
 		getRight().stop();
-	}
-
-	public void coast() {
-		getLeft().getMaster().neutralOutput();
-		getRight().getMaster().neutralOutput();
 	}
 
 	// /**
@@ -292,8 +291,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	 * @param right_voltage
 	 */
 	public void setVoltages(double left_voltage, double right_voltage) {
-		getLeft().getMaster().set(ControlMode.PercentOutput, left_voltage / 12);
-		getRight().getMaster().set(ControlMode.PercentOutput, right_voltage / 12);
+		getLeft().getMaster().setVoltage(left_voltage, 0);
+		getRight().getMaster().setVoltage(right_voltage, 0);
 	}
 
 	public void setClosedLoop(DriveSignal signal) {
@@ -312,23 +311,12 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	public void setCLosedLoop(Velocity<Length> left, Velocity<Length> right, double leftPercent, double rightPercent,
 			boolean brakeMode) {
 		setNeutralMode((brakeMode) ? NeutralMode.Brake : NeutralMode.Coast);
-		getLeft().getMaster().set(ControlMode.Velocity, left, DemandType.ArbitraryFeedForward, leftPercent);
-		getRight().getMaster().set(ControlMode.Velocity, right, DemandType.ArbitraryFeedForward, rightPercent);
+		getLeft().getMaster().setVelocity(left.getValue(), leftPercent);
+		getLeft().getMaster().setVelocity(right.getValue(), rightPercent);
 	}
 
 	public void setClosedLoop(Velocity<Length> left, Velocity<Length> right) {
 		setCLosedLoop(left, right, 0, 0, false);
-	}
-
-	/**
-	 * Set the raw speeds of the talons. Use setClosedLoop() instead.
-	 * 
-	 * @deprecated
-	 */
-	@Deprecated
-	public void setRawSpeeds(double leftRaw, double rightRaw) {
-		getLeftMotor().set(ControlMode.Velocity, leftRaw);
-		getRightMotor().set(ControlMode.Velocity, rightRaw);
 	}
 
 	/**
@@ -339,8 +327,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	 * @param right_power
 	 */
 	public void setPowers(double left_power, double right_power) {
-		leftTransmission.getMaster().set(ControlMode.PercentOutput, left_power);
-		rightTransmission.getMaster().set(ControlMode.PercentOutput, right_power);
+		leftTransmission.getMaster().setDutyCycle(left_power, 0);
+		rightTransmission.getMaster().setDutyCycle(right_power, 0);
 	}
 
 	public Pose2d getRobotPosition() {
@@ -511,10 +499,10 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		@Override
 		protected void initialize() {
 			DriveTrain.getInstance().setNeutralMode(NeutralMode.Brake);
-			DriveTrain.getInstance().getLeft().getMaster().configClosedloopRamp(0.16);
-			DriveTrain.getInstance().getRight().getMaster().configClosedloopRamp(0.16);
-			DriveTrain.getInstance().getLeft().getMaster().configOpenloopRamp(0.16);
-			DriveTrain.getInstance().getRight().getMaster().configOpenloopRamp(0.16);
+			DriveTrain.getInstance().getLeft().getMaster().getMotorController().configClosedloopRamp(0.16, 0);
+			DriveTrain.getInstance().getRight().getMaster().getMotorController().configClosedloopRamp(0.16, 0);
+			DriveTrain.getInstance().getLeft().getMaster().getMotorController().configOpenloopRamp(0.16, 0);
+			DriveTrain.getInstance().getRight().getMaster().getMotorController().configOpenloopRamp(0.16, 0);
 		}
 
 		@Override
@@ -649,8 +637,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		if (rightPercent < 0.06 && rightPercent > -0.06)
 			rightPercent = 0.0;
 
-		getLeft().getMaster().set(ControlMode.PercentOutput, leftPercent); // because C O M P E N S A T I O N
-		getRight().getMaster().set(ControlMode.PercentOutput, rightPercent);
+		getLeft().getMaster().setDutyCycle(leftPercent, 0);
+		getRight().getMaster().setDutyCycle(rightPercent, 0);
 
 		// 2.1 meters per second in low gear
 		//
@@ -756,11 +744,11 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 	@Override
 	public void logPeriodicIO() {
-		Logger.log("Bus voltage", getLeftMotor().getBusVoltage());
+		Logger.log("Bus voltage", getLeftMotor().getMotorController().getBusVoltage());
 		Logger.log("Forward joystick command", Robot.m_oi.getForwardAxis());
 		Logger.log("Turn joystick command", Robot.m_oi.getTurnAxis());
-		Logger.log("Left talon output voltage", getLeftMotor().getMotorOutputVoltage());
-		Logger.log("Right talon output voltage", getRightMotor().getMotorOutputVoltage());
+		Logger.log("Left talon output voltage", getLeftMotor().getMotorController().getMotorOutputVoltage());
+		Logger.log("Right talon output voltage", getRightMotor().getMotorController().getMotorOutputVoltage());
 	}
 
 }

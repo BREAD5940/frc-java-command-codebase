@@ -123,8 +123,8 @@ public class ZeroElevatorDisabled extends Command {
 
 		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
 
-		SuperStructure.getElevator().getMaster().set(ControlMode.PercentOutput, 0);
-		SuperStructure.getElevator().getMaster().setSensorPosition(mZeroHeight);
+		SuperStructure.getElevator().getMaster().setNeutral();
+		SuperStructure.getElevator().getMaster().getEncoder().resetPosition(mZeroHeight.getMeter());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

@@ -368,29 +368,29 @@ public class Trajectories {
 				reversed, optomizeSplines);
 	}
 
-	public static TimedTrajectory<Pose2dWithCurvature> reflect(TimedTrajectory<Pose2dWithCurvature> unReflected) {
-		List<Pose2d> newWaypoints = new ArrayList<>();
-		Velocity<Length> maxVelocity = VelocityKt.getVelocity(LengthKt.getInch(0));
-		Acceleration<Length> maxAccel = AccelerationKt.getAcceleration(LengthKt.getInch(0));
-		for (TimedEntry<Pose2dWithCurvature> point : unReflected.getPoints()) {
-			maxVelocity = (point.getVelocity().getValue() > maxVelocity.getValue()) ? point.getVelocity() : maxVelocity;
-			maxAccel = (point.getAcceleration().getValue() > maxAccel.getValue()) ? point.getAcceleration() : maxAccel;
-			double centerOffset = (13.5 - point.getState().getPose().getTranslation().getY().getFeet()) * -1;
-			newWaypoints.add(new Pose2d(
-					new Translation2d(LengthKt.getFeet(centerOffset + 13.5),
-							point.getState().getPose().getTranslation().getY()),
-					new Rotation2d(point.getState().getPose().getRotation().getRadian() * -1)));
-		}
-
-		return TrajectoryGeneratorKt.getDefaultTrajectoryGenerator().generateTrajectory(
-				newWaypoints,
-				kLowGearConstraints, //FIXME find gear of other traject
-				unReflected.getFirstState().getVelocity(), //FIXME i think this does what I want it to
-				unReflected.getLastState().getVelocity(),
-				maxVelocity,
-				maxAccel,
-				unReflected.getReversed(),
-				unReflected.getReversed());
-	}
+//	public static TimedTrajectory<Pose2dWithCurvature> reflect(TimedTrajectory<Pose2dWithCurvature> unReflected) {
+//		List<Pose2d> newWaypoints = new ArrayList<>();
+//		Velocity<Length> maxVelocity = VelocityKt.getVelocity(LengthKt.getInch(0));
+//		Acceleration<Length> maxAccel = AccelerationKt.getAcceleration(LengthKt.getInch(0));
+//		for (TimedEntry<Pose2dWithCurvature> point : unReflected.getPoints()) {
+//			maxVelocity = (point.getVelocity().getValue() > maxVelocity.getValue()) ? point.getVelocity() : maxVelocity;
+//			maxAccel = (point.getAcceleration().getValue() > maxAccel.getValue()) ? point.getAcceleration() : maxAccel;
+//			double centerOffset = (13.5 - point.getState().getPose().getTranslation().getY().getFeet()) * -1;
+//			newWaypoints.add(new Pose2d(
+//					new Translation2d(LengthKt.getFeet(centerOffset + 13.5),
+//							point.getState().getPose().getTranslation().getY()),
+//					new Rotation2d(point.getState().getPose().getRotation().getRadian() * -1)));
+//		}
+//
+//		return TrajectoryGeneratorKt.getDefaultTrajectoryGenerator().generateTrajectory(
+//				newWaypoints,
+//				kLowGearConstraints, //FIXME find gear of other traject
+//				unReflected.getFirstState().getVelocity(), //FIXME i think this does what I want it to
+//				unReflected.getLastState().getVelocity(),
+//				maxVelocity,
+//				maxAccel,
+//				unReflected.getReversed(),
+//				unReflected.getReversed());
+//	}
 
 }

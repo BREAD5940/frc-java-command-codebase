@@ -84,7 +84,7 @@ dependencies {
 //	compile 'com.github.5190GreenHopeRobotics:FalconLibrary:2019.3.4'
   compile "com.github.mcm001:FalconLibrary:0.0.2"
 
-  compile 'com.github.mcm001:pantrycommon:587caa1eab'
+  compile 'com.github.mcm001:pantrycommon:2d570ea774'
 
   compile 'com.github.Oblarg:Oblog:2.8.1'
 

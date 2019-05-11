@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -36,6 +37,7 @@ import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.LimeLight.LEDMode;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import org.ghrobotics.lib.mathematics.units.SILengthConstants;
 
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly init
@@ -234,7 +236,7 @@ public class Robot extends TimedRobot {
 		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
 		// wrist.getMaster().setSelectedSensorPosition((int) (wristStart));
 
-		elevator.getMaster().setSelectedSensorPosition((int) (elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue())); // just to be super sure the elevator is safe-ishhhh
+		elevator.getMaster().getMotorController().setSelectedSensorPosition((int) (elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue()), 0, 0); // just to be super sure the elevator is safe-ishhhh
 		var cmd = zeroElevatorWhileDisabled;
 		cmd.start();
 
@@ -497,11 +499,11 @@ public class Robot extends TimedRobot {
 
 		// System.out.println(String.format("carriage max %s inner stage min %s", superstructure.getCarriageMaxLimit(), superstructure.getInnerStageMinLimit() ));
 
-		SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
-		SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
+		SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX() / SILengthConstants.kFeetToMeter);
+		SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY() / SILengthConstants.kFeetToMeter);
 
-		LiveDashboard.INSTANCE.setRobotX(drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
-		LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
+		LiveDashboard.INSTANCE.setRobotX(drivetrain.getLocalization().getRobotPosition().getTranslation().getX() / SILengthConstants.kFeetToMeter);
+		LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY() / SILengthConstants.kFeetToMeter);
 		LiveDashboard.INSTANCE.setRobotHeading(drivetrain.getLocalization().getRobotPosition().getRotation().getRadian());
 
 		// SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getFeetPerSecond());

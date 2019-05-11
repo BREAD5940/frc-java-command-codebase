@@ -37,7 +37,7 @@ public class JustElevatorTeleop extends Command {
 		SuperStructure.elevator.setGear(Elevator.kDefaultGear);
 		// System.out.println("kp: ================ " + SuperStructure.elevator.getMaster().getKP());
 		mCachedState = SuperStructure.getInstance().updateState();
-		SuperStructure.getElevator().getMaster().selectProfileSlot(3, 0);
+		SuperStructure.getElevator().getMaster().getMotorController().selectProfileSlot(3, 0);
 		// SuperStructure.getInstance().getElbow().getMaster().selectProfileSlot(3, 0);
 
 		if (SuperStructure.elevator.elevatorZeroed == false) {
