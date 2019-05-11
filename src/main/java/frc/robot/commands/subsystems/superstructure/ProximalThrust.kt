@@ -1,6 +1,7 @@
 package frc.robot.commands.subsystems.superstructure
 
 import edu.wpi.first.wpilibj.command.Command
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
 import frc.robot.lib.obj.RoundRotation2d
 import frc.robot.states.ElevatorState
 import frc.robot.states.SuperStructureState
@@ -76,10 +77,20 @@ class ProximalThrust(
         structure.wrist.requestAngle(newWantedWrsit)
         elevator.setPositionSetpoint(ElevatorState(newWantedElevator))
 
+        this.lastState = currentState
+
     }
 
     override fun isFinished(): Boolean {
         return iteratorFinished
+    }
+
+    override fun initSendable(builder: SendableBuilder?) {
+
+        builder?.addBooleanProperty("iterator finished", { iteratorFinished }, null)
+        builder?.addStringProperty("last commanded state", { lastState.toString() }, null)
+
+        super.initSendable(builder)
     }
 
 }
