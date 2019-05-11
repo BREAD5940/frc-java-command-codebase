@@ -16,7 +16,7 @@ public class RoundRotation2d implements Loggable {
 		this.sine = Math.sin(this.getRadian());
 	}
 
-	private RoundRotation2d(double deg) {
+	public RoundRotation2d(double deg) {
 		this.value = deg;
 	}
 

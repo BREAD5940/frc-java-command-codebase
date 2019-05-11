@@ -3,12 +3,10 @@ package frc.robot.subsystems.superstructure;
 import java.util.Arrays;
 import java.util.List;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
-import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
@@ -17,11 +15,11 @@ import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
 import org.ghrobotics.lib.motors.ctre.FalconSRX;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -126,9 +124,9 @@ public class Elevator extends HalfBakedSubsystem {
 
 	public Elevator(int masterPort, int slavePort1, int slavePort2, int slavePort3, EncoderMode mode, InvertSettings settings) {
 
-		 super("Elevator");
+		super("Elevator");
 
-		 var masterTalon = new TalonSRX(masterPort);
+		var masterTalon = new TalonSRX(masterPort);
 
 		if (mode == EncoderMode.CTRE_MagEncoder_Relative) {
 			masterTalon.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 30);
@@ -145,8 +143,7 @@ public class Elevator extends HalfBakedSubsystem {
 
 		masterTalon.setInverted(false);
 
-		 mMaster = new FalconSRX<Length>(masterTalon, lengthModel);
-
+		mMaster = new FalconSRX<Length>(masterTalon, lengthModel);
 
 		var slave1Talon = new TalonSRX(slavePort1);
 		var slave12Talon = new TalonSRX(slavePort2);
@@ -193,7 +190,7 @@ public class Elevator extends HalfBakedSubsystem {
 	}
 
 	public void configMotionMagicGains(PIDSettings settings) {
-		getMaster().getMotorController().configMotionCruiseVelocity((int) settings.motionMagicCruiseVelocity,0);
+		getMaster().getMotorController().configMotionCruiseVelocity((int) settings.motionMagicCruiseVelocity, 0);
 		getMaster().getMotorController().configMotionAcceleration((int) settings.motionMagicAccel, 0);
 	}
 
@@ -315,7 +312,7 @@ public class Elevator extends HalfBakedSubsystem {
 		setpoint = Util.limit(setpoint, SuperStructureConstants.Elevator.bottom, SuperStructureConstants.Elevator.top);
 		getMaster().getMotorController().selectProfileSlot(3, 0);
 		// Logger.log("Elevator setpoint: " + setpoint.getInch() + " feedforward: " + feedForwardPercent + " current raw output: " + getMaster().getMotorOutputPercent());
-//		getMaster().set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
+		//		getMaster().set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
 
 		getMaster().setUseMotionProfileForPosition(true);
 		getMaster().setPosition(setpoint.getMeter(), feedForwardPercent);
@@ -387,10 +384,10 @@ public class Elevator extends HalfBakedSubsystem {
 		return new ElevatorState(getHeight(), getVelocity());
 	}
 
-	 @Override
-	 protected void initDefaultCommand() {
+	@Override
+	protected void initDefaultCommand() {
 
-	 }
+	}
 
 	@Override
 	public void onDisable() {
