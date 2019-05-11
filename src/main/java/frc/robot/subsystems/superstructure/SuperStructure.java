@@ -3,6 +3,8 @@ package frc.robot.subsystems.superstructure;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2dKt;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Mass;
@@ -149,6 +151,19 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	public SuperStructureState getCurrentState() {
 		updateState();
 		return mCurrentState;
+	}
+
+	/**
+	 * Get the current state of the superstructure as a Translation2d, given a SuperStructureState
+	 * @param state the current state of the SuperStructure
+	 * @return a Translation2d represeting the current state.
+	 */
+	public static Translation2d getCurrentStateAsPose(SuperStructureState state) {
+		var proximalAngle = state.getElbowAngle();
+		var proximalLen = 0.41;//meter
+		var proximalPose = Translation2dKt.toTranslation(proximalAngle.toRotation2d());
+		var structureOrientedPose = proximalPose.plus(new Translation2d(0, state.getElevatorHeight().getMeter()));
+		return structureOrientedPose;
 	}
 
 	public static class iPosition {
@@ -304,6 +319,16 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 			elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
 					new InvertSettings(true, InvertType.FollowMaster, InvertType.OpposeMaster, InvertType.OpposeMaster));
 		return elevator;
+	}
+
+	public static RoundRotation2d getUnDumbWrist(RoundRotation2d dumbWrist, RoundRotation2d relevantProx) {
+		var compensatedAngle = dumbWrist.plus(relevantProx.div(2));
+		return compensatedAngle;
+	}
+
+	public static RoundRotation2d getDumbWrist(RoundRotation2d smartWrist, RoundRotation2d relevantProx) {
+		var unCompensatedAngle = smartWrist.minus(relevantProx.div(2));
+		return unCompensatedAngle;
 	}
 
 	public void move(SuperStructureState requState) {

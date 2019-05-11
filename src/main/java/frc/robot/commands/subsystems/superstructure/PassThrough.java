@@ -1,5 +1,7 @@
 package frc.robot.commands.subsystems.superstructure;
 
+import static frc.robot.subsystems.superstructure.SuperStructure.getDumbWrist;
+
 import java.util.function.Supplier;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -16,16 +18,6 @@ public class PassThrough extends ConditionalCommand {
 
 	private static final double kProximalMaxVel = 150d / 360d * 2 * Math.PI;
 	private static final double kWristMaxVel = 150d / 360d * 2 * Math.PI;
-
-	private static RoundRotation2d getUnDumbWrist(RoundRotation2d dumbWrist, RoundRotation2d relevantProx) {
-		var compensatedAngle = dumbWrist.plus(relevantProx.div(2));
-		return compensatedAngle;
-	}
-
-	private static RoundRotation2d getDumbWrist(RoundRotation2d smartWrist, RoundRotation2d relevantProx) {
-		var unCompensatedAngle = smartWrist.minus(relevantProx.div(2));
-		return unCompensatedAngle;
-	}
 
 	public static class SyncedMove extends Command {
 
