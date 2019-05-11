@@ -21,8 +21,8 @@ class ProximalThrust(
         private val structure: SuperStructure,
         private val elevator : Elevator,
         private val pokeDistance: Double,
-        private val proximalLen: Double,
-        private val wristAngle: Double
+        private val wristAngle: RoundRotation2d,
+        private val isOutwardsPoke: Boolean = true
 ) : Command() {
 
     init {
@@ -54,19 +54,23 @@ class ProximalThrust(
     override fun execute() {
         val currentState = structure.currentState
 
-        val newWantedProximal = lastState.elbowAngle.radian + kProximalSpeed * 0.02
+        // haha i pulled a sneeky on ya. Double times Boolean is Double. if true, the Boolean is 1, or -1 if false
+        val newWantedProximal = lastState.elbowAngle.radian + (kProximalSpeed * 0.02 * isOutwardsPoke)
 
         val startProximalTranslation2d = Translation2d.fromRotation2d(startState!!.elbowAngle.radian, kProximalLen)
 
         val newProximalTranslation2d = Translation2d.fromRotation2d(newWantedProximal, kProximalLen)
 
-        if (newProximalTranslation2d.x > pokeDistance) {iteratorFinished = true ; return}
+        if (newProximalTranslation2d.x > pokeDistance && isOutwardsPoke
+                || newProximalTranslation2d.x < pokeDistance && !isOutwardsPoke) {
+            iteratorFinished = true ; return
+        }
 
         val deltaHeight = newProximalTranslation2d.y - startProximalTranslation2d.y
 
         val newWantedElevator = startState!!.elevatorHeight + deltaHeight.meter
 
-        val newWantedWrsit = getDumbWrist(0.roundRadian, currentState.elbowAngle)
+        val newWantedWrsit = getDumbWrist(wristAngle, currentState.elbowAngle)
 
         structure.elbow.requestAngle(newWantedProximal.roundRadian)
         structure.wrist.requestAngle(newWantedWrsit)
@@ -78,4 +82,8 @@ class ProximalThrust(
         return iteratorFinished
     }
 
+}
+
+private operator fun Number.times(other: Boolean): Double {
+    return toDouble() * (if (other) 1 else -1)
 }
