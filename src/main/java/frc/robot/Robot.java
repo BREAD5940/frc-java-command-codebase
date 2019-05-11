@@ -26,19 +26,16 @@ import frc.robot.commands.auto.TerribleAutoChooser;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
 import frc.robot.commands.subsystems.superstructure.PassThrough.SyncedMove;
-import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.ZeroElevatorDisabled;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
-import frc.robot.states.IntakeAngle;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.LimeLight.LEDMode;
 import frc.robot.subsystems.superstructure.SuperStructure;
-import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly init
@@ -332,7 +329,6 @@ public class Robot extends TimedRobot {
 
 		var backFront = new CommandGroup();
 		backFront.addSequential(new SyncedMove(Math.toRadians(0), true, superstructure));
-
 
 		SmartDashboard.putData("front to back passthrough", frontBack);
 		SmartDashboard.putData("back to front passthrough", backFront);
