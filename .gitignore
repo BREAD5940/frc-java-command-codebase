@@ -171,3 +171,6 @@ src/main/python/twoHatchLLtest.csv
 src\main\python\twoHatchLLtest.csv
 src\main\python\twoHatchLLtest.csv
 *.gz
+*.xml
+*.iml
+.idea/workspace.xml
