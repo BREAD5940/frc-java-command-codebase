@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Constants;
 import frc.robot.lib.Logger;
 
-// @SuppressWarnings("WeakerAccess")
+@SuppressWarnings("WeakerAccess")
 public class Trajectories {
 
 	public static TimedTrajectory<Pose2dWithCurvature> reverse3FeetLowGear;// = generateTrajectoryLowGear(Arrays.asList(new Pose2d(LengthKt.getFeet(0), LengthKt.getFeet(0), Rotation2dKt.getDegree(180)), new Pose2d(LengthKt.getFeet(3), LengthKt.getFeet(0), Rotation2dKt.getDegree(180))), true);

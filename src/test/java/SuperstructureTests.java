@@ -1,19 +1,5 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.junit.jupiter.api.Test;
-
-import frc.robot.SuperStructureConstants;
-import frc.robot.lib.Logger;
-import frc.robot.lib.motion.Util;
-import frc.robot.lib.obj.RoundRotation2d;
-import frc.robot.states.ElevatorState;
-import frc.robot.states.IntakeAngle;
-import frc.robot.states.SuperStructureState;
-import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
-import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 public class SuperstructureTests extends Testable {
 
@@ -136,101 +122,101 @@ public class SuperstructureTests extends Testable {
 
 		writeToCSV("src/test/java/safingTestOut.csv", toPrint);
 	}
-
-	@Test
-	public void superstructureMotionTest() {
-
-		SuperStructureState Start1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(5)),
-				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
-
-		SuperStructureState Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(10)),
-				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
-
-		// testableSSMotion.getInstance().plan(Goal1, Start1);
-
-		Start1 = iPosition.HATCH_GRAB_INSIDE;
-		Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(3.5)), iPosition.CARGO_GRAB);
-		Logger.log("======== testing hatch grab to cargo pickup ========");
-
-		testableSSMotion motion;
-		// motion = new testableSSMotion(Goal1, Start1);
-
-		// motion.initialize();
-
-		// motion = new testableSSMotion(Start1, Goal1);
-
-		// motion.initialize();
-
-		Start1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(60)),
-				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-120)), new RotatingArmState(RoundRotation2d.getDegree(-45))));
-
-		Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(10)),
-				// elbow state, wrist state
-				new RotatingArmState(RoundRotation2d.getDegree(0)),
-				new RotatingArmState(RoundRotation2d.getDegree(0)));
-
-		motion = new testableSSMotion(Goal1, Start1);
-
-		motion.initialize();
-
-		// testableSSMotion.getInstance().plan(Goal1, Start1);
-
-		// var planned = testableSSMotion.getInstance().getQueue();
-
-		// for(Command c : planned.)
-
-	}
-
-	@Test
-	public void testMotion() {
-
-		//FIXME Goal1 and Start1 are undefined
-		// SuperstructureMotion.getInstance().plan(Goal1, Start1);
-
-		// System.out.println(SuperstructureMotion.getInstance().getQueue());
-
-		var iswithin = (Util.isWithin(RoundRotation2d.getDegree(-90), RoundRotation2d.getDegree(-60), RoundRotation2d.getDegree(-80)));
-
-		var worstCaseElbow = (Util.getWorstCase(RoundRotation2d.getDegree(-90), RoundRotation2d.getDegree(-60), RoundRotation2d.getDegree(-80)));
-
-		System.out.println("worst case: " + worstCaseElbow);
-		System.out.println("is within? " + iswithin);
-
-		assertEquals(worstCaseElbow.getDegree(), -80, 0.1);
-		assertFalse(iswithin);
-
-		worstCaseElbow = (Util.getWorstCase(RoundRotation2d.getDegree(-90), RoundRotation2d.getDegree(-80), RoundRotation2d.getDegree(-130)));
-		assertEquals(worstCaseElbow.getDegree(), -90, 0.1);
-		System.out.println("worst case: " + worstCaseElbow);
-
-	}
-
-	@Test
-	public void rotation2dTest() {
-		assertEquals(360, RoundRotation2d.getDegree(360).getDegree(), 0.1);
-	}
-
-	@Test
-	public void pointsTest() {
-		Translation2d SPelevator = new Translation2d(LengthKt.getInch(0), LengthKt.getInch(20));
-		Translation2d SPwristLong = new Translation2d(LengthKt.getInch(RoundRotation2d.getDegree(30).getCos() * SuperStructureConstants.Elbow.carriageToIntake.getInch()),
-				LengthKt.getInch(RoundRotation2d.getDegree(30).getSin() * SuperStructureConstants.Elbow.carriageToIntake.getInch())).plus(SPelevator);
-
-		Translation2d SPwristShort = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, RoundRotation2d.getDegree(30).toRotation2d()).plus(SPelevator);
-
-		assertEquals(10.3923, SPwristShort.getX().getInch(), 0.1);
-		assertEquals(10.3923, SPwristLong.getX().getInch(), 0.1);
-
-	}
-
-	@Test
-	public void testPoints() {
-		var goalState = new SuperStructureState(new ElevatorState(), new RotatingArmState(RoundRotation2d.getDegree(-90)), new RotatingArmState(RoundRotation2d.getDegree(0)));
-		Translation2d GPelevator = new Translation2d(LengthKt.getInch(0), LengthKt.getInch(0));
-		Translation2d GPwrist = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, goalState.getElbowAngle().toRotation2d()).plus(GPelevator);
-
-		Logger.log(String.format("GPWrist X %s Y %s", GPwrist.getX().getInch(), GPwrist.getY().getInch()));
-
-	}
+	//
+	//	@Test
+	//	public void superstructureMotionTest() {
+	//
+	//		SuperStructureState Start1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(5)),
+	//				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
+	//
+	//		SuperStructureState Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(10)),
+	//				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
+	//
+	//		// testableSSMotion.getInstance().plan(Goal1, Start1);
+	//
+	//		Start1 = iPosition.HATCH_GRAB_INSIDE;
+	//		Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(3.5)), iPosition.CARGO_GRAB);
+	//		Logger.log("======== testing hatch grab to cargo pickup ========");
+	//
+	//		testableSSMotion motion;
+	//		// motion = new testableSSMotion(Goal1, Start1);
+	//
+	//		// motion.initialize();
+	//
+	//		// motion = new testableSSMotion(Start1, Goal1);
+	//
+	//		// motion.initialize();
+	//
+	//		Start1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(60)),
+	//				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-120)), new RotatingArmState(RoundRotation2d.getDegree(-45))));
+	//
+	//		Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(10)),
+	//				// elbow state, wrist state
+	//				new RotatingArmState(RoundRotation2d.getDegree(0)),
+	//				new RotatingArmState(RoundRotation2d.getDegree(0)));
+	//
+	//		motion = new testableSSMotion(Goal1, Start1);
+	//
+	//		motion.initialize();
+	//
+	//		// testableSSMotion.getInstance().plan(Goal1, Start1);
+	//
+	//		// var planned = testableSSMotion.getInstance().getQueue();
+	//
+	//		// for(Command c : planned.)
+	//
+	//	}
+	//
+	//	@Test
+	//	public void testMotion() {
+	//
+	//		//FIXME Goal1 and Start1 are undefined
+	//		// SuperstructureMotion.getInstance().plan(Goal1, Start1);
+	//
+	//		// System.out.println(SuperstructureMotion.getInstance().getQueue());
+	//
+	//		var iswithin = (Util.isWithin(RoundRotation2d.getDegree(-90), RoundRotation2d.getDegree(-60), RoundRotation2d.getDegree(-80)));
+	//
+	//		var worstCaseElbow = (Util.getWorstCase(RoundRotation2d.getDegree(-90), RoundRotation2d.getDegree(-60), RoundRotation2d.getDegree(-80)));
+	//
+	//		System.out.println("worst case: " + worstCaseElbow);
+	//		System.out.println("is within? " + iswithin);
+	//
+	//		assertEquals(worstCaseElbow.getDegree(), -80, 0.1);
+	//		assertFalse(iswithin);
+	//
+	//		worstCaseElbow = (Util.getWorstCase(RoundRotation2d.getDegree(-90), RoundRotation2d.getDegree(-80), RoundRotation2d.getDegree(-130)));
+	//		assertEquals(worstCaseElbow.getDegree(), -90, 0.1);
+	//		System.out.println("worst case: " + worstCaseElbow);
+	//
+	//	}
+	//
+	//	@Test
+	//	public void rotation2dTest() {
+	//		assertEquals(360, RoundRotation2d.getDegree(360).getDegree(), 0.1);
+	//	}
+	//
+	//	@Test
+	//	public void pointsTest() {
+	//		Translation2d SPelevator = new Translation2d(LengthKt.getInch(0), LengthKt.getInch(20));
+	//		Translation2d SPwristLong = new Translation2d(LengthKt.getInch(RoundRotation2d.getDegree(30).getCos() * SuperStructureConstants.Elbow.carriageToIntake.getInch()),
+	//				LengthKt.getInch(RoundRotation2d.getDegree(30).getSin() * SuperStructureConstants.Elbow.carriageToIntake.getInch())).plus(SPelevator);
+	//
+	//		Translation2d SPwristShort = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, RoundRotation2d.getDegree(30).toRotation2d()).plus(SPelevator);
+	//
+	//		assertEquals(10.3923, SPwristShort.getX().getInch(), 0.1);
+	//		assertEquals(10.3923, SPwristLong.getX().getInch(), 0.1);
+	//
+	//	}
+	//
+	//	@Test
+	//	public void testPoints() {
+	//		var goalState = new SuperStructureState(new ElevatorState(), new RotatingArmState(RoundRotation2d.getDegree(-90)), new RotatingArmState(RoundRotation2d.getDegree(0)));
+	//		Translation2d GPelevator = new Translation2d(LengthKt.getInch(0), LengthKt.getInch(0));
+	//		Translation2d GPwrist = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, goalState.getElbowAngle().toRotation2d()).plus(GPelevator);
+	//
+	//		Logger.log(String.format("GPWrist X %s Y %s", GPwrist.getX().getInch(), GPwrist.getY().getInch()));
+	//
+	//	}
 
 }
