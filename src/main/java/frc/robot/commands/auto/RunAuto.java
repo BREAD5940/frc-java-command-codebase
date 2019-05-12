@@ -1,7 +1,6 @@
 // package frc.robot.commands.auto;
 
-// import frc.robot.commands.auto.groups.AutoCommandGroup;
-// import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
+// // import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
 // import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalType;
 // import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 // import frc.robot.subsystems.DriveTrain;
@@ -45,27 +44,27 @@
 // 		this.mHeight = mHeight;
 // 		this.isDrive = false;
 
-// 		requires(SuperStructure.getInstance());
-// 		requires(SuperStructure.getInstance().getWrist());
-// 		requires(SuperStructure.getInstance().getElbow());
-// 		requires(SuperStructure.getElevator());
-// 		requires(DriveTrain.getInstance());
+// 		addRequirements(SuperStructure.getInstance());
+// 		addRequirements(SuperStructure.getInstance().getWrist());
+// 		addRequirements(SuperStructure.getInstance().getElbow());
+// 		addRequirements(SuperStructure.getElevator());
+// 		addRequirements(DriveTrain.getInstance());
 // 	}
 
 // 	public RunAuto(GoalType mGt, GoalHeight mHeight) {
 // 		this.mGt = mGt;
 // 		this.mHeight = mHeight;
 // 		this.isDrive = false;
-// 		requires(SuperStructure.getInstance());
-// 		requires(DriveTrain.getInstance());
+// 		addRequirements(SuperStructure.getInstance());
+// 		addRequirements(DriveTrain.getInstance());
 // 	}
 
 // 	public RunAuto(HeldPiece cPiece, String... cKeys) {
 // 		this.cKeys = cKeys;
 // 		this.isDrive = true;
 // 		this.cPiece = cPiece;
-// 		requires(SuperStructure.getInstance());
-// 		requires(DriveTrain.getInstance());
+// 		addRequirements(SuperStructure.getInstance());
+// 		addRequirements(DriveTrain.getInstance());
 // 	}
 
 // 	@Override

@@ -3,11 +3,11 @@ package frc.robot.commands.subsystems.drivetrain;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.TerriblePID;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 /**
  * auto_DriveDistance is a basic auto action. It should drive in a straight-ish line, as it uses 
@@ -46,7 +46,7 @@ public class DriveDistance extends SendableCommandBase {
 		this.targetSpeed = targetSpeed;
 		this.timeout = timeout;
 		this.forwardPID.setMaxOutput(targetSpeed);
-		requires(Robot.drivetrain);
+		addRequirements(Robot.drivetrain);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class DriveDistance extends SendableCommandBase {
 	public DriveDistance(double distance, double timeout) {
 		this.targetDistance = distance;
 		this.timeout = timeout;
-		requires(Robot.drivetrain);
+		addRequirements(Robot.drivetrain);
 	}
 
 	/**
@@ -70,14 +70,14 @@ public class DriveDistance extends SendableCommandBase {
 	 */
 	public DriveDistance(double distance) {
 		this.targetDistance = distance;
-		requires(Robot.drivetrain);
+		addRequirements(Robot.drivetrain);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
 	public void initialize() {
 		forwardPID.setSetpoint(targetDistance);
-		setTimeout(timeout); // set the timeout
+//		setTimeout(timeout); // set the timeout
 		System.out.println("Auto action drive init!");
 	}
 
@@ -112,7 +112,7 @@ public class DriveDistance extends SendableCommandBase {
 				&& (Math.abs(Robot.drivetrain.getLeft().getFeet() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence)
 				&& (Math.abs(Robot.drivetrain.getLeft().getFeet()) < RobotConfig.auto.tolerences.velocity_tolerence)
 				&& (Math.abs(Robot.drivetrain.getRight().getFeet()) < RobotConfig.auto.tolerences.velocity_tolerence))
-				|| (isTimedOut())) {
+				) {
 			return true;
 		} else {
 			return false;
@@ -127,8 +127,8 @@ public class DriveDistance extends SendableCommandBase {
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		Robot.drivetrain.stop();
-	}
+//	@Override
+//	protected void interrupted() {
+//		Robot.drivetrain.stop();
+//	}
 }

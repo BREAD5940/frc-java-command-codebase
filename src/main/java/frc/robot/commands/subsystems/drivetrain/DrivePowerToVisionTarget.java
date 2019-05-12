@@ -8,13 +8,14 @@
 package frc.robot.commands.subsystems.drivetrain;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.command.TimedCommand;
+//import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.Robot;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
+import org.team5940.pantry.exparimental.command.WaitCommand;
 
-public class DrivePowerToVisionTarget extends TimedCommand {
+public class DrivePowerToVisionTarget extends WaitCommand {
 
 	double exitArea;
 	boolean hasTarget, hadTarget;
@@ -32,7 +33,7 @@ public class DrivePowerToVisionTarget extends TimedCommand {
 	public DrivePowerToVisionTarget(double power, double time) {
 		super(time);
 
-		requires(DriveTrain.getInstance());
+		addRequirements(DriveTrain.getInstance());
 
 		this.power = power;
 
@@ -40,7 +41,7 @@ public class DrivePowerToVisionTarget extends TimedCommand {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {}
+	public void initialize() {super.initialize();}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
@@ -136,12 +137,7 @@ public class DrivePowerToVisionTarget extends TimedCommand {
 	@Override
 	public void end(boolean interrupted) {
 		DriveTrain.getInstance().stop();
+		super.end(interrupted);
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		end();
-	}
 }

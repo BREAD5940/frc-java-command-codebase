@@ -20,8 +20,8 @@ public class ToggleClamp extends InstantCommand {
 	 */
 	public ToggleClamp() {
 		super();
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
 	}
 
 	// Called once when the command executes

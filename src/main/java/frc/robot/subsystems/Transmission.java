@@ -10,7 +10,6 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
-import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -21,6 +20,7 @@ import com.ctre.phoenix.motorcontrol.SensorTerm;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotConfig.driveTrain;
 import frc.robot.lib.enums.TransmissionSide;
+import org.ghrobotics.lib.motors.ctre.FalconSRX;
 
 public class Transmission {
 	public static enum EncoderMode {
@@ -42,33 +42,33 @@ public class Transmission {
 			lengthModel = driveTrain.RIGHT_NATIVE_UNIT_LENGTH_MODEL;
 		}
 
-		mMaster = new FalconSRX<Length>(masterPort, lengthModel, TimeUnitsKt.getMillisecond(10));
-		mSlave = new FalconSRX<Length>(slavePort, lengthModel, TimeUnitsKt.getMillisecond(10));
+		mMaster = new FalconSRX<Length>(masterPort, lengthModel);
+		mSlave = new FalconSRX<Length>(slavePort, lengthModel);
 
 		this.side = side;
 
 		if (mode == EncoderMode.CTRE_MagEncoder_Relative) {
-			mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-			mMaster.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 0);
+			mMaster.getTalonSRX().configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+			mMaster.getTalonSRX().configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 0);
 		}
-		mSlave.set(ControlMode.Follower, mMaster.getDeviceID());
+		mSlave.getTalonSRX().set(ControlMode.Follower, mMaster.getTalonSRX().getDeviceID());
 		// Quadrature Encoder of current
 		// Talon
-		mMaster.configPeakOutputForward(+1.0, 30);
-		mMaster.configPeakOutputReverse(-1.0, 30);
+		mMaster.getTalonSRX().configPeakOutputForward(+1.0, 30);
+		mMaster.getTalonSRX().configPeakOutputReverse(-1.0, 30);
 
 		SmartDashboard.putBoolean("Is the " + side.toString() + " transmission inverted", isInverted);
 
 		// if(isInverted == true) {
 		// Logger.log("Making this inverted");
-		mMaster.setInverted(isInverted);
-		mSlave.setInverted(InvertType.FollowMaster);
+		mMaster.getTalonSRX().setInverted(isInverted);
+		mSlave.getTalonSRX().setInverted(InvertType.FollowMaster);
 
-		mMaster.configVoltageCompSaturation(12);
-		mMaster.enableVoltageCompensation(true);
+		mMaster.getTalonSRX().configVoltageCompSaturation(12);
+		mMaster.getTalonSRX().enableVoltageCompensation(true);
 
-		mSlave.configVoltageCompSaturation(12);
-		mSlave.enableVoltageCompensation(true);
+		mSlave.getTalonSRX().configVoltageCompSaturation(12);
+		mSlave.getTalonSRX().enableVoltageCompensation(true);
 		// }
 	}
 
@@ -86,11 +86,11 @@ public class Transmission {
 	}
 
 	public Length getDistance() {
-		return mMaster.getSensorPosition();
+		return LengthKt.getMeter(mMaster.getEncoder().getPosition());
 	}
 
 	public Velocity<Length> getVelocity() {
-		return mMaster.getSensorVelocity();
+		return VelocityKt.getVelocity(LengthKt.getMeter(mMaster.getEncoder().getVelocity()));
 	}
 
 	public double getFeetPerSecond() {
@@ -102,34 +102,34 @@ public class Transmission {
 	}
 
 	public Length getClosedLoopError() {
-		if (getMaster().getControlMode() != ControlMode.PercentOutput) {
-			return lengthModel.fromNativeUnitPosition(NativeUnitKt.getNativeUnits(mMaster.getClosedLoopError()));
+		if (getMaster().getTalonSRX().getControlMode() != ControlMode.PercentOutput) {
+			return lengthModel.fromNativeUnitPosition(NativeUnitKt.getNativeUnits(mMaster.getTalonSRX().getClosedLoopError()));
 		} else {
 			return LengthKt.getFeet(0);
 		}
 	}
 
 	public void zeroEncoder() {
-		mMaster.setSensorPosition(LengthKt.getMeter(0));
+		mMaster.getEncoder().resetPosition(0);
 	}
 
 	public void setNeutralMode(NeutralMode mode) {
 		for (FalconSRX<Length> motor : getAll()) {
-			motor.setNeutralMode(mode);
+			motor.getTalonSRX().setNeutralMode(mode);
 		}
 	}
 
 	public void stop() {
-		getMaster().set(ControlMode.PercentOutput, 0);
+		getMaster().setNeutral();
 	}
 
 	public void setClosedLoopGains(double kp, double ki, double kd, double kf, double iZone, double maxIntegral) {
-		mMaster.config_kP(0, kp, 0);
-		mMaster.config_kI(0, ki, 0);
-		mMaster.config_kD(0, kd, 0);
-		mMaster.config_kF(0, kf, 0);
-		mMaster.config_IntegralZone(0, (int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getMeter(iZone)).getValue()), 30);
-		mMaster.configMaxIntegralAccumulator(0, maxIntegral, 0);
+		mMaster.getTalonSRX().config_kP(0, kp, 0);
+		mMaster.getTalonSRX().config_kI(0, ki, 0);
+		mMaster.getTalonSRX().config_kD(0, kd, 0);
+		mMaster.getTalonSRX().config_kF(0, kf, 0);
+		mMaster.getTalonSRX().config_IntegralZone(0, (int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getMeter(iZone)).getValue()), 30);
+		mMaster.getTalonSRX().configMaxIntegralAccumulator(0, maxIntegral, 0);
 	}
 
 }

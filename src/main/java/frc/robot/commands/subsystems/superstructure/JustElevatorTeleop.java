@@ -3,7 +3,8 @@ package frc.robot.commands.subsystems.superstructure;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+//import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.states.ElevatorState;
@@ -24,11 +25,11 @@ public class JustElevatorTeleop extends SendableCommandBase {
 	 * @author Matthew Morley
 	 */
 	public JustElevatorTeleop() {
-		// Use requires() here to declare subsystem dependencies
-		requires(SuperStructure.getInstance());
-		// requires(SuperStructure.getInstance().getWrist());
-		// requires(SuperStructure.getInstance().getElbow());
-		requires(SuperStructure.getElevator());
+		// Use addRequirements() here to declare subsystem dependencies
+		addRequirements(SuperStructure.getInstance());
+		// addRequirements(SuperStructure.getInstance().getWrist());
+		// addRequirements(SuperStructure.getInstance().getElbow());
+		addRequirements(SuperStructure.getElevator());
 	}
 
 	// Called just before this Command runs the first time
@@ -37,7 +38,7 @@ public class JustElevatorTeleop extends SendableCommandBase {
 		SuperStructure.elevator.setGear(Elevator.kDefaultGear);
 		// System.out.println("kp: ================ " + SuperStructure.elevator.getMaster().getKP());
 		mCachedState = SuperStructure.getInstance().updateState();
-		SuperStructure.getElevator().getMaster().selectProfileSlot(3, 0);
+		SuperStructure.getElevator().getMaster().getTalonSRX().selectProfileSlot(3, 0);
 		// SuperStructure.getInstance().getElbow().getMaster().selectProfileSlot(3, 0);
 
 		if (SuperStructure.elevator.elevatorZeroed == false) {
@@ -85,6 +86,6 @@ public class JustElevatorTeleop extends SendableCommandBase {
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
+//	@Override
+//	protected void interrupted() {}
 }

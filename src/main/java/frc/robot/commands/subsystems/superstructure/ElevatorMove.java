@@ -2,9 +2,10 @@ package frc.robot.commands.subsystems.superstructure;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+//import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 public class ElevatorMove extends SendableCommandBase {
 
@@ -24,12 +25,12 @@ public class ElevatorMove extends SendableCommandBase {
 
 	public ElevatorMove(ElevatorState goal, String name) {
 		this.mGoal = goal;
-		requires(SuperStructure.getElevator());
+		addRequirements(SuperStructure.getElevator());
 		setName(name);
 	}
 
 	@Override
-	protected void initialize() {}
+	public void initialize() {}
 
 	@Override
 	public void execute() {

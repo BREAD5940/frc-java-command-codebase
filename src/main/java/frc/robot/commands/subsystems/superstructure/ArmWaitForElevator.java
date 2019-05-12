@@ -4,13 +4,15 @@ import java.util.concurrent.Callable;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+//import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.lib.AutoWaitForCondition;
 import frc.robot.states.IntakeAngle;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
-public class ArmWaitForElevator extends AutoCommandGroup {
+public class ArmWaitForElevator extends SequentialCommandGroup {
 
 	IntakeAngle desired;
 	Length finalEleHeight, tolerence;
@@ -35,8 +37,8 @@ public class ArmWaitForElevator extends AutoCommandGroup {
 		// (null) -> [or becomes, turns into] (basically if the elevator is within tolerance)
 		// this Caller is then used by auto wait for condition and polled in isFinished();
 
-		addSequential(new AutoWaitForCondition(elevatorMoved));
-		addSequential(new ArmMove(desired));
+		addCommands(new AutoWaitForCondition(elevatorMoved));
+		addCommands(new ArmMove(desired));
 	}
 
 	@Override

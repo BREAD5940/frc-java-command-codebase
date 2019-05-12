@@ -7,9 +7,11 @@
 
 package frc.robot.commands.subsystems.drivetrain;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain.Gear;
+import org.team5940.pantry.exparimental.command.InstantCommand;
+//import org.team5940.pantry.exparimental.command.InstantCommand;
+//import org.team5940.pantry.exparimental.command.InstantCommand;
 
 /**
  * Add your docs here.
@@ -21,10 +23,10 @@ public class SetGearCommand extends InstantCommand {
 	 * Add your docs here.
 	 */
 	public SetGearCommand(Gear gear) {
-		super("Set gear to " + gear.name());
+//		super("Set gear to " + gear.name());
 		this.gear = gear;
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
 	}
 
 	// Called once when the command executes

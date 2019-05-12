@@ -3,7 +3,7 @@ package frc.robot.commands.subsystems.drivetrain;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.Robot;
 
 public class SetInitialOdometry extends SendableCommandBase {
@@ -11,7 +11,7 @@ public class SetInitialOdometry extends SendableCommandBase {
 	Pose2dWithCurvature initialPose;
 
 	public SetInitialOdometry(TimedTrajectory<Pose2dWithCurvature> trajectory) {
-		requires(Robot.drivetrain);
+		addRequirements(Robot.drivetrain);
 		initialPose = trajectory.getFirstState().getState();
 	}
 
@@ -35,8 +35,4 @@ public class SetInitialOdometry extends SendableCommandBase {
 	@Override
 	public void end(boolean interrupted) {}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
 }

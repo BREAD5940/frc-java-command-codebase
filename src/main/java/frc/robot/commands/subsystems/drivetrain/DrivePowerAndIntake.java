@@ -7,11 +7,12 @@
 
 package frc.robot.commands.subsystems.drivetrain;
 
-import edu.wpi.first.wpilibj.command.TimedCommand;
+//import importedu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
+import org.team5940.pantry.exparimental.command.WaitCommand;
 
-public class DrivePowerAndIntake extends TimedCommand {
+public class DrivePowerAndIntake extends WaitCommand {
 	double power, time, reqEndTime, intake;
 
 	/**
@@ -23,9 +24,9 @@ public class DrivePowerAndIntake extends TimedCommand {
 	 */
 	public DrivePowerAndIntake(double drive, double intake, double time) {
 		super(time);
-		// Use requires() here to declare subsystem dependencies
-		requires(DriveTrain.getInstance());
-		requires(Intake.getInstance());
+		// Use addRequirements() here to declare subsystem dependencies
+		addRequirements(DriveTrain.getInstance());
+		addRequirements(Intake.getInstance());
 		this.power = drive;
 		this.intake = intake;
 		this.time = time;
@@ -45,12 +46,8 @@ public class DrivePowerAndIntake extends TimedCommand {
 	public void end(boolean interrupted) {
 		DriveTrain.getInstance().stop();
 		Intake.getInstance().setHatchSpeed(0);
+
+		super.end(interrupted);
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		end();
-	}
 }

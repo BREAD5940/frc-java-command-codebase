@@ -1,6 +1,6 @@
 package frc.robot.commands.subsystems.superstructure;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 public class WaitForElevator extends SendableCommandBase {
 
@@ -13,7 +13,7 @@ public class WaitForElevator extends SendableCommandBase {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {}
+	public void initialize() {}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
@@ -30,8 +30,4 @@ public class WaitForElevator extends SendableCommandBase {
 	@Override
 	public void end(boolean interrupted) {}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
 }

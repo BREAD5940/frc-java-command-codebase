@@ -5,7 +5,7 @@
 // import org.ghrobotics.lib.mathematics.units.Length;
 // import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-// import org.team5940.pantry.experimental.command.SendableCommandBase;
+// import org.team5940.pantry.exparimental.command.SendableCommandBase;
 // import edu.wpi.first.wpilibj.command.CommandGroup;
 // import edu.wpi.first.wpilibj.command.ConditionalCommand;
 // import edu.wpi.first.wpilibj.command.InstantCommand;
@@ -59,7 +59,7 @@
 // 	 * 
 // 	 */
 // 	public SuperstructureGoToState(SuperStructureState requState, double timeout) {
-// 		requires(SuperStructure.getInstance());
+// 		addRequirements(SuperStructure.getInstance());
 // 		mRequState = requState;
 // 		setTimeout(timeout);
 
@@ -142,10 +142,10 @@
 // 		 * @author Matthew Morley
 // 		 */
 // 		public StateMovementCommand(SuperStructureState requState, double timeout) {
-// 			requires(SuperStructure.getInstance()); // TODO so I'm still <confuse> about reserving superstructure vs the individual parts.
-// 			requires(SuperStructure.getInstance().getWrist());
-// 			requires(SuperStructure.getInstance().getElbow());
-// 			requires(SuperStructure.getElevator());
+// 			addRequirements(SuperStructure.getInstance()); // TODO so I'm still <confuse> about reserving superstructure vs the individual parts.
+// 			addRequirements(SuperStructure.getInstance().getWrist());
+// 			addRequirements(SuperStructure.getInstance().getElbow());
+// 			addRequirements(SuperStructure.getElevator());
 // 			mRequState = requState;
 // 			setTimeout(timeout);
 
@@ -350,7 +350,7 @@
 // 		abstract boolean isFinished(SuperStructureState mCurrent);
 
 // 		@Override
-// 		protected void initialize() {}
+// 		public void initialize() {}
 
 // 		@Override
 // 		public void execute() {}

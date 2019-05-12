@@ -12,6 +12,7 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+import org.ghrobotics.lib.mathematics.units.SILengthConstants;
 import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.junit.jupiter.api.Test;
@@ -249,7 +250,7 @@ public class AutoPathingCSVGenerator {
 
 			pw.println("x,y");
 			for (Translation2d t : path) {
-				pw.println(t.getX().getFeet() + "," + t.getY().getFeet());
+				pw.println(t.getX()/ SILengthConstants.kFeetToMeter + "," + t.getY()/ SILengthConstants.kFeetToMeter);
 			}
 
 			// pw.print("adsffdsaadsfdsfaadsffads1");

@@ -13,22 +13,32 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class ZeroElevatorDisabled extends SendableCommandBase {
 	public ZeroElevatorDisabled(Length height) {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		requires(SuperStructure.getInstance());
-		requires(SuperStructure.getElevator());
-		requires(SuperStructure.getInstance().getWrist());
-		requires(SuperStructure.getInstance().getElbow());
-		setInterruptible(true);
-		setRunWhenDisabled(true);
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
+		addRequirements(SuperStructure.getInstance());
+		addRequirements(SuperStructure.getElevator());
+		addRequirements(SuperStructure.getInstance().getWrist());
+		addRequirements(SuperStructure.getInstance().getElbow());
+//		setInterruptible(true);
+//		setRunWhenDisabled(true);
 		this.mZeroHeight = height;
+	}
+
+	@Override
+	public void schedule() {
+		schedule(true);
+	}
+
+	@Override
+	public boolean runsWhenDisabled() {
+		return true;
 	}
 
 	public ZeroElevatorDisabled() {
@@ -125,8 +135,11 @@ public class ZeroElevatorDisabled extends SendableCommandBase {
 
 		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
 
-		SuperStructure.getElevator().getMaster().set(ControlMode.PercentOutput, 0);
-		SuperStructure.getElevator().getMaster().setSensorPosition(mZeroHeight);
+		SuperStructure.getElevator().getMaster().setDutyCycle(0,0);
+//		SuperStructure.getElevator().getMaster().getTalonSRX().setSensorPosition(mZeroHeight);
+		SuperStructure.getElevator().getMaster().getEncoder().resetPosition(
+				SuperStructure.getElevator().getMaster().getModel().toNativeUnitPosition(mZeroHeight.getMeter())
+		);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -144,8 +157,8 @@ public class ZeroElevatorDisabled extends SendableCommandBase {
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		SmartDashboard.putString("Zeroing state", mCurrentState.name());
-	}
+//	@Override
+//	protected void interrupted() {
+//		SmartDashboard.putString("Zeroing state", mCurrentState.name());
+//	}
 }

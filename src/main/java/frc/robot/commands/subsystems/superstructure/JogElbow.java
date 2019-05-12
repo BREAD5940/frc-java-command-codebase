@@ -7,7 +7,7 @@
 
 // package frc.robot.commands.subsystems.superstructure;
 
-// import org.team5940.pantry.experimental.command.SendableCommandBase;
+// import org.team5940.pantry.exparimental.command.SendableCommandBase;
 // import edu.wpi.first.wpilibj.command.InstantCommand;
 // import frc.robot.lib.obj.RoundRotation2d;
 // import frc.robot.states.SuperStructureState;
@@ -26,12 +26,12 @@
 // 	 */
 // 	public JogElbow(RoundRotation2d delta) {
 // 		super();
-// 		// Use requires() here to declare subsystem dependencies
-// 		// eg. requires(chassis);
-// 		requires(SuperStructure.getInstance());
-// 		requires(SuperStructure.getInstance().getElbow());
-// 		requires(SuperStructure.getInstance().getWrist());
-// 		requires(SuperStructure.getElevator());
+// 		// Use addRequirements() here to declare subsystem dependencies
+// 		// eg. addRequirements(chassis);
+// 		addRequirements(SuperStructure.getInstance());
+// 		addRequirements(SuperStructure.getInstance().getElbow());
+// 		addRequirements(SuperStructure.getInstance().getWrist());
+// 		addRequirements(SuperStructure.getElevator());
 
 // 		deltaAngle = delta;
 // 		// isUpwards = isUp;

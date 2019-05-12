@@ -1,12 +1,13 @@
 package frc.robot.commands.subsystems.drivetrain;
 
+import frc.robot.subsystems.DriveTrain;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 import frc.robot.lib.TerriblePID;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 /**
  * Literally just pivot in place by a desired amount
@@ -52,8 +53,8 @@ public class TurnInPlace extends SendableCommandBase {
 	 * @param target_angle
 	 */
 	public TurnInPlace(Rotation2d target_angle) {
-		// Use requires() here to declare subsystem dependencies
-		requires(Robot.drivetrain);
+		// Use addRequirements() here to declare subsystem dependencies
+		addRequirements(Robot.drivetrain);
 		this.target_angle = target_angle.getDegree();
 	}
 
@@ -66,8 +67,8 @@ public class TurnInPlace extends SendableCommandBase {
 	 */
 	public TurnInPlace(Rotation2d target_angle, boolean isAbsolute) {
 		this.isAbsolute = isAbsolute;
-		// Use requires() here to declare subsystem dependencies
-		requires(Robot.drivetrain);
+		// Use addRequirements() here to declare subsystem dependencies
+		addRequirements(Robot.drivetrain);
 		this.target_angle = target_angle.getDegree();
 	}
 
@@ -113,10 +114,12 @@ public class TurnInPlace extends SendableCommandBase {
 
 	// Called once after isFinished returns true
 	@Override
-	public void end(boolean interrupted) {}
+	public void end(boolean interrupted) {
+		DriveTrain.getInstance().stop();
+	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
+//	@Override
+//	protected void interrupted() {}
 }

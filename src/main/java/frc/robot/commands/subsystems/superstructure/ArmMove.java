@@ -1,6 +1,7 @@
 package frc.robot.commands.subsystems.superstructure;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+//import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.IntakeAngle;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -15,8 +16,8 @@ public class ArmMove extends SendableCommandBase {
 	 */
 	public ArmMove(IntakeAngle state) {
 		this.mDesired = state;
-		requires(SuperStructure.getInstance().getWrist());
-		requires(SuperStructure.getInstance().getElbow());
+		addRequirements(SuperStructure.getInstance().getWrist());
+		addRequirements(SuperStructure.getInstance().getElbow());
 	}
 
 	@Override

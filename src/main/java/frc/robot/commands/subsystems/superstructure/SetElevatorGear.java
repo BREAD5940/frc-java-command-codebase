@@ -7,7 +7,7 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.subsystems.superstructure.Elevator.ElevatorGear;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
@@ -16,8 +16,8 @@ public class SetElevatorGear extends SendableCommandBase {
 	private ElevatorGear mReq;
 
 	public SetElevatorGear(ElevatorGear mReq_) {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
 		this.mReq = mReq_;
 	}
 
@@ -41,9 +41,5 @@ public class SetElevatorGear extends SendableCommandBase {
 	@Override
 	public void end(boolean interrupted) {}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
 
 }

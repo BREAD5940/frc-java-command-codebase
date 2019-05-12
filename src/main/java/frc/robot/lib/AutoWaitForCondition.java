@@ -2,7 +2,7 @@ package frc.robot.lib;
 
 import java.util.concurrent.Callable;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 public class AutoWaitForCondition extends SendableCommandBase {
 

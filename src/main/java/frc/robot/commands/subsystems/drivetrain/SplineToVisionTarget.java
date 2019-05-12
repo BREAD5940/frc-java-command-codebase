@@ -20,7 +20,7 @@ import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import edu.wpi.first.wpilibj.Timer;
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+//import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.motion.Util;
@@ -28,8 +28,10 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 import frc.robot.subsystems.LimeLight;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
-public class SplineToVisionTarget extends SendableCommandBaseGroup {
+public class SplineToVisionTarget extends SequentialCommandGroup {
 	double targetDistance, exitArea;
 
 	// final Pose2d initialPose;
@@ -51,9 +53,9 @@ public class SplineToVisionTarget extends SendableCommandBaseGroup {
 		// this.initialPose = currentPose;
 		this.kEndOffset = desired_end;
 		this.straightLength = driveStraightDistance;
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		// requires(DriveTrain.getInstance());
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
+		// addRequirements(DriveTrain.getInstance());
 	}
 
 	boolean mCommandStarted = false;
@@ -75,7 +77,7 @@ public class SplineToVisionTarget extends SendableCommandBaseGroup {
 
 		List<Pose2d> path;
 		// just go straight if we are too close or straight distance is zero
-		if (end.getTranslation().getX().epsilonEquals(splineEnd.getTranslation().getX()) || (mVisionTargetPose.getTranslation().getX().minus(kOffset).getInch() < straightLength.getInch())) {
+		if (end.getTranslation().getX() == (splineEnd.getTranslation().getX()) || (mVisionTargetPose.getTranslation().getX() - (kOffset).getMeter() < straightLength.getMeter())) {
 			path = Arrays.asList(mVisionTargetPose, end);
 		} else {
 			path = Arrays.asList(mVisionTargetPose, splineEnd, end);
@@ -89,7 +91,7 @@ public class SplineToVisionTarget extends SendableCommandBaseGroup {
 		System.out.println("Pose2d of the target that we measured: " + Util.toString(mVisionTargetPose));
 
 		// this.clearRequirements();
-		mFollowerCommand.start();
+		mFollowerCommand.schedule();
 		mCommandStarted = true;
 
 		// addSequential(mFollowerCommand);
@@ -99,13 +101,13 @@ public class SplineToVisionTarget extends SendableCommandBaseGroup {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	public void execute() {
-		// if(mCommandStarted && mFollowerCommand.isCompleted()) requires(DriveTrain.getInstance());
+		// if(mCommandStarted && mFollowerCommand.isCompleted()) addRequirements(DriveTrain.getInstance());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	public boolean isFinished() {
-		return (mCommandStarted && mFollowerCommand.isCompleted()) || (LimeLight.getInstance().getTargetArea() > exitArea);
+		return (mCommandStarted && mFollowerCommand.isFinished()) || (LimeLight.getInstance().getTargetArea() > exitArea);
 	}
 
 	// Called once after isFinished returns true
@@ -114,8 +116,4 @@ public class SplineToVisionTarget extends SendableCommandBaseGroup {
 		DriveTrain.getInstance().stop();
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
 }

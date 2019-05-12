@@ -2,7 +2,7 @@
 
 // import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-// import org.team5940.pantry.experimental.command.SendableCommandBase;
+// import org.team5940.pantry.exparimental.command.SendableCommandBase;
 // import frc.robot.OI;
 // import frc.robot.Robot;
 // import frc.robot.lib.obj.RoundRotation2d;
@@ -23,11 +23,11 @@
 // 	 * @author Matthew Morley
 // 	 */
 // 	public SuperStructureTelop() {
-// 		// Use requires() here to declare subsystem dependencies
-// 		requires(SuperStructure.getInstance());
-// 		requires(SuperStructure.getInstance().getWrist());
-// 		requires(SuperStructure.getInstance().getElbow());
-// 		requires(SuperStructure.getElevator());
+// 		// Use addRequirements() here to declare subsystem dependencies
+// 		addRequirements(SuperStructure.getInstance());
+// 		addRequirements(SuperStructure.getInstance().getWrist());
+// 		addRequirements(SuperStructure.getInstance().getElbow());
+// 		addRequirements(SuperStructure.getElevator());
 // 	}
 
 // 	// Called just before this Command runs the first time

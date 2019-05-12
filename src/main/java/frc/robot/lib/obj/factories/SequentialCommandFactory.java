@@ -9,34 +9,27 @@ package frc.robot.lib.obj.factories;
 
 import java.util.List;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
-import frc.robot.states.ElevatorState;
-import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
+//import org.team5940.pantry.exparimental.command.SendableCommandBase;
+//import edu.wpi.first.wpilibj.command.CommandGroup;
+//import frc.robot.RobotConfig.auto.fieldPositions;
+//import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
+//import frc.robot.states.ElevatorState;
+//import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 /**
  * Maybe a factory for making preset command groups. This should be used for things like
  * level one hatch, where you have to move the wrist before the elevator. Or for lazy stuff
- * 
+ *
  * @author Matthew Morley
  */
 public class SequentialCommandFactory {
 
-	public static CommandGroup levelOneHatch() {
-		CommandGroup toReturn = new CommandGroup();
-		toReturn.addSequential(new SuperstructureGoToState(iPosition.HATCH));
-		toReturn.addSequential(new SuperstructureGoToState(new ElevatorState(fieldPositions.hatchLowGoal)));
-
-		return toReturn;
-
-	}
-
-	public static CommandGroup getSequentialCommands(List<Command> toAdd) {
-		CommandGroup toReturn = new CommandGroup();
+	public static Command getSequentialCommands(List<Command> toAdd) {
+		SequentialCommandGroup toReturn = new SequentialCommandGroup();
 		for (Command c : toAdd) {
-			toReturn.addSequential(c);
+			toReturn.addCommands(c);
 		}
 		return toReturn;
 	}

@@ -4,25 +4,27 @@ import java.util.function.Supplier;
 
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker;
+import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTrackerOutput;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TrajectorySamplePoint;
 import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.SILengthConstants;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
-import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.lib.AutoCommand;
+//import frc.robot.lib.AutoCommand;
 import frc.robot.lib.Logger;
 import frc.robot.subsystems.DriveTrain;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 // @SuppressWarnings({"WeakerAccess", "unused"})
-public class TrajectoryTrackerCommand extends AutoCommand {
+public class TrajectoryTrackerCommand extends SendableCommandBase {
 	private TrajectoryTracker trajectoryTracker;
 	private Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource;
 	private DriveTrain driveBase;
@@ -48,7 +50,7 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 	}
 
 	public TrajectoryTrackerCommand(DriveTrain driveBase, TrajectoryTracker trajectoryTracker, Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource, boolean reset) {
-		requires(driveBase);
+		addRequirements(driveBase);
 		this.driveBase = driveBase;
 		this.trajectoryTracker = trajectoryTracker;
 		this.trajectorySource = trajectorySource;
@@ -65,11 +67,11 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 			Trajectories.generateAllTrajectories();
 		}
 
-		Logger.log("get: " + trajectorySource.get().getFirstState().getState().getCurvature().toString());
+		Logger.log("get: " + trajectorySource.get().getFirstState().getState().getCurvature());
 
 		trajectoryTracker.reset(this.trajectorySource.get());
 
-		Logger.log("first pose: " + trajectorySource.get().getFirstState().getState().getPose().getTranslation().getX().getFeet());
+		Logger.log("first pose: " + trajectorySource.get().getFirstState().getState().getPose().getTranslation().getX() / SILengthConstants.kFeetToMeter);
 
 		if (reset == true) {
 			Robot.drivetrain.getLocalization().reset(trajectorySource.get().getFirstState().getState().getPose());
@@ -86,8 +88,8 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 			if (referencePoint != null) {
 				Pose2d referencePose = referencePoint.getState().getState().getPose();
 
-				LiveDashboard.INSTANCE.setPathX(referencePose.getTranslation().getX().getFeet());
-				LiveDashboard.INSTANCE.setPathY(referencePose.getTranslation().getY().getFeet());
+				LiveDashboard.INSTANCE.setPathX(referencePose.getTranslation().getX() / SILengthConstants.kFeetToMeter);
+				LiveDashboard.INSTANCE.setPathY(referencePose.getTranslation().getY() / SILengthConstants.kFeetToMeter);
 				LiveDashboard.INSTANCE.setPathHeading(referencePose.getRotation().getRadian());
 
 				// Shuffleboard.getTab("Auto").getLayout("Pathing", BuiltInLayouts.kList).

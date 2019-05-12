@@ -1,7 +1,8 @@
 package frc.robot.commands.auto;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
 
 public class PrettyRunAuto extends SendableCommandBase {
@@ -9,8 +10,8 @@ public class PrettyRunAuto extends SendableCommandBase {
 	protected final AutoMotionStateMachine machine;
 	protected boolean onlyPreset;
 	protected AutoMotion createdMotion;
-	protected AutoCommandGroup mainCommand;
-	protected AutoCommandGroup ssCommand;
+	protected Command mainCommand;
+	protected Command ssCommand;
 	protected boolean mainBegun = false;
 
 	public PrettyRunAuto(AutoMotionStateMachine machine, boolean onlyPreset) {
@@ -24,15 +25,15 @@ public class PrettyRunAuto extends SendableCommandBase {
 
 	@Override
 	public void initialize() {
-		ssCommand.start();
+		ssCommand.schedule();
 	}
 
 	@Override
 	public void execute() {
-		System.out.printf("Done? %b\n", ssCommand.done());
+		System.out.printf("Done? %b\n", ssCommand.isFinished());
 
-		if (ssCommand.done() && !mainBegun && !onlyPreset) {
-			createdMotion.getBigCommandGroup().start();
+		if (ssCommand.isFinished() && !mainBegun && !onlyPreset) {
+			createdMotion.getBigCommandGroup().schedule();
 			mainBegun = true;
 		}
 	}
@@ -40,9 +41,9 @@ public class PrettyRunAuto extends SendableCommandBase {
 	@Override
 	public boolean isFinished() {
 		if (onlyPreset) {
-			return ssCommand.done();
+			return ssCommand.isFinished();
 		} else {
-			return mainBegun && mainCommand.done();
+			return mainBegun && mainCommand.isFinished();
 		}
 	}
 }

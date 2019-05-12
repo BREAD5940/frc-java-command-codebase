@@ -267,14 +267,14 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	//		this.moveSuperstructureCombo(mReqState.getElevator(), intakeState);
 	//	}
 
-	@Override
-	protected void initDefaultCommand() {
-		// pretty sure it doesn't need a default command, so leaving this empty
-		// Actually yeah all that you really need is the buttons
-		// well also jogging with joysticks but eehhhh
-		// actually that should be the default command, hot prank
-		setDefaultCommand(new JustElevatorTeleop());
-	}
+////	@Override
+//	protected void initDefaultCommand() {
+//		// pretty sure it doesn't need a default command, so leaving this empty
+//		// Actually yeah all that you really need is the buttons
+//		// well also jogging with joysticks but eehhhh
+//		// actually that should be the default command, hot prank
+//		setDefaultCommand(new JustElevatorTeleop());
+//	}
 
 	public SuperStructureState updateState() {
 		var mNewWrist = getWrist().getCurrentState();

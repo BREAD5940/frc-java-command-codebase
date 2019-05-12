@@ -8,7 +8,8 @@
 package frc.robot.commands.subsystems.drivetrain;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+//import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
@@ -21,12 +22,12 @@ public class FollowVisionTargetTheSecond extends SendableCommandBase {
 	double offset = 0;
 
 	public FollowVisionTargetTheSecond(double targetArea) {
-		requires(DriveTrain.getInstance());
+		addRequirements(DriveTrain.getInstance());
 		this.targetArea = targetArea;
 	}
 
 	public FollowVisionTargetTheSecond(double targetArea, double angleOffset) {
-		requires(DriveTrain.getInstance());
+		addRequirements(DriveTrain.getInstance());
 		this.targetArea = targetArea;
 		this.offset = angleOffset;
 	}
@@ -63,11 +64,6 @@ public class FollowVisionTargetTheSecond extends SendableCommandBase {
 	// Called once after isFinished returns true
 	@Override
 	public void end(boolean interrupted) {}
-
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
 
 	private boolean m_LimelightHasValidTarget = false;
 	private double m_LimelightDriveCommand = 0.0;

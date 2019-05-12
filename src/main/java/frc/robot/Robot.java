@@ -1,5 +1,8 @@
 package frc.robot;
 
+import frc.robot.commands.subsystems.superstructure.IntakeTelop;
+import frc.robot.commands.subsystems.superstructure.JustElevatorTeleop;
+import frc.robot.subsystems.Intake;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -13,7 +16,9 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.ghrobotics.lib.mathematics.units.SILengthConstants;
+import org.team5940.pantry.exparimental.command.CommandScheduler;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -131,6 +136,16 @@ public class Robot extends TimedRobot {
 	*/
 	public Robot() {
 		super(mPeriod);
+		superstructure.setDefaultCommand(
+				new JustElevatorTeleop()
+		);
+
+		var curveyBoi = new DriveTrain.CurvatureDrive();
+		drivetrain.setDefaultCommand(curveyBoi);
+		SmartDashboard.putData(curveyBoi);
+
+		Intake.getInstance().setDefaultCommand(new IntakeTelop());
+
 	}
 
 	public static enum RobotState {
@@ -164,7 +179,8 @@ public class Robot extends TimedRobot {
 
 		Logger.clearLog();
 
-		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
+//		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
+		SmartDashboard.putData(CommandScheduler.getInstance());
 
 		SmartDashboard.putData(zeroElevatorWhileDisabled);
 
@@ -208,7 +224,7 @@ public class Robot extends TimedRobot {
 		// 600 is the boiiii
 		var target_ = 650;
 		var target_COMP = 650;
-		var tickkkkks_ = (SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+		var tickkkkks_ = (SuperStructure.getElevator().getMaster().getTalonSRX().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getElevator().getMaster().getTalonSRX().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		var delta_ = (tickkkkks_ - (int) target_COMP) * -1;
 
 		// elevator.getMaster().setSelectedSensorPosition((int) (startingHeightTicks + delta_));
@@ -235,9 +251,9 @@ public class Robot extends TimedRobot {
 		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
 		// wrist.getMaster().setSelectedSensorPosition((int) (wristStart));
 
-		elevator.getMaster().setSelectedSensorPosition((int) (elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue()), 0, 0); // just to be super sure the elevator is safe-ishhhh
+		elevator.getMaster().getTalonSRX().setSelectedSensorPosition((int) (elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue()), 0, 0); // just to be super sure the elevator is safe-ishhhh
 		var cmd = zeroElevatorWhileDisabled;
-		cmd.start();
+		cmd.schedule();
 
 		switch (RobotConfig.auto.auto_gear) {
 		case HIGH:
@@ -314,24 +330,24 @@ public class Robot extends TimedRobot {
 			}
 			if (reset) {
 				superstructure.getCurrentCommand().cancel();
-				superstructure.getDefaultCommand().start();
+				superstructure.getDefaultCommand().schedule();
 			}
 
 		});
 
 		// mResetNotifier.startPeriodic(0.5);
 
-		var frontBack = new CommandGroup();
-		//		frontBack.addSequential(new ElevatorMove(LengthKt.getInch(24)));
-		frontBack.addSequential(new SyncedMove(Math.toRadians(-180), true, superstructure));
-		// frontBack.addSequential(new ArmMove(new IntakeAngle(
-		// 	new RotatingArmState(RoundRotation2d.getDegree(-210)),
-		// 	new RotatingArmState(RoundRotation2d.getDegree(-180))
-		// 	)));
-
-		var backFront = new CommandGroup();
-		//		backFront.addSequential(new ElevatorMove(LengthKt.getInch(24)));
-		backFront.addSequential(new SyncedMove(Math.toRadians(0), true, superstructure));
+//		var frontBack = new sequen();
+//		//		frontBack.addSequential(new ElevatorMove(LengthKt.getInch(24)));
+//		frontBack.addSequential(new SyncedMove(Math.toRadians(-180), true, superstructure));
+//		// frontBack.addSequential(new ArmMove(new IntakeAngle(
+//		// 	new RotatingArmState(RoundRotation2d.getDegree(-210)),
+//		// 	new RotatingArmState(RoundRotation2d.getDegree(-180))
+//		// 	)));
+//
+//		var backFront = new CommandGroup();
+//		//		backFront.addSequential(new ElevatorMove(LengthKt.getInch(24)));
+//		backFront.addSequential(new SyncedMove(Math.toRadians(0), true, superstructure));
 
 		SmartDashboard.putData("front to back passthrough", new PassThrough.FrontToBack(superstructure));
 		SmartDashboard.putData("back to front passthrough", new PassThrough.BackToFront(superstructure));
@@ -339,7 +355,7 @@ public class Robot extends TimedRobot {
 
 	}
 
-	public static Command zeroElevatorWhileDisabled = new ZeroElevatorDisabled();
+	public static SendableCommandBase zeroElevatorWhileDisabled = new ZeroElevatorDisabled();
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode. You
@@ -386,7 +402,7 @@ public class Robot extends TimedRobot {
 		// drivetrain.gyro.reset(); // Reset the current gyro heading to zero
 		// drivetrain.zeroEncoders();
 
-		mAutoChooser.getSelection().start(); // So this needs a defaut option
+		mAutoChooser.getSelection().schedule(); // So this needs a defaut option
 
 		// 	if (RobotConfig.auto.auto_gear == Gear.LOW) {
 		// 		drivetrain.setLowGear();
@@ -460,7 +476,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
-		Scheduler.getInstance().run();
+//		Scheduler.getInstance().run();
+		CommandScheduler.getInstance().run();
 
 		drivetrain.logPeriodicIO();
 
@@ -485,7 +502,7 @@ public class Robot extends TimedRobot {
 
 			SmartDashboard.putNumber("wrist absolute pos ", tickks);
 
-			var ticcccks = (SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+			var ticcccks = (SuperStructure.getElevator().getMaster().getTalonSRX().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getElevator().getMaster().getTalonSRX().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 
 			SmartDashboard.putNumber("Elevator absolute pos ", tickks);
 
@@ -501,11 +518,11 @@ public class Robot extends TimedRobot {
 
 		// System.out.println(String.format("carriage max %s inner stage min %s", superstructure.getCarriageMaxLimit(), superstructure.getInnerStageMinLimit() ));
 
-		SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
-		SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
+		SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX() / SILengthConstants.kFeetToMeter);
+		SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY() / SILengthConstants.kFeetToMeter);
 
-		LiveDashboard.INSTANCE.setRobotX(drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
-		LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
+		LiveDashboard.INSTANCE.setRobotX(drivetrain.getLocalization().getRobotPosition().getTranslation().getX() / SILengthConstants.kFeetToMeter);
+		LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY() / SILengthConstants.kFeetToMeter);
 		LiveDashboard.INSTANCE.setRobotHeading(drivetrain.getLocalization().getRobotPosition().getRotation().getRadian());
 
 		// SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getFeetPerSecond());

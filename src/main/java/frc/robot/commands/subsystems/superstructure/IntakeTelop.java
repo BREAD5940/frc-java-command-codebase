@@ -7,20 +7,21 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+//import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.Intake;
 
 public class IntakeTelop extends SendableCommandBase {
 	public IntakeTelop() {
-		// Use requires() here to declare subsystem dependencies
-		requires(Intake.getInstance());
+		// Use addRequirements() here to declare subsystem dependencies
+		addRequirements(Intake.getInstance());
 	}
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {}
+	public void initialize() {}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
@@ -44,8 +45,4 @@ public class IntakeTelop extends SendableCommandBase {
 	@Override
 	public void end(boolean interrupted) {}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
 }

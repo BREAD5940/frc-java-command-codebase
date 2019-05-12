@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.ghrobotics.lib.localization.Localization;
 import org.ghrobotics.lib.localization.TankEncoderLocalization;
+import org.ghrobotics.lib.localization.TimeInterpolatableBuffer;
 import org.ghrobotics.lib.mathematics.twodim.control.FeedForwardTracker;
 import org.ghrobotics.lib.mathematics.twodim.control.PurePursuitTracker;
 import org.ghrobotics.lib.mathematics.twodim.control.RamseteTracker;
@@ -15,9 +16,11 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
+import org.ghrobotics.lib.motors.ctre.FalconSRX;
 import org.ghrobotics.lib.subsystems.drive.DifferentialTrackerDriveBase;
-import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
-import org.team5940.pantry.experimental.command.SendableSubsystemBase;
+import org.team5940.pantry.exparimental.command.ParallelCommandGroup;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SendableSubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
@@ -28,9 +31,6 @@ import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
-import org.team5940.pantry.experimental.command.SendableCommandBase;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import org.team5940.pantry.experimental.command.SendableSubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -117,7 +117,8 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 
 		/* Create a localization object because lamda expressions are fun */
 		localization = new TankEncoderLocalization(() -> Rotation2dKt.getDegree(getGyro(true)),
-				() -> getLeft().getDistance(), () -> getRight().getDistance());
+				() -> getLeft().getDistance().getMeter(), () -> getRight().getDistance().getMeter(),
+				new TimeInterpolatableBuffer<>());
 		/* set the robot pose to 0,0,0 */
 		localization.reset(new Pose2d());
 
@@ -237,8 +238,8 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	}
 
 	public void setNeutralMode(NeutralMode mode) {
-		getLeft().getMaster().setNeutralMode(mode);
-		getRight().getMaster().setNeutralMode(mode);
+		getLeft().getMaster().getTalonSRX().setNeutralMode(mode);
+		getRight().getMaster().getTalonSRX().setNeutralMode(mode);
 	}
 
 	public Transmission getLeft() {
@@ -263,8 +264,8 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	}
 
 	public void coast() {
-		getLeft().getMaster().neutralOutput();
-		getRight().getMaster().neutralOutput();
+		getLeft().getMaster().setNeutral();
+		getRight().getMaster().setNeutral();
 	}
 
 	// /**
@@ -293,8 +294,8 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	 * @param right_voltage
 	 */
 	public void setVoltages(double left_voltage, double right_voltage) {
-		getLeft().getMaster().set(ControlMode.PercentOutput, left_voltage / 12);
-		getRight().getMaster().set(ControlMode.PercentOutput, right_voltage / 12);
+		getLeft().getMaster().setVoltage(left_voltage, 0);
+		getRight().getMaster().setVoltage(right_voltage, 0);
 	}
 
 	public void setClosedLoop(DriveSignal signal) {
@@ -313,8 +314,8 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	public void setCLosedLoop(Velocity<Length> left, Velocity<Length> right, double leftPercent, double rightPercent,
 			boolean brakeMode) {
 		setNeutralMode((brakeMode) ? NeutralMode.Brake : NeutralMode.Coast);
-		getLeft().getMaster().set(ControlMode.Velocity, left, DemandType.ArbitraryFeedForward, leftPercent);
-		getRight().getMaster().set(ControlMode.Velocity, right, DemandType.ArbitraryFeedForward, rightPercent);
+		getLeft().getMaster().setVelocity(left.getValue(), leftPercent);
+		getRight().getMaster().setVelocity(right.getValue(), rightPercent);
 	}
 
 	public void setClosedLoop(Velocity<Length> left, Velocity<Length> right) {
@@ -328,8 +329,8 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	 */
 	@Deprecated
 	public void setRawSpeeds(double leftRaw, double rightRaw) {
-		getLeftMotor().set(ControlMode.Velocity, leftRaw);
-		getRightMotor().set(ControlMode.Velocity, rightRaw);
+		getLeftMotor().getTalonSRX().set(ControlMode.Velocity, leftRaw);
+		getRightMotor().getTalonSRX().set(ControlMode.Velocity, rightRaw);
 	}
 
 	/**
@@ -340,8 +341,8 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	 * @param right_power
 	 */
 	public void setPowers(double left_power, double right_power) {
-		leftTransmission.getMaster().set(ControlMode.PercentOutput, left_power);
-		rightTransmission.getMaster().set(ControlMode.PercentOutput, right_power);
+		leftTransmission.getMaster().setDutyCycle(left_power, 0);
+		rightTransmission.getMaster().setDutyCycle(right_power, 0);
 	}
 
 	public Pose2d getRobotPosition() {
@@ -501,21 +502,21 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	private ChassisState mCachedChassisState;
 	public boolean isFirstRun = true;
 
-	public class CurvatureDrive extends SendableCommandBase {
+	public static class CurvatureDrive extends SendableCommandBase {
 
 		static final boolean squared = true;
 
 		public CurvatureDrive() {
-			requires(DriveTrain.getInstance());
+			addRequirements(DriveTrain.getInstance());
 		}
 
 		@Override
 		public void initialize() {
 			DriveTrain.getInstance().setNeutralMode(NeutralMode.Brake);
-			DriveTrain.getInstance().getLeft().getMaster().configClosedloopRamp(0.16);
-			DriveTrain.getInstance().getRight().getMaster().configClosedloopRamp(0.16);
-			DriveTrain.getInstance().getLeft().getMaster().configOpenloopRamp(0.16);
-			DriveTrain.getInstance().getRight().getMaster().configOpenloopRamp(0.16);
+			DriveTrain.getInstance().getLeft().getMaster().getTalonSRX().configClosedloopRamp(0.16);
+			DriveTrain.getInstance().getRight().getMaster().getTalonSRX().configClosedloopRamp(0.16);
+			DriveTrain.getInstance().getLeft().getMaster().getTalonSRX().configOpenloopRamp(0.16);
+			DriveTrain.getInstance().getRight().getMaster().getTalonSRX().configOpenloopRamp(0.16);
 		}
 
 		@Override
@@ -534,16 +535,17 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 
 				//				System.out.println("forward " + forwardSpeed);
 
-				forwardSpeed = Util.deadband(forwardSpeed, 0.07) * ((getCachedGear() == Gear.HIGH) ? 0.8 : 1);
-				turnSpeed = Util.deadband(turnSpeed, 0.07);
+				// reduce forward speed a bit if in high gear (oof)
+				forwardSpeed = Util.deadband(forwardSpeed, 0.05) * ((DriveTrain.getInstance().getCachedGear() == Gear.HIGH) ? 0.8 : 1);
+				turnSpeed = Util.deadband(turnSpeed, 0.06);
 
 				// System.out.println("forward speed: " + forwardSpeed + " turn speed: " + turnSpeed);
 
 				// curvatureDrive(forwardSpeed, turnSpeed, Robot.m_oi.getPrimary().getRawButton(6));
-				curvatureDrive(forwardSpeed, turnSpeed, false);
+				DriveTrain.getInstance().curvatureDrive(forwardSpeed, turnSpeed, false);
 
 			} else {
-				curvatureDrive(forwardSpeed * Math.abs(forwardSpeed) * Math.abs(forwardSpeed), turnSpeed, true);
+				DriveTrain.getInstance().curvatureDrive(forwardSpeed * Math.abs(forwardSpeed) * Math.abs(forwardSpeed), turnSpeed, true);
 			}
 
 		}
@@ -644,14 +646,13 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 		// getLeft().getMaster().getSensorVelocity().getValue());
 		// Logger.log("Right speed: " + getRight().getVelocity().getValue());
 
-		if (leftPercent < 0.06 && leftPercent > -0.06)
+		if (leftPercent < 0.05 && leftPercent > -0.05)
 			leftPercent = 0.0;
 
-		if (rightPercent < 0.06 && rightPercent > -0.06)
+		if (rightPercent < 0.05 && rightPercent > -0.05)
 			rightPercent = 0.0;
 
-		getLeft().getMaster().set(ControlMode.PercentOutput, leftPercent); // because C O M P E N S A T I O N
-		getRight().getMaster().set(ControlMode.PercentOutput, rightPercent);
+		setPowers(leftPercent, rightPercent);
 
 		// 2.1 meters per second in low gear
 		//
@@ -689,8 +690,8 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 		return followTrajectory(trajectory, Robot.getDrivetrainGear(), reset);
 	}
 
-	public Command followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory,
-			TrajectoryTrackerMode mode, boolean reset) {
+	public SendableCommandBase followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory,
+												TrajectoryTrackerMode mode, boolean reset) {
 		// kDefaulTrajectoryTrackerMode = mode;
 		mCurrentGear = Robot.getDrivetrainGear();
 		return new TrajectoryTrackerCommand(this, getTrajectoryTracker(mode), () -> trajectory, reset);
@@ -703,13 +704,15 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	 * @param gear that the action should be in
 	 * @param resetPose if we should reset the robot pose or not
 	 */
-	public Command followTrajectoryWithGear(TimedTrajectory<Pose2dWithCurvature> trajectory,
+	public SendableCommandBase followTrajectoryWithGear(TimedTrajectory<Pose2dWithCurvature> trajectory,
 			TrajectoryTrackerMode mode, Gear gear, boolean resetPose) {
-		mCurrentGear = gear;
-		CommandGroup mCommandGroup = new CommandGroup();
-		mCommandGroup.addParallel(new SetGearCommand(gear));
-		mCommandGroup.addSequential(followTrajectory(trajectory, mode, resetPose));
-		return mCommandGroup;
+//		mCurrentGear = gear;
+
+		return new ParallelCommandGroup(
+				followTrajectory(trajectory, mode, resetPose),
+				new SetGearCommand(gear)
+		);
+//		return mCommandGroup;
 	}
 
 	/**
@@ -740,28 +743,26 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 		gyroZero = gyro.getAngle();
 	}
 
-	@Override
-	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
-		// setDefaultCommand(new ArcadeDrive());
-		// setDefaultCommand(new PIDArcadeDrive(true));
+//	@Override
+//	public void initDefaultCommand() {
+//		// Set the default command for a subsystem here.
+//		// setDefaultCommand(new ArcadeDrive());
+//		// setDefaultCommand(new PIDArcadeDrive(true));
+//
+//		//		System.out.println("setting drivetrain default commands");
 
-		//		System.out.println("setting drivetrain default commands");
 
-		var curveyBoi = new CurvatureDrive();
-		setDefaultCommand(curveyBoi);
-		SmartDashboard.putData(curveyBoi);
 		// setDefaultCommand(new ClosedLoopDriveTheSecond(true));
 		// setDefaultCommand(new auto_action_DRIVE(5, "high", 5, 30));
-	}
+//	}
 
 	@Override
 	public void logPeriodicIO() {
-		Logger.log("Bus voltage", getLeftMotor().getBusVoltage());
+		Logger.log("Bus voltage", getLeftMotor().getTalonSRX().getBusVoltage());
 		Logger.log("Forward joystick command", Robot.m_oi.getForwardAxis());
 		Logger.log("Turn joystick command", Robot.m_oi.getTurnAxis());
-		Logger.log("Left talon output voltage", getLeftMotor().getMotorOutputVoltage());
-		Logger.log("Right talon output voltage", getRightMotor().getMotorOutputVoltage());
+		Logger.log("Left talon output voltage", getLeftMotor().getTalonSRX().getMotorOutputVoltage());
+		Logger.log("Right talon output voltage", getRightMotor().getTalonSRX().getMotorOutputVoltage());
 	}
 
 }

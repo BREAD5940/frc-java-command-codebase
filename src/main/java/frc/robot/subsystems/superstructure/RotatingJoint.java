@@ -313,8 +313,8 @@ public class RotatingJoint extends HalfBakedSubsystem {
 		return getMaster().getRotation2d().getDegree();
 	}
 
-	@Override
-	protected void initDefaultCommand() {}
+//	@Override
+//	protected void initDefaultCommand() {}
 
 	public boolean isWithinTolerance(RoundRotation2d tolerance, RoundRotation2d setpoint) {
 		return Math.abs(getRotation().minus(setpoint).getDegree()) < tolerance.getDegree();

@@ -1,6 +1,6 @@
 // package frc.robot.commands.subsystems.drivetrain;
 
-// import org.team5940.pantry.experimental.command.SendableCommandBase;
+// import org.team5940.pantry.exparimental.command.SendableCommandBase;
 // import frc.robot.Robot;
 // import frc.robot.RobotConfig;
 // import frc.robot.lib.TerriblePID;
@@ -40,7 +40,7 @@
 // 		this.timeout = timeout;
 // 		this.targetSpeed = speed;
 // 		this.targetPercentOfFrame = 2;
-// 		requires(Robot.drivetrain);
+// 		addRequirements(Robot.drivetrain);
 // 	}
 
 // 	/**
@@ -55,7 +55,7 @@
 // 		this.targetSpeed = speed;
 // 		this.targetPercentOfFrame = targetPercentOfFrame;
 // 		this.followRange = true;
-// 		requires(Robot.drivetrain);
+// 		addRequirements(Robot.drivetrain);
 // 	}
 
 // 	// Called just before this Command runs the first time

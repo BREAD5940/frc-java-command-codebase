@@ -10,7 +10,7 @@ package frc.robot.commands.subsystems.drivetrain;
 import java.util.TreeMap;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+//import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.lib.InterpolatableLut;
 import frc.robot.lib.InterpolatableLutEntry;
@@ -18,6 +18,7 @@ import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 public class HybridDriverAssist extends SendableCommandBase {
 
@@ -33,7 +34,7 @@ public class HybridDriverAssist extends SendableCommandBase {
 	 * @param areaToExitAt when to exit the command (i.e. can't see the vision target anymore)
 	 */
 	public HybridDriverAssist() {
-		requires(DriveTrain.getInstance());
+		addRequirements(DriveTrain.getInstance());
 
 		var deployedMap = new TreeMap<Double, InterpolatableLutEntry>();
 		var stowedMap = new TreeMap<Double, InterpolatableLutEntry>();
@@ -58,7 +59,7 @@ public class HybridDriverAssist extends SendableCommandBase {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {}
+	public void initialize() {}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
@@ -157,8 +158,8 @@ public class HybridDriverAssist extends SendableCommandBase {
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		end();
-	}
+//	@Override
+//	protected void interrupted() {
+//		end();
+//	}
 }

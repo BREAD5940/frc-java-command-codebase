@@ -7,9 +7,9 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+//import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.SuperStructureConstants;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
+//import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.lib.Logger;
@@ -19,6 +19,10 @@ import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
+import org.ghrobotics.lib.mathematics.units.SILengthConstants;
+import org.team5940.pantry.exparimental.command.InstantCommand;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
 /**
  * Instructions for using this mutant command-thing:
@@ -42,20 +46,20 @@ public class SuperstructureMotion extends SendableCommandBase {
 
 	@Deprecated
 	private SuperstructureMotion() {
-		requires(SuperStructure.getInstance());
+		addRequirements(SuperStructure.getInstance());
 
-		requires(SuperStructure.getInstance().getWrist());
-		requires(SuperStructure.getInstance().getElbow());
-		requires(SuperStructure.getElevator());
+		addRequirements(SuperStructure.getInstance().getWrist());
+		addRequirements(SuperStructure.getInstance().getElbow());
+		addRequirements(SuperStructure.getElevator());
 	}
 
 	public SuperstructureMotion(SuperStructureState gsIn, SuperStructureState current) {
 		System.out.println("ssmotion instan");
 		this.gsIn = gsIn;
-		requires(SuperStructure.getInstance().getWrist());
-		requires(SuperStructure.getInstance().getElbow());
-		requires(SuperStructure.getElevator());
-		requires(SuperStructure.getInstance());
+		addRequirements(SuperStructure.getInstance().getWrist());
+		addRequirements(SuperStructure.getInstance().getElbow());
+		addRequirements(SuperStructure.getElevator());
+		addRequirements(SuperStructure.getInstance());
 	}
 
 	public SuperstructureMotion(SuperStructureState gsIn) {
@@ -63,10 +67,10 @@ public class SuperstructureMotion extends SendableCommandBase {
 	}
 
 	private static SuperstructureMotion instance_;
-	protected AutoCommandGroup queue = new AutoCommandGroup();
+	protected SequentialCommandGroup queue = new SequentialCommandGroup();
 	// protected CommandGroup eleQueue = new CommandGroup();
 	// protected CommandGroup armQueue = new CommandGroup();
-	protected Optional<Command> current;
+	protected Optional<SendableCommandBase> current;
 
 	@Deprecated
 	public static SuperstructureMotion getInstance() {
@@ -123,7 +127,7 @@ public class SuperstructureMotion extends SendableCommandBase {
 		Translation2d GPelevator = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight()); // TODO maybe change constructor to use a Translation2d fromed from a Length and Rotation2d?
 		Translation2d GPwrist = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, goalState.getElbowAngle().toRotation2d()).plus(GPelevator);
 
-		Logger.log("Goal position: " + goalState.toCSV() + String.format("gpWrist: x %s y %s", GPwrist.getX().getInch(), GPwrist.getY().getInch()));
+		Logger.log("Goal position: " + goalState.toCSV() + String.format("gpWrist: x %s y %s", GPwrist.getX(), GPwrist.getY()));
 
 		/** 
 		 * goal point end of intake 
@@ -143,27 +147,27 @@ public class SuperstructureMotion extends SendableCommandBase {
 
 		Logger.log("made points");
 
-		if (Math.atan((GPeoi.getY().getInch() + GPwrist.getY().getInch()) / (GPeoi.getX().getInch() + GPwrist.getX().getInch())) > SuperStructureConstants.Wrist.kWristMax.getRadian()) {
+		if (Math.atan((GPeoi.getY() + GPwrist.getY()) / (GPeoi.getX() + GPwrist.getX())) > SuperStructureConstants.Wrist.kWristMax.getRadian()) {
 			Logger.log("Wrist big");
 			goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMax); // constrain wrist to max
-		} else if (Math.atan((GPeoi.getY().getInch() + GPwrist.getY().getInch()) / (GPeoi.getX().getInch() + GPwrist.getX().getInch())) < SuperStructureConstants.Wrist.kWristMin.getRadian()) {
+		} else if (Math.atan((GPeoi.getY() + GPwrist.getY()) / (GPeoi.getX() + GPwrist.getX())) < SuperStructureConstants.Wrist.kWristMin.getRadian()) {
 			Logger.log("Wrist small");
 			goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMin); // constrain wrist to min
 		}
 
 		//SAFE potential crashes on the end state (FIXME not necessarily in between states?)
-		if (GPwrist.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch() || GPeoi.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch()) {
+		if (GPwrist.getY() < SuperStructureConstants.Elevator.electronicsHeight.getMeter() || GPeoi.getY() < SuperStructureConstants.Elevator.electronicsHeight.getMeter()) {
 			Logger.log("intake too low");
 			RoundRotation2d tempTheta = goalState.getElbowAngle();
 			tempTheta = RoundRotation2d.getRadian(
 					Math.asin(
-							Math.abs(SuperStructureConstants.Elevator.electronicsHeight.getInch() - GPelevator.getY().getInch())
-									/ SuperStructureConstants.Elbow.carriageToIntake.getInch()));
+							Math.abs(SuperStructureConstants.Elevator.electronicsHeight.getMeter() - GPelevator.getY())
+									/ SuperStructureConstants.Elbow.carriageToIntake.getMeter()));
 			goalState.getElbow().setAngle(tempTheta);
 			GPwrist = new Translation2d(LengthKt.getInch(tempTheta.getCos() * SuperStructureConstants.Elbow.carriageToIntake.getInch()),
-					LengthKt.getInch(Math.sin(tempTheta.getRadian()) * SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(GPelevator.getY()));
-			GPeoi = new Translation2d(LengthKt.getInch(getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()).getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getX()),
-					LengthKt.getInch(getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()).getSin() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
+					LengthKt.getInch(Math.sin(tempTheta.getRadian()) * SuperStructureConstants.Elbow.carriageToIntake.getInch()).plus(LengthKt.getMeter(GPelevator.getY())));
+			GPeoi = new Translation2d(LengthKt.getInch(getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()).getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(LengthKt.getMeter(GPwrist.getX())),
+					LengthKt.getInch(getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()).getSin() * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(LengthKt.getMeter(GPwrist.getY())));
 		}
 
 		//I really hope we don't actually need this
@@ -185,43 +189,43 @@ public class SuperstructureMotion extends SendableCommandBase {
 		Translation2d lowestGP = GPeoi;
 		for (Translation2d current : Arrays.asList(GPelevator, GPwrist, GPeoi,
 				GPeoi.minus(new Translation2d(LengthKt.getInch(0), SuperStructureConstants.Wrist.intakeAbove)))) {
-			lowestGP = (lowestGP.getY().getInch() >= current.getY().getInch()) ? current : lowestGP;
+			lowestGP = (lowestGP.getY() >= current.getY()) ? current : lowestGP;
 		}
 
 		Translation2d lowestSP = SPeoi;
 		for (Translation2d current : Arrays.asList(SPelevator, SPwrist, SPeoi,
 				SPeoi.minus(new Translation2d(LengthKt.getInch(0), SuperStructureConstants.Wrist.intakeAbove)))) {
-			lowestSP = (lowestSP.getY().getInch() >= current.getY().getInch()) ? current : lowestSP;
+			lowestSP = (lowestSP.getY() >= current.getY()) ? current : lowestSP;
 		}
 
 		Logger.log("lowests");
 
 		//SAFE potential crashes IN BETWEEN states
-		if (lowestGP.getY().getInch() < GPelevator.getY().getInch()) {
+		if (lowestGP.getY() < GPelevator.getY()) {
 			//FIND how much of the intake is in the way
 
 			//SET the tolerance to that number
 
 		}
 
-		startArmTol = GPelevator.getY().minus(LengthKt.getInch(Math.abs(lowestSP.getY().minus(SPelevator.getY()).getInch())));
+		startArmTol = LengthKt.getMeter(GPelevator.getY() - (Math.abs(lowestSP.getY() - (SPelevator.getY()))));
 
-		startArmTol = (startArmTol.getInch() > (Math.abs(GPelevator.getY().getInch() - Math.abs(lowestGP.getY().minus(GPelevator.getY()).getInch()))))
+		startArmTol = (startArmTol.getMeter() > (Math.abs(GPelevator.getY() - Math.abs(lowestGP.getY() - (GPelevator.getY()))))
 				? startArmTol
-				: (LengthKt.getInch(Math.abs(GPelevator.getY().getInch() - Math.abs(lowestGP.getY().minus(GPelevator.getY()).getInch()))));
+				: (LengthKt.getMeter(Math.abs(GPelevator.getY() - Math.abs(lowestGP.getY() - (GPelevator.getY()))))));
 		Logger.log("tolerances");
 		//CLEAR the queue
-		this.queue = new AutoCommandGroup();
+		this.queue = new SequentialCommandGroup();
 		Logger.log("queue cleared");
 
 		//CHECK if the elevator point is in proximity to the crossbar - if it is, stow it
 		// This is the VERY FIRST thing we do so that we make sure that we don't slap a meme
-		if ((GPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch()
-				&& SPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch())
-				|| (GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch()
-						&& SPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.getInch())
-				|| (GPelevator.getY().getInch() < SuperStructureConstants.Elevator.crossbarBottom.plus(SuperStructureConstants.Elevator.crossbarWidth).getInch()
-						&& GPelevator.getY().getInch() > SuperStructureConstants.Elevator.crossbarBottom.getInch()) && (
+		if ((GPelevator.getY() / SILengthConstants.kInchToMeter < SuperStructureConstants.Elevator.crossbarBottom.getInch()
+				&& SPelevator.getY() / SILengthConstants.kInchToMeter > SuperStructureConstants.Elevator.crossbarBottom.getInch())
+				|| (GPelevator.getY() / SILengthConstants.kInchToMeter > SuperStructureConstants.Elevator.crossbarBottom.getInch()
+						&& SPelevator.getY() / SILengthConstants.kInchToMeter < SuperStructureConstants.Elevator.crossbarBottom.getInch())
+				|| (GPelevator.getY() / SILengthConstants.kInchToMeter < SuperStructureConstants.Elevator.crossbarBottom.plus(SuperStructureConstants.Elevator.crossbarWidth).getInch()
+						&& GPelevator.getY() / SILengthConstants.kInchToMeter > SuperStructureConstants.Elevator.crossbarBottom.getInch()) && (
 
 				// check if the elbow is in danger of hitting something, I don't care about the height as long as the intake isn't passed through right now
 				goalState.getElbowAngle().getDegree() < -95 || currentState.getElbowAngle().getDegree() < -95
@@ -229,11 +233,11 @@ public class SuperstructureMotion extends SendableCommandBase {
 				)) {
 			// I think this should be one of the first move commands, above anything else
 
-			var doWeNeedToSafeElevatorFirst = (Util.max(GPelevator.getY(), SPelevator.getY()).getInch() < SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar.getInch());
+			var doWeNeedToSafeElevatorFirst = (Math.max(GPelevator.getY(), SPelevator.getY()) < SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar.getMeter());
 
 			if (doWeNeedToSafeElevatorFirst)
-				this.queue.addSequential(new ElevatorMove(SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar));
-			this.queue.addSequentialLoggable(new ArmMove(SuperStructure.iPosition.STOWED), isReal);
+				this.queue.addCommands(new ElevatorMove(SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar));
+			this.queue.addCommands(new ArmMove(iPosition.STOWED));
 		}
 
 		// figure out if the intake is gunna yeet itself into the bottom. This is done by finding the worst case (intake and stuff as far pitched down as possible)
@@ -261,8 +265,8 @@ public class SuperstructureMotion extends SendableCommandBase {
 										SuperStructureConstants.Wrist.intakeOut,
 										worstCaseWrist.toRotation2d()));
 
-		var isWithinFramePerimeter = (rawGoalProximal.getX().getInch() < SuperStructureConstants.kCarriageToFramePerimeter.getInch())
-				|| (rawStartProximal.getX().getInch() < SuperStructureConstants.kCarriageToFramePerimeter.getInch());
+		var isWithinFramePerimeter = (rawGoalProximal.getX() < SuperStructureConstants.kCarriageToFramePerimeter.getMeter())
+				|| (rawStartProximal.getX() < SuperStructureConstants.kCarriageToFramePerimeter.getMeter());
 
 		if (isWithinFramePerimeter)
 			Logger.log("current or goal state is within the frame perimeter!");
@@ -270,14 +274,14 @@ public class SuperstructureMotion extends SendableCommandBase {
 		// first, check if trying to move the arms _right now_ would make something hit
 		var worstCaseStartingPos = worstCaseCarriageToEOI.plus(new Translation2d(currentState.getElevator().height, LengthKt.getInch(0)));
 		var worstCaseGoalPos = worstCaseCarriageToEOI.plus(new Translation2d(goalState.getElevator().height, LengthKt.getInch(0)));
-		var minUnCrashHeight = new ElevatorState(worstCaseCarriageToEOI.getY().times(-1).plus(LengthKt.getInch(4)));
+		var minUnCrashHeight = new ElevatorState(LengthKt.getMeter(worstCaseCarriageToEOI.getY() * (-1) + (LengthKt.getInch(4)).getMeter()));
 
-		if (worstCaseStartingPos.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch() || worstCaseGoalPos.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch()) {
+		if (worstCaseStartingPos.getY() < SuperStructureConstants.Elevator.electronicsHeight.getMeter() || worstCaseGoalPos.getY() < SuperStructureConstants.Elevator.electronicsHeight.getMeter()) {
 			Logger.log("gunna slap the electronics plate, gotta move the elevator first");
 
 			// TODO check if the end state is going to hit anything
 
-			queue.addSequentialLoggable(new ElevatorMove(minUnCrashHeight), isReal);
+			queue.addCommands(new ElevatorMove(minUnCrashHeight));
 
 		}
 
@@ -298,21 +302,21 @@ public class SuperstructureMotion extends SendableCommandBase {
 
 		if (isLongClimb) {
 			// this.queue.addSequentialLoggable(new ArmWaitForElevator(SuperStructure.iPosition.STOWED, minUnCrashHeight.getHeight(), LengthKt.getInch(3)), isReal);
-			this.queue.addSequentialLoggable(new ArmMove(SuperStructure.iPosition.STOWED/*, minUnCrashHeight.getHeight(), LengthKt.getInch(3)*/), isReal);
+			this.queue.addCommands(new ArmMove(iPosition.STOWED/*, minUnCrashHeight.getHeight(), LengthKt.getInch(3)*/));
 		}
 
 		// this.queue.addSequentialLoggable(new ArmWaitForElevator(goalState.getAngle(), goalState.getElevatorHeight(), startArmTol.plus(LengthKt.getInch(5)),
 		// goalState.getElevatorHeight().getInch() < currentState.getElevatorHeight().getInch()), isReal);
 
 		// ok so by now the elevator should be such that we can safely move stuff?
-		queue.addSequentialLoggable(new ArmMove(goalState.getAngle()), isReal);
+		queue.addCommands(new ArmMove(goalState.getAngle()));
 
-		this.queue.addSequentialLoggable(new ElevatorMove(goalState.getElevator()), isReal);
+		this.queue.addCommands(new ElevatorMove(goalState.getElevator()));
 
 		return true;
 	}
 
-	public AutoCommandGroup getQueue() {
+	public SendableCommandBase getQueue() {
 		System.out.println("queue gotten");
 		return this.queue;
 	}
@@ -326,9 +330,9 @@ public class SuperstructureMotion extends SendableCommandBase {
 		System.out.println("===================================================================");
 		Logger.log(String.format("Start state (%s) Goal state (%s)", current.toString(), gsIn.toString()));
 		// Logger.log(getQueue().getCommandLog().get(0));
-		for (String s : getQueue().getCommandLog()) {
-			System.out.println(s);
-		}
+//		for (String s : getQueue().get()) {
+//			System.out.println(s);
+//		}
 		System.out.println("===================================================================");
 
 	}
@@ -338,5 +342,6 @@ public class SuperstructureMotion extends SendableCommandBase {
 		// return queue.isCompleted();
 		return true;
 	}
+
 
 }

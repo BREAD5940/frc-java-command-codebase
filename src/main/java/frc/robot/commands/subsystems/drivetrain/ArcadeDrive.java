@@ -2,7 +2,7 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 
@@ -22,7 +22,7 @@ public class ArcadeDrive extends SendableCommandBase {
 	 * This command will reserve the drivetrain.
 	 */
 	public ArcadeDrive() {
-		requires(Robot.drivetrain);
+		addRequirements(Robot.drivetrain);
 	}
 
 	// drivetrain drivetrain = new drivetrain();
@@ -31,10 +31,10 @@ public class ArcadeDrive extends SendableCommandBase {
 	@Override
 	public void initialize() {
 		Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
-		Robot.drivetrain.getLeft().getMaster().configClosedloopRamp(0.2);
-		Robot.drivetrain.getRight().getMaster().configClosedloopRamp(0.2);
-		Robot.drivetrain.getLeft().getMaster().configOpenloopRamp(0.2);
-		Robot.drivetrain.getRight().getMaster().configOpenloopRamp(0.2);
+		Robot.drivetrain.getLeft().getMaster().getTalonSRX().configClosedloopRamp(0.2);
+		Robot.drivetrain.getRight().getMaster().getTalonSRX().configClosedloopRamp(0.2);
+		Robot.drivetrain.getLeft().getMaster().getTalonSRX().configOpenloopRamp(0.2);
+		Robot.drivetrain.getRight().getMaster().getTalonSRX().configOpenloopRamp(0.2);
 		Robot.drivetrain.arcadeDrive(0, 0);
 		System.out.println("arcade drive command init");
 		DriveTrain.getInstance().isFirstRun = true;
@@ -92,16 +92,10 @@ public class ArcadeDrive extends SendableCommandBase {
 	public void end(boolean interrupted) {
 		Robot.drivetrain.arcadeDrive(0, 0);
 		System.out.println("arcade end called");
-		Robot.drivetrain.getLeft().getMaster().configClosedloopRamp(0.0);
-		Robot.drivetrain.getRight().getMaster().configClosedloopRamp(0.0);
-		Robot.drivetrain.getLeft().getMaster().configOpenloopRamp(0.0);
-		Robot.drivetrain.getRight().getMaster().configOpenloopRamp(0.0);
+		Robot.drivetrain.getLeft().getMaster().getTalonSRX().configClosedloopRamp(0.0);
+		Robot.drivetrain.getRight().getMaster().getTalonSRX().configClosedloopRamp(0.0);
+		Robot.drivetrain.getLeft().getMaster().getTalonSRX().configOpenloopRamp(0.0);
+		Robot.drivetrain.getRight().getMaster().getTalonSRX().configOpenloopRamp(0.0);
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		end();
-	}
 }

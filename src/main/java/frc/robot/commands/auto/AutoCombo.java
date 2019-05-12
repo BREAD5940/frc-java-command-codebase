@@ -1,8 +1,13 @@
 package frc.robot.commands.auto;
 
-import frc.robot.commands.auto.groups.AutoCommandGroup;
+//import frc.robot.commands.auto.routines.TwoHatchOneCargo;
+//import frc.robot.commands.auto.routines.TwoHatchOneCargo;
+//import org.team5940.pantry.exparimental.command.Command;
+
+// import frc.robot.commands.auto.routines.TwoHatchOneCargo;
 import frc.robot.commands.auto.routines.TwoHatchOneCargo;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 /**
  * Creates an AutoMotion and drive plan based on the inputted params. Will
@@ -11,7 +16,7 @@ import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
  * @author Jocelyn McHugo
  */
 public class AutoCombo {
-	private AutoCommandGroup mBigCommandGroup;
+	private SendableCommandBase mBigCommandGroup;
 
 	/**
 	 * 2-hatch 1-cargo hard-coded auto. ow.
@@ -89,14 +94,14 @@ public class AutoCombo {
 
 	// id functions
 
-	/**
-	 * identification function
-	 * @return
-	 *  the mBigCommandGroup of the function
-	 */
-	public AutoCommandGroup getBigCommandGroup() {
-		return this.mBigCommandGroup;
-	}
+	//	/**
+	//	 * identification function
+	//	 * @return
+	//	 *  the mBigCommandGroup of the function
+	//	 */
+	//	public AutoCommandGroup getBigCommandGroup() {
+	//		return this.mBigCommandGroup;
+	//	}
 
 	//not id functions
 

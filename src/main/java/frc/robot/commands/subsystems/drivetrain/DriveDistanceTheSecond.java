@@ -1,6 +1,7 @@
 package frc.robot.commands.subsystems.drivetrain;
 
 import java.util.Arrays;
+import java.util.Set;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
@@ -13,7 +14,8 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
@@ -48,14 +50,14 @@ public class DriveDistanceTheSecond extends SendableCommandBase {
 		this.distance = distance;
 		this.vel = vel;
 		this.reversed = reversed;
-		requires(DriveTrain.getInstance());
+		addRequirements(DriveTrain.getInstance());
 	}
 
 	@Override
 	public void initialize() {
 
 		var currentPose = new Pose2d();
-		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX().getInch() + "," + currentPose.getTranslation().getY().getInch());
+		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX() + "," + currentPose.getTranslation().getY());
 		Translation2d offsetTrans;
 		if (!reversed) {
 			offsetTrans = new Translation2d(distance, currentPose.getRotation());
@@ -64,7 +66,7 @@ public class DriveDistanceTheSecond extends SendableCommandBase {
 		}
 		var offsetPose = currentPose.plus(new Pose2d(offsetTrans, Rotation2dKt.getDegree(0)));
 
-		System.out.println("OFFSET POSE: " + offsetPose.getTranslation().getX().getInch() + "," + offsetPose.getTranslation().getY().getInch());
+		System.out.println("OFFSET POSE: " + offsetPose.getTranslation().getX() + "," + offsetPose.getTranslation().getY());
 
 		var waypoints = Arrays.asList(
 				currentPose, offsetPose);
@@ -80,13 +82,13 @@ public class DriveDistanceTheSecond extends SendableCommandBase {
 
 		System.out.println("FIRST POSE: " + Util.toString(trajectory.getFirstState().getState().getPose()) + " LAST POSE: " + Util.toString(trajectory.getLastState().getState().getPose()));
 
-		clearRequirements();
+		this.m_requirements = Set.of();
 
 		mCommand = DriveTrain.getInstance().followTrajectory(trajectory, TrajectoryTrackerMode.RAMSETE, true);
 
 		// addSequential(mCommand);
-		clearRequirements();
-		mCommand.start();
+//		clearRequirements();
+		mCommand.schedule();
 
 		// mCommand.start();
 		commandStarted = true;
@@ -106,7 +108,7 @@ public class DriveDistanceTheSecond extends SendableCommandBase {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	public boolean isFinished() {
-		return mCommand.isCompleted() && commandStarted;
+		return mCommand.isFinished() && commandStarted;
 	}
 
 	// 	// Called once after isFinished returns true

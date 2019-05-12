@@ -3,14 +3,22 @@ package frc.robot.commands.subsystems.superstructure;
 import org.ghrobotics.lib.mathematics.units.Length;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.ConditionalCommand;
-import edu.wpi.first.wpilibj.command.PrintCommand;
+//import edu.wpi.first.wpilibj.command.ConditionalCommand;
+//import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import org.team5940.pantry.exparimental.command.ConditionalCommand;
+import org.team5940.pantry.exparimental.command.PrintCommand;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
-public class JankyGoToState extends SendableCommandBaseGroup {
+public class JankyGoToState extends SequentialCommandGroup {
+
+	@Override
+	public void schedule() {
+		schedule(false);
+	}
 
 	public JankyGoToState(Length height, IntakeAngle angles) {
 		this(new SuperStructureState(new ElevatorState(height), angles));
@@ -22,17 +30,15 @@ public class JankyGoToState extends SendableCommandBaseGroup {
 
 	public JankyGoToState(SuperStructureState requ_) {
 
-		requires(SuperStructure.getInstance());
+		addRequirements(SuperStructure.getInstance());
 
-		setInterruptible(false);
+//		setInterruptible(false);
 
-		addSequential(new PrintCommand("requested state: " + requ_.toCSV()));
+		addCommands(new PrintCommand("requested state: " + requ_.toCSV()));
 
-		var safeMove = new ConditionalCommand(new ElevatorThanArm(requ_), new ArmThanElevator(requ_)) {
+		var safeMove = new ConditionalCommand(new ElevatorThanArm(requ_), new ArmThanElevator(requ_), () ->
 
-			@Override
-			protected boolean condition() {
-				var proximalThreshold = -18;
+		{var proximalThreshold = -18;
 				var currentState = SuperStructure.getInstance().getCurrentState();
 				var startAboveSafe = requ_.getElevatorHeight().getInch() > 25;
 				var endAboveSafe = currentState.getElevatorHeight().getInch() > 25;
@@ -45,15 +51,14 @@ public class JankyGoToState extends SendableCommandBaseGroup {
 
 				System.out.println(((shouldMoveElevatorFirst) ? "We are moving the elevator first!" : "We are moving the arm first!"));
 
-				return shouldMoveElevatorFirst;
+				return (boolean) shouldMoveElevatorFirst;}
+		);
 
-			}
-		};
+		var choosePath = new ConditionalCommand(new SuperstructureGoToState(requ_), safeMove, () ->
 
-		var choosePath = new ConditionalCommand(new SuperstructureGoToState(requ_), safeMove) {
-
-			@Override
-			protected boolean condition() {
+//			@Override
+//			protected boolean condition() {
+		{
 				var proximalThreshold = -68;
 				var currentState = SuperStructure.getInstance().getCurrentState();
 				var nowOutsideCrossbar = currentState.getElbowAngle().getDegree() > proximalThreshold;
@@ -72,23 +77,23 @@ public class JankyGoToState extends SendableCommandBaseGroup {
 
 				return safeToMoveSynced;
 			}
-		};
+		);
 
-		addSequential(choosePath);
+		addCommands(choosePath);
 
 	}
 
-	public class ElevatorThanArm extends SendableCommandBaseGroup {
+	public static class ElevatorThanArm extends SequentialCommandGroup {
 		public ElevatorThanArm(SuperStructureState requ) {
-			addSequential(new ElevatorMove(requ.getElevator()));
-			addSequential(new ArmMove(requ.getAngle()));
+			addCommands(new ElevatorMove(requ.getElevator()));
+			addCommands(new ArmMove(requ.getAngle()));
 		}
 	}
 
-	public class ArmThanElevator extends SendableCommandBaseGroup {
+	public static class ArmThanElevator extends SequentialCommandGroup {
 		public ArmThanElevator(SuperStructureState requ) {
-			addSequential(new ArmMove(requ.getAngle()));
-			addSequential(new ElevatorMove(requ.getElevator()));
+			addCommands(new ArmMove(requ.getAngle()));
+			addCommands(new ElevatorMove(requ.getElevator()));
 		}
 	}
 

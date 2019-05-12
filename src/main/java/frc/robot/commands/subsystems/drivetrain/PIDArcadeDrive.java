@@ -12,13 +12,14 @@ import java.util.TreeMap;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+//import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.lib.InterpolatableLut;
 import frc.robot.lib.InterpolatableLutEntry;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 public class PIDArcadeDrive extends SendableCommandBase {
 
@@ -30,9 +31,9 @@ public class PIDArcadeDrive extends SendableCommandBase {
 	private boolean squareInputs;
 
 	public PIDArcadeDrive(boolean square) {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		requires(DriveTrain.getInstance());
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
+		addRequirements(DriveTrain.getInstance());
 		this.squareInputs = square;
 
 		var highGearMap = new TreeMap<Double, InterpolatableLutEntry>();
@@ -52,10 +53,10 @@ public class PIDArcadeDrive extends SendableCommandBase {
 	@Override
 	public void initialize() {
 		DriveTrain.getInstance().setNeutralMode(NeutralMode.Coast);
-		DriveTrain.getInstance().getLeft().getMaster().configClosedloopRamp(0.16);
-		DriveTrain.getInstance().getRight().getMaster().configClosedloopRamp(0.16);
-		DriveTrain.getInstance().getLeft().getMaster().configOpenloopRamp(0.16);
-		DriveTrain.getInstance().getRight().getMaster().configOpenloopRamp(0.16);
+		DriveTrain.getInstance().getLeft().getMaster().getTalonSRX().configClosedloopRamp(0.16);
+		DriveTrain.getInstance().getRight().getMaster().getTalonSRX().configClosedloopRamp(0.16);
+		DriveTrain.getInstance().getLeft().getMaster().getTalonSRX().configOpenloopRamp(0.16);
+		DriveTrain.getInstance().getRight().getMaster().getTalonSRX().configOpenloopRamp(0.16);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -186,8 +187,8 @@ public class PIDArcadeDrive extends SendableCommandBase {
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		DriveTrain.getInstance().stop();
-	}
+//	@Override
+//	protected void interrupted() {
+//		DriveTrain.getInstance().stop();
+//	}
 }

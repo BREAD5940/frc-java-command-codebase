@@ -1,6 +1,6 @@
 // package frc.robot.commands.subsystems.superstructure;
 
-// import org.team5940.pantry.experimental.command.SendableCommandBase;
+// import org.team5940.pantry.exparimental.command.SendableCommandBase;
 // import frc.robot.states.ElevatorState;
 // import frc.robot.subsystems.superstructure.SuperStructure;
 
@@ -14,11 +14,11 @@
 // 	 */
 // 	public ElevatorMove(ElevatorState goal) {
 // 		this.mGoal = goal;
-// 		requires(SuperStructure.getElevator());
+// 		addRequirements(SuperStructure.getElevator());
 // 	}
 
 // 	@Override
-// 	protected void initialize() {}
+// 	public void initialize() {}
 
 // 	@Override
 // 	public void execute() {

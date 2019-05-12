@@ -24,10 +24,10 @@
 // 	 */
 // 	public JogElevator(Length delta, boolean isUp) {
 // 		super();
-// 		// Use requires() here to declare subsystem dependencies
-// 		// eg. requires(chassis);
-// 		requires(SuperStructure.getInstance());
-// 		requires(SuperStructure.getElevator());
+// 		// Use addRequirements() here to declare subsystem dependencies
+// 		// eg. addRequirements(chassis);
+// 		addRequirements(SuperStructure.getInstance());
+// 		addRequirements(SuperStructure.getElevator());
 // 		deltaLength = delta.getAbsoluteValue();
 // 		isUpwards = isUp;
 // 	}

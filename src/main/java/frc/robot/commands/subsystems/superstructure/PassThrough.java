@@ -2,20 +2,24 @@ package frc.robot.commands.subsystems.superstructure;
 
 import static frc.robot.subsystems.superstructure.SuperStructure.getDumbWrist;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.Timer;
-import org.team5940.pantry.experimental.command.SendableCommandBase;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.ConditionalCommand;
-import edu.wpi.first.wpilibj.command.PrintCommand;
+import org.team5940.pantry.exparimental.command.ConditionalCommand;
+import org.team5940.pantry.exparimental.command.PrintCommand;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+//import edu.wpi.first.wpilibj.command.CommandGroup;
+//import edu.wpi.first.wpilibj.command.ConditionalCommand;
+//import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.RobotConfig;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
 public class PassThrough extends ConditionalCommand {
 
@@ -134,52 +138,62 @@ public class PassThrough extends ConditionalCommand {
 
 	private final SuperStructure structure;
 
-	public PassThrough(SuperStructure structure, Supplier<Boolean> isFrontToBack) {
+	public PassThrough(SuperStructure structure, BooleanSupplier isFrontToBack) {
 
 		// super(setupConstructor(structure), isFrontToBack);
 
-		super(new FrontToBack(structure), new BackToFront(structure));
+		super(new FrontToBack(structure), new BackToFront(structure), isFrontToBack	);
 
 		this.structure = structure;
 		this.isFrontToBack = isFrontToBack;
 
 	}
 
-	private Supplier<Boolean> isFrontToBack;
+	private BooleanSupplier isFrontToBack;
 
-	@Override
-	protected boolean condition() {
-		return isFrontToBack.get();
-	}
+//	@Override
+//	protected boolean condition() {
+//		return isFrontToBack.get();
+//	}
 
-	public static class FrontToBack extends SendableCommandBaseGroup {
+	public static class FrontToBack extends SequentialCommandGroup {
+
+		@Override
+		public void schedule() {
+			schedule(false);
+		}
 
 		public FrontToBack(SuperStructure structure) {
 
-			setInterruptible(false);
+//			setInterruptible(false);
 
-			addSequential(new PrintCommand("passing thru front to back"));
-			addSequential(new ElevatorMove(LengthKt.getInch(23))); //todo check height
-			addSequential(new SyncedMove(Math.toRadians(-160), true, structure));
+			addCommands(new PrintCommand("passing thru front to back"));
+			addCommands(new ElevatorMove(LengthKt.getInch(23))); //todo check height
+			addCommands(new SyncedMove(Math.toRadians(-160), true, structure));
 			//-188 elbow -106 wrist
-			addSequential(new ArmMove(new IntakeAngle(
+			addCommands(new ArmMove(new IntakeAngle(
 					RoundRotation2d.getDegree(-193),
 					RoundRotation2d.getDegree(-112))));
-			addSequential(new ElevatorMove(LengthKt.getInch(5))); //todo check height
+			addCommands(new ElevatorMove(LengthKt.getInch(5))); //todo check height
 		}
 	}
 
-	public static class BackToFront extends SendableCommandBaseGroup {
+	public static class BackToFront extends SequentialCommandGroup {
+
+		@Override
+		public void schedule() {
+			schedule(false);
+		}
 
 		public BackToFront(SuperStructure structure) {
 
-			setInterruptible(false);
+//			setInterruptible(false);
 
-			addSequential(new PrintCommand("passing thru back to front"));
-			addSequential(new ElevatorMove(LengthKt.getInch(23))); //todo check height
-			addSequential(new SyncedMove(Math.toRadians(0), false, structure));
-			addSequential(new ElevatorMove(LengthKt.getInch(15))); //todo check height
-			addSequential(new JankyGoToState(RobotConfig.auto.fieldPositions.hatchLowGoal, SuperStructure.iPosition.HATCH));
+			addCommands(new PrintCommand("passing thru back to front"));
+			addCommands(new ElevatorMove(LengthKt.getInch(23))); //todo check height
+			addCommands(new SyncedMove(Math.toRadians(0), false, structure));
+			addCommands(new ElevatorMove(LengthKt.getInch(15))); //todo check height
+			addCommands(new JankyGoToState(RobotConfig.auto.fieldPositions.hatchLowGoal, SuperStructure.iPosition.HATCH));
 
 		}
 	}

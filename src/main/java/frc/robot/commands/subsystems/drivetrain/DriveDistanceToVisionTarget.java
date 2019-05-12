@@ -4,11 +4,12 @@ import java.util.function.Supplier;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.SILengthConstants;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 
 import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LimeLight;
@@ -51,7 +52,7 @@ public class DriveDistanceToVisionTarget extends SendableCommandBase {
 		final double yawKp = 0.2; // TODO tuneme
 		final double maxYawSpeed = 4; //feet per sec
 
-		var fwdPower = Util.limit(distanceToGo.getFeet() * fwdKp, velocity.getType$FalconLibrary().getFeet());
+		var fwdPower = Util.limit(distanceToGo.getFeet() * fwdKp, velocity.getValue() / SILengthConstants.kFeetToMeter);
 		fwdPower = Util.limit(fwdPower, lastFwdCmd - (1 / ticksToMax), lastFwdCmd + (1 / ticksToMax));
 
 		var steer_cmd = targetYaw.get().getDegree() * yawKp;

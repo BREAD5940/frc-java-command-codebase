@@ -2,7 +2,8 @@ package frc.robot.commands.subsystems.superstructure;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+//import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
@@ -38,12 +39,12 @@ public class SuperstructureGoToState extends SendableCommandBase {
 	}
 
 	public SuperstructureGoToState(SuperStructureState requState, double timeout) {
-		requires(SuperStructure.getInstance());
-		requires(SuperStructure.getInstance().getWrist());
-		requires(SuperStructure.getInstance().getElbow());
-		requires(SuperStructure.getElevator());
+		addRequirements(SuperStructure.getInstance());
+		addRequirements(SuperStructure.getInstance().getWrist());
+		addRequirements(SuperStructure.getInstance().getElbow());
+		addRequirements(SuperStructure.getElevator());
 		mRequState = requState;
-		setTimeout(timeout);
+//		setTimeout(timeout);
 
 		this.elevatorSetpoint = requState.getElevatorHeight();
 		this.wristSetpoint = requState.getWristAngle();
@@ -75,7 +76,7 @@ public class SuperstructureGoToState extends SendableCommandBase {
 	public boolean isFinished() {
 		if (!hasSetState)
 			execute();
-		return (checkElbow() && checkWrist() && checkElevator()) || isTimedOut();
+		return (checkElbow() && checkWrist() && checkElevator());
 	}
 
 	private boolean checkElbow() {
@@ -117,8 +118,4 @@ public class SuperstructureGoToState extends SendableCommandBase {
 		//System.out.println("==============================================================");
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
 }

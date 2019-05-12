@@ -1,11 +1,12 @@
 package frc.robot.commands.auto;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.InstantCommand;
 
 import frc.robot.RobotConfig;
 import frc.robot.RobotConfig.auto;
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
@@ -25,21 +26,21 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 public class PrettyAutoMotion {
 
-	private AutoCommandGroup motionCommands;
-	private AutoCommandGroup presetCommands;
-	private AutoCommandGroup fullGroup = new AutoCommandGroup();
+	private Command motionCommands;
+	private Command presetCommands;
+	private Command fullGroup = new InstantCommand();
 	private SuperStructureState ssState;
 
 	public PrettyAutoMotion(AutoMotionStateMachine machine) {
 		this.ssState = findSuperStructureState(machine);
 		this.presetCommands = genPresetMotion(this.ssState);
 		this.motionCommands = genMainMotion(machine);
-		this.fullGroup.addSequential(this.presetCommands);
-		this.fullGroup.addSequential(this.motionCommands);
+		this.fullGroup = this.fullGroup.andThen(this.presetCommands);
+		this.fullGroup = this.fullGroup.andThen(this.motionCommands);
 	}
 
-	private AutoCommandGroup genMainMotion(AutoMotionStateMachine machine) {
-		AutoCommandGroup createdGroup = new AutoCommandGroup();
+	private Command genMainMotion(AutoMotionStateMachine machine) {
+		Command createdGroup = new InstantCommand();
 		if (machine.getMotionType() == MotionType.PICKUP) {
 			//CHECK if the location is the loading or not
 			if (machine.getGoalLocation() == GoalLocation.LOADING) {
@@ -47,7 +48,7 @@ public class PrettyAutoMotion {
 				if (machine.getGoalPiece() == HeldPiece.HATCH) {
 					//CLOSE clamp
 					//FIXME is this command still valid?
-					createdGroup.addSequential(new SetHatchMech(HatchMechState.kClamped));
+					createdGroup = createdGroup.andThen(new SetHatchMech(HatchMechState.kClamped));
 					//ALIGN with targets
 					// createdGroup.addSequential(new FollowVisionTarget(1, 5, 10));
 					//RUN intake
@@ -61,7 +62,7 @@ public class PrettyAutoMotion {
 				//RETURN
 			} else {
 				//RUN the intake for 1 second
-				createdGroup.addSequential(new RunIntake(1, 1, 1));
+				createdGroup = createdGroup.andThen(new RunIntake(1, 1, 1));
 				return createdGroup;
 			}
 
@@ -77,7 +78,7 @@ public class PrettyAutoMotion {
 		return createdGroup;
 	}
 
-	private AutoCommandGroup genPresetMotion(SuperStructureState state) {
+	private Command genPresetMotion(SuperStructureState state) {
 		SuperstructureMotion.getInstance().plan(state, SuperStructure.getInstance().lastState); //FIXME lastState is what we want, right?
 		return SuperstructureMotion.getInstance().getQueue();
 	}
@@ -194,7 +195,7 @@ public class PrettyAutoMotion {
 	 * @return
 	 *    a sequential group of presetCommands and motionCommands
 	 */
-	public AutoCommandGroup getFullMotion() {
+	public Command getFullMotion() {
 		return this.fullGroup;
 	}
 
@@ -203,7 +204,7 @@ public class PrettyAutoMotion {
 	 * @return
 	 *    the commands to move ONLY the superstructure to its starting pos
 	 */
-	public AutoCommandGroup getPresetCommands() {
+	public Command getPresetCommands() {
 		return this.presetCommands;
 	}
 
@@ -212,7 +213,7 @@ public class PrettyAutoMotion {
 	 * @return
 	 *    the actual moving part
 	 */
-	public AutoCommandGroup getMotionCommands() {
+	public Command getMotionCommands() {
 		return this.motionCommands;
 	}
 }

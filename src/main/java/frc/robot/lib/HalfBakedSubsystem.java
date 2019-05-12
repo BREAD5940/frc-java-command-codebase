@@ -1,11 +1,12 @@
 package frc.robot.lib;
 
-import org.team5940.pantry.experimental.command.SendableSubsystemBase;
 
-public abstract class HalfBakedSubsystem extends Subsystem {
+import org.team5940.pantry.exparimental.command.SendableSubsystemBase;
+
+public abstract class HalfBakedSubsystem extends SendableSubsystemBase {
 
 	public HalfBakedSubsystem(String string) {
-		super(string);
+
 	}
 
 	public abstract void onDisable();

@@ -1,7 +1,7 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.planners.SuperstructureMotion;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -10,8 +10,8 @@ public class PlannerTest extends SendableCommandBase {
 	SuperStructureState goal;
 
 	public PlannerTest(SuperStructureState goal) {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
 	}
 
 	// Called just before this Command runs the first time
@@ -36,8 +36,4 @@ public class PlannerTest extends SendableCommandBase {
 	@Override
 	public void end(boolean interrupted) {}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
 }

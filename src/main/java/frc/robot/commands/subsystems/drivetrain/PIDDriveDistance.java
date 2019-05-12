@@ -11,10 +11,11 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
-import org.team5940.pantry.experimental.command.SendableCommandBase;
+//import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 public class PIDDriveDistance extends SendableCommandBase {
 	double targetEnd;
@@ -25,22 +26,22 @@ public class PIDDriveDistance extends SendableCommandBase {
 	double lastCommand = 0;
 
 	public PIDDriveDistance(Length distance, double maxSpeedFt) {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
 		// super(20, 0, 0);
-		requires(DriveTrain.getInstance());
+		addRequirements(DriveTrain.getInstance());
 		this.rawDelta = distance.getFeet();
-		setTimeout(4);
+//		setTimeout(4);
 		this.maxSpeed = maxSpeedFt;
 	}
 
 	public PIDDriveDistance(double distance, double maxSpeedFt, double timeout) {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
 		// super(20, 0, 0);
-		requires(DriveTrain.getInstance());
+		addRequirements(DriveTrain.getInstance());
 		this.rawDelta = distance;
-		setTimeout(timeout);
+//		setTimeout(timeout);
 		this.maxSpeed = maxSpeedFt;
 	}
 
@@ -49,6 +50,7 @@ public class PIDDriveDistance extends SendableCommandBase {
 	public void initialize() {
 		this.targetEnd = rawDelta + DriveTrain.getInstance().getLeft().getFeet();
 		// super.setSetpoint(targetEnd);
+		isWithinDelta = false;
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -77,12 +79,14 @@ public class PIDDriveDistance extends SendableCommandBase {
 
 	// Called once after isFinished returns true
 	@Override
-	public void end(boolean interrupted) {}
+	public void end(boolean interrupted) {
+		DriveTrain.getInstance().stop();
+	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
+//	@Override
+//	protected void interrupted() {}
 
 	// @Override
 	// protected double returnPIDInput() {
