@@ -493,11 +493,6 @@ public class Robot extends TimedRobot {
 
 		}
 
-		// var elevatorAbsTicks = SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 1024;
-		// System.out.println(elevatorAbsTicks);
-
-		// System.out.println(String.format("carriage max %s inner stage min %s", superstructure.getCarriageMaxLimit(), superstructure.getInnerStageMinLimit() ));
-
 		SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX() / SILengthConstants.kFeetToMeter);
 		SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY() / SILengthConstants.kFeetToMeter);
 
@@ -505,50 +500,11 @@ public class Robot extends TimedRobot {
 		LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY() / SILengthConstants.kFeetToMeter);
 		LiveDashboard.INSTANCE.setRobotHeading(drivetrain.getLocalization().getRobotPosition().getRotation().getRadian());
 
-		// SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getFeetPerSecond());
-		// SmartDashboard.putNumber("Left talon error", drivetrain.getLeft().getClosedLoopError().getFeet());
-		// SmartDashboard.putNumber("Right talon speed", drivetrain.getRight().getFeetPerSecond());
-		// SmartDashboard.putNumber("Right talon error", drivetrain.getRight().getClosedLoopError().getFeet());
-
-		// List<Double> feetPerSecond = Arrays.asList(
-		// 		VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()),
-		// 		VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()));
-		// List<Double> feetPerSecondPerSecond = Arrays.asList(
-		// 		(VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()) - drivetrain.lastFeetPerSecond.get(0)) / 0.02d,
-		// 		(VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()) - drivetrain.lastFeetPerSecond.get(0)) / 0.02d);
-		// SmartDashboard.putNumber("Left drivetrian feet per second", feetPerSecond.get(0));
-		// SmartDashboard.putNumber("Right drivetrian feet per second", feetPerSecond.get(1));
-
-		// SmartDashboard.putNumber("7 feet per second is", drivetrain.getLeft().getModel().toNativeUnitPosition(LengthKt.getFeet(7)).getValue());
-
 		SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
-
-		// SmartDashboard.putData(drivetrain);
-		// SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getMaster().getSensorPosition().getDegree());
-		// SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
-		// SmartDashboard.putData(superstructure);
 
 		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
 
 		SmartDashboard.putData(autoState); //TODO test to see if it actually does the thing
-
-		// Limelight stuff
-		// double[] limelightdata = limelight.getData();
-
-		// SmartDashboard.putNumber("Vision targets?", limelightdata[0]);
-		// SmartDashboard.putNumber("Horizontal offset", limelightdata[1]);
-		// SmartDashboard.putNumber("Vertical offset", limelightdata[2]);
-		// SmartDashboard.putNumber("Target area", limelightdata[3]);
-		// SmartDashboard.putNumber("Target skew", limelightdata[4]);
-		// SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
-
-		// long elapsed = System.currentTimeMillis() - now;
-		// System.out.println("RobotPeriodic took " + elapsed + "ms");
-
-		// if (getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed())
-		// System.out.println("elbow limit: " + superstructure.getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed());
-		// if (getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed())
-		// System.out.println("wrist limit: " + superstructure.getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed());
 
 	}
 
