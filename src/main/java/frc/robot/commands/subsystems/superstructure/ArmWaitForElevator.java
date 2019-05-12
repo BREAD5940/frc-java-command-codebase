@@ -23,7 +23,6 @@ public class ArmWaitForElevator extends AutoCommandGroup {
 	 * @param desired the desired intake angles after the elevator moves
 	 * @param finalEleHeight the elevator height to wait for
 	 * @param tolerence the tolerance about the elevator setpoint
-	 * @param isDescending if the elevator is going down or not
 	 */
 	public ArmWaitForElevator(IntakeAngle desired, Length finalEleHeight, Length tolerence) {
 		elevatorMoved = (() -> {

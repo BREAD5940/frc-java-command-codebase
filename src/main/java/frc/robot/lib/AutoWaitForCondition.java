@@ -7,13 +7,14 @@ import edu.wpi.first.wpilibj.command.Command;
 
 public class AutoWaitForCondition extends Command {
 
-	BooleanSupplier mCaller; // the command group that called me
+	Callable<Boolean> mCaller; // the command group that called me
 	boolean ready = false;
 
 	/**
 	 * Wait for a 'super ish' AutoCommandgroup to be ReadyForNext before returning.
+	 * @param caller
 	 */
-	public AutoWaitForCondition(BooleanSupplier caller) {
+	public AutoWaitForCondition(Callable<Boolean> caller) {
 		this.mCaller = caller;
 	}
 
@@ -21,7 +22,7 @@ public class AutoWaitForCondition extends Command {
 	protected boolean isFinished() {
 		boolean isDone;
 		try {
-			isDone = mCaller.getAsBoolean();
+			isDone = mCaller.call();
 		} catch (Exception e) {
 			isDone = true;
 		}
