@@ -1,7 +1,6 @@
 package frc.robot.lib;
 
 import java.util.concurrent.Callable;
-import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.command.Command;
 
