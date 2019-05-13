@@ -175,3 +175,4 @@ src\main\python\twoHatchLLtest.csv
 *.iml
 .idea/workspace.xml
 .idea/compiler.xml
+*.kotlin_module

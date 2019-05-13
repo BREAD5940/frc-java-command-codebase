@@ -2,138 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e589cf4c-e643-4df8-bae1-8c79fefa739e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/bin/.gitconfig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/.kotlin-for-frc/kotlin-frc-preferences.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/.vscode/launch.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/.vscode/settings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/.vscode/tasks.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/.wpilib/wpilib_preferences.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/ArduinoController/UnoJoy.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/ArduinoController/UnoJoyArduinoSample.ino" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/GHRepo.url" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/PathWeaver/pathweaver.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/azure-pipelines.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/buildDeploy.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/buildDeploy.sh" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/config/checkstyle/checkstyle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/config/spotless/eclipseformat.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/config/spotless/importorder" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/gradle.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/index.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/ProgrammingTraining.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/ProgrammingTraining.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image10.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image11.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image12.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image13.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image14.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image15.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image16.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image17.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image18.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image19.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image20.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image21.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image22.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image23.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image24.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image25.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image26.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image27.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image28.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image29.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image3.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image30.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image5.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image6.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image7.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image8.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/docs/training/images/image9.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/genPath" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/genPath.ps1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/java_style.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/15inAway" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/2ftAway" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/3ftAway" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/4ftAway" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/5ftAway" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/A_primer_on_Odometry.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/FRC2019_DualTargetModel.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/MattsOdometryStuff.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/Pure_Pursuit_Implementation.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/Vision.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/WCP Spartan Board - User Guide.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/auto timing thonk.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/default_limelight_settings.PNG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/default_pipeline.vpr" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/dual_target_default_hsv.vpr" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/frc-pdr.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/limelightTargetPos.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/localization.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/more_space_state.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/motor_characterization.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/onlyLeftModel.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/pathfinder.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/pathweaver.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/pure-pursuit-2-link.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/state-space-guide.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfs_reference_etc/weirdNullPointer.log.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/settings.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/deploy/GripPipeline.ll" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/deploy/example.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/deploy/paths/Unnamed_0.left.pf1.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/deploy/paths/Unnamed_0.pf1.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/deploy/paths/Unnamed_0.right.pf1.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/deploy/paths/test.left.pf1.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/deploy/paths/test.pf1.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/deploy/paths/test.right.pf1.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/python/10.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/python/11.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/python/2019-field.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/python/5.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/python/6.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/python/VisualizeBot.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/python/VisualizePath.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/python/angles.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/python/calibration.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/python/calibresult.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/python/get-pip.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/python/solvePNP.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/main/python/twoHatchLLtestSuper.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/src/test/java/safingTestOut.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/vendordeps/Phoenix.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/vendordeps/navx_frc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/mathematics/twodim/geometry/Translation2d.kt" beforeDir="false" afterPath="$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/mathematics/twodim/geometry/Translation2d.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/frc-java-command-codebase.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules/735139012/FalconLibrary.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/735139012/FalconLibrary.main.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/735139012/FalconLibrary.test.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/ProximalThrust.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/ProximalThrust.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/735139012/FalconLibrary.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/735139012/FalconLibrary.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/735139012/FalconLibrary.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/735139012/FalconLibrary.test.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frc-java-command-codebase.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/ArcadeDrive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/ArcadeDrive.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistance.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistance.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheThird.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheThird.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/HybridDriverAssist.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/HybridDriverAssist.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/robot/lib/AutoWaitForCondition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/robot/lib/AutoWaitForCondition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/TestableAutoCommandGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestableAutoCommandGroup.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -142,6 +23,9 @@
     <ignored path="$PROJECT_DIR$/../FalconLibrary/.gradle/" />
     <ignored path="$PROJECT_DIR$/../FalconLibrary/build/" />
     <ignored path="$PROJECT_DIR$/../FalconLibrary/out/" />
+    <ignored path="$PROJECT_DIR$/../PantryCommon/.gradle/" />
+    <ignored path="$PROJECT_DIR$/../PantryCommon/build/" />
+    <ignored path="$PROJECT_DIR$/../PantryCommon/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -162,108 +46,121 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/subsystems/superstructure/Elevator.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/TrajectoryTrackerCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="101">
-              <caret line="333" column="16" selection-start-line="333" selection-start-column="16" selection-end-line="333" selection-end-column="16" />
+            <state relative-caret-position="330">
+              <caret line="141" column="4" selection-start-line="141" selection-start-column="4" selection-end-line="141" selection-end-column="4" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/subsystems/superstructure/SuperStructure.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="407">
-              <caret line="334" column="37" selection-start-line="334" selection-start-column="37" selection-end-line="334" selection-end-column="37" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/ProximalThrust.kt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="66" column="8" selection-start-line="66" selection-start-column="8" selection-end-line="66" selection-end-column="8" />
-              <folding>
-                <element signature="e#54#602#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../FalconLibrary/.gitignore">
+        <entry file="file://$PROJECT_DIR$/src/test/java/TestableAutoCommandGroup.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="327">
-              <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+            <state relative-caret-position="336">
+              <caret line="61" column="57" selection-start-line="61" selection-start-column="57" selection-end-line="61" selection-end-column="57" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#548#549#0" expanded="true" />
+                <element signature="e#632#633#0" expanded="true" />
+                <element signature="e#1860#1861#0" expanded="true" />
+                <element signature="e#1886#1887#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.31/d16c788b755be19bf8a7eace113755519a1d7182/kotlin-stdlib-1.3.31-sources.jar!/kotlin/Primitives.kt">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/subsystems/DriveTrain.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="1296" column="24" selection-start-line="1296" selection-start-column="24" selection-end-line="1296" selection-end-column="24" />
+            <state relative-caret-position="177">
+              <caret line="686" column="29" lean-forward="true" selection-start-line="686" selection-start-column="29" selection-end-line="686" selection-end-column="29" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/states/ElevatorState.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/ArcadeDrive.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="58">
-              <caret line="45" column="11" selection-start-line="45" selection-start-column="11" selection-end-line="45" selection-end-column="11" />
+            <state relative-caret-position="405">
+              <caret line="99" selection-start-line="99" selection-end-line="99" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/ElevatorMove.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/lib/AutoWaitForCondition.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-238">
-              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+            <state relative-caret-position="367">
+              <caret line="31" column="10" selection-start-line="31" selection-start-column="10" selection-end-line="31" selection-end-column="10" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#451#452#0" expanded="true" />
+                <element signature="e#479#480#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/subsystems/superstructure/RotatingJoint.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheThird.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="186" column="16" selection-start-line="186" selection-start-column="16" selection-end-line="186" selection-end-column="16" />
+            <state relative-caret-position="374">
+              <caret line="91" column="33" selection-start-line="91" selection-start-column="33" selection-end-line="91" selection-end-column="33" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#2721#2722#0" expanded="true" />
+                <element signature="e#2764#2765#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/mathematics/units/Length.kt">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/HybridDriverAssist.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+            <state relative-caret-position="345">
+              <caret line="152" column="13" lean-forward="true" selection-start-line="152" selection-start-column="13" selection-end-line="152" selection-end-column="13" />
+              <folding>
+                <element signature="e#5821#5822#0" expanded="true" />
+                <element signature="e#5859#5860#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/lib/obj/RoundRotation2d.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/AutoMotion.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="170">
-              <caret line="30" column="43" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="43" />
+              <caret line="95" column="31" selection-start-line="95" selection-start-column="31" selection-end-line="95" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistance.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="49" column="8" selection-start-line="49" selection-start-column="8" selection-end-line="49" selection-end-column="8" />
               <folding>
-                <element signature="e#498#499#0" expanded="true" />
-                <element signature="e#521#522#0" expanded="true" />
-                <element signature="e#550#551#0" expanded="true" />
-                <element signature="e#564#565#0" expanded="true" />
-                <element signature="e#1275#1276#0" expanded="true" />
-                <element signature="e#1317#1318#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/TwoHatchOneCargo.kt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="93" column="23" selection-start-line="93" selection-start-column="23" selection-end-line="93" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -281,7 +178,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>falconlibrary</find>
       <find>falconmotor</find>
       <find>.wrappers</find>
       <find>class</find>
@@ -311,21 +207,18 @@
       <find>pose</find>
       <find>startLocation</find>
       <find>.xml</find>
+      <find>pantrycommon</find>
     </findStrings>
     <replaceStrings>
       <replace>/ SILengthConstants.kInchToMeter</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../FalconLibrary" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/PassThroughForwardSynced.kt" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/PassThroughForwardSync.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/superstructure/RotatingJoint.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/lib/obj/AngularVelocity.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/states/IntakeAngle.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/states/SuperStructureState.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/mlem.java" />
@@ -340,13 +233,11 @@
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/OI.java" />
         <option value="$PROJECT_DIR$/../FalconLibrary/.gitignore" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/PassThrough.java" />
-        <option value="$PROJECT_DIR$/settings.gradle" />
         <option value="$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/mathematics/twodim/geometry/Translation2d.kt" />
         <option value="$PROJECT_DIR$/build.gradle" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/planners/SuperstructurePlannerOLD.java" />
         <option value="$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/mathematics/twodim/geometry/Pose2d.kt" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheSecond.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheThird.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/SplineToVisionTarget.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/lib/FalconSparkMax.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/lib/motion/Util.java" />
@@ -355,8 +246,6 @@
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/FieldConstraints.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/Trajectories.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/PIDArcadeDrive.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/ArcadeDrive.java" />
-        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/TrajectoryTrackerCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/Transmission.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/ElevatorMotionMagicTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/ZeroElevatorDisabled.java" />
@@ -372,6 +261,15 @@
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/subsystems/superstructure/SuperStructure.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/lib/obj/RoundRotation2d.java" />
         <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/ProximalThrust.kt" />
+        <option value="$PROJECT_DIR$/settings.gradle" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/TwoHatchOneCargo.kt" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheThird.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/ArcadeDrive.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/lib/AutoWaitForCondition.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/HybridDriverAssist.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistance.java" />
+        <option value="$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/TrajectoryTrackerCommand.java" />
+        <option value="$PROJECT_DIR$/src/test/java/TestableAutoCommandGroup.java" />
       </list>
     </option>
   </component>
@@ -380,7 +278,7 @@
       <facet id="frc-java-command-codebase/invalid/Python" />
     </ignored-facets>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
     <option name="width" value="1440" />
     <option name="height" value="900" />
   </component>
@@ -392,9 +290,9 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -403,7 +301,7 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="project.propCompiler" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -431,10 +329,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2947761" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.30329043" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -450,10 +348,10 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Problems" order="8" weight="0.32827735" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" sideWeight="0.49946696" visible="true" weight="0.45287108" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49946696" weight="0.45180723" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50053304" side_tool="true" weight="0.23293608" />
-      <window_info anchor="bottom" id="Build" order="11" weight="0.32827735" />
-      <window_info anchor="bottom" id="Messages" order="12" weight="0.32891566" />
+      <window_info anchor="bottom" id="Build" order="11" weight="0.32771084" />
+      <window_info active="true" anchor="bottom" id="Messages" order="12" visible="true" weight="0.32891566" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -467,111 +365,6 @@
     </layout>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/mathematics/twodim/geometry/Pose2d.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="39" column="20" lean-forward="true" selection-start-line="39" selection-start-column="20" selection-end-line="39" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheSecond.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="59" column="34" lean-forward="true" selection-start-line="59" selection-start-column="34" selection-end-line="59" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheThird.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="162" selection-start-line="162" selection-end-line="162" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/SplineToVisionTarget.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="77" selection-start-line="77" selection-end-line="77" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/lib/FalconSparkMax.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="73" selection-start-line="73" selection-end-line="73" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/lib/motion/Util.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
-          <caret line="184" column="5" lean-forward="true" selection-start-line="184" selection-start-column="5" selection-end-line="184" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/planners/SuperstructureMotion.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="265" column="258" selection-start-line="265" selection-start-column="258" selection-end-line="265" selection-end-column="258" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/mathematics/twodim/geometry/Pose2dWithCurvature.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="18" column="30" selection-start-line="18" selection-start-column="30" selection-end-line="18" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/FieldConstraints.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="1" column="78" selection-start-line="1" selection-start-column="78" selection-end-line="1" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/Trajectories.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="35">
-          <caret line="370" lean-forward="true" selection-start-line="370" selection-end-line="370" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/PIDArcadeDrive.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="57" column="103" selection-start-line="57" selection-start-column="103" selection-end-line="57" selection-end-column="103" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/ArcadeDrive.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="146">
-          <caret line="36" column="94" selection-start-line="36" selection-start-column="94" selection-end-line="36" selection-end-column="94" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/TrajectoryTrackerCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="73" lean-forward="true" selection-start-line="73" selection-end-line="73" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/motors/AbstractFalconEncoder.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/lib/HalfBakedSubsystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.mcm001/pantrycommon/2d570ea774/712c6a86a742239e0798bc506ff1ebae21841728/pantrycommon-2d570ea774.jar!/com/ctre/phoenix/motorcontrol/SensorTerm.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -728,13 +521,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/actions/DriveStraight.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="102" column="64" lean-forward="true" selection-start-line="102" selection-start-column="64" selection-end-line="102" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/actions/DriveStraight.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/JustElevatorTeleop.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="186">
@@ -742,27 +529,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/HybridKinematicDriverAssist.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="87" selection-start-line="87" selection-end-line="87" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/subsystems/DriveTrain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="754" selection-start-line="754" selection-end-line="754" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5936#5937#0" expanded="true" />
-            <element signature="e#5971#5972#0" expanded="true" />
-            <element signature="e#6016#6017#0" expanded="true" />
-            <element signature="e#6052#6053#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/HybridKinematicDriverAssist.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/states/SuperStructureState.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="160">
@@ -788,19 +555,65 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/subsystems/superstructure/SuperStructure.java">
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.31/d16c788b755be19bf8a7eace113755519a1d7182/kotlin-stdlib-1.3.31-sources.jar!/kotlin/Primitives.kt" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/subsystems/superstructure/Elevator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
-          <caret line="334" column="37" selection-start-line="334" selection-start-column="37" selection-end-line="334" selection-end-column="37" />
+        <state relative-caret-position="4155">
+          <caret line="333" column="16" selection-start-line="333" selection-start-column="16" selection-end-line="333" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/subsystems/superstructure/SuperStructure.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3825">
+          <caret line="290" selection-start-line="290" selection-end-line="290" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/ProximalThrust.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="795">
+          <caret line="66" selection-start-line="66" selection-end-line="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/states/ElevatorState.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="45" column="11" selection-start-line="45" selection-start-column="11" selection-end-line="45" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/ElevatorMove.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/subsystems/superstructure/RotatingJoint.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2415">
+          <caret line="186" column="16" selection-start-line="186" selection-start-column="16" selection-end-line="186" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/mathematics/units/Length.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/lib/obj/RoundRotation2d.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
+        <state relative-caret-position="315">
           <caret line="30" column="43" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="43" />
           <folding>
             <element signature="e#498#499#0" expanded="true" />
@@ -813,65 +626,155 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../FalconLibrary/src/main/kotlin/org/ghrobotics/lib/mathematics/units/Length.kt">
+    <entry file="file://$PROJECT_DIR$/../FalconLibrary/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+        <state relative-caret-position="375">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/subsystems/superstructure/RotatingJoint.java">
+    <entry file="file://$PROJECT_DIR$/settings.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="186" column="16" selection-start-line="186" selection-start-column="16" selection-end-line="186" selection-end-column="16" />
+        <state relative-caret-position="303">
+          <caret line="27" column="29" selection-start-line="27" selection-start-column="29" selection-end-line="27" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/ElevatorMove.java">
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.mcm001/pantrycommon/23923b5ec8/3de037419dc2224dc7fb7b96e48c0559c56f26b5/pantrycommon-23923b5ec8.jar!/org/team5940/pantry/experimental/command/WaitCommand.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-238">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+        <state relative-caret-position="90">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/subsystems/superstructure/Elevator.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/Baseline.kt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="101">
-          <caret line="333" column="16" selection-start-line="333" selection-start-column="16" selection-end-line="333" selection-end-column="16" />
+        <state relative-caret-position="555">
+          <caret line="48" column="53" selection-start-line="48" selection-start-column="53" selection-end-line="48" selection-end-column="53" />
+          <folding>
+            <element signature="e#529#1087#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/ArmWaitForElevator.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="32" column="30" selection-start-line="32" selection-start-column="30" selection-end-line="32" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.gradle">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1365">
+          <caret line="91" selection-start-line="91" selection-end-line="91" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/routines/TwoHatchOneCargo.kt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="93" column="23" selection-start-line="93" selection-start-column="23" selection-end-line="93" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistanceTheThird.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="91" column="33" selection-start-line="91" selection-start-column="33" selection-end-line="91" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2721#2722#0" expanded="true" />
+            <element signature="e#2764#2765#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/ArcadeDrive.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="99" selection-start-line="99" selection-end-line="99" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/lib/AutoWaitForCondition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="367">
+          <caret line="31" column="10" selection-start-line="31" selection-start-column="10" selection-end-line="31" selection-end-column="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#451#452#0" expanded="true" />
+            <element signature="e#479#480#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/HybridDriverAssist.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="152" column="13" lean-forward="true" selection-start-line="152" selection-start-column="13" selection-end-line="152" selection-end-column="13" />
+          <folding>
+            <element signature="e#5821#5822#0" expanded="true" />
+            <element signature="e#5859#5860#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.mcm001/pantrycommon/2d570ea774/8682248618b05c25a305d03deab78a81b50b906b/pantrycommon-2d570ea774-sources.jar!/org/team5940/pantry/exparimental/command/InstantCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="29" column="11" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/auto/AutoMotion.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="95" column="31" selection-start-line="95" selection-start-column="31" selection-end-line="95" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/subsystems/DriveTrain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="686" column="29" lean-forward="true" selection-start-line="686" selection-start-column="29" selection-end-line="686" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/states/ElevatorState.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/DriveDistance.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="58">
-          <caret line="45" column="11" selection-start-line="45" selection-start-column="11" selection-end-line="45" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.3.31/d16c788b755be19bf8a7eace113755519a1d7182/kotlin-stdlib-1.3.31-sources.jar!/kotlin/Primitives.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="1296" column="24" selection-start-line="1296" selection-start-column="24" selection-end-line="1296" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/superstructure/ProximalThrust.kt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="66" column="8" selection-start-line="66" selection-start-column="8" selection-end-line="66" selection-end-column="8" />
+        <state relative-caret-position="170">
+          <caret line="49" column="8" selection-start-line="49" selection-start-column="8" selection-end-line="49" selection-end-column="8" />
           <folding>
-            <element signature="e#54#602#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../FalconLibrary/.gitignore">
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/robot/commands/subsystems/drivetrain/TrajectoryTrackerCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="327">
-          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
+        <state relative-caret-position="330">
+          <caret line="141" column="4" selection-start-line="141" selection-start-column="4" selection-end-line="141" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/TestableAutoCommandGroup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="61" column="57" selection-start-line="61" selection-start-column="57" selection-end-line="61" selection-end-column="57" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#548#549#0" expanded="true" />
+            <element signature="e#632#633#0" expanded="true" />
+            <element signature="e#1860#1861#0" expanded="true" />
+            <element signature="e#1886#1887#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

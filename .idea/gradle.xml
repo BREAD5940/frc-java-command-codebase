@@ -11,6 +11,11 @@
                   <project path="$PROJECT_DIR$/../FalconLibrary" />
                 </projects>
               </build>
+              <build path="$PROJECT_DIR$/../PantryCommon">
+                <projects>
+                  <project path="$PROJECT_DIR$/../PantryCommon" />
+                </projects>
+              </build>
             </builds>
           </compositeBuild>
         </compositeConfiguration>
@@ -21,6 +26,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/../FalconLibrary" />
+            <option value="$PROJECT_DIR$/../PantryCommon" />
             <option value="$PROJECT_DIR$" />
           </set>
         </option>
