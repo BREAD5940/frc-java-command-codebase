@@ -7,7 +7,8 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import org.team5940.pantry.exparimental.command.InstantCommand;
+
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Intake.HatchMechState;
 
@@ -20,13 +21,13 @@ public class ToggleClamp extends InstantCommand {
 	 */
 	public ToggleClamp() {
 		super();
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
 	}
 
 	// Called once when the command executes
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		var currentState = Intake.getInstance().getHatchMechState();
 		var newState = (currentState == HatchMechState.kClamped) ? HatchMechState.kOpen : HatchMechState.kClamped;
 		System.out.println("OLD STATE: " + currentState.name() + " NEW STATE: " + newState.name());

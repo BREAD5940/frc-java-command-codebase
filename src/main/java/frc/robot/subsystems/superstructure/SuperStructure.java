@@ -111,7 +111,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	}
 
 	private SuperStructure() {
-		super("SuperStructure");
+		// super("SuperStructure");
 		kElbowTransmission = new DCMotorTransmission(Constants.kElbowSpeedPerVolt, Constants.kElbowTorquePerVolt, Constants.kElbowStaticFrictionVoltage);
 
 		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
@@ -140,6 +140,9 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 			SmartDashboard.putString("Superstructure move setpoint", mReqState.toCSV());
 		});
 		mSmartDashboardUpdater.startPeriodic(0.5);
+
+
+		setDefaultCommand(new JustElevatorTeleop());
 
 	}
 
@@ -196,84 +199,6 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 
 		public static final ArrayList<IntakeAngle> presets = new ArrayList<IntakeAngle>(Arrays.asList(CARGO_GRAB, CARGO_DOWN,
 				CARGO_PLACE, CARGO_REVERSE, HATCH, HATCH_REVERSE));
-	}
-
-	// public boolean setReqState(SuperStructureState reqState) {
-	// 	plan(req)
-	// }
-
-	//	/**
-	//	 * Move the superstructure based on a height, intake angle and wrist angle
-	//	 * TODO how do we go from held game piece to target angle?
-	//	 */
-	//	@Deprecated
-	//	public void moveSuperstructureCombo(ElevatorState elevator, RotatingArmState elbow,
-	//			RotatingArmState wrist) {
-	//		moveSuperstructureCombo(new SuperStructureState(elevator, elbow, wrist));
-	//	}
-	//
-	//	/**
-	//	* Move the superstructure based on a height, intake angle and wrist angle
-	//	* TODO how do we go from held game piece to target angle?
-	//	*/
-	//	@Deprecated
-	//	public void moveSuperstructureCombo(ElevatorState elevator, IntakeAngle intakeState) {
-	//		moveSuperstructureCombo(new SuperStructureState(elevator, intakeState));
-	//	}
-
-	//	/**
-	//	 * move a combination of the sub-subsystems of the superstructure
-	//	 *
-	//	 * @param mReqState_ the state that we want the superstructure to end up in
-	//	 *
-	//	 * @returnW
-	//	 *    the command group necessary to safely move the superstructure
-	//	 */
-	//	@Deprecated
-	//	public void moveSuperstructureCombo(SuperStructureState mRequState_) {
-	//
-	//		// TODO the wrist angle is mega broken because it's solely based on the currently held game piece
-	//		// this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
-	//		this.mReqPath = planner.plan(mRequState_, mCurrentState);
-	//		mReqState = mRequState_; // TODO I still don't trust mReqState
-	//		// return this.mCurrentCommandGroup;
-	//	}
-	//
-	//	/**
-	//	 * move only the elevator of the superstructure
-	//	 * @param height
-	//	 *    the height to raise the elevator to
-	//	 * @return
-	//	 *    the command group necessary to safely move the superstructure
-	//	 */
-	//	@Deprecated
-	//	public void moveSuperstructureElevator(Length height) {
-	//		// updateState();
-	//		this.moveSuperstructureCombo(new ElevatorState(height), getCurrentState().getElbow(), getCurrentState().getWrist());
-	//	}
-	//
-	//	/**
-	//	 * move only the wrist of the superstructure
-	//	 * @param angle
-	//	 *    the preset angle to set the wrist to
-	//	 * @param piece
-	//	 *    the piece the robot is currently holding -- necessary for wrist movements
-	//	 * @return
-	//	 *    the command group necessary to safely move the superstructure
-	//	 */
-	//	@Deprecated
-	//	public void moveSuperstructureAngle(IntakeAngle intakeState, AutoMotionStateMachine.HeldPiece piece) {
-	//		// updateState();
-	//		this.moveSuperstructureCombo(mReqState.getElevator(), intakeState);
-	//	}
-
-	@Override
-	protected void initDefaultCommand() {
-		// pretty sure it doesn't need a default command, so leaving this empty
-		// Actually yeah all that you really need is the buttons
-		// well also jogging with joysticks but eehhhh
-		// actually that should be the default command, hot prank
-		setDefaultCommand(new JustElevatorTeleop());
 	}
 
 	public SuperStructureState updateState() {

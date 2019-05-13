@@ -1,8 +1,9 @@
 package frc.robot.commands.subsystems.drivetrain;
 
+import frc.robot.subsystems.DriveTrain;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
@@ -11,7 +12,7 @@ import frc.robot.lib.TerriblePID;
 /**
  * Literally just pivot in place by a desired amount
  */
-public class TurnInPlace extends Command {
+public class TurnInPlace extends SendableCommandBase {
 
 	double starting_angle;
 	double target_angle_relative;
@@ -52,8 +53,8 @@ public class TurnInPlace extends Command {
 	 * @param target_angle
 	 */
 	public TurnInPlace(Rotation2d target_angle) {
-		// Use requires() here to declare subsystem dependencies
-		requires(Robot.drivetrain);
+		// Use addRequirements() here to declare subsystem dependencies
+		addRequirements(Robot.drivetrain);
 		this.target_angle = target_angle.getDegree();
 	}
 
@@ -66,14 +67,14 @@ public class TurnInPlace extends Command {
 	 */
 	public TurnInPlace(Rotation2d target_angle, boolean isAbsolute) {
 		this.isAbsolute = isAbsolute;
-		// Use requires() here to declare subsystem dependencies
-		requires(Robot.drivetrain);
+		// Use addRequirements() here to declare subsystem dependencies
+		addRequirements(Robot.drivetrain);
 		this.target_angle = target_angle.getDegree();
 	}
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		starting_angle = Robot.drivetrain.getGyro();
 
 		// If the angle is relative (which it should not be), setup target angle.
@@ -89,7 +90,7 @@ public class TurnInPlace extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		output = turnPID.update(Robot.drivetrain.getGyro() % 360);
 		raw_left = EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.left_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
 		raw_right = (-1) * EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.right_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
@@ -99,7 +100,7 @@ public class TurnInPlace extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		// if ( (Math.abs(Robot.gyro.getRate() ) < RobotConfig.turn_auto_angular_velocity_tolerence)
 		//   && (Math.abs(Robot.drivetrain.getGyro()) < RobotConfig.turn_auto_angle_tolerence)) {
 		//     return true;
@@ -111,12 +112,8 @@ public class TurnInPlace extends Command {
 		return (turnPID.getError() < 10);
 	}
 
-	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
-
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
+	public void end(boolean interrupted) {
+		DriveTrain.getInstance().stop();
+	}
 }

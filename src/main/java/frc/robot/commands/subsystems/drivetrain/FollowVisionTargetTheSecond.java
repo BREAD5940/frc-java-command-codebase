@@ -8,32 +8,32 @@
 package frc.robot.commands.subsystems.drivetrain;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
 
-public class FollowVisionTargetTheSecond extends Command {
+public class FollowVisionTargetTheSecond extends SendableCommandBase {
 
 	double targetArea;
 	boolean mHadTarget = false;
 	double offset = 0;
 
 	public FollowVisionTargetTheSecond(double targetArea) {
-		requires(DriveTrain.getInstance());
+		addRequirements(DriveTrain.getInstance());
 		this.targetArea = targetArea;
 	}
 
 	public FollowVisionTargetTheSecond(double targetArea, double angleOffset) {
-		requires(DriveTrain.getInstance());
+		addRequirements(DriveTrain.getInstance());
 		this.targetArea = targetArea;
 		this.offset = angleOffset;
 	}
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		// just in case turn on LEDs
 		LimeLight.getInstance().turnOnLED();
 
@@ -44,7 +44,7 @@ public class FollowVisionTargetTheSecond extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		Update_Limelight_Tracking();
 		if (m_LimelightHasValidTarget) {
 			// System.out.println(m_LimelightDriveCommand);
@@ -56,18 +56,9 @@ public class FollowVisionTargetTheSecond extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return m_isDone || (mHadTarget && !m_LimelightHasValidTarget);
 	}
-
-	// Called once after isFinished returns true
-	@Override
-	protected void end() {}
-
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
 
 	private boolean m_LimelightHasValidTarget = false;
 	private double m_LimelightDriveCommand = 0.0;

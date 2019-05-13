@@ -14,7 +14,8 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -237,7 +238,7 @@ public class Robot extends TimedRobot {
 
 		elevator.getMaster().getMotorController().setSelectedSensorPosition((int) (elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue()), 0, 0); // just to be super sure the elevator is safe-ishhhh
 		var cmd = zeroElevatorWhileDisabled;
-		cmd.start();
+		cmd.schedule();
 
 		switch (RobotConfig.auto.auto_gear) {
 		case HIGH:
@@ -314,29 +315,27 @@ public class Robot extends TimedRobot {
 			}
 			if (reset) {
 				superstructure.getCurrentCommand().cancel();
-				superstructure.getDefaultCommand().start();
+				superstructure.getDefaultCommand().schedule();
 			}
 
 		});
 
 		// mResetNotifier.startPeriodic(0.5);
 
-		var frontBack = new CommandGroup();
-		frontBack.addSequential(new SyncedMove(Math.toRadians(-180), true, superstructure));
+		var frontBack = new SyncedMove(Math.toRadians(-180), true, superstructure);
 		// frontBack.addSequential(new ArmMove(new IntakeAngle(
 		// 	new RotatingArmState(RoundRotation2d.getDegree(-210)),
 		// 	new RotatingArmState(RoundRotation2d.getDegree(-180))
 		// 	)));
 
-		var backFront = new CommandGroup();
-		backFront.addSequential(new SyncedMove(Math.toRadians(0), true, superstructure));
+		var backFront = new SyncedMove(Math.toRadians(0), true, superstructure);
 
 		SmartDashboard.putData("front to back passthrough", frontBack);
 		SmartDashboard.putData("back to front passthrough", backFront);
 
 	}
 
-	public static Command zeroElevatorWhileDisabled = new ZeroElevatorDisabled();
+	public static SendableCommandBase zeroElevatorWhileDisabled = new ZeroElevatorDisabled();
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode. You
@@ -383,7 +382,7 @@ public class Robot extends TimedRobot {
 		// drivetrain.gyro.reset(); // Reset the current gyro heading to zero
 		// drivetrain.zeroEncoders();
 
-		mAutoChooser.getSelection().start(); // So this needs a defaut option
+		mAutoChooser.getSelection().schedule(); // So this needs a defaut option
 
 		// 	if (RobotConfig.auto.auto_gear == Gear.LOW) {
 		// 		drivetrain.setLowGear();

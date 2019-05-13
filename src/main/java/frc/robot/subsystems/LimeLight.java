@@ -13,7 +13,8 @@ import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import org.team5940.pantry.exparimental.command.InstantCommand;
+
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotConfig;
 import frc.robot.lib.motion.Util;
@@ -310,11 +311,15 @@ public class LimeLight extends Subsystem {
 
 		public SetLEDs(LEDMode mode) {
 			this.mode = mode;
-			setRunWhenDisabled(true);
 		}
 
 		@Override
-		protected void initialize() {
+		public boolean runsWhenDisabled() {
+			return true;
+		}
+
+		@Override
+		public void initialize() {
 			if (mode == LEDMode.kON)
 				LimeLight.getInstance().turnOnLED();
 			if (mode == LEDMode.kOFF)
@@ -328,15 +333,21 @@ public class LimeLight extends Subsystem {
 
 		public setPipeline(PipelinePreset mode) {
 			this.mode = mode;
-			setRunWhenDisabled(true);
 		}
 
 		@Override
-		protected void initialize() {
+		public boolean runsWhenDisabled() {
+			return true;
+		}
+
+		@Override
+		public void initialize() {
 			LimeLight.getInstance().setPipeline(mode);
 		}
 
 	}
+
+
 
 	@Override
 	protected void initDefaultCommand() {

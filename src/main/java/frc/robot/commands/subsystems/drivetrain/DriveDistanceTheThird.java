@@ -25,9 +25,10 @@ import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.AutoCommand;
 import frc.robot.lib.Logger;
 import frc.robot.subsystems.DriveTrain;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 // @SuppressWarnings({"WeakerAccess", "unused"})
-public class DriveDistanceTheThird extends AutoCommand {
+public class DriveDistanceTheThird extends SendableCommandBase {
 	private TrajectoryTracker trajectoryTracker;
 	private Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource;
 	private DriveTrain driveBase;
@@ -73,11 +74,11 @@ public class DriveDistanceTheThird extends AutoCommand {
 		this.distance = distance;
 		this.vel = vel;
 		this.reversed = reversed;
-		requires(DriveTrain.getInstance());
+		addRequirements(DriveTrain.getInstance());
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 
 		var currentPose = DriveTrain.getInstance().getLocalization().getRobotPosition();
 		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX() / SILengthConstants.kInchToMeter + "," + currentPose.getTranslation().getY() / SILengthConstants.kInchToMeter + "," + currentPose.getRotation().getDegree());
@@ -172,7 +173,7 @@ public class DriveDistanceTheThird extends AutoCommand {
 	}
 
 	@Override
-	protected void execute() {
+	public void execute() {
 
 		// long now = System.currentTimeMillis();
 
@@ -200,14 +201,14 @@ public class DriveDistanceTheThird extends AutoCommand {
 	}
 
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		mUpdateNotifier.stop();
 		driveBase.stop();
 		LiveDashboard.INSTANCE.setFollowingPath(false);
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return trajectoryTracker.isFinished() || itDed;
 	}
 

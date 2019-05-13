@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.commands.subsystems.superstructure.IntakeTelop;
+import org.team5940.pantry.exparimental.command.SendableSubsystemBase;
 
 /**
  * The intake subsystem. Contains method setSpeed, openClamp and closeClamp.
@@ -17,7 +18,7 @@ import frc.robot.commands.subsystems.superstructure.IntakeTelop;
  * 
  * @author Matthew Morley
  */
-public class Intake extends Subsystem {
+public class Intake extends SendableSubsystemBase {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 	private static volatile Intake instance;
@@ -80,6 +81,8 @@ public class Intake extends Subsystem {
 		// talon.setName("Intake");
 		cargoTalon.configPeakOutputForward(.8);
 		cargoTalon.configPeakOutputReverse(-.8);
+
+		setDefaultCommand(new IntakeTelop());
 	}
 
 	private Intake() {
@@ -118,11 +121,5 @@ public class Intake extends Subsystem {
 	public void periodic() {
 		// setSpeed(Robot.m_oi.getIntakeSpeed());
 		// System.out.println("speed " + Robot.m_oi.getIntakeSpeed());
-	}
-
-	@Override
-	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
-		setDefaultCommand(new IntakeTelop());
 	}
 }

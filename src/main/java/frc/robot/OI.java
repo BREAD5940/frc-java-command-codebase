@@ -2,13 +2,9 @@ package frc.robot;
 
 import java.util.Arrays;
 
+import edu.wpi.first.wpilibj.Joystick;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.routines.TeleopCommands;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
@@ -17,13 +13,13 @@ import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
-import frc.robot.lib.ParallelRaceGroup;
 import frc.robot.lib.motion.Util;
-import frc.robot.lib.obj.factories.SequentialCommandFactory;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
+import org.team5940.pantry.exparimental.buttons.Button;
+import org.team5940.pantry.exparimental.buttons.JoystickButton;
 
 /**
  * Operator Input not Out-In This class is the glue that binds the controls on
@@ -75,48 +71,43 @@ public class OI {
 
 		// cargo presets
 		dsCargoIn.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kOpen),
+				(new SetHatchMech(HatchMechState.kOpen).alongWith(
 						new JankyGoToState(LengthKt.getInch(13.25), SuperStructure.iPosition.CARGO_GRAB))));
 
 		dsCargo1.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
+				(new SetHatchMech(HatchMechState.kClamped).alongWith(
 						new JankyGoToState(fieldPositions.cargoLowGoal, SuperStructure.iPosition.CARGO_PLACE))));
 
 		dsCargo2.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
+				(new SetHatchMech(HatchMechState.kClamped).alongWith(
 						new JankyGoToState(fieldPositions.cargoMiddleGoal, SuperStructure.iPosition.CARGO_PLACE))));
 
 		dsCargo3.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
+				(new SetHatchMech(HatchMechState.kClamped).alongWith(
 						new JankyGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE_PITCHED_UP))));
 
-		dsCargoShip.whenPressed(SequentialCommandFactory
-				.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(
-						fieldPositions.cargoMiddleGoal.plus(LengthKt.getInch(2)), SuperStructure.iPosition.CARGO_DOWN))));
+		dsCargoShip.whenPressed((new SetHatchMech(HatchMechState.kClamped)).alongWith(
+						new JankyGoToState(
+								fieldPositions.cargoMiddleGoal.plus(LengthKt.getInch(2)),
+								SuperStructure.iPosition.CARGO_DOWN)));
 
 		// hatch presets
 		primaryBButton.whileHeld(new HybridDriverAssist());
 		// primaryRightAnalogButton.whileHeld(new HybridKinematicDriverAssist());
 
-		dsHatch1.whenPressed(SequentialCommandFactory.getSequentialCommands(Arrays.asList(
-				new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH))));
+		dsHatch1.whenPressed((
+				new SetHatchMech(HatchMechState.kClamped)).alongWith(
+						new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)));
 
 		dsHatch2.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
-						new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH))));
+				(new SetHatchMech(HatchMechState.kClamped)).alongWith(
+						new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH)));
 		dsHatch3.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
+				(new SetHatchMech(HatchMechState.kClamped).alongWith(
 						new JankyGoToState(fieldPositions.hatchHighGoal, iPosition.HATCH_PITCHED_UP))));
 
-		dsHatchIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
-				Arrays.asList(new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));
-
-		var testMeme = new CommandGroup();
-		testMeme.addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)),
-				new TeleopCommands()));
-		testMeme.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-
-		primaryDpadDown.whenPressed(testMeme);
+		dsHatchIn.whenPressed((new SetHatchMech(HatchMechState.kClamped)).alongWith(
+				new JankyGoToState(iPosition.HATCH_GRAB_INSIDE)));
 
 	}
 
@@ -132,18 +123,18 @@ public class OI {
 		PRIMARY, SECONDARY;
 	}
 
-	public void setRumble(RumbleType side, Joystick stick, double value) {
-		value = Util.limit(value, 0, 1);
-		stick.setRumble(side, value);
-	}
-
-	public void setAllRumble(double value) {
-		setRumble(RumbleType.kLeftRumble, getPrimary(), value);
-		// setRumble(RumbleType.kLeftRumble, getSecondary(), value);
-
-		setRumble(RumbleType.kRightRumble, getPrimary(), value);
-		// setRumble(RumbleType.kRightRumble, getSecondary(), value);
-	}
+//	public void setRumble(RumbleType side, Joystick stick, double value) {
+//		value = Util.limit(value, 0, 1);
+//		stick.setRumble(side, value);
+//	}
+//
+//	public void setAllRumble(double value) {
+//		setRumble(RumbleType.kLeftRumble, getPrimary(), value);
+//		// setRumble(RumbleType.kLeftRumble, getSecondary(), value);
+//
+//		setRumble(RumbleType.kRightRumble, getPrimary(), value);
+//		// setRumble(RumbleType.kRightRumble, getSecondary(), value);
+//	}
 
 	public double getForwardAxis() {
 		// return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis);

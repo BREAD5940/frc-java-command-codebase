@@ -53,6 +53,7 @@ javadoc {
 repositories {
   mavenCentral()
   maven { url 'https://jitpack.io' }
+  maven { setUrl("https://maven.woke.engineer/") } // wpilib mirror
 }
 
 apply plugin: 'checkstyle'
@@ -85,6 +86,10 @@ dependencies {
   compile "com.github.mcm001:FalconLibrary:0.0.2"
 
   compile 'com.github.mcm001:pantrycommon:2d570ea774'
+
+//  compile 'com.github.mcm001:pantrycommon:69f8e4b0d5'
+  compile 'com.github.mcm001:pantrycommon:0.1.0'
+
 
   compile 'com.github.Oblarg:Oblog:2.8.1'
 

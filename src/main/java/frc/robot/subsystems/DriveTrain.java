@@ -26,7 +26,8 @@ import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -41,6 +42,7 @@ import frc.robot.lib.enums.TransmissionSide;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.DriveSignal;
 import kotlin.ranges.RangesKt;
+import org.team5940.pantry.exparimental.command.SendableSubsystemBase;
 
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
@@ -53,7 +55,7 @@ import kotlin.ranges.RangesKt;
  * 
  * @author Matthew Morley
  */
-public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBase, LoggableSubsystem {
+public class DriveTrain extends SendableSubsystemBase implements DifferentialTrackerDriveBase, LoggableSubsystem {
 
 	private static DriveTrain instance;
 
@@ -134,6 +136,10 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 			this.getLocalization().update();
 		});
 		localizationNotifier.startPeriodic(0.01);
+
+		var curveyBoi = new CurvatureDrive();
+		setDefaultCommand(curveyBoi);
+		SmartDashboard.putData(curveyBoi);
 
 	}
 
@@ -486,16 +492,16 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	private ChassisState mCachedChassisState;
 	public boolean isFirstRun = true;
 
-	public class CurvatureDrive extends Command {
+	public class CurvatureDrive extends SendableCommandBase {
 
 		static final boolean squared = true;
 
 		public CurvatureDrive() {
-			requires(DriveTrain.getInstance());
+			addRequirements(DriveTrain.getInstance());
 		}
 
 		@Override
-		protected void initialize() {
+		public void initialize() {
 			DriveTrain.getInstance().setNeutralMode(NeutralMode.Brake);
 			DriveTrain.getInstance().getLeft().getMaster().getMotorController().configClosedloopRamp(0.16, 0);
 			DriveTrain.getInstance().getRight().getMaster().getMotorController().configClosedloopRamp(0.16, 0);
@@ -504,7 +510,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		}
 
 		@Override
-		protected void execute() {
+		public void execute() {
 
 			var isQuickTurn = Robot.m_oi.getPrimary().getRawButton(3);
 
@@ -534,7 +540,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		}
 
 		@Override
-		protected boolean isFinished() {
+		public boolean isFinished() {
 			return false;
 		}
 
@@ -675,7 +681,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	}
 
 	public Command followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory,
-			TrajectoryTrackerMode mode, boolean reset) {
+									TrajectoryTrackerMode mode, boolean reset) {
 		// kDefaulTrajectoryTrackerMode = mode;
 		mCurrentGear = Robot.getDrivetrainGear();
 		return new TrajectoryTrackerCommand(this, getTrajectoryTracker(mode), () -> trajectory, reset);
@@ -692,9 +698,12 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 			TrajectoryTrackerMode mode, Gear gear, boolean resetPose) {
 		mCurrentGear = gear;
 		CommandGroup mCommandGroup = new CommandGroup();
-		mCommandGroup.addParallel(new SetGearCommand(gear));
-		mCommandGroup.addSequential(followTrajectory(trajectory, mode, resetPose));
-		return mCommandGroup;
+
+		return (new SetGearCommand(gear)).andThen(followTrajectory(trajectory, mode, resetPose));
+//
+//		mCommandGroup.addParallel(new SetGearCommand(gear));
+//		mCommandGroup.addSequential(followTrajectory(trajectory, mode, resetPose));
+//		return mCommandGroup;
 	}
 
 	/**
@@ -723,21 +732,6 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 	public void zeroGyro() {
 		gyroZero = gyro.getAngle();
-	}
-
-	@Override
-	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
-		// setDefaultCommand(new ArcadeDrive());
-		// setDefaultCommand(new PIDArcadeDrive(true));
-
-		System.out.println("setting drivetrain default commands");
-
-		var curveyBoi = new CurvatureDrive();
-		setDefaultCommand(curveyBoi);
-		SmartDashboard.putData(curveyBoi);
-		// setDefaultCommand(new ClosedLoopDriveTheSecond(true));
-		// setDefaultCommand(new auto_action_DRIVE(5, "high", 5, 30));
 	}
 
 	@Override

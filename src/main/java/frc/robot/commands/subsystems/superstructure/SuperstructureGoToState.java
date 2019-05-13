@@ -2,14 +2,15 @@ package frc.robot.commands.subsystems.superstructure;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import org.team5940.pantry.exparimental.command.WaitCommand;
 
-public class SuperstructureGoToState extends Command {
+public class SuperstructureGoToState extends WaitCommand {
 	SuperStructureState mRequState;
 	double kWristSetpoint, kElbowSetpoint;
 	private static final double kDefaultTimeout = 4;
@@ -38,12 +39,14 @@ public class SuperstructureGoToState extends Command {
 	}
 
 	public SuperstructureGoToState(SuperStructureState requState, double timeout) {
-		requires(SuperStructure.getInstance());
-		requires(SuperStructure.getInstance().getWrist());
-		requires(SuperStructure.getInstance().getElbow());
-		requires(SuperStructure.getElevator());
+		super(timeout);
+
+		addRequirements(SuperStructure.getInstance());
+		addRequirements(SuperStructure.getInstance().getWrist());
+		addRequirements(SuperStructure.getInstance().getElbow());
+		addRequirements(SuperStructure.getElevator());
 		mRequState = requState;
-		setTimeout(timeout);
+
 
 		this.elevatorSetpoint = requState.getElevatorHeight();
 		this.wristSetpoint = requState.getWristAngle();
@@ -52,30 +55,27 @@ public class SuperstructureGoToState extends Command {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
-		//System.out.println("==============================================================");
-		//System.out.println("Requested move loc: ");
-		//System.out.println(String.format("Elevator (%s) elbow (%s) wrist (%s)", elevatorSetpoint.getInch(), elbowSetpoint.getDegree(), wristSetpoint.getDegree()));
-		//System.out.println("==============================================================");
+	public void initialize() {
 		SuperStructure.getInstance().move(mRequState);
 		hasSetState = true;
-		// SuperStructure.getInstance().moveSuperstructureCombo(mRequState);
+
+		super.initialize();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		SuperStructure.getInstance().move(mRequState);
 		hasSetState = true;
-		// System.out.println("target state: " + mRequState.toCSV());
+
+		super.execute();
 	}
 
-	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		if (!hasSetState)
 			execute();
-		return (checkElbow() && checkWrist() && checkElevator()) || isTimedOut();
+		return (checkElbow() && checkWrist() && checkElevator()) || super.isFinished();
 	}
 
 	private boolean checkElbow() {
@@ -111,14 +111,18 @@ public class SuperstructureGoToState extends Command {
 		return isWithin;
 	}
 
-	// Called once after isFinished returns true
 	@Override
-	protected void end() {
-		//System.out.println("==============================================================");
+	public boolean runsWhenDisabled() {
+		return true;
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
+	// Called once after isFinished returns true
 	@Override
-	protected void interrupted() {}
+	public void end(boolean interrupted) {
+		var currentState = SuperStructure.getInstance().getCurrentState();
+		SuperStructure.getInstance().move(currentState);
+
+		super.end(interrupted);
+	}
+
 }

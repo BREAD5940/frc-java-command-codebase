@@ -11,14 +11,14 @@ import java.util.TreeMap;
 
 import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.lib.InterpolatableLut;
 import frc.robot.lib.InterpolatableLutEntry;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LimeLight;
 
-public class TurnToFaceVisionTarget extends Command {
+public class TurnToFaceVisionTarget extends SendableCommandBase {
 
 	private InterpolatableLut skewCorrection;
 
@@ -27,7 +27,7 @@ public class TurnToFaceVisionTarget extends Command {
 	private int count;
 
 	public TurnToFaceVisionTarget() {
-		requires(DriveTrain.getInstance());
+		addRequirements(DriveTrain.getInstance());
 
 		var map = new TreeMap<Double, InterpolatableLutEntry>();
 		map.put(Double.valueOf(0), new InterpolatableLutEntry(0));
@@ -37,7 +37,7 @@ public class TurnToFaceVisionTarget extends Command {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		var targetX = LimeLight.getInstance().getDx().getDegree();
 		var robotYaw = DriveTrain.getInstance().getGyro();
 		var interpolationOffset = skewCorrection.interpolate(LimeLight.getInstance().getTargetSkew());
@@ -47,7 +47,7 @@ public class TurnToFaceVisionTarget extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		final double kp = 0.3;
 
 		var error = DriveTrain.getInstance().getGyro() - targetAngle;
@@ -62,7 +62,7 @@ public class TurnToFaceVisionTarget extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 
 		var error = DriveTrain.getInstance().getGyro() - targetAngle;
 
@@ -75,13 +75,4 @@ public class TurnToFaceVisionTarget extends Command {
 		return count > 6;
 
 	}
-
-	// Called once after isFinished returns true
-	@Override
-	protected void end() {}
-
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
 }

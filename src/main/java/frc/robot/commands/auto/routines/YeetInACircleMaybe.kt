@@ -3,7 +3,7 @@
 //import edu.wpi.first.wpilibj.command.CommandGroup;
 //import frc.robot.commands.subsystems.drivetrain.YeetInACircleWhileMoving;
 //
-//public class YeetInACircleMaybe extends CommandGroup {
+//public class YeetInACircleMaybe extends SequentialCommandGroup {
 //	/**
 //	 * Add your docs here.
 //	 */

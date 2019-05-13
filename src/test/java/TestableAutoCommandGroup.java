@@ -2,13 +2,13 @@
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.lib.Logger;
 
 /**
  * basically just a CommandGroup but with the done() method and time tracking.
  */
-public class TestableAutoCommandGroup /*extends CommandGroup*/ {
+public class TestableAutoCommandGroup /*extends SequentialCommandGroup*/ {
 
 	double start = 0;
 

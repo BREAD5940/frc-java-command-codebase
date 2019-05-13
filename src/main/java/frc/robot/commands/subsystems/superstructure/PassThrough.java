@@ -2,14 +2,15 @@ package frc.robot.commands.subsystems.superstructure;
 
 import static frc.robot.subsystems.superstructure.SuperStructure.getDumbWrist;
 
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.ConditionalCommand;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.ConditionalCommand;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -19,7 +20,7 @@ public class PassThrough extends ConditionalCommand {
 	private static final double kProximalMaxVel = 150d / 360d * 2 * Math.PI;
 	private static final double kWristMaxVel = 150d / 360d * 2 * Math.PI;
 
-	public static class SyncedMove extends Command {
+	public static class SyncedMove extends SendableCommandBase {
 
 		private final double goal;
 		private final double goalWrist;
@@ -106,56 +107,27 @@ public class PassThrough extends ConditionalCommand {
 
 	private final SuperStructure structure;
 
-	public PassThrough(SuperStructure structure, Supplier<Boolean> isFrontToBack) {
+	public PassThrough(SuperStructure structure, BooleanSupplier isFrontToBack) {
 
 		// super(setupConstructor(structure), isFrontToBack);
 
-		super(getPassThroughFrontToBack(structure), getPassThroughBackToFront(structure));
+		super(getPassThroughFrontToBack(structure), getPassThroughBackToFront(structure), isFrontToBack);
 
 		this.structure = structure;
 		this.isFrontToBack = isFrontToBack;
 
 	}
 
-	private Supplier<Boolean> isFrontToBack;
-
-	@Override
-	protected boolean condition() {
-		return isFrontToBack.get();
-	}
+	private BooleanSupplier isFrontToBack;
 
 	private static Command getPassThroughFrontToBack(SuperStructure structure) {
-		var group = new CommandGroup();
-		group.addSequential(new ElevatorMove(LengthKt.getInch(30))); //todo check height
-		group.addSequential(new SyncedMove(Math.toRadians(-180), true, structure));
-		return group;
+		return (new ElevatorMove(LengthKt.getInch(30))) //todo check height
+			.andThen(new SyncedMove(Math.toRadians(-180), true, structure));
 	}
 
 	private static Command getPassThroughBackToFront(SuperStructure structure) {
-		var group = new CommandGroup();
-		group.addSequential(new ElevatorMove(LengthKt.getInch(30))); //todo check height
-		group.addSequential(new SyncedMove(Math.toRadians(180), false, structure));
-		return group;
+		return (new ElevatorMove(LengthKt.getInch(30))) //todo check height
+			.andThen(new SyncedMove(Math.toRadians(180), false, structure));
 	}
-
-	// public static Map<Boolean, Command> setupConstructor(SuperStructure structure) {
-
-	// 	// create possible command groups
-	// 	var frontToBackGroup = new CommandGroup();
-
-	// 	frontToBackGroup.addSequential(new ElevatorMove(LengthKt.getInch(30))); //todo check height
-	// 	frontToBackGroup.addSequential(new SyncedMove(Math.toRadians(-180), true, structure));
-
-	// 	var backToFrontGroup = new CommandGroup();
-
-	// 	backToFrontGroup.addSequential(new ElevatorMove(LengthKt.getInch(30))); //todo check height
-	// 	backToFrontGroup.addSequential(new SyncedMove(Math.toRadians(180), false, structure));
-
-	// 	var map = new HashMap<Boolean, Command>();
-	// 	map.put(true, frontToBackGroup);
-	// 	map.put(false, backToFrontGroup);
-
-	// 	return map;
-	// }
 
 }

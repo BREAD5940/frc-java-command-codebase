@@ -8,9 +8,10 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.SILengthConstants;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.InstantCommand;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.SuperStructureConstants;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.lib.Logger;
@@ -31,7 +32,7 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
  * 
  * @author Jocelyn McHugo
  */
-public class SuperstructureMotion extends Command {
+public class SuperstructureMotion extends SendableCommandBase {
 	/* RELEVANT COMMANDS:
 	  - ElevatorMove
 	  - ArmMove
@@ -43,20 +44,19 @@ public class SuperstructureMotion extends Command {
 
 	@Deprecated
 	private SuperstructureMotion() {
-		requires(SuperStructure.getInstance());
-
-		requires(SuperStructure.getInstance().getWrist());
-		requires(SuperStructure.getInstance().getElbow());
-		requires(SuperStructure.getElevator());
+		addRequirements(SuperStructure.getInstance());
+		addRequirements(SuperStructure.getInstance().getWrist());
+		addRequirements(SuperStructure.getInstance().getElbow());
+		addRequirements(SuperStructure.getElevator());
 	}
 
 	public SuperstructureMotion(SuperStructureState gsIn, SuperStructureState current) {
 		System.out.println("ssmotion instan");
 		this.gsIn = gsIn;
-		requires(SuperStructure.getInstance().getWrist());
-		requires(SuperStructure.getInstance().getElbow());
-		requires(SuperStructure.getElevator());
-		requires(SuperStructure.getInstance());
+		addRequirements(SuperStructure.getInstance().getWrist());
+		addRequirements(SuperStructure.getInstance().getElbow());
+		addRequirements(SuperStructure.getElevator());
+		addRequirements(SuperStructure.getInstance());
 	}
 
 	public SuperstructureMotion(SuperStructureState gsIn) {
@@ -64,7 +64,7 @@ public class SuperstructureMotion extends Command {
 	}
 
 	private static SuperstructureMotion instance_;
-	protected AutoCommandGroup queue = new AutoCommandGroup();
+	protected Command queue = new InstantCommand();
 	// protected CommandGroup eleQueue = new CommandGroup();
 	// protected CommandGroup armQueue = new CommandGroup();
 	protected Optional<Command> current;
@@ -202,7 +202,7 @@ public class SuperstructureMotion extends Command {
 				: (LengthKt.getInch(Math.abs(GPelevator.getY() / SILengthConstants.kInchToMeter - Math.abs(lowestGP.getY() - (GPelevator.getY()) / SILengthConstants.kInchToMeter))));
 		Logger.log("tolerances");
 		//CLEAR the queue
-		this.queue = new AutoCommandGroup();
+		this.queue = new InstantCommand();
 		Logger.log("queue cleared");
 
 		//CHECK if the elevator point is in proximity to the crossbar - if it is, stow it
@@ -223,8 +223,8 @@ public class SuperstructureMotion extends Command {
 			var doWeNeedToSafeElevatorFirst = (Math.max(GPelevator.getY(), SPelevator.getY()) / SILengthConstants.kInchToMeter < SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar.getInch());
 
 			if (doWeNeedToSafeElevatorFirst)
-				this.queue.addSequential(new ElevatorMove(SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar));
-			this.queue.addSequentialLoggable(new ArmMove(SuperStructure.iPosition.STOWED), isReal);
+				this.queue = this.queue.andThen(new ElevatorMove(SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar));
+			this.queue = queue.andThen(new ArmMove(SuperStructure.iPosition.STOWED));
 		}
 
 		// figure out if the intake is gunna yeet itself into the bottom. This is done by finding the worst case (intake and stuff as far pitched down as possible)
@@ -268,7 +268,7 @@ public class SuperstructureMotion extends Command {
 
 			// TODO check if the end state is going to hit anything
 
-			queue.addSequentialLoggable(new ElevatorMove(minUnCrashHeight), isReal);
+			queue = queue.andThen(new ElevatorMove(minUnCrashHeight));
 
 		}
 
@@ -289,27 +289,27 @@ public class SuperstructureMotion extends Command {
 
 		if (isLongClimb) {
 			// this.queue.addSequentialLoggable(new ArmWaitForElevator(SuperStructure.iPosition.STOWED, minUnCrashHeight.getHeight(), LengthKt.getInch(3)), isReal);
-			this.queue.addSequentialLoggable(new ArmMove(SuperStructure.iPosition.STOWED/*, minUnCrashHeight.getHeight(), LengthKt.getInch(3)*/), isReal);
+			queue = queue.andThen(new ArmMove(SuperStructure.iPosition.STOWED/*, minUnCrashHeight.getHeight(), LengthKt.getInch(3)*/));
 		}
 
 		// this.queue.addSequentialLoggable(new ArmWaitForElevator(goalState.getAngle(), goalState.getElevatorHeight(), startArmTol.plus(LengthKt.getInch(5)),
 		// goalState.getElevatorHeight() / SILengthConstants.kInchToMeter < currentState.getElevatorHeight() / SILengthConstants.kInchToMeter), isReal);
 
 		// ok so by now the elevator should be such that we can safely move stuff?
-		queue.addSequentialLoggable(new ArmMove(goalState.getAngle()), isReal);
+		queue = queue.andThen(new ArmMove(goalState.getAngle()));
 
-		this.queue.addSequentialLoggable(new ElevatorMove(goalState.getElevator()), isReal);
+		queue = queue.andThen(new ElevatorMove(goalState.getElevator()));
 
 		return true;
 	}
 
-	public AutoCommandGroup getQueue() {
+	public Command getQueue() {
 		System.out.println("queue gotten");
 		return this.queue;
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		// queue.start();
 		// var current = SuperStructure.getInstance().updateState();
 		var current = new SuperStructureState(new ElevatorState(LengthKt.getInch(3.5)), iPosition.CARGO_GRAB);
@@ -317,15 +317,13 @@ public class SuperstructureMotion extends Command {
 		System.out.println("===================================================================");
 		Logger.log(String.format("Start state (%s) Goal state (%s)", current.toString(), gsIn.toString()));
 		// Logger.log(getQueue().getCommandLog().get(0));
-		for (String s : getQueue().getCommandLog()) {
-			System.out.println(s);
-		}
+
 		System.out.println("===================================================================");
 
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		// return queue.isCompleted();
 		return true;
 	}

@@ -2,7 +2,7 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 
@@ -14,7 +14,7 @@ import frc.robot.subsystems.DriveTrain;
  * 
  * @author Matthew Morley
  */
-public class ArcadeDrive extends Command {
+public class ArcadeDrive extends SendableCommandBase {
 
 	// System.out.println("im an arcade drive command!");
 	/**
@@ -22,14 +22,14 @@ public class ArcadeDrive extends Command {
 	 * This command will reserve the drivetrain.
 	 */
 	public ArcadeDrive() {
-		requires(Robot.drivetrain);
+		addRequirements(Robot.drivetrain);
 	}
 
 	// drivetrain drivetrain = new drivetrain();
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		Robot.drivetrain.setNeutralMode(NeutralMode.Brake);
 		Robot.drivetrain.getLeft().getMaster().getMotorController().configClosedloopRamp(0.2, 0);
 		Robot.drivetrain.getRight().getMaster().getMotorController().configClosedloopRamp(0.2, 0);
@@ -44,7 +44,7 @@ public class ArcadeDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		// Robot.drivetrain.arcadeDrive(Robot.m_oi.getForwardAxis(),
 		//   Robot.m_oi.getTurnAxis());
 
@@ -81,7 +81,7 @@ public class ArcadeDrive extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		// System.out.println("we aint done chief");
 		return false;
 
@@ -98,10 +98,8 @@ public class ArcadeDrive extends Command {
 		Robot.drivetrain.getRight().getMaster().getMotorController().configOpenloopRamp(0.0, 0);
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
 	@Override
-	protected void interrupted() {
+	public void end(boolean interrupted) {
 		end();
 	}
 }

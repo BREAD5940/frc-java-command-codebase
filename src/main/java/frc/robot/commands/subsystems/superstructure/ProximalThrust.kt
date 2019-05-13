@@ -13,6 +13,7 @@ import org.ghrobotics.lib.mathematics.units.inch
 import org.ghrobotics.lib.mathematics.units.meter
 import frc.robot.subsystems.superstructure.SuperStructure.getDumbWrist
 import org.ghrobotics.lib.mathematics.units.radian
+import org.team5940.pantry.exparimental.command.SendableCommandBase
 
 val Number.roundRadian get() = RoundRotation2d.getRadian(toDouble())
 @Suppress("unused")
@@ -24,13 +25,10 @@ class ProximalThrust(
         private val pokeDistance: Double,
         private val wristAngle: RoundRotation2d,
         private val isOutwardsPoke: Boolean = true
-) : Command() {
+) : SendableCommandBase() {
 
     init {
-        requires(structure)
-        requires(structure.elbow)
-        requires(structure.wrist)
-        requires(elevator)
+        addRequirements(structure, structure.elbow, structure.wrist, elevator)
     }
 
     var startPose: Translation2d? = null
