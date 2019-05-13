@@ -1,25 +1,21 @@
 package frc.robot;
 
-import java.util.Arrays;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.team5940.pantry.exparimental.buttons.Button;
+import org.team5940.pantry.exparimental.buttons.JoystickButton;
 
 import edu.wpi.first.wpilibj.Joystick;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.auto.routines.TeleopCommands;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
-import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
-import org.team5940.pantry.exparimental.buttons.Button;
-import org.team5940.pantry.exparimental.buttons.JoystickButton;
 
 /**
  * Operator Input not Out-In This class is the glue that binds the controls on
@@ -87,17 +83,16 @@ public class OI {
 						new JankyGoToState(fieldPositions.cargoHighGoal, SuperStructure.iPosition.CARGO_PLACE_PITCHED_UP))));
 
 		dsCargoShip.whenPressed((new SetHatchMech(HatchMechState.kClamped)).alongWith(
-						new JankyGoToState(
-								fieldPositions.cargoMiddleGoal.plus(LengthKt.getInch(2)),
-								SuperStructure.iPosition.CARGO_DOWN)));
+				new JankyGoToState(
+						fieldPositions.cargoMiddleGoal.plus(LengthKt.getInch(2)),
+						SuperStructure.iPosition.CARGO_DOWN)));
 
 		// hatch presets
 		primaryBButton.whileHeld(new HybridDriverAssist());
 		// primaryRightAnalogButton.whileHeld(new HybridKinematicDriverAssist());
 
-		dsHatch1.whenPressed((
-				new SetHatchMech(HatchMechState.kClamped)).alongWith(
-						new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)));
+		dsHatch1.whenPressed((new SetHatchMech(HatchMechState.kClamped)).alongWith(
+				new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)));
 
 		dsHatch2.whenPressed(
 				(new SetHatchMech(HatchMechState.kClamped)).alongWith(
@@ -123,18 +118,18 @@ public class OI {
 		PRIMARY, SECONDARY;
 	}
 
-//	public void setRumble(RumbleType side, Joystick stick, double value) {
-//		value = Util.limit(value, 0, 1);
-//		stick.setRumble(side, value);
-//	}
-//
-//	public void setAllRumble(double value) {
-//		setRumble(RumbleType.kLeftRumble, getPrimary(), value);
-//		// setRumble(RumbleType.kLeftRumble, getSecondary(), value);
-//
-//		setRumble(RumbleType.kRightRumble, getPrimary(), value);
-//		// setRumble(RumbleType.kRightRumble, getSecondary(), value);
-//	}
+	//	public void setRumble(RumbleType side, Joystick stick, double value) {
+	//		value = Util.limit(value, 0, 1);
+	//		stick.setRumble(side, value);
+	//	}
+	//
+	//	public void setAllRumble(double value) {
+	//		setRumble(RumbleType.kLeftRumble, getPrimary(), value);
+	//		// setRumble(RumbleType.kLeftRumble, getSecondary(), value);
+	//
+	//		setRumble(RumbleType.kRightRumble, getPrimary(), value);
+	//		// setRumble(RumbleType.kRightRumble, getSecondary(), value);
+	//	}
 
 	public double getForwardAxis() {
 		// return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis);

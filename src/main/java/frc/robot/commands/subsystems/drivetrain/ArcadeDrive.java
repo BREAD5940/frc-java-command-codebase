@@ -1,8 +1,9 @@
 package frc.robot.commands.subsystems.drivetrain;
 
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 
@@ -89,17 +90,12 @@ public class ArcadeDrive extends SendableCommandBase {
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		Robot.drivetrain.arcadeDrive(0, 0);
 		System.out.println("arcade end called");
 		Robot.drivetrain.getLeft().getMaster().getMotorController().configClosedloopRamp(0.0, 0);
 		Robot.drivetrain.getRight().getMaster().getMotorController().configClosedloopRamp(0.0, 0);
 		Robot.drivetrain.getLeft().getMaster().getMotorController().configOpenloopRamp(0.0, 0);
 		Robot.drivetrain.getRight().getMaster().getMotorController().configOpenloopRamp(0.0, 0);
-	}
-
-	@Override
-	public void end(boolean interrupted) {
-		end();
 	}
 }

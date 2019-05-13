@@ -7,8 +7,9 @@
 
 package frc.robot.commands.subsystems.drivetrain;
 
-import edu.wpi.first.networktables.NetworkTableInstance;
 import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
+import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;

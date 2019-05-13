@@ -18,6 +18,9 @@ import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.motors.ctre.FalconSRX;
 import org.ghrobotics.lib.subsystems.drive.DifferentialTrackerDriveBase;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SendableSubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
@@ -26,10 +29,7 @@ import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
-import org.team5940.pantry.exparimental.command.Command;
-import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -42,7 +42,6 @@ import frc.robot.lib.enums.TransmissionSide;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.DriveSignal;
 import kotlin.ranges.RangesKt;
-import org.team5940.pantry.exparimental.command.SendableSubsystemBase;
 
 // import frc.robot.commands.drivetrain_shift_high;
 // import frc.robot.commands.drivetrain_shift_low;
@@ -681,7 +680,7 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	}
 
 	public Command followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory,
-									TrajectoryTrackerMode mode, boolean reset) {
+			TrajectoryTrackerMode mode, boolean reset) {
 		// kDefaulTrajectoryTrackerMode = mode;
 		mCurrentGear = Robot.getDrivetrainGear();
 		return new TrajectoryTrackerCommand(this, getTrajectoryTracker(mode), () -> trajectory, reset);
@@ -700,10 +699,10 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 		CommandGroup mCommandGroup = new CommandGroup();
 
 		return (new SetGearCommand(gear)).andThen(followTrajectory(trajectory, mode, resetPose));
-//
-//		mCommandGroup.addParallel(new SetGearCommand(gear));
-//		mCommandGroup.addSequential(followTrajectory(trajectory, mode, resetPose));
-//		return mCommandGroup;
+		//
+		//		mCommandGroup.addParallel(new SetGearCommand(gear));
+		//		mCommandGroup.addSequential(followTrajectory(trajectory, mode, resetPose));
+		//		return mCommandGroup;
 	}
 
 	/**

@@ -77,7 +77,7 @@ public class RotatingJoint extends HalfBakedSubsystem {
 	 */
 	public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, double reduction, RoundRotation2d min, RoundRotation2d max, boolean masterInvert, Length armLength, Mass armMass) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
 
-//		super("literally a rotating joint");
+		//		super("literally a rotating joint");
 
 		kMinAngle = min;
 		kMaxAngle = max;

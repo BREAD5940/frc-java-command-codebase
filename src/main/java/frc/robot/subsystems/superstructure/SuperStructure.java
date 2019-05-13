@@ -141,7 +141,6 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		});
 		mSmartDashboardUpdater.startPeriodic(0.5);
 
-
 		setDefaultCommand(new JustElevatorTeleop());
 
 	}

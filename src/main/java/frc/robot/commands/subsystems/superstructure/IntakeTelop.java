@@ -8,8 +8,8 @@
 package frc.robot.commands.subsystems.superstructure;
 
 import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import frc.robot.Robot;
-import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.Intake;
 
 public class IntakeTelop extends SendableCommandBase {
@@ -31,7 +31,7 @@ public class IntakeTelop extends SendableCommandBase {
 			Intake.getInstance().setSpeed(Robot.m_oi.getHatchSpeed(), 0);
 		}
 		var oi = Robot.m_oi;
-//		oi.setAllRumble(Util.limit(Math.max(Robot.m_oi.getCargoSpeed(), Robot.m_oi.getHatchSpeed()), 0, 0.9));
+		//		oi.setAllRumble(Util.limit(Math.max(Robot.m_oi.getCargoSpeed(), Robot.m_oi.getHatchSpeed()), 0, 0.9));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -43,7 +43,7 @@ public class IntakeTelop extends SendableCommandBase {
 	// Called once after isFinished returns true
 	@Override
 	public void end(boolean interrupted) {
-		Intake.getInstance().setSpeed(0,0);
+		Intake.getInstance().setSpeed(0, 0);
 	}
 
 }

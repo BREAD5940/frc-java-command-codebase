@@ -1,8 +1,9 @@
 
 import java.util.ArrayList;
 
+import org.team5940.pantry.exparimental.command.Command;
+
 import edu.wpi.first.wpilibj.Timer;
-import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.lib.Logger;
 
 /**
@@ -58,7 +59,7 @@ public class TestableAutoCommandGroup /*extends SequentialCommandGroup*/ {
 
 	public final synchronized void logCommand(Command command, String mode) {
 		var commandName = command.getName();
-		var commandSubsystem = command.getSubsystem();
+		var commandSubsystem = command.getRequirements();
 		mCommandList.add(String.format("Command %s added in %s mode and reserves %s", commandName, mode, commandSubsystem));
 	}
 

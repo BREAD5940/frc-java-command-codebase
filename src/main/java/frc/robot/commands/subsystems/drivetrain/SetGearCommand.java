@@ -7,9 +7,10 @@
 
 package frc.robot.commands.subsystems.drivetrain;
 
+import org.team5940.pantry.exparimental.command.InstantCommand;
+
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain.Gear;
-import org.team5940.pantry.exparimental.command.InstantCommand;
 
 /**
  * Add your docs here.

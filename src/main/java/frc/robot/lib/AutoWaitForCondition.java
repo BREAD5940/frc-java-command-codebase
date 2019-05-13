@@ -29,7 +29,7 @@ public class AutoWaitForCondition extends SendableCommandBase {
 	}
 
 	@Override
-	protected void end(boolean interrupted) {
+	public void end(boolean interrupted) {
 		System.out.println("===== auto wait for condition command is complete! =====");
 	}
 

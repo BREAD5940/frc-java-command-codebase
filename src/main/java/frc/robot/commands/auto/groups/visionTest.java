@@ -9,14 +9,13 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
-
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.team5940.pantry.exparimental.command.PrintCommand;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
+
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
-import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
 public class visionTest extends SequentialCommandGroup {
 	/**

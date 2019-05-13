@@ -9,8 +9,9 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import java.util.TreeMap;
 
-import edu.wpi.first.networktables.NetworkTableInstance;
 import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
+import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Robot;
 import frc.robot.lib.InterpolatableLut;
 import frc.robot.lib.InterpolatableLutEntry;
@@ -151,7 +152,7 @@ public class HybridDriverAssist extends SendableCommandBase {
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end(boolean interrupted) {
+	public void end(boolean interrupted) {
 		DriveTrain.getInstance().stop();
 	}
 

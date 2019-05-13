@@ -2,8 +2,8 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.team5940.pantry.exparimental.command.WaitCommand;
 
-import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
@@ -13,7 +13,7 @@ import frc.robot.lib.TerriblePID;
  * auto_DriveDistance is a basic auto action. It should drive in a straight-ish line, as it uses 
  * nested PID loops to correct for errors caused by differing coefficients of friction. 
  */
-public class DriveDistance extends SendableCommandBase {
+public class DriveDistance extends WaitCommand {
 	double targetDistance;
 	double targetSpeed = RobotConfig.auto.default_speed;
 	boolean isDone = false;
@@ -42,6 +42,7 @@ public class DriveDistance extends SendableCommandBase {
 	 * @param timeout
 	 */
 	public DriveDistance(double distance, double targetSpeed, double timeout) {
+		super(timeout);
 		this.targetDistance = distance;
 		this.targetSpeed = targetSpeed;
 		this.timeout = timeout;
@@ -57,6 +58,7 @@ public class DriveDistance extends SendableCommandBase {
 	 * @param timeout
 	 */
 	public DriveDistance(double distance, double timeout) {
+		super(timeout);
 		this.targetDistance = distance;
 		this.timeout = timeout;
 		addRequirements(Robot.drivetrain);
@@ -69,6 +71,7 @@ public class DriveDistance extends SendableCommandBase {
 	 * @param distance in feet
 	 */
 	public DriveDistance(double distance) {
+		super(60);
 		this.targetDistance = distance;
 		addRequirements(Robot.drivetrain);
 	}
@@ -77,8 +80,9 @@ public class DriveDistance extends SendableCommandBase {
 	@Override
 	public void initialize() {
 		forwardPID.setSetpoint(targetDistance);
-		setTimeout(timeout); // set the timeout
+		//		setTimeout(timeout); // set the timeout
 		System.out.println("Auto action drive init!");
+		super.initialize();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -103,6 +107,8 @@ public class DriveDistance extends SendableCommandBase {
 
 		System.out.println("target forward speed: " + forward_speed);
 		// System.out.println("Left speed raw/right speed raw: " + left_speed_raw + "/" + right_speed_raw);
+
+		super.execute();
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -111,11 +117,10 @@ public class DriveDistance extends SendableCommandBase {
 		if (((Math.abs(Robot.drivetrain.getRight().getFeet() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence)
 				&& (Math.abs(Robot.drivetrain.getLeft().getFeet() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence)
 				&& (Math.abs(Robot.drivetrain.getLeft().getFeet()) < RobotConfig.auto.tolerences.velocity_tolerence)
-				&& (Math.abs(Robot.drivetrain.getRight().getFeet()) < RobotConfig.auto.tolerences.velocity_tolerence))
-				) {
-			return true;
+				&& (Math.abs(Robot.drivetrain.getRight().getFeet()) < RobotConfig.auto.tolerences.velocity_tolerence))) {
+			return true || super.isFinished();
 		} else {
-			return false;
+			return false || super.isFinished();
 		}
 	}
 
@@ -123,6 +128,7 @@ public class DriveDistance extends SendableCommandBase {
 	@Override
 	public void end(boolean interrupted) {
 		Robot.drivetrain.stop();
+		super.end(interrupted);
 	}
 
 }

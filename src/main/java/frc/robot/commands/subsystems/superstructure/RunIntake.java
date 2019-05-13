@@ -7,9 +7,9 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.command.TimedCommand;
-import frc.robot.subsystems.Intake;
 import org.team5940.pantry.exparimental.command.WaitCommand;
+
+import frc.robot.subsystems.Intake;
 
 /**
  * Add your docs here.
@@ -60,6 +60,7 @@ public class RunIntake extends WaitCommand {
 	public void end(boolean interrupted) {
 		if (interrupted) {
 			interrupted();
-		} else end();
+		} else
+			end();
 	}
 }

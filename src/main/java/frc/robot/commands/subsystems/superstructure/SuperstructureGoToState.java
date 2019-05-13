@@ -1,14 +1,13 @@
 package frc.robot.commands.subsystems.superstructure;
 
 import org.ghrobotics.lib.mathematics.units.Length;
+import org.team5940.pantry.exparimental.command.WaitCommand;
 
-import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
-import org.team5940.pantry.exparimental.command.WaitCommand;
 
 public class SuperstructureGoToState extends WaitCommand {
 	SuperStructureState mRequState;
@@ -46,7 +45,6 @@ public class SuperstructureGoToState extends WaitCommand {
 		addRequirements(SuperStructure.getInstance().getElbow());
 		addRequirements(SuperStructure.getElevator());
 		mRequState = requState;
-
 
 		this.elevatorSetpoint = requState.getElevatorHeight();
 		this.wristSetpoint = requState.getWristAngle();

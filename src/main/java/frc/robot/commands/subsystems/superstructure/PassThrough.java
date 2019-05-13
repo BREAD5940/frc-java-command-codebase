@@ -3,14 +3,13 @@ package frc.robot.commands.subsystems.superstructure;
 import static frc.robot.subsystems.superstructure.SuperStructure.getDumbWrist;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
-
-import edu.wpi.first.wpilibj.Timer;
 import org.team5940.pantry.exparimental.command.Command;
 import org.team5940.pantry.exparimental.command.ConditionalCommand;
 import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -122,12 +121,12 @@ public class PassThrough extends ConditionalCommand {
 
 	private static Command getPassThroughFrontToBack(SuperStructure structure) {
 		return (new ElevatorMove(LengthKt.getInch(30))) //todo check height
-			.andThen(new SyncedMove(Math.toRadians(-180), true, structure));
+				.andThen(new SyncedMove(Math.toRadians(-180), true, structure));
 	}
 
 	private static Command getPassThroughBackToFront(SuperStructure structure) {
 		return (new ElevatorMove(LengthKt.getInch(30))) //todo check height
-			.andThen(new SyncedMove(Math.toRadians(180), false, structure));
+				.andThen(new SyncedMove(Math.toRadians(180), false, structure));
 	}
 
 }

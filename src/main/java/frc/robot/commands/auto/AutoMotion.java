@@ -1,7 +1,9 @@
 package frc.robot.commands.auto;
 
-
 import org.ghrobotics.lib.mathematics.units.Length;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.InstantCommand;
+import org.team5940.pantry.exparimental.command.PrintCommand;
 
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.groups.PlaceHatch;
@@ -16,9 +18,6 @@ import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
-import org.team5940.pantry.exparimental.command.Command;
-import org.team5940.pantry.exparimental.command.InstantCommand;
-import org.team5940.pantry.exparimental.command.PrintCommand;
 
 /**
  * Creates a command group for a specific automatic motion. Input a type of goal

@@ -1,6 +1,8 @@
 package frc.robot.commands.auto;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.InstantCommand;
 
 import frc.robot.RobotConfig;
 import frc.robot.RobotConfig.auto;
@@ -21,8 +23,6 @@ import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
-import org.team5940.pantry.exparimental.command.Command;
-import org.team5940.pantry.exparimental.command.InstantCommand;
 
 public class PrettyAutoMotion {
 
