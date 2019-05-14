@@ -1,5 +1,6 @@
 package frc.robot.lib
 
+import org.ghrobotics.lib.commands.FalconCommand
 import org.team5940.pantry.exparimental.command.*
 import org.ghrobotics.lib.utils.BooleanSource
 
@@ -162,9 +163,23 @@ infix fun Command.raceWith(parallel: Command): Command {
     return group
 }
 
-/**
- * Return a sequential command group of this and then the other command
- */
-operator fun Command.plus(command: Command): Command {
-    return this.andThen(command)
-}
+///**
+// * Return a sequential command group of this and then the other command
+// */
+//operator fun ParallelCommandGroup.unaryPlus(command: Command): Command {
+//    return this.alongWith(command)
+//}
+//
+///**
+// * Return a sequential command group of this and then the other command
+// */
+//operator fun SequentialCommandGroup.unaryPlus(command: Command): Command {
+//    return this.andThen(command)
+//}
+
+///**
+// * Return a sequential command group of this and then the other command
+// */
+//fun CommandGroupBase.plusAssign(command: Command) {
+//    this.addCommands(command)
+//}
