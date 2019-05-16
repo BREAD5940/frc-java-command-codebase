@@ -127,6 +127,8 @@ class CloseSideRocket (side: Char) : SequentialCommandGroup() {
 
         addCommands(JankyGoToState(iPosition.HATCH_GRAB_INSIDE))
 
+
+
         // addSequential(new PlaceHatch());
 
         // addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));

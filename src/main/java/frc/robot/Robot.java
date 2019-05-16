@@ -5,6 +5,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.SILengthConstants;
+import org.team5940.pantry.exparimental.command.CommandScheduler;
 import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -455,6 +456,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotPeriodic() {
 		Scheduler.getInstance().run();
+		CommandScheduler.getInstance().run();
+
 
 		drivetrain.logPeriodicIO();
 
@@ -499,7 +502,7 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
 
-		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
+//		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
 
 		SmartDashboard.putData(autoState); //TODO test to see if it actually does the thing
 

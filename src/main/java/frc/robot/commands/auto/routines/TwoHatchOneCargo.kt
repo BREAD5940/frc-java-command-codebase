@@ -89,8 +89,8 @@ class TwoHatchOneCargo
         // addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE_PREP)); // TODO fix this broken logic!
 
         // move the superstructure while driving backwards
-        addCommands(ElevatorMove(iPosition.HATCH_GRAB_INSIDE.getElevator()).andThen(
-                JankyGoToState(iPosition.HATCH_GRAB_INSIDE)).alongWith(
+        addCommands((ElevatorMove(iPosition.HATCH_GRAB_INSIDE.getElevator()).andThen(
+                JankyGoToState(iPosition.HATCH_GRAB_INSIDE))).alongWith(
                 DriveDistanceTheThird(3.feet, true)
         ))
 

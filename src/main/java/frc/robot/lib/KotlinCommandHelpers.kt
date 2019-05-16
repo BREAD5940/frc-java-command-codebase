@@ -163,6 +163,8 @@ infix fun Command.raceWith(parallel: Command): Command {
     return group
 }
 
+
+
 ///**
 // * Return a sequential command group of this and then the other command
 // */
@@ -176,10 +178,10 @@ infix fun Command.raceWith(parallel: Command): Command {
 //operator fun SequentialCommandGroup.unaryPlus(command: Command): Command {
 //    return this.andThen(command)
 //}
-
+//
 ///**
 // * Return a sequential command group of this and then the other command
 // */
-//fun CommandGroupBase.plusAssign(command: Command) {
+//fun CommandGroupBase.unaryPlus(command: Command) {
 //    this.addCommands(command)
 //}
