@@ -4,6 +4,7 @@ import static frc.robot.subsystems.superstructure.SuperStructure.getDumbWrist;
 
 import java.util.function.Supplier;
 
+import frc.robot.RobotConfig;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -178,6 +179,7 @@ public class PassThrough extends ConditionalCommand {
 			addSequential(new ElevatorMove(LengthKt.getInch(23))); //todo check height
 			addSequential(new SyncedMove(Math.toRadians(0), false, structure));
 			addSequential(new ElevatorMove(LengthKt.getInch(15))); //todo check height
+			addSequential(new JankyGoToState(RobotConfig.auto.fieldPositions.hatchLowGoal, SuperStructure.iPosition.HATCH));
 
 		}
 	}
