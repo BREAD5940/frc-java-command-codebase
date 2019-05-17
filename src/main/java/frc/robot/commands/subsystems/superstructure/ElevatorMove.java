@@ -33,9 +33,8 @@ public class ElevatorMove extends Command {
 
 	@Override
 	protected void execute() {
-		// como se dice "how should we do dis because elevator gravity feed forward sucks" en espa~nol?\
-		// yo no sé, pero lo haré de todos modos
-		// solución: periodic() otra vez 
+
+		System.out.println("moving to " + mGoal);
 
 		// double elevatorPercentVbusGravity = Elevator.getVoltage(SuperStructure.getInstance().updateState()) / 12;
 		SuperStructure.getElevator().setPositionSetpoint(mGoal);
@@ -44,7 +43,9 @@ public class ElevatorMove extends Command {
 
 	@Override
 	protected boolean isFinished() {
-		return Math.abs(SuperStructure.getElevator().getHeight().getInch() - mGoal.height.getInch()) <= 3;
+		var toReturn = Math.abs(SuperStructure.getElevator().getHeight().getInch() - mGoal.height.getInch()) <= 1;
+		System.out.println("ELEVATOR DONE? " + toReturn);
+		return toReturn;
 	}
 
 }

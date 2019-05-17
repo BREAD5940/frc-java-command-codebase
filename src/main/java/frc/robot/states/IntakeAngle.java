@@ -1,5 +1,6 @@
 package frc.robot.states;
 
+import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 /**
@@ -18,6 +19,10 @@ public class IntakeAngle {
 	public IntakeAngle(RotatingArmState elbowAngle, RotatingArmState wristAngle) {
 		this.wristAngle = wristAngle;
 		this.elbowAngle = elbowAngle;
+	}
+
+	public IntakeAngle(RoundRotation2d elbow, RoundRotation2d wrist) {
+		this(new RotatingArmState(elbow), new RotatingArmState(wrist));
 	}
 
 	public double getMinHeight() {

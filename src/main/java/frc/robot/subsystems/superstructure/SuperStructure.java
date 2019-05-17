@@ -3,6 +3,8 @@ package frc.robot.subsystems.superstructure;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
+import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2dKt;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Mass;
@@ -26,13 +28,10 @@ import frc.robot.lib.PIDSettings;
 import frc.robot.lib.PIDSettings.FeedbackMode;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.lib.obj.RoundRotation2d;
-import frc.robot.lib.statemachines.AutoMotionStateMachine;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
-import frc.robot.planners.SuperstructurePlannerOLD;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.superstructure.Elevator.EncoderMode;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
@@ -56,7 +55,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	private boolean currentPathComplete = false;
 	public static Elevator elevator;
 	public static Intake intake = Intake.getInstance();
-	private SuperstructurePlannerOLD planner = new SuperstructurePlannerOLD();
+	//	private superstructurepla planner = new SuperstructurePlannerOLD();
 	// public SuperStructureState mPeriodicIO = new SuperStructureState();
 	private Wrist mWrist;
 	private RotatingJoint mElbow;
@@ -151,6 +150,23 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		return mCurrentState;
 	}
 
+	public Translation2d getCurrentTranslation2d() {
+		return getCurrentStateAsPose(getCurrentState());
+	}
+
+	/**
+	 * Get the current state of the superstructure as a Translation2d, given a SuperStructureState
+	 * @param state the current state of the SuperStructure
+	 * @return a Translation2d represeting the current state.
+	 */
+	public static Translation2d getCurrentStateAsPose(SuperStructureState state) {
+		var proximalAngle = state.getElbowAngle();
+		var proximalLen = 0.41;//meter
+		var proximalPose = Translation2dKt.toTranslation(proximalAngle.toRotation2d());
+		var structureOrientedPose = proximalPose.plus(new Translation2d(0, state.getElevatorHeight().getMeter()));
+		return structureOrientedPose;
+	}
+
 	public static class iPosition {
 		public static final IntakeAngle CARGO_GRAB = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-44)), new RotatingArmState(RoundRotation2d.getDegree(-20)));
 		public static final IntakeAngle CARGO_DOWN = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-5)), new RotatingArmState(RoundRotation2d.getDegree(-50)));
@@ -186,70 +202,70 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	// 	plan(req)
 	// }
 
-	/**
-	 * Move the superstructure based on a height, intake angle and wrist angle
-	 * TODO how do we go from held game piece to target angle?
-	 */
-	@Deprecated
-	public void moveSuperstructureCombo(ElevatorState elevator, RotatingArmState elbow,
-			RotatingArmState wrist) {
-		moveSuperstructureCombo(new SuperStructureState(elevator, elbow, wrist));
-	}
+	//	/**
+	//	 * Move the superstructure based on a height, intake angle and wrist angle
+	//	 * TODO how do we go from held game piece to target angle?
+	//	 */
+	//	@Deprecated
+	//	public void moveSuperstructureCombo(ElevatorState elevator, RotatingArmState elbow,
+	//			RotatingArmState wrist) {
+	//		moveSuperstructureCombo(new SuperStructureState(elevator, elbow, wrist));
+	//	}
+	//
+	//	/**
+	//	* Move the superstructure based on a height, intake angle and wrist angle
+	//	* TODO how do we go from held game piece to target angle?
+	//	*/
+	//	@Deprecated
+	//	public void moveSuperstructureCombo(ElevatorState elevator, IntakeAngle intakeState) {
+	//		moveSuperstructureCombo(new SuperStructureState(elevator, intakeState));
+	//	}
 
-	/**
-	* Move the superstructure based on a height, intake angle and wrist angle
-	* TODO how do we go from held game piece to target angle?
-	*/
-	@Deprecated
-	public void moveSuperstructureCombo(ElevatorState elevator, IntakeAngle intakeState) {
-		moveSuperstructureCombo(new SuperStructureState(elevator, intakeState));
-	}
-
-	/**
-	 * move a combination of the sub-subsystems of the superstructure
-	 * 
-	 * @param mReqState_ the state that we want the superstructure to end up in
-	 * 
-	 * @returnW
-	 *    the command group necessary to safely move the superstructure
-	 */
-	@Deprecated
-	public void moveSuperstructureCombo(SuperStructureState mRequState_) {
-
-		// TODO the wrist angle is mega broken because it's solely based on the currently held game piece 
-		// this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
-		this.mReqPath = planner.plan(mRequState_, mCurrentState);
-		mReqState = mRequState_; // TODO I still don't trust mReqState
-		// return this.mCurrentCommandGroup;
-	}
-
-	/**
-	 * move only the elevator of the superstructure
-	 * @param height
-	 *    the height to raise the elevator to
-	 * @return
-	 *    the command group necessary to safely move the superstructure
-	 */
-	@Deprecated
-	public void moveSuperstructureElevator(Length height) {
-		// updateState();
-		this.moveSuperstructureCombo(new ElevatorState(height), getCurrentState().getElbow(), getCurrentState().getWrist());
-	}
-
-	/**
-	 * move only the wrist of the superstructure
-	 * @param angle
-	 *    the preset angle to set the wrist to
-	 * @param piece
-	 *    the piece the robot is currently holding -- necessary for wrist movements
-	 * @return
-	 *    the command group necessary to safely move the superstructure
-	 */
-	@Deprecated
-	public void moveSuperstructureAngle(IntakeAngle intakeState, AutoMotionStateMachine.HeldPiece piece) {
-		// updateState();
-		this.moveSuperstructureCombo(mReqState.getElevator(), intakeState);
-	}
+	//	/**
+	//	 * move a combination of the sub-subsystems of the superstructure
+	//	 *
+	//	 * @param mReqState_ the state that we want the superstructure to end up in
+	//	 *
+	//	 * @returnW
+	//	 *    the command group necessary to safely move the superstructure
+	//	 */
+	//	@Deprecated
+	//	public void moveSuperstructureCombo(SuperStructureState mRequState_) {
+	//
+	//		// TODO the wrist angle is mega broken because it's solely based on the currently held game piece
+	//		// this.mCurrentCommandGroup = planner.plan(mReqState, mCurrentState);
+	//		this.mReqPath = planner.plan(mRequState_, mCurrentState);
+	//		mReqState = mRequState_; // TODO I still don't trust mReqState
+	//		// return this.mCurrentCommandGroup;
+	//	}
+	//
+	//	/**
+	//	 * move only the elevator of the superstructure
+	//	 * @param height
+	//	 *    the height to raise the elevator to
+	//	 * @return
+	//	 *    the command group necessary to safely move the superstructure
+	//	 */
+	//	@Deprecated
+	//	public void moveSuperstructureElevator(Length height) {
+	//		// updateState();
+	//		this.moveSuperstructureCombo(new ElevatorState(height), getCurrentState().getElbow(), getCurrentState().getWrist());
+	//	}
+	//
+	//	/**
+	//	 * move only the wrist of the superstructure
+	//	 * @param angle
+	//	 *    the preset angle to set the wrist to
+	//	 * @param piece
+	//	 *    the piece the robot is currently holding -- necessary for wrist movements
+	//	 * @return
+	//	 *    the command group necessary to safely move the superstructure
+	//	 */
+	//	@Deprecated
+	//	public void moveSuperstructureAngle(IntakeAngle intakeState, AutoMotionStateMachine.HeldPiece piece) {
+	//		// updateState();
+	//		this.moveSuperstructureCombo(mReqState.getElevator(), intakeState);
+	//	}
 
 	@Override
 	protected void initDefaultCommand() {
@@ -306,6 +322,21 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		return elevator;
 	}
 
+	public static RoundRotation2d getUnDumbWrist(RoundRotation2d dumbWrist, RoundRotation2d relevantProx) {
+		var compensatedAngle = dumbWrist.plus(relevantProx.div(2));
+		return compensatedAngle;
+	}
+
+	public static RoundRotation2d getDumbWrist(RoundRotation2d smartWrist, RoundRotation2d relevantProx) {
+		var unCompensatedAngle = smartWrist.minus(relevantProx.div(2));
+		return unCompensatedAngle;
+	}
+
+	public static double getDumbWrist(double realWrist, double currentProximal) {
+		var unCompensated = realWrist - (currentProximal / 2);
+		return unCompensated;
+	}
+
 	public void move(SuperStructureState requState) {
 		//former superstructure periodic
 		updateState();
@@ -333,32 +364,32 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 
 	}
 
-	public SuperStructureState plan(SuperStructureState mReqState) {
-
-		mReqPath = planner.plan(mReqState, mCurrentState);
-
-		Length reqSetHeight = mReqPath.get(0).getElevatorHeight();
-
-		Length currentSetHeight = reqSetHeight;
-		currentDTVelocity = Math.abs((DriveTrain.getInstance().getLeft().getFeetPerSecond() + DriveTrain.getInstance().getRight().getFeetPerSecond()) / 2);
-		currentSetHeight = reqSetHeight;
-
-		if (currentDTVelocity > 5) {
-			currentSetHeight = LengthKt.getInch(0.310544 * Math.pow(currentDTVelocity, 2) - 11.7656 * currentDTVelocity + 119.868); //FIXME this is a regression based on arb. values. update after testing
-			if (currentSetHeight.getInch() > reqSetHeight.getInch()) {
-				currentSetHeight = reqSetHeight;
-			}
-		}
-
-		currentSetHeight = (currentSetHeight.plus(lastSH.plus(lastLastSH))).div(3);
-
-		lastLastSH = lastSH;
-		lastSH = currentSetHeight;
-
-		lastState = new SuperStructureState(new ElevatorState(currentSetHeight), mReqPath.get(0).getAngle());
-
-		return new SuperStructureState(new ElevatorState(currentSetHeight), mReqPath.get(0).getAngle());
-	}
+	//	public SuperStructureState plan(SuperStructureState mReqState) {
+	//
+	//		mReqPath = planner.plan(mReqState, mCurrentState);
+	//
+	//		Length reqSetHeight = mReqPath.get(0).getElevatorHeight();
+	//
+	//		Length currentSetHeight = reqSetHeight;
+	//		currentDTVelocity = Math.abs((DriveTrain.getInstance().getLeft().getFeetPerSecond() + DriveTrain.getInstance().getRight().getFeetPerSecond()) / 2);
+	//		currentSetHeight = reqSetHeight;
+	//
+	//		if (currentDTVelocity > 5) {
+	//			currentSetHeight = LengthKt.getInch(0.310544 * Math.pow(currentDTVelocity, 2) - 11.7656 * currentDTVelocity + 119.868); //FIXME this is a regression based on arb. values. update after testing
+	//			if (currentSetHeight.getInch() > reqSetHeight.getInch()) {
+	//				currentSetHeight = reqSetHeight;
+	//			}
+	//		}
+	//
+	//		currentSetHeight = (currentSetHeight.plus(lastSH.plus(lastLastSH))).div(3);
+	//
+	//		lastLastSH = lastSH;
+	//		lastSH = currentSetHeight;
+	//
+	//		lastState = new SuperStructureState(new ElevatorState(currentSetHeight), mReqPath.get(0).getAngle());
+	//
+	//		return new SuperStructureState(new ElevatorState(currentSetHeight), mReqPath.get(0).getAngle());
+	//	}
 
 	/**
 	 * Calculate the torque on the wrist due to gravity for a given state

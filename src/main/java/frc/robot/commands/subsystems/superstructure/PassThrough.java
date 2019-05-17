@@ -1,7 +1,11 @@
 package frc.robot.commands.subsystems.superstructure;
 
+import static frc.robot.subsystems.superstructure.SuperStructure.getDumbWrist;
+
 import java.util.function.Supplier;
 
+import edu.wpi.first.wpilibj.command.PrintCommand;
+import frc.robot.states.IntakeAngle;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -16,16 +20,6 @@ public class PassThrough extends ConditionalCommand {
 
 	private static final double kProximalMaxVel = 150d / 360d * 2 * Math.PI;
 	private static final double kWristMaxVel = 150d / 360d * 2 * Math.PI;
-
-	private static RoundRotation2d getUnDumbWrist(RoundRotation2d dumbWrist, RoundRotation2d relevantProx) {
-		var compensatedAngle = dumbWrist.plus(relevantProx.div(2));
-		return compensatedAngle;
-	}
-
-	private static RoundRotation2d getDumbWrist(RoundRotation2d smartWrist, RoundRotation2d relevantProx) {
-		var unCompensatedAngle = smartWrist.minus(relevantProx.div(2));
-		return unCompensatedAngle;
-	}
 
 	public static class SyncedMove extends Command {
 
@@ -74,6 +68,18 @@ public class PassThrough extends ConditionalCommand {
 
 			var nextProximal = this.lastCommandedProximal.plus(RoundRotation2d.getRadian(proximalVelocity * dt));
 
+			if(
+					nextProximal.getDegree() < -180
+			) {
+				nextProximal = RoundRotation2d.getDegree(-180);
+				moveIteratorFinished = true;
+			} else if (nextProximal.getDegree() > 5) {
+				nextProximal = RoundRotation2d.getDegree(5);
+				moveIteratorFinished = true;
+			}
+
+			System.out.println("next proximal: " + nextProximal.getDegree());
+
 			if (isFrontToBack) {
 				if (nextProximal.getRadian() < goal)
 					nextProximal = goalRotation2d;
@@ -104,11 +110,11 @@ public class PassThrough extends ConditionalCommand {
 
 		@Override
 		public boolean isFinished() {
-			return structure.getWrist().isWithinTolerance(RoundRotation2d.getDegree(5),
+			return (structure.getWrist().isWithinTolerance(RoundRotation2d.getDegree(5),
 					getDumbWrist(RoundRotation2d.getRadian(goal), lastObservedState.getElbowAngle()))
 					&& structure.getElbow()
-							.isWithinTolerance(RoundRotation2d.getDegree(5), RoundRotation2d.getRadian(goal))
-					&& moveIteratorFinished;
+					.isWithinTolerance(RoundRotation2d.getDegree(5), RoundRotation2d.getRadian(goal))
+					&& moveIteratorFinished) || moveIteratorFinished;
 		}
 	}
 
@@ -118,7 +124,7 @@ public class PassThrough extends ConditionalCommand {
 
 		// super(setupConstructor(structure), isFrontToBack);
 
-		super(getPassThroughFrontToBack(structure), getPassThroughBackToFront(structure));
+		super(new FrontToBack(structure), new BackToFront(structure));
 
 		this.structure = structure;
 		this.isFrontToBack = isFrontToBack;
@@ -132,18 +138,34 @@ public class PassThrough extends ConditionalCommand {
 		return isFrontToBack.get();
 	}
 
-	private static Command getPassThroughFrontToBack(SuperStructure structure) {
-		var group = new CommandGroup();
-		group.addSequential(new ElevatorMove(LengthKt.getInch(30))); //todo check height
-		group.addSequential(new SyncedMove(Math.toRadians(-180), true, structure));
-		return group;
+	public static class FrontToBack extends CommandGroup {
+
+				public FrontToBack(SuperStructure structure) {
+
+					setInterruptible(false);
+
+					addSequential(new PrintCommand("passing thru front to back"));
+					addSequential(new ElevatorMove(LengthKt.getInch(23))); //todo check height
+					addSequential(new SyncedMove(Math.toRadians(-150), true, structure));
+					addParallel(new ElevatorMove(LengthKt.getInch(10))); //todo check height
+					//-188 elbow -106 wrist
+					addSequential(new ArmMove(new IntakeAngle(
+							RoundRotation2d.getDegree(-188),
+							RoundRotation2d.getDegree(-106)
+					)));
+		}
 	}
 
-	private static Command getPassThroughBackToFront(SuperStructure structure) {
-		var group = new CommandGroup();
-		group.addSequential(new ElevatorMove(LengthKt.getInch(30))); //todo check height
-		group.addSequential(new SyncedMove(Math.toRadians(180), false, structure));
-		return group;
+	public static class BackToFront extends CommandGroup {
+
+		public BackToFront(SuperStructure structure) {
+
+			setInterruptible(false);
+
+			addSequential(new PrintCommand("passing thru back to front"));
+			addSequential(new ElevatorMove(LengthKt.getInch(23))); //todo check height
+			addSequential(new SyncedMove(Math.toRadians(0), false, structure));
+		}
 	}
 
 	// public static Map<Boolean, Command> setupConstructor(SuperStructure structure) {

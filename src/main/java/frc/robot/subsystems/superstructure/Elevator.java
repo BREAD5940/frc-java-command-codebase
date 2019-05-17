@@ -377,8 +377,8 @@ public class Elevator extends HalfBakedSubsystem {
 
 	@Override
 	public void onDisable() {
-		getMaster().set(ControlMode.PercentOutput, 10);
-		getMaster().set(ControlMode.PercentOutput, 10);
+		getMaster().set(ControlMode.PercentOutput, 0);
+		getMaster().set(ControlMode.PercentOutput, 0);
 		setHeightTrim(LengthKt.getInch(0));
 	}
 }

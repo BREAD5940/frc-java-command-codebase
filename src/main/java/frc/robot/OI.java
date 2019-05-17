@@ -2,6 +2,8 @@ package frc.robot;
 
 import java.util.Arrays;
 
+import edu.wpi.first.wpilibj.command.ConditionalCommand;
+import frc.robot.commands.subsystems.superstructure.PassThrough;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -35,16 +37,10 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 public class OI {
 
 	private Joystick primaryJoystick = new Joystick(RobotConfig.controls.primary_joystick_port);
-	// private Joystick secondaryJoystick = new
-	// Joystick(RobotConfig.controls.secondary_joystick_port);
 	private Joystick driverStation = new Joystick(5); // TODO make a constant
 
 	private Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
 	private Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
-	// private Button open_clamp_button = new JoystickButton(secondaryJoystick,
-	// xboxmap.Buttons.Y_BUTTON);
-	// private Button close_clamp_button = new JoystickButton(secondaryJoystick,
-	// xboxmap.Buttons.A_BUTTON);
 
 	// TODO change these to a button console once created
 
@@ -52,15 +48,6 @@ public class OI {
 	Button primaryAButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.A_BUTTON);
 	Button primaryXButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
 	Button primaryBButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
-
-	// Button secondaryDpadUp = new DPadButton(secondaryJoystick,
-	// DPadButton.Direction.UP);
-	// Button secondaryDpadDown = new DPadButton(secondaryJoystick,
-	// DPadButton.Direction.DOWN);
-	// Button secondaryDpadLeft = new DPadButton(secondaryJoystick,
-	// DPadButton.Direction.LEFT);
-	// Button secondaryDpadRight = new DPadButton(secondaryJoystick,
-	// DPadButton.Direction.RIGHT);
 
 	public Button primaryDpadUp = new DPadButton(primaryJoystick, DPadButton.Direction.UP);
 	Button primaryDpadDown = new DPadButton(primaryJoystick, DPadButton.Direction.DOWN);
@@ -83,8 +70,7 @@ public class OI {
 	Button dsHatch3 = new JoystickButton(driverStation, 1);
 	Button dsHatchIn = new JoystickButton(driverStation, 10);
 
-	// Button dsJogUp = new JoystickButton(driverStation, 9);
-	// Button dsJogDown = new JoystickButton(driverStation, 11);
+	Button dsTogglePassThru = new JoystickButton(driverStation, 4);
 
 	public OI() {
 
@@ -129,45 +115,6 @@ public class OI {
 		dsHatchIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));
 
-		// primaryDpadUp.whenPressed(new KillAuto());
-
-		// var yes = new CommandGroup();
-
-		// yes.addSequential(new TurnToFaceVisionTarget());
-
-		// yes.addSequential(
-		// 		new DriveDistanceToVisionTarget(LengthKt.getInch(35), VelocityKt.getVelocity(LengthKt.getFeet(2))));
-
-		// yes.addSequential(new TeleopCommands());
-
-		// primaryDpadUp.whenPressed(yes);
-
-		// primaryDpadDown.whenPressed(new TurnToFaceVisionTarget());
-
-		// var grabHatch = new CommandGroup();
-		// // yes.addSequential(new JankyGoToState(fieldPositions.hatchMiddleGoal,
-		// iPosition.HATCH));
-		// grabHatch.addSequential(new SetHatchMech(HatchMechState.kClamped));
-		// // yes.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal,
-		// iPosition.HATCH));
-		// grabHatch.addSequential(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
-		// grabHatch.addSequential(new FollowVisionTargetTheSecond(5.9));
-		// // new DrivePowerToVisionTarget(.3, 0.5),
-		// // yes.addParallel(new RunIntake(1, 0, 1));
-		// grabHatch.addSequential(new DrivePowerAndIntake(0.4, -1, 0.8));
-		// grabHatch.addSequential(new DrivePower(-.4, 0.7));
-
-		// var placeHatch = new CommandGroup();
-		// placeHatch.addSequential(new JankyGoToState(fieldPositions.hatchMiddleGoal,
-		// iPosition.HATCH));
-		// placeHatch.addSequential(new FollowVisionTargetTheSecond(4.4));
-		// placeHatch.addSequential(new DrivePower(0.4, 0.5));
-		// placeHatch.addParallel(new RunIntake(1, 0, 0.5));
-		// placeHatch.addSequential(new DrivePower(-.4, 0.5));
-
-		// primaryDpadDown.whenPressed(placeHatch);
-		// primaryDpadUp.whenPressed(grabHatch);
-
 		var testMeme = new CommandGroup();
 		testMeme.addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)),
 				new TeleopCommands()));
@@ -175,27 +122,9 @@ public class OI {
 
 		primaryDpadDown.whenPressed(testMeme);
 
-		// primaryDpadDown.whenPressed(new DrivePowerAndIntake(0.5, 1, 2));
+//		primaryXButton.whenPressed(new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
 
-		// primaryDpadUp.whenPressed(new CloseSideRocket('R'));
 
-		// primaryDpadLeft.whenPressed(new CloseSideRocket('L'));
-		// primaryDpadDown.whenPressed(new ArmMove(iPosition.HATCH));
-
-		// primaryDpadUp.whenPressed(new ElevatorMove(new
-		// ElevatorState(LengthKt.getInch(35))));
-
-		// primaryDpadUp.whenPressed(SequentialCommandFactory.getSequentialCommands(
-		// Arrays.asList(
-		// new SetHatchMech(HatchMechState.kOpen),
-		// new SetGearCommand(Gear.HIGH),
-		// new SetElevatorGear(ElevatorGear.LOW))));
-
-		// dsJogUp.whenPressed(new JogElevator(LengthKt.getInch(0.5), true));
-		// dsJogDown.whenPressed(new JogElevator(LengthKt.getInch(0.5), false));
-
-		// dsJogUp.whenPressed(new JogElbow(RoundRotation2d.getDegree(2)));
-		// dsJogDown.whenPressed(new JogElbow(RoundRotation2d.getDegree(-2)));
 
 	}
 
@@ -206,14 +135,6 @@ public class OI {
 	public Joystick getPrimary() {
 		return primaryJoystick;
 	}
-
-	// public Joystick getSecondary() {
-	// return secondaryJoystick;
-	// }
-
-	// public List<Joystick> getAllSticks() {
-	// return Arrays.asList(getPrimary(), getSecondary());
-	// }
 
 	public enum OperatorControllers {
 		PRIMARY, SECONDARY;
@@ -241,38 +162,6 @@ public class OI {
 		return primaryJoystick.getRawAxis(0);
 	}
 
-	// public double getIntakeAxis() {
-	// // return (secondaryJoystick.getRawButton(xboxmap.Buttons.RB_BUTTON)) ? 1 * 1
-	// : 0;\
-	// var inVal = driverStation.getRawButton(9) ? 1 : -1;
-	// var outVal = driverStation.getRawButton(11) ? 1 : -1;
-	// return inVal - outVal;
-	// }
-
-	// public double getCargoOuttake() {
-	// return (secondaryJoystick.getRawButton(xboxmap.Buttons.X_BUTTON)) ? 1 * 1 :
-	// 0;
-	// }
-
-	// public double getCargoIntake() {
-	// return (secondaryJoystick.getRawButton(xboxmap.Buttons.B_BUTTON)) ? 1 * 1 :
-	// 0;
-	// }
-
-	// public double getOuttakeAxis() {
-	// return (secondaryJoystick.getRawButton(xboxmap.Buttons.LB_BUTTON)) ? 1 * 1 :
-	// 0;
-	// }
-
-	// public double getWristAxis() {
-	// return secondaryJoystick.getRawAxis(5);
-	// }
-
-	// public double getElbowAxis() {
-	// return (secondaryJoystick.getRawAxis(2) - secondaryJoystick.getRawAxis(3)) *
-	// -1; // triggers
-	// }
-
 	public double getDSElbowAxis() {
 		return 0;// (driverStation.getRawAxis(DriverstationMap.Axes.elbowStick));
 	}
@@ -293,12 +182,6 @@ public class OI {
 		return driverStation.getRawAxis(0) * 1;
 	}
 
-	// public double getElevatorAxis() {
-	// return 0;
-	// return secondaryJoystick.getRawAxis(RobotConfig.controls.xbox_elevator_axis)
-	// * -1;
-	// }
-
 	public double getElevatorDS() {
 		var upPower = driverStation.getRawButton(9) ? 1 : -1;
 		var downPower = (driverStation.getRawButton(11) ? 1 : -1) * -1;
@@ -309,28 +192,4 @@ public class OI {
 		return toReturn;
 	}
 
-	// public double getThrottleAxis() {
-	// return 0;
-	// }//secondaryJoystick.getRawAxis(RobotConfig.controls.throttle_elevator_axis);
-	// }
-
-	// There are a few additional built in buttons you can use. Additionally,
-	// by subclassing Button you can create custom triggers and bind those to
-	// commands the same as any other Button.
-
-	//// TRIGGERING COMMANDS WITH BUTTONS
-	// Once you have a button, it's trivial to bind it to a button in one of
-	// three ways:
-
-	// Start the command when the button is pressed and let it run the command
-	// until it is finished as determined by it's isFinished method.
-	// button.whenPressed(new ExampleCommand());
-
-	// Run the command while the button is being held down and interrupt it once
-	// the button is released.
-	// button.whileHeld(new ExampleCommand());
-
-	// Start the command when the button is released and let it run the command
-	// until it is finished as determined by it's isFinished method.
-	// button.whenReleased(new ExampleCommand());
 }

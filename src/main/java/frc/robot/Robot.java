@@ -1,5 +1,6 @@
 package frc.robot;
 
+import frc.robot.commands.subsystems.superstructure.PassThrough;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -20,25 +21,20 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.RobotConfig.elevator;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.TerribleAutoChooser;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.subsystems.drivetrain.ZeroSuperStructure;
 import frc.robot.commands.subsystems.superstructure.PassThrough.SyncedMove;
-import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.ZeroElevatorDisabled;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
-import frc.robot.states.IntakeAngle;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.LimeLight.LEDMode;
 import frc.robot.subsystems.superstructure.SuperStructure;
-import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly init
@@ -168,6 +164,8 @@ public class Robot extends TimedRobot {
 
 		Logger.clearLog();
 
+		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
+
 		SmartDashboard.putData(zeroElevatorWhileDisabled);
 
 		mAutoChooser = new TerribleAutoChooser();
@@ -237,7 +235,7 @@ public class Robot extends TimedRobot {
 		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
 		// wrist.getMaster().setSelectedSensorPosition((int) (wristStart));
 
-		elevator.getMaster().setSelectedSensorPosition((int) (elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue())); // just to be super sure the elevator is safe-ishhhh
+		elevator.getMaster().setSelectedSensorPosition((int) (elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue()), 0, 0); // just to be super sure the elevator is safe-ishhhh
 		var cmd = zeroElevatorWhileDisabled;
 		cmd.start();
 
@@ -272,15 +270,15 @@ public class Robot extends TimedRobot {
 
 		//     odometry_.setLastPosition(odometry_.getCurrentEncoderPosition());
 		// }).startPeriodic(0.02);
-		SmartDashboard.putData("Zero elevator height:", new ZeroSuperStructure("elevator"));
-		SmartDashboard.putData("Zero elbow angle:", new ZeroSuperStructure("elbow"));
-		SmartDashboard.putData("Zero wrist angle:", new ZeroSuperStructure("wrist"));
-		SmartDashboard.putData("Max elevator height:", new ZeroSuperStructure("maxElevator"));
-		// SmartDashboard.putData("Top of inner stage elevator height", new ZeroSuperStructure("topInnerElevator"));
-		SmartDashboard.putData("Max wrist angle:", new ZeroSuperStructure("maxWrist"));
-		SmartDashboard.putData("Min wrist angle:", new ZeroSuperStructure("minWrist"));
-		SmartDashboard.putData("Max elbow angle:", new ZeroSuperStructure("maxElbow"));
-		SmartDashboard.putData("Min elbow angle:", new ZeroSuperStructure("minElbow"));
+//		SmartDashboard.putData("Zero elevator height:", new ZeroSuperStructure("elevator"));
+//		SmartDashboard.putData("Zero elbow angle:", new ZeroSuperStructure("elbow"));
+//		SmartDashboard.putData("Zero wrist angle:", new ZeroSuperStructure("wrist"));
+//		SmartDashboard.putData("Max elevator height:", new ZeroSuperStructure("maxElevator"));
+//		// SmartDashboard.putData("Top of inner stage elevator height", new ZeroSuperStructure("topInnerElevator"));
+//		SmartDashboard.putData("Max wrist angle:", new ZeroSuperStructure("maxWrist"));
+//		SmartDashboard.putData("Min wrist angle:", new ZeroSuperStructure("minWrist"));
+//		SmartDashboard.putData("Max elbow angle:", new ZeroSuperStructure("maxElbow"));
+//		SmartDashboard.putData("Min elbow angle:", new ZeroSuperStructure("minElbow"));
 		drivetrain.zeroEncoders();
 		System.out.println("Robot init'ed and encoders zeroed!");
 
@@ -324,6 +322,7 @@ public class Robot extends TimedRobot {
 		// mResetNotifier.startPeriodic(0.5);
 
 		var frontBack = new CommandGroup();
+//		frontBack.addSequential(new ElevatorMove(LengthKt.getInch(24)));
 		frontBack.addSequential(new SyncedMove(Math.toRadians(-180), true, superstructure));
 		// frontBack.addSequential(new ArmMove(new IntakeAngle(
 		// 	new RotatingArmState(RoundRotation2d.getDegree(-210)),
@@ -331,11 +330,12 @@ public class Robot extends TimedRobot {
 		// 	)));
 
 		var backFront = new CommandGroup();
+//		backFront.addSequential(new ElevatorMove(LengthKt.getInch(24)));
 		backFront.addSequential(new SyncedMove(Math.toRadians(0), true, superstructure));
 
-
-		SmartDashboard.putData("front to back passthrough", frontBack);
-		SmartDashboard.putData("back to front passthrough", backFront);
+		SmartDashboard.putData("front to back passthrough", new PassThrough.FrontToBack(superstructure));
+		SmartDashboard.putData("back to front passthrough", new PassThrough.BackToFront(superstructure));
+//		SmartDashboard.putData("THE ONE TRUE PASSTHROUGH", new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
 
 	}
 
@@ -530,8 +530,6 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getMaster().getSensorPosition().getDegree());
 		// SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
 		// SmartDashboard.putData(superstructure);
-
-		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
 
 		SmartDashboard.putData(autoState); //TODO test to see if it actually does the thing
 
