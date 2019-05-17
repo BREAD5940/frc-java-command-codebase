@@ -5,18 +5,17 @@ import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class ConditionalPassThrough extends ConditionalCommand {
 
-    public ConditionalPassThrough() {
+	public ConditionalPassThrough() {
 
-        super(
-                new PassThrough.FrontToBack(SuperStructure.getInstance()),
-                new PassThrough.BackToFront(SuperStructure.getInstance())
-        );
+		super(
+				new PassThrough.FrontToBack(SuperStructure.getInstance()),
+				new PassThrough.BackToFront(SuperStructure.getInstance()));
 
-    }
+	}
 
-    @Override
-    protected boolean condition() {
-        var state = SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree();
-        return state > -90;
-    }
+	@Override
+	protected boolean condition() {
+		var state = SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree();
+		return state > -90;
+	}
 }

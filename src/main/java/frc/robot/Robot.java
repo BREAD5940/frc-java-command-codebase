@@ -1,6 +1,5 @@
 package frc.robot;
 
-import frc.robot.commands.subsystems.superstructure.PassThrough;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -24,6 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.TerribleAutoChooser;
 import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.subsystems.superstructure.PassThrough;
 import frc.robot.commands.subsystems.superstructure.PassThrough.SyncedMove;
 import frc.robot.commands.subsystems.superstructure.ZeroElevatorDisabled;
 import frc.robot.lib.Logger;
@@ -270,15 +270,15 @@ public class Robot extends TimedRobot {
 
 		//     odometry_.setLastPosition(odometry_.getCurrentEncoderPosition());
 		// }).startPeriodic(0.02);
-//		SmartDashboard.putData("Zero elevator height:", new ZeroSuperStructure("elevator"));
-//		SmartDashboard.putData("Zero elbow angle:", new ZeroSuperStructure("elbow"));
-//		SmartDashboard.putData("Zero wrist angle:", new ZeroSuperStructure("wrist"));
-//		SmartDashboard.putData("Max elevator height:", new ZeroSuperStructure("maxElevator"));
-//		// SmartDashboard.putData("Top of inner stage elevator height", new ZeroSuperStructure("topInnerElevator"));
-//		SmartDashboard.putData("Max wrist angle:", new ZeroSuperStructure("maxWrist"));
-//		SmartDashboard.putData("Min wrist angle:", new ZeroSuperStructure("minWrist"));
-//		SmartDashboard.putData("Max elbow angle:", new ZeroSuperStructure("maxElbow"));
-//		SmartDashboard.putData("Min elbow angle:", new ZeroSuperStructure("minElbow"));
+		//		SmartDashboard.putData("Zero elevator height:", new ZeroSuperStructure("elevator"));
+		//		SmartDashboard.putData("Zero elbow angle:", new ZeroSuperStructure("elbow"));
+		//		SmartDashboard.putData("Zero wrist angle:", new ZeroSuperStructure("wrist"));
+		//		SmartDashboard.putData("Max elevator height:", new ZeroSuperStructure("maxElevator"));
+		//		// SmartDashboard.putData("Top of inner stage elevator height", new ZeroSuperStructure("topInnerElevator"));
+		//		SmartDashboard.putData("Max wrist angle:", new ZeroSuperStructure("maxWrist"));
+		//		SmartDashboard.putData("Min wrist angle:", new ZeroSuperStructure("minWrist"));
+		//		SmartDashboard.putData("Max elbow angle:", new ZeroSuperStructure("maxElbow"));
+		//		SmartDashboard.putData("Min elbow angle:", new ZeroSuperStructure("minElbow"));
 		drivetrain.zeroEncoders();
 		System.out.println("Robot init'ed and encoders zeroed!");
 
@@ -322,7 +322,7 @@ public class Robot extends TimedRobot {
 		// mResetNotifier.startPeriodic(0.5);
 
 		var frontBack = new CommandGroup();
-//		frontBack.addSequential(new ElevatorMove(LengthKt.getInch(24)));
+		//		frontBack.addSequential(new ElevatorMove(LengthKt.getInch(24)));
 		frontBack.addSequential(new SyncedMove(Math.toRadians(-180), true, superstructure));
 		// frontBack.addSequential(new ArmMove(new IntakeAngle(
 		// 	new RotatingArmState(RoundRotation2d.getDegree(-210)),
@@ -330,12 +330,12 @@ public class Robot extends TimedRobot {
 		// 	)));
 
 		var backFront = new CommandGroup();
-//		backFront.addSequential(new ElevatorMove(LengthKt.getInch(24)));
+		//		backFront.addSequential(new ElevatorMove(LengthKt.getInch(24)));
 		backFront.addSequential(new SyncedMove(Math.toRadians(0), true, superstructure));
 
 		SmartDashboard.putData("front to back passthrough", new PassThrough.FrontToBack(superstructure));
 		SmartDashboard.putData("back to front passthrough", new PassThrough.BackToFront(superstructure));
-//		SmartDashboard.putData("THE ONE TRUE PASSTHROUGH", new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
+		//		SmartDashboard.putData("THE ONE TRUE PASSTHROUGH", new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
 
 	}
 

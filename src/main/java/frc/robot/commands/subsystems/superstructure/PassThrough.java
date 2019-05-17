@@ -4,15 +4,15 @@ import static frc.robot.subsystems.superstructure.SuperStructure.getDumbWrist;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.command.PrintCommand;
-import frc.robot.states.IntakeAngle;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
+import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.lib.obj.RoundRotation2d;
+import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
@@ -64,7 +64,6 @@ public class PassThrough extends ConditionalCommand {
 			if (moveIteratorFinished)
 				return;
 
-
 			var now = Timer.getFPGATimestamp();
 			var dt = now - lastTime;
 			var currentState = structure.getCurrentState();
@@ -72,9 +71,7 @@ public class PassThrough extends ConditionalCommand {
 
 			var nextProximal = this.lastCommandedProximal.plus(RoundRotation2d.getRadian(proximalVelocity * dt));
 
-			if(
-					nextProximal.getDegree() < -180
-			) {
+			if (nextProximal.getDegree() < -180) {
 				nextProximal = RoundRotation2d.getDegree(-180);
 				moveIteratorFinished = true;
 				System.out.println("SETTING MOVE ITERATOR TO TRUE 1");
@@ -121,7 +118,7 @@ public class PassThrough extends ConditionalCommand {
 			var toReturn = (structure.getWrist().isWithinTolerance(RoundRotation2d.getDegree(5),
 					getDumbWrist(RoundRotation2d.getRadian(goal), lastObservedState.getElbowAngle()))
 					&& structure.getElbow()
-					.isWithinTolerance(RoundRotation2d.getDegree(5), RoundRotation2d.getRadian(goal))
+							.isWithinTolerance(RoundRotation2d.getDegree(5), RoundRotation2d.getRadian(goal))
 					&& moveIteratorFinished) || moveIteratorFinished;
 
 			System.out.println("pass thru done? " + toReturn);
@@ -154,20 +151,19 @@ public class PassThrough extends ConditionalCommand {
 
 	public static class FrontToBack extends CommandGroup {
 
-				public FrontToBack(SuperStructure structure) {
+		public FrontToBack(SuperStructure structure) {
 
-					setInterruptible(false);
+			setInterruptible(false);
 
-					addSequential(new PrintCommand("passing thru front to back"));
-					addSequential(new ElevatorMove(LengthKt.getInch(23))); //todo check height
-					addSequential(new SyncedMove(Math.toRadians(-160), true, structure));
-					//-188 elbow -106 wrist
-					addSequential(new ArmMove(new IntakeAngle(
-							RoundRotation2d.getDegree(-193),
-							RoundRotation2d.getDegree(-112)
-					)));
-					addSequential(new ElevatorMove(LengthKt.getInch(5))); //todo check height
-				}
+			addSequential(new PrintCommand("passing thru front to back"));
+			addSequential(new ElevatorMove(LengthKt.getInch(23))); //todo check height
+			addSequential(new SyncedMove(Math.toRadians(-160), true, structure));
+			//-188 elbow -106 wrist
+			addSequential(new ArmMove(new IntakeAngle(
+					RoundRotation2d.getDegree(-193),
+					RoundRotation2d.getDegree(-112))));
+			addSequential(new ElevatorMove(LengthKt.getInch(5))); //todo check height
+		}
 	}
 
 	public static class BackToFront extends CommandGroup {

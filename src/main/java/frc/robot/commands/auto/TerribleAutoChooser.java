@@ -3,11 +3,6 @@ package frc.robot.commands.auto;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import frc.robot.commands.auto.routines.Baseline;
-import frc.robot.commands.auto.routines.CargoShip1;
-import frc.robot.commands.auto.routines.CloseSideRocket;
-import frc.robot.commands.auto.routines.CloseThenFarRocket;
-import frc.robot.commands.auto.routines.FarSideRocket;
 
 /**
  * Literally just a sendable chooser
@@ -26,15 +21,15 @@ public class TerribleAutoChooser implements iAutoChooser {
 	}
 
 	public void addOptions() {
-//		addChoice("HabL to rocketLF", new FarSideRocket('L'));
-//		addChoice("HabR to rocketRF", new FarSideRocket('R'));
-//		addChoice("HabL to rocketLC", new CloseSideRocket('L'));
-//		addChoice("HabR to rocketRC", new CloseSideRocket('R'));
-//		addChoice("HabL to cargoL1", new CargoShip1('L'));
-//		addChoice("HabR to cargoR1", new CargoShip1('R'));
-//		addChoice("HabL to TWO HATCH AUTO", new CloseThenFarRocket('L'));
-//		addChoice("HabR to TWO HATCH AUTO", new CloseThenFarRocket('R'));
-//		addChoice("Baseline", new Baseline());
+		//		addChoice("HabL to rocketLF", new FarSideRocket('L'));
+		//		addChoice("HabR to rocketRF", new FarSideRocket('R'));
+		//		addChoice("HabL to rocketLC", new CloseSideRocket('L'));
+		//		addChoice("HabR to rocketRC", new CloseSideRocket('R'));
+		//		addChoice("HabL to cargoL1", new CargoShip1('L'));
+		//		addChoice("HabR to cargoR1", new CargoShip1('R'));
+		//		addChoice("HabL to TWO HATCH AUTO", new CloseThenFarRocket('L'));
+		//		addChoice("HabR to TWO HATCH AUTO", new CloseThenFarRocket('R'));
+		//		addChoice("Baseline", new Baseline());
 		setDefaultChoice("Do nothing", new CommandGroup("nothing"));
 	}
 

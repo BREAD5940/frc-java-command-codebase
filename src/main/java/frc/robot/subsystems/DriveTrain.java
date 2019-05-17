@@ -531,7 +531,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 					turnSpeed *= -1;
 				forwardSpeed *= Math.abs(forwardSpeed);
 
-//				System.out.println("forward " + forwardSpeed);
+				//				System.out.println("forward " + forwardSpeed);
 
 				forwardSpeed = Util.deadband(forwardSpeed, 0.07) * ((getCachedGear() == Gear.HIGH) ? 0.8 : 1);
 				turnSpeed = Util.deadband(turnSpeed, 0.07);
@@ -745,7 +745,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		// setDefaultCommand(new ArcadeDrive());
 		// setDefaultCommand(new PIDArcadeDrive(true));
 
-//		System.out.println("setting drivetrain default commands");
+		//		System.out.println("setting drivetrain default commands");
 
 		var curveyBoi = new CurvatureDrive();
 		setDefaultCommand(curveyBoi);
