@@ -53,13 +53,17 @@ public class PassThrough extends ConditionalCommand {
 		public void initialize() {
 			lastCommandedProximal = structure.getCurrentState().getElbowAngle();
 			lastTime = Timer.getFPGATimestamp();
+			moveIteratorFinished = false;
 		}
 
 		@Override
 		public void execute() {
 
+			System.out.println("MOVE I9TERATOR " + moveIteratorFinished);
+
 			if (moveIteratorFinished)
 				return;
+
 
 			var now = Timer.getFPGATimestamp();
 			var dt = now - lastTime;
@@ -73,9 +77,11 @@ public class PassThrough extends ConditionalCommand {
 			) {
 				nextProximal = RoundRotation2d.getDegree(-180);
 				moveIteratorFinished = true;
+				System.out.println("SETTING MOVE ITERATOR TO TRUE 1");
 			} else if (nextProximal.getDegree() > 5) {
 				nextProximal = RoundRotation2d.getDegree(5);
 				moveIteratorFinished = true;
+				System.out.println("SETTING MOVE ITERATOR TO TRUE 2");
 			}
 
 			System.out.println("next proximal: " + nextProximal.getDegree());
@@ -91,9 +97,11 @@ public class PassThrough extends ConditionalCommand {
 			if (isFrontToBack) {
 				if (nextProximal.getRadian() < goal) {
 					this.moveIteratorFinished = true;
+					System.out.println("SETTING MOVE ITERATOR TO TRUE 3");
 				}
 			} else if (nextProximal.getRadian() > goal) {
 				this.moveIteratorFinished = true;
+				System.out.println("SETTING MOVE ITERATOR TO TRUE 4");
 			}
 
 			var nextWrist = getDumbWrist(currentState.getElbowAngle(), currentState.getElbowAngle());
@@ -110,11 +118,17 @@ public class PassThrough extends ConditionalCommand {
 
 		@Override
 		public boolean isFinished() {
-			return (structure.getWrist().isWithinTolerance(RoundRotation2d.getDegree(5),
+			var toReturn = (structure.getWrist().isWithinTolerance(RoundRotation2d.getDegree(5),
 					getDumbWrist(RoundRotation2d.getRadian(goal), lastObservedState.getElbowAngle()))
 					&& structure.getElbow()
 					.isWithinTolerance(RoundRotation2d.getDegree(5), RoundRotation2d.getRadian(goal))
 					&& moveIteratorFinished) || moveIteratorFinished;
+
+			System.out.println("pass thru done? " + toReturn);
+
+			System.out.println("moveIteratorFinished? " + moveIteratorFinished);
+
+			return toReturn;
 		}
 	}
 
@@ -146,14 +160,14 @@ public class PassThrough extends ConditionalCommand {
 
 					addSequential(new PrintCommand("passing thru front to back"));
 					addSequential(new ElevatorMove(LengthKt.getInch(23))); //todo check height
-					addSequential(new SyncedMove(Math.toRadians(-150), true, structure));
-					addParallel(new ElevatorMove(LengthKt.getInch(10))); //todo check height
+					addSequential(new SyncedMove(Math.toRadians(-160), true, structure));
 					//-188 elbow -106 wrist
 					addSequential(new ArmMove(new IntakeAngle(
-							RoundRotation2d.getDegree(-188),
-							RoundRotation2d.getDegree(-106)
+							RoundRotation2d.getDegree(-193),
+							RoundRotation2d.getDegree(-112)
 					)));
-		}
+					addSequential(new ElevatorMove(LengthKt.getInch(5))); //todo check height
+				}
 	}
 
 	public static class BackToFront extends CommandGroup {
@@ -165,6 +179,8 @@ public class PassThrough extends ConditionalCommand {
 			addSequential(new PrintCommand("passing thru back to front"));
 			addSequential(new ElevatorMove(LengthKt.getInch(23))); //todo check height
 			addSequential(new SyncedMove(Math.toRadians(0), false, structure));
+			addSequential(new ElevatorMove(LengthKt.getInch(15))); //todo check height
+
 		}
 	}
 

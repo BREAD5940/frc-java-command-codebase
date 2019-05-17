@@ -75,7 +75,7 @@ public class Intake extends Subsystem {
 		// talon.configOpenloopRamp(0.15);
 		hatchTalon.configContinuousCurrentLimit(20);
 		hatchTalon.configPeakCurrentLimit(40);
-		hatchTalon.configPeakCurrentDuration(200);
+		hatchTalon.configPeakCurrentDuration(400);
 		hatchTalon.enableCurrentLimit(true);
 		// talon.setName("Intake");
 		cargoTalon.configPeakOutputForward(.8);

@@ -3,6 +3,7 @@ package frc.robot;
 import java.util.Arrays;
 
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
+import frc.robot.commands.subsystems.superstructure.ConditionalPassThrough;
 import frc.robot.commands.subsystems.superstructure.PassThrough;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
@@ -124,6 +125,7 @@ public class OI {
 
 //		primaryXButton.whenPressed(new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
 
+		dsTogglePassThru.whenPressed(new ConditionalPassThrough());
 
 
 	}

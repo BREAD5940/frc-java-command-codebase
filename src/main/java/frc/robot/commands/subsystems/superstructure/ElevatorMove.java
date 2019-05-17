@@ -34,7 +34,7 @@ public class ElevatorMove extends Command {
 	@Override
 	protected void execute() {
 
-		System.out.println("moving to " + mGoal);
+//		System.out.println("moving to " + mGoal);
 
 		// double elevatorPercentVbusGravity = Elevator.getVoltage(SuperStructure.getInstance().updateState()) / 12;
 		SuperStructure.getElevator().setPositionSetpoint(mGoal);
@@ -44,7 +44,7 @@ public class ElevatorMove extends Command {
 	@Override
 	protected boolean isFinished() {
 		var toReturn = Math.abs(SuperStructure.getElevator().getHeight().getInch() - mGoal.height.getInch()) <= 1;
-		System.out.println("ELEVATOR DONE? " + toReturn);
+//		System.out.println("ELEVATOR DONE? " + toReturn);
 		return toReturn;
 	}
 
