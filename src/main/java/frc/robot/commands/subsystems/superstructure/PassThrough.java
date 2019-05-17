@@ -4,7 +4,6 @@ import static frc.robot.subsystems.superstructure.SuperStructure.getDumbWrist;
 
 import java.util.function.Supplier;
 
-import frc.robot.RobotConfig;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -12,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import edu.wpi.first.wpilibj.command.PrintCommand;
+import frc.robot.RobotConfig;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
