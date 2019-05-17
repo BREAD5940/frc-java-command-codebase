@@ -158,12 +158,13 @@ public class OI {
 	}
 
 	public double getForwardAxis() {
-		// return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis);
+//		 return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis);
 		return getPrimary().getRawAxis(3) - getPrimary().getRawAxis(2);
 	}
 
 	public double getTurnAxis() {
-		return primaryJoystick.getRawAxis(0);
+//		return primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
+		return primaryJoystick.getRawAxis(0) + primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
 	}
 
 	public double getDSElbowAxis() {

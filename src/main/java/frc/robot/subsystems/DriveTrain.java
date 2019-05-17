@@ -542,7 +542,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 				curvatureDrive(forwardSpeed, turnSpeed, false);
 
 			} else {
-				curvatureDrive(forwardSpeed * Math.abs(forwardSpeed), turnSpeed, true);
+				curvatureDrive(forwardSpeed * Math.abs(forwardSpeed) * Math.abs(forwardSpeed), turnSpeed, true);
 			}
 
 		}
