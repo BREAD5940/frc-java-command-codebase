@@ -2,14 +2,14 @@ package frc.robot.commands.subsystems.superstructure;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class SuperstructureGoToState extends Command {
+public class SuperstructureGoToState extends SendableCommandBase {
 	SuperStructureState mRequState;
 	double kWristSetpoint, kElbowSetpoint;
 	private static final double kDefaultTimeout = 4;
@@ -52,7 +52,7 @@ public class SuperstructureGoToState extends Command {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		//System.out.println("==============================================================");
 		//System.out.println("Requested move loc: ");
 		//System.out.println(String.format("Elevator (%s) elbow (%s) wrist (%s)", elevatorSetpoint.getInch(), elbowSetpoint.getDegree(), wristSetpoint.getDegree()));
@@ -64,7 +64,7 @@ public class SuperstructureGoToState extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		SuperStructure.getInstance().move(mRequState);
 		hasSetState = true;
 		// System.out.println("target state: " + mRequState.toCSV());
@@ -72,7 +72,7 @@ public class SuperstructureGoToState extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		if (!hasSetState)
 			execute();
 		return (checkElbow() && checkWrist() && checkElevator()) || isTimedOut();
@@ -113,7 +113,7 @@ public class SuperstructureGoToState extends Command {
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		//System.out.println("==============================================================");
 	}
 

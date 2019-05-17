@@ -2,11 +2,11 @@ package frc.robot.commands.subsystems.superstructure;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.states.ElevatorState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class ElevatorMove extends Command {
+public class ElevatorMove extends SendableCommandBase {
 
 	private final ElevatorState mGoal;
 
@@ -32,7 +32,7 @@ public class ElevatorMove extends Command {
 	protected void initialize() {}
 
 	@Override
-	protected void execute() {
+	public void execute() {
 
 		//		System.out.println("moving to " + mGoal);
 
@@ -42,7 +42,7 @@ public class ElevatorMove extends Command {
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		var toReturn = Math.abs(SuperStructure.getElevator().getHeight().getInch() - mGoal.height.getInch()) <= 1;
 		//		System.out.println("ELEVATOR DONE? " + toReturn);
 		return toReturn;

@@ -7,12 +7,12 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.Intake;
 
-public class IntakeTelop extends Command {
+public class IntakeTelop extends SendableCommandBase {
 	public IntakeTelop() {
 		// Use requires() here to declare subsystem dependencies
 		requires(Intake.getInstance());
@@ -24,7 +24,7 @@ public class IntakeTelop extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		if (Math.abs(Robot.m_oi.getCargoSpeed()) > 0.2) {
 			Intake.getInstance().setSpeed(-1 * Robot.m_oi.getCargoSpeed(), Robot.m_oi.getCargoSpeed());
 		} else {
@@ -36,13 +36,13 @@ public class IntakeTelop extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return false;
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
+	public void end(boolean interrupted) {}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run

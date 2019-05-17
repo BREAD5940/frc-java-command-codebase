@@ -1,6 +1,6 @@
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 
 /**
  * an interface for an auto mode chooser

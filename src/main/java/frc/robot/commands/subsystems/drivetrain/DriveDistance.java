@@ -3,7 +3,7 @@ package frc.robot.commands.subsystems.drivetrain;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
@@ -13,7 +13,7 @@ import frc.robot.lib.TerriblePID;
  * auto_DriveDistance is a basic auto action. It should drive in a straight-ish line, as it uses 
  * nested PID loops to correct for errors caused by differing coefficients of friction. 
  */
-public class DriveDistance extends Command {
+public class DriveDistance extends SendableCommandBase {
 	double targetDistance;
 	double targetSpeed = RobotConfig.auto.default_speed;
 	boolean isDone = false;
@@ -75,7 +75,7 @@ public class DriveDistance extends Command {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		forwardPID.setSetpoint(targetDistance);
 		setTimeout(timeout); // set the timeout
 		System.out.println("Auto action drive init!");
@@ -107,7 +107,7 @@ public class DriveDistance extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		if (((Math.abs(Robot.drivetrain.getRight().getFeet() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence)
 				&& (Math.abs(Robot.drivetrain.getLeft().getFeet() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence)
 				&& (Math.abs(Robot.drivetrain.getLeft().getFeet()) < RobotConfig.auto.tolerences.velocity_tolerence)
@@ -121,7 +121,7 @@ public class DriveDistance extends Command {
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		Robot.drivetrain.stop();
 	}
 

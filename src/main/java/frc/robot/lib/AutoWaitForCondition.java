@@ -2,9 +2,9 @@ package frc.robot.lib;
 
 import java.util.concurrent.Callable;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 
-public class AutoWaitForCondition extends Command {
+public class AutoWaitForCondition extends SendableCommandBase {
 
 	Callable<Boolean> mCaller; // the command group that called me
 	boolean ready = false;
@@ -17,7 +17,7 @@ public class AutoWaitForCondition extends Command {
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		boolean isDone;
 		try {
 			isDone = mCaller.call().booleanValue();
@@ -28,7 +28,7 @@ public class AutoWaitForCondition extends Command {
 	}
 
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		System.out.println("===== auto wait for condition command is complete! =====");
 	}
 

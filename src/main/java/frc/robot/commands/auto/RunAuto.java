@@ -69,7 +69,7 @@
 // 	}
 
 // 	@Override
-// 	protected void initialize() {
+// 	public void initialize() {
 // 		if (!isDrive) {
 // 			mMotion = new AutoMotion(mHeight, mGt, false);
 // 			running = mMotion.getPrepCommand();
@@ -83,7 +83,7 @@
 
 // 	// Called repeatedly when this Command is scheduled to run
 // 	@Override
-// 	protected void execute() {
+// 	public void execute() {
 // 		// Don't need to do anything here
 // 		System.out.println("Done? " + running.done());
 // 		if (!isDrive && running.done() && !begun) {
@@ -99,7 +99,7 @@
 
 // 	// Make this return true when this Command no longer needs to run execute()
 // 	@Override
-// 	protected boolean isFinished() {
+// 	public boolean isFinished() {
 // 		// if (!isDrive) {
 // 		// 	return mMotion.getBigCommandGroup().done();
 // 		// } else {

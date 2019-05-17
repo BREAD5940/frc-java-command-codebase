@@ -61,19 +61,19 @@ public class YeetInACircleWhileMoving extends PIDCommand {
 	protected void initialize() {}
 
 	@Override
-	protected void execute() {
+	public void execute() {
 		Logger.log("Setpoint: " + getSetpoint() + " current: " + returnPIDInput() + " error: " + super.getPIDController().getError());
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return (Math.abs(getPIDController().getError()) < angleTolerence
 				|| (direction == 1 /* is clockwise */ && getPosition() > getSetpoint())
 				|| (direction == -1 /* is clockwise */ && getPosition() < getSetpoint()));
 	}
 
 	@Override
-	protected void end() {}
+	public void end(boolean interrupted) {}
 
 	@Override
 	protected void interrupted() {}

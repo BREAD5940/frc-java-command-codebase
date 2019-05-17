@@ -8,7 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import org.team5940.pantry.experimental.command.SendableSubsystemBase;
 
 /**
  * Add your docs here.

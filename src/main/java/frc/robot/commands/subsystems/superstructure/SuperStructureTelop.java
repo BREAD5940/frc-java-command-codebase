@@ -2,7 +2,7 @@
 
 // import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-// import edu.wpi.first.wpilibj.command.Command;
+// import org.team5940.pantry.experimental.command.SendableCommandBase;
 // import frc.robot.OI;
 // import frc.robot.Robot;
 // import frc.robot.lib.obj.RoundRotation2d;
@@ -12,7 +12,7 @@
 // import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 // import frc.robot.subsystems.superstructure.SuperStructure;
 
-// public class SuperStructureTelop extends Command {
+// public class SuperStructureTelop extends SendableCommandBase {
 // 	private OI mOI = Robot.m_oi;
 
 // 	SuperStructureState mCachedState;
@@ -32,7 +32,7 @@
 
 // 	// Called just before this Command runs the first time
 // 	@Override
-// 	protected void initialize() {
+// 	public void initialize() {
 // 		SuperStructure.elevator.setGear(Elevator.kDefaultGear);
 // 		// System.out.println("kp: ================ " + SuperStructure.elevator.getMaster().getKP());
 // 		mCachedState = SuperStructure.getInstance().updateState();
@@ -44,7 +44,7 @@
 
 // 	// Called repeatedly when this Command is scheduled to run
 // 	@Override
-// 	protected void execute() {
+// 	public void execute() {
 
 // 		SuperStructureState mCurrentState = SuperStructure.getInstance().updateState();
 // 		var mNewState = new SuperStructureState();
@@ -86,7 +86,7 @@
 
 // 	// Make this return true when this Command no longer needs to run execute()
 // 	@Override
-// 	protected boolean isFinished() {
+// 	public boolean isFinished() {
 // 		return false;
 // 	}
 

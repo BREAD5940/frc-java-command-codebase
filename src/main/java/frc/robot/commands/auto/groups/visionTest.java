@@ -17,7 +17,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 
-public class visionTest extends CommandGroup {
+public class visionTest extends SendableCommandBaseGroup {
 	/**
 	 * Nyoooooooooooooooooooooooooooooooooooooooooooom
 	 * <P>

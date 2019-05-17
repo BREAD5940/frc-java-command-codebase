@@ -9,7 +9,7 @@ import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
-public class GrabHatch extends CommandGroup {
+public class GrabHatch extends SendableCommandBaseGroup {
 
 	/**
 	 * Pickup a hatch from the loading station using some jank open loop code.

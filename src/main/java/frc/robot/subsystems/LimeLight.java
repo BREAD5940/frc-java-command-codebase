@@ -14,7 +14,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import org.team5940.pantry.experimental.command.SendableSubsystemBase;
 import frc.robot.RobotConfig;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.VisionTarget;
@@ -314,7 +314,7 @@ public class LimeLight extends Subsystem {
 		}
 
 		@Override
-		protected void initialize() {
+		public void initialize() {
 			if (mode == LEDMode.kON)
 				LimeLight.getInstance().turnOnLED();
 			if (mode == LEDMode.kOFF)
@@ -332,7 +332,7 @@ public class LimeLight extends Subsystem {
 		}
 
 		@Override
-		protected void initialize() {
+		public void initialize() {
 			LimeLight.getInstance().setPipeline(mode);
 		}
 

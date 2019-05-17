@@ -7,7 +7,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.SuperStructureConstants;
 import frc.robot.lib.Logger;
 import frc.robot.lib.motion.Util;
@@ -27,7 +27,7 @@ import frc.robot.subsystems.superstructure.SuperStructure;
  * 
  * @author Jocelyn McHugo
  */
-public class testableSSMotion /*extends Command*/ {
+public class testableSSMotion /*extends SendableCommandBase*/ {
 	/* RELEVANT COMMANDS:
 	  - ElevatorMove
 	  - ArmMove
@@ -340,7 +340,7 @@ public class testableSSMotion /*extends Command*/ {
 	}
 
 	// @Override
-	protected void initialize() {
+	public void initialize() {
 		// queue.start();
 		// var current = SuperStructure.getInstance().updateState();
 		// var current = new SuperStructureState(new ElevatorState(LengthKt.getInch(3.5)), iPosition.CARGO_GRAB);
@@ -349,7 +349,7 @@ public class testableSSMotion /*extends Command*/ {
 	}
 
 	// @Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		// return queue.isCompleted();
 		return true;
 	}

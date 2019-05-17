@@ -20,7 +20,7 @@ import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.motion.Util;
@@ -29,7 +29,7 @@ import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 import frc.robot.subsystems.LimeLight;
 
-public class SplineToVisionTarget extends CommandGroup {
+public class SplineToVisionTarget extends SendableCommandBaseGroup {
 	double targetDistance, exitArea;
 
 	// final Pose2d initialPose;
@@ -62,7 +62,7 @@ public class SplineToVisionTarget extends CommandGroup {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		final Length kOffset = LengthKt.getInch(100); // so that the spline ends up in FalconDashboard instead of off the map. HOly shit the possibilty for bugs here is big. Let's not.
 
 		double now = Timer.getFPGATimestamp();
@@ -98,19 +98,19 @@ public class SplineToVisionTarget extends CommandGroup {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		// if(mCommandStarted && mFollowerCommand.isCompleted()) requires(DriveTrain.getInstance());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return (mCommandStarted && mFollowerCommand.isCompleted()) || (LimeLight.getInstance().getTargetArea() > exitArea);
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		DriveTrain.getInstance().stop();
 	}
 

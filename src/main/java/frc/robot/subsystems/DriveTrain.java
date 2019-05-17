@@ -17,6 +17,7 @@ import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.subsystems.drive.DifferentialTrackerDriveBase;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
+import org.team5940.pantry.experimental.command.SendableSubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
@@ -27,9 +28,9 @@ import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import org.team5940.pantry.experimental.command.SendableSubsystemBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -54,7 +55,7 @@ import kotlin.ranges.RangesKt;
  * 
  * @author Matthew Morley
  */
-public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBase, LoggableSubsystem {
+public class DriveTrain extends SendableSubsystemBase implements DifferentialTrackerDriveBase, LoggableSubsystem {
 
 	private static DriveTrain instance;
 
@@ -500,7 +501,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	private ChassisState mCachedChassisState;
 	public boolean isFirstRun = true;
 
-	public class CurvatureDrive extends Command {
+	public class CurvatureDrive extends SendableCommandBase {
 
 		static final boolean squared = true;
 
@@ -509,7 +510,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		}
 
 		@Override
-		protected void initialize() {
+		public void initialize() {
 			DriveTrain.getInstance().setNeutralMode(NeutralMode.Brake);
 			DriveTrain.getInstance().getLeft().getMaster().configClosedloopRamp(0.16);
 			DriveTrain.getInstance().getRight().getMaster().configClosedloopRamp(0.16);
@@ -518,7 +519,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		}
 
 		@Override
-		protected void execute() {
+		public void execute() {
 
 			var isQuickTurn = Robot.m_oi.getPrimary().getRawButton(3);
 
@@ -548,7 +549,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		}
 
 		@Override
-		protected boolean isFinished() {
+		public boolean isFinished() {
 			return false;
 		}
 

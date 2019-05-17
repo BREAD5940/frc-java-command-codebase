@@ -1,6 +1,7 @@
 package frc.robot.commands.auto.actions;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.experimental.command.WaitCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
@@ -16,7 +17,7 @@ import frc.robot.lib.TerriblePID;
  *
  * @author Matthew Morley
  */
-public class DriveStraight extends Command {
+public class DriveStraight extends WaitCommand {
 	double distance;
 	double actionMaxSpeed;
 	double timeout = 15;
@@ -49,10 +50,11 @@ public class DriveStraight extends Command {
 	 * @param timeout timeout in seconds
 	 */
 	public DriveStraight(double distance, double speed, double timeout) {
+		super(timeout)
 		this.distance = distance;
 		this.actionMaxSpeed = speed;
 		this.target_gyro_angle = Robot.drivetrain.getGyro(); // TODO make sure that the angle is set correctly.
-		requires(Robot.drivetrain);
+		addRequirements(Robot.drivetrain);
 	}
 
 	/**
@@ -84,7 +86,7 @@ public class DriveStraight extends Command {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		start_left_distance = Robot.drivetrain.getLeft().getFeet();
 		start_right_distance = Robot.drivetrain.getRight().getFeet();
 		current_angle = Robot.drivetrain.getGyro();
@@ -98,7 +100,7 @@ public class DriveStraight extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		forward_speed = forwardPID.update(Robot.drivetrain.getLeft().getFeet());
 		turn_speed = turnPID.update(Robot.drivetrain.getGyro());
 		SmartDashboard.putNumber("TurnPID output", turnPID.update(Robot.drivetrain.getGyro()));
@@ -123,7 +125,7 @@ public class DriveStraight extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		// if ( ((Math.abs(Robot.drivetrain.getRight().getFeet() - this.distance) < RobotConfig.auto.tolerences.position_tolerence)
 		//   // && (Math.abs(Robot.drivetrain.getLeft().getFeet() - this.distance) < RobotConfig.drive_auto_position_tolerence)
 		//   && (Math.abs(Robot.drivetrain.getLeftVelocity()) < RobotConfig.auto.tolerences.velocity_tolerence)
@@ -137,10 +139,10 @@ public class DriveStraight extends Command {
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
+	public void end(boolean interrupted) {}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
+	// @Override
+	// protected void interrupted() {}
 }

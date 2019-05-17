@@ -11,12 +11,12 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 
-public class PIDDriveDistance extends Command {
+public class PIDDriveDistance extends SendableCommandBase {
 	double targetEnd;
 	double rawDelta;
 	double maxSpeed;
@@ -46,14 +46,14 @@ public class PIDDriveDistance extends Command {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		this.targetEnd = rawDelta + DriveTrain.getInstance().getLeft().getFeet();
 		// super.setSetpoint(targetEnd);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		SmartDashboard.putData(this);
 		final double kp = 6;
 
@@ -71,13 +71,13 @@ public class PIDDriveDistance extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return isWithinDelta;
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
+	public void end(boolean interrupted) {}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run

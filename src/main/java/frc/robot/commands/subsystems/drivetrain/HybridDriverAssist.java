@@ -10,7 +10,7 @@ package frc.robot.commands.subsystems.drivetrain;
 import java.util.TreeMap;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.lib.InterpolatableLut;
 import frc.robot.lib.InterpolatableLutEntry;
@@ -19,7 +19,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class HybridDriverAssist extends Command {
+public class HybridDriverAssist extends SendableCommandBase {
 
 	double exitArea;
 	boolean hasTarget, hadTarget;
@@ -62,7 +62,7 @@ public class HybridDriverAssist extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
 		double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
 		// double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
@@ -144,14 +144,14 @@ public class HybridDriverAssist extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		// var ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
 		return /*(Math.abs(exitArea - ta) < 0.3) || (hadTarget && !hasTarget)*/ false;
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		DriveTrain.getInstance().stop();
 	}
 

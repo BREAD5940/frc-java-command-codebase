@@ -30,14 +30,14 @@ public class RunIntake extends TimedCommand {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		Intake.getInstance().setCargoSpeed(cargo);
 		Intake.getInstance().setHatchSpeed(hatch);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		Intake.getInstance().setCargoSpeed(cargo);
 		Intake.getInstance().setHatchSpeed(hatch);
 
@@ -45,7 +45,7 @@ public class RunIntake extends TimedCommand {
 
 	// Called once after timeout
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		Intake.getInstance().setCargoSpeed(0);
 		Intake.getInstance().setHatchSpeed(0);
 	}

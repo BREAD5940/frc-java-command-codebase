@@ -29,7 +29,7 @@ public class SetGearCommand extends InstantCommand {
 
 	// Called once when the command executes
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		Robot.drivetrain.setGear(gear);
 	}
 

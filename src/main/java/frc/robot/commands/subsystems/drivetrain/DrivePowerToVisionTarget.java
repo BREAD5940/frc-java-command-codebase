@@ -44,7 +44,7 @@ public class DrivePowerToVisionTarget extends TimedCommand {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
 		double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
 		// double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
@@ -134,7 +134,7 @@ public class DrivePowerToVisionTarget extends TimedCommand {
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		DriveTrain.getInstance().stop();
 	}
 

@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import edu.wpi.first.wpilibj.command.PrintCommand;
@@ -22,7 +22,7 @@ public class PassThrough extends ConditionalCommand {
 	private static final double kProximalMaxVel = 150d / 360d * 2 * Math.PI;
 	private static final double kWristMaxVel = 150d / 360d * 2 * Math.PI;
 
-	public static class SyncedMove extends Command {
+	public static class SyncedMove extends SendableCommandBase {
 
 		private final double goal;
 		private final double goalWrist;
@@ -152,7 +152,7 @@ public class PassThrough extends ConditionalCommand {
 		return isFrontToBack.get();
 	}
 
-	public static class FrontToBack extends CommandGroup {
+	public static class FrontToBack extends SendableCommandBaseGroup {
 
 		public FrontToBack(SuperStructure structure) {
 
@@ -169,7 +169,7 @@ public class PassThrough extends ConditionalCommand {
 		}
 	}
 
-	public static class BackToFront extends CommandGroup {
+	public static class BackToFront extends SendableCommandBaseGroup {
 
 		public BackToFront(SuperStructure structure) {
 

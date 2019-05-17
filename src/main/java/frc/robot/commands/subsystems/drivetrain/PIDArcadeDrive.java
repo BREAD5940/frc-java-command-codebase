@@ -12,7 +12,7 @@ import java.util.TreeMap;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.lib.InterpolatableLut;
 import frc.robot.lib.InterpolatableLutEntry;
@@ -20,7 +20,7 @@ import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 
-public class PIDArcadeDrive extends Command {
+public class PIDArcadeDrive extends SendableCommandBase {
 
 	private ChassisState mCachedChassisState;
 	public boolean isFirstRun = true;
@@ -50,7 +50,7 @@ public class PIDArcadeDrive extends Command {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		DriveTrain.getInstance().setNeutralMode(NeutralMode.Coast);
 		DriveTrain.getInstance().getLeft().getMaster().configClosedloopRamp(0.16);
 		DriveTrain.getInstance().getRight().getMaster().configClosedloopRamp(0.16);
@@ -60,7 +60,7 @@ public class PIDArcadeDrive extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 
 		var linearPercent = Robot.m_oi.getForwardAxis();
 		var rotationPercent = Robot.m_oi.getTurnAxis();
@@ -174,13 +174,13 @@ public class PIDArcadeDrive extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return false;
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		DriveTrain.getInstance().stop();
 	}
 

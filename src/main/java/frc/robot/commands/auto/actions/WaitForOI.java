@@ -1,9 +1,9 @@
 package frc.robot.commands.auto.actions;
 
 import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 
-public class WaitForOI extends Command {
+public class WaitForOI extends SendableCommandBase {
 	Command toRun;
 	Button toPoll;
 
@@ -16,24 +16,24 @@ public class WaitForOI extends Command {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		this.clearRequirements();
 		toRun.start();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {}
+	public void execute() {}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return toPoll.get();
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		System.out.println("======== button pressed! ========");
 		toRun.cancel();
 	}

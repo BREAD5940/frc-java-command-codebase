@@ -10,14 +10,14 @@ package frc.robot.commands.subsystems.drivetrain;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.lib.TerriblePID;
 import frc.robot.lib.obj.DriveSignal;
 import frc.robot.subsystems.DifferentialUltrasonicSensor;
 import frc.robot.subsystems.DifferentialUltrasonicSensor.RangeMode;
 
-public class DriveUltrasonic extends Command {
+public class DriveUltrasonic extends SendableCommandBase {
 
 	double targetAngle = 0;
 
@@ -71,13 +71,13 @@ public class DriveUltrasonic extends Command {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		DifferentialUltrasonicSensor.getInstance().setMode(RangeMode.FEET);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		data = DifferentialUltrasonicSensor.getInstance().getRangesAsDouble();
 		distance = Math.min(data[0], data[1]);
 		angle = DifferentialUltrasonicSensor.getInstance().getAngleOffset();
@@ -112,7 +112,7 @@ public class DriveUltrasonic extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		if (distance != 0 || gotReading) { // if we have a reading
 			return Math.abs(distance) < tolerence || isTimedOut();
 		} else {
@@ -122,7 +122,7 @@ public class DriveUltrasonic extends Command {
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
+	public void end(boolean interrupted) {}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run

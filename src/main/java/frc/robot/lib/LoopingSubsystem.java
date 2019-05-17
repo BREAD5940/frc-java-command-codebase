@@ -1,7 +1,7 @@
 package frc.robot.lib;
 
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import org.team5940.pantry.experimental.command.SendableSubsystemBase;
 
 /**
  * A looping sybsystem is a subsystem that has components that need to run periodically,

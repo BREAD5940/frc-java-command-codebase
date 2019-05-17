@@ -9,35 +9,42 @@ package frc.robot.commands.auto.actions;
 
 import org.ghrobotics.lib.mathematics.units.Time;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
+import org.team5940.pantry.experimental.command.WaitCommand;
 
-public class DelayCommand extends Command {
+public class DelayCommand extends WaitCommand {
 	final double time;
 
 	public DelayCommand(Time time) {
+		super(time.getSecond());
 		this.time = time.getSecond();
 	}
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
-		setTimeout(time);
+	public void initialize() {
+		// setTimeout(time);
+		super.initialize();
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {}
+	public void execute() {
+		super.execute();
+	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
-		return isTimedOut();
+	public boolean isFinished() {
+		// return isTimedOut();
+		return super.isFinished();
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		System.out.println("Wait command done!");
+		super.end(interrupted);
 	}
 
 	// Called when another command which requires one or more of the same

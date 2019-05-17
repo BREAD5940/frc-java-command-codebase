@@ -1,13 +1,13 @@
 package frc.robot.commands.auto.actions;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 
 /**
  * SetIntakeMode sets the wrist to either cargo or hatch 'mode', then either 
  * switches to pointing down to drop/grab cargo or... doesn't
  */
-public class SetIntakeMode extends Command {
+public class SetIntakeMode extends SendableCommandBase {
 	HeldPiece intakeType;
 	boolean isDown = false;
 	boolean rev = false;
@@ -28,7 +28,7 @@ public class SetIntakeMode extends Command {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		if (rev) {
 			//TODO set the intake to be flipped through the elevator
 		}
@@ -56,13 +56,13 @@ public class SetIntakeMode extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return true; //basically instant command
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
+	public void end(boolean interrupted) {}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run

@@ -34,7 +34,7 @@
 
 // 	// Called once when the command executes
 // 	@Override
-// 	protected void initialize() {
+// 	public void initialize() {
 // 		var cachedState = SuperStructure.getInstance().getCurrentState();
 // 		SuperStructure.getElevator().jogHeightTrim(deltaLength, isUpwards);
 // 		SuperStructure.getInstance().move(cachedState);

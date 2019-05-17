@@ -34,7 +34,7 @@ public class DrivePowerAndIntake extends TimedCommand {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		// System.out.println("hi!");
 		DriveTrain.getInstance().arcadeDrive(power, 0, false);
 		Intake.getInstance().setHatchSpeed(intake);
@@ -42,7 +42,7 @@ public class DrivePowerAndIntake extends TimedCommand {
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		DriveTrain.getInstance().stop();
 		Intake.getInstance().setHatchSpeed(0);
 	}

@@ -2,10 +2,10 @@ package frc.robot.lib;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class ParallelRaceGroup extends CommandGroup {
+public class ParallelRaceGroup extends SendableCommandBaseGroup {
 
 	Supplier<Boolean> m_condition;
 
@@ -20,7 +20,7 @@ public class ParallelRaceGroup extends CommandGroup {
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return super.isFinished() || m_condition.get().booleanValue();
 	}
 

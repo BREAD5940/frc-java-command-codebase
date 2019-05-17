@@ -8,7 +8,7 @@ import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
-public class PlaceHatch extends CommandGroup {
+public class PlaceHatch extends SendableCommandBaseGroup {
 
 	/**
 	 * Pickup a hatch from the loading station using some jank open loop code.

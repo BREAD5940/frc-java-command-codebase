@@ -3,7 +3,7 @@ package frc.robot.commands.subsystems.superstructure;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.states.ElevatorState;
@@ -11,7 +11,7 @@ import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class JustElevatorTeleop extends Command {
+public class JustElevatorTeleop extends SendableCommandBase {
 	private OI mOI = Robot.m_oi;
 
 	SuperStructureState mCachedState;
@@ -33,7 +33,7 @@ public class JustElevatorTeleop extends Command {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		SuperStructure.elevator.setGear(Elevator.kDefaultGear);
 		// System.out.println("kp: ================ " + SuperStructure.elevator.getMaster().getKP());
 		mCachedState = SuperStructure.getInstance().updateState();
@@ -50,7 +50,7 @@ public class JustElevatorTeleop extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 
 		SuperStructureState mCurrentState = SuperStructure.getInstance().updateState();
 		var mNewState = mCachedState;
@@ -75,13 +75,13 @@ public class JustElevatorTeleop extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return false;
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
+	public void end(boolean interrupted) {}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run

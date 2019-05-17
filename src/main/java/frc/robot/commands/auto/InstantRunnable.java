@@ -17,7 +17,7 @@ public class InstantRunnable extends InstantCommand {
 
 	// Called once when the command executes
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		try {
 			toRun.run();
 		} catch (Exception e) {

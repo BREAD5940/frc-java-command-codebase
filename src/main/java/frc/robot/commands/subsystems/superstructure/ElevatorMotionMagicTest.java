@@ -6,14 +6,14 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.Elevator;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class ElevatorMotionMagicTest extends Command {
+public class ElevatorMotionMagicTest extends SendableCommandBase {
 
 	SuperStructureState mCurrent;
 	private final double kDefaultTimeout = 5;
@@ -26,7 +26,7 @@ public class ElevatorMotionMagicTest extends Command {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 
 		Elevator elev = SuperStructure.getElevator();
 		elev.getMaster().configMotionAcceleration((int) (600 * 9 * 1.75));
@@ -48,7 +48,7 @@ public class ElevatorMotionMagicTest extends Command {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		mCurrent = SuperStructure.getInstance().updateState();
 		// System.out.printf("Forward soft lim: %s rev soft lim: %s", SuperStructure.getElevator().getMaster().softlimit )
 		Length mTarget = LengthKt.getFeet(1);
@@ -64,14 +64,14 @@ public class ElevatorMotionMagicTest extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return false;
 		// return SuperStructure.getElevator().isWithinTolerence(mCurrent) || isTimedOut();
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		SuperStructure.elevator.setGear(Elevator.kDefaultGear);
 	}
 

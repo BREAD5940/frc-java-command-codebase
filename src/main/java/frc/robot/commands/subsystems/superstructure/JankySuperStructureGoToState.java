@@ -5,7 +5,7 @@
 // import org.ghrobotics.lib.mathematics.units.Length;
 // import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-// import edu.wpi.first.wpilibj.command.Command;
+// import org.team5940.pantry.experimental.command.SendableCommandBase;
 // import edu.wpi.first.wpilibj.command.CommandGroup;
 // import edu.wpi.first.wpilibj.command.ConditionalCommand;
 // import edu.wpi.first.wpilibj.command.InstantCommand;
@@ -16,7 +16,7 @@
 // import frc.robot.states.SuperStructureState;
 // import frc.robot.subsystems.superstructure.SuperStructure;
 
-// public class SuperstructureGoToState extends CommandGroup {
+// public class SuperstructureGoToState extends SendableCommandBaseGroup {
 // 	private static final double kDefaultTimeout = 4;
 
 // 	public SuperstructureGoToState(SuperStructureState requState) {
@@ -107,7 +107,7 @@
 
 // 	}
 
-// 	class StateMovementCommand extends Command {
+// 	class StateMovementCommand extends SendableCommandBase {
 // 		SuperStructureState mRequState;
 // 		double kWristSetpoint, kElbowSetpoint;
 // 		private boolean hasSetState = false;
@@ -156,7 +156,7 @@
 
 // 		// Called just before this Command runs the first time
 // 		@Override
-// 		protected void initialize() {
+// 		public void initialize() {
 // 			System.out.println("==============================================================");
 // 			System.out.println("Requested move loc: ");
 // 			System.out.println(String.format("Elevator (%s) elbow (%s) wrist (%s)", elevatorSetpoint.getInch(), elbowSetpoint.getDegree(), wristSetpoint.getDegree()));
@@ -168,7 +168,7 @@
 
 // 		// Called repeatedly when this Command is scheduled to run
 // 		@Override
-// 		protected void execute() {
+// 		public void execute() {
 // 			SuperStructure.getInstance().move(mRequState);
 // 			hasSetState = true;
 // 			// System.out.println("target state: " + mRequState.toCSV());
@@ -176,7 +176,7 @@
 
 // 		// Make this return true when this Command no longer needs to run execute()
 // 		@Override
-// 		protected boolean isFinished() {
+// 		public boolean isFinished() {
 // 			if (!hasSetState)
 // 				execute();
 // 			return (checkElbow() && checkWrist() && checkElevator()) || isTimedOut();
@@ -284,7 +284,7 @@
 // 		}
 
 // 		@Override
-// 		protected void initialize() {
+// 		public void initialize() {
 // 			SuperStructure.getInstance().getWrist().requestAngle(ControlMode.MotionMagic, mSetpoint);
 // 		}
 // 	}
@@ -296,7 +296,7 @@
 // 		}
 
 // 		@Override
-// 		protected void initialize() {
+// 		public void initialize() {
 // 			SuperStructure.getInstance().getElbow().requestAngle(ControlMode.MotionMagic, mSetpoint);
 // 		}
 // 	}
@@ -308,7 +308,7 @@
 // 		}
 
 // 		@Override
-// 		protected void initialize() {
+// 		public void initialize() {
 // 			SuperStructure.getElevator().setPositionSetpoint(mSetpoint);
 // 		}
 // 	}
@@ -320,14 +320,14 @@
 // 		}
 
 // 		@Override
-// 		protected void initialize() {
+// 		public void initialize() {
 // 			SuperStructure.getInstance().getElbow().requestAngle(ControlMode.MotionMagic, mSetpoint);
 // 			SuperStructure.getInstance().getWrist().requestAngle(ControlMode.MotionMagic, mSetpoint);
 
 // 		}
 // 	}
 
-// 	abstract class WaitSubCommand extends Command {
+// 	abstract class WaitSubCommand extends SendableCommandBase {
 // 		SuperStructureState mEndState, currentState;
 // 		public Length mHeightThreshold = LengthKt.getInch(1.0);
 // 		public RoundRotation2d mElbowThreshold = RoundRotation2d.getDegree(5.0);
@@ -342,7 +342,7 @@
 // 		}
 
 // 		@Override
-// 		protected boolean isFinished() {
+// 		public boolean isFinished() {
 // 			feedState(SuperStructure.getInstance().getCurrentState());
 // 			return isFinished(currentState);
 // 		}
@@ -353,7 +353,7 @@
 // 		protected void initialize() {}
 
 // 		@Override
-// 		protected void execute() {}
+// 		public void execute() {}
 
 // 		@Override
 // 		protected void end() {}

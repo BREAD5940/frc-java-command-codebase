@@ -13,13 +13,13 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.experimental.command.SendableCommandBase;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 
-public class DriveDistanceTheSecond extends Command {
+public class DriveDistanceTheSecond extends SendableCommandBase {
 
 	private static Velocity<Length> kCruiseVel = VelocityKt.getVelocity(LengthKt.getFeet(4));
 	private static Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(8));
@@ -52,7 +52,7 @@ public class DriveDistanceTheSecond extends Command {
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 
 		var currentPose = new Pose2d();
 		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX().getInch() + "," + currentPose.getTranslation().getY().getInch());
@@ -95,17 +95,17 @@ public class DriveDistanceTheSecond extends Command {
 
 	// 	// Called just before this Command runs the first time
 	// 	@Override
-	// 	protected void initialize() {
+	// 	public void initialize() {
 
 	// 	}
 
 	// 	// Called repeatedly when this Command is scheduled to run
 	// 	@Override
-	// 	protected void execute() {}
+	// 	public void execute() {}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return mCommand.isCompleted() && commandStarted;
 	}
 

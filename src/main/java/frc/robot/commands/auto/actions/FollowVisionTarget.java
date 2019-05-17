@@ -1,6 +1,6 @@
 // package frc.robot.commands.auto.actions;
 
-// import edu.wpi.first.wpilibj.command.Command;
+// import org.team5940.pantry.experimental.command.SendableCommandBase;
 // import frc.robot.Robot;
 // import frc.robot.RobotConfig;
 // import frc.robot.lib.Logger;
@@ -13,7 +13,7 @@
 //  * 
 //  * @author Matthew Morley
 //  */
-// public class FollowVisionTarget extends Command {
+// public class FollowVisionTarget extends SendableCommandBase {
 // 	double timeout,
 // 			targetSpeed,
 // 			targetPercentOfFrame,
@@ -70,7 +70,7 @@
 
 // 	// Called just before this Command runs the first time
 // 	@Override
-// 	protected void initialize() {
+// 	public void initialize() {
 // 		setTimeout(timeout);
 // 		turnPID.setSetpoint(0);
 // 		forwardPID.setMaxOutput(targetSpeed);
@@ -91,7 +91,7 @@
 
 // 	// Called repeatedly when this Command is scheduled to run
 // 	@Override
-// 	protected void execute() {
+// 	public void execute() {
 // 		if (Robot.limelight.getData()[0] != 0) {
 // 			noCurrentTarget = false;
 // 			hadTarget = true;
@@ -138,7 +138,7 @@
 
 // 	// Make this return true when this Command no longer needs to run execute()
 // 	@Override
-// 	protected boolean isFinished() {
+// 	public boolean isFinished() {
 // 		double datainYaw = Robot.limelight.getData()[1];
 // 		double datainSize = Robot.limelight.getData()[3];
 
