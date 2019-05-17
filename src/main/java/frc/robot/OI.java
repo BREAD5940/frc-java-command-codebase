@@ -2,6 +2,8 @@ package frc.robot;
 
 import java.util.Arrays;
 
+import edu.wpi.first.wpilibj.command.PrintCommand;
+import frc.robot.commands.subsystems.superstructure.PassThrough;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -123,7 +125,10 @@ public class OI {
 
 		//		primaryXButton.whenPressed(new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
 
-		dsTogglePassThru.whenPressed(new ConditionalPassThrough());
+//		dsTogglePassThru.whenPressed(new PrintCommand("nelasdfljkasdlk;"));
+		primaryDpadUp.whenPressed(new PassThrough.BackToFront(SuperStructure.getInstance()));
+		primaryDpadDown.whenPressed(new PassThrough.FrontToBack(SuperStructure.getInstance()));
+
 
 	}
 

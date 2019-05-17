@@ -54,6 +54,8 @@ public class PassThrough extends ConditionalCommand {
 			lastCommandedProximal = structure.getCurrentState().getElbowAngle();
 			lastTime = Timer.getFPGATimestamp();
 			moveIteratorFinished = false;
+
+			System.out.println("initial proximal: " + lastCommandedProximal);
 		}
 
 		@Override
@@ -71,8 +73,8 @@ public class PassThrough extends ConditionalCommand {
 
 			var nextProximal = this.lastCommandedProximal.plus(RoundRotation2d.getRadian(proximalVelocity * dt));
 
-			if (nextProximal.getDegree() < -180) {
-				nextProximal = RoundRotation2d.getDegree(-180);
+			if (nextProximal.getDegree() < -205) {
+				nextProximal = RoundRotation2d.getDegree(-205);
 				moveIteratorFinished = true;
 				System.out.println("SETTING MOVE ITERATOR TO TRUE 1");
 			} else if (nextProximal.getDegree() > 5) {

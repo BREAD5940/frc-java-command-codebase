@@ -9,8 +9,10 @@ public class ConditionalPassThrough extends ConditionalCommand {
 
 		super(
 				new PassThrough.FrontToBack(SuperStructure.getInstance()),
-				new PassThrough.BackToFront(SuperStructure.getInstance()));
+				new PassThrough.BackToFront(SuperStructure.getInstance())
+		);
 
+		setInterruptible(false);
 	}
 
 	@Override
