@@ -23,6 +23,7 @@ import frc.robot.subsystems.Intake.HatchMechState;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 public class PrettyAutoMotion {
 
@@ -79,7 +80,7 @@ public class PrettyAutoMotion {
 		return createdGroup;
 	}
 
-	private Command genPresetMotion(SuperStructureState state) {
+	private SendableCommandBase genPresetMotion(SuperStructureState state) {
 		SuperstructureMotion.getInstance().plan(state,
 				SuperStructure.getInstance().lastState); //FIXME lastState is what we want, right?
 		return SuperstructureMotion.getInstance().getQueue();

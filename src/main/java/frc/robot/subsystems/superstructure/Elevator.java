@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
-import frc.robot.SuperStructureConstants;
+import frc.robot.planners.SuperStructureConstants;
 import frc.robot.lib.HalfBakedSubsystem;
 import frc.robot.lib.Logger;
 import frc.robot.lib.PIDSettings;

@@ -1,5 +1,6 @@
-package frc.robot;
+package frc.robot.planners;
 
+import frc.robot.RobotConfig;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Mass;

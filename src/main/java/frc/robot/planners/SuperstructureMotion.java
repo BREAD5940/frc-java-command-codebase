@@ -10,7 +10,6 @@ import org.ghrobotics.lib.mathematics.units.SILengthConstants;
 import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
-import frc.robot.SuperStructureConstants;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.lib.Logger;

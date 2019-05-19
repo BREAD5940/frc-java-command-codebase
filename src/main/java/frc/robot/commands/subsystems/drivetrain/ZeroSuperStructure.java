@@ -2,7 +2,7 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
-import frc.robot.SuperStructureConstants;
+import frc.robot.planners.SuperStructureConstants;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
