@@ -39,6 +39,12 @@ public class HalfBakedRotatingSRX extends WPI_TalonSRX {
 		return pos_;
 	}
 
+	public RoundRotation2d getError() {
+		int ticks = super.getClosedLoopError();
+		RoundRotation2d pos_ = RoundRotation2d.getDegree(ticks / mModel);
+		return pos_;
+	}
+
 	public RoundRotation2d getRotation2dError() {
 		int ticks = super.getClosedLoopError();
 		RoundRotation2d toReturn = fromTicks(ticks);
@@ -82,4 +88,7 @@ public class HalfBakedRotatingSRX extends WPI_TalonSRX {
 			System.out.println("Cannot set to any other mode with RoundRotation2d. ur bad");
 		}
 	}
+
+	//	public RoundRotation2d getVelocity() {
+	//	}
 }

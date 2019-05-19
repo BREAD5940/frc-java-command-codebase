@@ -18,6 +18,7 @@ import com.team254.lib.physics.DCMotorTransmission;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotConfig.auto.fieldPositions;
@@ -486,5 +487,47 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	@Override
 	public void onDisable() {
 		// resetElbowTrim();
+	}
+
+	@Override
+	public void initSendable(SendableBuilder builder) {
+
+		builder.addDoubleProperty(".elevatorHeightInch", () -> SuperStructure.getElevator().getHeight().getInch(),
+				null);
+		builder.addDoubleProperty(".proximalAngleDeg", () -> getElbow().getMaster().getSensorPosition().getDegree(),
+				null);
+		builder.addDoubleProperty(".wristAngleDeg", () -> getWrist().getMaster().getSensorPosition().getDegree(), null);
+
+		builder.addDoubleProperty(".elevatorErrorInch", () -> SuperStructure.getElevator().getMaster().getModel()
+				.fromNativeUnitPosition(SuperStructure.getElevator().getMaster().getTalonSRX().getClosedLoopError()),
+				null);
+		builder.addDoubleProperty(".proximalErrorDeg", () -> getElbow().getMaster().getError().getDegree(), null);
+		builder.addDoubleProperty(".wristErrorDeg", () -> getWrist().getMaster().getError().getDegree(), null);
+
+		builder.addDoubleProperty(".elevatorVelocityDegPerSec",
+				() -> SuperStructure.getElevator().getMaster().getModel().fromNativeUnitVelocity(
+						SuperStructure.getElevator().getMaster().getTalonSRX().getSelectedSensorVelocity()),
+				null);
+		builder.addDoubleProperty(".proximalVelocityDegPerSec",
+				() -> getElbow().getMaster().getSensorVelocity().getValue(), null);
+		builder.addDoubleProperty(".wristVelocityDegPerSec",
+				() -> getWrist().getMaster().getSensorVelocity().getValue(), null);
+
+		builder.addDoubleProperty(".elevatorCurrentPerMotorAmp",
+				() -> SuperStructure.getElevator().getMaster().getTalonSRX().getOutputCurrent(), null);
+		builder.addDoubleProperty(".elevatorMotorVoltage",
+				() -> SuperStructure.getElevator().getMaster().getTalonSRX().getMotorOutputVoltage(), null);
+
+		builder.addDoubleProperty(".proximalCurrentPerMotorAmp",
+				() -> getElbow().getMaster().getOutputCurrent(), null);
+		builder.addDoubleProperty(".proximalMotorVoltage",
+				() -> getElbow().getMaster().getMotorOutputVoltage(), null);
+
+		builder.addDoubleProperty(".wristCurrentPerMotorAmp",
+				() -> getWrist().getMaster().getOutputCurrent(), null);
+		builder.addDoubleProperty(".wristMotorVoltage",
+				() -> getWrist().getMaster().getMotorOutputVoltage(), null);
+
+		super.initSendable(builder);
 	}
 }
