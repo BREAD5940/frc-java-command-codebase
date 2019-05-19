@@ -59,7 +59,8 @@ public class DifferentialDriveTest {
 				new Twist2d(
 						forwardKinematics.getLinear(),
 						0.0,
-						Rotation2dKt.getRadian(forwardKinematics.getAngular() * 1)).getAsPose());
+						Rotation2dKt.getRadian(forwardKinematics.getAngular() * 1))
+								.getAsPose());
 
 	}
 

@@ -32,7 +32,8 @@ public class DriveSignal {
 		this(left, right, 0, 0, false);
 	}
 
-	public DriveSignal(Velocity<Length> left, Velocity<Length> right, double leftPercent, double rightPercent,
+	public DriveSignal(Velocity<Length> left, Velocity<Length> right, double leftPercent,
+			double rightPercent,
 			boolean brakeMode) {
 		mLeftMotor = left;
 		mRightMotor = right;
@@ -41,11 +42,14 @@ public class DriveSignal {
 		mBrakeMode = brakeMode;
 	}
 
-	public static DriveSignal NEUTRAL = new DriveSignal(VelocityKt.getVelocity(LengthKt.getFeet(0)),
+	public static DriveSignal NEUTRAL = new DriveSignal(
+			VelocityKt.getVelocity(LengthKt.getFeet(0)),
 			VelocityKt.getVelocity(LengthKt.getFeet(0f)));
-	public static DriveSignal BRAKE = new DriveSignal(VelocityKt.getVelocity(LengthKt.getFeet(0f)),
+	public static DriveSignal BRAKE = new DriveSignal(
+			VelocityKt.getVelocity(LengthKt.getFeet(0f)),
 			VelocityKt.getVelocity(LengthKt.getFeet(0f)), true);
-	private static final Velocity<Length> zeroSpeed = VelocityKt.getVelocity(LengthKt.getFeet(0f));
+	private static final Velocity<Length> zeroSpeed = VelocityKt
+			.getVelocity(LengthKt.getFeet(0f));
 
 	public Velocity<Length> getLeft() {
 		return mLeftMotor;

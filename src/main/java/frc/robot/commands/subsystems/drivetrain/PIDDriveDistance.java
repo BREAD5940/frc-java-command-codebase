@@ -34,7 +34,7 @@ public class PIDDriveDistance extends SendableCommandBase {
 		this.maxSpeed = maxSpeedFt.doubleValue();
 	}
 
-//	public PIDDriveDistance(Length d)
+	//	public PIDDriveDistance(Length d)
 
 	// Called just before this Command runs the first time
 	@Override
@@ -50,12 +50,15 @@ public class PIDDriveDistance extends SendableCommandBase {
 		SmartDashboard.putData(this);
 		final double kp = 6;
 
-		var delta = targetEnd - DriveTrain.getInstance().getLeft().getDistance().getFeet();
+		var delta = targetEnd
+				- DriveTrain.getInstance().getLeft().getDistance().getFeet();
 
 		var power = Util.limit(delta * kp, maxSpeed);
-		power = Util.limit(power, lastCommand - (1 / ticksToMax), lastCommand + (1 / ticksToMax));
+		power = Util.limit(power, lastCommand - (1 / ticksToMax),
+				lastCommand + (1 / ticksToMax));
 
-		DriveTrain.getInstance().setClosedLoop(VelocityKt.getVelocity(LengthKt.getFeet(power)),
+		DriveTrain.getInstance().setClosedLoop(
+				VelocityKt.getVelocity(LengthKt.getFeet(power)),
 				VelocityKt.getVelocity(LengthKt.getFeet(power)));
 
 		lastCommand = power;

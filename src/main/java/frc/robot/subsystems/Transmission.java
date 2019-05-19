@@ -34,7 +34,8 @@ public class Transmission {
 
 	NativeUnitLengthModel lengthModel = driveTrain.LEFT_NATIVE_UNIT_LENGTH_MODEL;
 
-	public Transmission(int masterPort, int slavePort, EncoderMode mode, TransmissionSide side, boolean isInverted) {
+	public Transmission(int masterPort, int slavePort, EncoderMode mode,
+			TransmissionSide side, boolean isInverted) {
 		if (side == TransmissionSide.LEFT) {
 			lengthModel = driveTrain.LEFT_NATIVE_UNIT_LENGTH_MODEL;
 		} else {
@@ -47,16 +48,20 @@ public class Transmission {
 		this.side = side;
 
 		if (mode == EncoderMode.CTRE_MagEncoder_Relative) {
-			mMaster.getTalonSRX().configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
-			mMaster.getTalonSRX().configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 0);
+			mMaster.getTalonSRX().configSelectedFeedbackSensor(
+					FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+			mMaster.getTalonSRX().configSensorTerm(SensorTerm.Diff0,
+					FeedbackDevice.QuadEncoder, 0);
 		}
-		mSlave.getTalonSRX().set(ControlMode.Follower, mMaster.getTalonSRX().getDeviceID());
+		mSlave.getTalonSRX().set(ControlMode.Follower,
+				mMaster.getTalonSRX().getDeviceID());
 		// Quadrature Encoder of current
 		// Talon
 		mMaster.getTalonSRX().configPeakOutputForward(+1.0, 30);
 		mMaster.getTalonSRX().configPeakOutputReverse(-1.0, 30);
 
-		SmartDashboard.putBoolean("Is the " + side.toString() + " transmission inverted", isInverted);
+		SmartDashboard.putBoolean("Is the " + side.toString() + " transmission inverted",
+				isInverted);
 
 		// if(isInverted == true) {
 		// Logger.log("Making this inverted");
@@ -89,7 +94,8 @@ public class Transmission {
 	}
 
 	public Velocity<Length> getVelocity() {
-		return VelocityKt.getVelocity(LengthKt.getMeter(mMaster.getEncoder().getVelocity()));
+		return VelocityKt
+				.getVelocity(LengthKt.getMeter(mMaster.getEncoder().getVelocity()));
 	}
 
 	public double getFeetPerSecond() {
@@ -103,7 +109,8 @@ public class Transmission {
 	public Length getClosedLoopError() {
 		if (getMaster().getTalonSRX().getControlMode() != ControlMode.PercentOutput) {
 			return lengthModel
-					.fromNativeUnitPosition(NativeUnitKt.getNativeUnits(mMaster.getTalonSRX().getClosedLoopError()));
+					.fromNativeUnitPosition(NativeUnitKt
+							.getNativeUnits(mMaster.getTalonSRX().getClosedLoopError()));
 		} else {
 			return LengthKt.getFeet(0);
 		}
@@ -123,13 +130,16 @@ public class Transmission {
 		getMaster().setNeutral();
 	}
 
-	public void setClosedLoopGains(double kp, double ki, double kd, double kf, double iZone, double maxIntegral) {
+	public void setClosedLoopGains(double kp, double ki, double kd, double kf,
+			double iZone, double maxIntegral) {
 		mMaster.getTalonSRX().config_kP(0, kp, 0);
 		mMaster.getTalonSRX().config_kI(0, ki, 0);
 		mMaster.getTalonSRX().config_kD(0, kd, 0);
 		mMaster.getTalonSRX().config_kF(0, kf, 0);
 		mMaster.getTalonSRX().config_IntegralZone(0,
-				(int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getMeter(iZone)).getValue()), 30);
+				(int) Math.round(lengthModel
+						.toNativeUnitPosition(LengthKt.getMeter(iZone)).getValue()),
+				30);
 		mMaster.getTalonSRX().configMaxIntegralAccumulator(0, maxIntegral, 0);
 	}
 

@@ -45,18 +45,21 @@ public class ZeroSuperStructure extends SendableCommandBase {
 			old.elevator = new ElevatorState();
 		} else if (p.equals("elbow")) {
 			Logger.log("zeroing elbow");
-			SuperStructure.getInstance().getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(0));
+			SuperStructure.getInstance().getElbow().getMaster()
+					.setSensorPosition(RoundRotation2d.getDegree(0));
 			old.getElbow().setAngle(new RoundRotation2d());
 		} else if (p.equals("wrist")) {
 			Logger.log("zeroing wrist");
-			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(0));
+			SuperStructure.getInstance().getWrist().getMaster()
+					.setSensorPosition(RoundRotation2d.getDegree(0));
 			old.getWrist().setAngle(new RoundRotation2d());
 		} else if (p.equals("maxElevator")) {
 			SuperStructure.getElevator().getMaster().getEncoder().resetPosition(
-					SuperStructure.getElevator().getMaster().getModel().toNativeUnitPosition(
-							(SuperStructureConstants.Elevator.top)
+					SuperStructure.getElevator().getMaster().getModel()
+							.toNativeUnitPosition(
+									(SuperStructureConstants.Elevator.top)
 
-					).getValue());
+							).getValue());
 			//			);
 			old.getElevator().setHeight(SuperStructureConstants.Elevator.top);
 		} else if (p.equals("maxWrist")) {

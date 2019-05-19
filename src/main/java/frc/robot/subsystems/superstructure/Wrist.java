@@ -22,9 +22,11 @@ import frc.robot.states.SuperStructureState;
  */
 public class Wrist extends RotatingJoint {
 
-	public Wrist(PIDSettings settings, int motorPort, FeedbackDevice sensor, double reduction, RoundRotation2d min,
+	public Wrist(PIDSettings settings, int motorPort, FeedbackDevice sensor,
+			double reduction, RoundRotation2d min,
 			RoundRotation2d max, boolean invert, Length armLength, Mass mass) {
-		super(settings, Arrays.asList(motorPort), sensor, reduction, min, max, invert, armLength, mass);
+		super(settings, Arrays.asList(motorPort), sensor, reduction, min, max, invert,
+				armLength, mass);
 	}
 
 	public RoundRotation2d getAbsoluteAngle() {
@@ -48,7 +50,8 @@ public class Wrist extends RotatingJoint {
 		super.getMaster().set(kDefaultControlMode, normed);
 	}
 
-	public void requestAngle(ControlMode mode, RoundRotation2d reqAngle, SuperStructureState mCurrent) {
+	public void requestAngle(ControlMode mode, RoundRotation2d reqAngle,
+			SuperStructureState mCurrent) {
 		// System.out.println("requ angle: " + reqAngle.getDegree());
 
 		// RoundRotation2d normed = reqAngle.minus(mCurrent.getElbowAngle());
@@ -56,15 +59,18 @@ public class Wrist extends RotatingJoint {
 		super.getMaster().set(mode, normed);
 	}
 
-	public void requestAngle(RoundRotation2d reqAngle, double arbitraryFeedForward, SuperStructureState mCurrent) {
+	public void requestAngle(RoundRotation2d reqAngle, double arbitraryFeedForward,
+			SuperStructureState mCurrent) {
 		// System.out.println("requ angle: " + reqAngle.getDegree());
 
 		// RoundRotation2d normed = reqAngle.minus(mCurrent.getElbowAngle());
 		var normed = Util.limit(reqAngle, super.kMinAngle, super.kMaxAngle);
-		super.getMaster().set(kDefaultControlMode, normed, DemandType.ArbitraryFeedForward, arbitraryFeedForward);
+		super.getMaster().set(kDefaultControlMode, normed,
+				DemandType.ArbitraryFeedForward, arbitraryFeedForward);
 	}
 
-	private PIDSettings kDefaultMotionMagicPidSettings = new PIDSettings(.1, 0, 0, 0.1, 1000, 1000);
+	private PIDSettings kDefaultMotionMagicPidSettings = new PIDSettings(.1, 0, 0, 0.1,
+			1000, 1000);
 
 	@Override
 	public void setMotionMagicGains() {

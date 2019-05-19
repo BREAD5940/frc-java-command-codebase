@@ -36,7 +36,8 @@ public class PassThrough extends ConditionalCommand {
 		private boolean moveIteratorFinished = false;
 		private SuperStructureState lastObservedState = new SuperStructureState();
 
-		public SyncedMove(double goalAngle, double proximalMaxVel, double wristMaxVel, boolean isFrontToBack,
+		public SyncedMove(double goalAngle, double proximalMaxVel, double wristMaxVel,
+				boolean isFrontToBack,
 				SuperStructure structure) {
 			this.goal = goalAngle + (isFrontToBack ? -30 : 0);
 			this.goalWrist = goalAngle;
@@ -44,11 +45,13 @@ public class PassThrough extends ConditionalCommand {
 			this.goalRotation2d = RoundRotation2d.getRadian(goal);
 			this.structure = structure;
 			this.isFrontToBack = isFrontToBack;
-			this.proximalVelocity = Math.abs(Math.min(Math.abs(proximalMaxVel), Math.abs(wristMaxVel))) * 0.8
+			this.proximalVelocity = Math
+					.abs(Math.min(Math.abs(proximalMaxVel), Math.abs(wristMaxVel))) * 0.8
 					* (isFrontToBack ? -1 : 1);
 		}
 
-		public SyncedMove(double goalAngle, boolean isFrontToBack, SuperStructure structure) {
+		public SyncedMove(double goalAngle, boolean isFrontToBack,
+				SuperStructure structure) {
 			this(goalAngle, kProximalMaxVel, kWristMaxVel, isFrontToBack, structure);
 		}
 
@@ -74,7 +77,8 @@ public class PassThrough extends ConditionalCommand {
 			var currentState = structure.getCurrentState();
 			this.lastObservedState = currentState;
 
-			var nextProximal = this.lastCommandedProximal.plus(RoundRotation2d.getRadian(proximalVelocity * dt));
+			var nextProximal = this.lastCommandedProximal
+					.plus(RoundRotation2d.getRadian(proximalVelocity * dt));
 
 			if (nextProximal.getDegree() < -205) {
 				nextProximal = RoundRotation2d.getDegree(-205);
@@ -106,7 +110,8 @@ public class PassThrough extends ConditionalCommand {
 				System.out.println("SETTING MOVE ITERATOR TO TRUE 4");
 			}
 
-			var nextWrist = getDumbWrist(currentState.getElbowAngle(), currentState.getElbowAngle());
+			var nextWrist = getDumbWrist(currentState.getElbowAngle(),
+					currentState.getElbowAngle());
 
 			System.out.println("next elbow " + nextProximal);
 			System.out.println("next wrist " + nextWrist);
@@ -120,10 +125,13 @@ public class PassThrough extends ConditionalCommand {
 
 		@Override
 		public boolean isFinished() {
-			var toReturn = (structure.getWrist().isWithinTolerance(RoundRotation2d.getDegree(5),
-					getDumbWrist(RoundRotation2d.getRadian(goal), lastObservedState.getElbowAngle()))
+			var toReturn = (structure.getWrist().isWithinTolerance(
+					RoundRotation2d.getDegree(5),
+					getDumbWrist(RoundRotation2d.getRadian(goal),
+							lastObservedState.getElbowAngle()))
 					&& structure.getElbow()
-							.isWithinTolerance(RoundRotation2d.getDegree(5), RoundRotation2d.getRadian(goal))
+							.isWithinTolerance(RoundRotation2d.getDegree(5),
+									RoundRotation2d.getRadian(goal))
 					&& moveIteratorFinished) || moveIteratorFinished;
 
 			System.out.println("pass thru done? " + toReturn);
@@ -192,7 +200,8 @@ public class PassThrough extends ConditionalCommand {
 			addCommands(new SyncedMove(Math.toRadians(0), false, structure));
 			addCommands(new ElevatorMove(LengthKt.getInch(15))); //todo check height
 			addCommands(
-					new JankyGoToState(RobotConfig.auto.fieldPositions.hatchLowGoal, SuperStructure.iPosition.HATCH));
+					new JankyGoToState(RobotConfig.auto.fieldPositions.hatchLowGoal,
+							SuperStructure.iPosition.HATCH));
 
 		}
 	}

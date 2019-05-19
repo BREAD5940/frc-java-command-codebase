@@ -12,8 +12,10 @@ public class VisionTarget implements Loggable {
 
 	private final Length width, height;
 	private final Length goalHeight;
-	public static final List<Length> kDualVisionTapeShape = Arrays.asList(LengthKt.getInch(15), LengthKt.getInch(5)); // TODO check me
-	public static final List<Length> kSingleVisionTapeShape = Arrays.asList(LengthKt.getInch(3), LengthKt.getInch(5)); // TODO check me
+	public static final List<Length> kDualVisionTapeShape = Arrays
+			.asList(LengthKt.getInch(15), LengthKt.getInch(5)); // TODO check me
+	public static final List<Length> kSingleVisionTapeShape = Arrays
+			.asList(LengthKt.getInch(3), LengthKt.getInch(5)); // TODO check me
 
 	/**
 	 * Make a VisionTarget to store basic information about a vision target such as width, height and goal elevation.

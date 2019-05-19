@@ -46,7 +46,8 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 
 	private static SuperStructure instance_;
 	private static double currentDTVelocity; //in ft/sec
-	public static Length currentSetHeight, lastSH = LengthKt.getInch(0), lastLastSH = LengthKt.getInch(0);
+	public static Length currentSetHeight, lastSH = LengthKt.getInch(0),
+			lastLastSH = LengthKt.getInch(0);
 	public SuperStructureState mReqState = new SuperStructureState();
 	public SuperStructureState lastState = new SuperStructureState();
 	private CommandGroup mCurrentCommandGroup;
@@ -92,8 +93,9 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	}
 
 	public enum ElevatorPresets {
-		LOW_ROCKET_PORT(27), MIDDLE_ROCKET_PORT(55), HIGH_ROCKET_PORT(84), LOW_ROCKET_HATCH(19), MIDDLE_ROCKET_HATCH(
-				47), HIGH_ROCKET_HATCH(75),
+		LOW_ROCKET_PORT(27), MIDDLE_ROCKET_PORT(55), HIGH_ROCKET_PORT(
+				84), LOW_ROCKET_HATCH(19), MIDDLE_ROCKET_HATCH(
+						47), HIGH_ROCKET_HATCH(75),
 
 		CARGO_SHIP_HATCH(20),
 		// TODO this should be even with the low rocket hatch. According to the game manual, it isn't
@@ -113,25 +115,31 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 
 	private SuperStructure() {
 		super("SuperStructure");
-		kElbowTransmission = new DCMotorTransmission(Constants.kElbowSpeedPerVolt, Constants.kElbowTorquePerVolt,
+		kElbowTransmission = new DCMotorTransmission(Constants.kElbowSpeedPerVolt,
+				Constants.kElbowTorquePerVolt,
 				Constants.kElbowStaticFrictionVoltage);
 
-		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt,
+		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt,
+				Constants.kWristTorquePerVolt,
 				Constants.kWristStaticFrictionVoltage);
 
 		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33,
-				FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
+				FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax,
+				true /* FIXME check inverting! */,
 				Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
-		mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32),
+		mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR),
+				Arrays.asList(31, 32),
 				FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
-				true /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+				true /* FIXME should this be inverted? */, Constants.kElbowLength,
+				Constants.kElbowMass);
 
 		mElbow.getMaster().setSensorPhase(false);
 		getWrist().getMaster().setSensorPhase(true);
 
 		elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
-				new InvertSettings(true, InvertType.OpposeMaster, InvertType.FollowMaster, InvertType.FollowMaster));
+				new InvertSettings(true, InvertType.OpposeMaster, InvertType.FollowMaster,
+						InvertType.FollowMaster));
 
 		mElbow.setLimitSwitches();
 
@@ -168,7 +176,8 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		var proximalAngle = state.getElbowAngle();
 		var proximalLen = 0.41;//meter
 		var proximalPose = Translation2dKt.toTranslation(proximalAngle.toRotation2d());
-		var structureOrientedPose = proximalPose.plus(new Translation2d(0, state.getElevatorHeight().getMeter()));
+		var structureOrientedPose = proximalPose
+				.plus(new Translation2d(0, state.getElevatorHeight().getMeter()));
 		return structureOrientedPose;
 	}
 
@@ -193,12 +202,14 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		public static final IntakeAngle CARGO_REVERSE = new IntakeAngle(
 				new RotatingArmState(RoundRotation2d.getDegree(148.35)),
 				new RotatingArmState(RoundRotation2d.getDegree(-96.46)));
-		public static final IntakeAngle HATCH = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(5)),
+		public static final IntakeAngle HATCH = new IntakeAngle(
+				new RotatingArmState(RoundRotation2d.getDegree(5)),
 				new RotatingArmState(RoundRotation2d.getDegree(4)));
 		public static final IntakeAngle HATCH_PITCHED_UP = new IntakeAngle(
 				new RotatingArmState(RoundRotation2d.getDegree(9)),
 				new RotatingArmState(RoundRotation2d.getDegree(11)));
-		public static final IntakeAngle STOWED = new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-85)),
+		public static final IntakeAngle STOWED = new IntakeAngle(
+				new RotatingArmState(RoundRotation2d.getDegree(-85)),
 				new RotatingArmState(RoundRotation2d.getDegree(-45)));
 		public static final IntakeAngle HATCH_REVERSE = new IntakeAngle(
 				new RotatingArmState(RoundRotation2d.getDegree(-190)),
@@ -325,7 +336,8 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	public Wrist getWrist() {
 		if (mWrist == null)
 			mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33,
-					FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
+					FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax,
+					true /* FIXME check inverting! */,
 					Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
 
 		mWrist.getMaster().setSensorPhase(true);
@@ -334,9 +346,12 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 
 	public RotatingJoint getElbow() {
 		if (mElbow == null)
-			mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32),
+			mElbow = new RotatingJoint(
+					new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR),
+					Arrays.asList(31, 32),
 					FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
-					true /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+					true /* FIXME should this be inverted? */, Constants.kElbowLength,
+					Constants.kElbowMass);
 		mElbow.getMaster().setSensorPhase(false);
 
 		return mElbow;
@@ -353,17 +368,20 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	public static Elevator getElevator() {
 		if (elevator == null)
 			elevator = new Elevator(21, 22, 23, 24, EncoderMode.CTRE_MagEncoder_Relative,
-					new InvertSettings(true, InvertType.FollowMaster, InvertType.OpposeMaster,
+					new InvertSettings(true, InvertType.FollowMaster,
+							InvertType.OpposeMaster,
 							InvertType.OpposeMaster));
 		return elevator;
 	}
 
-	public static RoundRotation2d getUnDumbWrist(RoundRotation2d dumbWrist, RoundRotation2d relevantProx) {
+	public static RoundRotation2d getUnDumbWrist(RoundRotation2d dumbWrist,
+			RoundRotation2d relevantProx) {
 		var compensatedAngle = dumbWrist.plus(relevantProx.div(2));
 		return compensatedAngle;
 	}
 
-	public static RoundRotation2d getDumbWrist(RoundRotation2d smartWrist, RoundRotation2d relevantProx) {
+	public static RoundRotation2d getDumbWrist(RoundRotation2d smartWrist,
+			RoundRotation2d relevantProx) {
 		var unCompensatedAngle = smartWrist.minus(relevantProx.div(2));
 		return unCompensatedAngle;
 	}
@@ -392,7 +410,8 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		// SuperStructure.getInstance().getElbow().getMaster().set(ControlMode.Position, mRequState.getElbow().angle);
 		// SuperStructureState stateSetpoint = plan(requState);
 
-		getWrist().requestAngle(ControlMode.MotionMagic, requState.getWrist().angle, getCurrentState());
+		getWrist().requestAngle(ControlMode.MotionMagic, requState.getWrist().angle,
+				getCurrentState());
 		getElbow().requestAngle(ControlMode.MotionMagic, requState.getElbow().angle);
 		// getElevator().getMaster().set(ControlMode.MotionMagic, requState.getElevator().height, DemandType.ArbitraryFeedForward, elevatorPercentVbusGravity);
 		getElevator().setPositionSetpoint(requState);
@@ -439,11 +458,13 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		if (state.getHeldPiece() == HeldPiece.CARGO)
 			totalMass.plus(kCargoMass);
 		/* The distance from the pivot of the wrist to the center of mass */
-		double x1 = (getWrist().kArmLength.getValue()) * Math.abs(state.jointAngles.getWrist().angle.getCos()); // absolute value so cosine is always positive
+		double x1 = (getWrist().kArmLength.getValue())
+				* Math.abs(state.jointAngles.getWrist().angle.getCos()); // absolute value so cosine is always positive
 		/* The torque due to gravity  */
 		double torqueGravity = (totalMass.getValue() * 9.8 * x1);
 		/* The torque on the wrist due to acceleration of the elevator (assuming a rigid elbow) */
-		double torqueAccel = totalMass.getValue() * state.elevator.acceleration.getValue() * x1;
+		double torqueAccel = totalMass.getValue() * state.elevator.acceleration.getValue()
+				* x1;
 
 		return torqueGravity + torqueAccel;
 	}
@@ -462,13 +483,16 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 			wristTotalMass.plus(kCargoMass);
 
 		/* The distance from the pivot to the center of mass of the elbow */
-		double x_2 = (getElbow().kArmLength.getMeter()) * Math.abs(state.jointAngles.getWrist().angle.getCos());// absolute value so cosine is always positive
+		double x_2 = (getElbow().kArmLength.getMeter())
+				* Math.abs(state.jointAngles.getWrist().angle.getCos());// absolute value so cosine is always positive
 		/* The torque due to gravity  */
 		double torqueGravity = (getElbow().kArmMass.getKilogram() * 9.8 * x_2); // m_2 * g * x_2 
 		/* The torque doe to acceleration on the wrist */
-		double torqueAccel = getElbow().kArmMass.getKilogram() * state.elevator.acceleration.getValue() * x_2;
+		double torqueAccel = getElbow().kArmMass.getKilogram()
+				* state.elevator.acceleration.getValue() * x_2;
 		// m_2 * g * x_2
-		double torqueWrstComponent = (wristTotalMass.getKilogram() * getElbow().kArmLength.getMeter()
+		double torqueWrstComponent = (wristTotalMass.getKilogram()
+				* getElbow().kArmLength.getMeter()
 				* 2 /* double the distance from the joint to COM*/ * 9.8);
 
 		return torqueGravity + torqueAccel + torqueWrstComponent + wristTorque;
@@ -492,21 +516,30 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	@Override
 	public void initSendable(SendableBuilder builder) {
 
-		builder.addDoubleProperty(".elevatorHeightInch", () -> SuperStructure.getElevator().getHeight().getInch(),
+		builder.addDoubleProperty(".elevatorHeightInch",
+				() -> SuperStructure.getElevator().getHeight().getInch(),
 				null);
-		builder.addDoubleProperty(".proximalAngleDeg", () -> getElbow().getMaster().getSensorPosition().getDegree(),
+		builder.addDoubleProperty(".proximalAngleDeg",
+				() -> getElbow().getMaster().getSensorPosition().getDegree(),
 				null);
-		builder.addDoubleProperty(".wristAngleDeg", () -> getWrist().getMaster().getSensorPosition().getDegree(), null);
+		builder.addDoubleProperty(".wristAngleDeg",
+				() -> getWrist().getMaster().getSensorPosition().getDegree(), null);
 
-		builder.addDoubleProperty(".elevatorErrorInch", () -> SuperStructure.getElevator().getMaster().getModel()
-				.fromNativeUnitPosition(SuperStructure.getElevator().getMaster().getTalonSRX().getClosedLoopError()),
+		builder.addDoubleProperty(".elevatorErrorInch",
+				() -> SuperStructure.getElevator().getMaster().getModel()
+						.fromNativeUnitPosition(SuperStructure.getElevator().getMaster()
+								.getTalonSRX().getClosedLoopError()),
 				null);
-		builder.addDoubleProperty(".proximalErrorDeg", () -> getElbow().getMaster().getError().getDegree(), null);
-		builder.addDoubleProperty(".wristErrorDeg", () -> getWrist().getMaster().getError().getDegree(), null);
+		builder.addDoubleProperty(".proximalErrorDeg",
+				() -> getElbow().getMaster().getError().getDegree(), null);
+		builder.addDoubleProperty(".wristErrorDeg",
+				() -> getWrist().getMaster().getError().getDegree(), null);
 
 		builder.addDoubleProperty(".elevatorVelocityDegPerSec",
-				() -> SuperStructure.getElevator().getMaster().getModel().fromNativeUnitVelocity(
-						SuperStructure.getElevator().getMaster().getTalonSRX().getSelectedSensorVelocity()),
+				() -> SuperStructure.getElevator().getMaster().getModel()
+						.fromNativeUnitVelocity(
+								SuperStructure.getElevator().getMaster().getTalonSRX()
+										.getSelectedSensorVelocity()),
 				null);
 		builder.addDoubleProperty(".proximalVelocityDegPerSec",
 				() -> getElbow().getMaster().getSensorVelocity().getValue(), null);
@@ -514,9 +547,13 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 				() -> getWrist().getMaster().getSensorVelocity().getValue(), null);
 
 		builder.addDoubleProperty(".elevatorCurrentPerMotorAmp",
-				() -> SuperStructure.getElevator().getMaster().getTalonSRX().getOutputCurrent(), null);
+				() -> SuperStructure.getElevator().getMaster().getTalonSRX()
+						.getOutputCurrent(),
+				null);
 		builder.addDoubleProperty(".elevatorMotorVoltage",
-				() -> SuperStructure.getElevator().getMaster().getTalonSRX().getMotorOutputVoltage(), null);
+				() -> SuperStructure.getElevator().getMaster().getTalonSRX()
+						.getMotorOutputVoltage(),
+				null);
 
 		builder.addDoubleProperty(".proximalCurrentPerMotorAmp",
 				() -> getElbow().getMaster().getOutputCurrent(), null);

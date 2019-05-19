@@ -61,9 +61,12 @@ public class RotatingJoint extends HalfBakedSubsystem {
 	 * @param motorPort on the CAN Bus (for single talon arms)
 	 * @param sensor for the arm to use (ONLY MAG ENCODER TO USE)
 	 */
-	public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor, double reduction,
-			RoundRotation2d min, RoundRotation2d max, boolean invert, Length armLength, Mass mass) {
-		this(settings, Arrays.asList(motorPort), sensor, reduction, min, max, invert, armLength, mass); //FIXME what should the default masterInvert ACTUALLY be?
+	public RotatingJoint(PIDSettings settings, int motorPort, FeedbackDevice sensor,
+			double reduction,
+			RoundRotation2d min, RoundRotation2d max, boolean invert, Length armLength,
+			Mass mass) {
+		this(settings, Arrays.asList(motorPort), sensor, reduction, min, max, invert,
+				armLength, mass); //FIXME what should the default masterInvert ACTUALLY be?
 	}
 
 	/**
@@ -76,8 +79,10 @@ public class RotatingJoint extends HalfBakedSubsystem {
 	 * 
 	 * @author Matthew Morley
 	 */
-	public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor, double reduction,
-			RoundRotation2d min, RoundRotation2d max, boolean masterInvert, Length armLength, Mass armMass) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
+	public RotatingJoint(PIDSettings settings, List<Integer> ports, FeedbackDevice sensor,
+			double reduction,
+			RoundRotation2d min, RoundRotation2d max, boolean masterInvert,
+			Length armLength, Mass armMass) {    // super(name, settings.kp, settings.ki, settings.kd, settings.kf, 0.01f);
 
 		super("literally a rotating joint");
 
@@ -109,12 +114,15 @@ public class RotatingJoint extends HalfBakedSubsystem {
 			motors.get(1).setInverted(InvertType.OpposeMaster);
 		}
 
-		getMaster().configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, 0, 0);
+		getMaster().configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative,
+				0, 0);
 		getMaster().configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, 0);
 		getMaster().setSensorPosition(RoundRotation2d.getDegree(0));
 		setClosedLoopGains(0, settings);
-		getMaster().configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
-		getMaster().configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+		getMaster().configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+				LimitSwitchNormal.NormallyOpen);
+		getMaster().configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+				LimitSwitchNormal.NormallyOpen);
 		setMotionMagicGains();
 
 		for (HalfBakedRotatingSRX motor : getAllMotors()) {
@@ -124,14 +132,16 @@ public class RotatingJoint extends HalfBakedSubsystem {
 
 	}
 
-	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, double iZone,
+	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf,
+			double iZone,
 			double maxIntegral, double minOut, double maxOut) {
 		getMaster().selectProfileSlot(slot, 0);
 		getMaster().config_kP(0, kp, 30);
 		getMaster().config_kI(0, ki, 30);
 		getMaster().config_kD(0, kd, 30);
 		getMaster().config_kF(0, kf, 30);
-		getMaster().config_IntegralZone(0, (int) Math.round(getMaster().getTicks(Rotation2dKt.getDegree(iZone))), 0);
+		getMaster().config_IntegralZone(0,
+				(int) Math.round(getMaster().getTicks(Rotation2dKt.getDegree(iZone))), 0);
 		getMaster().configMaxIntegralAccumulator(0, maxIntegral, 0);
 		getMaster().configPeakOutputForward(maxOut);
 		getMaster().configPeakOutputReverse(minOut);
@@ -144,7 +154,8 @@ public class RotatingJoint extends HalfBakedSubsystem {
 			getMaster().selectProfileSlot(0, 0);
 	}
 
-	private PIDSettings kDefaultMotionMagicPidSettings = new PIDSettings(.1, 0, 0, 0.1, 1000, 1000);
+	private PIDSettings kDefaultMotionMagicPidSettings = new PIDSettings(.1, 0, 0, 0.1,
+			1000, 1000);
 
 	public void setMotionMagicGains() {
 		// Elevator elev = SuperStructure.getElevator();
@@ -162,7 +173,8 @@ public class RotatingJoint extends HalfBakedSubsystem {
 
 	public void setLimitSwitches() {
 		var maxTicks = getMaster().getTicks(kMaxAngle);
-		getMaster().configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector, LimitSwitchNormal.NormallyOpen);
+		getMaster().configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+				LimitSwitchNormal.NormallyOpen);
 		getMaster().configForwardSoftLimitThreshold(maxTicks);
 		getMaster().configForwardSoftLimitEnable(true);
 		getMaster().configClearPositionOnLimitF(false, 0);
@@ -184,7 +196,8 @@ public class RotatingJoint extends HalfBakedSubsystem {
 	}
 
 	public void setClosedLoopGains(int slot, PIDSettings config) {
-		setClosedLoopGains(slot, config.kp, config.ki, config.kd, config.kf, config.iZone, config.maxIAccum,
+		setClosedLoopGains(slot, config.kp, config.ki, config.kd, config.kf, config.iZone,
+				config.maxIAccum,
 				config.minOutput, config.maxOutput);
 	}
 
@@ -206,9 +219,11 @@ public class RotatingJoint extends HalfBakedSubsystem {
 	 * @param reqAngle to to to
 	 * @param feedForward extra throttle to apply
 	 */
-	public void requestAngleArbitraryFeedForward(RoundRotation2d reqAngle, double feedForward) {
+	public void requestAngleArbitraryFeedForward(RoundRotation2d reqAngle,
+			double feedForward) {
 		reqAngle = Util.limit(reqAngle, kMinAngle, kMaxAngle);
-		getMaster().set(ControlMode.Position, reqAngle, DemandType.ArbitraryFeedForward, feedForward);
+		getMaster().set(ControlMode.Position, reqAngle, DemandType.ArbitraryFeedForward,
+				feedForward);
 	}
 
 	public void setSetpoint(double setpoint_) {}
@@ -224,8 +239,10 @@ public class RotatingJoint extends HalfBakedSubsystem {
 	/**
 	 * Set the talon as a target angle and feedforward throttle percent
 	 */
-	public void setPositionArbitraryFeedForward(RoundRotation2d setpoint, double feedForwardPercent) {
-		getMaster().set(ControlMode.Position, setpoint.getDegree(), DemandType.ArbitraryFeedForward,
+	public void setPositionArbitraryFeedForward(RoundRotation2d setpoint,
+			double feedForwardPercent) {
+		getMaster().set(ControlMode.Position, setpoint.getDegree(),
+				DemandType.ArbitraryFeedForward,
 				feedForwardPercent);
 	}
 
@@ -321,8 +338,10 @@ public class RotatingJoint extends HalfBakedSubsystem {
 	//	@Override
 	//	protected void initDefaultCommand() {}
 
-	public boolean isWithinTolerance(RoundRotation2d tolerance, RoundRotation2d setpoint) {
-		return Math.abs(getRotation().minus(setpoint).getDegree()) < tolerance.getDegree();
+	public boolean isWithinTolerance(RoundRotation2d tolerance,
+			RoundRotation2d setpoint) {
+		return Math.abs(getRotation().minus(setpoint).getDegree()) < tolerance
+				.getDegree();
 	}
 
 	@Override

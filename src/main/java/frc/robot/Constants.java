@@ -14,7 +14,8 @@ import frc.robot.lib.motion.Util;
 
 public class Constants {
 	/* Graciously borrowed from 5190*/
-	public static final double kRobotMass = 50 /* Robot, kg */ + 5f /* Battery, kg */ + 2f /* Bumpers, kg */;
+	public static final double kRobotMass = 50 /* Robot, kg */ + 5f /* Battery, kg */
+			+ 2f /* Bumpers, kg */;
 	public static final double kRobotMomentOfInertia = 10.0; // kg m^2 // TODO Tune
 	public static final double kRobotAngularDrag = 12.0; // N*m / (rad/sec)
 
@@ -33,7 +34,8 @@ public class Constants {
 	private static final double kADriveRightLow = 0.031 * 1d; // Volts per radians per second per second TODO tune
 	private static final double kVInterceptRightLow = 1.02 * 1d; // Volts - tuned!
 
-	public static final DCMotorTransmission kLeftTransmissionModelLowGear = new DCMotorTransmission(1 / kVDriveLeftLow,
+	public static final DCMotorTransmission kLeftTransmissionModelLowGear = new DCMotorTransmission(
+			1 / kVDriveLeftLow,
 			kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveLeftLow),
 			kVInterceptLeftLow);
 
@@ -60,14 +62,18 @@ public class Constants {
 			kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveRightHigh),
 			kVInterceptRightHigh);
 
-	public static final DifferentialDrive kLowGearDifferentialDrive = new DifferentialDrive(kRobotMass,
+	public static final DifferentialDrive kLowGearDifferentialDrive = new DifferentialDrive(
+			kRobotMass,
 			kRobotMomentOfInertia,
-			kRobotAngularDrag, kWheelRadius, kTrackWidth / 2.0, kLeftTransmissionModelLowGear,
+			kRobotAngularDrag, kWheelRadius, kTrackWidth / 2.0,
+			kLeftTransmissionModelLowGear,
 			kRightTransmissionModelLowGear);
 
-	public static final DifferentialDrive kHighGearDifferentialDrive = new DifferentialDrive(kRobotMass,
+	public static final DifferentialDrive kHighGearDifferentialDrive = new DifferentialDrive(
+			kRobotMass,
 			kRobotMomentOfInertia,
-			kRobotAngularDrag, kWheelRadius, kTrackWidth / 2.0, kLeftTransmissionModelHighGear,
+			kRobotAngularDrag, kWheelRadius, kTrackWidth / 2.0,
+			kLeftTransmissionModelHighGear,
 			kRightTransmissionModelHighGear);
 
 	/* Ramsete constants */

@@ -5,7 +5,8 @@ public class Output {
 		this(0, 0, 0, 0, 0, 0);
 	}
 
-	public Output(double left_velocity, double right_velocity, double left_accel, double right_accel,
+	public Output(double left_velocity, double right_velocity, double left_accel,
+			double right_accel,
 			double left_feedforward_voltage, double right_feedforward_voltage) {
 		this.left_velocity = left_velocity;
 		this.right_velocity = right_velocity;

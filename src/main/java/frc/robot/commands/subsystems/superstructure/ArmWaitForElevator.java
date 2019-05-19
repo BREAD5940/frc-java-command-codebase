@@ -25,12 +25,14 @@ public class ArmWaitForElevator extends SequentialCommandGroup {
 	 * @param tolerence the tolerance about the elevator setpoint
 	 * @param isDescending if the elevator is going down or not
 	 */
-	public ArmWaitForElevator(IntakeAngle desired, Length finalEleHeight, Length tolerence) {
+	public ArmWaitForElevator(IntakeAngle desired, Length finalEleHeight,
+			Length tolerence) {
 		elevatorMoved = (() -> {
 			// return ((SuperStructure.getElevator().getHeight().getInch() < finalEleHeight.plus(tolerence).getInch() && isDescending)
 			// 		|| (SuperStructure.getElevator().getHeight().getInch() > finalEleHeight.minus(tolerence).getInch()
 			// 				&& !isDescending));
-			return (SuperStructure.getElevator().getHeight().minus(finalEleHeight).getAbsoluteValue()
+			return (SuperStructure.getElevator().getHeight().minus(finalEleHeight)
+					.getAbsoluteValue()
 					.getInch() < tolerence.getInch()); // check if the position error is acceptable
 		}); // this lamda Caller can be read as:
 		// (null) -> [or becomes, turns into] (basically if the elevator is within tolerance)
@@ -43,7 +45,8 @@ public class ArmWaitForElevator extends SequentialCommandGroup {
 	@Override
 	public boolean isFinished() {
 		return Math
-				.abs(desired.wristAngle.angle.getDegree() - SuperStructure.getInstance().getWrist().getDegrees()) <= 2
+				.abs(desired.wristAngle.angle.getDegree()
+						- SuperStructure.getInstance().getWrist().getDegrees()) <= 2
 				|| Math.abs(desired.elbowAngle.angle.getDegree()
 						- SuperStructure.getInstance().getElbow().getDegrees()) <= 2;
 	}

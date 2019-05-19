@@ -32,11 +32,14 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
  */
 public class OI {
 
-	private Joystick primaryJoystick = new Joystick(RobotConfig.controls.primary_joystick_port);
+	private Joystick primaryJoystick = new Joystick(
+			RobotConfig.controls.primary_joystick_port);
 	private Joystick driverStation = new Joystick(5); // TODO make a constant
 
-	private Button shift_up_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_up_button);
-	private Button shift_down_button = new JoystickButton(primaryJoystick, RobotConfig.controls.shift_down_button);
+	private Button shift_up_button = new JoystickButton(primaryJoystick,
+			RobotConfig.controls.shift_up_button);
+	private Button shift_down_button = new JoystickButton(primaryJoystick,
+			RobotConfig.controls.shift_down_button);
 
 	// TODO change these to a button console once created
 
@@ -45,15 +48,19 @@ public class OI {
 	Button primaryXButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.X_BUTTON);
 	Button primaryBButton = new JoystickButton(primaryJoystick, xboxmap.Buttons.B_BUTTON);
 
-	public Button primaryDpadUp = new DPadButton(primaryJoystick, DPadButton.Direction.UP);
+	public Button primaryDpadUp = new DPadButton(primaryJoystick,
+			DPadButton.Direction.UP);
 	Button primaryDpadDown = new DPadButton(primaryJoystick, DPadButton.Direction.DOWN);
 	Button primaryDpadLeft = new DPadButton(primaryJoystick, DPadButton.Direction.LEFT);
 	Button primaryDpadRight = new DPadButton(primaryJoystick, DPadButton.Direction.RIGHT);
 
-	Button primaryRightStart = new JoystickButton(primaryJoystick, xboxmap.Buttons.RIGHT_START_BUTTON);
-	Button primaryLeftStart = new JoystickButton(primaryJoystick, xboxmap.Buttons.LEFT_START_BUTTON);
+	Button primaryRightStart = new JoystickButton(primaryJoystick,
+			xboxmap.Buttons.RIGHT_START_BUTTON);
+	Button primaryLeftStart = new JoystickButton(primaryJoystick,
+			xboxmap.Buttons.LEFT_START_BUTTON);
 
-	Button primaryRightAnalogButton = new AnalogButton(primaryJoystick, xboxmap.Axis.RIGHT_TRIGGER, .8);
+	Button primaryRightAnalogButton = new AnalogButton(primaryJoystick,
+			xboxmap.Axis.RIGHT_TRIGGER, .8);
 
 	Button dsCargo1 = new JoystickButton(driverStation, 7);
 	Button dsCargo2 = new JoystickButton(driverStation, 6);
@@ -75,30 +82,40 @@ public class OI {
 
 		// cargo presets
 		dsCargoIn.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kOpen),
-						new JankyGoToState(LengthKt.getInch(13.25), SuperStructure.iPosition.CARGO_GRAB))),
+				SequentialCommandFactory.getSequentialCommands(
+						Arrays.asList(new SetHatchMech(HatchMechState.kOpen),
+								new JankyGoToState(LengthKt.getInch(13.25),
+										SuperStructure.iPosition.CARGO_GRAB))),
 				false);
 
 		dsCargo1.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
-						new JankyGoToState(fieldPositions.cargoLowGoal, SuperStructure.iPosition.CARGO_PLACE))),
+				SequentialCommandFactory.getSequentialCommands(
+						Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
+								new JankyGoToState(fieldPositions.cargoLowGoal,
+										SuperStructure.iPosition.CARGO_PLACE))),
 				false);
 
 		dsCargo2.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
-						new JankyGoToState(fieldPositions.cargoMiddleGoal, SuperStructure.iPosition.CARGO_PLACE))),
+				SequentialCommandFactory.getSequentialCommands(
+						Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
+								new JankyGoToState(fieldPositions.cargoMiddleGoal,
+										SuperStructure.iPosition.CARGO_PLACE))),
 				false);
 
 		dsCargo3.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
+				SequentialCommandFactory.getSequentialCommands(Arrays.asList(
+						new SetHatchMech(HatchMechState.kClamped),
 						new JankyGoToState(fieldPositions.cargoHighGoal,
 								SuperStructure.iPosition.CARGO_PLACE_PITCHED_UP))),
 				false);
 
 		dsCargoShip.whenPressed(SequentialCommandFactory
-				.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(
-						fieldPositions.cargoMiddleGoal.plus(LengthKt.getInch(2)),
-						SuperStructure.iPosition.CARGO_DOWN))),
+				.getSequentialCommands(
+						Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
+								new JankyGoToState(
+										fieldPositions.cargoMiddleGoal
+												.plus(LengthKt.getInch(2)),
+										SuperStructure.iPosition.CARGO_DOWN))),
 				false);
 
 		// hatch presets
@@ -107,15 +124,20 @@ public class OI {
 
 		dsHatch1.whenPressed(SequentialCommandFactory.getSequentialCommands(Arrays.asList(
 				new SetHatchMech(HatchMechState.kClamped),
-				new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH))), false);
+				new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH))),
+				false);
 
 		dsHatch2.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
-						new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH))),
+				SequentialCommandFactory.getSequentialCommands(
+						Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
+								new JankyGoToState(fieldPositions.hatchMiddleGoal,
+										iPosition.HATCH))),
 				false);
 		dsHatch3.whenPressed(
-				SequentialCommandFactory.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
-						new JankyGoToState(fieldPositions.hatchHighGoal, iPosition.HATCH_PITCHED_UP))),
+				SequentialCommandFactory.getSequentialCommands(
+						Arrays.asList(new SetHatchMech(HatchMechState.kClamped),
+								new JankyGoToState(fieldPositions.hatchHighGoal,
+										iPosition.HATCH_PITCHED_UP))),
 				false);
 
 		dsHatchIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
@@ -133,8 +155,10 @@ public class OI {
 		//		primaryXButton.whenPressed(new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
 
 		//		dsTogglePassThru.whenPressed(new PrintCommand("nelasdfljkasdlk;"));
-		primaryDpadUp.whenPressed(new PassThrough.BackToFront(SuperStructure.getInstance()), false);
-		primaryDpadDown.whenPressed(new PassThrough.FrontToBack(SuperStructure.getInstance()), false);
+		primaryDpadUp.whenPressed(
+				new PassThrough.BackToFront(SuperStructure.getInstance()), false);
+		primaryDpadDown.whenPressed(
+				new PassThrough.FrontToBack(SuperStructure.getInstance()), false);
 
 	}
 
@@ -170,7 +194,8 @@ public class OI {
 
 	public double getTurnAxis() {
 		//		return primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
-		return primaryJoystick.getRawAxis(0) + primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
+		return primaryJoystick.getRawAxis(0)
+				+ primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
 	}
 
 	public double getDSElbowAxis() {

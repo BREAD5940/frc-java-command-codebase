@@ -56,7 +56,8 @@ public class Intake extends SendableSubsystemBase {
 	private static final HatchMechState kDefaultState = HatchMechState.kOpen;
 
 	public HatchMechState getHatchMechState() {
-		return (getSolenoid().get() == Value.kForward) ? HatchMechState.kOpen : HatchMechState.kClamped; // TODO check kforward state
+		return (getSolenoid().get() == Value.kForward) ? HatchMechState.kOpen
+				: HatchMechState.kClamped; // TODO check kforward state
 	}
 
 	public void setHatchMech(HatchMechState mReq) {

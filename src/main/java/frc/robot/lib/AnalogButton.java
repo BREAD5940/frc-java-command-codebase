@@ -19,7 +19,8 @@ public class AnalogButton extends Button {
 	 * @param analogPort the port of the joystick to use
 	 * @param threshold the threshold after which to t r i g g e r
 	 */
-	public AnalogButton(final Joystick joystick, final int analogPort, final double threshold) {
+	public AnalogButton(final Joystick joystick, final int analogPort,
+			final double threshold) {
 		this.joystick = joystick;
 		this.port = analogPort;
 		this.threshold = (threshold);

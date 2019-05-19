@@ -38,7 +38,8 @@ public class Util {
 		return Math.min(max, Math.max(min, v));
 	}
 
-	public static RoundRotation2d limit(RoundRotation2d v, RoundRotation2d min, RoundRotation2d max) {
+	public static RoundRotation2d limit(RoundRotation2d v, RoundRotation2d min,
+			RoundRotation2d max) {
 		if (v.getDegree() > max.getDegree())
 			v = max;
 		if (v.getDegree() < min.getDegree())
@@ -46,7 +47,8 @@ public class Util {
 		return v;
 	}
 
-	public static Velocity<Length> limit(Velocity<Length> v, Velocity<Length> min, Velocity<Length> max) {
+	public static Velocity<Length> limit(Velocity<Length> v, Velocity<Length> min,
+			Velocity<Length> max) {
 		if (v.getValue() > max.getValue())
 			v = max;
 		if (v.getValue() < min.getValue())
@@ -90,7 +92,8 @@ public class Util {
 		return (a - epsilon <= b) && (a + epsilon >= b);
 	}
 
-	public static boolean allCloseTo(final List<Double> list, double value, double epsilon) {
+	public static boolean allCloseTo(final List<Double> list, double value,
+			double epsilon) {
 		boolean result = true;
 		for (Double value_in : list) {
 			result &= epsilonEquals(value_in, value, epsilon);
@@ -132,12 +135,14 @@ public class Util {
 	}
 
 	public static RoundRotation2d min(RoundRotation2d bound1, RoundRotation2d bound2) {
-		var min = RoundRotation2d.getDegree(Math.min(bound1.getDegree(), bound2.getDegree()));
+		var min = RoundRotation2d
+				.getDegree(Math.min(bound1.getDegree(), bound2.getDegree()));
 		return min;
 	}
 
 	public static RoundRotation2d max(RoundRotation2d bound1, RoundRotation2d bound2) {
-		var min = RoundRotation2d.getDegree(Math.max(bound1.getDegree(), bound2.getDegree()));
+		var min = RoundRotation2d
+				.getDegree(Math.max(bound1.getDegree(), bound2.getDegree()));
 		return min;
 	}
 
@@ -151,7 +156,8 @@ public class Util {
 	// 	return isBelowMax && isAboveMin;
 	// }
 
-	public static boolean isWithin(RoundRotation2d v, RoundRotation2d bound1, RoundRotation2d bound2) {
+	public static boolean isWithin(RoundRotation2d v, RoundRotation2d bound1,
+			RoundRotation2d bound2) {
 		var max = Math.max(bound1.getDegree(), bound2.getDegree());
 		var min = Math.min(bound1.getDegree(), bound2.getDegree());
 		var isBelowMax = v.getDegree() - max < 0;
@@ -159,7 +165,8 @@ public class Util {
 		return isBelowMax && isAboveMin;
 	}
 
-	public static RoundRotation2d getWorstCase(RoundRotation2d worstCase, RoundRotation2d bound1,
+	public static RoundRotation2d getWorstCase(RoundRotation2d worstCase,
+			RoundRotation2d bound1,
 			RoundRotation2d bound2) {
 		// RoundRotation2d toReturn;
 		if (isWithin(worstCase, bound1, bound2))
@@ -171,7 +178,8 @@ public class Util {
 	public static String toString(Pose2d pose) {
 		return String.format("Pose: (%s, %s) theta: (%s)",
 				pose.getTranslation().getX() / SILengthConstants.kFeetToMeter,
-				pose.getTranslation().getY() / SILengthConstants.kFeetToMeter, pose.getRotation().getDegree());
+				pose.getTranslation().getY() / SILengthConstants.kFeetToMeter,
+				pose.getRotation().getDegree());
 	}
 
 	public static Pose2d reflectWaypoint(Pose2d waypoint) {
@@ -179,7 +187,10 @@ public class Util {
 
 				new Translation2d(
 						waypoint.getTranslation().getX(),
-						LengthKt.getFeet(27).minus(LengthKt.getMeter(waypoint.getTranslation().getY())).getMeter()
+						LengthKt.getFeet(27)
+								.minus(LengthKt
+										.getMeter(waypoint.getTranslation().getY()))
+								.getMeter()
 
 				),
 

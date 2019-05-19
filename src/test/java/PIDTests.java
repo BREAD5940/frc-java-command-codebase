@@ -13,11 +13,15 @@ public class PIDTests {
 		// double integralZone, double maxIntegralAccum, double rampRate, FeedForwardMode forwardMode,
 		// FeedForwardBehavior feedforwardbehavior) {
 
-		TerriblePID mPid = new TerriblePID(1 /* kp */, 0 /* ki */, 0 /* kd */, 0 /* kf */, -1 /* min output */,
-				1 /* max output */, 0 /* integral zone */, 1000 /* max integral accum */, 0 /* ramp rate */, null,
+		TerriblePID mPid = new TerriblePID(1 /* kp */, 0 /* ki */, 0 /* kd */, 0 /* kf */,
+				-1 /* min output */,
+				1 /* max output */, 0 /* integral zone */, 1000 /* max integral accum */,
+				0 /* ramp rate */, null,
 				null);
-		TerriblePID mSecondaryPid = new TerriblePID(2 /* kp */, 0 /* ki */, 0 /* kd */, 0 /* kf */, -2 /* min output */,
-				2 /* max output */, 0 /* integral zone */, 1000 /* max integral accum */, 0 /* ramp rate */, null,
+		TerriblePID mSecondaryPid = new TerriblePID(2 /* kp */, 0 /* ki */, 0 /* kd */,
+				0 /* kf */, -2 /* min output */,
+				2 /* max output */, 0 /* integral zone */, 1000 /* max integral accum */,
+				0 /* ramp rate */, null,
 				null);
 
 		mPid.setSetpoint(10);
@@ -39,7 +43,8 @@ public class PIDTests {
 
 	@Test
 	public void testIntegral() {
-		TerriblePID mIntegralPid = new TerriblePID(0, 1, 0, 0, -1, 1, 0, 1000, 0, null, null);
+		TerriblePID mIntegralPid = new TerriblePID(0, 1, 0, 0, -1, 1, 0, 1000, 0, null,
+				null);
 		mIntegralPid.setSetpoint(10);
 
 		double mOutput = mIntegralPid.update(9);
@@ -54,7 +59,8 @@ public class PIDTests {
 	@Test
 	public void testDerivative() {
 		print("----- derivative pid test -----");
-		TerriblePID mDerivativePid = new TerriblePID(0, 0, 1, 0, -1, 1, 0, 0, 0, null, null);
+		TerriblePID mDerivativePid = new TerriblePID(0, 0, 1, 0, -1, 1, 0, 0, 0, null,
+				null);
 		mDerivativePid.setSetpoint(10);
 		double mOutput = mDerivativePid.update(10);
 		System.out.println("mOutput: " + mOutput);

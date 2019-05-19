@@ -16,7 +16,8 @@ public class RotatingVelocityTrajectoryFollower {
 
 	double kP, kV, kA;
 
-	public RotatingVelocityTrajectoryFollower(HalfBakedRotatingSRX mMotor, Trajectory profile, double kP, double kV,
+	public RotatingVelocityTrajectoryFollower(HalfBakedRotatingSRX mMotor,
+			Trajectory profile, double kP, double kV,
 			double kA) {
 		this.mMotor = mMotor;
 		this.profile = profile;
@@ -48,7 +49,8 @@ public class RotatingVelocityTrajectoryFollower {
 		double ff;
 		ControlMode mode;
 
-		public mPeriodicIO(RoundRotation2d feedBack, double feedForward, ControlMode mode) {
+		public mPeriodicIO(RoundRotation2d feedBack, double feedForward,
+				ControlMode mode) {
 			this.ff = feedForward;
 			this.fb = feedBack;
 			this.mode = mode;

@@ -58,18 +58,26 @@ public class LimeLight extends SendableSubsystemBase {
 	private static final double y_resolution_high = 720;
 	private static final Rotation2d x_fov = Rotation2dKt.getDegree(59.6);
 	private static final Rotation2d y_fov = Rotation2dKt.getDegree(45.7);
-	private static final double x_focal_length_low = x_resolution_low / (2 * Math.tan(x_fov.getRadian() / 2));
-	private static final double y_focal_length_low = y_resolution_low / (2 * Math.tan(y_fov.getRadian() / 2));
-	private static final double x_focal_length_high = x_resolution_low / (2 * Math.tan(x_fov.getRadian() / 2));
-	private static final double y_focal_length_high = y_resolution_low / (2 * Math.tan(y_fov.getRadian() / 2));
+	private static final double x_focal_length_low = x_resolution_low
+			/ (2 * Math.tan(x_fov.getRadian() / 2));
+	private static final double y_focal_length_low = y_resolution_low
+			/ (2 * Math.tan(y_fov.getRadian() / 2));
+	private static final double x_focal_length_high = x_resolution_low
+			/ (2 * Math.tan(x_fov.getRadian() / 2));
+	private static final double y_focal_length_high = y_resolution_low
+			/ (2 * Math.tan(y_fov.getRadian() / 2));
 	boolean isHighRes = false;
 	public PipelinePreset mCurrentPipeline;
 	private static final PipelinePreset kDefaultPreset = PipelinePreset.k2dVision;
 
-	private static final VisionTarget kRocketCargoSingleTarget = VisionTargetFactory.getRocketCargoSingleTarget();
-	private static final VisionTarget kHatchSingleTarget = VisionTargetFactory.getHatchSingleTarget();
-	private static final VisionTarget kRocketCargoDualTarget = VisionTargetFactory.getRocketCargoDualTarget();
-	private static final VisionTarget kHatchDualTarget = VisionTargetFactory.getHatchDualTarget();
+	private static final VisionTarget kRocketCargoSingleTarget = VisionTargetFactory
+			.getRocketCargoSingleTarget();
+	private static final VisionTarget kHatchSingleTarget = VisionTargetFactory
+			.getHatchSingleTarget();
+	private static final VisionTarget kRocketCargoDualTarget = VisionTargetFactory
+			.getRocketCargoDualTarget();
+	private static final VisionTarget kHatchDualTarget = VisionTargetFactory
+			.getHatchDualTarget();
 	private static final int kDefaultPipeline = 1;
 	private NetworkTable smartDashboard;
 
@@ -81,7 +89,8 @@ public class LimeLight extends SendableSubsystemBase {
 		smartDashboard.addEntryListener("Desired Vision Pipeline",
 				(smartDashboard, key, entry, value, flabs) -> {
 					setPipeline((int) value.getDouble());
-					System.out.println("Value changed! it's now " + (int) value.getDouble());
+					System.out.println(
+							"Value changed! it's now " + (int) value.getDouble());
 				},
 				EntryListenerFlags.kNew | EntryListenerFlags.kUpdate);
 
@@ -133,7 +142,8 @@ public class LimeLight extends SendableSubsystemBase {
 	 * @param distanceToShiftBy how far to move everything up/right so it shows up on falcon dashboard
 	 */
 	public Pose2d getPose(double distanceToShiftBy) {
-		double[] camtran = NetworkTableInstance.getDefault().getTable("limelight").getEntry("camtran")
+		double[] camtran = NetworkTableInstance.getDefault().getTable("limelight")
+				.getEntry("camtran")
 				.getDoubleArray(new double[]{});
 
 		// final double kOffset = 100;
@@ -142,7 +152,8 @@ public class LimeLight extends SendableSubsystemBase {
 
 		// final double kLimelightForeOffset = 25; //inches from limelight to hatch pannel
 		// forward/backward motion, left/right motion
-		Translation2d mTranToGoal = new Translation2d(LengthKt.getInch((camtran[2]) + distanceToShiftBy),
+		Translation2d mTranToGoal = new Translation2d(
+				LengthKt.getInch((camtran[2]) + distanceToShiftBy),
 				LengthKt.getInch((camtran[0] * -1) + distanceToShiftBy));
 		Rotation2d mRotToGoal = Rotation2dKt.getDegree(camtran[4] * 1);
 		Pose2d mPoseToGoal = new Pose2d(mTranToGoal, mRotToGoal);
@@ -221,7 +232,8 @@ public class LimeLight extends SendableSubsystemBase {
 	 * @return pipeline latency contribution in seconds
 	 */
 	public Time getPipelineLatency() {
-		return TimeUnitsKt.getMillisecond((table.getEntry("tl").getDouble(0) / 1000) + 11);
+		return TimeUnitsKt
+				.getMillisecond((table.getEntry("tl").getDouble(0) / 1000) + 11);
 	}
 
 	/**
@@ -274,7 +286,8 @@ public class LimeLight extends SendableSubsystemBase {
 	public class MeasuredVisionTarget {
 		private double x_, y_, width_, height_, area_;
 
-		MeasuredVisionTarget(double x, double y, double width, double height, double area) {
+		MeasuredVisionTarget(double x, double y, double width, double height,
+				double area) {
 			x_ = x;
 			y_ = y;
 			width_ = width;
@@ -362,7 +375,8 @@ public class LimeLight extends SendableSubsystemBase {
 
 		Rotation2d targetAngle = getDy().plus(cameraAngle);
 
-		var distance = (visionTargetHeight.minus(cameraHeight)).div(Math.tan(targetAngle.getRadian()));
+		var distance = (visionTargetHeight.minus(cameraHeight))
+				.div(Math.tan(targetAngle.getRadian()));
 
 		System.out.println("estimated distance: " + distance.getInch());
 

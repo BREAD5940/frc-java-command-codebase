@@ -46,12 +46,15 @@ public class TrajectoryTrackerCommand extends SendableCommandBase {
 	}
 
 	public TrajectoryTrackerCommand(DriveTrain driveBase,
-			Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource, boolean reset) {
+			Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource,
+			boolean reset) {
 		this(driveBase, Robot.drivetrain.getTrajectoryTracker(), trajectorySource, reset);
 	}
 
-	public TrajectoryTrackerCommand(DriveTrain driveBase, TrajectoryTracker trajectoryTracker,
-			Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource, boolean reset) {
+	public TrajectoryTrackerCommand(DriveTrain driveBase,
+			TrajectoryTracker trajectoryTracker,
+			Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource,
+			boolean reset) {
 		addRequirements(driveBase);
 		this.driveBase = driveBase;
 		this.trajectoryTracker = trajectoryTracker;
@@ -70,15 +73,18 @@ public class TrajectoryTrackerCommand extends SendableCommandBase {
 			Trajectories.generateAllTrajectories();
 		}
 
-		Logger.log("get: " + trajectorySource.get().getFirstState().getState().getCurvature());
+		Logger.log("get: "
+				+ trajectorySource.get().getFirstState().getState().getCurvature());
 
 		trajectoryTracker.reset(this.trajectorySource.get());
 
-		Logger.log("first pose: " + trajectorySource.get().getFirstState().getState().getPose().getTranslation().getX()
+		Logger.log("first pose: " + trajectorySource.get().getFirstState().getState()
+				.getPose().getTranslation().getX()
 				/ SILengthConstants.kFeetToMeter);
 
 		if (reset == true) {
-			Robot.drivetrain.getLocalization().reset(trajectorySource.get().getFirstState().getState().getPose());
+			Robot.drivetrain.getLocalization()
+					.reset(trajectorySource.get().getFirstState().getState().getPose());
 		}
 
 		// Logger.log("desired linear, real linear");
@@ -94,9 +100,12 @@ public class TrajectoryTrackerCommand extends SendableCommandBase {
 			if (referencePoint != null) {
 				Pose2d referencePose = referencePoint.getState().getState().getPose();
 
-				LiveDashboard.INSTANCE.setPathX(referencePose.getTranslation().getX() / SILengthConstants.kFeetToMeter);
-				LiveDashboard.INSTANCE.setPathY(referencePose.getTranslation().getY() / SILengthConstants.kFeetToMeter);
-				LiveDashboard.INSTANCE.setPathHeading(referencePose.getRotation().getRadian());
+				LiveDashboard.INSTANCE.setPathX(referencePose.getTranslation().getX()
+						/ SILengthConstants.kFeetToMeter);
+				LiveDashboard.INSTANCE.setPathY(referencePose.getTranslation().getY()
+						/ SILengthConstants.kFeetToMeter);
+				LiveDashboard.INSTANCE
+						.setPathHeading(referencePose.getRotation().getRadian());
 
 				// Shuffleboard.getTab("Auto").getLayout("Pathing", BuiltInLayouts.kList).
 

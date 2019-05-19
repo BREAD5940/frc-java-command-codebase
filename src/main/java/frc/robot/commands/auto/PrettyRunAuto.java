@@ -18,7 +18,8 @@ public class PrettyRunAuto extends SendableCommandBase {
 		//plz no require thing
 		this.machine = machine;
 		this.onlyPreset = onlyPreset;
-		createdMotion = new AutoMotion(machine.getGoalHeight(), machine.getGoalType(), false);
+		createdMotion = new AutoMotion(machine.getGoalHeight(), machine.getGoalType(),
+				false);
 		ssCommand = createdMotion.getPrepCommand();
 		mainCommand = createdMotion.getBigCommandGroup();
 	}

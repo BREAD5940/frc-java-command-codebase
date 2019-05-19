@@ -48,11 +48,15 @@ public class DrivePowerToVisionTarget extends WaitCommand {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	public void execute() {
-		double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
-		double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0);
+		double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv")
+				.getDouble(0);
+		double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx")
+				.getDouble(0);
 		// double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-		double ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
-		double ts = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts").getDouble(0);
+		double ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta")
+				.getDouble(0);
+		double ts = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ts")
+				.getDouble(0);
 
 		tx = tx + (Robot.m_oi.getTurnAxis() * 10); // TODO tune, to offset allignment
 
@@ -70,7 +74,8 @@ public class DrivePowerToVisionTarget extends WaitCommand {
 		if (tv < 1.0) {
 			hasTarget = false;
 			turnCommand = 0.0;
-			DriveTrain.getInstance().arcadeDrive(Robot.m_oi.getForwardAxis(), Robot.m_oi.getTurnAxis());
+			DriveTrain.getInstance().arcadeDrive(Robot.m_oi.getForwardAxis(),
+					Robot.m_oi.getTurnAxis());
 			return;
 		} else {
 			hasTarget = true;

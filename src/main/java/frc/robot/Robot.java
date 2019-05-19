@@ -185,14 +185,16 @@ public class Robot extends TimedRobot {
 		System.out.println("Auto chooser sent!");
 		Trajectories.generateAllTrajectories();
 
-		Shuffleboard.getTab("Auto").getLayout("Path selection", BuiltInLayouts.kList).add(mAutoChooser.getChooser())
+		Shuffleboard.getTab("Auto").getLayout("Path selection", BuiltInLayouts.kList)
+				.add(mAutoChooser.getChooser())
 				.withSize(2, 5).withPosition(0, 0);
 
 		if (drivetrain == null)
 			drivetrain = DriveTrain.getInstance();
 		// FIXME Jocelyn this might mess with auto stuff, will it? (I think no?)
 		drivetrain.getLocalization()
-				.reset(new Pose2d(LengthKt.getFeet(5.5), LengthKt.getFeet(17), new Rotation2d(0f, 0f, false)));
+				.reset(new Pose2d(LengthKt.getFeet(5.5), LengthKt.getFeet(17),
+						new Rotation2d(0f, 0f, false)));
 
 		autoState = new AutoMotionStateMachine();
 		// logger = Logger.getInstance();
@@ -218,13 +220,16 @@ public class Robot extends TimedRobot {
 		// wrist.init();
 		drivetrain.zeroGyro();
 		var elevator = SuperStructure.getElevator();
-		var startingHeightTicks = elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue();
+		var startingHeightTicks = elevator.getModel()
+				.toNativeUnitPosition(LengthKt.getInch(24)).getValue();
 		// 600 is the boiiii
 		var target_ = 650;
 		var target_COMP = 650;
-		var tickkkkks_ = (SuperStructure.getElevator().getMaster().getTalonSRX().getSensorCollection()
+		var tickkkkks_ = (SuperStructure.getElevator().getMaster().getTalonSRX()
+				.getSensorCollection()
 				.getPulseWidthPosition() % 2048)
-				* ((SuperStructure.getElevator().getMaster().getTalonSRX().getSensorCollection()
+				* ((SuperStructure.getElevator().getMaster().getTalonSRX()
+						.getSensorCollection()
 						.getPulseWidthPosition() > 0) ? 1 : -1);
 		var delta_ = (tickkkkks_ - (int) target_COMP) * -1;
 
@@ -233,30 +238,38 @@ public class Robot extends TimedRobot {
 
 		var proximal = SuperStructure.getInstance().getElbow();
 		// var startingAngleTicks = (int) proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
-		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048)
-				* ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection()
+				.getPulseWidthPosition() % 2048)
+				* ((superstructure.getElbow().getMaster().getSensorCollection()
+						.getPulseWidthPosition() > 0) ? 1 : -1);
 		var targetProximal_ = 1400;
 		var targetProximal_COMP = 1900;
 		var delta = (tickkkkks - (int) targetProximal_COMP) * -1;
-		var startingAngleTicks = proximal.getMaster().getTicks(RoundRotation2d.getDegree(-78));
+		var startingAngleTicks = proximal.getMaster()
+				.getTicks(RoundRotation2d.getDegree(-78));
 
 		proximal.getMaster().setSelectedSensorPosition((int) (0 + startingAngleTicks));
 		// proximal.getMaster().setSelectedSensorPosition((int) (startingAngleTicks));
 
 		var wrist = SuperStructure.getInstance().getWrist();
-		var wristStart = (int) wrist.getMaster().getTicks(RoundRotation2d.getDegree(-43 + 4 - 9));
+		var wristStart = (int) wrist.getMaster()
+				.getTicks(RoundRotation2d.getDegree(-43 + 4 - 9));
 		var targetWrist = (int) 1000;
 		var targetWristComp = 1500 + 150;
-		var correctionDelta = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition()
+		var correctionDelta = (superstructure.getElbow().getMaster().getSensorCollection()
+				.getPulseWidthPosition()
 				% 2048)
-				* ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+				* ((superstructure.getElbow().getMaster().getSensorCollection()
+						.getPulseWidthPosition() > 0) ? 1 : -1);
 		var deltaW = (correctionDelta - (int) targetWristComp) * 1;
 
 		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
 		// wrist.getMaster().setSelectedSensorPosition((int) (wristStart));
 
 		elevator.getMaster().getTalonSRX().setSelectedSensorPosition(
-				(int) (elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue()), 0, 0); // just to be super sure the elevator is safe-ishhhh
+				(int) (elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24))
+						.getValue()),
+				0, 0); // just to be super sure the elevator is safe-ishhhh
 		var cmd = zeroElevatorWhileDisabled;
 		cmd.schedule();
 
@@ -312,25 +325,32 @@ public class Robot extends TimedRobot {
 			// SuperStructure.getInstance().getWrist().getMaster().setSelectedSensorPosition(proximal.getMaster().getTicks(RoundRotation2d.getDegree(-42)));
 
 			boolean reset = false;
-			if (superstructure.getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
+			if (superstructure.getElbow().getMaster().getSensorCollection()
+					.isFwdLimitSwitchClosed()) {
 				// RoundRotation2d new_ = RoundRotation2d.getDegree(15);
 				// superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(15));
 				// System.out.println("elbow fwd triggered! new pos: " + new_.getDegree());
 				// reset = true;
 			}
-			if (superstructure.getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
+			if (superstructure.getWrist().getMaster().getSensorCollection()
+					.isFwdLimitSwitchClosed()) {
 				System.out.println("wrist fwd triggered!");
-				superstructure.getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(90));
+				superstructure.getWrist().getMaster()
+						.setSensorPosition(RoundRotation2d.getDegree(90));
 				reset = true;
 			}
-			if (superstructure.getElbow().getMaster().getSensorCollection().isRevLimitSwitchClosed()) {
+			if (superstructure.getElbow().getMaster().getSensorCollection()
+					.isRevLimitSwitchClosed()) {
 				System.out.println("elbow rev triggered!");
-				superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(-180 - 15));
+				superstructure.getElbow().getMaster()
+						.setSensorPosition(RoundRotation2d.getDegree(-180 - 15));
 				reset = true;
 			}
-			if (superstructure.getWrist().getMaster().getSensorCollection().isRevLimitSwitchClosed()) {
+			if (superstructure.getWrist().getMaster().getSensorCollection()
+					.isRevLimitSwitchClosed()) {
 				System.out.println("wrist rev triggered!");
-				superstructure.getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(-90));
+				superstructure.getWrist().getMaster()
+						.setSensorPosition(RoundRotation2d.getDegree(-90));
 				reset = true;
 			}
 			if (reset) {
@@ -354,8 +374,10 @@ public class Robot extends TimedRobot {
 		//		//		backFront.addSequential(new ElevatorMove(LengthKt.getInch(24)));
 		//		backFront.addSequential(new SyncedMove(Math.toRadians(0), true, superstructure));
 
-		SmartDashboard.putData("front to back passthrough", new PassThrough.FrontToBack(superstructure));
-		SmartDashboard.putData("back to front passthrough", new PassThrough.BackToFront(superstructure));
+		SmartDashboard.putData("front to back passthrough",
+				new PassThrough.FrontToBack(superstructure));
+		SmartDashboard.putData("back to front passthrough",
+				new PassThrough.BackToFront(superstructure));
 		//		SmartDashboard.putData("THE ONE TRUE PASSTHROUGH", new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
 
 	}
@@ -385,7 +407,8 @@ public class Robot extends TimedRobot {
 		} else if (RobotConfig.auto.auto_gear == Gear.HIGH) {
 			drivetrain.setHighGear();
 		} else {
-			System.out.println("default auto gear " + RobotConfig.auto.auto_gear + " is not a valid choice!");
+			System.out.println("default auto gear " + RobotConfig.auto.auto_gear
+					+ " is not a valid choice!");
 		}
 
 		drivetrain.setNeutralMode(NeutralMode.Coast);
@@ -496,24 +519,31 @@ public class Robot extends TimedRobot {
 
 		if (postTicks) {
 
-			SmartDashboard.putBoolean("Elevator limit switch", SuperStructure.getInstance().getInnerStageMinLimit());
+			SmartDashboard.putBoolean("Elevator limit switch",
+					SuperStructure.getInstance().getInnerStageMinLimit());
 
 			// var tickkkkks = (int) superstructure.getWrist().getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
 			// var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-			var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048)
-					* ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1
-							: -1);
+			var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection()
+					.getPulseWidthPosition() % 2048)
+					* ((superstructure.getElbow().getMaster().getSensorCollection()
+							.getPulseWidthPosition() > 0) ? 1
+									: -1);
 			SmartDashboard.putNumber("Elbow absolute pos ", tickkkkks);
 
-			var tickks = (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048)
-					* ((superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1
-							: -1);
+			var tickks = (superstructure.getWrist().getMaster().getSensorCollection()
+					.getPulseWidthPosition() % 2048)
+					* ((superstructure.getWrist().getMaster().getSensorCollection()
+							.getPulseWidthPosition() > 0) ? 1
+									: -1);
 
 			SmartDashboard.putNumber("wrist absolute pos ", tickks);
 
-			var ticcccks = (SuperStructure.getElevator().getMaster().getTalonSRX().getSensorCollection()
+			var ticcccks = (SuperStructure.getElevator().getMaster().getTalonSRX()
+					.getSensorCollection()
 					.getPulseWidthPosition() % 2048)
-					* ((SuperStructure.getElevator().getMaster().getTalonSRX().getSensorCollection()
+					* ((SuperStructure.getElevator().getMaster().getTalonSRX()
+							.getSensorCollection()
 							.getPulseWidthPosition() > 0) ? 1 : -1);
 
 			SmartDashboard.putNumber("Elevator absolute pos ", tickks);
@@ -521,7 +551,8 @@ public class Robot extends TimedRobot {
 			// System.out.println(superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition());
 			// System.out.println(superstructure.getElbow().getMaster().getSensorPosition().getDegree());
 
-			SmartDashboard.putString(SuperStructure.getInstance().getCurrentState().getCSVHeader(),
+			SmartDashboard.putString(
+					SuperStructure.getInstance().getCurrentState().getCSVHeader(),
 					SuperStructure.getInstance().getCurrentState().toCSV());
 
 		}
@@ -538,12 +569,15 @@ public class Robot extends TimedRobot {
 				drivetrain.getLocalization().getRobotPosition().getTranslation().getY()
 						/ SILengthConstants.kFeetToMeter);
 
-		LiveDashboard.INSTANCE.setRobotX(drivetrain.getLocalization().getRobotPosition().getTranslation().getX()
-				/ SILengthConstants.kFeetToMeter);
-		LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY()
-				/ SILengthConstants.kFeetToMeter);
+		LiveDashboard.INSTANCE.setRobotX(
+				drivetrain.getLocalization().getRobotPosition().getTranslation().getX()
+						/ SILengthConstants.kFeetToMeter);
+		LiveDashboard.INSTANCE.setRobotY(
+				drivetrain.getLocalization().getRobotPosition().getTranslation().getY()
+						/ SILengthConstants.kFeetToMeter);
 		LiveDashboard.INSTANCE
-				.setRobotHeading(drivetrain.getLocalization().getRobotPosition().getRotation().getRadian());
+				.setRobotHeading(drivetrain.getLocalization().getRobotPosition()
+						.getRotation().getRadian());
 
 		// SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getFeetPerSecond());
 		// SmartDashboard.putNumber("Left talon error", drivetrain.getLeft().getClosedLoopError().getFeet());

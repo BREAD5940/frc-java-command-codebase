@@ -63,7 +63,8 @@ public class JustElevatorTeleop extends SendableCommandBase {
 		// Figure out of the operator is commanding an elevator move. If so, increment the new state and cache the current state - if not, stay at the cached state.
 		if (Math.abs(mElevatorPower) > 0.01) {
 			mNewState.elevator = new ElevatorState(mCurrentState.getElevatorHeight()
-					.plus(LengthKt.getInch(mElevatorPower * ((mElevatorPower > 0) ? 2 : 2))));
+					.plus(LengthKt
+							.getInch(mElevatorPower * ((mElevatorPower > 0) ? 2 : 2))));
 			mCachedState.elevator = mNewState.elevator;
 		} //else {
 			// mNewState.elevator = mCachedState.elevator;

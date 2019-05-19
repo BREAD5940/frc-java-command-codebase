@@ -14,7 +14,8 @@ public class Logger {
 	}
 
 	public static void log(String mark) {
-		try (PrintWriter writer = new PrintWriter(new FileWriter("/home/lvuser/log.txt", true))) {
+		try (PrintWriter writer = new PrintWriter(
+				new FileWriter("/home/lvuser/log.txt", true))) {
 
 			writer.print(mark);
 			//            writer.println();

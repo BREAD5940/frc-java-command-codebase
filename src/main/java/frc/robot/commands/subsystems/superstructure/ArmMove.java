@@ -28,9 +28,11 @@ public class ArmMove extends SendableCommandBase {
 
 	@Override
 	public boolean isFinished() {
-		return SuperStructure.getInstance().getWrist().isWithinTolerance(RoundRotation2d.getDegree(5),
+		return SuperStructure.getInstance().getWrist().isWithinTolerance(
+				RoundRotation2d.getDegree(5),
 				mDesired.getWrist().angle)
-				&& SuperStructure.getInstance().getElbow().isWithinTolerance(RoundRotation2d.getDegree(5),
+				&& SuperStructure.getInstance().getElbow().isWithinTolerance(
+						RoundRotation2d.getDegree(5),
 						mDesired.getElbow().angle);
 	}
 

@@ -37,10 +37,12 @@ public class InterpolatableLut {
 			// System.out.println("bottom bound is nan or null, returning " + topBound.getValue().getValue());
 			return topBound.getValue().getValue();
 		} else {
-			var ratio = (key - bottomBound.getKey()) / (topBound.getKey() - bottomBound.getKey());
+			var ratio = (key - bottomBound.getKey())
+					/ (topBound.getKey() - bottomBound.getKey());
 			// System.out.println("the ratio between the two points is " + ratio);
 			// System.out.println("returning " + bottomBound.getValue().interpolate(topBound.getValue().getValue(), ratio));
-			return bottomBound.getValue().interpolate(topBound.getValue().getValue(), ratio);
+			return bottomBound.getValue().interpolate(topBound.getValue().getValue(),
+					ratio);
 		}
 
 	}

@@ -101,7 +101,8 @@ public class AutoPathingCSVGenerator {
 			rocketFtoLoading = Util.reflectTrajectory(rocketFtoLoading);
 		}
 
-		var t_fallOFfHab = Trajectories.generateTrajectory(fallOFfHab, Trajectories.kLowGearConstraints,
+		var t_fallOFfHab = Trajectories.generateTrajectory(fallOFfHab,
+				Trajectories.kLowGearConstraints,
 
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(5.0)),
@@ -110,7 +111,8 @@ public class AutoPathingCSVGenerator {
 				false,
 				true);
 
-		var t_floorToRocketF = Trajectories.generateTrajectory(floorToRocketF, Trajectories.kLowGearConstraints,
+		var t_floorToRocketF = Trajectories.generateTrajectory(floorToRocketF,
+				Trajectories.kLowGearConstraints,
 
 				VelocityKt.getVelocity(LengthKt.getFeet(5.0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(3.0)),
@@ -119,7 +121,8 @@ public class AutoPathingCSVGenerator {
 				false,
 				true);
 
-		var t_rocketLFToLoading = Trajectories.generateTrajectory(rocketCToLoading, Trajectories.kLowGearConstraints,
+		var t_rocketLFToLoading = Trajectories.generateTrajectory(rocketCToLoading,
+				Trajectories.kLowGearConstraints,
 
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
@@ -128,7 +131,8 @@ public class AutoPathingCSVGenerator {
 				true,
 				true);
 
-		var t_loadingToRocketF = Trajectories.generateTrajectory(loadingToRocketF, Trajectories.kLowGearConstraints,
+		var t_loadingToRocketF = Trajectories.generateTrajectory(loadingToRocketF,
+				Trajectories.kLowGearConstraints,
 
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
@@ -137,7 +141,8 @@ public class AutoPathingCSVGenerator {
 				true,
 				true);
 
-		var t_rocketFtoLoading = Trajectories.generateTrajectory(rocketFtoLoading, Trajectories.kLowGearConstraints,
+		var t_rocketFtoLoading = Trajectories.generateTrajectory(rocketFtoLoading,
+				Trajectories.kLowGearConstraints,
 
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
 				VelocityKt.getVelocity(LengthKt.getFeet(0.0)),
@@ -204,34 +209,46 @@ public class AutoPathingCSVGenerator {
 				if (j == 0) {
 					toReturn.add(toReturn.get(toReturn.size() - 1));
 				} else {
-					TimedEntry<Pose2dWithCurvature> point = bigPath.get(i).getPoints().get(j);
+					TimedEntry<Pose2dWithCurvature> point = bigPath.get(i).getPoints()
+							.get(j);
 					double deltaT = (point.getT().getSecond()
-							- bigPath.get(i).getPoints().get(j - 1).getT().getSecond()) / 2;
+							- bigPath.get(i).getPoints().get(j - 1).getT().getSecond())
+							/ 2;
 					SuperStructureState prevState = toReturn.get(toReturn.size() - 1);
 
 					double nextHeight = 0; //FIXME this requires math and ifs to make it move the right distance in the right direction
 					double nextElbow = 0;
 					double nextWrist = 0;
 
-					if (currentGoal.getElevatorHeight().getInch() - prevState.getElevatorHeight().getInch() > 0) {
-						nextHeight = prevState.getElevatorHeight().getInch() + elevatorInchPerSecond / deltaT;
+					if (currentGoal.getElevatorHeight().getInch()
+							- prevState.getElevatorHeight().getInch() > 0) {
+						nextHeight = prevState.getElevatorHeight().getInch()
+								+ elevatorInchPerSecond / deltaT;
 					} else {
-						nextHeight = prevState.getElevatorHeight().getInch() - elevatorInchPerSecond / deltaT;
+						nextHeight = prevState.getElevatorHeight().getInch()
+								- elevatorInchPerSecond / deltaT;
 					}
 
-					if (currentGoal.getElbowAngle().getRadian() - prevState.getElbowAngle().getRadian() > 0) {
-						nextElbow = prevState.getElbowAngle().getRadian() + elbowRadPerSecond / deltaT;
+					if (currentGoal.getElbowAngle().getRadian()
+							- prevState.getElbowAngle().getRadian() > 0) {
+						nextElbow = prevState.getElbowAngle().getRadian()
+								+ elbowRadPerSecond / deltaT;
 					} else {
-						nextElbow = prevState.getElbowAngle().getRadian() - elbowRadPerSecond / deltaT;
+						nextElbow = prevState.getElbowAngle().getRadian()
+								- elbowRadPerSecond / deltaT;
 					}
 
-					if (currentGoal.getWrist().angle.getRadian() - prevState.getWrist().angle.getRadian() > 0) {
-						nextElbow = prevState.getWrist().angle.getRadian() + wristRadPerSecond / deltaT;
+					if (currentGoal.getWrist().angle.getRadian()
+							- prevState.getWrist().angle.getRadian() > 0) {
+						nextElbow = prevState.getWrist().angle.getRadian()
+								+ wristRadPerSecond / deltaT;
 					} else {
-						nextElbow = prevState.getWrist().angle.getRadian() - wristRadPerSecond / deltaT;
+						nextElbow = prevState.getWrist().angle.getRadian()
+								- wristRadPerSecond / deltaT;
 					}
 
-					toReturn.add(new SuperStructureState(new ElevatorState(LengthKt.getInch(nextHeight)),
+					toReturn.add(new SuperStructureState(
+							new ElevatorState(LengthKt.getInch(nextHeight)),
 							new RotatingArmState(RoundRotation2d.getRadian(nextElbow)),
 							new RotatingArmState(RoundRotation2d.getRadian(nextWrist))));
 				}
@@ -252,7 +269,8 @@ public class AutoPathingCSVGenerator {
 
 			pw.println("x,y");
 			for (Translation2d t : path) {
-				pw.println(t.getX() / SILengthConstants.kFeetToMeter + "," + t.getY() / SILengthConstants.kFeetToMeter);
+				pw.println(t.getX() / SILengthConstants.kFeetToMeter + ","
+						+ t.getY() / SILengthConstants.kFeetToMeter);
 			}
 
 			// pw.print("adsffdsaadsfdsfaadsffads1");
@@ -272,7 +290,8 @@ public class AutoPathingCSVGenerator {
 
 			pw.println("height,elbowAngle,wristAngle");
 			for (SuperStructureState t : path) {
-				pw.println(t.getElevatorHeight().getFeet() + "," + t.getElbowAngle().getRadian() + ","
+				pw.println(t.getElevatorHeight().getFeet() + ","
+						+ t.getElbowAngle().getRadian() + ","
 						+ t.getWrist().angle.getRadian());
 			}
 
@@ -285,7 +304,8 @@ public class AutoPathingCSVGenerator {
 
 	}
 
-	public ArrayList<Translation2d> trajectToArrayList(TimedTrajectory<Pose2dWithCurvature> traject) {
+	public ArrayList<Translation2d> trajectToArrayList(
+			TimedTrajectory<Pose2dWithCurvature> traject) {
 		List<TimedEntry<Pose2dWithCurvature>> points = traject.getPoints();
 
 		ArrayList<Translation2d> toReturn = new ArrayList<Translation2d>();
@@ -316,14 +336,16 @@ public class AutoPathingCSVGenerator {
 		cStart = "cargoM" + side;
 		cPiece = HeldPiece.NONE;
 
-		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories
+				.get(cStart + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
 		points.addAll(trajectToArrayList(traject));
 
 		/* Go right up to the cargo ship from the loading station */
 		cStart = mLoadingStation;
 		cPiece = HeldPiece.HATCH;
 
-		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories
+				.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
 		points.addAll(trajectToArrayList(traject));
 
 		// turn 90 degrees to face the goal
@@ -333,13 +355,15 @@ public class AutoPathingCSVGenerator {
 		cStart = "cargo" + side + '1';
 		cPiece = HeldPiece.NONE;
 
-		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "depot" + side); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories
+				.get(cStart + " to " + "depot" + side); //current trajectory from hashmap in Trajectorie
 		points.addAll(trajectToArrayList(traject));
 
 		/* Go from depot to cargo ship ~~2~~ 1 darnit you're right. Thanks 10pm me */
 		cStart = "depot" + side;
 		cPiece = HeldPiece.CARGO;
-		traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories
+				.get(cStart + " to " + "cargo" + side + '1'); //current trajectory from hashmap in Trajectorie
 		points.addAll(trajectToArrayList(traject));
 
 		return points;
@@ -368,7 +392,8 @@ public class AutoPathingCSVGenerator {
 		cPiece = HeldPiece.NONE;
 
 		/* Get a trajectory to move from close side cargo ship to loading station*/
-		traject = Trajectories.generatedHGTrajectories.get(mCloseRocket + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories
+				.get(mCloseRocket + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
 		if (traject == null)
 			return null;
 		points.addAll(trajectToArrayList(traject));
@@ -376,7 +401,8 @@ public class AutoPathingCSVGenerator {
 		cPiece = HeldPiece.HATCH;
 
 		/* Get a trajectory to move from loading station to far side rocket (this is 2 hatches) */
-		traject = Trajectories.generatedHGTrajectories.get(mLoadingStation + " to " + mFarRocket); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories
+				.get(mLoadingStation + " to " + mFarRocket); //current trajectory from hashmap in Trajectorie
 		if (traject == null)
 			Logger.log("Trajectory doesn't exist! ur bad.");
 		points.addAll(trajectToArrayList(traject));
@@ -384,13 +410,15 @@ public class AutoPathingCSVGenerator {
 		cPiece = HeldPiece.NONE;
 
 		/* Get a trajectory to move back from far rocket to loading station */
-		traject = Trajectories.generatedHGTrajectories.get(mFarRocket + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories
+				.get(mFarRocket + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
 		if (traject == null)
 			Logger.log("Trajectory doesn't exist! ur bad.");
 		points.addAll(trajectToArrayList(traject));
 
 		/* Get a trajectory to move from loading station to far side rocket (this is 3 hatches) */
-		traject = Trajectories.generatedHGTrajectories.get(mLoadingStation + " to " + mFarRocket); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories
+				.get(mLoadingStation + " to " + mFarRocket); //current trajectory from hashmap in Trajectorie
 		if (traject == null)
 			Logger.log("Trajectory doesn't exist! ur bad.");
 		points.addAll(trajectToArrayList(traject));
@@ -398,7 +426,8 @@ public class AutoPathingCSVGenerator {
 		cPiece = HeldPiece.NONE;
 
 		/* Get a trajectory to move back from far rocket to loading station */
-		traject = Trajectories.generatedHGTrajectories.get(mFarRocket + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories
+				.get(mFarRocket + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
 		if (traject == null)
 			Logger.log("Trajectory doesn't exist! ur bad.");
 		points.addAll(trajectToArrayList(traject));
@@ -406,7 +435,8 @@ public class AutoPathingCSVGenerator {
 		cPiece = HeldPiece.HATCH;
 
 		/* Get a trajectory to move from loading station to far side rocket (this is 4 hatches) */
-		traject = Trajectories.generatedHGTrajectories.get(mLoadingStation + " to " + mFarRocket); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories
+				.get(mLoadingStation + " to " + mFarRocket); //current trajectory from hashmap in Trajectorie
 		if (traject == null)
 			Logger.log("Trajectory doesn't exist! ur bad.");
 		points.addAll(trajectToArrayList(traject));
@@ -416,13 +446,15 @@ public class AutoPathingCSVGenerator {
 		cPiece = HeldPiece.NONE;
 
 		/* Get a trajectory to move back from far rocket to loading station */
-		traject = Trajectories.generatedHGTrajectories.get(mFarRocket + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories
+				.get(mFarRocket + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
 		if (traject == null)
 			Logger.log("Trajectory doesn't exist! ur bad.");
 		points.addAll(trajectToArrayList(traject));
 
 		/* Get a trajectory to move to the rocket ship close side (THIS IS BACKWARDS/REVERSED!) */
-		traject = Trajectories.generatedHGTrajectories.get(mLoadingStation + " to " + mCloseRocket); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories
+				.get(mLoadingStation + " to " + mCloseRocket); //current trajectory from hashmap in Trajectorie
 		if (traject == null)
 			return null;
 		points.addAll(trajectToArrayList(traject));
@@ -430,13 +462,15 @@ public class AutoPathingCSVGenerator {
 		cPiece = HeldPiece.NONE;
 
 		/* Get a trajectory to move from close side cargo ship to loading station*/
-		traject = Trajectories.generatedHGTrajectories.get(mCloseRocket + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories
+				.get(mCloseRocket + " to " + mLoadingStation); //current trajectory from hashmap in Trajectorie
 		if (traject == null)
 			return null;
 		points.addAll(trajectToArrayList(traject));
 
 		/* Get a trajectory to move from loading station to the rocket ship close side for the last bloody time*/
-		traject = Trajectories.generatedHGTrajectories.get(mLoadingStation + " to " + mCloseRocket); //current trajectory from hashmap in Trajectorie
+		traject = Trajectories.generatedHGTrajectories
+				.get(mLoadingStation + " to " + mCloseRocket); //current trajectory from hashmap in Trajectorie
 		if (traject == null)
 			return null;
 		points.addAll(trajectToArrayList(traject));

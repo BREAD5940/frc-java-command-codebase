@@ -13,14 +13,16 @@ public class SuperStructureState implements Loggable {
 	private HeldPiece piece = HeldPiece.NONE;
 
 	public SuperStructureState() {
-		this(new ElevatorState(), new RotatingArmState(), new RotatingArmState(), HeldPiece.NONE);
+		this(new ElevatorState(), new RotatingArmState(), new RotatingArmState(),
+				HeldPiece.NONE);
 	}
 
 	public SuperStructureState(SuperStructureState other) {
 		this(other.elevator, other.jointAngles);
 	}
 
-	public SuperStructureState(ElevatorState elevatorState, RotatingArmState elbowState, RotatingArmState wristState,
+	public SuperStructureState(ElevatorState elevatorState, RotatingArmState elbowState,
+			RotatingArmState wristState,
 			HeldPiece heldPiece) {
 		jointAngles = new IntakeAngle(elbowState, wristState);
 		elevator = elevatorState;
@@ -29,7 +31,8 @@ public class SuperStructureState implements Loggable {
 
 	// public SuperStructureState(ElevatorState elevatorState, IntakeAngle intakeState)
 
-	public SuperStructureState(ElevatorState elevatorState, RotatingArmState elbowState, RotatingArmState wristState) {
+	public SuperStructureState(ElevatorState elevatorState, RotatingArmState elbowState,
+			RotatingArmState wristState) {
 		jointAngles = new IntakeAngle(elbowState, wristState);
 		elevator = elevatorState;
 		piece = HeldPiece.NONE;
@@ -43,7 +46,8 @@ public class SuperStructureState implements Loggable {
 		this(eState, new RotatingArmState(), new RotatingArmState(), HeldPiece.NONE);
 	}
 
-	public SuperStructureState(ElevatorState elevatorState, IntakeAngle angles___, HeldPiece piece__) {
+	public SuperStructureState(ElevatorState elevatorState, IntakeAngle angles___,
+			HeldPiece piece__) {
 		jointAngles = angles___;
 		elevator = elevatorState;
 		piece = piece__;
@@ -105,8 +109,10 @@ public class SuperStructureState implements Loggable {
 
 	@Override
 	public String toString() {
-		return "HeldPiece: " + this.piece.toString() + ", Elbow Angle: " + this.jointAngles.getElbow().toString() +
-				", Wrist Angle: " + this.jointAngles.getWrist().toString() + ", Elevator Height: "
+		return "HeldPiece: " + this.piece.toString() + ", Elbow Angle: "
+				+ this.jointAngles.getElbow().toString() +
+				", Wrist Angle: " + this.jointAngles.getWrist().toString()
+				+ ", Elevator Height: "
 				+ this.elevator.getHeight().getInch();
 	}
 
@@ -119,7 +125,8 @@ public class SuperStructureState implements Loggable {
 	public String toCSV() {
 		return Math.round(elevator.getHeight().getInch() * 100) / 100 + ","
 				+ Math.round(jointAngles.getElbow().angle.getDegree() * 100) / 100 + ","
-				+ Math.round(jointAngles.getWrist().angle.getDegree() * 100) / 100 + "," + piece.name();
+				+ Math.round(jointAngles.getWrist().angle.getDegree() * 100) / 100 + ","
+				+ piece.name();
 	}
 
 }

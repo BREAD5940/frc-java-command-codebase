@@ -41,7 +41,8 @@ public class TurnInPlace extends SendableCommandBase {
 	//   RobotConfig.auto.turnInPlace.max_turn_speed
 	// );
 
-	TerriblePID turnPID = new TerriblePID(kp, ki, kd, 0, -1, 1, integralZone, maxIntegralAccum, 0, null, null);
+	TerriblePID turnPID = new TerriblePID(kp, ki, kd, 0, -1, 1, integralZone,
+			maxIntegralAccum, 0, null, null);
 
 	/**
 	 * Turn a specified number of degrees in the default auto gear.
@@ -92,14 +93,18 @@ public class TurnInPlace extends SendableCommandBase {
 	@Override
 	public void execute() {
 		output = turnPID.update(Robot.drivetrain.getGyro() % 360);
-		raw_left = EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.left_wheel_effective_diameter,
+		raw_left = EncoderLib.distanceToRaw(output,
+				RobotConfig.driveTrain.left_wheel_effective_diameter,
 				RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
-		raw_right = (-1) * EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.right_wheel_effective_diameter,
+		raw_right = (-1) * EncoderLib.distanceToRaw(output,
+				RobotConfig.driveTrain.right_wheel_effective_diameter,
 				RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
 		Robot.drivetrain.setPowers(output, -output);
 		System.out.println(
-				String.format("Turn in place execute! Target: %s Gyro output: %s,Output: %s, Raw left: %s Raw right %s",
-						turnPID.getSetpoint(), Robot.drivetrain.getGyro(), output, raw_left, raw_right));
+				String.format(
+						"Turn in place execute! Target: %s Gyro output: %s,Output: %s, Raw left: %s Raw right %s",
+						turnPID.getSetpoint(), Robot.drivetrain.getGyro(), output,
+						raw_left, raw_right));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

@@ -42,7 +42,8 @@ public class TurnToFaceVisionTarget extends SendableCommandBase {
 	public void initialize() {
 		var targetX = LimeLight.getInstance().getDx().getDegree();
 		var robotYaw = DriveTrain.getInstance().getGyro();
-		var interpolationOffset = skewCorrection.interpolate(LimeLight.getInstance().getTargetSkew());
+		var interpolationOffset = skewCorrection
+				.interpolate(LimeLight.getInstance().getTargetSkew());
 
 		targetAngle = targetX + robotYaw + interpolationOffset;
 	}

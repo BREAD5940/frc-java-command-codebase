@@ -7,9 +7,7 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
-import kotlin.Suppress;
 import org.team5940.pantry.exparimental.command.InstantCommand;
-import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 import frc.robot.subsystems.superstructure.Elevator.ElevatorGear;
 import frc.robot.subsystems.superstructure.SuperStructure;

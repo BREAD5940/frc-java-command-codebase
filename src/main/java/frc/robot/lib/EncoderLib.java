@@ -68,7 +68,8 @@ public class EncoderLib {
 	 * @return distance
 	 * 
 	 */
-	public static double rawToDistance(double rawPosition, double unitsPerRotation, double effectiveDiam) {
+	public static double rawToDistance(double rawPosition, double unitsPerRotation,
+			double effectiveDiam) {
 		double rotations = rawPosition / unitsPerRotation;
 		double circumference = Math.PI * effectiveDiam;
 		double distance = rotations * circumference;
@@ -81,7 +82,8 @@ public class EncoderLib {
 	 * @param unitsPerRotation in raw encoder units
 	 * @return rawPosition in feet
 	 */
-	public static double distanceToRaw(double distance, double effectiveDiam, double unitsPerRotation) {
+	public static double distanceToRaw(double distance, double effectiveDiam,
+			double unitsPerRotation) {
 
 		double rawDistance = ((distance) / (Math.PI * effectiveDiam)) * unitsPerRotation;
 

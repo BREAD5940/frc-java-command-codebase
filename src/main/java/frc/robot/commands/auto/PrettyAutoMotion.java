@@ -48,7 +48,8 @@ public class PrettyAutoMotion {
 				if (machine.getGoalPiece() == HeldPiece.HATCH) {
 					//CLOSE clamp
 					//FIXME is this command still valid?
-					createdGroup = createdGroup.andThen(new SetHatchMech(HatchMechState.kClamped));
+					createdGroup = createdGroup
+							.andThen(new SetHatchMech(HatchMechState.kClamped));
 					//ALIGN with targets
 					// createdGroup.addSequential(new FollowVisionTarget(1, 5, 10));
 					//RUN intake
@@ -79,13 +80,15 @@ public class PrettyAutoMotion {
 	}
 
 	private Command genPresetMotion(SuperStructureState state) {
-		SuperstructureMotion.getInstance().plan(state, SuperStructure.getInstance().lastState); //FIXME lastState is what we want, right?
+		SuperstructureMotion.getInstance().plan(state,
+				SuperStructure.getInstance().lastState); //FIXME lastState is what we want, right?
 		return SuperstructureMotion.getInstance().getQueue();
 	}
 
 	private SuperStructureState findSuperStructureState(AutoMotionStateMachine machine) {
 		ElevatorState eState = new ElevatorState();
-		IntakeAngle aState = new IntakeAngle(new RotatingArmState(), new RotatingArmState());
+		IntakeAngle aState = new IntakeAngle(new RotatingArmState(),
+				new RotatingArmState());
 
 		//FIXME all the fieldPositions need tuning
 		switch (machine.getGoalLocation()) {
@@ -154,7 +157,8 @@ public class PrettyAutoMotion {
 					}
 					break;
 				case IN:
-					eState.setHeight(iPosition.HATCH_SLAM_ROCKET_INSIDE_PREP.getElevatorHeight());
+					eState.setHeight(
+							iPosition.HATCH_SLAM_ROCKET_INSIDE_PREP.getElevatorHeight());
 					aState = iPosition.HATCH_SLAM_ROCKET_INSIDE_PREP.getAngle();
 					break;
 				case BACK:

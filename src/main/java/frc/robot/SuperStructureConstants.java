@@ -11,7 +11,8 @@ public class SuperStructureConstants {
 	public static class Wrist {
 		public static final RoundRotation2d kWristMin = RoundRotation2d.getDegree(-90); // relative
 		public static final RoundRotation2d kWristMax = RoundRotation2d.getDegree(90); // relative
-		public static final RoundRotation2d kWristApproachingThreshold = RoundRotation2d.getDegree(6); // FIXME kinda random rn
+		public static final RoundRotation2d kWristApproachingThreshold = RoundRotation2d
+				.getDegree(6); // FIXME kinda random rn
 		public static final Length intakeOut = LengthKt.getInch(19); //FIXME check
 		public static final Length intakeDown = intakeOut;
 		public static final Length intakeUp = intakeOut;
@@ -25,9 +26,12 @@ public class SuperStructureConstants {
 		public static final RoundRotation2d kElbowMin = RoundRotation2d.getDegree(-180); // absolute
 		public static final RoundRotation2d kElbowMax = RoundRotation2d.getDegree(15); // absolute
 		public static final Length carriageToIntake = LengthKt.getInch(12); //FIXME verify
-		public static final RoundRotation2d kStowedAngle = RoundRotation2d.getDegree(-110); //FIXED, now less arb.
-		public static final RoundRotation2d kClearFirstStageMinElbowAngle = RoundRotation2d.getDegree(-70); //FIXME
-		public static final RoundRotation2d kElbowApproachingThreshold = RoundRotation2d.getDegree(6); // FIXME kinda random rn
+		public static final RoundRotation2d kStowedAngle = RoundRotation2d
+				.getDegree(-110); //FIXED, now less arb.
+		public static final RoundRotation2d kClearFirstStageMinElbowAngle = RoundRotation2d
+				.getDegree(-70); //FIXME
+		public static final RoundRotation2d kElbowApproachingThreshold = RoundRotation2d
+				.getDegree(6); // FIXME kinda random rn
 
 	}
 

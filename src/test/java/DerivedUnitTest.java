@@ -40,11 +40,16 @@ public class DerivedUnitTest {
 	@Test
 	public void testReflection() {
 		var old_ = Arrays.asList(
-				new Pose2d(LengthKt.getFeet(5.2), LengthKt.getFeet(17.6), Rotation2dKt.getDegree(0)),
-				new Pose2d(LengthKt.getFeet(9.802), LengthKt.getFeet(17.564), Rotation2dKt.getDegree(0)),
-				new Pose2d(LengthKt.getFeet(17.376), LengthKt.getFeet(21.539), Rotation2dKt.getDegree(25.868)),
-				new Pose2d(LengthKt.getFeet(21.7), LengthKt.getFeet(18.847), Rotation2dKt.getDegree(-90)),
-				new Pose2d(LengthKt.getFeet(21.7), LengthKt.getFeet(16.619), Rotation2dKt.getDegree(-90)));
+				new Pose2d(LengthKt.getFeet(5.2), LengthKt.getFeet(17.6),
+						Rotation2dKt.getDegree(0)),
+				new Pose2d(LengthKt.getFeet(9.802), LengthKt.getFeet(17.564),
+						Rotation2dKt.getDegree(0)),
+				new Pose2d(LengthKt.getFeet(17.376), LengthKt.getFeet(21.539),
+						Rotation2dKt.getDegree(25.868)),
+				new Pose2d(LengthKt.getFeet(21.7), LengthKt.getFeet(18.847),
+						Rotation2dKt.getDegree(-90)),
+				new Pose2d(LengthKt.getFeet(21.7), LengthKt.getFeet(16.619),
+						Rotation2dKt.getDegree(-90)));
 
 		for (Pose2d pose : old_)
 			System.out.println("start pose: " + Util.toString(pose));
@@ -60,13 +65,18 @@ public class DerivedUnitTest {
 
 		boolean isLeft = side == 'L' || side == 'l';
 
-		final Velocity<Length> kDefaultStartVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
-		final Velocity<Length> kDefaultEndVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
+		final Velocity<Length> kDefaultStartVelocity = VelocityKt
+				.getVelocity(LengthKt.getFeet(0));
+		final Velocity<Length> kDefaultEndVelocity = VelocityKt
+				.getVelocity(LengthKt.getFeet(0));
 
-		final Velocity<Length> kDefaultVelocityLow = VelocityKt.getVelocity(LengthKt.getFeet(5));
-		final Velocity<Length> kDefaultVelocityHigh = VelocityKt.getVelocity(LengthKt.getFeet(9));
+		final Velocity<Length> kDefaultVelocityLow = VelocityKt
+				.getVelocity(LengthKt.getFeet(5));
+		final Velocity<Length> kDefaultVelocityHigh = VelocityKt
+				.getVelocity(LengthKt.getFeet(9));
 
-		final Acceleration<Length> kDefaultAcceleration = AccelerationKt.getAcceleration(LengthKt.getFeet(6));
+		final Acceleration<Length> kDefaultAcceleration = AccelerationKt
+				.getAcceleration(LengthKt.getFeet(6));
 
 		List<Pose2d> p_hab = Arrays.asList(
 				new Pose2d(
@@ -121,7 +131,8 @@ public class DerivedUnitTest {
 		if (!isLeft) {
 			p_hab = Util.reflectTrajectory(p_hab);
 			p_toHatchPlace = Util.reflectTrajectory(p_toHatchPlace);
-			p_halfWayToLoadingStationL = Util.reflectTrajectory(p_halfWayToLoadingStationL);
+			p_halfWayToLoadingStationL = Util
+					.reflectTrajectory(p_halfWayToLoadingStationL);
 			p_toLoadingStation = Util.reflectTrajectory(p_toLoadingStation);
 		}
 

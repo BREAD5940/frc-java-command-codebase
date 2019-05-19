@@ -20,9 +20,11 @@ public class ElevatorState {
 	// private Elevator elevator = SuperStructure.elevator;
 
 	private Length kDefaultHeight = LengthKt.getFeet(0);
-	private Velocity<Length> kDefaultVelocity = VelocityKt.getVelocity(LengthKt.getFeet(0));
+	private Velocity<Length> kDefaultVelocity = VelocityKt
+			.getVelocity(LengthKt.getFeet(0));
 
-	public ElevatorState(Length height_, Velocity<Length> velocity_, Acceleration<Length> accel_, Time time_) {
+	public ElevatorState(Length height_, Velocity<Length> velocity_,
+			Acceleration<Length> accel_, Time time_) {
 		height = height_;
 		velocity = velocity_;
 		acceleration = accel_;
@@ -36,7 +38,8 @@ public class ElevatorState {
 		time = TimeUnitsKt.getSecond(0);
 	}
 
-	public ElevatorState(Length height_, Velocity<Length> velocity_, Acceleration<Length> accel_) {
+	public ElevatorState(Length height_, Velocity<Length> velocity_,
+			Acceleration<Length> accel_) {
 		height = height_;
 		velocity = velocity_;
 		acceleration = accel_;
@@ -56,18 +59,22 @@ public class ElevatorState {
 	}
 
 	public ElevatorState(Length height) {
-		this(height, VelocityKt.getVelocity(LengthKt.getFeet(0)), AccelerationKt.getAcceleration(LengthKt.getFeet(0)),
+		this(height, VelocityKt.getVelocity(LengthKt.getFeet(0)),
+				AccelerationKt.getAcceleration(LengthKt.getFeet(0)),
 				TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
 	}
 
 	public ElevatorState(Length height, boolean simulate) {
-		this(height, VelocityKt.getVelocity(LengthKt.getFeet(0)), AccelerationKt.getAcceleration(LengthKt.getFeet(0)),
+		this(height, VelocityKt.getVelocity(LengthKt.getFeet(0)),
+				AccelerationKt.getAcceleration(LengthKt.getFeet(0)),
 				TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
 	}
 
-	public ElevatorState getNewState(ElevatorState lastState, Length height_, Velocity<Length> velocity_) {
+	public ElevatorState getNewState(ElevatorState lastState, Length height_,
+			Velocity<Length> velocity_) {
 		Acceleration<Length> accel = AccelerationKt
-				.getAcceleration(LengthKt.getMeter((velocity_.getValue() - lastState.velocity.getValue())
+				.getAcceleration(LengthKt.getMeter((velocity_.getValue()
+						- lastState.velocity.getValue())
 						/ (Timer.getFPGATimestamp() - lastState.time.getValue())));
 		return new ElevatorState(height_, velocity_, accel); // TODO fixme
 	}

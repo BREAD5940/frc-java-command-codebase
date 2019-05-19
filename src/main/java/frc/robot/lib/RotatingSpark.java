@@ -9,11 +9,13 @@ public class RotatingSpark extends Spark implements Loggable {
 	private final int ticksPerRotation;
 	private final Encoder mEncoder;
 
-	public RotatingSpark(int motorPort, int encoderChannelA, int encoderChannelB, boolean reverse,
+	public RotatingSpark(int motorPort, int encoderChannelA, int encoderChannelB,
+			boolean reverse,
 			double ticksPerRotation) {
 		super(motorPort);
 		this.ticksPerRotation = (int) ticksPerRotation;
-		mEncoder = new Encoder(encoderChannelA, encoderChannelB, reverse, Encoder.EncodingType.k4X);
+		mEncoder = new Encoder(encoderChannelA, encoderChannelB, reverse,
+				Encoder.EncodingType.k4X);
 
 		mEncoder.setMaxPeriod(.1);
 		mEncoder.setMinRate(10);

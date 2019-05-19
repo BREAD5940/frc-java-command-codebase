@@ -18,7 +18,8 @@ public class PlannerTest extends SendableCommandBase {
 	// Called just before this Command runs the first time
 	@Override
 	public void initialize() {
-		SuperstructureMotion.getInstance().plan(goal, SuperStructure.getInstance().lastState);
+		SuperstructureMotion.getInstance().plan(goal,
+				SuperStructure.getInstance().lastState);
 		// SuperstructureMotion.getInstance().start();
 	}
 

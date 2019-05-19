@@ -13,7 +13,8 @@ public class Path {
 	public double maxWAccel, maxWVel;
 	public double maxEAccel, maxEVel;
 
-	public Path(SuperStructureState[] states, double mEleA, double mEleV, double mEA, double mEV, double mWA,
+	public Path(SuperStructureState[] states, double mEleA, double mEleV, double mEA,
+			double mEV, double mWA,
 			double mWV) {
 		this.states = states;
 	}
@@ -39,10 +40,14 @@ public class Path {
 
 			for (int j = 1; j < numToInject + 1; j++) {
 				//calculate intermediate x points between j and j+1 original points
-				morePoints[index][0] = j * ((orig[i + 1][0] - orig[i][0]) / (numToInject + 1)) + orig[i][0];
+				morePoints[index][0] = j
+						* ((orig[i + 1][0] - orig[i][0]) / (numToInject + 1))
+						+ orig[i][0];
 
 				//calculate intermediate y points  between j and j+1 original points
-				morePoints[index][1] = j * ((orig[i + 1][1] - orig[i][1]) / (numToInject + 1)) + orig[i][1];
+				morePoints[index][1] = j
+						* ((orig[i + 1][1] - orig[i][1]) / (numToInject + 1))
+						+ orig[i][1];
 
 				index++;
 			}
@@ -56,7 +61,8 @@ public class Path {
 		return morePoints;
 	}
 
-	public static double[][] smoother(double[][] path, double weight_data, double weight_smooth, double tolerance) {
+	public static double[][] smoother(double[][] path, double weight_data,
+			double weight_smooth, double tolerance) {
 
 		//copy array
 		double[][] newPath = doubleArrayCopy(path);
@@ -68,7 +74,8 @@ public class Path {
 				for (int j = 0; j < path[i].length; j++) {
 					double aux = newPath[i][j];
 					newPath[i][j] += weight_data * (path[i][j] - newPath[i][j])
-							+ weight_smooth * (newPath[i - 1][j] + newPath[i + 1][j] - (2.0 * newPath[i][j]));
+							+ weight_smooth * (newPath[i - 1][j] + newPath[i + 1][j]
+									- (2.0 * newPath[i][j]));
 					change += Math.abs(aux - newPath[i][j]);
 				}
 		}

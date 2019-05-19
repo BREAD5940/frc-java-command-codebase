@@ -27,12 +27,15 @@ public class IntakeTelop extends SendableCommandBase {
 	@Override
 	public void execute() {
 		if (Math.abs(Robot.m_oi.getCargoSpeed()) > 0.2) {
-			Intake.getInstance().setSpeed(-1 * Robot.m_oi.getCargoSpeed(), Robot.m_oi.getCargoSpeed());
+			Intake.getInstance().setSpeed(-1 * Robot.m_oi.getCargoSpeed(),
+					Robot.m_oi.getCargoSpeed());
 		} else {
 			Intake.getInstance().setSpeed(Robot.m_oi.getHatchSpeed(), 0);
 		}
 		var oi = Robot.m_oi;
-		oi.setAllRumble(Util.limit(Math.max(Robot.m_oi.getCargoSpeed(), Robot.m_oi.getHatchSpeed()), 0, 0.9));
+		oi.setAllRumble(Util.limit(
+				Math.max(Robot.m_oi.getCargoSpeed(), Robot.m_oi.getHatchSpeed()), 0,
+				0.9));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

@@ -59,7 +59,8 @@ public class PointFinder {
 		// System.out.println("---------");
 
 		/* Now we have them ordered by Y coordinate, we should check what order they should be in in terms of X axis */
-		if (topPoints.get(0).x < topPoints.get(1).x) /* if the first index is more leftward than the second */ {
+		if (topPoints.get(0).x < topPoints
+				.get(1).x) /* if the first index is more leftward than the second */ {
 			// we set the top left coordinate to index zero and to right to index one
 			topLeft = topPoints.get(0);
 			topRight = topPoints.get(1);
@@ -72,7 +73,8 @@ public class PointFinder {
 		}
 
 		// We do the same thing for bottom points
-		if (bottomPoints.get(0).x < bottomPoints.get(1).x) /* if the first index is more leftward than the second */ {
+		if (bottomPoints.get(0).x < bottomPoints
+				.get(1).x) /* if the first index is more leftward than the second */ {
 			// we set the top left coordinate to index zero and to right to index one
 			bottomLeft = bottomPoints.get(0);
 			bottomRight = bottomPoints.get(1);

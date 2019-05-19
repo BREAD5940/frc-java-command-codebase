@@ -1,6 +1,5 @@
 package frc.robot.commands.auto;
 
-import frc.robot.commands.subsystems.drivetrain.PIDDriveDistance;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.team5940.pantry.exparimental.command.Command;
@@ -9,8 +8,8 @@ import org.team5940.pantry.exparimental.command.PrintCommand;
 
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.groups.PlaceHatch;
-//import frc.robot.commands.subsystems.dri?vetrain.DriveDistance;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
+import frc.robot.commands.subsystems.drivetrain.PIDDriveDistance;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
@@ -54,13 +53,16 @@ public class AutoMotion {
 		//select heldPiece
 		if (this.gType == GoalType.CARGO_CARGO || this.gType == GoalType.ROCKET_CARGO) {
 			this.piece = HeldPiece.CARGO;
-		} else if (this.gType == GoalType.CARGO_HATCH || this.gType == GoalType.ROCKET_HATCH) {
+		} else if (this.gType == GoalType.CARGO_HATCH
+				|| this.gType == GoalType.ROCKET_HATCH) {
 			this.piece = HeldPiece.HATCH;
 		} else {
 			this.piece = HeldPiece.NONE;
 		}
-		this.mSSState = new SuperStructureState(new ElevatorState(getElevatorPreset()), getIA());
-		this.mPrepCommand = this.mPrepCommand.andThen(new SuperstructureGoToState(this.mSSState));
+		this.mSSState = new SuperStructureState(new ElevatorState(getElevatorPreset()),
+				getIA());
+		this.mPrepCommand = this.mPrepCommand
+				.andThen(new SuperstructureGoToState(this.mSSState));
 		if (this.piece != HeldPiece.NONE) {
 			this.mBigCommandGroup = genPlaceCommands();
 		} else {
@@ -164,13 +166,15 @@ public class AutoMotion {
 	private IntakeAngle getIA() {
 		if (this.gType == GoalType.RETRIEVE_CARGO) {
 			return iPosition.CARGO_GRAB;
-		} else if (this.gType == GoalType.ROCKET_CARGO || this.gType == GoalType.CARGO_CARGO) {
+		} else if (this.gType == GoalType.ROCKET_CARGO
+				|| this.gType == GoalType.CARGO_CARGO) {
 			if (rev) {
 				return iPosition.CARGO_REVERSE;
 			} else {
 				return iPosition.CARGO_PLACE;
 			}
-		} else if (this.gType == GoalType.CARGO_HATCH || this.gType == GoalType.ROCKET_HATCH
+		} else if (this.gType == GoalType.CARGO_HATCH
+				|| this.gType == GoalType.ROCKET_HATCH
 				|| this.gType == GoalType.RETRIEVE_HATCH) {
 			if (rev) {
 				return iPosition.HATCH_REVERSE;

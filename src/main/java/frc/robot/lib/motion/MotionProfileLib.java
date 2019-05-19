@@ -32,7 +32,8 @@ public class MotionProfileLib {
 	 * @param effective_diameter of the drivetrain wheel
 	 * @param motionProfileStatus object
 	 */
-	public static void motionProfileInit(TalonSRX talon, String path, double effective_diameter,
+	public static void motionProfileInit(TalonSRX talon, String path,
+			double effective_diameter,
 			MotionProfileStatus motionProfileStatus) {
 
 		System.out.println("--- Loading trajectory to talon... ---");
@@ -90,8 +91,10 @@ public class MotionProfileLib {
 		System.out.println("Converted segments:");
 		for (int x = 0; x < pathSegments.size(); x++) {
 			// double number = pathSegments.get(i)[1];
-			System.out.println("Line number: " + x + " Position: " + pathSegments.get(x)[3]
-					+ " Velocity: " + pathSegments.get(x)[4] + " Angle: " + pathSegments.get(x)[7]);
+			System.out
+					.println("Line number: " + x + " Position: " + pathSegments.get(x)[3]
+							+ " Velocity: " + pathSegments.get(x)[4] + " Angle: "
+							+ pathSegments.get(x)[7]);
 		}
 		return pathSegments;
 	}
@@ -104,14 +107,17 @@ public class MotionProfileLib {
 	 * @param talonSRX the Talon SRX device reference
 	 * @param profile the generated trajectory extracted from a CSV file
 	 */
-	public static void loadTrajectoryToTalon(TalonSRX talonSRX, ArrayList<double[]> profile,
+	public static void loadTrajectoryToTalon(TalonSRX talonSRX,
+			ArrayList<double[]> profile,
 			double effective_diameter) {
 		TrajectoryPoint point = new TrajectoryPoint();
 
 		for (int i = 0; i < profile.size(); i++) {
-			point.position = EncoderLib.distanceToRaw(profile.get(i)[4], effective_diameter,
+			point.position = EncoderLib.distanceToRaw(profile.get(i)[4],
+					effective_diameter,
 					RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);     // meters -> rotations -> ticks
-			point.velocity = EncoderLib.distanceToRaw(((profile.get(i)[5]) / 10.0), effective_diameter,
+			point.velocity = EncoderLib.distanceToRaw(((profile.get(i)[5]) / 10.0),
+					effective_diameter,
 					RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);     // meters/second -> ticks/sec -> ticks/100ms
 			point.headingDeg = profile.get(i)[7];
 			point.timeDur = 50;

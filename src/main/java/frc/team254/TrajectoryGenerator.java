@@ -52,7 +52,8 @@ public class TrajectoryGenerator {
 
 	// Move from the start to the goal with a trapezoidal speed profile.
 	// Jerk limits are ignored.
-	public static final Strategy TrapezoidalStrategy = new Strategy("TrapezoidalStrategy");
+	public static final Strategy TrapezoidalStrategy = new Strategy(
+			"TrapezoidalStrategy");
 
 	// Move from the start tot he goal with a S-curve speed profile.  All limits
 	// are obeyed, but only point-to-point moves (start_vel = goal_vel = 0) are
@@ -62,9 +63,11 @@ public class TrajectoryGenerator {
 	// Choose one of the above strategies based on the inputs.
 	public static final Strategy AutomaticStrategy = new Strategy("AutomaticStrategy");
 
-	private static final IntegrationMethod RectangularIntegration = new IntegrationMethod("RectangularIntegration");
+	private static final IntegrationMethod RectangularIntegration = new IntegrationMethod(
+			"RectangularIntegration");
 
-	private static final IntegrationMethod TrapezoidalIntegration = new IntegrationMethod("TrapezoidalIntegration");
+	private static final IntegrationMethod TrapezoidalIntegration = new IntegrationMethod(
+			"TrapezoidalIntegration");
 
 	///// METHODS /////
 	/**

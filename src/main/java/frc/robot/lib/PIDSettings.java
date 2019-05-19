@@ -5,7 +5,8 @@ import frc.robot.lib.TerriblePID.FeedForwardMode;
 
 public class PIDSettings {
 
-	public PIDSettings(double kp_, double ki_, double kd_, double kf_, FeedbackMode mode_) {
+	public PIDSettings(double kp_, double ki_, double kd_, double kf_,
+			FeedbackMode mode_) {
 		this(kp_, ki_, kd_, kf_, -1, 1, 0, 0, mode_);
 	}
 
@@ -14,7 +15,8 @@ public class PIDSettings {
 	}
 
 	// TODO make this use rotation2d or length
-	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double minOutput_, double maxOutput_,
+	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double minOutput_,
+			double maxOutput_,
 			double iZone_, double maxIAccum_, FeedbackMode mode_) {
 		kp = kp_;
 		ki = ki_;
@@ -27,7 +29,8 @@ public class PIDSettings {
 		mode = mode_;
 	}
 
-	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double mmVel, double mmAccel, double minOutput_,
+	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double mmVel,
+			double mmAccel, double minOutput_,
 			double maxOutput_, double iZone_, double maxIAccum_, FeedbackMode mode_) {
 		kp = kp_;
 		ki = ki_;
@@ -42,7 +45,8 @@ public class PIDSettings {
 		motionMagicCruiseVelocity = mmVel;
 	}
 
-	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double mmVel, double mmAccel,
+	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double mmVel,
+			double mmAccel,
 			FeedbackMode mode_) {
 		kp = kp_;
 		ki = ki_;
@@ -53,7 +57,8 @@ public class PIDSettings {
 		mode = mode_;
 	}
 
-	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double mmVel, double mmAccel) {
+	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double mmVel,
+			double mmAccel) {
 		kp = kp_;
 		ki = ki_;
 		kd = kd_;

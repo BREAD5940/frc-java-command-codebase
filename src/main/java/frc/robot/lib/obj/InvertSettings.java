@@ -13,7 +13,8 @@ public class InvertSettings {
 	 * @param s2FollowMode the mode of the second follower
 	 * @param s3FollowMode the mode of the third follower
 	 */
-	public InvertSettings(boolean mInvert, InvertType s1FollowMode, InvertType s2FollowMode, InvertType s3FollowMode) {
+	public InvertSettings(boolean mInvert, InvertType s1FollowMode,
+			InvertType s2FollowMode, InvertType s3FollowMode) {
 		masterInverted = mInvert;
 		slave1FollowerMode = s1FollowMode;
 		slave2FollowerMode = s2FollowMode;

@@ -13,7 +13,8 @@ public class ConditionalPassThrough extends ConditionalCommand {
 				new PassThrough.FrontToBack(SuperStructure.getInstance()),
 				new PassThrough.BackToFront(SuperStructure.getInstance()),
 				() -> {
-					var state = SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree();
+					var state = SuperStructure.getInstance().getCurrentState()
+							.getElbowAngle().getDegree();
 					return state > -90;
 				});
 

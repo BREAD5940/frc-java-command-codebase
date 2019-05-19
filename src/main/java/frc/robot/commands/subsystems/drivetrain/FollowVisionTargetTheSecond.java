@@ -49,7 +49,8 @@ public class FollowVisionTargetTheSecond extends SendableCommandBase {
 		Update_Limelight_Tracking();
 		if (m_LimelightHasValidTarget) {
 			// System.out.println(m_LimelightDriveCommand);
-			DriveTrain.getInstance().arcadeDrive(m_LimelightDriveCommand, m_LimelightSteerCommand);
+			DriveTrain.getInstance().arcadeDrive(m_LimelightDriveCommand,
+					m_LimelightSteerCommand);
 		} else {
 			DriveTrain.getInstance().stop();
 		}
@@ -81,10 +82,14 @@ public class FollowVisionTargetTheSecond extends SendableCommandBase {
 		double DESIRED_TARGET_AREA = this.targetArea;         // Area of the target when the robot reaches the wall
 		double MAX_DRIVE = 0.45;                   // Simple speed limit so we don't drive too fast
 
-		double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv").getDouble(0);
-		double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx").getDouble(0) - offset;
-		double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty").getDouble(0);
-		double ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta").getDouble(0);
+		double tv = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tv")
+				.getDouble(0);
+		double tx = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tx")
+				.getDouble(0) - offset;
+		double ty = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ty")
+				.getDouble(0);
+		double ta = NetworkTableInstance.getDefault().getTable("limelight").getEntry("ta")
+				.getDouble(0);
 
 		if (ta < 1)
 			MAX_DRIVE = .7; // TOOD tune

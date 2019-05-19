@@ -43,7 +43,8 @@ public class ElevatorMove extends SendableCommandBase {
 
 	@Override
 	public boolean isFinished() {
-		var toReturn = Math.abs(SuperStructure.getElevator().getHeight().getInch() - mGoal.height.getInch()) <= 1;
+		var toReturn = Math.abs(SuperStructure.getElevator().getHeight().getInch()
+				- mGoal.height.getInch()) <= 1;
 		//		System.out.println("ELEVATOR DONE? " + toReturn);
 		return toReturn;
 	}

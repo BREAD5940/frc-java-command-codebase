@@ -74,8 +74,10 @@ public class DifferentialUltrasonicSensor {
 	* @return theta, where positive is more clockwise
 	*/
 	public double getAngleOffset() {
-		double delta = getDistance(sensor2, RangeMode.INCHES) - getDistance(sensor1, RangeMode.INCHES);
-		double theta = Math.toDegrees(Math.atan(delta / ultrasonicSensors.sensorCenterDistance));
+		double delta = getDistance(sensor2, RangeMode.INCHES)
+				- getDistance(sensor1, RangeMode.INCHES);
+		double theta = Math
+				.toDegrees(Math.atan(delta / ultrasonicSensors.sensorCenterDistance));
 		return theta;
 	}
 

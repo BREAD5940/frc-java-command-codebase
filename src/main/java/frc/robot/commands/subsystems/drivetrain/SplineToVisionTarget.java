@@ -45,7 +45,8 @@ public class SplineToVisionTarget extends SequentialCommandGroup {
 	 * @param dsired_end how far away from the vision target to exit at
 	 * @param areaAtWhichToExit the area at which the command will exit, regarless of everything else
 	 */
-	public SplineToVisionTarget(/*Pose2d currentPose, */Length driveStraightDistance, Length desired_end,
+	public SplineToVisionTarget(/*Pose2d currentPose, */Length driveStraightDistance,
+			Length desired_end,
 			double areaAtWhichToExit) {
 		// this.targetDistance = targetLimelightOffset;
 		this.exitArea = areaAtWhichToExit;
@@ -69,31 +70,41 @@ public class SplineToVisionTarget extends SequentialCommandGroup {
 		double now = Timer.getFPGATimestamp();
 
 		// get the current and target poses in addition to drive straight pose
-		Pose2d mVisionTargetPose = LimeLight.getInstance().getPose(/*kEndOffset.getInch(), */kOffset.getInch());
-		Pose2d end = new Pose2d(new Translation2d(kOffset.plus(kEndOffset), kOffset), Rotation2dKt.getDegree(0));
+		Pose2d mVisionTargetPose = LimeLight.getInstance()
+				.getPose(/*kEndOffset.getInch(), */kOffset.getInch());
+		Pose2d end = new Pose2d(new Translation2d(kOffset.plus(kEndOffset), kOffset),
+				Rotation2dKt.getDegree(0));
 		// offset the end by the end offset to make a straight portion
-		Pose2d splineEnd = end.minus(new Pose2d(kOffset.plus(kEndOffset).minus(straightLength), LengthKt.getInch(0),
+		Pose2d splineEnd = end.minus(new Pose2d(
+				kOffset.plus(kEndOffset).minus(straightLength), LengthKt.getInch(0),
 				Rotation2dKt.getDegree(0)));
 
 		List<Pose2d> path;
 		// just go straight if we are too close or straight distance is zero
 		if (end.getTranslation().getX() == (splineEnd.getTranslation().getX())
-				|| (mVisionTargetPose.getTranslation().getX() - (kOffset).getMeter() < straightLength.getMeter())) {
+				|| (mVisionTargetPose.getTranslation().getX()
+						- (kOffset).getMeter() < straightLength.getMeter())) {
 			path = Arrays.asList(mVisionTargetPose, end);
 		} else {
 			path = Arrays.asList(mVisionTargetPose, splineEnd, end);
 		}
 
-		trajectory = Trajectories.generateTrajectory(path, Trajectories.kLowGearConstraints,
-				VelocityKt.getVelocity(LengthKt.getFeet(1)), VelocityKt.getVelocity(LengthKt.getFeet(2)),
-				VelocityKt.getVelocity(LengthKt.getFeet(2)), Trajectories.kDefaultAcceleration.div(2), false, true);
-		mFollowerCommand = DriveTrain.getInstance().followTrajectoryWithGear(trajectory, TrajectoryTrackerMode.RAMSETE,
+		trajectory = Trajectories.generateTrajectory(path,
+				Trajectories.kLowGearConstraints,
+				VelocityKt.getVelocity(LengthKt.getFeet(1)),
+				VelocityKt.getVelocity(LengthKt.getFeet(2)),
+				VelocityKt.getVelocity(LengthKt.getFeet(2)),
+				Trajectories.kDefaultAcceleration.div(2), false, true);
+		mFollowerCommand = DriveTrain.getInstance().followTrajectoryWithGear(trajectory,
+				TrajectoryTrackerMode.RAMSETE,
 				Gear.LOW, true);
 
 		System.out.println(
-				"========== Vision spline generated in " + (Timer.getFPGATimestamp() - now) + " seconds! ==========");
+				"========== Vision spline generated in "
+						+ (Timer.getFPGATimestamp() - now) + " seconds! ==========");
 
-		System.out.println("Pose2d of the target that we measured: " + Util.toString(mVisionTargetPose));
+		System.out.println("Pose2d of the target that we measured: "
+				+ Util.toString(mVisionTargetPose));
 
 		// this.clearRequirements();
 		mFollowerCommand.schedule();

@@ -22,7 +22,8 @@ public class SuperstructureGoToState extends SendableCommandBase {
 	}
 
 	public SuperstructureGoToState(ElevatorState eState) {
-		this(new SuperStructureState(eState, SuperStructure.getInstance().updateState().getAngle()));
+		this(new SuperStructureState(eState,
+				SuperStructure.getInstance().updateState().getAngle()));
 	}
 
 	public SuperstructureGoToState(Length eState, IntakeAngle aState) {
@@ -34,7 +35,8 @@ public class SuperstructureGoToState extends SendableCommandBase {
 	}
 
 	public SuperstructureGoToState(IntakeAngle aState) {
-		this(new SuperStructureState(SuperStructure.getInstance().updateState().getElevator(), aState));
+		this(new SuperStructureState(
+				SuperStructure.getInstance().updateState().getElevator(), aState));
 	}
 
 	public SuperstructureGoToState(SuperStructureState requState, double timeout) {
@@ -79,7 +81,8 @@ public class SuperstructureGoToState extends SendableCommandBase {
 	}
 
 	private boolean checkElbow() {
-		RoundRotation2d mCurrent = SuperStructure.getInstance().getCurrentState().getElbow().angle;
+		RoundRotation2d mCurrent = SuperStructure.getInstance().getCurrentState()
+				.getElbow().angle;
 		// RoundRotation2d mTarget = mRequState.getWrist().angle;
 		double kTolerence = 5; // degrees
 		var mError = Math.abs(elbowSetpoint.getDegree() - mCurrent.getDegree());
@@ -90,7 +93,8 @@ public class SuperstructureGoToState extends SendableCommandBase {
 	}
 
 	private boolean checkWrist() {
-		RoundRotation2d mCurrent = SuperStructure.getInstance().getCurrentState().getWrist().angle;
+		RoundRotation2d mCurrent = SuperStructure.getInstance().getCurrentState()
+				.getWrist().angle;
 		// RoundRotation2d mTarget = mRequState.getWrist().angle;
 		double kTolerence = 5; // degrees
 		var mError = Math.abs(wristSetpoint.getDegree() - mCurrent.getDegree());
@@ -101,7 +105,8 @@ public class SuperstructureGoToState extends SendableCommandBase {
 	}
 
 	private boolean checkElevator() {
-		Length mCurrent = SuperStructure.getInstance().getCurrentState().getElevatorHeight();
+		Length mCurrent = SuperStructure.getInstance().getCurrentState()
+				.getElevatorHeight();
 		Length mTarget = mRequState.elevator.height;
 		double kTolerence = 1; // inches
 		double mError = mTarget.minus(mCurrent).getInch();
