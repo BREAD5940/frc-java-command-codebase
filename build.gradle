@@ -60,20 +60,20 @@ repositories {
   maven { url 'https://jitpack.io' }
 }
 
-apply plugin: 'checkstyle'
-checkstyle {
-    toolVersion '7.8.1'
-    configFile file("config/checkstyle/checkstyle.xml")
-    showViolations = true
-    ignoreFailures = false
-    sourceSets = []
-}
-checkstyleMain {
-    source ='src/main/java'
-}
-checkstyleTest {
-    source ='src/test/java'
-}
+//apply plugin: 'checkstyle'
+//checkstyle {
+//    toolVersion '7.8.1'
+//    configFile file("config/checkstyle/checkstyle.xml")
+//    showViolations = true
+//    ignoreFailures = false
+//    sourceSets = []
+//}
+//checkstyleMain {
+//    source ='src/main/java'
+//}
+//checkstyleTest {
+//    source ='src/test/java'
+//}
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
