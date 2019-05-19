@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.team5940.pantry.exparimental.buttons.Button;
 import org.team5940.pantry.exparimental.buttons.JoystickButton;
+import org.team5940.pantry.exparimental.command.PrintCommand;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
@@ -159,6 +160,13 @@ public class OI {
 				new PassThrough.BackToFront(SuperStructure.getInstance()), false);
 		primaryDpadDown.whenPressed(
 				new PassThrough.FrontToBack(SuperStructure.getInstance()), false);
+
+		dsTogglePassThru.whenPressed(
+				(new PrintCommand("TOGGLING PASS THROUGH")).alongWith(
+						new PassThrough(
+								SuperStructure.getInstance(),
+								() -> (SuperStructure.getInstance().getCurrentState()
+										.getElbowAngle().getDegree() > -90))), false);
 
 	}
 
