@@ -174,7 +174,7 @@ public class PassThrough extends ConditionalCommand {
 			//			setInterruptible(false);
 
 			addCommands(new PrintCommand("passing thru front to back"));
-			addCommands(new ElevatorMove(LengthKt.getInch(23))); //todo check height
+			addCommands(new ElevatorMove(LengthKt.getInch(23.5))); //todo check height
 			addCommands(new SyncedMove(Math.toRadians(-160), true, structure));
 			//-188 elbow -106 wrist
 			addCommands(new ArmMove(new IntakeAngle(
@@ -196,7 +196,7 @@ public class PassThrough extends ConditionalCommand {
 			//			setInterruptible(false);
 
 			addCommands(new PrintCommand("passing thru back to front"));
-			addCommands(new ElevatorMove(LengthKt.getInch(23))); //todo check height
+			addCommands(new ElevatorMove(LengthKt.getInch(23.5))); //todo check height
 			addCommands(new SyncedMove(Math.toRadians(0), false, structure));
 			addCommands(new ElevatorMove(LengthKt.getInch(15))); //todo check height
 			addCommands(
