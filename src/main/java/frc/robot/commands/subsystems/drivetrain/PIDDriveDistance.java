@@ -24,25 +24,17 @@ public class PIDDriveDistance extends SendableCommandBase {
 	double ticksToMax = 3;
 	double lastCommand = 0;
 
-	public PIDDriveDistance(Length distance, double maxSpeedFt) {
+	public PIDDriveDistance(Length distance, Number maxSpeedFt) {
 		// Use addRequirements() here to declare subsystem dependencies
 		// eg. addRequirements(chassis);
 		// super(20, 0, 0);
 		addRequirements(DriveTrain.getInstance());
 		this.rawDelta = distance.getFeet();
 		//		setTimeout(4);
-		this.maxSpeed = maxSpeedFt;
+		this.maxSpeed = maxSpeedFt.doubleValue();
 	}
 
-	public PIDDriveDistance(double distance, double maxSpeedFt, double timeout) {
-		// Use addRequirements() here to declare subsystem dependencies
-		// eg. addRequirements(chassis);
-		// super(20, 0, 0);
-		addRequirements(DriveTrain.getInstance());
-		this.rawDelta = distance;
-		//		setTimeout(timeout);
-		this.maxSpeed = maxSpeedFt;
-	}
+//	public PIDDriveDistance(Length d)
 
 	// Called just before this Command runs the first time
 	@Override

@@ -26,7 +26,7 @@ public class TurnToFaceVisionTarget extends SendableCommandBase {
 
 	private double targetAngle;
 
-	private int count;
+	private int count = 0;
 
 	public TurnToFaceVisionTarget() {
 		addRequirements((Subsystem) DriveTrain.getInstance());
@@ -53,6 +53,13 @@ public class TurnToFaceVisionTarget extends SendableCommandBase {
 		final double kp = 0.3;
 
 		var error = DriveTrain.getInstance().getGyro() - targetAngle;
+
+		if (Math.abs(error) < 2) {
+			count++;
+		} else if (count > 0) {
+			count--;
+		}
+
 		var turnPower = kp * error;
 
 		turnPower = Util.limit(turnPower, 4);
@@ -65,17 +72,7 @@ public class TurnToFaceVisionTarget extends SendableCommandBase {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	public boolean isFinished() {
-
-		var error = DriveTrain.getInstance().getGyro() - targetAngle;
-
-		if (Math.abs(error) < 2) {
-			count++;
-		} else if (count > 0) {
-			count--;
-		}
-
-		return count > 6;
-
+		return count > 10;
 	}
 
 	// Called once after isFinished returns true

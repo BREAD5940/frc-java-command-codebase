@@ -12,8 +12,9 @@ import org.team5940.pantry.exparimental.command.PrintCommand
 import frc.robot.RobotConfig.auto.fieldPositions
 import frc.robot.commands.auto.AutoMotion
 import frc.robot.commands.auto.Trajectories
-import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheThird
+//import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheThird
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond
+import frc.robot.commands.subsystems.drivetrain.PIDDriveDistance
 import frc.robot.commands.subsystems.superstructure.ArmMove
 import frc.robot.commands.subsystems.superstructure.ElevatorMove
 import frc.robot.commands.subsystems.superstructure.JankyGoToState
@@ -91,7 +92,7 @@ class TwoHatchOneCargo
         // move the superstructure while driving backwards
         addCommands((ElevatorMove(iPosition.HATCH_GRAB_INSIDE.getElevator()).andThen(
                 JankyGoToState(iPosition.HATCH_GRAB_INSIDE))).alongWith(
-                DriveDistanceTheThird(3.feet, true)
+                PIDDriveDistance(3.feet, 6)
         ))
 
         addCommands(PrintCommand("GOT TO next spline"))

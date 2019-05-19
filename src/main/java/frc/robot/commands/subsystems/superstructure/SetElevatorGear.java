@@ -7,12 +7,14 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
+import kotlin.Suppress;
+import org.team5940.pantry.exparimental.command.InstantCommand;
 import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 import frc.robot.subsystems.superstructure.Elevator.ElevatorGear;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class SetElevatorGear extends SendableCommandBase {
+public class SetElevatorGear extends InstantCommand {
 
 	private ElevatorGear mReq;
 
@@ -27,19 +29,5 @@ public class SetElevatorGear extends SendableCommandBase {
 	public void initialize() {
 		SuperStructure.elevator.setGear(mReq);
 	}
-
-	// Called repeatedly when this Command is scheduled to run
-	@Override
-	public void execute() {}
-
-	// Make this return true when this Command no longer needs to run execute()
-	@Override
-	public boolean isFinished() {
-		return true;
-	}
-
-	// Called once after isFinished returns true
-	@Override
-	public void end(boolean interrupted) {}
 
 }

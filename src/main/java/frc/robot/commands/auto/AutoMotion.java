@@ -1,13 +1,15 @@
 package frc.robot.commands.auto;
 
+import frc.robot.commands.subsystems.drivetrain.PIDDriveDistance;
 import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.team5940.pantry.exparimental.command.Command;
 import org.team5940.pantry.exparimental.command.InstantCommand;
 import org.team5940.pantry.exparimental.command.PrintCommand;
 
 import frc.robot.RobotConfig;
 import frc.robot.commands.auto.groups.PlaceHatch;
-import frc.robot.commands.subsystems.drivetrain.DriveDistance;
+//import frc.robot.commands.subsystems.dri?vetrain.DriveDistance;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
@@ -92,7 +94,7 @@ public class AutoMotion {
 			toReturn = toReturn.andThen((new RunIntake(1, 1, 1)));
 			//pull the hatch out of the brushes
 			// toReturn.addSequential(new SuperstructureGoToState(new ElevatorState(getElevatorPreset().plus(LengthKt.getInch(6))))); // lift from brushes
-			toReturn = toReturn.andThen(new DriveDistance(-0.5)); // back up
+			toReturn = toReturn.andThen(new PIDDriveDistance(LengthKt.getFeet(-0.5), 7)); // back up
 			this.endPiece = HeldPiece.HATCH;
 		} else {
 			toReturn = new InstantCommand();
@@ -112,10 +114,10 @@ public class AutoMotion {
 
 		if (this.gType == GoalType.CARGO_CARGO) {
 			// Drive forward so the intake is over the bay and the bumpers are in the indent thingy
-			toReturn = (new DriveDistance(0.5 + 0.43)); // the 0.43 is the bumpers FIXME check distances
+			toReturn = (new PIDDriveDistance(LengthKt.getFeet(0.5 + 0.43), 7)); // the 0.43 is the bumpers FIXME check distances
 		} else {
 			// Drive forward so the intake is flush with the port/hatch
-			toReturn = (new DriveDistance(0.5)); // FIXME check distances
+			toReturn = (new PIDDriveDistance(LengthKt.getFeet(0.5), 7)); // FIXME check distances
 		}
 
 		if (this.piece == HeldPiece.CARGO) {

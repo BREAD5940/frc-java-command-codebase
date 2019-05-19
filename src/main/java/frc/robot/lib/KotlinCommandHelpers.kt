@@ -2,6 +2,7 @@ package frc.robot.lib
 
 import org.ghrobotics.lib.commands.FalconCommand
 import org.ghrobotics.lib.mathematics.units.SILengthConstants
+import org.ghrobotics.lib.mathematics.units.Time
 import org.team5940.pantry.exparimental.command.*
 import org.ghrobotics.lib.utils.BooleanSource
 
@@ -28,6 +29,8 @@ typealias ktRunnable = () -> Unit
 infix fun Command.withTimeout(seconds: Double): Command {
     return ParallelRaceGroup(this, WaitCommand(seconds))
 }
+
+infix fun Command.withTimeout(time: Time) = withTimeout(time.second)
 
 /**
  * Decorates this command with an interrupt condition.  If the specified condition becomes true

@@ -15,6 +15,7 @@ import frc.robot.commands.subsystems.drivetrain.PIDDriveDistance
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand
 import frc.robot.commands.subsystems.superstructure.JankyGoToState
 import frc.robot.commands.subsystems.superstructure.RunIntake
+import frc.robot.lib.withTimeout
 import frc.robot.subsystems.DriveTrain
 import frc.robot.subsystems.DriveTrain.Gear
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode
@@ -97,7 +98,7 @@ class PlaceCargoFrontL (/* char startPos, char side */) : SequentialCommandGroup
 
         addCommands(RunIntake(-1.0, 0.0, 1.0))
 
-        addCommands(PIDDriveDistance(-3.0, 12.0, /* timeout */ 0.5))
+        addCommands(PIDDriveDistance((-3.0).inch, 12.0) withTimeout 0.5.second)
 
         // addSequential(new DriveDistanceTheThird(LengthKt.getFeet(2), true));
     }
