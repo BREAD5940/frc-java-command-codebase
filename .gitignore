@@ -173,3 +173,4 @@ src\main\python\twoHatchLLtest.csv
 *.gz
 *.xml
 *.iml
+*.kotlin_module
