@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
@@ -119,6 +120,23 @@ public class Intake extends SendableSubsystemBase {
 	public void periodic() {
 		// setSpeed(Robot.m_oi.getIntakeSpeed());
 		// System.out.println("speed " + Robot.m_oi.getIntakeSpeed());
+	}
+
+	@Override
+	public void initSendable(SendableBuilder builder) {
+
+		builder.addDoubleProperty(".hatchOutputVolt",
+				() -> hatchTalon.getMotorOutputVoltage(),
+				(demand) -> hatchTalon.set(ControlMode.PercentOutput, demand / 12));
+		builder.addDoubleProperty(".cargoOutputVolt",
+				() -> cargoTalon.getMotorOutputVoltage(),
+				(demand) -> cargoTalon.set(ControlMode.PercentOutput, demand / 12));
+		builder.addDoubleProperty(".hatchOutputAmp",
+				() -> hatchTalon.getOutputCurrent(), null);
+		builder.addDoubleProperty(".cargoOutputAmp",
+				() -> cargoTalon.getOutputCurrent(), null);
+
+		super.initSendable(builder);
 	}
 
 	//	@Override

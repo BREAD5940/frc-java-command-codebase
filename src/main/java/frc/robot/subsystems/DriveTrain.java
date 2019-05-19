@@ -15,6 +15,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+import org.ghrobotics.lib.mathematics.units.SILengthConstants;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.motors.ctre.FalconSRX;
 import org.ghrobotics.lib.subsystems.drive.DifferentialTrackerDriveBase;
@@ -30,6 +31,8 @@ import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -565,6 +568,17 @@ public class DriveTrain extends SendableSubsystemBase
 		}
 
 		@Override
+		public void initSendable(SendableBuilder builder) {
+
+			builder.addDoubleProperty(".forwardCommand", () -> lastForward, null);
+			builder.addDoubleProperty(".turnCommand", () -> lastTurn, null);
+
+			super.initSendable(builder);
+		}
+
+		private double lastForward = 0, lastTurn = 0;
+
+		@Override
 		public void execute() {
 
 			var isQuickTurn = Robot.m_oi.getPrimary().getRawButton(3);
@@ -590,11 +604,16 @@ public class DriveTrain extends SendableSubsystemBase
 
 				// curvatureDrive(forwardSpeed, turnSpeed, Robot.m_oi.getPrimary().getRawButton(6));
 				DriveTrain.getInstance().curvatureDrive(forwardSpeed, turnSpeed, false);
+				lastForward = forwardSpeed;
+				lastTurn = turnSpeed;
 
 			} else {
-				DriveTrain.getInstance().curvatureDrive(
-						forwardSpeed * Math.abs(forwardSpeed) * Math.abs(forwardSpeed),
+				final var forwardCommand = forwardSpeed * Math.abs(forwardSpeed)
+						* Math.abs(forwardSpeed);
+				DriveTrain.getInstance().curvatureDrive(forwardCommand,
 						turnSpeed, true);
+				lastForward = forwardCommand;
+				lastTurn = turnSpeed;
 			}
 
 		}
@@ -825,4 +844,55 @@ public class DriveTrain extends SendableSubsystemBase
 				getRightMotor().getTalonSRX().getMotorOutputVoltage());
 	}
 
+	@Override
+	public void initSendable(SendableBuilder builder) {
+
+		// log left and right voltage outputs, velocities and errors
+		builder.addDoubleProperty(".busVoltage",
+				() -> getLeftMotor().getTalonSRX().getBusVoltage(), null);
+		builder.addDoubleProperty("match time ish", () -> Timer.getMatchTime(), null);
+		builder.addDoubleProperty(".leftOutputVolt",
+				() -> getLeftMotor().getTalonSRX().getMotorOutputVoltage(), null);
+		builder.addDoubleProperty(".rightOutputVolt",
+				() -> getRightMotor().getTalonSRX().getMotorOutputVoltage(), null);
+		builder.addDoubleProperty(".leftOutputAmp",
+				() -> getLeftMotor().getTalonSRX().getOutputCurrent(), null);
+		builder.addDoubleProperty(".rightOutputAmp",
+				() -> getRightMotor().getTalonSRX().getOutputCurrent(), null);
+
+		builder.addDoubleProperty(".leftVelocityFeetPerSec",
+				() -> (getLeftMotor().getEncoder().getVelocity()
+						/ SILengthConstants.kFeetToMeter),
+				null);
+
+		builder.addDoubleProperty(".rightVelocityFeetPerSec",
+				() -> (getRightMotor().getEncoder().getVelocity()
+						/ SILengthConstants.kFeetToMeter),
+				null);
+
+		builder.addDoubleProperty(".leftErrorFeetIsh",
+				() -> getLeftMotor().getModel().fromNativeUnitPosition(
+						getLeftMotor().getTalonSRX().getClosedLoopError())
+						/ SILengthConstants.kFeetToMeter,
+				null);
+
+		builder.addDoubleProperty(".rightErrorFeetIsh",
+				() -> getRightMotor().getModel().fromNativeUnitPosition(
+						getLeftMotor().getTalonSRX().getClosedLoopError())
+						/ SILengthConstants.kFeetToMeter,
+				null);
+
+		builder.addStringProperty(".robotPose",
+				() -> {
+					var currentPos = localization.getRobotPosition();
+					return currentPos.getTranslation().getX()
+							/ SILengthConstants.kFeetToMeter + ","
+							+ currentPos.getTranslation().getY()
+									/ SILengthConstants.kFeetToMeter
+							+ ","
+							+ currentPos.getRotation().getDegree();
+				}, null);
+
+		super.initSendable(builder);
+	}
 }
