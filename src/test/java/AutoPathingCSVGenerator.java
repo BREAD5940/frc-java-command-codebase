@@ -185,7 +185,8 @@ public class AutoPathingCSVGenerator {
 
 	}
 
-	public ArrayList<SuperStructureState> injectStates(ArrayList<SuperStructureState> wps, ArrayList<TimedTrajectory<Pose2dWithCurvature>> bigPath) {
+	public ArrayList<SuperStructureState> injectStates(ArrayList<SuperStructureState> wps,
+			ArrayList<TimedTrajectory<Pose2dWithCurvature>> bigPath) {
 		double elevatorInchPerSecond = 12;
 		double elbowRadPerSecond = 3.14159;
 		double wristRadPerSecond = 3.14159;
@@ -204,7 +205,8 @@ public class AutoPathingCSVGenerator {
 					toReturn.add(toReturn.get(toReturn.size() - 1));
 				} else {
 					TimedEntry<Pose2dWithCurvature> point = bigPath.get(i).getPoints().get(j);
-					double deltaT = (point.getT().getSecond() - bigPath.get(i).getPoints().get(j - 1).getT().getSecond()) / 2;
+					double deltaT = (point.getT().getSecond()
+							- bigPath.get(i).getPoints().get(j - 1).getT().getSecond()) / 2;
 					SuperStructureState prevState = toReturn.get(toReturn.size() - 1);
 
 					double nextHeight = 0; //FIXME this requires math and ifs to make it move the right distance in the right direction
@@ -250,7 +252,7 @@ public class AutoPathingCSVGenerator {
 
 			pw.println("x,y");
 			for (Translation2d t : path) {
-				pw.println(t.getX()/ SILengthConstants.kFeetToMeter + "," + t.getY()/ SILengthConstants.kFeetToMeter);
+				pw.println(t.getX() / SILengthConstants.kFeetToMeter + "," + t.getY() / SILengthConstants.kFeetToMeter);
 			}
 
 			// pw.print("adsffdsaadsfdsfaadsffads1");
@@ -270,7 +272,8 @@ public class AutoPathingCSVGenerator {
 
 			pw.println("height,elbowAngle,wristAngle");
 			for (SuperStructureState t : path) {
-				pw.println(t.getElevatorHeight().getFeet() + "," + t.getElbowAngle().getRadian() + "," + t.getWrist().angle.getRadian());
+				pw.println(t.getElevatorHeight().getFeet() + "," + t.getElbowAngle().getRadian() + ","
+						+ t.getWrist().angle.getRadian());
 			}
 
 			// pw.print("adsffdsaadsfdsfaadsffads1");
@@ -304,7 +307,8 @@ public class AutoPathingCSVGenerator {
 		String mLoadingStation = "loading" + side;
 
 		/* Get a trajectory to move to the cargo ship */
-		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + "cargoM" + side); //current trajectory from hashmap in Trajectorie
+		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories
+				.get(cStart + " to " + "cargoM" + side); //current trajectory from hashmap in Trajectorie
 		// Logger.log("first trajectory to cargo: " + traject.toString());
 		points.addAll(trajectToArrayList(traject));
 
@@ -355,7 +359,8 @@ public class AutoPathingCSVGenerator {
 		String cStart = "hab" + startPos;
 
 		/* Get a trajectory to move to the rocket ship close side (THIS IS BACKWARDS/REVERSED!) */
-		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories.get(cStart + " to " + mCloseRocket); //current trajectory from hashmap in Trajectorie
+		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedHGTrajectories
+				.get(cStart + " to " + mCloseRocket); //current trajectory from hashmap in Trajectorie
 		if (traject == null)
 			return null;
 		points.addAll(trajectToArrayList(traject));

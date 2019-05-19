@@ -159,7 +159,8 @@ public class Util {
 		return isBelowMax && isAboveMin;
 	}
 
-	public static RoundRotation2d getWorstCase(RoundRotation2d worstCase, RoundRotation2d bound1, RoundRotation2d bound2) {
+	public static RoundRotation2d getWorstCase(RoundRotation2d worstCase, RoundRotation2d bound1,
+			RoundRotation2d bound2) {
 		// RoundRotation2d toReturn;
 		if (isWithin(worstCase, bound1, bound2))
 			return worstCase;
@@ -168,7 +169,9 @@ public class Util {
 	}
 
 	public static String toString(Pose2d pose) {
-		return String.format("Pose: (%s, %s) theta: (%s)", pose.getTranslation().getX() / SILengthConstants.kFeetToMeter, pose.getTranslation().getY() / SILengthConstants.kFeetToMeter, pose.getRotation().getDegree());
+		return String.format("Pose: (%s, %s) theta: (%s)",
+				pose.getTranslation().getX() / SILengthConstants.kFeetToMeter,
+				pose.getTranslation().getY() / SILengthConstants.kFeetToMeter, pose.getRotation().getDegree());
 	}
 
 	public static Pose2d reflectWaypoint(Pose2d waypoint) {

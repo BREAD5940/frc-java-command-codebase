@@ -67,7 +67,8 @@ public class Path {
 			for (int i = 1; i < path.length - 1; i++)
 				for (int j = 0; j < path[i].length; j++) {
 					double aux = newPath[i][j];
-					newPath[i][j] += weight_data * (path[i][j] - newPath[i][j]) + weight_smooth * (newPath[i - 1][j] + newPath[i + 1][j] - (2.0 * newPath[i][j]));
+					newPath[i][j] += weight_data * (path[i][j] - newPath[i][j])
+							+ weight_smooth * (newPath[i - 1][j] + newPath[i + 1][j] - (2.0 * newPath[i][j]));
 					change += Math.abs(aux - newPath[i][j]);
 				}
 		}

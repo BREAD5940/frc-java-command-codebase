@@ -7,13 +7,13 @@
 
 package frc.robot.commands.subsystems.drivetrain;
 
+import org.team5940.pantry.exparimental.command.WaitCommand;
+
 import edu.wpi.first.networktables.NetworkTableInstance;
-//import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.Robot;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
-import org.team5940.pantry.exparimental.command.WaitCommand;
 
 public class DrivePowerToVisionTarget extends WaitCommand {
 
@@ -41,7 +41,9 @@ public class DrivePowerToVisionTarget extends WaitCommand {
 
 	// Called just before this Command runs the first time
 	@Override
-	public void initialize() {super.initialize();}
+	public void initialize() {
+		super.initialize();
+	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override

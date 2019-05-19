@@ -3,23 +3,19 @@ package frc.robot.commands.subsystems.superstructure;
 import static frc.robot.subsystems.superstructure.SuperStructure.getDumbWrist;
 
 import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
-
-import edu.wpi.first.wpilibj.Timer;
 import org.team5940.pantry.exparimental.command.ConditionalCommand;
 import org.team5940.pantry.exparimental.command.PrintCommand;
 import org.team5940.pantry.exparimental.command.SendableCommandBase;
-//import edu.wpi.first.wpilibj.command.CommandGroup;
-//import edu.wpi.first.wpilibj.command.ConditionalCommand;
-//import edu.wpi.first.wpilibj.command.PrintCommand;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
+
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.RobotConfig;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
-import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
 public class PassThrough extends ConditionalCommand {
 
@@ -40,14 +36,16 @@ public class PassThrough extends ConditionalCommand {
 		private boolean moveIteratorFinished = false;
 		private SuperStructureState lastObservedState = new SuperStructureState();
 
-		public SyncedMove(double goalAngle, double proximalMaxVel, double wristMaxVel, boolean isFrontToBack, SuperStructure structure) {
+		public SyncedMove(double goalAngle, double proximalMaxVel, double wristMaxVel, boolean isFrontToBack,
+				SuperStructure structure) {
 			this.goal = goalAngle + (isFrontToBack ? -30 : 0);
 			this.goalWrist = goalAngle;
 			this.goalWristRotation2d = RoundRotation2d.getRadian(goalWrist);
 			this.goalRotation2d = RoundRotation2d.getRadian(goal);
 			this.structure = structure;
 			this.isFrontToBack = isFrontToBack;
-			this.proximalVelocity = Math.abs(Math.min(Math.abs(proximalMaxVel), Math.abs(wristMaxVel))) * 0.8 * (isFrontToBack ? -1 : 1);
+			this.proximalVelocity = Math.abs(Math.min(Math.abs(proximalMaxVel), Math.abs(wristMaxVel))) * 0.8
+					* (isFrontToBack ? -1 : 1);
 		}
 
 		public SyncedMove(double goalAngle, boolean isFrontToBack, SuperStructure structure) {
@@ -142,7 +140,7 @@ public class PassThrough extends ConditionalCommand {
 
 		// super(setupConstructor(structure), isFrontToBack);
 
-		super(new FrontToBack(structure), new BackToFront(structure), isFrontToBack	);
+		super(new FrontToBack(structure), new BackToFront(structure), isFrontToBack);
 
 		this.structure = structure;
 		this.isFrontToBack = isFrontToBack;
@@ -151,10 +149,10 @@ public class PassThrough extends ConditionalCommand {
 
 	private BooleanSupplier isFrontToBack;
 
-//	@Override
-//	protected boolean condition() {
-//		return isFrontToBack.get();
-//	}
+	//	@Override
+	//	protected boolean condition() {
+	//		return isFrontToBack.get();
+	//	}
 
 	public static class FrontToBack extends SequentialCommandGroup {
 
@@ -165,7 +163,7 @@ public class PassThrough extends ConditionalCommand {
 
 		public FrontToBack(SuperStructure structure) {
 
-//			setInterruptible(false);
+			//			setInterruptible(false);
 
 			addCommands(new PrintCommand("passing thru front to back"));
 			addCommands(new ElevatorMove(LengthKt.getInch(23))); //todo check height
@@ -187,13 +185,14 @@ public class PassThrough extends ConditionalCommand {
 
 		public BackToFront(SuperStructure structure) {
 
-//			setInterruptible(false);
+			//			setInterruptible(false);
 
 			addCommands(new PrintCommand("passing thru back to front"));
 			addCommands(new ElevatorMove(LengthKt.getInch(23))); //todo check height
 			addCommands(new SyncedMove(Math.toRadians(0), false, structure));
 			addCommands(new ElevatorMove(LengthKt.getInch(15))); //todo check height
-			addCommands(new JankyGoToState(RobotConfig.auto.fieldPositions.hatchLowGoal, SuperStructure.iPosition.HATCH));
+			addCommands(
+					new JankyGoToState(RobotConfig.auto.fieldPositions.hatchLowGoal, SuperStructure.iPosition.HATCH));
 
 		}
 	}

@@ -9,17 +9,17 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import java.util.TreeMap;
 
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
-//import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.Robot;
 import frc.robot.lib.InterpolatableLut;
 import frc.robot.lib.InterpolatableLutEntry;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
-import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 public class PIDArcadeDrive extends SendableCommandBase {
 
@@ -137,11 +137,13 @@ public class PIDArcadeDrive extends SendableCommandBase {
 
 		if (isHighGear) {
 			// limit limear acceleration
-			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearHigh / Robot.mPeriod,
+			mVelocity.setLinear(Util.limit(mVelocity.getLinear(),
+					mCachedChassisState.getLinear() - maxAccelLinearHigh / Robot.mPeriod,
 					mCachedChassisState.getLinear() + maxAccelLinearHigh / Robot.mPeriod));
 
 			// limit the angular acceleration
-			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), mCachedChassisState.getAngular() - maxAccelAngularHigh / Robot.mPeriod,
+			mVelocity.setAngular(Util.limit(mVelocity.getAngular(),
+					mCachedChassisState.getAngular() - maxAccelAngularHigh / Robot.mPeriod,
 					mCachedChassisState.getAngular() + maxAccelAngularHigh / Robot.mPeriod));
 
 			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), highGearForward)); // constrain linear velocity just in case
@@ -149,7 +151,8 @@ public class PIDArcadeDrive extends SendableCommandBase {
 			highGearTurn = highGearAngularLUT.interpolate(Util.toFeet(mVelocity.getLinear()));
 			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), highGearTurn)); // limit angular velocity based on calculated max speed
 		} else {
-			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearLow / Robot.mPeriod,
+			mVelocity.setLinear(Util.limit(mVelocity.getLinear(),
+					mCachedChassisState.getLinear() - maxAccelLinearLow / Robot.mPeriod,
 					mCachedChassisState.getLinear() + maxAccelLinearLow / Robot.mPeriod));
 			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), lowGearForward));
 			lowGearTurn = lowGearAngularLUT.interpolate(Util.toFeet(mVelocity.getLinear()));
@@ -187,8 +190,8 @@ public class PIDArcadeDrive extends SendableCommandBase {
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-//	@Override
-//	protected void interrupted() {
-//		DriveTrain.getInstance().stop();
-//	}
+	//	@Override
+	//	protected void interrupted() {
+	//		DriveTrain.getInstance().stop();
+	//	}
 }

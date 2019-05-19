@@ -9,15 +9,16 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import java.util.TreeMap;
 
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.Subsystem;
+
 import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
-import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import frc.robot.lib.InterpolatableLut;
 import frc.robot.lib.InterpolatableLutEntry;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LimeLight;
-import org.team5940.pantry.exparimental.command.Subsystem;
 
 public class TurnToFaceVisionTarget extends SendableCommandBase {
 
@@ -79,10 +80,12 @@ public class TurnToFaceVisionTarget extends SendableCommandBase {
 
 	// Called once after isFinished returns true
 	@Override
-	public void end(boolean interrupted) {DriveTrain.getInstance().stop();}
+	public void end(boolean interrupted) {
+		DriveTrain.getInstance().stop();
+	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-//	@Override
-//	protected void interrupted() {}
+	//	@Override
+	//	protected void interrupted() {}
 }

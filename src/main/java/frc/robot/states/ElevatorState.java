@@ -44,12 +44,14 @@ public class ElevatorState {
 	}
 
 	public ElevatorState() {
-		this(LengthKt.getFeet(0), VelocityKt.getVelocity(LengthKt.getFeet(0)), AccelerationKt.getAcceleration(LengthKt.getFeet(0)),
+		this(LengthKt.getFeet(0), VelocityKt.getVelocity(LengthKt.getFeet(0)),
+				AccelerationKt.getAcceleration(LengthKt.getFeet(0)),
 				TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
 	}
 
 	public ElevatorState(boolean simulate) {
-		this(LengthKt.getFeet(0), VelocityKt.getVelocity(LengthKt.getFeet(0)), AccelerationKt.getAcceleration(LengthKt.getFeet(0)),
+		this(LengthKt.getFeet(0), VelocityKt.getVelocity(LengthKt.getFeet(0)),
+				AccelerationKt.getAcceleration(LengthKt.getFeet(0)),
 				TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
 	}
 
@@ -64,7 +66,9 @@ public class ElevatorState {
 	}
 
 	public ElevatorState getNewState(ElevatorState lastState, Length height_, Velocity<Length> velocity_) {
-		Acceleration<Length> accel = AccelerationKt.getAcceleration(LengthKt.getMeter((velocity_.getValue() - lastState.velocity.getValue()) / (Timer.getFPGATimestamp() - lastState.time.getValue())));
+		Acceleration<Length> accel = AccelerationKt
+				.getAcceleration(LengthKt.getMeter((velocity_.getValue() - lastState.velocity.getValue())
+						/ (Timer.getFPGATimestamp() - lastState.time.getValue())));
 		return new ElevatorState(height_, velocity_, accel); // TODO fixme
 	}
 
@@ -85,7 +89,8 @@ public class ElevatorState {
 	}
 
 	public boolean isEqualTo(ElevatorState other) {
-		return (this.acceleration.getValue() == other.acceleration.getValue() && this.height.getFeet() == other.height.getFeet()
+		return (this.acceleration.getValue() == other.acceleration.getValue()
+				&& this.height.getFeet() == other.height.getFeet()
 				&& this.velocity.getValue() == other.velocity.getValue());
 	}
 

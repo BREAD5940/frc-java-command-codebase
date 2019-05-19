@@ -7,15 +7,14 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Mass;
 import org.ghrobotics.lib.mathematics.units.MassKt;
-import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
+import org.ghrobotics.lib.motors.ctre.FalconSRX;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -33,7 +32,6 @@ import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.InvertSettings;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
-import org.ghrobotics.lib.motors.ctre.FalconSRX;
 
 /**
  * The elevator subsystem controls the elevator height
@@ -123,7 +121,8 @@ public class Elevator extends HalfBakedSubsystem {
 
 	NativeUnitLengthModel lengthModel = RobotConfig.elevator.elevatorModel;
 
-	public Elevator(int masterPort, int slavePort1, int slavePort2, int slavePort3, EncoderMode mode, InvertSettings settings) {
+	public Elevator(int masterPort, int slavePort1, int slavePort2, int slavePort3, EncoderMode mode,
+			InvertSettings settings) {
 
 		super("Elevator");
 
@@ -183,8 +182,8 @@ public class Elevator extends HalfBakedSubsystem {
 	}
 
 	public void configMotionMagicGains(PIDSettings settings) {
-//		getMaster().setMotionProfileCruiseVelocity((int) settings.motionMagicCruiseVelocity);
-//		getMaster().setMotionProfileAcceleration((int) settings.motionMagicAccel);
+		//		getMaster().setMotionProfileCruiseVelocity((int) settings.motionMagicCruiseVelocity);
+		//		getMaster().setMotionProfileAcceleration((int) settings.motionMagicAccel);
 
 		getMaster().getTalonSRX().configMotionCruiseVelocity((int) settings.motionMagicCruiseVelocity);
 		getMaster().getTalonSRX().configMotionAcceleration((int) settings.motionMagicAccel);
@@ -254,7 +253,8 @@ public class Elevator extends HalfBakedSubsystem {
 
 	public Length getClosedLoopError() {
 		if (getMaster().getTalonSRX().getControlMode() != ControlMode.PercentOutput) {
-			return lengthModel.fromNativeUnitPosition(NativeUnitKt.getNativeUnits(mMaster.getTalonSRX().getClosedLoopError()));
+			return lengthModel
+					.fromNativeUnitPosition(NativeUnitKt.getNativeUnits(mMaster.getTalonSRX().getClosedLoopError()));
 		} else {
 			return LengthKt.getFeet(0);
 		}
@@ -274,20 +274,23 @@ public class Elevator extends HalfBakedSubsystem {
 		getMaster().setNeutral();
 	}
 
-	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, double iZone, double maxIntegral, double minOut, double maxOut) {
+	public void setClosedLoopGains(int slot, double kp, double ki, double kd, double kf, double iZone,
+			double maxIntegral, double minOut, double maxOut) {
 		mMaster.getTalonSRX().selectProfileSlot(slot, 0);
 		mMaster.getTalonSRX().config_kP(slot, kp, 30);
 		mMaster.getTalonSRX().config_kI(slot, ki, 30);
 		mMaster.getTalonSRX().config_kD(slot, kd, 30);
 		mMaster.getTalonSRX().config_kF(slot, kf, 30);
-		mMaster.getTalonSRX().config_IntegralZone(slot, (int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getInch(iZone)).getValue()), 30);
+		mMaster.getTalonSRX().config_IntegralZone(slot,
+				(int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getInch(iZone)).getValue()), 30);
 		mMaster.getTalonSRX().configMaxIntegralAccumulator(slot, maxIntegral, 0);
 		mMaster.getTalonSRX().configPeakOutputForward(maxOut);
 		mMaster.getTalonSRX().configPeakOutputReverse(minOut);
 	}
 
 	public void setClosedLoopGains(int slot, PIDSettings config) {
-		setClosedLoopGains(slot, config.kp, config.ki, config.kd, config.kf, config.iZone, config.maxIAccum, config.minOutput, config.maxOutput);
+		setClosedLoopGains(slot, config.kp, config.ki, config.kd, config.kf, config.iZone, config.maxIAccum,
+				config.minOutput, config.maxOutput);
 	}
 
 	/**
@@ -297,7 +300,7 @@ public class Elevator extends HalfBakedSubsystem {
 		setpoint = Util.limit(setpoint, SuperStructureConstants.Elevator.bottom, SuperStructureConstants.Elevator.top);
 		getMaster().setUseMotionProfileForPosition(true);
 		getMaster().setPosition(setpoint.getMeter(), feedForwardPercent);
-//		getMaster().set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
+		//		getMaster().set(ControlMode.Position, setpoint, DemandType.ArbitraryFeedForward, feedForwardPercent);
 	}
 
 	/**
@@ -380,10 +383,10 @@ public class Elevator extends HalfBakedSubsystem {
 		return new ElevatorState(getHeight(), getVelocity());
 	}
 
-//	@Override
-//	protected void initDefaultCommand() {
-//
-//	}
+	//	@Override
+	//	protected void initDefaultCommand() {
+	//
+	//	}
 
 	@Override
 	public void onDisable() {

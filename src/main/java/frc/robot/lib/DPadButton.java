@@ -3,8 +3,9 @@ package frc.robot.lib;
 //import edu.wpi.first.wpilibj.Joystick;
 //import edu.wpi.first.wpilibj.buttons.Button;
 
-import edu.wpi.first.wpilibj.Joystick;
 import org.team5940.pantry.exparimental.buttons.Button;
+
+import edu.wpi.first.wpilibj.Joystick;
 
 public class DPadButton extends Button {
 

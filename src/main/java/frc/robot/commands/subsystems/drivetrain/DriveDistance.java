@@ -2,12 +2,12 @@ package frc.robot.commands.subsystems.drivetrain;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.TerriblePID;
-import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 /**
  * auto_DriveDistance is a basic auto action. It should drive in a straight-ish line, as it uses 
@@ -77,7 +77,7 @@ public class DriveDistance extends SendableCommandBase {
 	@Override
 	public void initialize() {
 		forwardPID.setSetpoint(targetDistance);
-//		setTimeout(timeout); // set the timeout
+		//		setTimeout(timeout); // set the timeout
 		System.out.println("Auto action drive init!");
 	}
 
@@ -94,7 +94,8 @@ public class DriveDistance extends SendableCommandBase {
 		//   RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
 		// Robot.drivetrain.setSpeeds(left_speed_raw, right_speed_raw);
 
-		Robot.drivetrain.setClosedLoop(VelocityKt.getVelocity(LengthKt.getFeet(forward_speed)), VelocityKt.getVelocity(LengthKt.getFeet(forward_speed)));
+		Robot.drivetrain.setClosedLoop(VelocityKt.getVelocity(LengthKt.getFeet(forward_speed)),
+				VelocityKt.getVelocity(LengthKt.getFeet(forward_speed)));
 
 		SmartDashboard.putNumber("Forward speed pid output", forward_speed);
 		SmartDashboard.putNumber("Raw left speed auto meme", left_speed_raw);
@@ -108,11 +109,13 @@ public class DriveDistance extends SendableCommandBase {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	public boolean isFinished() {
-		if (((Math.abs(Robot.drivetrain.getRight().getFeet() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence)
-				&& (Math.abs(Robot.drivetrain.getLeft().getFeet() - this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence)
+		if (((Math.abs(Robot.drivetrain.getRight().getFeet()
+				- this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence)
+				&& (Math.abs(Robot.drivetrain.getLeft().getFeet()
+						- this.targetDistance) < RobotConfig.auto.tolerences.position_tolerence)
 				&& (Math.abs(Robot.drivetrain.getLeft().getFeet()) < RobotConfig.auto.tolerences.velocity_tolerence)
-				&& (Math.abs(Robot.drivetrain.getRight().getFeet()) < RobotConfig.auto.tolerences.velocity_tolerence))
-				) {
+				&& (Math.abs(
+						Robot.drivetrain.getRight().getFeet()) < RobotConfig.auto.tolerences.velocity_tolerence))) {
 			return true;
 		} else {
 			return false;
@@ -127,8 +130,8 @@ public class DriveDistance extends SendableCommandBase {
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-//	@Override
-//	protected void interrupted() {
-//		Robot.drivetrain.stop();
-//	}
+	//	@Override
+	//	protected void interrupted() {
+	//		Robot.drivetrain.stop();
+	//	}
 }

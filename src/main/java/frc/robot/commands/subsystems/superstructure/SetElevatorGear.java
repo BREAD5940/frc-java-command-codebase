@@ -8,6 +8,7 @@
 package frc.robot.commands.subsystems.superstructure;
 
 import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import frc.robot.subsystems.superstructure.Elevator.ElevatorGear;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
@@ -40,6 +41,5 @@ public class SetElevatorGear extends SendableCommandBase {
 	// Called once after isFinished returns true
 	@Override
 	public void end(boolean interrupted) {}
-
 
 }

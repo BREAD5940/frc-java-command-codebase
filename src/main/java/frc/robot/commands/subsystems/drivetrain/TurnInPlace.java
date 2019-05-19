@@ -1,13 +1,13 @@
 package frc.robot.commands.subsystems.drivetrain;
 
-import frc.robot.subsystems.DriveTrain;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 import frc.robot.Robot;
 import frc.robot.RobotConfig;
 import frc.robot.lib.EncoderLib;
 import frc.robot.lib.TerriblePID;
-import org.team5940.pantry.exparimental.command.SendableCommandBase;
+import frc.robot.subsystems.DriveTrain;
 
 /**
  * Literally just pivot in place by a desired amount
@@ -92,10 +92,14 @@ public class TurnInPlace extends SendableCommandBase {
 	@Override
 	public void execute() {
 		output = turnPID.update(Robot.drivetrain.getGyro() % 360);
-		raw_left = EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.left_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
-		raw_right = (-1) * EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.right_wheel_effective_diameter, RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
+		raw_left = EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.left_wheel_effective_diameter,
+				RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
+		raw_right = (-1) * EncoderLib.distanceToRaw(output, RobotConfig.driveTrain.right_wheel_effective_diameter,
+				RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION);
 		Robot.drivetrain.setPowers(output, -output);
-		System.out.println(String.format("Turn in place execute! Target: %s Gyro output: %s,Output: %s, Raw left: %s Raw right %s", turnPID.getSetpoint(), Robot.drivetrain.getGyro(), output, raw_left, raw_right));
+		System.out.println(
+				String.format("Turn in place execute! Target: %s Gyro output: %s,Output: %s, Raw left: %s Raw right %s",
+						turnPID.getSetpoint(), Robot.drivetrain.getGyro(), output, raw_left, raw_right));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -120,6 +124,6 @@ public class TurnInPlace extends SendableCommandBase {
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-//	@Override
-//	protected void interrupted() {}
+	//	@Override
+	//	protected void interrupted() {}
 }

@@ -8,18 +8,17 @@ import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.Time;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
+import org.team5940.pantry.exparimental.command.InstantCommand;
+import org.team5940.pantry.exparimental.command.SendableSubsystemBase;
 
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-//import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.RobotConfig;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.VisionTarget;
 import frc.robot.lib.obj.factories.VisionTargetFactory;
-import org.team5940.pantry.exparimental.command.InstantCommand;
-import org.team5940.pantry.exparimental.command.SendableSubsystemBase;
 
 /**
  * tv  Whether the limelight has any valid targets (0 or 1)
@@ -134,7 +133,8 @@ public class LimeLight extends SendableSubsystemBase {
 	 * @param distanceToShiftBy how far to move everything up/right so it shows up on falcon dashboard
 	 */
 	public Pose2d getPose(double distanceToShiftBy) {
-		double[] camtran = NetworkTableInstance.getDefault().getTable("limelight").getEntry("camtran").getDoubleArray(new double[]{});
+		double[] camtran = NetworkTableInstance.getDefault().getTable("limelight").getEntry("camtran")
+				.getDoubleArray(new double[]{});
 
 		// final double kOffset = 100;
 
@@ -142,7 +142,8 @@ public class LimeLight extends SendableSubsystemBase {
 
 		// final double kLimelightForeOffset = 25; //inches from limelight to hatch pannel
 		// forward/backward motion, left/right motion
-		Translation2d mTranToGoal = new Translation2d(LengthKt.getInch((camtran[2]) + distanceToShiftBy), LengthKt.getInch((camtran[0] * -1) + distanceToShiftBy));
+		Translation2d mTranToGoal = new Translation2d(LengthKt.getInch((camtran[2]) + distanceToShiftBy),
+				LengthKt.getInch((camtran[0] * -1) + distanceToShiftBy));
 		Rotation2d mRotToGoal = Rotation2dKt.getDegree(camtran[4] * 1);
 		Pose2d mPoseToGoal = new Pose2d(mTranToGoal, mRotToGoal);
 
@@ -311,7 +312,7 @@ public class LimeLight extends SendableSubsystemBase {
 
 		public SetLEDs(LEDMode mode) {
 			this.mode = mode;
-//			setRunWhenDisabled(true);
+			//			setRunWhenDisabled(true);
 		}
 
 		@Override
@@ -334,7 +335,7 @@ public class LimeLight extends SendableSubsystemBase {
 
 		public setPipeline(PipelinePreset mode) {
 			this.mode = mode;
-//			setRunWhenDisabled(true);
+			//			setRunWhenDisabled(true);
 		}
 
 		@Override
@@ -349,10 +350,10 @@ public class LimeLight extends SendableSubsystemBase {
 
 	}
 
-//	@Override
-//	protected void initDefaultCommand() {
+	//	@Override
+	//	protected void initDefaultCommand() {
 
-//	}
+	//	}
 
 	public Length estimateDistanceFromAngle() {
 		final Rotation2d cameraAngle = Rotation2dKt.getDegree(-29);

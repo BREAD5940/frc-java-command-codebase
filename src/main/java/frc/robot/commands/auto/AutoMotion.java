@@ -168,7 +168,8 @@ public class AutoMotion {
 			} else {
 				return iPosition.CARGO_PLACE;
 			}
-		} else if (this.gType == GoalType.CARGO_HATCH || this.gType == GoalType.ROCKET_HATCH || this.gType == GoalType.RETRIEVE_HATCH) {
+		} else if (this.gType == GoalType.CARGO_HATCH || this.gType == GoalType.ROCKET_HATCH
+				|| this.gType == GoalType.RETRIEVE_HATCH) {
 			if (rev) {
 				return iPosition.HATCH_REVERSE;
 			} else {

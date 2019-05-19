@@ -32,7 +32,8 @@ public class TrapezoidalProfileTest {
 			TrajectoryGenerator.Strategy strategy) {
 		TrajectoryGenerator.Config config = new TrajectoryGenerator.Config();
 
-		System.out.println("=============================== Testing strategy " + strategy.toString() + " ===============================");
+		System.out.println("=============================== Testing strategy " + strategy.toString()
+				+ " ===============================");
 
 		config.dt = .02;
 		config.max_acc = 750.0;

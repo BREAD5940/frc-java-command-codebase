@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.team5940.pantry.exparimental.command.SendableSubsystemBase;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -8,8 +10,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.commands.subsystems.superstructure.IntakeTelop;
-import org.team5940.pantry.exparimental.command.SendableSubsystemBase;
 
 /**
  * The intake subsystem. Contains method setSpeed, openClamp and closeClamp.
@@ -120,9 +120,9 @@ public class Intake extends SendableSubsystemBase {
 		// System.out.println("speed " + Robot.m_oi.getIntakeSpeed());
 	}
 
-//	@Override
-//	public void initDefaultCommand() {
-//		// Set the default command for a subsystem here.
-//		setDefaultCommand(new IntakeTelop());
-//	}
+	//	@Override
+	//	public void initDefaultCommand() {
+	//		// Set the default command for a subsystem here.
+	//		setDefaultCommand(new IntakeTelop());
+	//	}
 }

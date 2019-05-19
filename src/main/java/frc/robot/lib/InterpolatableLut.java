@@ -28,10 +28,12 @@ public class InterpolatableLut {
 
 		// System.out.println("BOTTOM BOUND value: " + bottomBound.getValue().getValue());
 
-		if (topBound == null || Double.isNaN(topBound.getValue().getValue()) || Util.epsilonEquals(topBound.getKey(), key)) {
+		if (topBound == null || Double.isNaN(topBound.getValue().getValue())
+				|| Util.epsilonEquals(topBound.getKey(), key)) {
 			// System.out.println("top bound is nan or null, returning " + bottomBound.getValue().getValue());
 			return bottomBound.getValue().getValue();
-		} else if (bottomBound == null || Double.isNaN(bottomBound.getValue().getValue()) || Util.epsilonEquals(topBound.getKey(), key)) {
+		} else if (bottomBound == null || Double.isNaN(bottomBound.getValue().getValue())
+				|| Util.epsilonEquals(topBound.getKey(), key)) {
 			// System.out.println("bottom bound is nan or null, returning " + topBound.getValue().getValue());
 			return topBound.getValue().getValue();
 		} else {

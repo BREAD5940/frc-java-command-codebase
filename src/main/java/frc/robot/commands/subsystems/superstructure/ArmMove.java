@@ -1,7 +1,7 @@
 package frc.robot.commands.subsystems.superstructure;
 
 import org.team5940.pantry.exparimental.command.SendableCommandBase;
-//import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.IntakeAngle;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -28,8 +28,10 @@ public class ArmMove extends SendableCommandBase {
 
 	@Override
 	public boolean isFinished() {
-		return SuperStructure.getInstance().getWrist().isWithinTolerance(RoundRotation2d.getDegree(5), mDesired.getWrist().angle)
-				&& SuperStructure.getInstance().getElbow().isWithinTolerance(RoundRotation2d.getDegree(5), mDesired.getElbow().angle);
+		return SuperStructure.getInstance().getWrist().isWithinTolerance(RoundRotation2d.getDegree(5),
+				mDesired.getWrist().angle)
+				&& SuperStructure.getInstance().getElbow().isWithinTolerance(RoundRotation2d.getDegree(5),
+						mDesired.getElbow().angle);
 	}
 
 }

@@ -3,14 +3,12 @@ package frc.robot.commands.subsystems.superstructure;
 import java.util.concurrent.Callable;
 
 import org.ghrobotics.lib.mathematics.units.Length;
-
 import org.team5940.pantry.exparimental.command.Command;
-import org.team5940.pantry.exparimental.command.SendableCommandBase;
-//import frc.robot.commands.auto.groups.AutoCommandGroup;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
+
 import frc.robot.lib.AutoWaitForCondition;
 import frc.robot.states.IntakeAngle;
 import frc.robot.subsystems.superstructure.SuperStructure;
-import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
 public class ArmWaitForElevator extends SequentialCommandGroup {
 
@@ -32,7 +30,8 @@ public class ArmWaitForElevator extends SequentialCommandGroup {
 			// return ((SuperStructure.getElevator().getHeight().getInch() < finalEleHeight.plus(tolerence).getInch() && isDescending)
 			// 		|| (SuperStructure.getElevator().getHeight().getInch() > finalEleHeight.minus(tolerence).getInch()
 			// 				&& !isDescending));
-			return (SuperStructure.getElevator().getHeight().minus(finalEleHeight).getAbsoluteValue().getInch() < tolerence.getInch()); // check if the position error is acceptable
+			return (SuperStructure.getElevator().getHeight().minus(finalEleHeight).getAbsoluteValue()
+					.getInch() < tolerence.getInch()); // check if the position error is acceptable
 		}); // this lamda Caller can be read as:
 		// (null) -> [or becomes, turns into] (basically if the elevator is within tolerance)
 		// this Caller is then used by auto wait for condition and polled in isFinished();
@@ -43,8 +42,10 @@ public class ArmWaitForElevator extends SequentialCommandGroup {
 
 	@Override
 	public boolean isFinished() {
-		return Math.abs(desired.wristAngle.angle.getDegree() - SuperStructure.getInstance().getWrist().getDegrees()) <= 2
-				|| Math.abs(desired.elbowAngle.angle.getDegree() - SuperStructure.getInstance().getElbow().getDegrees()) <= 2;
+		return Math
+				.abs(desired.wristAngle.angle.getDegree() - SuperStructure.getInstance().getWrist().getDegrees()) <= 2
+				|| Math.abs(desired.elbowAngle.angle.getDegree()
+						- SuperStructure.getInstance().getElbow().getDegrees()) <= 2;
 	}
 
 }

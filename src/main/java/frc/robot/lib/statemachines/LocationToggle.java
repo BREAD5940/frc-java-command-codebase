@@ -1,6 +1,7 @@
 package frc.robot.lib.statemachines;
 
 import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import frc.robot.Robot;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalLocation;
 
@@ -17,7 +18,7 @@ public class LocationToggle extends SendableCommandBase {
 		Robot.autoState.setGoalLocation(GoalLocation.CARGO_SHIP);
 	}
 
-//	@Override
+	//	@Override
 	protected void interrupted() {
 		Robot.autoState.setGoalLocation(GoalLocation.ROCKET);
 	}

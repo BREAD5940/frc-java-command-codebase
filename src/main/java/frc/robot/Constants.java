@@ -37,7 +37,8 @@ public class Constants {
 			kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveLeftLow),
 			kVInterceptLeftLow);
 
-	public static final DCMotorTransmission kRightTransmissionModelLowGear = new DCMotorTransmission(1 / kVDriveRightLow,
+	public static final DCMotorTransmission kRightTransmissionModelLowGear = new DCMotorTransmission(
+			1 / kVDriveRightLow,
 			kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveRightLow),
 			kVInterceptRightLow);
 
@@ -49,19 +50,25 @@ public class Constants {
 	private static final double kADriveRightHigh = 0.043 * 1d; // Volts per radians per second per second 
 	private static final double kVInterceptRightHigh = 1.34 * 1d;//4 * 0.4d; // Volts - tuned!
 
-	private static final DCMotorTransmission kLeftTransmissionModelHighGear = new DCMotorTransmission(1 / kVDriveLeftHigh,
+	private static final DCMotorTransmission kLeftTransmissionModelHighGear = new DCMotorTransmission(
+			1 / kVDriveLeftHigh,
 			kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveLeftHigh),
 			kVInterceptLeftHigh);
 
-	private static final DCMotorTransmission kRightTransmissionModelHighGear = new DCMotorTransmission(1 / kVDriveRightHigh,
+	private static final DCMotorTransmission kRightTransmissionModelHighGear = new DCMotorTransmission(
+			1 / kVDriveRightHigh,
 			kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveRightHigh),
 			kVInterceptRightHigh);
 
-	public static final DifferentialDrive kLowGearDifferentialDrive = new DifferentialDrive(kRobotMass, kRobotMomentOfInertia,
-			kRobotAngularDrag, kWheelRadius, kTrackWidth / 2.0, kLeftTransmissionModelLowGear, kRightTransmissionModelLowGear);
+	public static final DifferentialDrive kLowGearDifferentialDrive = new DifferentialDrive(kRobotMass,
+			kRobotMomentOfInertia,
+			kRobotAngularDrag, kWheelRadius, kTrackWidth / 2.0, kLeftTransmissionModelLowGear,
+			kRightTransmissionModelLowGear);
 
-	public static final DifferentialDrive kHighGearDifferentialDrive = new DifferentialDrive(kRobotMass, kRobotMomentOfInertia,
-			kRobotAngularDrag, kWheelRadius, kTrackWidth / 2.0, kLeftTransmissionModelHighGear, kRightTransmissionModelHighGear);
+	public static final DifferentialDrive kHighGearDifferentialDrive = new DifferentialDrive(kRobotMass,
+			kRobotMomentOfInertia,
+			kRobotAngularDrag, kWheelRadius, kTrackWidth / 2.0, kLeftTransmissionModelHighGear,
+			kRightTransmissionModelHighGear);
 
 	/* Ramsete constants */
 	public static final double kDriveBeta = 2 * 1d; // Inverse meters squared

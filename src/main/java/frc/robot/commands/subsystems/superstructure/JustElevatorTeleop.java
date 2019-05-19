@@ -2,9 +2,8 @@ package frc.robot.commands.subsystems.superstructure;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
-
 import org.team5940.pantry.exparimental.command.SendableCommandBase;
-//import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import frc.robot.OI;
 import frc.robot.Robot;
 import frc.robot.states.ElevatorState;
@@ -63,7 +62,8 @@ public class JustElevatorTeleop extends SendableCommandBase {
 
 		// Figure out of the operator is commanding an elevator move. If so, increment the new state and cache the current state - if not, stay at the cached state.
 		if (Math.abs(mElevatorPower) > 0.01) {
-			mNewState.elevator = new ElevatorState(mCurrentState.getElevatorHeight().plus(LengthKt.getInch(mElevatorPower * ((mElevatorPower > 0) ? 2 : 2))));
+			mNewState.elevator = new ElevatorState(mCurrentState.getElevatorHeight()
+					.plus(LengthKt.getInch(mElevatorPower * ((mElevatorPower > 0) ? 2 : 2))));
 			mCachedState.elevator = mNewState.elevator;
 		} //else {
 			// mNewState.elevator = mCachedState.elevator;
@@ -86,6 +86,6 @@ public class JustElevatorTeleop extends SendableCommandBase {
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-//	@Override
-//	protected void interrupted() {}
+	//	@Override
+	//	protected void interrupted() {}
 }

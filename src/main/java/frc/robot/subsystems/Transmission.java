@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
+import org.ghrobotics.lib.motors.ctre.FalconSRX;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -20,7 +20,6 @@ import com.ctre.phoenix.motorcontrol.SensorTerm;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotConfig.driveTrain;
 import frc.robot.lib.enums.TransmissionSide;
-import org.ghrobotics.lib.motors.ctre.FalconSRX;
 
 public class Transmission {
 	public static enum EncoderMode {
@@ -103,7 +102,8 @@ public class Transmission {
 
 	public Length getClosedLoopError() {
 		if (getMaster().getTalonSRX().getControlMode() != ControlMode.PercentOutput) {
-			return lengthModel.fromNativeUnitPosition(NativeUnitKt.getNativeUnits(mMaster.getTalonSRX().getClosedLoopError()));
+			return lengthModel
+					.fromNativeUnitPosition(NativeUnitKt.getNativeUnits(mMaster.getTalonSRX().getClosedLoopError()));
 		} else {
 			return LengthKt.getFeet(0);
 		}
@@ -128,7 +128,8 @@ public class Transmission {
 		mMaster.getTalonSRX().config_kI(0, ki, 0);
 		mMaster.getTalonSRX().config_kD(0, kd, 0);
 		mMaster.getTalonSRX().config_kF(0, kf, 0);
-		mMaster.getTalonSRX().config_IntegralZone(0, (int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getMeter(iZone)).getValue()), 30);
+		mMaster.getTalonSRX().config_IntegralZone(0,
+				(int) Math.round(lengthModel.toNativeUnitPosition(LengthKt.getMeter(iZone)).getValue()), 30);
 		mMaster.getTalonSRX().configMaxIntegralAccumulator(0, maxIntegral, 0);
 	}
 

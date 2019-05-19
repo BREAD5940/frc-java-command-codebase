@@ -32,7 +32,8 @@ public class MotionProfileLib {
 	 * @param effective_diameter of the drivetrain wheel
 	 * @param motionProfileStatus object
 	 */
-	public static void motionProfileInit(TalonSRX talon, String path, double effective_diameter, MotionProfileStatus motionProfileStatus) {
+	public static void motionProfileInit(TalonSRX talon, String path, double effective_diameter,
+			MotionProfileStatus motionProfileStatus) {
 
 		System.out.println("--- Loading trajectory to talon... ---");
 
@@ -103,7 +104,8 @@ public class MotionProfileLib {
 	 * @param talonSRX the Talon SRX device reference
 	 * @param profile the generated trajectory extracted from a CSV file
 	 */
-	public static void loadTrajectoryToTalon(TalonSRX talonSRX, ArrayList<double[]> profile, double effective_diameter) {
+	public static void loadTrajectoryToTalon(TalonSRX talonSRX, ArrayList<double[]> profile,
+			double effective_diameter) {
 		TrajectoryPoint point = new TrajectoryPoint();
 
 		for (int i = 0; i < profile.size(); i++) {

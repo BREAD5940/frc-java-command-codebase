@@ -18,15 +18,13 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
-//import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 import edu.wpi.first.wpilibj.Notifier;
 import frc.robot.Robot;
 import frc.robot.commands.auto.Trajectories;
-//import frc.robot.lib.AutoCommand;
 import frc.robot.lib.Logger;
 import frc.robot.subsystems.DriveTrain;
-import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 // @SuppressWarnings({"WeakerAccess", "unused"})
 public class DriveDistanceTheThird extends SendableCommandBase {
@@ -82,11 +80,14 @@ public class DriveDistanceTheThird extends SendableCommandBase {
 	public void initialize() {
 
 		var currentPose = DriveTrain.getInstance().getLocalization().getRobotPosition();
-		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX() + "," + currentPose.getTranslation().getY() + "," + currentPose.getRotation().getDegree());
+		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX() + ","
+				+ currentPose.getTranslation().getY() + "," + currentPose.getRotation().getDegree());
 		Translation2d offsetTrans;
 		if (!reversed) {
 			// offsetTrans = new Translation2d(distance, currentPose.getRotation().plus(Rotation2dKt.getDegree(-0)));
-			offsetTrans = new Translation2d(distance.times(currentPose.getRotation().plus(Rotation2dKt.getDegree(90)).getCos()), distance.times(currentPose.getRotation().plus(Rotation2dKt.getDegree(90)).getSin()));
+			offsetTrans = new Translation2d(
+					distance.times(currentPose.getRotation().plus(Rotation2dKt.getDegree(90)).getCos()),
+					distance.times(currentPose.getRotation().plus(Rotation2dKt.getDegree(90)).getSin()));
 		} else {
 			offsetTrans = new Translation2d(distance, currentPose.getRotation().plus(Rotation2dKt.getDegree(180)));
 		}
@@ -99,8 +100,8 @@ public class DriveDistanceTheThird extends SendableCommandBase {
 
 				new Translation2d(
 
-				currentPose.getTranslation().getX() + (offsetTrans.getX()),
-				currentPose.getTranslation().getY() + (offsetTrans.getY())),
+						currentPose.getTranslation().getX() + (offsetTrans.getX()),
+						currentPose.getTranslation().getY() + (offsetTrans.getY())),
 				currentPose.getRotation());
 		// if(!reversed) {
 		// 	offsetPose = new Pose2d(
@@ -114,7 +115,8 @@ public class DriveDistanceTheThird extends SendableCommandBase {
 		// 		currentPose.getRotation());
 		// }
 
-		System.out.println("OFFSET POSE: " + offsetPose.getTranslation().getX() + "," + offsetPose.getTranslation().getY() + "," + offsetPose.getRotation().getDegree());
+		System.out.println("OFFSET POSE: " + offsetPose.getTranslation().getX() + ","
+				+ offsetPose.getTranslation().getY() + "," + offsetPose.getRotation().getDegree());
 
 		var waypoints = Arrays.asList(
 				currentPose, offsetPose);
@@ -139,7 +141,8 @@ public class DriveDistanceTheThird extends SendableCommandBase {
 			LiveDashboard.INSTANCE.setFollowingPath(false);
 
 			if (trajectorySource == null) {
-				Logger.log("Sadly the trajectories are not generated. the person responsible for the trajectories has been sacked.");
+				Logger.log(
+						"Sadly the trajectories are not generated. the person responsible for the trajectories has been sacked.");
 				Trajectories.generateAllTrajectories();
 			}
 
@@ -147,7 +150,8 @@ public class DriveDistanceTheThird extends SendableCommandBase {
 
 			trajectoryTracker.reset(this.trajectorySource.get());
 
-			Logger.log("first pose: " + trajectorySource.get().getFirstState().getState().getPose().getTranslation().getX());
+			Logger.log("first pose: "
+					+ trajectorySource.get().getFirstState().getState().getPose().getTranslation().getX());
 
 			if (reset == true) {
 				Robot.drivetrain.getLocalization().reset(trajectorySource.get().getFirstState().getState().getPose());
@@ -158,14 +162,18 @@ public class DriveDistanceTheThird extends SendableCommandBase {
 			LiveDashboard.INSTANCE.setFollowingPath(true);
 
 			mUpdateNotifier = new Notifier(() -> {
-				output = trajectoryTracker.nextState(driveBase.getRobotPosition(), TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
+				output = trajectoryTracker.nextState(driveBase.getRobotPosition(),
+						TimeUnitsKt.getMillisecond(System.currentTimeMillis()));
 
-				TrajectorySamplePoint<TimedEntry<Pose2dWithCurvature>> referencePoint = trajectoryTracker.getReferencePoint();
+				TrajectorySamplePoint<TimedEntry<Pose2dWithCurvature>> referencePoint = trajectoryTracker
+						.getReferencePoint();
 				if (referencePoint != null) {
 					Pose2d referencePose = referencePoint.getState().getState().getPose();
 
-					LiveDashboard.INSTANCE.setPathX(referencePose.getTranslation().getX() / SILengthConstants.kFeetToMeter);
-					LiveDashboard.INSTANCE.setPathY(referencePose.getTranslation().getY() / SILengthConstants.kFeetToMeter);
+					LiveDashboard.INSTANCE
+							.setPathX(referencePose.getTranslation().getX() / SILengthConstants.kFeetToMeter);
+					LiveDashboard.INSTANCE
+							.setPathY(referencePose.getTranslation().getY() / SILengthConstants.kFeetToMeter);
 					LiveDashboard.INSTANCE.setPathHeading(referencePose.getRotation().getRadian());
 				}
 				// Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );

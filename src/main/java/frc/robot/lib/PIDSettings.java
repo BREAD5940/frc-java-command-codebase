@@ -14,7 +14,8 @@ public class PIDSettings {
 	}
 
 	// TODO make this use rotation2d or length
-	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double minOutput_, double maxOutput_, double iZone_, double maxIAccum_, FeedbackMode mode_) {
+	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double minOutput_, double maxOutput_,
+			double iZone_, double maxIAccum_, FeedbackMode mode_) {
 		kp = kp_;
 		ki = ki_;
 		kd = kd_;
@@ -26,7 +27,8 @@ public class PIDSettings {
 		mode = mode_;
 	}
 
-	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double mmVel, double mmAccel, double minOutput_, double maxOutput_, double iZone_, double maxIAccum_, FeedbackMode mode_) {
+	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double mmVel, double mmAccel, double minOutput_,
+			double maxOutput_, double iZone_, double maxIAccum_, FeedbackMode mode_) {
 		kp = kp_;
 		ki = ki_;
 		kd = kd_;
@@ -40,7 +42,8 @@ public class PIDSettings {
 		motionMagicCruiseVelocity = mmVel;
 	}
 
-	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double mmVel, double mmAccel, FeedbackMode mode_) {
+	public PIDSettings(double kp_, double ki_, double kd_, double kf_, double mmVel, double mmAccel,
+			FeedbackMode mode_) {
 		kp = kp_;
 		ki = ki_;
 		kd = kd_;

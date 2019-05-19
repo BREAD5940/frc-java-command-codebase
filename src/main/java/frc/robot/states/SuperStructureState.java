@@ -20,7 +20,8 @@ public class SuperStructureState implements Loggable {
 		this(other.elevator, other.jointAngles);
 	}
 
-	public SuperStructureState(ElevatorState elevatorState, RotatingArmState elbowState, RotatingArmState wristState, HeldPiece heldPiece) {
+	public SuperStructureState(ElevatorState elevatorState, RotatingArmState elbowState, RotatingArmState wristState,
+			HeldPiece heldPiece) {
 		jointAngles = new IntakeAngle(elbowState, wristState);
 		elevator = elevatorState;
 		piece = heldPiece;
@@ -105,7 +106,8 @@ public class SuperStructureState implements Loggable {
 	@Override
 	public String toString() {
 		return "HeldPiece: " + this.piece.toString() + ", Elbow Angle: " + this.jointAngles.getElbow().toString() +
-				", Wrist Angle: " + this.jointAngles.getWrist().toString() + ", Elevator Height: " + this.elevator.getHeight().getInch();
+				", Wrist Angle: " + this.jointAngles.getWrist().toString() + ", Elevator Height: "
+				+ this.elevator.getHeight().getInch();
 	}
 
 	@Override
@@ -115,7 +117,8 @@ public class SuperStructureState implements Loggable {
 
 	@Override
 	public String toCSV() {
-		return Math.round(elevator.getHeight().getInch() * 100) / 100 + "," + Math.round(jointAngles.getElbow().angle.getDegree() * 100) / 100 + ","
+		return Math.round(elevator.getHeight().getInch() * 100) / 100 + ","
+				+ Math.round(jointAngles.getElbow().angle.getDegree() * 100) / 100 + ","
 				+ Math.round(jointAngles.getWrist().angle.getDegree() * 100) / 100 + "," + piece.name();
 	}
 

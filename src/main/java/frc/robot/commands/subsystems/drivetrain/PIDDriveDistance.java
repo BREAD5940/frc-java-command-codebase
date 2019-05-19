@@ -10,12 +10,11 @@ package frc.robot.commands.subsystems.drivetrain;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
-//import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
-import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 public class PIDDriveDistance extends SendableCommandBase {
 	double targetEnd;
@@ -31,7 +30,7 @@ public class PIDDriveDistance extends SendableCommandBase {
 		// super(20, 0, 0);
 		addRequirements(DriveTrain.getInstance());
 		this.rawDelta = distance.getFeet();
-//		setTimeout(4);
+		//		setTimeout(4);
 		this.maxSpeed = maxSpeedFt;
 	}
 
@@ -41,7 +40,7 @@ public class PIDDriveDistance extends SendableCommandBase {
 		// super(20, 0, 0);
 		addRequirements(DriveTrain.getInstance());
 		this.rawDelta = distance;
-//		setTimeout(timeout);
+		//		setTimeout(timeout);
 		this.maxSpeed = maxSpeedFt;
 	}
 
@@ -64,7 +63,8 @@ public class PIDDriveDistance extends SendableCommandBase {
 		var power = Util.limit(delta * kp, maxSpeed);
 		power = Util.limit(power, lastCommand - (1 / ticksToMax), lastCommand + (1 / ticksToMax));
 
-		DriveTrain.getInstance().setClosedLoop(VelocityKt.getVelocity(LengthKt.getFeet(power)), VelocityKt.getVelocity(LengthKt.getFeet(power)));
+		DriveTrain.getInstance().setClosedLoop(VelocityKt.getVelocity(LengthKt.getFeet(power)),
+				VelocityKt.getVelocity(LengthKt.getFeet(power)));
 
 		lastCommand = power;
 
@@ -85,8 +85,8 @@ public class PIDDriveDistance extends SendableCommandBase {
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-//	@Override
-//	protected void interrupted() {}
+	//	@Override
+	//	protected void interrupted() {}
 
 	// @Override
 	// protected double returnPIDInput() {

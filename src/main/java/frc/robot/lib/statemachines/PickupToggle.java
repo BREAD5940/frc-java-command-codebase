@@ -1,7 +1,7 @@
 package frc.robot.lib.statemachines;
 
 import org.team5940.pantry.exparimental.command.SendableCommandBase;
-//import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import frc.robot.Robot;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.MotionType;
 
@@ -18,7 +18,7 @@ public class PickupToggle extends SendableCommandBase {
 		Robot.autoState.setMotionType(MotionType.PICKUP);
 	}
 
-//	@Override
+	//	@Override
 	protected void interrupted() {
 		Robot.autoState.setMotionType(MotionType.PLACE);
 	}

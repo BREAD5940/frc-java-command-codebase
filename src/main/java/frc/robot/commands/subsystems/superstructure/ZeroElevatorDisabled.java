@@ -9,11 +9,11 @@ package frc.robot.commands.subsystems.superstructure;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -26,8 +26,8 @@ public class ZeroElevatorDisabled extends SendableCommandBase {
 		addRequirements(SuperStructure.getElevator());
 		addRequirements(SuperStructure.getInstance().getWrist());
 		addRequirements(SuperStructure.getInstance().getElbow());
-//		setInterruptible(true);
-//		setRunWhenDisabled(true);
+		//		setInterruptible(true);
+		//		setRunWhenDisabled(true);
 		this.mZeroHeight = height;
 	}
 
@@ -128,18 +128,20 @@ public class ZeroElevatorDisabled extends SendableCommandBase {
 		var wristStart = (int) wrist.getMaster().getTicks(RoundRotation2d.getDegree(-43 + 4 - 9));
 		var targetWrist = (int) 1000;
 		var targetWristComp = 1500 + 150;
-		var correctionDelta = (SuperStructure.getInstance().getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getInstance().getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+		var correctionDelta = (SuperStructure.getInstance().getElbow().getMaster().getSensorCollection()
+				.getPulseWidthPosition() % 2048)
+				* ((SuperStructure.getInstance().getElbow().getMaster().getSensorCollection()
+						.getPulseWidthPosition() > 0) ? 1 : -1);
 
 		//		var deltaW = (correctionDelta - (int) targetWrist) * 1;
 		var deltaW = (correctionDelta - (int) targetWristComp) * 1;
 
 		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
 
-		SuperStructure.getElevator().getMaster().setDutyCycle(0,0);
-//		SuperStructure.getElevator().getMaster().getTalonSRX().setSensorPosition(mZeroHeight);
+		SuperStructure.getElevator().getMaster().setDutyCycle(0, 0);
+		//		SuperStructure.getElevator().getMaster().getTalonSRX().setSensorPosition(mZeroHeight);
 		SuperStructure.getElevator().getMaster().getEncoder().resetPosition(
-				SuperStructure.getElevator().getMaster().getModel().toNativeUnitPosition(mZeroHeight.getMeter())
-		);
+				SuperStructure.getElevator().getMaster().getModel().toNativeUnitPosition(mZeroHeight.getMeter()));
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
@@ -157,8 +159,8 @@ public class ZeroElevatorDisabled extends SendableCommandBase {
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-//	@Override
-//	protected void interrupted() {
-//		SmartDashboard.putString("Zeroing state", mCurrentState.name());
-//	}
+	//	@Override
+	//	protected void interrupted() {
+	//		SmartDashboard.putString("Zeroing state", mCurrentState.name());
+	//	}
 }

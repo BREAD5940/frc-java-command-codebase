@@ -16,7 +16,8 @@ public class RotatingVelocityTrajectoryFollower {
 
 	double kP, kV, kA;
 
-	public RotatingVelocityTrajectoryFollower(HalfBakedRotatingSRX mMotor, Trajectory profile, double kP, double kV, double kA) {
+	public RotatingVelocityTrajectoryFollower(HalfBakedRotatingSRX mMotor, Trajectory profile, double kP, double kV,
+			double kA) {
 		this.mMotor = mMotor;
 		this.profile = profile;
 		this.kV = kV;

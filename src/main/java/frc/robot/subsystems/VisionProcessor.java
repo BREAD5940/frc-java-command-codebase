@@ -38,7 +38,8 @@ public class VisionProcessor {
 		mCameraMatrix.put(1, 1, 2.5635071715912881e+02);
 		mCameraMatrix.put(1, 2, 1.1971433393615548e+02);
 
-		mDistortionCoefficients = new MatOfDouble(2.9684613693070039e-01, -1.4380252254747885e+00, -2.2098421479494509e-03, -3.3894563533907176e-03, 2.5344430354806740e+00);
+		mDistortionCoefficients = new MatOfDouble(2.9684613693070039e-01, -1.4380252254747885e+00,
+				-2.2098421479494509e-03, -3.3894563533907176e-03, 2.5344430354806740e+00);
 
 		pointFinder = new PointFinder(isYAxisFlipped);
 	}
@@ -95,9 +96,12 @@ public class VisionProcessor {
 
 		Mat projectionMatrix = new Mat(3, 4, CvType.CV_64F);
 		projectionMatrix.put(0, 0,
-				rotationMatrix.get(0, 0)[0], rotationMatrix.get(0, 1)[0], rotationMatrix.get(0, 2)[0], translationVector.get(0, 0)[0],
-				rotationMatrix.get(1, 0)[0], rotationMatrix.get(1, 1)[0], rotationMatrix.get(1, 2)[0], translationVector.get(1, 0)[0],
-				rotationMatrix.get(2, 0)[0], rotationMatrix.get(2, 1)[0], rotationMatrix.get(2, 2)[0], translationVector.get(2, 0)[0]);
+				rotationMatrix.get(0, 0)[0], rotationMatrix.get(0, 1)[0], rotationMatrix.get(0, 2)[0],
+				translationVector.get(0, 0)[0],
+				rotationMatrix.get(1, 0)[0], rotationMatrix.get(1, 1)[0], rotationMatrix.get(1, 2)[0],
+				translationVector.get(1, 0)[0],
+				rotationMatrix.get(2, 0)[0], rotationMatrix.get(2, 1)[0], rotationMatrix.get(2, 2)[0],
+				translationVector.get(2, 0)[0]);
 
 		Mat cameraMatrix = new Mat();
 		Mat rotMatrix = new Mat();
@@ -115,7 +119,8 @@ public class VisionProcessor {
 
 		// print("translationVector cols: " + transVect.cols());
 		// print("translationVector rows: " + transVect.rows());
-		print("translationVector: " + translationVector.get(0, 0)[0] + ", " + translationVector.get(1, 0)[0] + ", " + translationVector.get(2, 0)[0]);
+		print("translationVector: " + translationVector.get(0, 0)[0] + ", " + translationVector.get(1, 0)[0] + ", "
+				+ translationVector.get(2, 0)[0]);
 
 		// System.out.println("rollInDegrees" + rollInDegrees);
 		// System.out.println("pitchInDegrees" + pitchInDegrees);

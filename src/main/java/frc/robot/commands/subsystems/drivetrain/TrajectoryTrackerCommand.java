@@ -13,15 +13,14 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TrajectorySamplePo
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.SILengthConstants;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
 import frc.robot.commands.auto.Trajectories;
-//import frc.robot.lib.AutoCommand;
 import frc.robot.lib.Logger;
 import frc.robot.subsystems.DriveTrain;
-import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 // @SuppressWarnings({"WeakerAccess", "unused"})
 public class TrajectoryTrackerCommand extends SendableCommandBase {
@@ -41,15 +40,18 @@ public class TrajectoryTrackerCommand extends SendableCommandBase {
 
 	Notifier mUpdateNotifier;
 
-	public TrajectoryTrackerCommand(DriveTrain driveBase, Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource) {
+	public TrajectoryTrackerCommand(DriveTrain driveBase,
+			Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource) {
 		this(driveBase, trajectorySource, false);
 	}
 
-	public TrajectoryTrackerCommand(DriveTrain driveBase, Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource, boolean reset) {
+	public TrajectoryTrackerCommand(DriveTrain driveBase,
+			Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource, boolean reset) {
 		this(driveBase, Robot.drivetrain.getTrajectoryTracker(), trajectorySource, reset);
 	}
 
-	public TrajectoryTrackerCommand(DriveTrain driveBase, TrajectoryTracker trajectoryTracker, Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource, boolean reset) {
+	public TrajectoryTrackerCommand(DriveTrain driveBase, TrajectoryTracker trajectoryTracker,
+			Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource, boolean reset) {
 		addRequirements(driveBase);
 		this.driveBase = driveBase;
 		this.trajectoryTracker = trajectoryTracker;
@@ -63,7 +65,8 @@ public class TrajectoryTrackerCommand extends SendableCommandBase {
 		LiveDashboard.INSTANCE.setFollowingPath(false);
 
 		if (trajectorySource == null) {
-			Logger.log("Sadly the trajectories are not generated. the person responsible for the trajectories has been sacked.");
+			Logger.log(
+					"Sadly the trajectories are not generated. the person responsible for the trajectories has been sacked.");
 			Trajectories.generateAllTrajectories();
 		}
 
@@ -71,7 +74,8 @@ public class TrajectoryTrackerCommand extends SendableCommandBase {
 
 		trajectoryTracker.reset(this.trajectorySource.get());
 
-		Logger.log("first pose: " + trajectorySource.get().getFirstState().getState().getPose().getTranslation().getX() / SILengthConstants.kFeetToMeter);
+		Logger.log("first pose: " + trajectorySource.get().getFirstState().getState().getPose().getTranslation().getX()
+				/ SILengthConstants.kFeetToMeter);
 
 		if (reset == true) {
 			Robot.drivetrain.getLocalization().reset(trajectorySource.get().getFirstState().getState().getPose());
@@ -82,9 +86,11 @@ public class TrajectoryTrackerCommand extends SendableCommandBase {
 		LiveDashboard.INSTANCE.setFollowingPath(true);
 
 		mUpdateNotifier = new Notifier(() -> {
-			output = trajectoryTracker.nextState(driveBase.getRobotPosition(), TimeUnitsKt.getSecond(Timer.getFPGATimestamp()));
+			output = trajectoryTracker.nextState(driveBase.getRobotPosition(),
+					TimeUnitsKt.getSecond(Timer.getFPGATimestamp()));
 
-			TrajectorySamplePoint<TimedEntry<Pose2dWithCurvature>> referencePoint = trajectoryTracker.getReferencePoint();
+			TrajectorySamplePoint<TimedEntry<Pose2dWithCurvature>> referencePoint = trajectoryTracker
+					.getReferencePoint();
 			if (referencePoint != null) {
 				Pose2d referencePose = referencePoint.getState().getState().getPose();
 

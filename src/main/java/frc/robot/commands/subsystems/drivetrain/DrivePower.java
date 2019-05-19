@@ -8,8 +8,9 @@
 package frc.robot.commands.subsystems.drivetrain;
 
 //import edu.wpi.first.wpilibj.command.TimedCommand;
-import frc.robot.subsystems.DriveTrain;
 import org.team5940.pantry.exparimental.command.WaitCommand;
+
+import frc.robot.subsystems.DriveTrain;
 
 public class DrivePower extends WaitCommand {
 	double power, time, reqEndTime;

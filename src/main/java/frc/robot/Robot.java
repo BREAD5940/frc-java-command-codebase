@@ -1,12 +1,12 @@
 package frc.robot;
 
-import frc.robot.commands.subsystems.superstructure.IntakeTelop;
-import frc.robot.commands.subsystems.superstructure.JustElevatorTeleop;
-import frc.robot.subsystems.Intake;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.ghrobotics.lib.mathematics.units.SILengthConstants;
+import org.team5940.pantry.exparimental.command.CommandScheduler;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
@@ -16,11 +16,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
-import org.ghrobotics.lib.mathematics.units.SILengthConstants;
-import org.team5940.pantry.exparimental.command.CommandScheduler;
-import org.team5940.pantry.exparimental.command.SendableCommandBase;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -28,8 +23,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.TerribleAutoChooser;
 import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.subsystems.superstructure.IntakeTelop;
+import frc.robot.commands.subsystems.superstructure.JustElevatorTeleop;
 import frc.robot.commands.subsystems.superstructure.PassThrough;
-import frc.robot.commands.subsystems.superstructure.PassThrough.SyncedMove;
 import frc.robot.commands.subsystems.superstructure.ZeroElevatorDisabled;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
@@ -37,6 +33,7 @@ import frc.robot.lib.statemachines.AutoMotionStateMachine;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.LimeLight.LEDMode;
 import frc.robot.subsystems.superstructure.SuperStructure;
@@ -137,8 +134,7 @@ public class Robot extends TimedRobot {
 	public Robot() {
 		super(mPeriod);
 		superstructure.setDefaultCommand(
-				new JustElevatorTeleop()
-		);
+				new JustElevatorTeleop());
 
 		var curveyBoi = new DriveTrain.CurvatureDrive();
 		drivetrain.setDefaultCommand(curveyBoi);
@@ -179,7 +175,7 @@ public class Robot extends TimedRobot {
 
 		Logger.clearLog();
 
-//		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
+		//		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
 		SmartDashboard.putData(CommandScheduler.getInstance());
 
 		SmartDashboard.putData(zeroElevatorWhileDisabled);
@@ -189,12 +185,14 @@ public class Robot extends TimedRobot {
 		System.out.println("Auto chooser sent!");
 		Trajectories.generateAllTrajectories();
 
-		Shuffleboard.getTab("Auto").getLayout("Path selection", BuiltInLayouts.kList).add(mAutoChooser.getChooser()).withSize(2, 5).withPosition(0, 0);
+		Shuffleboard.getTab("Auto").getLayout("Path selection", BuiltInLayouts.kList).add(mAutoChooser.getChooser())
+				.withSize(2, 5).withPosition(0, 0);
 
 		if (drivetrain == null)
 			drivetrain = DriveTrain.getInstance();
 		// FIXME Jocelyn this might mess with auto stuff, will it? (I think no?)
-		drivetrain.getLocalization().reset(new Pose2d(LengthKt.getFeet(5.5), LengthKt.getFeet(17), new Rotation2d(0f, 0f, false)));
+		drivetrain.getLocalization()
+				.reset(new Pose2d(LengthKt.getFeet(5.5), LengthKt.getFeet(17), new Rotation2d(0f, 0f, false)));
 
 		autoState = new AutoMotionStateMachine();
 		// logger = Logger.getInstance();
@@ -224,7 +222,10 @@ public class Robot extends TimedRobot {
 		// 600 is the boiiii
 		var target_ = 650;
 		var target_COMP = 650;
-		var tickkkkks_ = (SuperStructure.getElevator().getMaster().getTalonSRX().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getElevator().getMaster().getTalonSRX().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+		var tickkkkks_ = (SuperStructure.getElevator().getMaster().getTalonSRX().getSensorCollection()
+				.getPulseWidthPosition() % 2048)
+				* ((SuperStructure.getElevator().getMaster().getTalonSRX().getSensorCollection()
+						.getPulseWidthPosition() > 0) ? 1 : -1);
 		var delta_ = (tickkkkks_ - (int) target_COMP) * -1;
 
 		// elevator.getMaster().setSelectedSensorPosition((int) (startingHeightTicks + delta_));
@@ -232,7 +233,8 @@ public class Robot extends TimedRobot {
 
 		var proximal = SuperStructure.getInstance().getElbow();
 		// var startingAngleTicks = (int) proximal.getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(proximal.getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
-		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+		var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048)
+				* ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		var targetProximal_ = 1400;
 		var targetProximal_COMP = 1900;
 		var delta = (tickkkkks - (int) targetProximal_COMP) * -1;
@@ -245,13 +247,16 @@ public class Robot extends TimedRobot {
 		var wristStart = (int) wrist.getMaster().getTicks(RoundRotation2d.getDegree(-43 + 4 - 9));
 		var targetWrist = (int) 1000;
 		var targetWristComp = 1500 + 150;
-		var correctionDelta = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+		var correctionDelta = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition()
+				% 2048)
+				* ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 		var deltaW = (correctionDelta - (int) targetWristComp) * 1;
 
 		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
 		// wrist.getMaster().setSelectedSensorPosition((int) (wristStart));
 
-		elevator.getMaster().getTalonSRX().setSelectedSensorPosition((int) (elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue()), 0, 0); // just to be super sure the elevator is safe-ishhhh
+		elevator.getMaster().getTalonSRX().setSelectedSensorPosition(
+				(int) (elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue()), 0, 0); // just to be super sure the elevator is safe-ishhhh
 		var cmd = zeroElevatorWhileDisabled;
 		cmd.schedule();
 
@@ -337,17 +342,17 @@ public class Robot extends TimedRobot {
 
 		// mResetNotifier.startPeriodic(0.5);
 
-//		var frontBack = new sequen();
-//		//		frontBack.addSequential(new ElevatorMove(LengthKt.getInch(24)));
-//		frontBack.addSequential(new SyncedMove(Math.toRadians(-180), true, superstructure));
-//		// frontBack.addSequential(new ArmMove(new IntakeAngle(
-//		// 	new RotatingArmState(RoundRotation2d.getDegree(-210)),
-//		// 	new RotatingArmState(RoundRotation2d.getDegree(-180))
-//		// 	)));
-//
-//		var backFront = new CommandGroup();
-//		//		backFront.addSequential(new ElevatorMove(LengthKt.getInch(24)));
-//		backFront.addSequential(new SyncedMove(Math.toRadians(0), true, superstructure));
+		//		var frontBack = new sequen();
+		//		//		frontBack.addSequential(new ElevatorMove(LengthKt.getInch(24)));
+		//		frontBack.addSequential(new SyncedMove(Math.toRadians(-180), true, superstructure));
+		//		// frontBack.addSequential(new ArmMove(new IntakeAngle(
+		//		// 	new RotatingArmState(RoundRotation2d.getDegree(-210)),
+		//		// 	new RotatingArmState(RoundRotation2d.getDegree(-180))
+		//		// 	)));
+		//
+		//		var backFront = new CommandGroup();
+		//		//		backFront.addSequential(new ElevatorMove(LengthKt.getInch(24)));
+		//		backFront.addSequential(new SyncedMove(Math.toRadians(0), true, superstructure));
 
 		SmartDashboard.putData("front to back passthrough", new PassThrough.FrontToBack(superstructure));
 		SmartDashboard.putData("back to front passthrough", new PassThrough.BackToFront(superstructure));
@@ -476,7 +481,7 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotPeriodic() {
-//		Scheduler.getInstance().run();
+		//		Scheduler.getInstance().run();
 		CommandScheduler.getInstance().run();
 
 		drivetrain.logPeriodicIO();
@@ -495,21 +500,29 @@ public class Robot extends TimedRobot {
 
 			// var tickkkkks = (int) superstructure.getWrist().getMaster().getTicks(RoundRotation2d.getDegree(-90)) + (-640) + (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048 * Math.signum(superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048));
 			// var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
-			var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+			var tickkkkks = (superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048)
+					* ((superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1
+							: -1);
 			SmartDashboard.putNumber("Elbow absolute pos ", tickkkkks);
 
-			var tickks = (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+			var tickks = (superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() % 2048)
+					* ((superstructure.getWrist().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1
+							: -1);
 
 			SmartDashboard.putNumber("wrist absolute pos ", tickks);
 
-			var ticcccks = (SuperStructure.getElevator().getMaster().getTalonSRX().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getElevator().getMaster().getTalonSRX().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
+			var ticcccks = (SuperStructure.getElevator().getMaster().getTalonSRX().getSensorCollection()
+					.getPulseWidthPosition() % 2048)
+					* ((SuperStructure.getElevator().getMaster().getTalonSRX().getSensorCollection()
+							.getPulseWidthPosition() > 0) ? 1 : -1);
 
 			SmartDashboard.putNumber("Elevator absolute pos ", tickks);
 
 			// System.out.println(superstructure.getElbow().getMaster().getSensorCollection().getPulseWidthPosition());
 			// System.out.println(superstructure.getElbow().getMaster().getSensorPosition().getDegree());
 
-			SmartDashboard.putString(SuperStructure.getInstance().getCurrentState().getCSVHeader(), SuperStructure.getInstance().getCurrentState().toCSV());
+			SmartDashboard.putString(SuperStructure.getInstance().getCurrentState().getCSVHeader(),
+					SuperStructure.getInstance().getCurrentState().toCSV());
 
 		}
 
@@ -518,12 +531,19 @@ public class Robot extends TimedRobot {
 
 		// System.out.println(String.format("carriage max %s inner stage min %s", superstructure.getCarriageMaxLimit(), superstructure.getInnerStageMinLimit() ));
 
-		SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX() / SILengthConstants.kFeetToMeter);
-		SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY() / SILengthConstants.kFeetToMeter);
+		SmartDashboard.putNumber("Robot X (feet) ",
+				drivetrain.getLocalization().getRobotPosition().getTranslation().getX()
+						/ SILengthConstants.kFeetToMeter);
+		SmartDashboard.putNumber("Robot Y (feet) ",
+				drivetrain.getLocalization().getRobotPosition().getTranslation().getY()
+						/ SILengthConstants.kFeetToMeter);
 
-		LiveDashboard.INSTANCE.setRobotX(drivetrain.getLocalization().getRobotPosition().getTranslation().getX() / SILengthConstants.kFeetToMeter);
-		LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY() / SILengthConstants.kFeetToMeter);
-		LiveDashboard.INSTANCE.setRobotHeading(drivetrain.getLocalization().getRobotPosition().getRotation().getRadian());
+		LiveDashboard.INSTANCE.setRobotX(drivetrain.getLocalization().getRobotPosition().getTranslation().getX()
+				/ SILengthConstants.kFeetToMeter);
+		LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY()
+				/ SILengthConstants.kFeetToMeter);
+		LiveDashboard.INSTANCE
+				.setRobotHeading(drivetrain.getLocalization().getRobotPosition().getRotation().getRadian());
 
 		// SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getFeetPerSecond());
 		// SmartDashboard.putNumber("Left talon error", drivetrain.getLeft().getClosedLoopError().getFeet());

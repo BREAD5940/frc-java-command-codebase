@@ -32,7 +32,8 @@ public class SuperStructureConstants {
 	}
 
 	public static class Elevator {
-		public static final Length bottom = LengthKt.getInch(RobotConfig.elevator.elevator_minimum_height.getInch() + 0.5);
+		public static final Length bottom = LengthKt
+				.getInch(RobotConfig.elevator.elevator_minimum_height.getInch() + 0.5);
 		public static final Length top = RobotConfig.elevator.elevator_maximum_height;
 		public static final Length crossbarBottom = LengthKt.getInch(35); //FIXME verify
 		public static final Length crossbarWidth = LengthKt.getInch(4); //FIXME verify

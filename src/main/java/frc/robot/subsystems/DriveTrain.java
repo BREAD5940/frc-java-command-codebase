@@ -23,7 +23,6 @@ import org.team5940.pantry.exparimental.command.SendableCommandBase;
 import org.team5940.pantry.exparimental.command.SendableSubsystemBase;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.kauailabs.navx.frc.AHRS;
 import com.team254.lib.physics.DifferentialDrive;
@@ -112,7 +111,8 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 				RobotConfig.driveTrain.leftTalons.s_left_talon_port, Transmission.EncoderMode.CTRE_MagEncoder_Relative,
 				TransmissionSide.LEFT, true);
 		rightTransmission = new Transmission(RobotConfig.driveTrain.rightTalons.m_right_talon_port,
-				RobotConfig.driveTrain.rightTalons.s_right_talon_port, Transmission.EncoderMode.CTRE_MagEncoder_Relative,
+				RobotConfig.driveTrain.rightTalons.s_right_talon_port,
+				Transmission.EncoderMode.CTRE_MagEncoder_Relative,
 				TransmissionSide.RIGHT, false);
 
 		/* Create a localization object because lamda expressions are fun */
@@ -139,7 +139,8 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 
 	public DifferentialDrive getDifferentialDrive() {
 		// String mes = (mCurrentGear == Gear.LOW) ? "lowGearDifferentialDrive" : "highGearDifferentialDrive"; 
-		SmartDashboard.putString("current drive model", (mCurrentGear == Gear.LOW) ? "lowGearDifferentialDrive" : "highGearDifferentialDrive");
+		SmartDashboard.putString("current drive model",
+				(mCurrentGear == Gear.LOW) ? "lowGearDifferentialDrive" : "highGearDifferentialDrive");
 
 		return (mCurrentGear == Gear.LOW) ? lowGearDifferentialDrive : highGearDifferentialDrive;
 	}
@@ -199,11 +200,14 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	public void setHighGear() {
 		leftTransmission.setClosedLoopGains(RobotConfig.driveTrain.leftTalons.velocity_kp_high,
 				RobotConfig.driveTrain.leftTalons.velocity_ki_high, RobotConfig.driveTrain.leftTalons.velocity_kd_high,
-				RobotConfig.driveTrain.leftTalons.velocity_kf_high, RobotConfig.driveTrain.leftTalons.velocity_izone_high,
+				RobotConfig.driveTrain.leftTalons.velocity_kf_high,
+				RobotConfig.driveTrain.leftTalons.velocity_izone_high,
 				RobotConfig.driveTrain.leftTalons.velocity_max_integral_high);
 		rightTransmission.setClosedLoopGains(RobotConfig.driveTrain.rightTalons.velocity_kp_high,
-				RobotConfig.driveTrain.rightTalons.velocity_ki_high, RobotConfig.driveTrain.rightTalons.velocity_kd_high,
-				RobotConfig.driveTrain.rightTalons.velocity_kf_high, RobotConfig.driveTrain.rightTalons.velocity_izone_high,
+				RobotConfig.driveTrain.rightTalons.velocity_ki_high,
+				RobotConfig.driveTrain.rightTalons.velocity_kd_high,
+				RobotConfig.driveTrain.rightTalons.velocity_kf_high,
+				RobotConfig.driveTrain.rightTalons.velocity_izone_high,
 				RobotConfig.driveTrain.rightTalons.velocity_max_integral_high);
 		// Trigger solenoids
 		Robot.drivetrain_shift_high();
@@ -217,7 +221,8 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 				RobotConfig.driveTrain.leftTalons.velocity_max_integral_low);
 		rightTransmission.setClosedLoopGains(RobotConfig.driveTrain.rightTalons.velocity_kp_low,
 				RobotConfig.driveTrain.rightTalons.velocity_ki_low, RobotConfig.driveTrain.rightTalons.velocity_kd_low,
-				RobotConfig.driveTrain.rightTalons.velocity_kf_low, RobotConfig.driveTrain.rightTalons.velocity_izone_low,
+				RobotConfig.driveTrain.rightTalons.velocity_kf_low,
+				RobotConfig.driveTrain.rightTalons.velocity_izone_low,
 				RobotConfig.driveTrain.rightTalons.velocity_max_integral_low);
 		// Trigger solenoids
 		Robot.drivetrain_shift_low();
@@ -465,19 +470,22 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 		}
 
 		if (isHighGear) {
-			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearHigh / Robot.mPeriod,
+			mVelocity.setLinear(Util.limit(mVelocity.getLinear(),
+					mCachedChassisState.getLinear() - maxAccelLinearHigh / Robot.mPeriod,
 					mCachedChassisState.getLinear() + maxAccelLinearHigh / Robot.mPeriod));
 
 			if (mVelocity.getLinear() < Util.toMeters(5))
 				highGearTurn = Util.toMeters(12);
 
-			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), mCachedChassisState.getAngular() - maxAccelAngularHigh / Robot.mPeriod,
+			mVelocity.setAngular(Util.limit(mVelocity.getAngular(),
+					mCachedChassisState.getAngular() - maxAccelAngularHigh / Robot.mPeriod,
 					mCachedChassisState.getAngular() + maxAccelAngularHigh / Robot.mPeriod));
 
 			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), highGearForward));
 			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), highGearTurn));
 		} else {
-			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), mCachedChassisState.getLinear() - maxAccelLinearLow / Robot.mPeriod,
+			mVelocity.setLinear(Util.limit(mVelocity.getLinear(),
+					mCachedChassisState.getLinear() - maxAccelLinearLow / Robot.mPeriod,
 					mCachedChassisState.getLinear() + maxAccelLinearLow / Robot.mPeriod));
 			mVelocity.setLinear(Util.limit(mVelocity.getLinear(), lowGearForward));
 			mVelocity.setAngular(Util.limit(mVelocity.getAngular(), lowGearTurn));
@@ -536,7 +544,8 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 				//				System.out.println("forward " + forwardSpeed);
 
 				// reduce forward speed a bit if in high gear (oof)
-				forwardSpeed = Util.deadband(forwardSpeed, 0.05) * ((DriveTrain.getInstance().getCachedGear() == Gear.HIGH) ? 0.8 : 1);
+				forwardSpeed = Util.deadband(forwardSpeed, 0.05)
+						* ((DriveTrain.getInstance().getCachedGear() == Gear.HIGH) ? 0.8 : 1);
 				turnSpeed = Util.deadband(turnSpeed, 0.06);
 
 				// System.out.println("forward speed: " + forwardSpeed + " turn speed: " + turnSpeed);
@@ -545,7 +554,8 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 				DriveTrain.getInstance().curvatureDrive(forwardSpeed, turnSpeed, false);
 
 			} else {
-				DriveTrain.getInstance().curvatureDrive(forwardSpeed * Math.abs(forwardSpeed) * Math.abs(forwardSpeed), turnSpeed, true);
+				DriveTrain.getInstance().curvatureDrive(forwardSpeed * Math.abs(forwardSpeed) * Math.abs(forwardSpeed),
+						turnSpeed, true);
 			}
 
 		}
@@ -681,7 +691,8 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	 * @param reset      if we should reset robot odometry to the initial pose or
 	 *                   not
 	 */
-	public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, Gear gear, boolean reset) {
+	public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, Gear gear,
+			boolean reset) {
 		mCurrentGear = Robot.getDrivetrainGear();
 		return new TrajectoryTrackerCommand(this, () -> trajectory, reset);
 	}
@@ -691,7 +702,7 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	}
 
 	public SendableCommandBase followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory,
-												TrajectoryTrackerMode mode, boolean reset) {
+			TrajectoryTrackerMode mode, boolean reset) {
 		// kDefaulTrajectoryTrackerMode = mode;
 		mCurrentGear = Robot.getDrivetrainGear();
 		return new TrajectoryTrackerCommand(this, getTrajectoryTracker(mode), () -> trajectory, reset);
@@ -706,13 +717,12 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 	 */
 	public SendableCommandBase followTrajectoryWithGear(TimedTrajectory<Pose2dWithCurvature> trajectory,
 			TrajectoryTrackerMode mode, Gear gear, boolean resetPose) {
-//		mCurrentGear = gear;
+		//		mCurrentGear = gear;
 
 		return new ParallelCommandGroup(
 				followTrajectory(trajectory, mode, resetPose),
-				new SetGearCommand(gear)
-		);
-//		return mCommandGroup;
+				new SetGearCommand(gear));
+		//		return mCommandGroup;
 	}
 
 	/**
@@ -743,18 +753,17 @@ public class DriveTrain extends SendableSubsystemBase implements DifferentialTra
 		gyroZero = gyro.getAngle();
 	}
 
-//	@Override
-//	public void initDefaultCommand() {
-//		// Set the default command for a subsystem here.
-//		// setDefaultCommand(new ArcadeDrive());
-//		// setDefaultCommand(new PIDArcadeDrive(true));
-//
-//		//		System.out.println("setting drivetrain default commands");
+	//	@Override
+	//	public void initDefaultCommand() {
+	//		// Set the default command for a subsystem here.
+	//		// setDefaultCommand(new ArcadeDrive());
+	//		// setDefaultCommand(new PIDArcadeDrive(true));
+	//
+	//		//		System.out.println("setting drivetrain default commands");
 
-
-		// setDefaultCommand(new ClosedLoopDriveTheSecond(true));
-		// setDefaultCommand(new auto_action_DRIVE(5, "high", 5, 30));
-//	}
+	// setDefaultCommand(new ClosedLoopDriveTheSecond(true));
+	// setDefaultCommand(new auto_action_DRIVE(5, "high", 5, 30));
+	//	}
 
 	@Override
 	public void logPeriodicIO() {

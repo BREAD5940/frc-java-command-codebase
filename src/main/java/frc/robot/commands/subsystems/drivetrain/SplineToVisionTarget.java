@@ -18,18 +18,16 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
 import edu.wpi.first.wpilibj.Timer;
-//import org.team5940.pantry.exparimental.command.SendableCommandBase;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 import frc.robot.subsystems.LimeLight;
-import org.team5940.pantry.exparimental.command.Command;
-import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
 public class SplineToVisionTarget extends SequentialCommandGroup {
 	double targetDistance, exitArea;
@@ -47,7 +45,8 @@ public class SplineToVisionTarget extends SequentialCommandGroup {
 	 * @param dsired_end how far away from the vision target to exit at
 	 * @param areaAtWhichToExit the area at which the command will exit, regarless of everything else
 	 */
-	public SplineToVisionTarget(/*Pose2d currentPose, */Length driveStraightDistance, Length desired_end, double areaAtWhichToExit) {
+	public SplineToVisionTarget(/*Pose2d currentPose, */Length driveStraightDistance, Length desired_end,
+			double areaAtWhichToExit) {
 		// this.targetDistance = targetLimelightOffset;
 		this.exitArea = areaAtWhichToExit;
 		// this.initialPose = currentPose;
@@ -73,20 +72,26 @@ public class SplineToVisionTarget extends SequentialCommandGroup {
 		Pose2d mVisionTargetPose = LimeLight.getInstance().getPose(/*kEndOffset.getInch(), */kOffset.getInch());
 		Pose2d end = new Pose2d(new Translation2d(kOffset.plus(kEndOffset), kOffset), Rotation2dKt.getDegree(0));
 		// offset the end by the end offset to make a straight portion
-		Pose2d splineEnd = end.minus(new Pose2d(kOffset.plus(kEndOffset).minus(straightLength), LengthKt.getInch(0), Rotation2dKt.getDegree(0)));
+		Pose2d splineEnd = end.minus(new Pose2d(kOffset.plus(kEndOffset).minus(straightLength), LengthKt.getInch(0),
+				Rotation2dKt.getDegree(0)));
 
 		List<Pose2d> path;
 		// just go straight if we are too close or straight distance is zero
-		if (end.getTranslation().getX() == (splineEnd.getTranslation().getX()) || (mVisionTargetPose.getTranslation().getX() - (kOffset).getMeter() < straightLength.getMeter())) {
+		if (end.getTranslation().getX() == (splineEnd.getTranslation().getX())
+				|| (mVisionTargetPose.getTranslation().getX() - (kOffset).getMeter() < straightLength.getMeter())) {
 			path = Arrays.asList(mVisionTargetPose, end);
 		} else {
 			path = Arrays.asList(mVisionTargetPose, splineEnd, end);
 		}
 
-		trajectory = Trajectories.generateTrajectory(path, Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(1)), VelocityKt.getVelocity(LengthKt.getFeet(2)), VelocityKt.getVelocity(LengthKt.getFeet(2)), Trajectories.kDefaultAcceleration.div(2), false, true);
-		mFollowerCommand = DriveTrain.getInstance().followTrajectoryWithGear(trajectory, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true);
+		trajectory = Trajectories.generateTrajectory(path, Trajectories.kLowGearConstraints,
+				VelocityKt.getVelocity(LengthKt.getFeet(1)), VelocityKt.getVelocity(LengthKt.getFeet(2)),
+				VelocityKt.getVelocity(LengthKt.getFeet(2)), Trajectories.kDefaultAcceleration.div(2), false, true);
+		mFollowerCommand = DriveTrain.getInstance().followTrajectoryWithGear(trajectory, TrajectoryTrackerMode.RAMSETE,
+				Gear.LOW, true);
 
-		System.out.println("========== Vision spline generated in " + (Timer.getFPGATimestamp() - now) + " seconds! ==========");
+		System.out.println(
+				"========== Vision spline generated in " + (Timer.getFPGATimestamp() - now) + " seconds! ==========");
 
 		System.out.println("Pose2d of the target that we measured: " + Util.toString(mVisionTargetPose));
 
@@ -107,7 +112,8 @@ public class SplineToVisionTarget extends SequentialCommandGroup {
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	public boolean isFinished() {
-		return (mCommandStarted && mFollowerCommand.isFinished()) || (LimeLight.getInstance().getTargetArea() > exitArea);
+		return (mCommandStarted && mFollowerCommand.isFinished())
+				|| (LimeLight.getInstance().getTargetArea() > exitArea);
 	}
 
 	// Called once after isFinished returns true

@@ -1,6 +1,7 @@
 package frc.robot.commands.subsystems.drivetrain;
 
 import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import frc.robot.SuperStructureConstants;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
@@ -21,7 +22,7 @@ public class ZeroSuperStructure extends SendableCommandBase {
 	public ZeroSuperStructure(String piece) {
 		this.p = piece;
 		// addRequirements(SuperStructure.getInstance());
-//		setInterruptible(false);
+		//		setInterruptible(false);
 		struc = SuperStructure.getInstance();
 		addRequirements(SuperStructure.getInstance());
 		addRequirements(SuperStructure.getElevator());
@@ -56,19 +57,23 @@ public class ZeroSuperStructure extends SendableCommandBase {
 							(SuperStructureConstants.Elevator.top)
 
 					).getValue());
-//			);
+			//			);
 			old.getElevator().setHeight(SuperStructureConstants.Elevator.top);
 		} else if (p.equals("maxWrist")) {
-			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(SuperStructureConstants.Wrist.kWristMax);
+			SuperStructure.getInstance().getWrist().getMaster()
+					.setSensorPosition(SuperStructureConstants.Wrist.kWristMax);
 			old.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMax);
 		} else if (p.equals("minWrist")) {
-			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(SuperStructureConstants.Wrist.kWristMin);
+			SuperStructure.getInstance().getWrist().getMaster()
+					.setSensorPosition(SuperStructureConstants.Wrist.kWristMin);
 			old.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMin);
 		} else if (p.equals("maxElbow")) {
-			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(SuperStructureConstants.Elbow.kElbowMax);
+			SuperStructure.getInstance().getWrist().getMaster()
+					.setSensorPosition(SuperStructureConstants.Elbow.kElbowMax);
 			old.getWrist().setAngle(SuperStructureConstants.Elbow.kElbowMax);
 		} else if (p.equals("minElbow")) {
-			SuperStructure.getInstance().getWrist().getMaster().setSensorPosition(SuperStructureConstants.Elbow.kElbowMin);
+			SuperStructure.getInstance().getWrist().getMaster()
+					.setSensorPosition(SuperStructureConstants.Elbow.kElbowMin);
 			old.getWrist().setAngle(SuperStructureConstants.Elbow.kElbowMin);
 		}
 		// } else if (p.equals("topInnerElevator")) {
@@ -87,7 +92,7 @@ public class ZeroSuperStructure extends SendableCommandBase {
 		return true;
 	}
 
-//	@Override
+	//	@Override
 	public void end(boolean interrupted) {
 		struc.getDefaultCommand().cancel();
 		System.out.println("Restarting the default command");
@@ -95,8 +100,8 @@ public class ZeroSuperStructure extends SendableCommandBase {
 		struc.getDefaultCommand().schedule();
 	}
 
-//	@Override
-//	public void interrupted() {
-//
-//	}
+	//	@Override
+	//	public void interrupted() {
+	//
+	//	}
 }

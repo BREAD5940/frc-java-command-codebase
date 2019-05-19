@@ -13,9 +13,9 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
-
 import org.team5940.pantry.exparimental.command.Command;
 import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
@@ -57,7 +57,8 @@ public class DriveDistanceTheSecond extends SendableCommandBase {
 	public void initialize() {
 
 		var currentPose = new Pose2d();
-		System.out.println("CURRENT POSE: " + currentPose.getTranslation().getX() + "," + currentPose.getTranslation().getY());
+		System.out.println(
+				"CURRENT POSE: " + currentPose.getTranslation().getX() + "," + currentPose.getTranslation().getY());
 		Translation2d offsetTrans;
 		if (!reversed) {
 			offsetTrans = new Translation2d(distance, currentPose.getRotation());
@@ -66,7 +67,8 @@ public class DriveDistanceTheSecond extends SendableCommandBase {
 		}
 		var offsetPose = currentPose.plus(new Pose2d(offsetTrans, Rotation2dKt.getDegree(0)));
 
-		System.out.println("OFFSET POSE: " + offsetPose.getTranslation().getX() + "," + offsetPose.getTranslation().getY());
+		System.out.println(
+				"OFFSET POSE: " + offsetPose.getTranslation().getX() + "," + offsetPose.getTranslation().getY());
 
 		var waypoints = Arrays.asList(
 				currentPose, offsetPose);
@@ -80,14 +82,15 @@ public class DriveDistanceTheSecond extends SendableCommandBase {
 
 		var trajectory = Trajectories.generateTrajectoryHighGear(waypoints, reversed);
 
-		System.out.println("FIRST POSE: " + Util.toString(trajectory.getFirstState().getState().getPose()) + " LAST POSE: " + Util.toString(trajectory.getLastState().getState().getPose()));
+		System.out.println("FIRST POSE: " + Util.toString(trajectory.getFirstState().getState().getPose())
+				+ " LAST POSE: " + Util.toString(trajectory.getLastState().getState().getPose()));
 
 		this.m_requirements = Set.of();
 
 		mCommand = DriveTrain.getInstance().followTrajectory(trajectory, TrajectoryTrackerMode.RAMSETE, true);
 
 		// addSequential(mCommand);
-//		clearRequirements();
+		//		clearRequirements();
 		mCommand.schedule();
 
 		// mCommand.start();

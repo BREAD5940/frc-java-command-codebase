@@ -22,7 +22,8 @@ import frc.robot.states.SuperStructureState;
  */
 public class Wrist extends RotatingJoint {
 
-	public Wrist(PIDSettings settings, int motorPort, FeedbackDevice sensor, double reduction, RoundRotation2d min, RoundRotation2d max, boolean invert, Length armLength, Mass mass) {
+	public Wrist(PIDSettings settings, int motorPort, FeedbackDevice sensor, double reduction, RoundRotation2d min,
+			RoundRotation2d max, boolean invert, Length armLength, Mass mass) {
 		super(settings, Arrays.asList(motorPort), sensor, reduction, min, max, invert, armLength, mass);
 	}
 

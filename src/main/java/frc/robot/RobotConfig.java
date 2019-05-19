@@ -88,8 +88,10 @@ public class RobotConfig {
 
 		public static final NativeUnit kDriveSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
 
-		public static final NativeUnitLengthModel LEFT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, left_radius);
-		public static final NativeUnitLengthModel RIGHT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, right_radius);
+		public static final NativeUnitLengthModel LEFT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(
+				kDriveSensorUnitsPerRotation, left_radius);
+		public static final NativeUnitLengthModel RIGHT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(
+				kDriveSensorUnitsPerRotation, right_radius);
 
 		// Pathfinder shit
 		public static final double left_static_kv = 0.05; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
@@ -294,7 +296,8 @@ public class RobotConfig {
 		private static final NativeUnit kSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
 		private static final Length left_radius = LengthKt.getInch(1.5).div(2);
 
-		public static final NativeUnitLengthModel elevatorModel = new NativeUnitLengthModel(kSensorUnitsPerRotation, left_radius);
+		public static final NativeUnitLengthModel elevatorModel = new NativeUnitLengthModel(kSensorUnitsPerRotation,
+				left_radius);
 
 		public class elevatorTalon {
 			/**
