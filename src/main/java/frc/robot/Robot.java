@@ -1,5 +1,7 @@
 package frc.robot;
 
+import frc.robot.lib.ShuffleBoardTabs;
+import frc.robot.lib.obj.RobotStartingPos;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -64,6 +66,8 @@ public class Robot extends TimedRobot {
 	public static Compressor compressor = new Compressor(9);
 
 	private Notifier mResetNotifier;
+
+	public static SendableChooser m_robotStartPositionChooser = new SendableChooser<RobotStartingPos>();
 
 	// public static Odometer odometry_;
 	// public static DifferentialUltrasonicSensor differentialUltrasonicSensor = DifferentialUltrasonicSensor.getInstance();
@@ -140,7 +144,18 @@ public class Robot extends TimedRobot {
 		drivetrain.setDefaultCommand(curveyBoi);
 		SmartDashboard.putData(curveyBoi);
 
+		superstructure.setDefaultCommand(new JustElevatorTeleop());
+
 		Intake.getInstance().setDefaultCommand(new IntakeTelop());
+
+		ShuffleBoardTabs.INSTANCE.registerSubsystem(drivetrain);
+		ShuffleBoardTabs.INSTANCE.registerSubsystem(superstructure);
+		ShuffleBoardTabs.INSTANCE.registerSubsystem(SuperStructure.intake);
+
+		m_robotStartPositionChooser.addOption("left", RobotStartingPos.Left);
+		m_robotStartPositionChooser.addOption("middle", RobotStartingPos.Middle);
+		m_robotStartPositionChooser.addOption("right", RobotStartingPos.Right);
+
 
 	}
 
@@ -174,6 +189,9 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 
 		Logger.clearLog();
+
+		SmartDashboard.putData(autoState); //TODO test to see if it actually does the thing
+
 
 		//		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
 		SmartDashboard.putData(CommandScheduler.getInstance());
@@ -602,7 +620,6 @@ public class Robot extends TimedRobot {
 		// SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
 		// SmartDashboard.putData(superstructure);
 
-		SmartDashboard.putData(autoState); //TODO test to see if it actually does the thing
 
 		// Limelight stuff
 		// double[] limelightdata = limelight.getData();
