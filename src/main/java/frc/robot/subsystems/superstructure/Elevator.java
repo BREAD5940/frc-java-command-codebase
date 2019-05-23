@@ -230,6 +230,7 @@ public class Elevator extends HalfBakedSubsystem {
 		// this.getMaster().selectProfileSlot(3, 0);
 		// this.getMaster().configClosedloopRamp(0.1);
 		this.getMaster().setUseMotionProfileForPosition(true);
+		getMaster().getTalonSRX().selectProfileSlot(3, 0);
 	}
 
 	public Length getHeight() {
@@ -332,7 +333,7 @@ public class Elevator extends HalfBakedSubsystem {
 	public void setMMArbitraryFeedForward(Length setpoint, double feedForwardPercent) {
 		setpoint = Util.limit(setpoint, SuperStructureConstants.Elevator.bottom,
 				SuperStructureConstants.Elevator.top);
-		getMaster().getTalonSRX().selectProfileSlot(3, 0);
+//		getMaster().getTalonSRX().selectProfileSlot(3, 0);
 		// Logger.log("Elevator setpoint: " + setpoint.getInch() + " feedforward: " + feedForwardPercent + " current raw output: " + getMaster().getMotorOutputPercent());
 		getMaster().setUseMotionProfileForPosition(true);
 		getMaster().setPosition(setpoint.getMeter(), feedForwardPercent);
@@ -346,6 +347,7 @@ public class Elevator extends HalfBakedSubsystem {
 				.configMotionCruiseVelocity((int) config.motionMagicCruiseVelocity);
 		getMaster().getTalonSRX().configMotionAcceleration((int) config.motionMagicAccel);
 		getMaster().setUseMotionProfileForPosition(true);
+		getMaster().getTalonSRX().selectProfileSlot(3, 0);
 	}
 
 	SuperStructureState requState = new SuperStructureState(

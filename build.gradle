@@ -86,7 +86,9 @@ dependencies {
   // testCompile 'junit:junit:4.12'
   compile 'com.google.code.gson:gson:2.8.2'
 
-	compile 'com.github.5190GreenHopeRobotics:FalconLibrary:2019.5.12'
+//	compile 'com.github.5190GreenHopeRobotics:FalconLibrary:2019.5.12'
+  	compile 'com.local.mcm001:FalconLibrary:0.0.2'
+
 
   compile 'com.github.mcm001:pantrycommon:60acecb5a7'
 

@@ -123,6 +123,7 @@ public class RotatingJoint extends HalfBakedSubsystem {
 				LimitSwitchNormal.NormallyOpen);
 		getMaster().configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
 				LimitSwitchNormal.NormallyOpen);
+
 		setMotionMagicGains();
 
 		for (HalfBakedRotatingSRX motor : getAllMotors()) {
@@ -167,6 +168,7 @@ public class RotatingJoint extends HalfBakedSubsystem {
 		this.getMaster().config_kD(3, 6.0, 0);
 		this.getMaster().config_kF(3, 0.45, 0);
 		this.getMaster().configClearPositionOnLimitF(true, 0);
+		this.getMaster().selectProfileSlot(3, 0);
 		// this.getMaster().selectProfileSlot(3, 0);
 		// this.getMaster().configClosedloopRamp(0.1);
 	}
