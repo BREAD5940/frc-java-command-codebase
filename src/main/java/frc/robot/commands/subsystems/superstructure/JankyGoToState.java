@@ -1,16 +1,16 @@
 package frc.robot.commands.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.mathematics.units.Length;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.ConditionalCommand;
 import edu.wpi.first.wpilibj.command.PrintCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 public class JankyGoToState extends CommandGroup {
 
@@ -75,15 +75,13 @@ public class JankyGoToState extends CommandGroup {
 
 				SmartDashboard.putString("passthru data", "nowOutsideCrossbar " + nowOutsideCrossbar + " willBeOutsideCrossbar " + willBeOutsideCrossbar + " might hit electronics? " + mightHitElectronics +
 						" proximalStartSafe " + proximalStartSafe + " proximalEndSafe? " + proximalEndSafe + " startHighEnough " + startHighEnough
-				+ " endHighEnough " + endHighEnough);
+						+ " endHighEnough " + endHighEnough);
 
 				System.out.println("Safe to move synced? " + safeToMoveSynced);
 
 				return safeToMoveSynced;
 			}
 		};
-
-
 
 		var checkPassThroughSafe = new ConditionalCommand(new PassThroughButShort(SuperStructure.getInstance())) {
 

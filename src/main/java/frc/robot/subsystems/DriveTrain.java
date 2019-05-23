@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import java.util.Arrays;
 import java.util.List;
 
-import frc.robot.subsystems.superstructure.SuperStructure;
 import org.ghrobotics.lib.localization.Localization;
 import org.ghrobotics.lib.localization.TankEncoderLocalization;
 import org.ghrobotics.lib.mathematics.twodim.control.FeedForwardTracker;
@@ -42,6 +41,7 @@ import frc.robot.lib.Logger;
 import frc.robot.lib.enums.TransmissionSide;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.DriveSignal;
+import frc.robot.subsystems.superstructure.SuperStructure;
 import kotlin.ranges.RangesKt;
 
 // import frc.robot.commands.drivetrain_shift_high;
@@ -529,10 +529,9 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 			if (!isQuickTurn) {
 
 				// reverse the turn speed if going backwards
-				if (forwardSpeed < -0.05 && (
-						SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() > -90
-						)) {
-					turnSpeed *= -1; }
+				if (forwardSpeed < -0.05 && (SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() > -90)) {
+					turnSpeed *= -1;
+				}
 				forwardSpeed *= Math.abs(forwardSpeed) * Math.abs(forwardSpeed);
 
 				//				System.out.println("forward " + forwardSpeed);

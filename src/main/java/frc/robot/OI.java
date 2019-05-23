@@ -2,8 +2,6 @@ package frc.robot;
 
 import java.util.Arrays;
 
-import edu.wpi.first.wpilibj.command.PrintCommand;
-import frc.robot.commands.subsystems.superstructure.PassThrough;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -15,8 +13,8 @@ import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.routines.TeleopCommands;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
-import frc.robot.commands.subsystems.superstructure.ConditionalPassThrough;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
+import frc.robot.commands.subsystems.superstructure.PassThrough;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
@@ -125,12 +123,11 @@ public class OI {
 
 		//		primaryXButton.whenPressed(new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
 
-//		dsTogglePassThru.whenPressed(new PrintCommand("nelasdfljkasdlk;"));
+		//		dsTogglePassThru.whenPressed(new PrintCommand("nelasdfljkasdlk;"));
 		primaryDpadUp.whenPressed(new PassThrough.BackToFront(SuperStructure.getInstance()));
 		primaryDpadDown.whenPressed(new PassThrough.FrontToBack(SuperStructure.getInstance()));
 
 		dsPassThroughFrontToBack.whenPressed(new PassThrough.FrontToBack(SuperStructure.getInstance()));
-
 
 	}
 
@@ -160,12 +157,12 @@ public class OI {
 	}
 
 	public double getForwardAxis() {
-//		 return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis);
+		//		 return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis);
 		return getPrimary().getRawAxis(3) - getPrimary().getRawAxis(2);
 	}
 
 	public double getTurnAxis() {
-//		return primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
+		//		return primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
 		return primaryJoystick.getRawAxis(0) + primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
 	}
 
