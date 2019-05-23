@@ -1,5 +1,6 @@
 package frc.robot.commands.subsystems.superstructure;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.ghrobotics.lib.mathematics.units.Length;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -9,6 +10,7 @@ import frc.robot.states.ElevatorState;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
+import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 public class JankyGoToState extends CommandGroup {
 
@@ -59,14 +61,21 @@ public class JankyGoToState extends CommandGroup {
 				var nowOutsideCrossbar = currentState.getElbowAngle().getDegree() > proximalThreshold;
 				var willBeOutsideCrossbar = requ_.getElbowAngle().getDegree() > proximalThreshold;
 
-				var mightHitElectronics = (requ_.getElevatorHeight().getInch() < 15 && requ_.getElbowAngle().getDegree() > 45) || (requ_.getElevatorHeight().getInch() < 20 && requ_.getElbowAngle().getDegree() < 45); // TODO check angles?
+				var mightHitElectronics = (requ_.getElevatorHeight().getInch() < 15 && requ_.getElbowAngle().getDegree() > proximalThreshold) || (requ_.getElevatorHeight().getInch() < 20 && requ_.getElbowAngle().getDegree() < proximalThreshold); // TODO check angles?
 
 				var proximalStartSafe = currentState.getElbowAngle().getDegree() > -80;
 				var proximalEndSafe = requ_.getElbowAngle().getDegree() > -80;
 				var startHighEnough = currentState.getElevatorHeight().getInch() > 18;
 				var endHighEnough = requ_.getElevatorHeight().getInch() > 20;
 
-				var safeToMoveSynced = (nowOutsideCrossbar && willBeOutsideCrossbar && !mightHitElectronics) || (proximalStartSafe && proximalEndSafe && startHighEnough && endHighEnough);
+				var needsExceptionForCargoGrab = currentState.getElbowAngle().getDegree() > -62 && currentState.getElevatorHeight().getInch() > 16;
+
+				var safeToMoveSynced = (nowOutsideCrossbar && willBeOutsideCrossbar && (!mightHitElectronics || needsExceptionForCargoGrab))
+						|| (proximalStartSafe && proximalEndSafe && startHighEnough && endHighEnough);
+
+				SmartDashboard.putString("passthru data", "nowOutsideCrossbar " + nowOutsideCrossbar + " willBeOutsideCrossbar " + willBeOutsideCrossbar + " might hit electronics? " + mightHitElectronics +
+						" proximalStartSafe " + proximalStartSafe + " proximalEndSafe? " + proximalEndSafe + " startHighEnough " + startHighEnough
+				+ " endHighEnough " + endHighEnough);
 
 				System.out.println("Safe to move synced? " + safeToMoveSynced);
 
@@ -74,8 +83,30 @@ public class JankyGoToState extends CommandGroup {
 			}
 		};
 
+
+
+		var checkPassThroughSafe = new ConditionalCommand(new PassThroughButShort(SuperStructure.getInstance())) {
+
+			@Override
+			protected boolean condition() {
+				var currentState = SuperStructure.getInstance().getCurrentState();
+				var needsPassThrough = currentState.getElbowAngle().getDegree() < -90;
+				System.out.println("Needs pass through? " + needsPassThrough);
+				return needsPassThrough;
+			}
+		};
+
+		addSequential(checkPassThroughSafe);
 		addSequential(choosePath);
 
+	}
+
+	private class PassThroughButShort extends CommandGroup {
+		public PassThroughButShort(SuperStructure structure) {
+			addSequential(new PrintCommand("passing thru back to front"));
+			addSequential(new ElevatorMove(LengthKt.getInch(23))); //todo check height
+			addSequential(new PassThrough.SyncedMove(Math.toRadians(0), false, structure));
+		}
 	}
 
 	public class ElevatorThanArm extends CommandGroup {

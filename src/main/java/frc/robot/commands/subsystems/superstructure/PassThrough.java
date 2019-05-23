@@ -5,6 +5,7 @@ import static frc.robot.subsystems.superstructure.SuperStructure.getDumbWrist;
 import java.util.function.Supplier;
 
 import frc.robot.RobotConfig;
+import frc.robot.subsystems.Intake;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -19,8 +20,8 @@ import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class PassThrough extends ConditionalCommand {
 
-	private static final double kProximalMaxVel = 150d / 360d * 2 * Math.PI;
-	private static final double kWristMaxVel = 150d / 360d * 2 * Math.PI;
+	private static final double kProximalMaxVel = 190d / 360d * 2 * Math.PI;
+	private static final double kWristMaxVel = 190d / 360d * 2 * Math.PI;
 
 	public static class SyncedMove extends Command {
 
@@ -72,7 +73,14 @@ public class PassThrough extends ConditionalCommand {
 			var currentState = structure.getCurrentState();
 			this.lastObservedState = currentState;
 
-			var nextProximal = this.lastCommandedProximal.plus(RoundRotation2d.getRadian(proximalVelocity * dt));
+			RoundRotation2d nextProximal = lastCommandedProximal;
+
+			if(
+					Math.abs(SuperStructure.getUnDumbWrist(lastObservedState.getWristAngle(), lastObservedState.getElbowAngle()).getDegree() - lastCommandedProximal.getDegree()) < 50
+			) {
+				nextProximal = this.lastCommandedProximal.plus(RoundRotation2d.getRadian(proximalVelocity * dt));
+			}
+
 
 			if (nextProximal.getDegree() < -205) {
 				nextProximal = RoundRotation2d.getDegree(-205);
@@ -114,6 +122,15 @@ public class PassThrough extends ConditionalCommand {
 
 			this.lastCommandedProximal = nextProximal;
 			lastTime = now;
+
+
+			System.out.println("====================");
+
+			System.out.println("last observed prox " + lastObservedState.getElbowAngle().getDegree() + " last wrist " +
+					lastObservedState.getWristAngle().getDegree() + " next elbow " + nextProximal +
+					" next wrist " + nextWrist);
+
+			System.out.println("====================");
 		}
 
 		@Override
@@ -158,8 +175,11 @@ public class PassThrough extends ConditionalCommand {
 
 			setInterruptible(false);
 
+			
 			addSequential(new PrintCommand("passing thru front to back"));
-			addSequential(new ElevatorMove(LengthKt.getInch(23))); //todo check height
+			addSequential(new SetHatchMech(Intake.HatchMechState.kClamped));
+//			addSequential(new LineEverythingUp(() -> SuperStructure.getInstance().getCurrentState().getElbowAngle()));
+			addSequential(new ElevatorMove(LengthKt.getInch(22.5))); //todo check height
 			addSequential(new SyncedMove(Math.toRadians(-160), true, structure));
 			//-188 elbow -106 wrist
 			addSequential(new ArmMove(new IntakeAngle(
@@ -176,13 +196,58 @@ public class PassThrough extends ConditionalCommand {
 			setInterruptible(false);
 
 			addSequential(new PrintCommand("passing thru back to front"));
-			addSequential(new ElevatorMove(LengthKt.getInch(23))); //todo check height
+			addSequential(new SetHatchMech(Intake.HatchMechState.kClamped));
+			addSequential(new ElevatorMove(LengthKt.getInch(22.5))); //todo check height
+//			addSequential(new SyncedMove(Math.toRadians(-58), false, structure));
 			addSequential(new SyncedMove(Math.toRadians(0), false, structure));
-			addSequential(new ElevatorMove(LengthKt.getInch(15))); //todo check height
-			addSequential(new JankyGoToState(RobotConfig.auto.fieldPositions.hatchLowGoal, SuperStructure.iPosition.HATCH));
+			addSequential(new ArmMove(SuperStructure.iPosition.HATCH_GRAB_INSIDE.getAngle()));
+			addSequential(new ElevatorMove(SuperStructure.iPosition.HATCH_GRAB_INSIDE.getElevator()));
 
 		}
 	}
+	
+//	public static class LineEverythingUp extends Command {
+//
+//		private final Supplier<RoundRotation2d> goalSupplier;
+//		private RoundRotation2d goalState = null;
+//		private boolean started = false;
+//		private SuperStructureState lastObservedState;
+//
+//		public LineEverythingUp(Supplier<RoundRotation2d> goal) {
+//			this.goalSupplier = goal;
+//		}
+//
+//		@Override
+//		protected void initialize() {
+//			this.lastObservedState = SuperStructure.getInstance().getCurrentState();
+//			started = true;
+//			goalState = goalSupplier.get();
+//		}
+//
+//		@Override
+//		protected void execute() {
+//			var structure = SuperStructure.getInstance();
+//			structure.getWrist().requestAngle(goalState);
+//			structure.getElbow().requestAngle(SuperStructure.getDumbWrist(goalState, goalState));
+//		}
+//
+//		@Override
+//		public boolean isFinished() {
+//
+//			var structure = SuperStructure.getInstance();
+//
+//			if(started == false && started) return true;
+//			if(started == false && !started) return false;
+//			var toReturn = (SuperStructure.getInstance().getWrist().isWithinTolerance(RoundRotation2d.getDegree(4),
+//					getDumbWrist(goalState, lastObservedState.getElbowAngle()))
+//					&& structure.getElbow().isWithinTolerance(RoundRotation2d.getDegree(4), goalState));
+//
+//
+//			System.out.println("move done? " + toReturn);
+//
+//			return toReturn;
+//		}
+//	}
 
 	// public static Map<Boolean, Command> setupConstructor(SuperStructure structure) {
 

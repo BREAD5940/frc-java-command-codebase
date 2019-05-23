@@ -71,7 +71,7 @@ public class OI {
 	Button dsHatch3 = new JoystickButton(driverStation, 1);
 	Button dsHatchIn = new JoystickButton(driverStation, 10);
 
-	Button dsTogglePassThru = new JoystickButton(driverStation, 4);
+	Button dsPassThroughFrontToBack = new JoystickButton(driverStation, 4);
 
 	public OI() {
 
@@ -128,6 +128,8 @@ public class OI {
 //		dsTogglePassThru.whenPressed(new PrintCommand("nelasdfljkasdlk;"));
 		primaryDpadUp.whenPressed(new PassThrough.BackToFront(SuperStructure.getInstance()));
 		primaryDpadDown.whenPressed(new PassThrough.FrontToBack(SuperStructure.getInstance()));
+
+		dsPassThroughFrontToBack.whenPressed(new PassThrough.FrontToBack(SuperStructure.getInstance()));
 
 
 	}
