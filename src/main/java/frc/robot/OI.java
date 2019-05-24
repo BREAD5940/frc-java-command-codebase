@@ -98,8 +98,8 @@ public class OI {
 						fieldPositions.cargoMiddleGoal.plus(LengthKt.getInch(2)), SuperStructure.iPosition.CARGO_DOWN))));
 
 		// hatch presets
-		primaryBButton.whileHeld(new HybridDriverAssist());
-		// primaryRightAnalogButton.whileHeld(new HybridKinematicDriverAssist());
+//		primaryBButton.whileHeld(new HybridDriverAssist());
+		 primaryRightAnalogButton.whileHeld(new HybridDriverAssist());
 
 		dsHatch1.whenPressed(SequentialCommandFactory.getSequentialCommands(Arrays.asList(
 				new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH))));
@@ -157,13 +157,13 @@ public class OI {
 	}
 
 	public double getForwardAxis() {
-		//		 return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis);
-		return getPrimary().getRawAxis(3) - getPrimary().getRawAxis(2);
+				 return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis);
+//		return getPrimary().getRawAxis(3) - getPrimary().getRawAxis(2);
 	}
 
 	public double getTurnAxis() {
-		//		return primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
-		return primaryJoystick.getRawAxis(0) + primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
+				return primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
+//		return primaryJoystick.getRawAxis(0) + primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
 	}
 
 	public double getDSElbowAxis() {

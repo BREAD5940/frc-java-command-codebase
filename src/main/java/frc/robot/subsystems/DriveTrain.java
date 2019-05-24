@@ -521,7 +521,8 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		@Override
 		protected void execute() {
 
-			var isQuickTurn = Robot.m_oi.getPrimary().getRawButton(3);
+//			var isQuickTurn = Robot.m_oi.getPrimary().getRawButton(3);
+			var isQuickTurn = Robot.m_oi.getPrimary().getRawButton(6);
 
 			double forwardSpeed = Robot.m_oi.getForwardAxis();
 			double turnSpeed = Robot.m_oi.getTurnAxis();
@@ -529,10 +530,10 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 			if (!isQuickTurn) {
 
 				// reverse the turn speed if going backwards
-				if (forwardSpeed < -0.05 && (SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() > -90)) {
-					turnSpeed *= -1;
-				}
-				forwardSpeed *= Math.abs(forwardSpeed) * Math.abs(forwardSpeed);
+//				if (forwardSpeed < -0.05 && (SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() > -90)) {
+//					turnSpeed *= -1;
+//				}
+				forwardSpeed *= Math.abs(forwardSpeed);// * Math.abs(forwardSpeed);
 
 				//				System.out.println("forward " + forwardSpeed);
 
@@ -545,7 +546,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 				curvatureDrive(forwardSpeed, turnSpeed, false);
 
 			} else {
-				curvatureDrive(forwardSpeed * Math.abs(forwardSpeed) * Math.abs(forwardSpeed), turnSpeed, true);
+				curvatureDrive(forwardSpeed * Math.abs(forwardSpeed), turnSpeed, true);
 			}
 
 		}
