@@ -68,7 +68,7 @@ public class JankyGoToState extends CommandGroup {
 				var startHighEnough = currentState.getElevatorHeight().getInch() > 18;
 				var endHighEnough = requ_.getElevatorHeight().getInch() > 20;
 
-				var needsExceptionForCargoGrab = currentState.getElbowAngle().getDegree() > -62 && currentState.getElevatorHeight().getInch() > 16;
+				var needsExceptionForCargoGrab = currentState.getElbowAngle().getDegree() > -62 && currentState.getElevatorHeight().getInch() > 25 && requ_.getElbowAngle().getDegree() > -62;
 
 				var safeToMoveSynced = (nowOutsideCrossbar && willBeOutsideCrossbar && (!mightHitElectronics || needsExceptionForCargoGrab))
 						|| (proximalStartSafe && proximalEndSafe && startHighEnough && endHighEnough);
