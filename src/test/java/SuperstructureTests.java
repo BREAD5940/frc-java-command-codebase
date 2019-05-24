@@ -189,9 +189,9 @@ public class SuperstructureTests extends Testable {
 
 		// System.out.println(SuperstructureMotion.getInstance().getQueue());
 
-		var iswithin = (Util.isWithin(RoundRotation2d.getDegree(-90), RoundRotation2d.getDegree(-60), RoundRotation2d.getDegree(-80)));
+		boolean iswithin = (Util.isWithin(RoundRotation2d.getDegree(-90), RoundRotation2d.getDegree(-60), RoundRotation2d.getDegree(-80)));
 
-		var worstCaseElbow = (Util.getWorstCase(RoundRotation2d.getDegree(-90), RoundRotation2d.getDegree(-60), RoundRotation2d.getDegree(-80)));
+		RoundRotation2d worstCaseElbow = (Util.getWorstCase(RoundRotation2d.getDegree(-90), RoundRotation2d.getDegree(-60), RoundRotation2d.getDegree(-80)));
 
 		System.out.println("worst case: " + worstCaseElbow);
 		System.out.println("is within? " + iswithin);
@@ -225,7 +225,7 @@ public class SuperstructureTests extends Testable {
 
 	@Test
 	public void testPoints() {
-		var goalState = new SuperStructureState(new ElevatorState(), new RotatingArmState(RoundRotation2d.getDegree(-90)), new RotatingArmState(RoundRotation2d.getDegree(0)));
+		SuperStructureState goalState = new SuperStructureState(new ElevatorState(), new RotatingArmState(RoundRotation2d.getDegree(-90)), new RotatingArmState(RoundRotation2d.getDegree(0)));
 		Translation2d GPelevator = new Translation2d(LengthKt.getInch(0), LengthKt.getInch(0));
 		Translation2d GPwrist = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, goalState.getElbowAngle().toRotation2d()).plus(GPelevator);
 
