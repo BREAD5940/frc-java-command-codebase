@@ -22,59 +22,59 @@ class AutonomousCommand : CommandGroup() {
 
 }
 
-@Suppress("unused")
-class ParallelRaceGroup() : CommandGroup() {
-
-    constructor(vararg commands: Command) : this() {
-        addCommands(*commands)
-    }
-
-    private val commandVector: Vector<Command> = Vector()
-
-    fun addCommands(vararg commands: Command) {
-        commands.forEach {
-            this.addParallel(it)
-            commandVector.addElement(it)
-        }
-    }
-
-    override fun isFinished(): Boolean {
-//        val commands = m_commands
-        var toReturn = super.isFinished()
-        commandVector.forEach {
-            toReturn = toReturn || it.isCompleted
-        }
-        return toReturn
-    }
-
-}
-
-@Suppress("unused")
-class ParallelDeadlineGroup(private val deadline: Command, vararg commands: Command) : CommandGroup() {
-
-    init {
-        this.addParallel(deadline)
-        commands.forEach {
-            this.addParallel(it)
-        }
-    }
-
-    var startedRunning = false
-
-    override fun execute() {
-
-        if(!startedRunning && deadline.isRunning) startedRunning = true
-
-        super.execute()
-    }
-
-    override fun isFinished(): Boolean {
-
-        return super.isFinished() || (deadline.isRunning && startedRunning)
-
-    }
-
-}
+//@Suppress("unused")
+//class ParallelRaceGroup() : CommandGroup() {
+//
+//    constructor(vararg commands: Command) : this() {
+//        addCommands(*commands)
+//    }
+//
+//    private val commandVector: Vector<Command> = Vector()
+//
+//    fun addCommands(vararg commands: Command) {
+//        commands.forEach {
+//            this.addParallel(it)
+//            commandVector.addElement(it)
+//        }
+//    }
+//
+//    override fun isFinished(): Boolean {
+////        val commands = m_commands
+//        var toReturn = super.isFinished()
+//        commandVector.forEach {
+//            toReturn = toReturn || it.isCompleted
+//        }
+//        return toReturn
+//    }
+//
+//}
+//
+//@Suppress("unused")
+//class ParallelDeadlineGroup(private val deadline: Command, vararg commands: Command) : CommandGroup() {
+//
+//    init {
+//        this.addParallel(deadline)
+//        commands.forEach {
+//            this.addParallel(it)
+//        }
+//    }
+//
+//    var startedRunning = false
+//
+//    override fun execute() {
+//
+//        if(!startedRunning && deadline.isRunning) startedRunning = true
+//
+//        super.execute()
+//    }
+//
+//    override fun isFinished(): Boolean {
+//
+//        return super.isFinished() || (deadline.isRunning && startedRunning)
+//
+//    }
+//
+//}
 
 @Suppress("unused")
 class WaitCommand(val duration: Time) : Command() {
