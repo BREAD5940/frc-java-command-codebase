@@ -4,8 +4,10 @@ import edu.wpi.first.wpilibj.command.Scheduler
 //import frc.robot.lib.command.ParallelDeadlineGroup
 //import frc.robot.lib.command.ParallelRaceGroup
 import frc.robot.lib.command.WaitCommand
+import org.ghrobotics.lib.mathematics.units.millisecond
 import org.ghrobotics.lib.mathematics.units.second
 import org.junit.Test
+import org.team5940.pantry.exparimental.command.CommandScheduler
 
 class CommandExtensionTest {
 
@@ -38,6 +40,59 @@ class CommandExtensionTest {
 //    }
 
     @Test
+    fun testTestCommand() {
+        val test = TestCommand()
+        assert(!test.mIsDone)
+        assert(!getBooleanMethodViaReflection(test, "isFinished"))
+        assert(!test.hasBeenExecuted)
+        assert(!test.hasBeenInitilized)
+        test.start()
+        assert(!test.isCompleted)
+        CommandScheduler.getInstance().run()
+        CommandScheduler.getInstance().run()
+        assert(!test.mIsDone)
+        assert(!getBooleanMethodViaReflection(test, "isFinished"))
+//        assert(test.hasBeenExecuted)
+//        assert(test.hasBeenInitilized)
+        assert(!test.isCompleted)
+        test.mIsDone = true
+        CommandScheduler.getInstance().run()
+        assert(test.isCompleted)
+
+    }
+
+    @Test
+    fun testAutoCommandGroup() {
+
+        val test1 = TestCommand()
+        val test2 = TestCommand()
+
+        class AutoTestCommand: CommandGroup() {
+            init {
+                addSequential(test1)
+                addSequential(test2)
+            }
+        }
+
+        val command = AutoTestCommand()
+
+        CommandScheduler.getInstance().run()
+        Thread.sleep(20)
+        command.start()
+        CommandScheduler.getInstance().run()
+        Thread.sleep(20)
+        CommandScheduler.getInstance().run()
+        Thread.sleep(20)
+        CommandScheduler.getInstance().run()
+        Thread.sleep(20)
+        println("command running? ${command.isRunning}")
+
+
+    }
+
+
+
+    @Test
     fun testParallelCommandGroup() {
 
         val test1 = TestCommand()
@@ -53,7 +108,7 @@ class CommandExtensionTest {
         println("test 1 initilized? ${test1.hasBeenInitilized}")
 
         println("group started? ${group.isRunning}")
-        println("group done? ${Scheduler.getInstance().subsystem}")
+        println("GROUP done? ${getBooleanMethodViaReflection(group, "isFinished")}")
 
     }
 
@@ -104,11 +159,11 @@ class CommandExtensionTest {
 
     private fun getBooleanMethodViaReflection(object_: Any , methodName: String) : Boolean {
         return try {
-            object_.javaClass.getDeclaredField(methodName).let {
+            object_.javaClass.getDeclaredMethod(methodName).let {
                 it.isAccessible = true
-                val value = it.getBoolean(object_)
+                val value = it.invoke(it)
                 //todo
-                return@let value;
+                return@let value as Boolean;
             }
         } catch (e: Throwable) {
             false
@@ -138,7 +193,10 @@ class CommandExtensionTest {
     }
 
     class TestCommand : Command() {
-        override fun isFinished(): Boolean = mIsDone
+        override fun isFinished(): Boolean {
+            println("isFinished? returning $mIsDone")
+            return mIsDone
+        }
 
         var mIsDone = false
 
@@ -148,6 +206,7 @@ class CommandExtensionTest {
         var hasBeenInitilized = false
 
         override fun initialize() {
+            println("command now initializing")
             hasBeenInitilized = true
         }
 
