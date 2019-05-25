@@ -3,13 +3,24 @@ package frc.robot.lib.command
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.command.Command
 import edu.wpi.first.wpilibj.command.CommandGroup
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature
-import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory
-import org.ghrobotics.lib.mathematics.twodim.trajectory.types.mirror
 import org.ghrobotics.lib.mathematics.units.Time
-import org.ghrobotics.lib.utils.BooleanSource
-import org.ghrobotics.lib.utils.map
+import org.ghrobotics.lib.mathematics.units.second
 import java.util.Vector
+
+@Suppress("unused")
+fun Command.withTimeout(runtime: Time) = ParallelRaceGroup(this, WaitCommand(runtime))
+
+@Suppress("unused")
+class AutonomousCommand : CommandGroup() {
+
+    var interruptCondition = {false}
+
+
+    override fun isFinished(): Boolean {
+        return super.isFinished() || interruptCondition()
+    }
+
+}
 
 @Suppress("unused")
 class ParallelRaceGroup() : CommandGroup() {
@@ -39,20 +50,7 @@ class ParallelRaceGroup() : CommandGroup() {
 }
 
 @Suppress("unused")
-class AutonomousCommand : CommandGroup() {
-
-    var interruptCondition = {false}
-
-    fun withTimeout(runtime: Time) = ParallelRaceGroup(this, WaitCommand(runtime))
-
-    override fun isFinished(): Boolean {
-        return super.isFinished() || interruptCondition()
-    }
-
-}
-
-@Suppress("unused")
-class ParallelDeadlineGroup(val deadline: Command, vararg commands: Command) : CommandGroup() {
+class ParallelDeadlineGroup(private val deadline: Command, vararg commands: Command) : CommandGroup() {
 
     init {
         this.addParallel(deadline)
@@ -72,20 +70,23 @@ class ParallelDeadlineGroup(val deadline: Command, vararg commands: Command) : C
 
     override fun isFinished(): Boolean {
 
-        return super.isFinished() || deadline.isRunning
+        return super.isFinished() || (deadline.isRunning && startedRunning)
 
     }
 
 }
 
 @Suppress("unused")
-class WaitCommand(duration: Time) : Command() {
+class WaitCommand(val duration: Time) : Command() {
+
+    constructor(duration: Double) : this(duration.second)
 
     private var mTimer = Timer()
     private var mDuration: Double = -1.0
 
     init {
         setRunWhenDisabled(true)
+        mDuration = duration.second
     }
 
     public override fun initialize() {
@@ -100,6 +101,7 @@ class WaitCommand(duration: Time) : Command() {
     override fun interrupted() = end()
 
     public override fun isFinished(): Boolean {
+//        println(mTimer.hasPeriodPassed(mDuration))
         return mTimer.hasPeriodPassed(mDuration)
     }
 
