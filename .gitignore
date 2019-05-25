@@ -173,3 +173,5 @@ src\main\python\twoHatchLLtest.csv
 *.gz
 *.xml
 *.iml
+out/*
+out\*
