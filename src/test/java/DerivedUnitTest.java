@@ -24,11 +24,11 @@ public class DerivedUnitTest {
 	public void testAddMass() {
 		Mass kStart = MassKt.getLb(5);
 		Mass kEnd = kStart.plus(MassKt.getLb(5));
-		Logger.log("Calc-ed mass: " + kEnd.getLb()); // the more units the better
+		System.out.println("Calc-ed mass: " + kEnd.getLb()); // the more units the better
 		assertEquals(MassKt.getLb(10).getKilogram(), kEnd.getKilogram(), 0.01);
 		Mass kMult = kEnd.times(3);
 		assertEquals(MassKt.getLb(30).getKilogram(), kMult.getKilogram(), 0.01);
-		Logger.log("Calc-ed mass: " + kMult.getLb()); // the more units the better
+		System.out.println("Calc-ed mass: " + kMult.getLb()); // the more units the better
 	}
 
 	@Test

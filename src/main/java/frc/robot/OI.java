@@ -2,6 +2,7 @@ package frc.robot;
 
 import java.util.Arrays;
 
+import frc.robot.lib.OLDParallelRaceGroup;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -18,7 +19,6 @@ import frc.robot.commands.subsystems.superstructure.PassThrough;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
-import frc.robot.lib.ParallelRaceGroup;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.factories.SequentialCommandFactory;
 import frc.robot.subsystems.DriveTrain.Gear;
@@ -115,7 +115,7 @@ public class OI {
 				Arrays.asList(new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));
 
 		var testMeme = new CommandGroup();
-		testMeme.addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)),
+		testMeme.addSequential(new OLDParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)),
 				new TeleopCommands()));
 		testMeme.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 

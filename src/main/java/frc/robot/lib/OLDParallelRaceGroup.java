@@ -5,11 +5,11 @@ import java.util.function.Supplier;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class ParallelRaceGroup extends CommandGroup {
+public class OLDParallelRaceGroup extends CommandGroup {
 
 	Supplier<Boolean> m_condition;
 
-	public ParallelRaceGroup(Supplier<Boolean> condition, Command... commands) {
+	public OLDParallelRaceGroup(Supplier<Boolean> condition, Command... commands) {
 
 		m_condition = condition;
 

@@ -210,7 +210,7 @@ public class CloseThenFarRocket extends CommandGroup {
 
 		// addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(35), VelocityKt.getVelocity(LengthKt.getFeet(2))));
 
-		// addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)), new TeleopCommands()));
+		// addSequential(new OLDParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)), new TeleopCommands()));
 
 		// addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
 
@@ -218,13 +218,13 @@ public class CloseThenFarRocket extends CommandGroup {
 
 		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_turnToLoading, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false));
 
-		// addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
+		// addSequential(new OLDParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
 
 		// addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_loadingToRocketF, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
 
 		// addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 
-		// addSequential(new ParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
+		// addSequential(new OLDParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)) , new TeleopCommands()));
 
 		// addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(20), VelocityKt.getVelocity(LengthKt.getFeet(3))));
 

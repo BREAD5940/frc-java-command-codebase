@@ -150,7 +150,7 @@ public class SuperstructureTests extends Testable {
 
 		Start1 = iPosition.HATCH_GRAB_INSIDE;
 		Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(3.5)), iPosition.CARGO_GRAB);
-		Logger.log("======== testing hatch grab to cargo pickup ========");
+		System.out.printf("======== testing hatch grab to cargo pickup ========");
 
 		testableSSMotion motion;
 		// motion = new testableSSMotion(Goal1, Start1);
@@ -229,7 +229,7 @@ public class SuperstructureTests extends Testable {
 		Translation2d GPelevator = new Translation2d(LengthKt.getInch(0), LengthKt.getInch(0));
 		Translation2d GPwrist = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, goalState.getElbowAngle().toRotation2d()).plus(GPelevator);
 
-		Logger.log(String.format("GPWrist X %s Y %s", GPwrist.getX().getInch(), GPwrist.getY().getInch()));
+		System.out.printf("GPWrist X %s Y %s", GPwrist.getX().getInch(), GPwrist.getY().getInch());
 
 	}
 

@@ -58,15 +58,15 @@ public class testableSSMotion /*extends Command*/ {
 		// requires(SuperStructure.getInstance());
 
 		plan(this.gsIn, currentState);
-		Logger.log(String.format("Start state (%s) Goal state (%s)", currentState.toString(), gsIn.toString()));
+		System.out.printf("Start state (%s) Goal state (%s)", currentState.toString(), gsIn.toString());
 		System.out.println("===================================================================");
-		Logger.log(String.format("Start state (%s)", currentState.toString()));
+		System.out.printf("Start state (%s)", currentState.toString());
 
-		// Logger.log(getQueue().getCommandLog().get(0));
+		// System.out.printf(getQueue().getCommandLog().get(0);
 		for (String s : getQueue().getCommandLog()) {
 			System.out.println(s);
 		}
-		Logger.log(String.format("End state (%s)", gsIn.toString()));
+		System.out.printf("End state (%s)", gsIn.toString());
 
 		System.out.println("===================================================================");
 	}
@@ -106,29 +106,29 @@ public class testableSSMotion /*extends Command*/ {
 		Length startArmTol = LengthKt.getInch(3);
 		//CHECK if the current and goal match
 		if (goalState.isEqualTo(currentState)) {
-			Logger.log("Goal and current states same.");
+			System.out.printf("Goal and current states same.");
 			return true;
 		}
 
-		Logger.log("Checking basic mins/maxes");
+		System.out.printf("Checking basic mins/maxes");
 		//SAFE illegal inputs
 		if (goalState.getElevatorHeight().getInch() > SuperStructureConstants.Elevator.top.getInch() - SuperStructureConstants.Elevator.carriageHeight.getInch()) {
-			Logger.log("Elevator too high! Safing elevator...");
+			System.out.printf("Elevator too high! Safing elevator...");
 			goalState.getElevator().setHeight(SuperStructureConstants.Elevator.top); // constrain elevator to max height
 		} else if (goalState.getElevatorHeight().getInch() < SuperStructureConstants.Elevator.bottom.getInch()) {
-			Logger.log("Elevator too low! Safing elevator");
+			System.out.printf("Elevator too low! Safing elevator");
 			goalState.getElevator().setHeight(SuperStructureConstants.Elevator.bottom); // constrain elevator to min height
 		}
 
 		if (goalState.getElbowAngle().getDegree() > SuperStructureConstants.Elbow.kElbowMax.getDegree()) {
-			Logger.log("Elbow big");
+			System.out.printf("Elbow big");
 			goalState.getElbow().setAngle(SuperStructureConstants.Elbow.kElbowMax); // Constrain elbow to max
 		} else if (goalState.getElbowAngle().getDegree() < SuperStructureConstants.Elbow.kElbowMin.getDegree()) {
-			Logger.log("Elbow small");
+			System.out.printf("Elbow small");
 			goalState.getElbow().setAngle(SuperStructureConstants.Elbow.kElbowMin); // Constrain elbow to min
 		}
 
-		Logger.log("Out of illegal safing");
+		System.out.printf("Out of illegal safing");
 
 		// TODO safe the wrist, which is stupid and changes a lot. Maybe we need a equation or something for it?
 
@@ -136,7 +136,7 @@ public class testableSSMotion /*extends Command*/ {
 		Translation2d GPelevator = new Translation2d(LengthKt.getInch(0), goalState.getElevatorHeight()); // TODO maybe change constructor to use a Translation2d fromed from a Length and Rotation2d?
 		Translation2d GPwrist = new Translation2d(SuperStructureConstants.Elbow.carriageToIntake, goalState.getElbowAngle().toRotation2d()).plus(GPelevator);
 
-		Logger.log("Goal position: " + goalState.toCSV() + String.format("gpWrist: x %s y %s", GPwrist.getX().getInch(), GPwrist.getY().getInch()));
+		System.out.printf("Goal position: " + goalState.toCSV() + String.format("gpWrist: x %s y %s", GPwrist.getX().getInch(), GPwrist.getY().getInch()));
 
 		/** 
 		 * goal point end of intake 
@@ -156,19 +156,19 @@ public class testableSSMotion /*extends Command*/ {
 		Translation2d SPeoi = new Translation2d(LengthKt.getInch(getUnDumbWrist(currentState.getWristAngle(), currentState.getElbowAngle()).getCos() * SuperStructureConstants.Wrist.intakeOut.getInch()),
 				LengthKt.getInch(getUnDumbWrist(currentState.getWristAngle(), currentState.getElbowAngle()).getSin() * SuperStructureConstants.Wrist.intakeOut.getInch())).plus(SPwrist);
 
-		Logger.log("made points");
+		System.out.printf("made points");
 
 		if (Math.atan((GPeoi.getY().getInch() + GPwrist.getY().getInch()) / (GPeoi.getX().getInch() + GPwrist.getX().getInch())) > SuperStructureConstants.Wrist.kWristMax.getRadian()) {
-			Logger.log("Wrist big");
+			System.out.printf("Wrist big");
 			goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMax); // constrain wrist to max
 		} else if (Math.atan((GPeoi.getY().getInch() + GPwrist.getY().getInch()) / (GPeoi.getX().getInch() + GPwrist.getX().getInch())) < SuperStructureConstants.Wrist.kWristMin.getRadian()) {
-			Logger.log("Wrist small");
+			System.out.printf("Wrist small");
 			goalState.getWrist().setAngle(SuperStructureConstants.Wrist.kWristMin); // constrain wrist to min
 		}
 
 		//SAFE potential crashes on the end state (FIXME not necessarily in between states?)
 		if (GPwrist.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch() || GPeoi.getY().getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch()) {
-			Logger.log("intake too low");
+			System.out.printf("intake too low");
 			RoundRotation2d tempTheta = goalState.getElbowAngle();
 			tempTheta = RoundRotation2d.getRadian(
 					Math.asin(
@@ -183,7 +183,7 @@ public class testableSSMotion /*extends Command*/ {
 
 		//I really hope we don't actually need this
 		// if (GPeoi.getY().minus(Wrist.intakeAbove).getInch() < SuperStructureConstants.Elevator.electronicsHeight.getInch()) {
-		// 	Logger.log("intake still too low");
+		// 	System.out.printf("intake still too low");
 		// 	RoundRotation2d tempTheta = getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle());
 		// 	tempTheta = RoundRotation2d.getRadian(
 		// 			Math.asin(
@@ -194,7 +194,7 @@ public class testableSSMotion /*extends Command*/ {
 		// 			LengthKt.getInch(Math.sin(tempTheta.getRadian()) * SuperStructureConstants.Wrist.intakeOut.getInch()).plus(GPwrist.getY()));
 		// }
 
-		Logger.log("a r c s i n");
+		System.out.printf("a r c s i n");
 
 		//FIND the lowest goal and end points
 		Translation2d lowestGP = GPeoi;
@@ -209,7 +209,7 @@ public class testableSSMotion /*extends Command*/ {
 			lowestSP = (lowestSP.getY().getInch() >= current.getY().getInch()) ? current : lowestSP;
 		}
 
-		Logger.log("lowests");
+		System.out.printf("lowests");
 
 		//SAFE potential crashes IN BETWEEN states
 		if (lowestGP.getY().getInch() < GPelevator.getY().getInch()) {
@@ -224,10 +224,10 @@ public class testableSSMotion /*extends Command*/ {
 		startArmTol = (startArmTol.getInch() > (Math.abs(GPelevator.getY().getInch() - Math.abs(lowestGP.getY().minus(GPelevator.getY()).getInch()))))
 				? startArmTol
 				: (LengthKt.getInch(Math.abs(GPelevator.getY().getInch() - Math.abs(lowestGP.getY().minus(GPelevator.getY()).getInch()))));
-		Logger.log("tolerances");
+		System.out.printf("tolerances");
 		//CLEAR the queue
 		this.queue = new TestableCommandGroup();
-		Logger.log("queue cleared");
+		System.out.printf("queue cleared");
 
 		//CHECK if the elevator point is in proximity to the crossbar - if it is, stow it
 		// This is the VERY FIRST thing we do so that we make sure that we don't slap a meme
@@ -249,16 +249,16 @@ public class testableSSMotion /*extends Command*/ {
 			if (doWeNeedToSafeElevatorFirst)
 				this.queue.addSequentialLoggable(new ElevatorMove(SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar));
 			if (doWeNeedToSafeElevatorFirst)
-				Logger.log("so if we try to yeet we will hit the crossbar. So let's yeet the elevator up to " + SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar.getInch());
+				System.out.printf("so if we try to yeet we will hit the crossbar. So let's yeet the elevator up to " + SuperStructureConstants.Elevator.minimumPassThroughAboveCrossbar.getInch());
 
-			Logger.log("So apparently the elbow is in danger of hitting the crossbar. So uhh let's stow the arm.");
+			System.out.printf("So apparently the elbow is in danger of hitting the crossbar. So uhh let's stow the arm.");
 			this.queue.addSequentialLoggable(new ArmMove(SuperStructure.iPosition.STOWED));
 		}
 
 		boolean isLongClimb = Math.abs(goalState.getElevatorHeight().minus(currentState.getElevatorHeight()).getInch()) >= SuperStructureConstants.Elevator.kElevatorLongRaiseDistance.getInch();
 
 		// if (isLongClimb) {
-		// Logger.log("Stowing arm on long climb");
+		// System.out.printf("Stowing arm on long climb");
 		// this.queue.addSequentialLoggable(new ArmWaitForElevator(SuperStructure.iPosition.STOWED, minUnCrashHeight.getHeight(), LengthKt.getInch(3)));
 		// this.queue.addSequentialLoggable(new ArmMove(SuperStructure.iPosition.STOWED/*, minUnCrashHeight.getHeight(), LengthKt.getInch(3)*/));
 		// }
@@ -269,7 +269,7 @@ public class testableSSMotion /*extends Command*/ {
 				getUnDumbWrist(goalState.getWristAngle(), goalState.getElbowAngle()),
 				getUnDumbWrist(currentState.getWristAngle(), currentState.getElbowAngle()));
 
-		Logger.log(String.format("WORST CASE ELBOW: (%s) WORST CASE WRIST: (%s)", worstCaseElbow.toString(), worstCaseWrist.toString()));
+		System.out.printf("WORST CASE ELBOW: (%s) WORST CASE WRIST: (%s)", worstCaseElbow.toString(), worstCaseWrist.toString());
 
 		// now that we have a worst case angle, apply that to move the superstructure. 
 		// First off, if moving the intake first would cause anything to hit the electronics, move the elevator up.
@@ -291,7 +291,7 @@ public class testableSSMotion /*extends Command*/ {
 				|| (rawStartProximal.getX().getInch() < SuperStructureConstants.kCarriageToFramePerimeter.getInch());
 
 		if (isWithinFramePerimeter)
-			Logger.log("current or goal state is within the frame perimeter!");
+			System.out.printf("current or goal state is within the frame perimeter!");
 
 		// first, check if trying to move the arms _right now_ would make something hit
 		var worstCaseStartingPos = worstCaseCarriageToEOI.plus(new Translation2d(currentState.getElevator().height, LengthKt.getInch(0)));
@@ -302,20 +302,20 @@ public class testableSSMotion /*extends Command*/ {
 
 			// TODO check if the end state is going to hit anything
 
-			Logger.log("gunna slap the electronics plate, gotta move the elevator first");
+			System.out.printf("gunna slap the electronics plate, gotta move the elevator first");
 			queue.addSequentialLoggable(new ElevatorMove(minUnCrashHeight));
 
 		}
 
 		// TODO where should passthrough go?
-		// Logger.log("goal pos elbow end x: " + GPwrist.getX().getInch() + " startpoint pos elbow end: " + SPwrist.getX().getInch());
+		// System.out.printf("goal pos elbow end x: " + GPwrist.getX().getInch() + " startpoint pos elbow end: " + SPwrist.getX().getInch());
 		// if (GPwrist.getX().getInch() > 8 && SPwrist.getX().getInch() < -8) {
 		// queue.addSequentialLoggable(new PassThroughReverse());
 		// } else if (GPwrist.getX().getInch() < -8 && SPwrist.getX().getInch() > 8) {
 		// queue.addSequentialLoggable(new PassThroughForward());
 		// }
 
-		// Logger.log("pass");
+		// System.out.printf("pass");
 
 		//CHECK the position of the intake -- hatch or cargo
 		// IF it's a long climb
@@ -325,10 +325,10 @@ public class testableSSMotion /*extends Command*/ {
 
 		// ok so by now the elevator should be such that we can safely move stuff?
 		// TODO make both move at same time if safe?
-		Logger.log("Moving arm to final state");
+		System.out.printf("Moving arm to final state");
 		queue.addSequentialLoggable(new ArmMove(goalState.getAngle(), "final arm move"));
 
-		Logger.log("moving elevator to final state");
+		System.out.printf("moving elevator to final state");
 		this.queue.addSequentialLoggable(new ElevatorMove(goalState.getElevator()));
 
 		return true;
@@ -415,12 +415,12 @@ public class testableSSMotion /*extends Command*/ {
 		}
 
 		public void addSequentialLoggable(AbstractCommand command) {
-			Logger.log("Commamd " + command.name + " added in sequential mode");//
+			System.out.printf("Commamd " + command.name + " added in sequential mode");//
 			commandLog.add("Commamd " + command.name + " added in sequential mode");
 		}
 
 		public void addParallelLoggable(AbstractCommand command) {
-			Logger.log("Commamd " + command.name + " added in parallel mode");
+			System.out.printf("Commamd " + command.name + " added in parallel mode");
 			commandLog.add("Commamd " + command.name + " added in parallel mode");// and does \t" + command.toString());
 		}
 	}
