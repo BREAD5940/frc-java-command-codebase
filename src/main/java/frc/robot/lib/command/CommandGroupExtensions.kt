@@ -3,14 +3,19 @@ package frc.robot.lib.command
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.command.Command
 import edu.wpi.first.wpilibj.command.CommandGroup
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature
+import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory
+import org.ghrobotics.lib.mathematics.twodim.trajectory.types.mirror
 import org.ghrobotics.lib.mathematics.units.Time
+import org.ghrobotics.lib.utils.BooleanSource
+import org.ghrobotics.lib.utils.map
 import java.util.Vector
 
 @Suppress("unused")
-class ParallelRaceGroup(vararg command: Command) : CommandGroup() {
+class ParallelRaceGroup() : CommandGroup() {
 
-    init {
-        addCommands(*command)
+    constructor(vararg commands: Command) : this() {
+        addCommands(*commands)
     }
 
     private val commandVector: Vector<Command> = Vector()
@@ -56,22 +61,18 @@ class ParallelDeadlineGroup(val deadline: Command, vararg commands: Command) : C
         }
     }
 
+    var startedRunning = false
+
+    override fun execute() {
+
+        if(!startedRunning && deadline.isRunning) startedRunning = true
+
+        super.execute()
+    }
+
     override fun isFinished(): Boolean {
 
-//        val reflectionGang = this.javaClass.getDeclaredMethod("isFinished").invoke(javaClass) as Boolean
-
-//        kotlin.runCatching {  }
-
-        return try {
-            super.isFinished() || javaClass.getDeclaredField("isFinished").let {
-                it.isAccessible = true
-                val value = it.getBoolean(this)
-                //todo
-                return@let value;
-            }
-        } catch (e: Throwable) {
-            super.isFinished()
-        }
+        return super.isFinished() || deadline.isRunning
 
     }
 
@@ -80,26 +81,26 @@ class ParallelDeadlineGroup(val deadline: Command, vararg commands: Command) : C
 @Suppress("unused")
 class WaitCommand(duration: Time) : Command() {
 
-    protected var m_timer = Timer()
-    private var m_duration: Double = -1.0
+    private var mTimer = Timer()
+    private var mDuration: Double = -1.0
 
     init {
         setRunWhenDisabled(true)
     }
 
     public override fun initialize() {
-        m_timer.reset()
-        m_timer.start()
+        mTimer.reset()
+        mTimer.start()
     }
 
     override fun end() {
-        m_timer.stop()
+        mTimer.stop()
     }
 
     override fun interrupted() = end()
 
     public override fun isFinished(): Boolean {
-        return m_timer.hasPeriodPassed(m_duration)
+        return mTimer.hasPeriodPassed(mDuration)
     }
 
 }
