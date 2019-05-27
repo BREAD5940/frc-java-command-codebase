@@ -15,7 +15,6 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.junit.jupiter.api.Test;
 
-import frc.robot.lib.Logger;
 import frc.robot.lib.motion.Util;
 
 public class DerivedUnitTest {

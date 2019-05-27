@@ -41,7 +41,6 @@ import frc.robot.lib.Logger;
 import frc.robot.lib.enums.TransmissionSide;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.DriveSignal;
-import frc.robot.subsystems.superstructure.SuperStructure;
 import kotlin.ranges.RangesKt;
 
 // import frc.robot.commands.drivetrain_shift_high;
@@ -521,7 +520,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		@Override
 		protected void execute() {
 
-//			var isQuickTurn = Robot.m_oi.getPrimary().getRawButton(3);
+			//			var isQuickTurn = Robot.m_oi.getPrimary().getRawButton(3);
 			var isQuickTurn = Robot.m_oi.getPrimary().getRawButton(6);
 
 			double forwardSpeed = Robot.m_oi.getForwardAxis();
@@ -530,9 +529,9 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 			if (!isQuickTurn) {
 
 				// reverse the turn speed if going backwards
-//				if (forwardSpeed < -0.05 && (SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() > -90)) {
-//					turnSpeed *= -1;
-//				}
+				//				if (forwardSpeed < -0.05 && (SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() > -90)) {
+				//					turnSpeed *= -1;
+				//				}
 				forwardSpeed *= Math.abs(forwardSpeed);// * Math.abs(forwardSpeed);
 
 				//				System.out.println("forward " + forwardSpeed);
