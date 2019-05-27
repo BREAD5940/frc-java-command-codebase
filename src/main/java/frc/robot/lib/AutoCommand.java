@@ -1,23 +1,30 @@
 package frc.robot.lib;
 
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * basically just a CommandGroup but with the done() method and time tracking.
  */
-public abstract class AutoCommand extends Command {
+public abstract class AutoCommand extends SendableCommandBase {
 
 	double start = 0;
 
+	// @Override
+	// public synchronized void start() {
+	// 	super.schedule();
+	// 	start = Timer.getFPGATimestamp();
+	// }
+
 	@Override
-	public synchronized void start() {
-		super.start();
+	public void initialize() {
 		start = Timer.getFPGATimestamp();
+		super.initialize();
 	}
 
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		Logger.log(super.getName() + " ran in " + (Timer.getFPGATimestamp() - start) + " seconds!");
 	}
 

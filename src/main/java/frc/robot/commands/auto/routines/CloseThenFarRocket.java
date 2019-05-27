@@ -7,8 +7,8 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.commands.subsystems.drivetrain.TurnToFaceVisionTarget;
@@ -18,7 +18,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
-public class CloseThenFarRocket extends CommandGroup {
+public class CloseThenFarRocket extends SequentialCommandGroup {
 	/**
 	 * Semi-auto routine for placing on the far rocet followed by the close one; 
 	 */
@@ -202,11 +202,16 @@ public class CloseThenFarRocket extends CommandGroup {
 				true,
 				true);
 
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_fallOFfHab, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
-		addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_floorToRocketC, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false));
+		addCommands(DriveTrain.getInstance().followTrajectoryWithGear(t_fallOFfHab, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, true));
 
-		addSequential(new TurnToFaceVisionTarget());
+		addCommands(parallel(
+				new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH),
+				DriveTrain.getInstance().followTrajectoryWithGear(t_floorToRocketC, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false)));
+
+		//		addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		//		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(t_floorToRocketC, TrajectoryTrackerMode.RAMSETE, DriveTrain.Gear.LOW, false));
+
+		addCommands(new TurnToFaceVisionTarget());
 
 		// addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(35), VelocityKt.getVelocity(LengthKt.getFeet(2))));
 

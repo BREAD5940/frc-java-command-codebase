@@ -62,6 +62,9 @@ javadoc {
 repositories {
   mavenCentral()
   maven { url 'https://jitpack.io' }
+    maven { url "http://dl.bintray.com/kyonifer/maven" }
+    jcenter()
+
 }
 
 apply plugin: 'checkstyle'
@@ -90,11 +93,14 @@ dependencies {
   // testCompile 'junit:junit:4.12'
   compile 'com.google.code.gson:gson:2.8.2'
 
-	compile 'com.github.5190GreenHopeRobotics:FalconLibrary:2019.3.4'
+    compile 'com.github.5190GreenHopeRobotics:FalconLibrary:2019.3.4'
 
-  compile 'com.github.mcm001:pantrycommon:60acecb5a7'
+  compile 'com.github.mcm001:pantrycommon:0f120fc4fb'
 
   compile 'com.github.Oblarg:Oblog:2.8.1'
+
+    // Serial Communication
+    compile "com.fazecast:jSerialComm:2.4.1"
 
   // testCompile group: 'org.openpnp', name: 'opencv', version: '3.2.0-0'
 

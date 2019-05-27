@@ -7,11 +7,12 @@
 
 package frc.robot.commands.subsystems.drivetrain;
 
-import edu.wpi.first.wpilibj.command.TimedCommand;
+import org.team5940.pantry.exparimental.command.WaitCommand;
+
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 
-public class DrivePowerAndIntake extends TimedCommand {
+public class DrivePowerAndIntake extends WaitCommand {
 	double power, time, reqEndTime, intake;
 
 	/**
@@ -23,9 +24,9 @@ public class DrivePowerAndIntake extends TimedCommand {
 	 */
 	public DrivePowerAndIntake(double drive, double intake, double time) {
 		super(time);
-		// Use requires() here to declare subsystem dependencies
-		requires(DriveTrain.getInstance());
-		requires(Intake.getInstance());
+		// Use addRequirements() here to declare subsystem dependencies
+		addRequirements(DriveTrain.getInstance());
+		addRequirements(Intake.getInstance());
 		this.power = drive;
 		this.intake = intake;
 		this.time = time;
@@ -34,7 +35,7 @@ public class DrivePowerAndIntake extends TimedCommand {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		// System.out.println("hi!");
 		DriveTrain.getInstance().arcadeDrive(power, 0, false);
 		Intake.getInstance().setHatchSpeed(intake);
@@ -42,15 +43,9 @@ public class DrivePowerAndIntake extends TimedCommand {
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		DriveTrain.getInstance().stop();
 		Intake.getInstance().setHatchSpeed(0);
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		end();
-	}
 }

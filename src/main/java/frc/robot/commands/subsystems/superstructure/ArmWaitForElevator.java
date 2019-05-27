@@ -3,14 +3,14 @@ package frc.robot.commands.subsystems.superstructure;
 import java.util.concurrent.Callable;
 
 import org.ghrobotics.lib.mathematics.units.Length;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
-import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.lib.AutoWaitForCondition;
 import frc.robot.states.IntakeAngle;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class ArmWaitForElevator extends AutoCommandGroup {
+public class ArmWaitForElevator extends SequentialCommandGroup {
 
 	IntakeAngle desired;
 	Length finalEleHeight, tolerence;
@@ -35,12 +35,12 @@ public class ArmWaitForElevator extends AutoCommandGroup {
 		// (null) -> [or becomes, turns into] (basically if the elevator is within tolerance)
 		// this Caller is then used by auto wait for condition and polled in isFinished();
 
-		addSequential(new AutoWaitForCondition(elevatorMoved));
-		addSequential(new ArmMove(desired));
+		addCommands(new AutoWaitForCondition(elevatorMoved));
+		addCommands(new ArmMove(desired));
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return Math.abs(desired.wristAngle.angle.getDegree() - SuperStructure.getInstance().getWrist().getDegrees()) <= 2
 				|| Math.abs(desired.elbowAngle.angle.getDegree() - SuperStructure.getInstance().getElbow().getDegrees()) <= 2;
 	}

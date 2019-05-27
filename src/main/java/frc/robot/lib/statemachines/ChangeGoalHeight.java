@@ -1,6 +1,7 @@
 package frc.robot.lib.statemachines;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import frc.robot.Robot;
 
 /**
@@ -8,7 +9,7 @@ import frc.robot.Robot;
  * 
  * @author jocleyn McHugo
  */
-public class ChangeGoalHeight extends Command {
+public class ChangeGoalHeight extends SendableCommandBase {
 	private boolean up = true;
 
 	public ChangeGoalHeight(boolean up) {
@@ -16,7 +17,7 @@ public class ChangeGoalHeight extends Command {
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		if (up) {
 			Robot.autoState.goalHeightUp();
 		} else {
@@ -25,7 +26,7 @@ public class ChangeGoalHeight extends Command {
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return true;
 	}
 }

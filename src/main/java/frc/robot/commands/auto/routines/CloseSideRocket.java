@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Supplier;
 
-import frc.robot.lib.OLDParallelRaceGroup;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
@@ -15,14 +14,15 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Acceleration;
 import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
 import frc.robot.Robot;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
-import frc.robot.commands.auto.groups.VisionCommandGroup;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
+import frc.robot.lib.OLDParallelRaceGroup;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
@@ -33,8 +33,8 @@ import frc.robot.xboxmap;
 /**
  * 2-hatch 1-cargo auto
  */
-public class CloseSideRocket extends VisionCommandGroup {
-	// private AutoCommandGroup mBigCommandGroup;
+public class CloseSideRocket extends SequentialCommandGroup {
+	// private SendableCommandBase mBigCommandGroup;
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
 	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
 
@@ -126,17 +126,21 @@ public class CloseSideRocket extends VisionCommandGroup {
 		// var t_toLoadingStation = Trajectories.generateTrajectory(p_toLoadingStation, Trajectories.kLowGearConstraints, VelocityKt.getVelocity(LengthKt.getFeet(0)),
 		// 		VelocityKt.getVelocity(LengthKt.getFeet(0)), VelocityKt.getVelocity(LengthKt.getFeet(6)), kDefaultAcceleration, false, true);
 
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_rocketC, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // keep going over to the far side of the rocket
-		addParallel(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_rocketCPart2, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); // keep going over to the far side of the rocket
+		addCommands(DriveTrain.getInstance().followTrajectoryWithGear(p_rocketC, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); // keep going over to the far side of the rocket
+		//		addParallel(new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
+		//		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(p_rocketCPart2, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)); // keep going over to the far side of the rocket
+
+		addCommands(parallel(
+				new JankyGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH),
+				DriveTrain.getInstance().followTrajectoryWithGear(p_rocketCPart2, TrajectoryTrackerMode.RAMSETE, Gear.LOW, false)));
 
 		Supplier<Boolean> checker = (() -> (Boolean.valueOf(Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON))));
 
-		addSequential(new OLDParallelRaceGroup(checker, new TeleopCommands()));
+		addCommands(new OLDParallelRaceGroup(checker, new TeleopCommands()));
 
 		// addSequential(new DrivePower(-0.4, 0.5));
 
-		addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
+		addCommands(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE));
 
 		// addSequential(new PlaceHatch());
 
@@ -170,7 +174,7 @@ public class CloseSideRocket extends VisionCommandGroup {
 	 * @return
 	 *  the mBigCommandGroup of the function
 	 */
-	public AutoCommandGroup getBigCommandGroup() {
+	public SendableCommandBase getBigCommandGroup() {
 		return this;
 	}
 

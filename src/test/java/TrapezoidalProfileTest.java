@@ -1,8 +1,10 @@
-import org.junit.jupiter.api.Test;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
 
 import frc.team254.Trajectory;
 import frc.team254.TrajectoryGenerator;
-import junit.framework.Assert;
 
 public class TrapezoidalProfileTest {
 
@@ -51,9 +53,9 @@ public class TrapezoidalProfileTest {
 		// System.out.print(traj.toString());
 
 		Trajectory.Segment last = traj.getSegment(traj.getNumSegments() - 1);
-		Assert.assertFalse(Math.abs(last.pos - goal_distance) > 1.0);
-		Assert.assertFalse(Math.abs(last.vel - goal_vel) > 1.0);
-		Assert.assertFalse(Math.abs(last.heading) > 1.0);
+		assertFalse(Math.abs(last.pos - goal_distance) > 1.0);
+		assertFalse(Math.abs(last.vel - goal_vel) > 1.0);
+		assertFalse(Math.abs(last.heading) > 1.0);
 	}
 
 }

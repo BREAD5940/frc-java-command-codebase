@@ -2,15 +2,15 @@ package frc.robot.commands.subsystems.superstructure;
 
 import static frc.robot.subsystems.superstructure.SuperStructure.getDumbWrist;
 
-import java.util.function.Supplier;
+import java.util.function.BooleanSupplier;
 
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.team5940.pantry.exparimental.command.ConditionalCommand;
+import org.team5940.pantry.exparimental.command.PrintCommand;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.ConditionalCommand;
-import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
@@ -22,7 +22,7 @@ public class PassThrough extends ConditionalCommand {
 	private static final double kProximalMaxVel = 190d / 360d * 2 * Math.PI;
 	private static final double kWristMaxVel = 190d / 360d * 2 * Math.PI;
 
-	public static class SyncedMove extends Command {
+	public static class SyncedMove extends SendableCommandBase {
 
 		private final double goal;
 		private final double goalWrist;
@@ -146,61 +146,61 @@ public class PassThrough extends ConditionalCommand {
 
 	private final SuperStructure structure;
 
-	public PassThrough(SuperStructure structure, Supplier<Boolean> isFrontToBack) {
+	public PassThrough(SuperStructure structure, BooleanSupplier isFrontToBack) {
 
 		// super(setupConstructor(structure), isFrontToBack);
 
-		super(new FrontToBack(structure), new BackToFront(structure));
+		super(new FrontToBack(structure), new BackToFront(structure), isFrontToBack);
 
 		this.structure = structure;
 		this.isFrontToBack = isFrontToBack;
 
 	}
 
-	private Supplier<Boolean> isFrontToBack;
+	private BooleanSupplier isFrontToBack;
 
-	@Override
-	protected boolean condition() {
-		return isFrontToBack.get();
-	}
+	//	@Override
+	//	protected boolean condition() {
+	//		return isFrontToBack.getAsBoolean();
+	//	}
 
-	public static class FrontToBack extends CommandGroup {
+	public static class FrontToBack extends SequentialCommandGroup {
 
 		public FrontToBack(SuperStructure structure) {
 
-			setInterruptible(false);
+			//			setInterruptible(false);
 
-			addSequential(new PrintCommand("passing thru front to back"));
-			addSequential(new SetHatchMech(Intake.HatchMechState.kClamped));
-			//			addSequential(new LineEverythingUp(() -> SuperStructure.getInstance().getCurrentState().getElbowAngle()));
-			addSequential(new ElevatorMove(LengthKt.getInch(22.5))); //todo check height
-			addSequential(new SyncedMove(Math.toRadians(-160), true, structure));
+			addCommands(new PrintCommand("passing thru front to back"));
+			addCommands(new SetHatchMech(Intake.HatchMechState.kClamped));
+			//			addCommands(new LineEverythingUp(() -> SuperStructure.getInstance().getCurrentState().getElbowAngle()));
+			addCommands(new ElevatorMove(LengthKt.getInch(22.0))); //todo check height
+			addCommands(new SyncedMove(Math.toRadians(-160), true, structure));
 			//-188 elbow -106 wrist
-			addSequential(new ArmMove(new IntakeAngle(
+			addCommands(new ArmMove(new IntakeAngle(
 					RoundRotation2d.getDegree(-193),
 					RoundRotation2d.getDegree(-112))));
-			addSequential(new ElevatorMove(LengthKt.getInch(5))); //todo check height
+			addCommands(new ElevatorMove(LengthKt.getInch(5))); //todo check height
 		}
 	}
 
-	public static class BackToFront extends CommandGroup {
+	public static class BackToFront extends SequentialCommandGroup {
 
 		public BackToFront(SuperStructure structure) {
 
-			setInterruptible(false);
+			//			setInterruptible(false);
 
-			addSequential(new PrintCommand("passing thru back to front"));
-			addSequential(new SetHatchMech(Intake.HatchMechState.kClamped));
-			addSequential(new ElevatorMove(LengthKt.getInch(22.5))); //todo check height
-			//			addSequential(new SyncedMove(Math.toRadians(-58), false, structure));
-			addSequential(new SyncedMove(Math.toRadians(0), false, structure));
-			addSequential(new ArmMove(SuperStructure.iPosition.HATCH_GRAB_INSIDE.getAngle()));
-			addSequential(new ElevatorMove(SuperStructure.iPosition.HATCH_GRAB_INSIDE.getElevator()));
+			addCommands(new PrintCommand("passing thru back to front"));
+			addCommands(new SetHatchMech(Intake.HatchMechState.kClamped));
+			addCommands(new ElevatorMove(LengthKt.getInch(22.0))); //todo check height
+			//			addCommands(new SyncedMove(Math.toRadians(-58), false, structure));
+			addCommands(new SyncedMove(Math.toRadians(0), false, structure));
+			addCommands(new ArmMove(SuperStructure.iPosition.HATCH_GRAB_INSIDE.getAngle()));
+			addCommands(new ElevatorMove(SuperStructure.iPosition.HATCH_GRAB_INSIDE.getElevator()));
 
 		}
 	}
 
-	//	public static class LineEverythingUp extends Command {
+	//	public static class LineEverythingUp extends SendableCommandBase{
 	//
 	//		private final Supplier<RoundRotation2d> goalSupplier;
 	//		private RoundRotation2d goalState = null;
@@ -212,14 +212,14 @@ public class PassThrough extends ConditionalCommand {
 	//		}
 	//
 	//		@Override
-	//		protected void initialize() {
+	//		public void initialize() {
 	//			this.lastObservedState = SuperStructure.getInstance().getCurrentState();
 	//			started = true;
 	//			goalState = goalSupplier.get();
 	//		}
 	//
 	//		@Override
-	//		protected void execute() {
+	//		public void execute() {
 	//			var structure = SuperStructure.getInstance();
 	//			structure.getWrist().requestAngle(goalState);
 	//			structure.getElbow().requestAngle(SuperStructure.getDumbWrist(goalState, goalState));

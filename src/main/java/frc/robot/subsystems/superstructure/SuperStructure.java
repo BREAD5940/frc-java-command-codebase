@@ -17,7 +17,6 @@ import com.team254.lib.physics.DCMotorTransmission;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotConfig.auto.fieldPositions;
@@ -49,7 +48,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	public static Length currentSetHeight, lastSH = LengthKt.getInch(0), lastLastSH = LengthKt.getInch(0);
 	public SuperStructureState mReqState = new SuperStructureState();
 	public SuperStructureState lastState = new SuperStructureState();
-	private CommandGroup mCurrentCommandGroup;
+	//	private CommandGroup mCurrentCommandGroup;
 	private ArrayList<SuperStructureState> mReqPath;
 	private int cPathIndex = 0;
 	private boolean currentPathComplete = false;
@@ -140,6 +139,8 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 			SmartDashboard.putString("Superstructure move setpoint", mReqState.toCSV());
 		});
 		mSmartDashboardUpdater.startPeriodic(0.5);
+
+		setDefaultCommand(new JustElevatorTeleop());
 
 	}
 
@@ -266,15 +267,6 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	//		// updateState();
 	//		this.moveSuperstructureCombo(mReqState.getElevator(), intakeState);
 	//	}
-
-	@Override
-	protected void initDefaultCommand() {
-		// pretty sure it doesn't need a default command, so leaving this empty
-		// Actually yeah all that you really need is the buttons
-		// well also jogging with joysticks but eehhhh
-		// actually that should be the default command, hot prank
-		setDefaultCommand(new JustElevatorTeleop());
-	}
 
 	public SuperStructureState updateState() {
 		var mNewWrist = getWrist().getCurrentState();

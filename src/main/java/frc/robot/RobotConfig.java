@@ -86,7 +86,7 @@ public class RobotConfig {
 		// public static final double VELOCITY_PULSES_PER_ROTATION = 409.6f;
 		public static final double POSITION_PULSES_PER_ROTATION = 4096;
 
-		public static final NativeUnit kDriveSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
+		public static final NativeUnit kDriveSensorUnitsPerRotation = NativeUnitKt.getNativeUnits(4096);
 
 		public static final NativeUnitLengthModel LEFT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, left_radius);
 		public static final NativeUnitLengthModel RIGHT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, right_radius);
@@ -291,7 +291,7 @@ public class RobotConfig {
 		public static final Length elevator_minimum_height = LengthKt.getInch(0f);
 		public static final Length elevator_maximum_height = LengthKt.getInch(65f); // changed to inches, TODO verify maximum height
 
-		private static final NativeUnit kSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
+		private static final NativeUnit kSensorUnitsPerRotation = NativeUnitKt.getNativeUnits(4096);
 		private static final Length left_radius = LengthKt.getInch(1.5).div(2);
 
 		public static final NativeUnitLengthModel elevatorModel = new NativeUnitLengthModel(kSensorUnitsPerRotation, left_radius);

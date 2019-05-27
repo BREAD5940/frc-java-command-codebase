@@ -1,6 +1,7 @@
 package frc.robot.lib.statemachines;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import frc.robot.Robot;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalLocation;
 
@@ -9,26 +10,25 @@ import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalLocation;
  * 
  * @author jocleyn McHugo
  */
-public class LocationToggle extends Command {
+public class LocationToggle extends SendableCommandBase {
 	public LocationToggle() {}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		Robot.autoState.setGoalLocation(GoalLocation.CARGO_SHIP);
 	}
 
-	@Override
-	protected void interrupted() {
+	public void interrupted() {
 		Robot.autoState.setGoalLocation(GoalLocation.ROCKET);
 	}
 
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		interrupted();
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return false;
 	}
 }

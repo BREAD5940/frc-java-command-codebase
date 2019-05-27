@@ -1,6 +1,6 @@
 package frc.robot.commands.auto;
 
-import edu.wpi.first.wpilibj.command.InstantCommand;
+import org.team5940.pantry.exparimental.command.InstantCommand;
 
 /**
  * Add your docs here.
@@ -11,13 +11,18 @@ public class InstantRunnable extends InstantCommand {
 
 	public InstantRunnable(Runnable thing, boolean runWhenDisabled) {
 		super();
-		setRunWhenDisabled(runWhenDisabled);
+		//		setRunWhenDisabled(runWhenDisabled);
 		this.toRun = thing;
+	}
+
+	@Override
+	public boolean runsWhenDisabled() {
+		return true;
 	}
 
 	// Called once when the command executes
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		try {
 			toRun.run();
 		} catch (Exception e) {

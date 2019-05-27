@@ -9,15 +9,15 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.team5940.pantry.exparimental.command.PrintCommand;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 
-public class visionTest extends CommandGroup {
+public class visionTest extends SequentialCommandGroup {
 	/**
 	 * Nyoooooooooooooooooooooooooooooooooooooooooooom
 	 * <P>
@@ -47,9 +47,9 @@ public class visionTest extends CommandGroup {
 
 		TimedTrajectory<Pose2dWithCurvature> trajectory = Trajectories.generateTrajectory(waypoints, Trajectories.kLowGearConstraints, Trajectories.kDefaultStartVelocity, VelocityKt.getVelocity(LengthKt.getFeet(2)), VelocityKt.getVelocity(LengthKt.getFeet(5)), Trajectories.kDefaultAcceleration.div(2), false, true);
 
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(trajectory, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true));
+		addCommands(DriveTrain.getInstance().followTrajectoryWithGear(trajectory, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true));
 
-		addSequential(new PrintCommand("==================================== moving on to next command ======================="));
+		addCommands(new PrintCommand("==================================== moving on to next command ======================="));
 
 		// addSequential(new SplineToVisionTarget(, 6.5)); // todo check numbers
 

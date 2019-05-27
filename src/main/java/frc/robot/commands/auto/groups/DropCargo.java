@@ -1,9 +1,10 @@
 package frc.robot.commands.auto.groups;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
+
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 
-public class DropCargo extends CommandGroup {
+public class DropCargo extends SequentialCommandGroup {
 	/**
 	 * drops cargo. 
 	 * if it's being shot through a hatch/port, it outtakes forward. otherwise it outtakes downward
@@ -13,10 +14,10 @@ public class DropCargo extends CommandGroup {
 	public DropCargo(boolean isDrop) {
 		if (!isDrop) {
 			// addSequential(new SetWrist(0, false));
-			addSequential(new RunIntake(-1, -1, 2));
+			addCommands(new RunIntake(-1, -1, 2));
 		} else {
 			// addSequential(new SetWrist(-90, false)); // TODO the entire SetWrist command is currently commented out
-			addSequential(new RunIntake(-1, 01, 2));
+			addCommands(new RunIntake(-1, 01, 2));
 		}
 
 	}

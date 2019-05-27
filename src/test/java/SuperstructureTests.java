@@ -6,14 +6,11 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.junit.jupiter.api.Test;
 
 import frc.robot.SuperStructureConstants;
-import frc.robot.lib.Logger;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.states.ElevatorState;
-import frc.robot.states.IntakeAngle;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
-import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 public class SuperstructureTests extends Testable {
 
@@ -137,49 +134,49 @@ public class SuperstructureTests extends Testable {
 		writeToCSV("src/test/java/safingTestOut.csv", toPrint);
 	}
 
-	@Test
-	public void superstructureMotionTest() {
-
-		SuperStructureState Start1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(5)),
-				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
-
-		SuperStructureState Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(10)),
-				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
-
-		// testableSSMotion.getInstance().plan(Goal1, Start1);
-
-		Start1 = iPosition.HATCH_GRAB_INSIDE;
-		Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(3.5)), iPosition.CARGO_GRAB);
-		System.out.printf("======== testing hatch grab to cargo pickup ========");
-
-		testableSSMotion motion;
-		// motion = new testableSSMotion(Goal1, Start1);
-
-		// motion.initialize();
-
-		// motion = new testableSSMotion(Start1, Goal1);
-
-		// motion.initialize();
-
-		Start1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(60)),
-				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-120)), new RotatingArmState(RoundRotation2d.getDegree(-45))));
-
-		Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(10)),
-				// elbow state, wrist state
-				new RotatingArmState(RoundRotation2d.getDegree(0)),
-				new RotatingArmState(RoundRotation2d.getDegree(0)));
-
-		motion = new testableSSMotion(Goal1, Start1);
-
-		motion.initialize();
-
-		// testableSSMotion.getInstance().plan(Goal1, Start1);
-
-		// var planned = testableSSMotion.getInstance().getQueue();
-
-		// for(Command c : planned.)
-
-	}
+	//	@Test
+	//	public void superstructureMotionTest() {
+	//
+	//		SuperStructureState Start1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(5)),
+	//				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
+	//
+	//		SuperStructureState Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(10)),
+	//				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(0)), new RotatingArmState(RoundRotation2d.getDegree(0))));
+	//
+	//		// testableSSMotion.getInstance().plan(Goal1, Start1);
+	//
+	//		Start1 = iPosition.HATCH_GRAB_INSIDE;
+	//		Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(3.5)), iPosition.CARGO_GRAB);
+	//		System.out.printf("======== testing hatch grab to cargo pickup ========");
+	//
+	//		testableSSMotion motion;
+	//		// motion = new testableSSMotion(Goal1, Start1);
+	//
+	//		// motion.initialize();
+	//
+	//		// motion = new testableSSMotion(Start1, Goal1);
+	//
+	//		// motion.initialize();
+	//
+	//		Start1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(60)),
+	//				new IntakeAngle(new RotatingArmState(RoundRotation2d.getDegree(-120)), new RotatingArmState(RoundRotation2d.getDegree(-45))));
+	//
+	//		Goal1 = new SuperStructureState(new ElevatorState(LengthKt.getInch(10)),
+	//				// elbow state, wrist state
+	//				new RotatingArmState(RoundRotation2d.getDegree(0)),
+	//				new RotatingArmState(RoundRotation2d.getDegree(0)));
+	//
+	//		motion = new testableSSMotion(Goal1, Start1);
+	//
+	//		motion.initialize();
+	//
+	//		// testableSSMotion.getInstance().plan(Goal1, Start1);
+	//
+	//		// var planned = testableSSMotion.getInstance().getQueue();
+	//
+	//		// for(Command c : planned.)
+	//
+	//	}
 
 	@Test
 	public void testMotion() {

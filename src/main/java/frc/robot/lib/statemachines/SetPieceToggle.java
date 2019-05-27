@@ -1,6 +1,7 @@
 package frc.robot.lib.statemachines;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import frc.robot.Robot;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 
@@ -9,26 +10,25 @@ import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
  * 
  * @author jocleyn McHugo
  */
-public class SetPieceToggle extends Command {
+public class SetPieceToggle extends SendableCommandBase {
 	public SetPieceToggle() {}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		Robot.autoState.setHeldPiece(HeldPiece.CARGO);
 	}
 
-	@Override
-	protected void interrupted() {
+	public void interrupted() {
 		Robot.autoState.setHeldPiece(HeldPiece.HATCH);
 	}
 
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		interrupted();
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return false;
 	}
 }

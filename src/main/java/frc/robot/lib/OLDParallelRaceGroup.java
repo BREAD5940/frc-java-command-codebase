@@ -2,10 +2,10 @@ package frc.robot.lib;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.ParallelCommandGroup;
 
-public class OLDParallelRaceGroup extends CommandGroup {
+public class OLDParallelRaceGroup extends ParallelCommandGroup {
 
 	Supplier<Boolean> m_condition;
 
@@ -13,14 +13,16 @@ public class OLDParallelRaceGroup extends CommandGroup {
 
 		m_condition = condition;
 
-		for (Command command : commands) {
-			super.addParallel(command);
-		}
+		super.addCommands(commands);
+
+		//		for (Command command : commands) {
+		//			super.addParallel(command);
+		//		}
 
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return super.isFinished() || m_condition.get().booleanValue();
 	}
 

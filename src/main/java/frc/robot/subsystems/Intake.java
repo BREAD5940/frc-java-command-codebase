@@ -1,12 +1,13 @@
 package frc.robot.subsystems;
 
+import org.team5940.pantry.exparimental.command.SendableSubsystemBase;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.commands.subsystems.superstructure.IntakeTelop;
@@ -17,7 +18,7 @@ import frc.robot.commands.subsystems.superstructure.IntakeTelop;
  * 
  * @author Matthew Morley
  */
-public class Intake extends Subsystem {
+public class Intake extends SendableSubsystemBase {
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 	private static volatile Intake instance;
@@ -80,6 +81,7 @@ public class Intake extends Subsystem {
 		// talon.setName("Intake");
 		cargoTalon.configPeakOutputForward(.8);
 		cargoTalon.configPeakOutputReverse(-.8);
+		setDefaultCommand(new IntakeTelop());
 	}
 
 	private Intake() {
@@ -120,9 +122,9 @@ public class Intake extends Subsystem {
 		// System.out.println("speed " + Robot.m_oi.getIntakeSpeed());
 	}
 
-	@Override
-	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
-		setDefaultCommand(new IntakeTelop());
-	}
+	//	@Override
+	//	public void initDefaultCommand() {
+	//		 Set the default command for a subsystem here.
+	//		setDefaultCommand(new IntakeTelop());
+	//	}
 }

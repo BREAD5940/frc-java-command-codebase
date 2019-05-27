@@ -1,6 +1,6 @@
 // package frc.robot.commands.subsystems.drivetrain;
 
-// import edu.wpi.first.wpilibj.command.Command;
+// import org.team5940.pantry.exparimental.command.SendableCommandBase;
 // import frc.robot.Robot;
 // import frc.robot.RobotConfig;
 // import frc.robot.lib.TerriblePID;
@@ -9,7 +9,7 @@
 // /**
 //  * Follow a vision target tracked by a limelight
 //  */
-// public class FollowVisionTarget extends Command {
+// public class FollowVisionTarget extends SendableCommandBase{
 // 	double timeout,
 // 			targetSpeed,
 // 			targetPercentOfFrame,
@@ -40,7 +40,7 @@
 // 		this.timeout = timeout;
 // 		this.targetSpeed = speed;
 // 		this.targetPercentOfFrame = 2;
-// 		requires(Robot.drivetrain);
+// 		addRequirements(Robot.drivetrain);
 // 	}
 
 // 	/**
@@ -55,12 +55,12 @@
 // 		this.targetSpeed = speed;
 // 		this.targetPercentOfFrame = targetPercentOfFrame;
 // 		this.followRange = true;
-// 		requires(Robot.drivetrain);
+// 		addRequirements(Robot.drivetrain);
 // 	}
 
 // 	// Called just before this Command runs the first time
 // 	@Override
-// 	protected void initialize() {
+// 	public void initialize() {
 // 		setTimeout(timeout);
 // 		turnPID.setSetpoint(0);
 // 		forwardPID.setMaxOutput(targetSpeed);
@@ -80,7 +80,7 @@
 
 // 	// Called repeatedly when this Command is scheduled to run
 // 	@Override
-// 	protected void execute() {
+// 	public void execute() {
 // 		if (Robot.limelight.getData()[0] != 0) {
 // 			double[] data = Robot.limelight.getData();
 // 			double xAxisOffset = data[1]; // x axis offset
@@ -109,13 +109,13 @@
 
 // 	// Make this return true when this Command no longer needs to run execute()
 // 	@Override
-// 	protected boolean isFinished() {
+// 	public boolean isFinished() {
 // 		return isTimedOut() || Math.abs(sizeData - this.targetPercentOfFrame) < 0.2;
 // 	}
 
 // 	// Called once after isFinished returns true
 // 	@Override
-// 	protected void end() {}
+// 	public void end(boolean interrupted) {}
 
 // 	// Called when another command which requires one or more of the same
 // 	// subsystems is scheduled to run

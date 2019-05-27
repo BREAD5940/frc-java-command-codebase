@@ -8,11 +8,11 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
-import frc.robot.commands.auto.groups.VisionCommandGroup;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
 import frc.robot.commands.subsystems.drivetrain.PIDDriveDistance;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
@@ -28,8 +28,8 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 /**
  * 2-hatch 1-cargo auto
  */
-public class PlaceCargoFrontL extends VisionCommandGroup {
-	// private AutoCommandGroup mBigCommandGroup;
+public class PlaceCargoFrontL extends SequentialCommandGroup {
+	// private SendableCommandBase mBigCommandGroup;
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
 	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
 
@@ -69,32 +69,37 @@ public class PlaceCargoFrontL extends VisionCommandGroup {
 				new Pose2d(LengthKt.getFeet(9.5), LengthKt.getFeet(17.684), Rotation2dKt.getDegree(0)),
 				new Pose2d(LengthKt.getFeet(15.1), LengthKt.getFeet(14.434), Rotation2dKt.getDegree(0))), false);
 
-		addSequential(new SetGearCommand(Gear.LOW));
+		addCommands(new SetGearCommand(Gear.LOW));
 
 		// addSequential(new DriveDistanceTheSecond(LengthKt.getFeet(6), VelocityKt.getVelocity(LengthKt.getFeet(7)), false));
-		addSequential(new PIDDriveDistance(LengthKt.getFeet(5), 6));
+		addCommands(new PIDDriveDistance(LengthKt.getFeet(5), 6));
 
 		// addSequential(new DelayCommand(TimeUnitsKt.getSecond(1)).getWrappedValue());
 		// addSequential(new WaitCommand(0.7));
 
 		// addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)); // move arm inside to prep state
-		addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE)); // move arm inside to prep state
 
-		addSequential(new LimeLight.SetLEDs(LimeLight.LEDMode.kON));
-		addSequential(new LimeLight.setPipeline(PipelinePreset.k3dVision));
+		addCommands(parallel(
+				new JankyGoToState(iPosition.HATCH_GRAB_INSIDE),
+				new LimeLight.SetLEDs(LimeLight.LEDMode.kON)));
 
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
+		//		addParallel(new JankyGoToState(iPosition.HATCH_GRAB_INSIDE)); // move arm inside to prep state
+		//		addSequential(new LimeLight.SetLEDs(LimeLight.LEDMode.kON));
+
+		addCommands(new LimeLight.setPipeline(PipelinePreset.k3dVision));
+
+		addCommands(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
 
 		// addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
-		addSequential(new FollowVisionTargetTheSecond(5));
+		addCommands(new FollowVisionTargetTheSecond(5));
 
 		// addSequential(new DriveDistanceTheThird(LengthKt.getFeet(0.4), false));
 
 		// addSequential(new PrintCommand("GOT TO RUN INTAKE"));
 
-		addSequential(new RunIntake(-1, 0, 1));
+		addCommands(new RunIntake(-1, 0, 1));
 
-		addSequential(new PIDDriveDistance(-3, 12, /* timeout */ 0.5));
+		addCommands(new PIDDriveDistance(-3, 12, /* timeout */ 0.5));
 
 		// addSequential(new DriveDistanceTheThird(LengthKt.getFeet(2), true));
 	}
@@ -106,7 +111,7 @@ public class PlaceCargoFrontL extends VisionCommandGroup {
 	 * @return
 	 *  the mBigCommandGroup of the function
 	 */
-	public AutoCommandGroup getBigCommandGroup() {
+	public SendableCommandBase getBigCommandGroup() {
 		return this;
 	}
 

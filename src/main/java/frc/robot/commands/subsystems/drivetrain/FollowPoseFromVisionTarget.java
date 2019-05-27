@@ -1,26 +1,27 @@
 package frc.robot.commands.subsystems.drivetrain;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import frc.robot.Robot;
 
-public class FollowPoseFromVisionTarget extends Command {
+public class FollowPoseFromVisionTarget extends SendableCommandBase {
 
 	boolean hadTarget;
 
 	double[] visionData, rangeData;
 
 	public FollowPoseFromVisionTarget() {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
 	}
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {}
+	public void initialize() {}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 
 		// We first try to aquire a vision target
 		// this part doesn't need to run once you've found one
@@ -38,16 +39,16 @@ public class FollowPoseFromVisionTarget extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return false;
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
+	public void end(boolean interrupted) {}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
+	// @Override
+	// protected void interrupted() {}
 }

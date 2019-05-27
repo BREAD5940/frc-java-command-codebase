@@ -86,7 +86,7 @@ public class RotatingJoint extends HalfBakedSubsystem {
 
 		kArmMass = armMass;
 
-		NativeUnit unitsPerRotation = NativeUnitKt.getSTU(0);
+		NativeUnit unitsPerRotation = NativeUnitKt.getNativeUnits(0);
 
 		// TODO add support for more sensors
 		// if (sensor == FeedbackDevice.CTRE_MagEncoder_Relative) {
@@ -313,8 +313,8 @@ public class RotatingJoint extends HalfBakedSubsystem {
 		return getMaster().getRotation2d().getDegree();
 	}
 
-	@Override
-	protected void initDefaultCommand() {}
+	//	@Override
+	//	protected void initDefaultCommand() {}
 
 	public boolean isWithinTolerance(RoundRotation2d tolerance, RoundRotation2d setpoint) {
 		return Math.abs(getRotation().minus(setpoint).getDegree()) < tolerance.getDegree();

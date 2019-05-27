@@ -1,8 +1,8 @@
 package frc.robot.commands.subsystems.superstructure;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
-public class WaitForElevator extends Command {
+public class WaitForElevator extends SendableCommandBase {
 
 	double demand;
 
@@ -13,25 +13,25 @@ public class WaitForElevator extends Command {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {}
+	public void initialize() {}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {}
+	public void execute() {}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		// return Robot.elevator.isWithinTolerence(demand);
 		return true;
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
+	public void end(boolean interrupted) {}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
+	// @Override
+	// protected void interrupted() {}
 }

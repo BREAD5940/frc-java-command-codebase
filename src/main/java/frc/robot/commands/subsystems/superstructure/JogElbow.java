@@ -7,8 +7,8 @@
 
 // package frc.robot.commands.subsystems.superstructure;
 
-// import edu.wpi.first.wpilibj.command.Command;
-// import edu.wpi.first.wpilibj.command.InstantCommand;
+// import org.team5940.pantry.exparimental.command.SendableCommandBase;
+// import org.team5940.pantry.exparimental.command.InstantCommand;
 // import frc.robot.lib.obj.RoundRotation2d;
 // import frc.robot.states.SuperStructureState;
 // import frc.robot.subsystems.superstructure.SuperStructure;
@@ -16,7 +16,7 @@
 // /**
 //  * Add your docs here.
 //  */
-// public class JogElbow extends Command {
+// public class JogElbow extends SendableCommandBase{
 // 	RoundRotation2d deltaAngle;
 // 	boolean isUpwards;
 // 	Command moveCommand;
@@ -26,12 +26,12 @@
 // 	 */
 // 	public JogElbow(RoundRotation2d delta) {
 // 		super();
-// 		// Use requires() here to declare subsystem dependencies
-// 		// eg. requires(chassis);
-// 		requires(SuperStructure.getInstance());
-// 		requires(SuperStructure.getInstance().getElbow());
-// 		requires(SuperStructure.getInstance().getWrist());
-// 		requires(SuperStructure.getElevator());
+// 		// Use addRequirements() here to declare subsystem dependencies
+// 		// eg. addRequirements(chassis);
+// 		addRequirements(SuperStructure.getInstance());
+// 		addRequirements(SuperStructure.getInstance().getElbow());
+// 		addRequirements(SuperStructure.getInstance().getWrist());
+// 		addRequirements(SuperStructure.getElevator());
 
 // 		deltaAngle = delta;
 // 		// isUpwards = isUp;
@@ -39,7 +39,7 @@
 
 // 	// Called once when the command executes
 // 	@Override
-// 	protected void initialize() {
+// 	public void initialize() {
 // 		SuperStructureState currentProximalAngle = SuperStructure.getInstance().getCurrentState();
 // 		var newAngle = currentProximalAngle.getElbowAngle().plus(deltaAngle);
 
@@ -50,13 +50,13 @@
 // 		System.out.println("angle is now " + SuperStructure.getInstance().getElbow().getMaster().getSensorPosition());
 
 // 		moveCommand = new ArmMove(currentProximalAngle.jointAngles);
-// 		moveCommand.start();
+// 		moveCommand.schedule();
 // 		// updateStateCommand.clearRequirements();
 
 // 	}
 
 // 	@Override
-// 	protected boolean isFinished() {
+// 	public boolean isFinished() {
 // 		if(moveCommand == null) return true;
 // 		return moveCommand.isCompleted();
 // 	}

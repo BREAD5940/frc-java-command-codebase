@@ -48,7 +48,7 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 	}
 
 	public TrajectoryTrackerCommand(DriveTrain driveBase, TrajectoryTracker trajectoryTracker, Supplier<TimedTrajectory<Pose2dWithCurvature>> trajectorySource, boolean reset) {
-		requires(driveBase);
+		addRequirements(driveBase);
 		this.driveBase = driveBase;
 		this.trajectoryTracker = trajectoryTracker;
 		this.trajectorySource = trajectorySource;
@@ -57,7 +57,7 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 	}
 
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		LiveDashboard.INSTANCE.setFollowingPath(false);
 
 		if (trajectorySource == null) {
@@ -104,7 +104,7 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 	}
 
 	@Override
-	protected void execute() {
+	public void execute() {
 
 		// long now = System.currentTimeMillis();
 
@@ -132,14 +132,14 @@ public class TrajectoryTrackerCommand extends AutoCommand {
 	}
 
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		mUpdateNotifier.stop();
 		driveBase.stop();
 		LiveDashboard.INSTANCE.setFollowingPath(false);
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return trajectoryTracker.isFinished();
 	}
 

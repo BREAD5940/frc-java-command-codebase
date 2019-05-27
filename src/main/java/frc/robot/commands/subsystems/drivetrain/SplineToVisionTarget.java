@@ -18,10 +18,10 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.auto.Trajectories;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
@@ -29,7 +29,7 @@ import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 import frc.robot.subsystems.LimeLight;
 
-public class SplineToVisionTarget extends CommandGroup {
+public class SplineToVisionTarget extends SequentialCommandGroup {
 	double targetDistance, exitArea;
 
 	// final Pose2d initialPose;
@@ -51,9 +51,9 @@ public class SplineToVisionTarget extends CommandGroup {
 		// this.initialPose = currentPose;
 		this.kEndOffset = desired_end;
 		this.straightLength = driveStraightDistance;
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
-		// requires(DriveTrain.getInstance());
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
+		// addRequirements(DriveTrain.getInstance());
 	}
 
 	boolean mCommandStarted = false;
@@ -62,7 +62,7 @@ public class SplineToVisionTarget extends CommandGroup {
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		final Length kOffset = LengthKt.getInch(100); // so that the spline ends up in FalconDashboard instead of off the map. HOly shit the possibilty for bugs here is big. Let's not.
 
 		double now = Timer.getFPGATimestamp();
@@ -89,7 +89,7 @@ public class SplineToVisionTarget extends CommandGroup {
 		System.out.println("Pose2d of the target that we measured: " + Util.toString(mVisionTargetPose));
 
 		// this.clearRequirements();
-		mFollowerCommand.start();
+		mFollowerCommand.schedule();
 		mCommandStarted = true;
 
 		// addSequential(mFollowerCommand);
@@ -98,24 +98,24 @@ public class SplineToVisionTarget extends CommandGroup {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
-		// if(mCommandStarted && mFollowerCommand.isCompleted()) requires(DriveTrain.getInstance());
+	public void execute() {
+		// if(mCommandStarted && mFollowerCommand.isCompleted()) addRequirements(DriveTrain.getInstance());
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
-		return (mCommandStarted && mFollowerCommand.isCompleted()) || (LimeLight.getInstance().getTargetArea() > exitArea);
+	public boolean isFinished() {
+		return (mCommandStarted && mFollowerCommand.isFinished()) || (LimeLight.getInstance().getTargetArea() > exitArea);
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		DriveTrain.getInstance().stop();
 	}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
+	// @Override
+	// protected void interrupted() {}
 }

@@ -4,6 +4,7 @@ import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
@@ -13,8 +14,6 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -23,8 +22,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.TerribleAutoChooser;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.subsystems.superstructure.PassThrough;
-import frc.robot.commands.subsystems.superstructure.PassThrough.SyncedMove;
 import frc.robot.commands.subsystems.superstructure.ZeroElevatorDisabled;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
@@ -237,7 +234,7 @@ public class Robot extends TimedRobot {
 
 		elevator.getMaster().setSelectedSensorPosition((int) (elevator.getModel().toNativeUnitPosition(LengthKt.getInch(24)).getValue()), 0, 0); // just to be super sure the elevator is safe-ishhhh
 		var cmd = zeroElevatorWhileDisabled;
-		cmd.start();
+		cmd.schedule();
 
 		switch (RobotConfig.auto.auto_gear) {
 		case HIGH:
@@ -314,7 +311,7 @@ public class Robot extends TimedRobot {
 			}
 			if (reset) {
 				superstructure.getCurrentCommand().cancel();
-				superstructure.getDefaultCommand().start();
+				superstructure.getDefaultCommand().schedule();
 			}
 
 		});
@@ -355,25 +352,25 @@ public class Robot extends TimedRobot {
 
 		// mResetNotifier.startPeriodic(0.5);
 
-		var frontBack = new CommandGroup();
-		//		frontBack.addSequential(new ElevatorMove(LengthKt.getInch(24)));
-		frontBack.addSequential(new SyncedMove(Math.toRadians(-180), true, superstructure));
-		// frontBack.addSequential(new ArmMove(new IntakeAngle(
-		// 	new RotatingArmState(RoundRotation2d.getDegree(-210)),
-		// 	new RotatingArmState(RoundRotation2d.getDegree(-180))
-		// 	)));
-
-		var backFront = new CommandGroup();
-		//		backFront.addSequential(new ElevatorMove(LengthKt.getInch(24)));
-		backFront.addSequential(new SyncedMove(Math.toRadians(0), true, superstructure));
-
-		SmartDashboard.putData("front to back passthrough", new PassThrough.FrontToBack(superstructure));
-		SmartDashboard.putData("back to front passthrough", new PassThrough.BackToFront(superstructure));
-		//		SmartDashboard.putData("THE ONE TRUE PASSTHROUGH", new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
+		//		var frontBack = new CommandGroup();
+		//		//		frontBack.addSequential(new ElevatorMove(LengthKt.getInch(24)));
+		//		frontBack.addSequential(new SyncedMove(Math.toRadians(-180), true, superstructure));
+		//		// frontBack.addSequential(new ArmMove(new IntakeAngle(
+		//		// 	new RotatingArmState(RoundRotation2d.getDegree(-210)),
+		//		// 	new RotatingArmState(RoundRotation2d.getDegree(-180))
+		//		// 	)));
+		//
+		//		var backFront = new CommandGroup();
+		//		//		backFront.addSequential(new ElevatorMove(LengthKt.getInch(24)));
+		//		backFront.addSequential(new SyncedMove(Math.toRadians(0), true, superstructure));
+		//
+		//		SmartDashboard.putData("front to back passthrough", new PassThrough.FrontToBack(superstructure));
+		//		SmartDashboard.putData("back to front passthrough", new PassThrough.BackToFront(superstructure));
+		//		//		SmartDashboard.putData("THE ONE TRUE PASSTHROUGH", new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
 
 	}
 
-	public static Command zeroElevatorWhileDisabled = new ZeroElevatorDisabled();
+	public static SendableCommandBase zeroElevatorWhileDisabled = new ZeroElevatorDisabled();
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode. You
@@ -415,12 +412,12 @@ public class Robot extends TimedRobot {
 	public void autonomousInit() {
 		mResetNotifier.stop();
 		// DriveTrajectoryPathfinder meme = new DriveTrajectoryPathfinder("file");
-		// meme.start();
+		// meme.schedule();
 
 		// drivetrain.gyro.reset(); // Reset the current gyro heading to zero
 		// drivetrain.zeroEncoders();
 
-		mAutoChooser.getSelection().start(); // So this needs a defaut option
+		mAutoChooser.getSelection().schedule(); // So this needs a defaut option
 
 		// 	if (RobotConfig.auto.auto_gear == Gear.LOW) {
 		// 		drivetrain.setLowGear();

@@ -5,15 +5,15 @@ import java.util.function.Supplier;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
 import com.team254.lib.physics.DifferentialDrive.ChassisState;
 
-import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LimeLight;
 
-public class DriveDistanceToVisionTarget extends Command {
+public class DriveDistanceToVisionTarget extends SendableCommandBase {
 
 	private final Length finalDistance;
 	// private final Velocity<Length> 
@@ -44,7 +44,7 @@ public class DriveDistanceToVisionTarget extends Command {
 	}
 
 	@Override
-	protected void execute() {
+	public void execute() {
 		var distanceToGo = targetDistance.get().minus(finalDistance);
 
 		final double fwdKp = 6;
@@ -70,7 +70,7 @@ public class DriveDistanceToVisionTarget extends Command {
 	}
 
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return isWithinDelta;
 	}
 

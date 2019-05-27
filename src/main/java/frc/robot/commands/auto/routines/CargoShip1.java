@@ -10,13 +10,14 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.ParallelCommandGroup;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.PlaceHatch;
-import frc.robot.commands.auto.groups.VisionCommandGroup;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
@@ -26,8 +27,8 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 /**
  * 2-hatch 1-cargo auto
  */
-public class CargoShip1 extends VisionCommandGroup {
-	// private AutoCommandGroup mBigCommandGroup;
+public class CargoShip1 extends SequentialCommandGroup {
+	// private SendableCommandBase mBigCommandGroup;
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
 	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
 
@@ -87,10 +88,14 @@ public class CargoShip1 extends VisionCommandGroup {
 				false,
 				true);
 
-		this.addSequential(DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, true));
-		addParallel(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-		this.addSequential(DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, false));
-		addSequential(new PlaceHatch());
+		this.addCommands(DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, true));
+
+		addCommands(
+				new ParallelCommandGroup(
+						new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH),
+						DriveTrain.getInstance().followTrajectory(p_fallOffTheHab, TrajectoryTrackerMode.RAMSETE, false)));
+
+		addCommands(new PlaceHatch());
 
 	}
 
@@ -101,7 +106,7 @@ public class CargoShip1 extends VisionCommandGroup {
 	 * @return
 	 *  the mBigCommandGroup of the function
 	 */
-	public AutoCommandGroup getBigCommandGroup() {
+	public Command getBigCommandGroup() {
 		return this;
 	}
 

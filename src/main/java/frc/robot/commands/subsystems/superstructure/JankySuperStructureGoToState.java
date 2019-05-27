@@ -5,10 +5,10 @@
 // import org.ghrobotics.lib.mathematics.units.Length;
 // import org.ghrobotics.lib.mathematics.units.LengthKt;
 
-// import edu.wpi.first.wpilibj.command.Command;
-// import edu.wpi.first.wpilibj.command.CommandGroup;
+// import org.team5940.pantry.exparimental.command.SendableCommandBase;
+// import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 // import edu.wpi.first.wpilibj.command.ConditionalCommand;
-// import edu.wpi.first.wpilibj.command.InstantCommand;
+// import org.team5940.pantry.exparimental.command.InstantCommand;
 // import frc.robot.SuperStructureConstants;
 // import frc.robot.lib.obj.RoundRotation2d;
 // import frc.robot.states.ElevatorState;
@@ -16,7 +16,7 @@
 // import frc.robot.states.SuperStructureState;
 // import frc.robot.subsystems.superstructure.SuperStructure;
 
-// public class SuperstructureGoToState extends CommandGroup {
+// public class SuperstructureGoToState extends SequentialCommandGroup {
 // 	private static final double kDefaultTimeout = 4;
 
 // 	public SuperstructureGoToState(SuperStructureState requState) {
@@ -59,7 +59,7 @@
 // 	 * 
 // 	 */
 // 	public SuperstructureGoToState(SuperStructureState requState, double timeout) {
-// 		requires(SuperStructure.getInstance());
+// 		addRequirements(SuperStructure.getInstance());
 // 		mRequState = requState;
 // 		setTimeout(timeout);
 
@@ -107,7 +107,7 @@
 
 // 	}
 
-// 	class StateMovementCommand extends Command {
+// 	class StateMovementCommand extends SendableCommandBase{
 // 		SuperStructureState mRequState;
 // 		double kWristSetpoint, kElbowSetpoint;
 // 		private boolean hasSetState = false;
@@ -142,10 +142,10 @@
 // 		 * @author Matthew Morley
 // 		 */
 // 		public StateMovementCommand(SuperStructureState requState, double timeout) {
-// 			requires(SuperStructure.getInstance()); // TODO so I'm still <confuse> about reserving superstructure vs the individual parts.
-// 			requires(SuperStructure.getInstance().getWrist());
-// 			requires(SuperStructure.getInstance().getElbow());
-// 			requires(SuperStructure.getElevator());
+// 			addRequirements(SuperStructure.getInstance()); // TODO so I'm still <confuse> about reserving superstructure vs the individual parts.
+// 			addRequirements(SuperStructure.getInstance().getWrist());
+// 			addRequirements(SuperStructure.getInstance().getElbow());
+// 			addRequirements(SuperStructure.getElevator());
 // 			mRequState = requState;
 // 			setTimeout(timeout);
 
@@ -156,7 +156,7 @@
 
 // 		// Called just before this Command runs the first time
 // 		@Override
-// 		protected void initialize() {
+// 		public void initialize() {
 // 			System.out.println("==============================================================");
 // 			System.out.println("Requested move loc: ");
 // 			System.out.println(String.format("Elevator (%s) elbow (%s) wrist (%s)", elevatorSetpoint.getInch(), elbowSetpoint.getDegree(), wristSetpoint.getDegree()));
@@ -168,7 +168,7 @@
 
 // 		// Called repeatedly when this Command is scheduled to run
 // 		@Override
-// 		protected void execute() {
+// 		public void execute() {
 // 			SuperStructure.getInstance().move(mRequState);
 // 			hasSetState = true;
 // 			// System.out.println("target state: " + mRequState.toCSV());
@@ -176,7 +176,7 @@
 
 // 		// Make this return true when this Command no longer needs to run execute()
 // 		@Override
-// 		protected boolean isFinished() {
+// 		public boolean isFinished() {
 // 			if (!hasSetState)
 // 				execute();
 // 			return (checkElbow() && checkWrist() && checkElevator()) || isTimedOut();
@@ -217,7 +217,7 @@
 
 // 		// Called once after isFinished returns true
 // 		@Override
-// 		protected void end() {
+// 		public void end(boolean interrupted) {
 // 			System.out.println("==============================================================");
 // 		}
 
@@ -284,7 +284,7 @@
 // 		}
 
 // 		@Override
-// 		protected void initialize() {
+// 		public void initialize() {
 // 			SuperStructure.getInstance().getWrist().requestAngle(ControlMode.MotionMagic, mSetpoint);
 // 		}
 // 	}
@@ -296,7 +296,7 @@
 // 		}
 
 // 		@Override
-// 		protected void initialize() {
+// 		public void initialize() {
 // 			SuperStructure.getInstance().getElbow().requestAngle(ControlMode.MotionMagic, mSetpoint);
 // 		}
 // 	}
@@ -308,7 +308,7 @@
 // 		}
 
 // 		@Override
-// 		protected void initialize() {
+// 		public void initialize() {
 // 			SuperStructure.getElevator().setPositionSetpoint(mSetpoint);
 // 		}
 // 	}
@@ -320,14 +320,14 @@
 // 		}
 
 // 		@Override
-// 		protected void initialize() {
+// 		public void initialize() {
 // 			SuperStructure.getInstance().getElbow().requestAngle(ControlMode.MotionMagic, mSetpoint);
 // 			SuperStructure.getInstance().getWrist().requestAngle(ControlMode.MotionMagic, mSetpoint);
 
 // 		}
 // 	}
 
-// 	abstract class WaitSubCommand extends Command {
+// 	abstract class WaitSubCommand extends SendableCommandBase{
 // 		SuperStructureState mEndState, currentState;
 // 		public Length mHeightThreshold = LengthKt.getInch(1.0);
 // 		public RoundRotation2d mElbowThreshold = RoundRotation2d.getDegree(5.0);
@@ -342,7 +342,7 @@
 // 		}
 
 // 		@Override
-// 		protected boolean isFinished() {
+// 		public boolean isFinished() {
 // 			feedState(SuperStructure.getInstance().getCurrentState());
 // 			return isFinished(currentState);
 // 		}
@@ -350,13 +350,13 @@
 // 		abstract boolean isFinished(SuperStructureState mCurrent);
 
 // 		@Override
-// 		protected void initialize() {}
+// 		public void initialize() {}
 
 // 		@Override
-// 		protected void execute() {}
+// 		public void execute() {}
 
 // 		@Override
-// 		protected void end() {}
+// 		public void end(boolean interrupted) {}
 
 // 		@Override
 // 		protected void interrupted() {}

@@ -9,12 +9,9 @@ package frc.robot.lib.obj.factories;
 
 import java.util.List;
 
-import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
-import frc.robot.states.ElevatorState;
-import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
 /**
  * Maybe a factory for making preset command groups. This should be used for things like
@@ -24,19 +21,10 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
  */
 public class SequentialCommandFactory {
 
-	public static CommandGroup levelOneHatch() {
-		CommandGroup toReturn = new CommandGroup();
-		toReturn.addSequential(new SuperstructureGoToState(iPosition.HATCH));
-		toReturn.addSequential(new SuperstructureGoToState(new ElevatorState(fieldPositions.hatchLowGoal)));
-
-		return toReturn;
-
-	}
-
-	public static CommandGroup getSequentialCommands(List<Command> toAdd) {
-		CommandGroup toReturn = new CommandGroup();
-		for (Command c : toAdd) {
-			toReturn.addSequential(c);
+	public static SendableCommandBase getSequentialCommands(List<Command> toAdd) {
+		var toReturn = new SequentialCommandGroup();
+		for (Command it : toAdd) {
+			toReturn.addCommands(it);
 		}
 		return toReturn;
 	}

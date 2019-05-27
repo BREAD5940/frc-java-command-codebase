@@ -1,10 +1,13 @@
 package frc.robot.commands.auto;
 
 import org.ghrobotics.lib.mathematics.units.Length;
+import org.team5940.pantry.exparimental.command.Command;
+import org.team5940.pantry.exparimental.command.InstantCommand;
+import org.team5940.pantry.exparimental.command.PrintCommand;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
-import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.RobotConfig;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
 import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.subsystems.drivetrain.DriveDistance;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
@@ -31,8 +34,8 @@ public class AutoMotion {
 	private GoalType gType;
 	private HeldPiece piece;
 	private HeldPiece endPiece;
-	private AutoCommandGroup mBigCommandGroup;
-	private AutoCommandGroup mPrepCommand = new AutoCommandGroup();
+	private SendableCommandBase mBigCommandGroup;
+	private Command mPrepCommand = new InstantCommand();
 	private SuperStructureState mSSState;
 	private boolean rev;
 
@@ -57,7 +60,7 @@ public class AutoMotion {
 			this.piece = HeldPiece.NONE;
 		}
 		this.mSSState = new SuperStructureState(new ElevatorState(getElevatorPreset()), getIA());
-		this.mPrepCommand.addSequential(new SuperstructureGoToState(this.mSSState));
+		this.mPrepCommand = mPrepCommand.andThen(new SuperstructureGoToState(this.mSSState));
 		if (this.piece != HeldPiece.NONE) {
 			this.mBigCommandGroup = genPlaceCommands();
 		} else {
@@ -74,24 +77,24 @@ public class AutoMotion {
 	 * @return
 	 *  an ArrayList of commands
 	 */
-	private AutoCommandGroup genGrabCommands() {
-		AutoCommandGroup toReturn = new AutoCommandGroup();
+	private SendableCommandBase genGrabCommands() {
+		SequentialCommandGroup toReturn = new SequentialCommandGroup();
 		if (this.gType == GoalType.RETRIEVE_CARGO) {
 			//TODO target cargo
-			toReturn.addSequential(new RunIntake(0.75d, .75d, 1));
+			toReturn.addCommands(new RunIntake(0.75d, .75d, 1));
 			this.endPiece = HeldPiece.CARGO;
 		} else if (this.gType == GoalType.RETRIEVE_HATCH) {
-			toReturn.addSequential(new PrintCommand("running grab commands!"));
+			toReturn.addCommands(new PrintCommand("running grab commands!"));
 			//TODO align with vision targets
-			toReturn.addSequential(new FollowVisionTargetTheSecond(4));
+			toReturn.addCommands(new FollowVisionTargetTheSecond(4));
 			//yeet into loading station
 			// toReturn.addSequential(new DriveDistance());
 			//TODO maybe check the alignment with the center of the hatch with a sensor or some shit?
 			//grab
-			toReturn.addSequential(new RunIntake(1, 1, 1));
+			toReturn.addCommands(new RunIntake(1, 1, 1));
 			//pull the hatch out of the brushes
 			// toReturn.addSequential(new SuperstructureGoToState(new ElevatorState(getElevatorPreset().plus(LengthKt.getInch(6))))); // lift from brushes
-			toReturn.addSequential(new DriveDistance(-0.5)); // back up
+			toReturn.addCommands(new DriveDistance(-0.5)); // back up
 			this.endPiece = HeldPiece.HATCH;
 		}
 		return toReturn;
@@ -101,24 +104,24 @@ public class AutoMotion {
 	 * @return
 	 *  an ArrayList of commands
 	 */
-	private AutoCommandGroup genPlaceCommands() {
-		AutoCommandGroup toReturn = new AutoCommandGroup();
+	private SendableCommandBase genPlaceCommands() {
+		SequentialCommandGroup toReturn = new SequentialCommandGroup();
 
 		// Align with the vision targets, slightly back from the goal
 		//TODO get the robot/limelight 1ft away from the goal
 
 		if (this.gType == GoalType.CARGO_CARGO) {
 			// Drive forward so the intake is over the bay and the bumpers are in the indent thingy
-			toReturn.addSequential(new DriveDistance(0.5 + 0.43)); // the 0.43 is the bumpers FIXME check distances
+			toReturn.addCommands(new DriveDistance(0.5 + 0.43)); // the 0.43 is the bumpers FIXME check distances
 		} else {
 			// Drive forward so the intake is flush with the port/hatch
-			toReturn.addSequential(new DriveDistance(0.5)); // FIXME check distances
+			toReturn.addCommands(new DriveDistance(0.5)); // FIXME check distances
 		}
 
 		if (this.piece == HeldPiece.CARGO) {
-			toReturn.addSequential(new RunIntake(-1, -1, 0.5));
+			toReturn.addCommands(new RunIntake(-1, -1, 0.5));
 		} else if (this.piece == HeldPiece.HATCH) {
-			toReturn.addSequential(new PlaceHatch()); // TODO so we need to pass in the goal lol
+			toReturn.addCommands(new PlaceHatch()); // TODO so we need to pass in the goal lol
 		}
 		this.endPiece = HeldPiece.NONE;
 		return toReturn;
@@ -209,7 +212,7 @@ public class AutoMotion {
 	 * @return
 	 *  the mBigCommandGroup of the function
 	 */
-	public AutoCommandGroup getBigCommandGroup() {
+	public SendableCommandBase getBigCommandGroup() {
 		return this.mBigCommandGroup;
 	}
 
@@ -218,7 +221,7 @@ public class AutoMotion {
 	 * @return
 	 * 	the commands for the prep for the motion
 	 */
-	public AutoCommandGroup getPrepCommand() {
+	public Command getPrepCommand() {
 		return this.mPrepCommand;
 	}
 

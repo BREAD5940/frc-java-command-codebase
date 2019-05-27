@@ -1,6 +1,7 @@
 package frc.robot.commands.subsystems.drivetrain;
 
-import edu.wpi.first.wpilibj.command.Command;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+
 import frc.robot.SuperStructureConstants;
 import frc.robot.lib.Logger;
 import frc.robot.lib.obj.RoundRotation2d;
@@ -8,20 +9,20 @@ import frc.robot.states.ElevatorState;
 import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.superstructure.SuperStructure;
 
-public class ZeroSuperStructure extends Command {
+public class ZeroSuperStructure extends SendableCommandBase {
 	String p;
 	SuperStructure struc;
 	SuperStructureState old;
 
 	public ZeroSuperStructure(String piece) {
 		this.p = piece;
-		// requires(SuperStructure.getInstance());
-		setInterruptible(false);
+		// addRequirements(SuperStructure.getInstance());
+		//		setInterruptible(false);
 		struc = SuperStructure.getInstance();
-		requires(SuperStructure.getInstance());
-		requires(SuperStructure.getElevator());
-		requires(SuperStructure.getInstance().getElbow());
-		requires(SuperStructure.getInstance().getWrist());
+		addRequirements(SuperStructure.getInstance());
+		addRequirements(SuperStructure.getElevator());
+		addRequirements(SuperStructure.getInstance().getElbow());
+		addRequirements(SuperStructure.getInstance().getWrist());
 		// Command comm = struc.getCurrentCommand();
 		// if (comm != null)
 		// comm.cancel();
@@ -78,15 +79,11 @@ public class ZeroSuperStructure extends Command {
 	}
 
 	@Override
-	public void end() {
+	public void end(boolean interrupted) {
 		struc.getDefaultCommand().cancel();
 		System.out.println("Restarting the default command");
 		struc.move(old);
-		struc.getDefaultCommand().start();
+		struc.getDefaultCommand().schedule();
 	}
 
-	@Override
-	public void interrupted() {
-
-	}
 }

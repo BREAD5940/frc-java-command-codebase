@@ -2,16 +2,13 @@ package frc.robot;
 
 import java.util.Arrays;
 
-import frc.robot.lib.OLDParallelRaceGroup;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
+import org.team5940.pantry.exparimental.buttons.Button;
+import org.team5940.pantry.exparimental.buttons.JoystickButton;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.auto.routines.TeleopCommands;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
@@ -98,8 +95,8 @@ public class OI {
 						fieldPositions.cargoMiddleGoal.plus(LengthKt.getInch(2)), SuperStructure.iPosition.CARGO_DOWN))));
 
 		// hatch presets
-//		primaryBButton.whileHeld(new HybridDriverAssist());
-		 primaryRightAnalogButton.whileHeld(new HybridDriverAssist());
+		//		primaryBButton.whileHeld(new HybridDriverAssist());
+		primaryRightAnalogButton.whileHeld(new HybridDriverAssist());
 
 		dsHatch1.whenPressed(SequentialCommandFactory.getSequentialCommands(Arrays.asList(
 				new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH))));
@@ -114,12 +111,12 @@ public class OI {
 		dsHatchIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));
 
-		var testMeme = new CommandGroup();
-		testMeme.addSequential(new OLDParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)),
-				new TeleopCommands()));
-		testMeme.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-
-		primaryDpadDown.whenPressed(testMeme);
+		//		var testMeme = new CommandGroup();
+		//		testMeme.addSequential(new OLDParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)),
+		//				new TeleopCommands()));
+		//		testMeme.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
+		//
+		//		primaryDpadDown.whenPressed(testMeme);
 
 		//		primaryXButton.whenPressed(new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
 
@@ -157,13 +154,13 @@ public class OI {
 	}
 
 	public double getForwardAxis() {
-				 return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis);
-//		return getPrimary().getRawAxis(3) - getPrimary().getRawAxis(2);
+		return -1 * primaryJoystick.getRawAxis(RobotConfig.controls.forward_axis);
+		//		return getPrimary().getRawAxis(3) - getPrimary().getRawAxis(2);
 	}
 
 	public double getTurnAxis() {
-				return primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
-//		return primaryJoystick.getRawAxis(0) + primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
+		return primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
+		//		return primaryJoystick.getRawAxis(0) + primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
 	}
 
 	public double getDSElbowAxis() {

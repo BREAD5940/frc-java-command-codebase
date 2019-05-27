@@ -10,13 +10,13 @@ package frc.robot.commands.subsystems.drivetrain;
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
 
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
 
-public class PIDDriveDistance extends Command {
+public class PIDDriveDistance extends SendableCommandBase {
 	double targetEnd;
 	double rawDelta;
 	double maxSpeed;
@@ -25,35 +25,35 @@ public class PIDDriveDistance extends Command {
 	double lastCommand = 0;
 
 	public PIDDriveDistance(Length distance, double maxSpeedFt) {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
 		// super(20, 0, 0);
-		requires(DriveTrain.getInstance());
+		addRequirements(DriveTrain.getInstance());
 		this.rawDelta = distance.getFeet();
-		setTimeout(4);
+		//		setTimeout(4);
 		this.maxSpeed = maxSpeedFt;
 	}
 
 	public PIDDriveDistance(double distance, double maxSpeedFt, double timeout) {
-		// Use requires() here to declare subsystem dependencies
-		// eg. requires(chassis);
+		// Use addRequirements() here to declare subsystem dependencies
+		// eg. addRequirements(chassis);
 		// super(20, 0, 0);
-		requires(DriveTrain.getInstance());
+		addRequirements(DriveTrain.getInstance());
 		this.rawDelta = distance;
-		setTimeout(timeout);
+		//		setTimeout(timeout);
 		this.maxSpeed = maxSpeedFt;
 	}
 
 	// Called just before this Command runs the first time
 	@Override
-	protected void initialize() {
+	public void initialize() {
 		this.targetEnd = rawDelta + DriveTrain.getInstance().getLeft().getFeet();
 		// super.setSetpoint(targetEnd);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		SmartDashboard.putData(this);
 		final double kp = 6;
 
@@ -71,18 +71,18 @@ public class PIDDriveDistance extends Command {
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
-	protected boolean isFinished() {
+	public boolean isFinished() {
 		return isWithinDelta;
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {}
+	public void end(boolean interrupted) {}
 
 	// Called when another command which requires one or more of the same
 	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {}
+	// @Override
+	// protected void interrupted() {}
 
 	// @Override
 	// protected double returnPIDInput() {

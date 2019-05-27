@@ -7,10 +7,11 @@
 
 package frc.robot.commands.subsystems.drivetrain;
 
-import edu.wpi.first.wpilibj.command.TimedCommand;
+import org.team5940.pantry.exparimental.command.WaitCommand;
+
 import frc.robot.subsystems.DriveTrain;
 
-public class DrivePower extends TimedCommand {
+public class DrivePower extends WaitCommand {
 	double power, time, reqEndTime;
 
 	/**
@@ -22,8 +23,8 @@ public class DrivePower extends TimedCommand {
 	 */
 	public DrivePower(double power, double time) {
 		super(time);
-		// Use requires() here to declare subsystem dependencies
-		requires(DriveTrain.getInstance());
+		// Use addRequirements() here to declare subsystem dependencies
+		addRequirements(DriveTrain.getInstance());
 		this.power = power;
 		this.time = time;
 		// setTimeout(time);
@@ -31,21 +32,15 @@ public class DrivePower extends TimedCommand {
 
 	// Called repeatedly when this Command is scheduled to run
 	@Override
-	protected void execute() {
+	public void execute() {
 		// System.out.println("hi!");
 		DriveTrain.getInstance().arcadeDrive(power, 0, false);
 	}
 
 	// Called once after isFinished returns true
 	@Override
-	protected void end() {
+	public void end(boolean interrupted) {
 		DriveTrain.getInstance().stop();
 	}
 
-	// Called when another command which requires one or more of the same
-	// subsystems is scheduled to run
-	@Override
-	protected void interrupted() {
-		end();
-	}
 }

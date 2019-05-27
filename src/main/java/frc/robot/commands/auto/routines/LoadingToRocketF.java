@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
+import org.team5940.pantry.exparimental.command.SendableCommandBase;
+import org.team5940.pantry.exparimental.command.SequentialCommandGroup;
 
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.AutoMotion;
 import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
-import frc.robot.commands.auto.groups.VisionCommandGroup;
 import frc.robot.commands.subsystems.superstructure.SuperstructureGoToState;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.Gear;
@@ -21,8 +21,8 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 /**
  * 2-hatch 1-cargo auto
  */
-public class LoadingToRocketF extends VisionCommandGroup {
-	// private AutoCommandGroup mBigCommandGroup;
+public class LoadingToRocketF extends SequentialCommandGroup {
+	// private SendableCommandBase mBigCommandGroup;
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
 	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
 
@@ -48,12 +48,20 @@ public class LoadingToRocketF extends VisionCommandGroup {
 		TimedTrajectory<Pose2dWithCurvature> traject = Trajectories.generatedLGTrajectories.get(String.format("loading%s to rocket%sF", startPos, side)); //current trajectory from hashmap in Trajectories
 
 		// if (doIntake)
-		addParallel(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)); // move arm inside to prep state
-		addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kON));
-		addParallel(new LimeLight.setPipeline(PipelinePreset.k3dVision));
-		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
+		//		addParallel(new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH)); // move arm inside to prep state
+		//		addParallel(new LimeLight.SetLEDs(LimeLight.LEDMode.kON));
+		//		addParallel(new LimeLight.setPipeline(PipelinePreset.k3dVision));
+		//		addSequential(DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true)); //drive to goal
+
+		addCommands(parallel(
+				new SuperstructureGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH), // move arm inside to prep state
+				new LimeLight.SetLEDs(LimeLight.LEDMode.kON),
+				new LimeLight.setPipeline(PipelinePreset.k3dVision),
+				DriveTrain.getInstance().followTrajectoryWithGear(traject, TrajectoryTrackerMode.RAMSETE, Gear.LOW, true) //drive to goal
+		));
+
 		// if (doIntake)
-		addParallel(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
+		addCommands(new SuperstructureGoToState(fieldPositions.hatchMiddleGoal, iPosition.HATCH));
 		// addSequential(new SplineToVisionTarget(/*this.getPoseStorage1(), */LengthKt.getInch(0), LengthKt.getInch(30), 6.5));
 		// addSequential(new FollowVisionTargetTheSecond(4.3));
 		// addSequential(new DriveDistanceToVisionTarget(LengthKt.getInch(35), 5));
@@ -121,7 +129,7 @@ public class LoadingToRocketF extends VisionCommandGroup {
 	 * @return
 	 *  the mBigCommandGroup of the function
 	 */
-	public AutoCommandGroup getBigCommandGroup() {
+	public SendableCommandBase getBigCommandGroup() {
 		return this;
 	}
 

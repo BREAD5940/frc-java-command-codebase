@@ -8,13 +8,13 @@ import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.Rotation2dKt;
 import org.ghrobotics.lib.mathematics.units.Time;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
+import org.team5940.pantry.exparimental.command.InstantCommand;
+import org.team5940.pantry.exparimental.command.SendableSubsystemBase;
 
 import edu.wpi.first.networktables.EntryListenerFlags;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.command.InstantCommand;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotConfig;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.VisionTarget;
@@ -31,7 +31,7 @@ import frc.robot.lib.obj.factories.VisionTargetFactory;
  * 
  * @author Matthew Morley
  */
-public class LimeLight extends Subsystem {
+public class LimeLight extends SendableSubsystemBase {
 
 	private static LimeLight instance;
 	private static Object mutex = new Object();
@@ -310,11 +310,16 @@ public class LimeLight extends Subsystem {
 
 		public SetLEDs(LEDMode mode) {
 			this.mode = mode;
-			setRunWhenDisabled(true);
+			//			setRunWhenDisabled(true);
 		}
 
 		@Override
-		protected void initialize() {
+		public boolean runsWhenDisabled() {
+			return true;
+		}
+
+		@Override
+		public void initialize() {
 			if (mode == LEDMode.kON)
 				LimeLight.getInstance().turnOnLED();
 			if (mode == LEDMode.kOFF)
@@ -328,20 +333,25 @@ public class LimeLight extends Subsystem {
 
 		public setPipeline(PipelinePreset mode) {
 			this.mode = mode;
-			setRunWhenDisabled(true);
+			//			setRunWhenDisabled(true);
 		}
 
 		@Override
-		protected void initialize() {
+		public boolean runsWhenDisabled() {
+			return true;
+		}
+
+		@Override
+		public void initialize() {
 			LimeLight.getInstance().setPipeline(mode);
 		}
 
 	}
 
-	@Override
-	protected void initDefaultCommand() {
-
-	}
+	//	@Override
+	//	protected void initDefaultCommand() {
+	//
+	//	}
 
 	public Length estimateDistanceFromAngle() {
 		final Rotation2d cameraAngle = Rotation2dKt.getDegree(-29);

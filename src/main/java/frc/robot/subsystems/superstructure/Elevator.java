@@ -370,10 +370,10 @@ public class Elevator extends HalfBakedSubsystem {
 		return new ElevatorState(getHeight(), getVelocity());
 	}
 
-	@Override
-	protected void initDefaultCommand() {
-
-	}
+	//	@Override
+	//	protected void initDefaultCommand() {
+	//
+	//	}
 
 	@Override
 	public void onDisable() {
