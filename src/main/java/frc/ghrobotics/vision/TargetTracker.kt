@@ -1,10 +1,8 @@
-package frc.ghrobotics.vision
+package org.ghrobotics.frc2019.vision
 
-import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.Timer
 import frc.robot.subsystems.DriveTrain
-import frc.robot.subsystems.superstructure.SuperStructure
-//import org.ghrobotics.frc2019.Constants
+//import org.ghrobotics.frc2019.?Constants
 //import org.ghrobotics.frc2019.subsystems.drive.DriveSubsystem
 import org.ghrobotics.lib.debug.LiveDashboard
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
@@ -15,8 +13,6 @@ import org.ghrobotics.lib.mathematics.units.*
 object TargetTracker {
 
     private val targets = mutableSetOf<TrackedTarget>()
-
-    private val table = NetworkTableInstance.getDefault().getTable("limelight")
 
     fun update() {
         synchronized(targets) {
@@ -31,14 +27,11 @@ object TargetTracker {
             }
             // Publish to dashboard
             LiveDashboard.visionTargets = targets.asSequence()
-                .filter { it.isReal }
-                .map { it.averagedPose2d }
-                .toList()
+                    .filter { it.isReal }
+                    .map { it.averagedPose2d }
+                    .toList()
         }
     }
-
-    fun getDx(): Rotation2d = table.getEntry("tx").getDouble(0.0).degree
-
 
     fun addSamples(creationTime: Double, samples: Iterable<Pose2d>) {
         if (creationTime >= Timer.getFPGATimestamp()) return // Cannot predict the future
@@ -50,7 +43,7 @@ object TargetTracker {
                 }
                 val sample = TrackedTargetSample(creationTime, samplePose)
                 if (closestTarget == null
-                    || closestTarget.averagedPose2d.translation.distance(samplePose.translation) > kTargetTrackingDistanceErrorTolerance.value
+                        || closestTarget.averagedPose2d.translation.distance(samplePose.translation) > kTargetTrackingDistanceErrorTolerance.value
                 ) {
                     // Create new target if no targets are within tolerance
                     targets += TrackedTarget(sample)
@@ -63,38 +56,35 @@ object TargetTracker {
     }
 
     fun getBestTarget(isFrontTarget: Boolean) = synchronized(targets) {
-
-//        if(!SuperStructure.getInstance().getPassedThrough())
-
         targets.asSequence()
-            .filter {
-                if (!it.isReal) return@filter false
-                val x = it.averagedPose2dRelativeToBot.translation.x
-                if (isFrontTarget) x.value >= 0.0 else x.value <= 0.0
-            }.minBy { it.averagedPose2dRelativeToBot.translation.norm }
+                .filter {
+                    if (!it.isReal) return@filter false
+                    val x = it.averagedPose2dRelativeToBot.translation.x.value
+                    if (isFrontTarget) x >= 0.0 else x <= 0.0
+                }.minBy { it.averagedPose2dRelativeToBot.translation.norm }
     }
 
     fun getBestTargetUsingReference(referencePose: Pose2d, isFrontTarget: Boolean) = synchronized(targets) {
         targets.asSequence()
-            .associateWith { it.averagedPose2d inFrameOfReferenceOf referencePose }
-            .filter {
-                val x = it.value.translation.x
-                it.key.isReal && if (isFrontTarget) x.value > 0.0 else x.value < 0.0
-            }
-            .minBy { it.value.translation.norm }?.key
+                .associateWith { it.averagedPose2d inFrameOfReferenceOf referencePose }
+                .filter {
+                    val x = it.value.translation.x.value
+                    it.key.isReal && if (isFrontTarget) x > 0.0 else x < 0.0
+                }
+                .minBy { it.value.translation.norm }?.key
     }
 
     fun getAbsoluteTarget(translation2d: Translation2d) = synchronized(targets) {
         targets.asSequence()
-            .filter {
-                it.isReal
-                    && translation2d.distance(it.averagedPose2d.translation) <= kTargetTrackingDistanceErrorTolerance.value
-            }
-            .minBy { it.averagedPose2d.translation.distance(translation2d) }
+                .filter {
+                    it.isReal
+                            && translation2d.distance(it.averagedPose2d.translation) <= kTargetTrackingDistanceErrorTolerance.value
+                }
+                .minBy { it.averagedPose2d.translation.distance(translation2d) }
     }
 
     class TrackedTarget(
-        initialTargetSample: TrackedTargetSample
+            initialTargetSample: TrackedTargetSample
     ) {
 
         private val samples = mutableSetOf<TrackedTargetSample>()
@@ -138,20 +128,20 @@ object TargetTracker {
             isAlive = samples.isNotEmpty()
             if (samples.size >= 2) isReal = true
             stability = (samples.size / (kVisionCameraFPS * kTargetTrackingMaxLifetime.value))
-                .coerceAtMost(1.0)
+                    .coerceAtMost(1.0)
             // Update Averaged Pose
-            var accumulatedX = 0.0
-            var accumulatedY = 0.0
+            var accumulatedX = 0.meter
+            var accumulatedY = 0.meter
             var accumulatedAngle = 0.0
             for (sample in samples) {
-                accumulatedX += sample.targetPose.translation.x.value
-                accumulatedY += sample.targetPose.translation.y.value
+                accumulatedX += sample.targetPose.translation.x
+                accumulatedY += sample.targetPose.translation.y
                 accumulatedAngle += sample.targetPose.rotation.value
             }
             averagedPose2d = Pose2d(
-                Length(accumulatedX / samples.size),
-                Length(accumulatedY / samples.size),
-                Rotation2d(accumulatedAngle / samples.size)
+                    accumulatedX / samples.size,
+                    accumulatedY / samples.size,
+                    Rotation2d(accumulatedAngle / samples.size)
             )
             averagedPose2dRelativeToBot = averagedPose2d inFrameOfReferenceOf currentRobotPose
         }
@@ -159,8 +149,8 @@ object TargetTracker {
     }
 
     data class TrackedTargetSample(
-        val creationTime: Double,
-        val targetPose: Pose2d
+            val creationTime: Double,
+            val targetPose: Pose2d
     )
 
     // VISION
@@ -170,4 +160,5 @@ object TargetTracker {
     val kTargetTrackingDistanceErrorTolerance = 16.inch
     val kTargetTrackingMinLifetime = 0.1.second
     val kTargetTrackingMaxLifetime = 0.5.second
+
 }
