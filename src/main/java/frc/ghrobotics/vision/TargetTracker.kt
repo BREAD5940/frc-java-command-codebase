@@ -1,6 +1,7 @@
 package org.ghrobotics.frc2019.vision
 
 import edu.wpi.first.wpilibj.Timer
+import edu.wpi.first.wpilibj.command.Subsystem
 import frc.robot.subsystems.DriveTrain
 //import org.ghrobotics.frc2019.?Constants
 //import org.ghrobotics.frc2019.subsystems.drive.DriveSubsystem
@@ -10,7 +11,13 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d
 import org.ghrobotics.lib.mathematics.units.*
 
 
-object TargetTracker {
+object TargetTracker: Subsystem() {
+
+    override fun initDefaultCommand() {}
+
+    override fun periodic() {
+        update()
+    }
 
     private val targets = mutableSetOf<TrackedTarget>()
 

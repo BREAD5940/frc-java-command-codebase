@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import org.ghrobotics.lib.localization.Localization;
 import org.ghrobotics.lib.localization.TankEncoderLocalization;
@@ -500,13 +502,17 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	private ChassisState mCachedChassisState;
 	public boolean isFirstRun = true;
 
-	public class CurvatureDrive extends Command {
+	public static class CurvatureDrive extends Command {
 
 		static final boolean squared = true;
 
 		public CurvatureDrive() {
 			requires(DriveTrain.getInstance());
 		}
+
+		protected Supplier<Double> forward = () -> Robot.m_oi.getForwardAxis();
+
+//		protected
 
 		@Override
 		protected void initialize() {
@@ -536,16 +542,16 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 				//				System.out.println("forward " + forwardSpeed);
 
-				forwardSpeed = Util.deadband(forwardSpeed, 0.07) * ((getCachedGear() == Gear.HIGH) ? 0.8 : 1);
-				turnSpeed = Util.deadband(turnSpeed, 0.07);
+				forwardSpeed = Util.deadband(forwardSpeed, 0.05) * ((DriveTrain.getInstance().getCachedGear() == Gear.HIGH) ? 0.8 : 1);
+				turnSpeed = Util.deadband(turnSpeed, 0.05);
 
 				// System.out.println("forward speed: " + forwardSpeed + " turn speed: " + turnSpeed);
 
 				// curvatureDrive(forwardSpeed, turnSpeed, Robot.m_oi.getPrimary().getRawButton(6));
-				curvatureDrive(forwardSpeed, turnSpeed, false);
+				DriveTrain.getInstance().curvatureDrive(forwardSpeed, turnSpeed, false);
 
 			} else {
-				curvatureDrive(forwardSpeed * Math.abs(forwardSpeed), turnSpeed, true);
+				DriveTrain.getInstance().curvatureDrive(forwardSpeed * Math.abs(forwardSpeed), turnSpeed, true);
 			}
 
 		}

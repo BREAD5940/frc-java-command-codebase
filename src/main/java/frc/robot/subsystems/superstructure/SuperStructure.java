@@ -307,6 +307,14 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		return mElbow;
 	}
 
+	public boolean isPassedThrough() {
+
+		var state = updateState();
+
+		return state.getElbowAngle().getDegree() < -90;
+
+	}
+
 	public DCMotorTransmission getWTransmission() {
 		return kWristTransmission;
 	}

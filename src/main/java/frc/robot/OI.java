@@ -2,6 +2,7 @@ package frc.robot;
 
 import java.util.Arrays;
 
+import frc.robot.commands.subsystems.drivetrain.DualHybridDriverAssist;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -99,7 +100,10 @@ public class OI {
 
 		// hatch presets
 		//		primaryBButton.whileHeld(new HybridDriverAssist());
-		primaryRightAnalogButton.whileHeld(new HybridDriverAssist());
+//		primaryRightAnalogButton.whileHeld(new HybridDriverAssist());
+		primaryRightAnalogButton.whileHeld(
+				new DualHybridDriverAssist()
+		);
 
 		dsHatch1.whenPressed(SequentialCommandFactory.getSequentialCommands(Arrays.asList(
 				new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH))));
