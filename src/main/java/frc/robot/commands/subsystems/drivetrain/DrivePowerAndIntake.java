@@ -12,7 +12,9 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Intake;
 
 public class DrivePowerAndIntake extends TimedCommand {
-	double power, time, reqEndTime, intake;
+	double power;
+	double time;
+	double intake;
 
 	/**
 	 * So I fear no man. But this, this scares me. Literally drive forward for a couple seconds.
@@ -29,7 +31,6 @@ public class DrivePowerAndIntake extends TimedCommand {
 		this.power = drive;
 		this.intake = intake;
 		this.time = time;
-		// setTimeout(time);
 	}
 
 	// Called repeatedly when this Command is scheduled to run

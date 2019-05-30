@@ -108,7 +108,7 @@ public class TurnInPlace extends Command {
 		// TODO so this is how a return works
 		// return ( (Math.abs(Robot.gyro.getRate() ) < RobotConfig.auto.tolerences.angular_velocity_tolerence)
 		//   && (Math.abs(Robot.drivetrain.getGyro() - target_angle) < RobotConfig.auto.tolerences.angle_tolerence));
-		return (turnPID.getError() < 10);
+		return (Math.abs(turnPID.getError()) < 2);
 	}
 
 	// Called once after isFinished returns true

@@ -25,6 +25,7 @@ public class TurnToFaceVisionTarget extends Command {
 	private double targetAngle;
 
 	private int count;
+	private double lastError = 0;
 
 	public TurnToFaceVisionTarget() {
 		requires(DriveTrain.getInstance());
@@ -39,7 +40,7 @@ public class TurnToFaceVisionTarget extends Command {
 	@Override
 	protected void initialize() {
 		var targetX = LimeLight.getInstance().getDx().getDegree();
-		var robotYaw = DriveTrain.getInstance().getGyro();
+		var robotYaw = DriveTrain.getInstance().getRobotPosition().getRotation().getDegree();
 		var interpolationOffset = skewCorrection.interpolate(LimeLight.getInstance().getTargetSkew());
 
 		targetAngle = targetX + robotYaw + interpolationOffset;
@@ -49,30 +50,34 @@ public class TurnToFaceVisionTarget extends Command {
 	@Override
 	protected void execute() {
 		final double kp = 0.3;
+		final double kd = 0;
 
-		var error = DriveTrain.getInstance().getGyro() - targetAngle;
-		var turnPower = kp * error;
+		var error = DriveTrain.getInstance().getRobotPosition().getRotation().getDegree() - targetAngle;
+
+		var turnPower = kp * error - kd * lastError;
 
 		turnPower = Util.limit(turnPower, 4);
 
 		ChassisState state = new ChassisState(0, turnPower);
 
 		DriveTrain.getInstance().setOutputFromKinematics(state);
+
+		lastError = error;
 	}
 
 	// Make this return true when this Command no longer needs to run execute()
 	@Override
 	protected boolean isFinished() {
 
-		var error = DriveTrain.getInstance().getGyro() - targetAngle;
+//		var error = DriveTrain.getInstance().getGyro() - targetAngle;
 
-		if (Math.abs(error) < 2) {
+		if (Math.abs(lastError) < 2) {
 			count++;
 		} else if (count > 0) {
 			count--;
 		}
 
-		return count > 6;
+		return count > 4;
 
 	}
 
