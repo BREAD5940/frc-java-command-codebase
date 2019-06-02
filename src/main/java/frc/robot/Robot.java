@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
 	public static SuperStructure superstructure = SuperStructure.getInstance();
 	// public static VisionProcessor visionProcessor = new VisionProcessor();
 	public static LimeLight limelight = LimeLight.getInstance();
+	public static LimeLightManager manager = LimeLightManager.INSTANCE;
 	// public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
 	public static DoubleSolenoid shifterDoubleSolenoid;
 	public static DoubleSolenoid intakeDoubleSolenoid;
