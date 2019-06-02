@@ -67,7 +67,7 @@ class VisionAssistedTrajectoryTracker(
         // if we are, try to find a new target
         if (withinVisionRadius) {
             val newTarget = if (useAbsoluteVision) {
-                TargetTracker.getAbsoluteTarget((trajectory.lastState.state.pose + Constants.kCenterToHatchGrabInside).translation)
+                TargetTracker.getAbsoluteTarget((trajectory.lastState.state.pose + Constants.kCenterToForwardIntake).translation)
             } else {
                 TargetTracker.getBestTarget(!trajectory.reversed) // usually this is the case
             }

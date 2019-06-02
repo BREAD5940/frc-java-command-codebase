@@ -1,7 +1,7 @@
 package frc.robot.commands.auto.paths
 
 import frc.robot.Constants
-import org.ghrobotics.frc2019.Constants
+//import org.ghrobotics.frc2019.Constants
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.mathematics.twodim.geometry.Rectangle2d
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d
