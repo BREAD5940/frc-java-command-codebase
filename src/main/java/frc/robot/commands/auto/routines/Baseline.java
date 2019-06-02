@@ -17,7 +17,6 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.commands.auto.Trajectories;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.DriveTrain.TrajectoryTrackerMode;
 

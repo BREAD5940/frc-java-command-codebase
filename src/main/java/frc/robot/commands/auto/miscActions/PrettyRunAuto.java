@@ -1,7 +1,7 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.auto.miscActions;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
+import frc.robot.commands.auto.routines.AutoCommandGroup;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
 
 public class PrettyRunAuto extends Command {

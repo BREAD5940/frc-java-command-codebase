@@ -16,7 +16,7 @@ import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
 import frc.robot.Robot;
-import frc.robot.commands.auto.Trajectories;
+import frc.robot.commands.auto.routines.Trajectories;
 import frc.robot.lib.AutoCommand;
 import frc.robot.lib.Logger;
 import frc.robot.subsystems.DriveTrain;

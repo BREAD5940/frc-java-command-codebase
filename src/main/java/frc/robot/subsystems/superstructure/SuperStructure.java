@@ -3,12 +3,10 @@ package frc.robot.subsystems.superstructure;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2dKt;
-import org.ghrobotics.lib.mathematics.units.Length;
-import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.Mass;
-import org.ghrobotics.lib.mathematics.units.MassKt;
+import org.ghrobotics.lib.mathematics.units.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -35,6 +33,8 @@ import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.superstructure.Elevator.EncoderMode;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
+
+import static org.ghrobotics.lib.mathematics.units.SILengthConstants.*;
 
 /**
  * First level of control for the superstructure of the robot. Contains all the
@@ -112,15 +112,15 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 
 	private SuperStructure() {
 		super("SuperStructure");
-		kElbowTransmission = new DCMotorTransmission(Constants.kElbowSpeedPerVolt, Constants.kElbowTorquePerVolt, Constants.kElbowStaticFrictionVoltage);
+		kElbowTransmission = new DCMotorTransmission(Constants.INSTANCE.getKElbowSpeedPerVolt(), Constants.INSTANCE.getKElbowTorquePerVolt(), Constants.INSTANCE.getKElbowStaticFrictionVoltage());
 
-		kWristTransmission = new DCMotorTransmission(Constants.kWristSpeedPerVolt, Constants.kWristTorquePerVolt, Constants.kWristStaticFrictionVoltage);
+		kWristTransmission = new DCMotorTransmission(Constants.INSTANCE.getKWristSpeedPerVolt(), Constants.INSTANCE.getKWristTorquePerVolt(), Constants.INSTANCE.getKWristStaticFrictionVoltage());
 
 		mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
-				Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
+				Constants.INSTANCE.getKWristLength(), Constants.INSTANCE.getKWristMass()); // FIXME the ports are wrong and check inverting!
 
 		mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
-				true /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+				true /* FIXME should this be inverted? */, Constants.INSTANCE.getKElbowLength(), Constants.INSTANCE.getKElbowMass());
 
 		mElbow.getMaster().setSensorPhase(false);
 		getWrist().getMaster().setSensorPhase(true);
@@ -292,7 +292,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	public Wrist getWrist() {
 		if (mWrist == null)
 			mWrist = new Wrist(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), 33, FeedbackDevice.CTRE_MagEncoder_Relative, 8, kWristMin, kWristMax, true /* FIXME check inverting! */,
-					Constants.kWristLength, Constants.kWristMass); // FIXME the ports are wrong and check inverting!
+					Constants.INSTANCE.getKWristLength(), Constants.INSTANCE.getKWristMass()); // FIXME the ports are wrong and check inverting!
 
 		mWrist.getMaster().setSensorPhase(true);
 		return mWrist;
@@ -301,7 +301,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	public RotatingJoint getElbow() {
 		if (mElbow == null)
 			mElbow = new RotatingJoint(new PIDSettings(0.5d, 0, 0, 0, FeedbackMode.ANGULAR), Arrays.asList(31, 32), FeedbackDevice.CTRE_MagEncoder_Relative, 9.33, kElbowMin, kElbowMax,
-					true /* FIXME should this be inverted? */, Constants.kElbowLength, Constants.kElbowMass);
+					true /* FIXME should this be inverted? */, Constants.INSTANCE.getKElbowLength(), Constants.INSTANCE.getKElbowMass());
 		mElbow.getMaster().setSensorPhase(false);
 
 		return mElbow;
@@ -458,5 +458,53 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	@Override
 	public void onDisable() {
 		// resetElbowTrim();
+	}
+
+	@Override
+	public void initSendable(SendableBuilder builder) {
+
+		builder.addDoubleProperty(".elevatorHeightInch",
+				() -> SuperStructure.getElevator().getHeight().getInch(),
+				null);
+		builder.addDoubleProperty(".proximalAngleDeg",
+				() -> getElbow().getMaster().getSensorPosition().getDegree(),
+				null);
+		builder.addDoubleProperty(".wristAngleDeg",
+				() -> getWrist().getMaster().getSensorPosition().getDegree(), null);
+
+//		builder.addDoubleProperty(".proximalErrorDeg",
+//				() -> getElbow().getMaster().getClosedLoopError().getDegree(), null);
+//		builder.addDoubleProperty(".wristErrorDeg",
+//				() -> getWrist().getMaster().getError().getDegree(), null);
+
+		builder.addDoubleProperty(".elevatorVelocityDegPerSec",
+				() -> SuperStructure.getElevator().getVelocity().getValue() / kFeetToMeter,
+				null);
+
+		builder.addDoubleProperty(".proximalVelocityDegPerSec",
+				() -> getElbow().getMaster().getSensorVelocity().getValue(), null);
+		builder.addDoubleProperty(".wristVelocityDegPerSec",
+				() -> getWrist().getMaster().getSensorVelocity().getValue(), null);
+
+		builder.addDoubleProperty(".elevatorCurrentPerMotorAmp",
+				() -> SuperStructure.getElevator().getMaster()
+						.getOutputCurrent(),
+				null);
+		builder.addDoubleProperty(".elevatorMotorVoltage",
+				() -> SuperStructure.getElevator().getMaster()
+						.getMotorOutputVoltage(),
+				null);
+
+		builder.addDoubleProperty(".proximalCurrentPerMotorAmp",
+				() -> getElbow().getMaster().getOutputCurrent(), null);
+		builder.addDoubleProperty(".proximalMotorVoltage",
+				() -> getElbow().getMaster().getMotorOutputVoltage(), null);
+
+		builder.addDoubleProperty(".wristCurrentPerMotorAmp",
+				() -> getWrist().getMaster().getOutputCurrent(), null);
+		builder.addDoubleProperty(".wristMotorVoltage",
+				() -> getWrist().getMaster().getMotorOutputVoltage(), null);
+
+		super.initSendable(builder);
 	}
 }

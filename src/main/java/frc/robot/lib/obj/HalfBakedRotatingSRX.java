@@ -19,7 +19,8 @@ public class HalfBakedRotatingSRX extends WPI_TalonSRX {
 	}
 
 	public RoundRotation2d getRotation2d() {
-		NativeUnit rawPos = NativeUnitKt.getNativeUnits(super.getSelectedSensorPosition());
+		NativeUnit rawPos = NativeUnitKt
+				.getNativeUnits(super.getSelectedSensorPosition());
 
 		// first divide by count to get rotations
 		double rotations = rawPos.div(mModel).getValue();
@@ -39,6 +40,12 @@ public class HalfBakedRotatingSRX extends WPI_TalonSRX {
 		return pos_;
 	}
 
+	public RoundRotation2d getError() {
+		int ticks = super.getClosedLoopError();
+		RoundRotation2d pos_ = RoundRotation2d.getDegree(ticks / mModel);
+		return pos_;
+	}
+
 	public RoundRotation2d getRotation2dError() {
 		int ticks = super.getClosedLoopError();
 		RoundRotation2d toReturn = fromTicks(ticks);
@@ -48,7 +55,8 @@ public class HalfBakedRotatingSRX extends WPI_TalonSRX {
 	public AngularVelocity getSensorVelocity() {
 		int raw_ = super.getSelectedSensorVelocity();
 		double rotPerSec = raw_ / mModel * 10;
-		return new AngularVelocity(RoundRotation2d.fromRotations(rotPerSec), TimeUnitsKt.getSecond(0.1));
+		return new AngularVelocity(RoundRotation2d.fromRotations(rotPerSec),
+				TimeUnitsKt.getSecond(0.1));
 	}
 
 	public RoundRotation2d fromTicks(int ticks) {
@@ -75,11 +83,16 @@ public class HalfBakedRotatingSRX extends WPI_TalonSRX {
 		super.set(mode, getTicks(setpoint));
 	}
 
-	public void set(ControlMode mode, RoundRotation2d setpoint, DemandType type, double arg2) {
+	public void set(ControlMode mode, RoundRotation2d setpoint, DemandType type,
+					double arg2) {
 		if (mode == ControlMode.Position)
 			super.set(mode, getTicks(setpoint), type, arg2);
 		else {
-			System.out.println("Cannot set to any other mode with RoundRotation2d. ur bad");
+			System.out
+					.println("Cannot set to any other mode with RoundRotation2d. ur bad");
 		}
 	}
+
+	//	public RoundRotation2d getVelocity() {
+	//	}
 }

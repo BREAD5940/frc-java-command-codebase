@@ -7,6 +7,7 @@ import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.cscore.HttpCamera;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -17,12 +18,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.auto.AutoMotion;
-import frc.robot.commands.auto.TerribleAutoChooser;
-import frc.robot.commands.auto.Trajectories;
+import frc.ghrobotics.vision.*;
+import frc.robot.commands.auto.miscActions.AutoMotion;
+import frc.robot.commands.auto.miscActions.TerribleAutoChooser;
+import frc.robot.commands.auto.routines.Trajectories;
 import frc.robot.commands.subsystems.superstructure.PassThrough;
 import frc.robot.commands.subsystems.superstructure.PassThrough.SyncedMove;
 import frc.robot.commands.subsystems.superstructure.ZeroElevatorDisabled;
@@ -35,6 +36,7 @@ import frc.robot.subsystems.DriveTrain.Gear;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.LimeLight.LEDMode;
 import frc.robot.subsystems.superstructure.SuperStructure;
+//import frc.ghrobotics.vision.FishyJeVois;
 
 /**
  * Main robot class. There shouldn't be a *ton* of stuff here, mostly init
@@ -60,6 +62,8 @@ public class Robot extends TimedRobot {
 	// SendableChooser<Command> m_chooser = new SendableChooser<Command>();
 	TerribleAutoChooser mAutoChooser;
 	public static Compressor compressor = new Compressor(9);
+
+//	public static YetAnotherJeVois yeevois = YetAnotherJeVois.INSTANCE;
 
 	private Notifier mResetNotifier;
 
@@ -162,6 +166,16 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 
+		//		var meme = SerialMeme.INSTANCE;
+
+		//		command__.start();
+
+		var jevois = JeVoisManager.INSTANCE;
+		var tracker = TargetTracker.INSTANCE;
+		var jevoisVision = VisionProcessing.INSTANCE;
+
+		//		var jevoisBoi = MattJeVois.INSTANCE;
+
 		Logger.clearLog();
 
 		SmartDashboard.putData(Scheduler.getInstance()); //it'll let you see all the active commands and (I think) cancel them too
@@ -173,7 +187,14 @@ public class Robot extends TimedRobot {
 		System.out.println("Auto chooser sent!");
 		Trajectories.generateAllTrajectories();
 
-		Shuffleboard.getTab("Auto").getLayout("Path selection", BuiltInLayouts.kList).add(mAutoChooser.getChooser()).withSize(2, 5).withPosition(0, 0);
+		Network.INSTANCE.getAutoTab().getLayout("Path selection", BuiltInLayouts.kList).add(mAutoChooser.getChooser()).withSize(2, 5).withPosition(0, 0);
+		Network.INSTANCE.getSuperStructureTab().add(superstructure);
+
+		var camera = new HttpCamera("limelight", "http://10.59.40.11:5800/");
+
+		Network.INSTANCE.getVisionTab().add(camera)
+				.withPosition(0, 0)
+				.withSize(6, 4);
 
 		if (drivetrain == null)
 			drivetrain = DriveTrain.getInstance();
@@ -541,22 +562,6 @@ public class Robot extends TimedRobot {
 		LiveDashboard.INSTANCE.setRobotX(drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
 		LiveDashboard.INSTANCE.setRobotY(drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
 		LiveDashboard.INSTANCE.setRobotHeading(drivetrain.getLocalization().getRobotPosition().getRotation().getRadian());
-
-		// SmartDashboard.putNumber("Left talon speed", drivetrain.getLeft().getFeetPerSecond());
-		// SmartDashboard.putNumber("Left talon error", drivetrain.getLeft().getClosedLoopError().getFeet());
-		// SmartDashboard.putNumber("Right talon speed", drivetrain.getRight().getFeetPerSecond());
-		// SmartDashboard.putNumber("Right talon error", drivetrain.getRight().getClosedLoopError().getFeet());
-
-		// List<Double> feetPerSecond = Arrays.asList(
-		// 		VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()),
-		// 		VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()));
-		// List<Double> feetPerSecondPerSecond = Arrays.asList(
-		// 		(VelocityKt.getFeetPerSecond(drivetrain.getLeft().getVelocity()) - drivetrain.lastFeetPerSecond.get(0)) / 0.02d,
-		// 		(VelocityKt.getFeetPerSecond(drivetrain.getRight().getVelocity()) - drivetrain.lastFeetPerSecond.get(0)) / 0.02d);
-		// SmartDashboard.putNumber("Left drivetrian feet per second", feetPerSecond.get(0));
-		// SmartDashboard.putNumber("Right drivetrian feet per second", feetPerSecond.get(1));
-
-		// SmartDashboard.putNumber("7 feet per second is", drivetrain.getLeft().getModel().toNativeUnitPosition(LengthKt.getFeet(7)).getValue());
 
 		SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
 

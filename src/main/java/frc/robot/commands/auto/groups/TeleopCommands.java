@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.auto.routines;
+package frc.robot.commands.auto.groups;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;

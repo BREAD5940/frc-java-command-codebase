@@ -1,6 +1,6 @@
 // package frc.robot.commands.auto;
 
-// import frc.robot.commands.auto.groups.AutoCommandGroup;
+// import frc.robot.commands.auto.routines.AutoCommandGroup;
 // import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
 // import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalType;
 // import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;

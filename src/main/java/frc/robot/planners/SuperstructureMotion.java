@@ -9,7 +9,7 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.SuperStructureConstants;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
+import frc.robot.commands.auto.routines.AutoCommandGroup;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.lib.Logger;

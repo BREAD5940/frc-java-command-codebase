@@ -1,5 +1,6 @@
-package frc.robot.commands.auto.groups;
+package frc.robot.commands.subsystems.drivetrain;
 
+import frc.robot.commands.auto.routines.AutoCommandGroup;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 
 /**

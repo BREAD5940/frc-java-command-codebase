@@ -1,6 +1,6 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.auto.miscActions;
 
-import frc.robot.commands.auto.groups.AutoCommandGroup;
+import frc.robot.commands.auto.routines.AutoCommandGroup;
 import frc.robot.commands.auto.routines.TwoHatchOneCargo;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 

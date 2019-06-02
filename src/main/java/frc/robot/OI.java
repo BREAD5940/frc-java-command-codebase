@@ -11,8 +11,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.auto.routines.TeleopCommands;
-import frc.robot.commands.subsystems.drivetrain.HybridDriverAssist;
+import frc.robot.commands.auto.groups.TeleopCommands;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.PassThrough;
@@ -100,9 +99,14 @@ public class OI {
 
 		// hatch presets
 		//		primaryBButton.whileHeld(new HybridDriverAssist());
-//		primaryRightAnalogButton.whileHeld(new HybridDriverAssist());
+		//		primaryRightAnalogButton.whileHeld(new HybridDriverAssist());
+
+		var assist = new DualHybridDriverAssist();
+
+		Network.INSTANCE.getVisionTab().add(assist);
+
 		primaryRightAnalogButton.whileHeld(
-				new DualHybridDriverAssist()
+				assist
 		);
 
 		dsHatch1.whenPressed(SequentialCommandFactory.getSequentialCommands(Arrays.asList(

@@ -5,7 +5,7 @@ import java.util.concurrent.Callable;
 import org.ghrobotics.lib.mathematics.units.Length;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
+import frc.robot.commands.auto.routines.AutoCommandGroup;
 import frc.robot.lib.AutoWaitForCondition;
 import frc.robot.states.IntakeAngle;
 import frc.robot.subsystems.superstructure.SuperStructure;

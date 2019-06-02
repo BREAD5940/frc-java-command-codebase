@@ -1,7 +1,7 @@
 package frc.robot.lib;
 
 public interface Loggable {
-	public abstract String getCSVHeader();
+	String getCSVHeader();
 
-	public abstract String toCSV();
+	String toCSV();
 }

@@ -1,4 +1,4 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.auto.routines;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -86,13 +86,13 @@ public class Trajectories {
 
 	public static List<TimingConstraint<Pose2dWithCurvature>> kLowGearConstraints = Arrays.asList(
 			new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getFeet(7))),
-			new DifferentialDriveDynamicsConstraint(Constants.kLowGearDifferentialDrive, 12 /* volts */),
+			new DifferentialDriveDynamicsConstraint(Constants.INSTANCE.getKLowGearDifferentialDrive(), 12 /* volts */),
 			// This limits our velocity while within the given Rectangle2d to 2 feet per second (read: the hab)
 			new VelocityLimitRegionConstraint(new Rectangle2d(7.0, 0.0, 8.0, 13.0), VelocityKt.getVelocity(LengthKt.getFeet(5.0))));
 
 	private static List<TimingConstraint<Pose2dWithCurvature>> kHighGearConstraints = Arrays.asList(
 			new CentripetalAccelerationConstraint(AccelerationKt.getAcceleration(LengthKt.getFeet(7))),
-			new DifferentialDriveDynamicsConstraint(Constants.kHighGearDifferentialDrive, 12 /* volts */),
+			new DifferentialDriveDynamicsConstraint(Constants.INSTANCE.getKHighGearDifferentialDrive(), 12 /* volts */),
 			// This limits our velocity while within the given Rectangle2d to 2 feet per second (read: the hab)
 			new VelocityLimitRegionConstraint(new Rectangle2d(7.0, 0.0, 8.0, 13.0), VelocityKt.getVelocity(LengthKt.getFeet(5.0))));
 

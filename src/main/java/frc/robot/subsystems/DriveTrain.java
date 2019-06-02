@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import org.ghrobotics.lib.localization.Localization;
@@ -122,12 +121,12 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 		/* set the robot pose to 0,0,0 */
 		localization.reset(new Pose2d());
 
-		lowGearDifferentialDrive = Constants.kHighGearDifferentialDrive;
-		highGearDifferentialDrive = Constants.kLowGearDifferentialDrive;
+		lowGearDifferentialDrive = Constants.INSTANCE.getKHighGearDifferentialDrive();
+		highGearDifferentialDrive = Constants.INSTANCE.getKLowGearDifferentialDrive();
 
-		ramseteTracker = new RamseteTracker(Constants.kDriveBeta, Constants.kDriveZeta);
-		purePursuitTracker = new PurePursuitTracker(Constants.kLat, Constants.kLookaheadTime,
-				Constants.kMinLookaheadDistance);
+		ramseteTracker = new RamseteTracker(Constants.INSTANCE.getKDriveBeta(), Constants.INSTANCE.getKDriveZeta());
+		purePursuitTracker = new PurePursuitTracker(Constants.INSTANCE.getKLat(), Constants.INSTANCE.getKLookaheadTime(),
+                Constants.INSTANCE.getKMinLookaheadDistance());
 		feedForwardTracker = new FeedForwardTracker();
 
 		localizationNotifier = new Notifier(() -> {
@@ -512,7 +511,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 		protected Supplier<Double> forward = () -> Robot.m_oi.getForwardAxis();
 
-//		protected
+		//		protected
 
 		@Override
 		protected void initialize() {

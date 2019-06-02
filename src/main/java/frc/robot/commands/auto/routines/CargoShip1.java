@@ -12,11 +12,9 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.auto.AutoMotion;
-import frc.robot.commands.auto.Trajectories;
-import frc.robot.commands.auto.groups.AutoCommandGroup;
+import frc.robot.commands.auto.miscActions.AutoMotion;
 import frc.robot.commands.auto.groups.PlaceHatch;
-import frc.robot.commands.auto.groups.VisionCommandGroup;
+import frc.robot.commands.subsystems.drivetrain.VisionCommandGroup;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.lib.motion.Util;
 import frc.robot.subsystems.DriveTrain;
