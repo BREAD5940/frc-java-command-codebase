@@ -82,11 +82,26 @@ object Constants {
     val kElbowTorquePerVolt = 55.0 // Newton meters per volt, stall
     val kElbowStaticFrictionVoltage = 0.0 // volts, TODO tune
 
-    /* Geometry stuff */
-    val kCenterToFrontOfRobot = Pose2d((32.inch / 2.0), Length.kZero, 0.degree)
-    val kCenterToHatchGrabInside = kCenterToFrontOfRobot + Pose2d(8.inch, Length.kZero, 0.degree)
-    val kCenterToBackOfRobot = Pose2d(((-32).inch / 2.0), Length.kZero, 0.degree)
-    val kCenterToHatchPassedThrough = kCenterToBackOfRobot + Pose2d((-5).inch, Length.kZero, 0.degree)
+    // ROBOT AND MECHANISM DIMENSIONS
 
+    val kRobotWidth = 28.inch
+    val kRobotLength = 32.inch
+
+    val kBumperThickness = 4.5.inch
+    val kIntakeProtrusionFrontExtended = 18.5.inch       // Out of frame protrusion.
+    val kCenterToPointOfRotation = kRobotLength/2 - 11.inch
+    val kIntakeProtrusionBackExtended = -kIntakeProtrusionFrontExtended + kCenterToPointOfRotation
+    val kBadIntakeOffset = 0.inch
+
+
+    // TRANSFORMATIONS
+    val kFrontBumperToCenter = Pose2d(-(kRobotLength / 2.0) - kBumperThickness + kCenterToPointOfRotation, 0.meter, 0.degree)
+    val kBackBumperToCenter = Pose2d((kRobotLength / 2.0) + kBumperThickness - kCenterToPointOfRotation, 0.meter, 0.degree)
+    val kForwardIntakeToCenter = Pose2d(-(kRobotLength / 2.0) - kIntakeProtrusionFrontExtended, kBadIntakeOffset, 0.degree)
+    val kCenterToForwardIntake = Pose2d((kRobotLength / 2.0) + kIntakeProtrusionFrontExtended, -kBadIntakeOffset, 0.degree)
+    val kBackwardIntakeToCenter = Pose2d(kRobotLength / 2.0 + kIntakeProtrusionBackExtended, -kBadIntakeOffset, 0.degree)
+
+    val kCenterToFrontCamera = Pose2d((-1.75).inch, 0.0.inch, 0.degree)
+    val kCenterToBackCamera = Pose2d((-6.25).inch, 0.0.inch, 180.degree)
 
 }
