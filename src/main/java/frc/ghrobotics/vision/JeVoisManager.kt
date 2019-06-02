@@ -13,7 +13,6 @@ import com.google.gson.JsonParseException
 //import edu.wpi.first.wpilibj.SerialPort
 //import edu.wpi.first.wpilibj.SerialPort
 import edu.wpi.first.wpilibj.Timer
-import org.ghrobotics.frc2019.vision.TargetTracker
 //import org.ghrobotics.frc2019.Constants
 import org.ghrobotics.lib.mathematics.units.Time
 import org.ghrobotics.lib.mathematics.units.second
@@ -21,7 +20,7 @@ import kotlin.concurrent.fixedRateTimer
 
 object JeVoisManager {
 
-    private val kJevoisGson = Gson()
+    internal val kJevoisGson = Gson()
 
     private val connectedJeVoisCameras = mutableListOf<JeVois>()
 
@@ -32,17 +31,25 @@ object JeVoisManager {
         private set
 
     init {
-        fixedRateTimer(name = "JevoisManager", period = 10000L) {
+
+        fixedRateTimer(name = "JevoisManager", period = 1000L) {
             val currentTime = Timer.getFPGATimestamp().second
+
+            var connect = ""
+            connectedJeVoisCameras.forEach {
+                connect += "name ${it.systemPortName} isFront ${it.isFront}"
+            }
+
+//            println("====> Updating Jevoises at ${currentTime.second}: current jevoises $connect")
 
             connectedJeVoisCameras.removeIf {
                 it.update(currentTime)
                 if (!it.isAlive) {
                     println("[JeVois Manager] Disconnected Camera: ${it.systemPortName}")
                     it.dispose()
-                    true
+                    return@removeIf true
                 } else {
-                    false
+                    return@removeIf false
                 }
             }
 
@@ -53,13 +60,14 @@ object JeVoisManager {
                 if (connectedJeVoisCameras.any { it.systemPortName.equals(serialPort.systemPortName, true) }) {
                     continue
                 }
-                println("[JeVois Manager] Found new camera: ${serialPort.systemPortName}")
+                println("========[JeVois Manager] Found new camera: ${serialPort.systemPortName} at baud ${serialPort.baudRate}")
                 connectedJeVoisCameras.add(JeVois(serialPort))
             }
 
             isFrontJeVoisConnected = connectedJeVoisCameras.any { it.isFront == true }
             isBackJeVoisConnected = connectedJeVoisCameras.any { it.isFront == false }
         }
+
     }
 
     class JeVois(
@@ -77,13 +85,27 @@ object JeVoisManager {
         var isAlive = true
             private set
 
+//        class TestListener : SerialPortDataListener {
+//
+//            override fun serialEvent(event: SerialPortEvent?) {
+//                println("found data of type ${event!!.eventType}")
+//            }
+//
+//            override fun getListeningEvents() = SerialPort.LISTENING_EVENT_DATA_AVAILABLE
+//
+//        }
+
         init {
+
             serialPort.openPort()
             serialPort.addDataListener(object : SerialPortDataListener {
                 private var stringBuffer = StringBuilder(1024)
 
                 override fun serialEvent(event: SerialPortEvent) {
                     try {
+
+//                        println("serial event on jevois $systemPortName!")
+
                         if (event.eventType != SerialPort.LISTENING_EVENT_DATA_AVAILABLE)
                             return
                         val bytesAvailable = serialPort.bytesAvailable()
@@ -99,9 +121,13 @@ object JeVoisManager {
                                 stringBuffer.append(newChar)
                                 continue
                             }
+
                             processMessage(stringBuffer.toString())
                             stringBuffer.clear()
                         }
+
+
+
                     } catch (e: Throwable) {
                         println("[JeVois] ${e.localizedMessage}")
 //                    e.printStackTrace()
@@ -110,6 +136,9 @@ object JeVoisManager {
 
                 override fun getListeningEvents() = SerialPort.LISTENING_EVENT_DATA_AVAILABLE
             })
+
+//            serialPort.addDataListener(TestListener())
+
             lastMessageReceived = Timer.getFPGATimestamp().second
         }
 
@@ -125,6 +154,9 @@ object JeVoisManager {
                     .filterIsInstance<JsonObject>()
 
                 this.isFront = isFront
+
+//                println("processing data from the ${if(isFront) "front" else "back"} jevois, captured $timestamp, " +
+//                        "with found contours $contours")
 
                 VisionProcessing.processData(VisionData(isFront, timestamp, contours))
             } catch (e: JsonParseException) {

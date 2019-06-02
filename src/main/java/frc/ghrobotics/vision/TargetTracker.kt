@@ -1,25 +1,58 @@
-package org.ghrobotics.frc2019.vision
+package frc.ghrobotics.vision
 
 import edu.wpi.first.wpilibj.Timer
 import edu.wpi.first.wpilibj.command.Subsystem
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
+import frc.robot.Network
 import frc.robot.subsystems.DriveTrain
 //import org.ghrobotics.frc2019.?Constants
 //import org.ghrobotics.frc2019.subsystems.drive.DriveSubsystem
 import org.ghrobotics.lib.debug.LiveDashboard
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d
-import org.ghrobotics.lib.mathematics.units.*
+import org.ghrobotics.lib.mathematics.units.Rotation2d
+import org.ghrobotics.lib.mathematics.units.inch
+import org.ghrobotics.lib.mathematics.units.meter
+import org.ghrobotics.lib.mathematics.units.second
 
 
 object TargetTracker: Subsystem() {
 
-    override fun initDefaultCommand() {}
+    override fun initDefaultCommand() {
+        Network.VisionTab.add(this)
+    }
 
     override fun periodic() {
+//        println("updating target tracker...")
         update()
     }
 
-    private val targets = mutableSetOf<TrackedTarget>()
+    override fun initSendable(builder: SendableBuilder) {
+
+        builder.addStringProperty("TargetData",
+                {getBackTargetData()}, null)
+
+        super.initSendable(builder)
+    }
+
+    private fun getBackTargetData(): String {
+
+        if(!JeVoisManager.isBackJeVoisConnected) return ""
+
+        val newTarget = getBestTargetUsingReference(
+                DriveTrain.getInstance().robotPosition, false)
+
+        if(newTarget == null) return ""
+
+        val transform = newTarget!!.averagedPose2d inFrameOfReferenceOf  DriveTrain.getInstance().robotPosition // TODO check math
+        val angle = Rotation2d(transform.translation.x.value, transform.translation.y.value, true)
+
+
+        return "angle ${angle.degree} distance ${transform.translation.norm.feet}"
+
+    }
+
+    internal val targets = mutableSetOf<TrackedTarget>()
 
     fun update() {
         synchronized(targets) {
@@ -62,6 +95,9 @@ object TargetTracker: Subsystem() {
         }
     }
 
+    /**
+     * Find the target that's closest to the robot per it's averagedPose2dRelativeToBot
+     */
     fun getBestTarget(isFrontTarget: Boolean) = synchronized(targets) {
         targets.asSequence()
                 .filter {
@@ -95,6 +131,10 @@ object TargetTracker: Subsystem() {
     ) {
 
         private val samples = mutableSetOf<TrackedTargetSample>()
+
+        override fun toString(): String {
+            return "Pose $averagedPose2d isAlive? $isAlive isReal? $isReal"
+        }
 
         /**
          * The averaged pose2d for x time
