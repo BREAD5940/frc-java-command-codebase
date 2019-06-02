@@ -8,6 +8,7 @@ import frc.robot.subsystems.DriveTrain
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d
 import org.ghrobotics.lib.mathematics.units.Time
+import org.ghrobotics.lib.mathematics.units.degree
 import org.ghrobotics.lib.mathematics.units.inch
 import org.ghrobotics.lib.mathematics.units.radian
 import org.opencv.core.*
@@ -15,6 +16,9 @@ import org.opencv.core.MatOfPoint2f
 import org.opencv.calib3d.Calib3d
 import org.opencv.core.Mat
 import kotlin.math.*
+import org.opencv.core.CvType
+
+
 
 
 object LimeLightManager {
@@ -148,14 +152,27 @@ object LimeLightManager {
         val rot = Mat()
         Calib3d.Rodrigues(rvec, rot)
 
-        val rot_inv = rot.transpose()
+        // implementation from https://www.chiefdelphi.com/t/limelight-real-world-camera-positioning/343941/29?u=thatmattguy
 
-        // This should be pzero_world = numpy.matmul(rot_inv, -tvec)
-        val pzero_world = rot_inv * -tvec
+        val projectionMatrix = Mat(3, 4, CvType.CV_64F)
+        projectionMatrix.put(0, 0,
+                rot.get(0, 0)[0], rot.get(0, 1)[0], rot.get(0, 2)[0], tvec.get(0, 0)[0],
+                rot.get(1, 0)[0], rot.get(1, 1)[0], rot.get(1, 2)[0], tvec.get(1, 0)[0],
+                rot.get(2, 0)[0], rot.get(2, 1)[0], rot.get(2, 2)[0], tvec.get(2, 0)[0]
+        )
 
-        val angle2 = atan2(pzero_world[0][0], pzero_world[2][0])
+        val cameraMatrix = Mat()
+        val rotMatrix = Mat()
+        val transVect = Mat()
+        val rotMatrixX = Mat()
+        val rotMatrixY = Mat()
+        val rotMatrixZ = Mat()
+        val eulerAngles = Mat()
+        Calib3d.decomposeProjectionMatrix(projectionMatrix, cameraMatrix, rotMatrix, transVect, rotMatrixX, rotMatrixY, rotMatrixZ, eulerAngles)
 
-        return Pose2d(Translation2d(distance.inch, angle1.radian), angle2.radian)
+        val yawInDegrees = eulerAngles.get(1, 0)[0]
+
+        return Pose2d(Translation2d(distance.inch, angle1.radian), yawInDegrees.degree)
 
     }
 
