@@ -53,10 +53,10 @@ object LimeLightManager {
                 || pose.translation.y.absoluteValue > VisionProcessing.kRobotWidth / 2.0)
             return
 
-        val globalPose = pose + robotPosition
+        val globalPose = VisionProcessing.kCenterToFrontCamera + (pose + robotPosition)
 
         TargetTracker.addSamples(
-                timestamp, listOf(pose)
+                timestamp, listOf(globalPose)
         )
 
     }
@@ -75,13 +75,15 @@ object LimeLightManager {
         val leftCorners = corners.let { list ->
             // find the minimum
 
-            val sorted = list.sortedBy { -it.x }
+            val sorted = list.sortedBy { it.x }
 
-            return@let listOf(sorted[0], sorted[1]).sortedBy { it.y }
+            val leftMost = listOf(sorted[0], sorted[1])
+            
+            return@let leftMost.sortedBy { it.y }
 
         }
 
-        val rightCorners = listOf(corners[0], corners[1]).sortedBy { it.y  }
+        val rightCorners = listOf(corners[2], corners[3]).sortedBy { it.y  }
 
         // in the form left top, left bottom, right bottom, right top
         // note that positive y is down!
