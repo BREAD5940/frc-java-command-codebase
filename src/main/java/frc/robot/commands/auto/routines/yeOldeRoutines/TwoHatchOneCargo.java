@@ -1,8 +1,9 @@
-package frc.robot.commands.auto.routines;
+package frc.robot.commands.auto.routines.yeOldeRoutines;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import frc.robot.commands.auto.routines.AutoRoutine;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -11,7 +12,7 @@ import edu.wpi.first.wpilibj.command.PrintCommand;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.miscActions.AutoMotion;
-import frc.robot.commands.subsystems.drivetrain.VisionCommandGroup;
+import frc.robot.commands.subsystems.drivetrain.VisionRoutine;
 import frc.robot.commands.subsystems.drivetrain.DriveDistanceTheThird;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
@@ -29,8 +30,8 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 /**
  * 2-hatch 1-cargo auto
  */
-public class TwoHatchOneCargo extends VisionCommandGroup {
-	// private AutoCommandGroup mBigCommandGroup;
+public class TwoHatchOneCargo extends VisionRoutine {
+	// private AutoRoutine mBigCommandGroup;
 	public ArrayList<TimedTrajectory<Pose2dWithCurvature>> trajects = new ArrayList<TimedTrajectory<Pose2dWithCurvature>>();
 	public ArrayList<AutoMotion> motions = new ArrayList<AutoMotion>();
 
@@ -130,7 +131,7 @@ public class TwoHatchOneCargo extends VisionCommandGroup {
 	 * @return
 	 *  the mBigCommandGroup of the function
 	 */
-	public AutoCommandGroup getBigCommandGroup() {
+	public AutoRoutine getBigCommandGroup() {
 		return this;
 	}
 

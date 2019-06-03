@@ -1,6 +1,6 @@
 package frc.robot.commands.subsystems.drivetrain;
 
-import frc.robot.commands.auto.routines.AutoCommandGroup;
+import frc.robot.commands.auto.routines.AutoRoutine;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 
 /**
@@ -9,9 +9,9 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
  * 
  * @author Matthew Morley
  */
-public class VisionCommandGroup extends AutoCommandGroup {
+public class VisionRoutine extends AutoRoutine {
 
-	public VisionCommandGroup() {
+	public VisionRoutine() {
 		super();
 		mPoseStorage1 = new Pose2d();
 		mPoseStorage2 = mPoseStorage1;

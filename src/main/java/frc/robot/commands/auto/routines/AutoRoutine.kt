@@ -9,19 +9,22 @@ import edu.wpi.first.wpilibj.command.InstantCommand
 import frc.robot.Constants
 import frc.robot.commands.subsystems.drivetrain.VisionAssistedTrajectoryTracker
 import frc.robot.lib.Logger
+import frc.robot.lib.OLDParallelRaceGroup
 import frc.robot.subsystems.DriveTrain
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature
+import org.ghrobotics.lib.mathematics.twodim.geometry.Rectangle2d
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.mirror
 import org.ghrobotics.lib.mathematics.units.Length
+import org.ghrobotics.lib.mathematics.units.Time
 import org.ghrobotics.lib.utils.BooleanSource
 import org.ghrobotics.lib.utils.map
 
 /**
  * basically just a CommandGroup but with the done() method and time tracking.
  */
-open class AutoCommandGroup : CommandGroup() {
+open class AutoRoutine : CommandGroup() {
 
 
     protected fun followVisionAssistedTrajectory(
@@ -44,7 +47,7 @@ open class AutoCommandGroup : CommandGroup() {
         DriveTrain.getInstance().localization.reset(newPosition)
     }
 
-    fun parallel(vararg commands: Command) = object : AutoCommandGroup() {
+    fun parallel(vararg commands: Command) = object : AutoRoutine() {
         init {
             commands.forEach {
                 addParallel(it)
@@ -52,7 +55,7 @@ open class AutoCommandGroup : CommandGroup() {
         }
     }
 
-    fun sequential(vararg commands: Command) = object : AutoCommandGroup() {
+    fun sequential(vararg commands: Command) = object : AutoRoutine() {
         init {
             commands.forEach {
                 addSequential(it)
@@ -60,8 +63,55 @@ open class AutoCommandGroup : CommandGroup() {
         }
     }
 
+    fun notWithinRegion(region: Rectangle2d) = object : Command() {
+        override fun isFinished() = !region.contains(DriveTrain.getInstance().robotPosition.translation)
+    }
+
+    protected fun Command.withTimeout(time: Time) = object: CommandGroup() {
+
+        val command: Command = this@withTimeout
+
+        init {
+            addSequential(this@withTimeout)
+            mDuration = time.second
+            setRunWhenDisabled(true)
+        }
+
+        private var mTimer = Timer()
+        private var mDuration: Double = -1.0
+
+        public override fun initialize() {
+            mTimer.reset()
+            mTimer.start()
+            super.initialize()
+        }
+
+        override fun end() {
+            mTimer.stop()
+        }
+
+        override fun interrupted() = end()
+
+        public override fun isFinished(): Boolean {
+            return mTimer.hasPeriodPassed(mDuration) || super.isFinished()
+        }
+
+    }
+
+    protected fun Command.withExit(exit: BooleanSource) = object: CommandGroup() {
+
+        init {
+            super.addSequential(this@withExit)
+        }
+
+        override fun isFinished(): Boolean {
+            return exit() || super.isFinished()
+        }
+
+    }
+
     operator fun Command.unaryPlus() {
-        addSequential(this)
+        addSequential(this@unaryPlus)
     }
 
     internal var start = 0.0
