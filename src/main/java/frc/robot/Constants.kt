@@ -8,7 +8,7 @@ import com.team254.lib.physics.DifferentialDrive
 import frc.robot.lib.motion.Util
 import org.ghrobotics.lib.mathematics.units.*
 
-object Constants {
+public object Constants {
     /* Graciously borrowed from 5190*/
     val kRobotMass = (50f /* Robot, kg */ + 5f /* Battery, kg */ + 2f /* Bumpers, kg */).toDouble()
     val kRobotMomentOfInertia = 10.0 // kg m^2 // TODO Tune
@@ -53,10 +53,10 @@ object Constants {
             kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveRightHigh),
             kVInterceptRightHigh)
 
-    val kLowGearDifferentialDrive = DifferentialDrive(kRobotMass, kRobotMomentOfInertia,
+    public val kLowGearDifferentialDrive = DifferentialDrive(kRobotMass, kRobotMomentOfInertia,
             kRobotAngularDrag, kWheelRadius, kTrackWidth / 2.0, kLeftTransmissionModelLowGear, kRightTransmissionModelLowGear)
 
-    val kHighGearDifferentialDrive = DifferentialDrive(kRobotMass, kRobotMomentOfInertia,
+    public val kHighGearDifferentialDrive = DifferentialDrive(kRobotMass, kRobotMomentOfInertia,
             kRobotAngularDrag, kWheelRadius, kTrackWidth / 2.0, kLeftTransmissionModelHighGear, kRightTransmissionModelHighGear)
 
     /* Ramsete constants */

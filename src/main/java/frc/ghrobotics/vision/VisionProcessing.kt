@@ -1,6 +1,10 @@
 package frc.ghrobotics.vision
 
 import com.google.gson.JsonObject
+import frc.robot.Constants.kCenterToBackCamera
+import frc.robot.Constants.kCenterToFrontCamera
+import frc.robot.Constants.kRobotLength
+import frc.robot.Constants.kRobotWidth
 import frc.robot.subsystems.DriveTrain
 //import org.ghrobotics.frc2019.Constants
 //import org.ghrobotics.frc2019.subsystems.drive.DriveSubsystem
@@ -56,10 +60,10 @@ object VisionProcessing {
 
 
 
-    val kCenterToFrontCamera = Pose2d((-1.75).inch, 0.0.inch, 0.degree)
-    val kCenterToBackCamera = Pose2d((6.25).inch, 0.0.inch, 180.degree) // make sure these numbers are right
-    val kRobotWidth = 30.inch
-    val kRobotLength = 30.inch
+//    val kCenterToFrontCamera = Pose2d((-1.75).inch, 0.0.inch, 0.degree)
+//    val kCenterToBackCamera = Pose2d((6.25).inch, 0.0.inch, 180.degree) // make sure these numbers are right
+//    val kRobotWidth = 30.inch
+//    val kRobotLength = 30.inch
 
 
 }

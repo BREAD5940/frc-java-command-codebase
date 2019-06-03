@@ -5,6 +5,7 @@ import frc.ghrobotics.vision.TargetTracker
 import frc.robot.Constants
 import frc.robot.Network
 import frc.robot.subsystems.DriveTrain
+import frc.robot.subsystems.LimeLight
 //import org.ghrobotics.lib.commands.FalconCommand
 import org.ghrobotics.lib.debug.LiveDashboard
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
@@ -26,10 +27,14 @@ import org.ghrobotics.lib.utils.Source
 class VisionAssistedTrajectoryTracker(
         val trajectorySource: Source<Trajectory<Time, TimedEntry<Pose2dWithCurvature>>>,
         val radiusFromEnd: Length,
-        val useAbsoluteVision: Boolean = false
+        val useAbsoluteVision: Boolean = false,
+        val useLimeLightOverTargetTracker: Boolean = true
 ) : Command() {
 
     private var trajectoryFinished = false
+
+    var limelightHasTarget = false
+    var limeLightAngle: Rotation2d? = null
 
     private var prevError = 0.0 // cached error for the PD loop
 
@@ -76,22 +81,41 @@ class VisionAssistedTrajectoryTracker(
 
             // store this pose if it's for real
             if (newTarget?.isAlive == true && newPose != null) this.lastKnownTargetPose = newPose
+
+            if(!trajectory.reversed && useLimeLightOverTargetTracker) {
+
+                // we COULD use the limelight
+                this.limelightHasTarget = LimeLight.getInstance().trackedTargets > 0
+
+                this.limeLightAngle = if(limelightHasTarget) {
+                    LimeLight.getInstance().dx + robotPosition.rotation}
+                else null
+            }
         }
 
         val lastKnownTargetPose = this.lastKnownTargetPose
 
-        if (lastKnownTargetPose != null) {
+        if (lastKnownTargetPose != null || limeLightAngle != null) {
             println("VISION")
             visionActive = true
 
-            // find our angle to the target
-            val transform = lastKnownTargetPose inFrameOfReferenceOf robotPosition
-            val angle = Rotation2d(transform.translation.x.meter, transform.translation.y.meter, true)
+            var error = 0.0
 
-            Network.visionDriveAngle.setDouble(angle.degree)
-            Network.visionDriveActive.setBoolean(true)
+            if(limeLightAngle != null && useLimeLightOverTargetTracker) {
 
-            val error = (angle + if (!trajectory.reversed) Rotation2d.kZero else Math.PI.radian).radian
+                error = (limeLightAngle!! - robotPosition.rotation).radian
+
+            } else if(lastKnownTargetPose != null) {
+
+                // find our angle to the target
+                val transform = lastKnownTargetPose inFrameOfReferenceOf robotPosition
+                val angle = Rotation2d(transform.translation.x.meter, transform.translation.y.meter, true)
+
+                Network.visionDriveAngle.setDouble(angle.degree)
+                Network.visionDriveActive.setBoolean(true)
+
+                error = (angle + if (!trajectory.reversed) Rotation2d.kZero else Math.PI.radian).radian
+            }
 
             // It's a simple PD loop, but quite effective
             val turn = kCorrectionKp * error + kCorrectionKd * (error - prevError)

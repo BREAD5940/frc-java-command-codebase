@@ -4,6 +4,7 @@ import edu.wpi.first.networktables.EntryListenerFlags
 import edu.wpi.first.networktables.NetworkTable
 import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.Timer
+import frc.robot.Constants
 import frc.robot.subsystems.DriveTrain
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d
@@ -53,11 +54,11 @@ object LimeLightManager {
             return
         }
 
-        if(pose.translation.x.absoluteValue > VisionProcessing.kRobotLength / 2.0 - 5.inch
-                || pose.translation.y.absoluteValue > VisionProcessing.kRobotWidth / 2.0)
+        if(pose.translation.x.absoluteValue > Constants.kRobotLength / 2.0 - 5.inch
+                || pose.translation.y.absoluteValue > Constants.kRobotWidth / 2.0)
             return
 
-        val globalPose = VisionProcessing.kCenterToFrontCamera + (pose + robotPosition)
+        val globalPose = Constants.kCenterToFrontCamera + (pose + robotPosition)
 
         TargetTracker.addSamples(
                 timestamp, listOf(globalPose)
