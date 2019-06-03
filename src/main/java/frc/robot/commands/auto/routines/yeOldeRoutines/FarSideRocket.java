@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import frc.robot.commands.auto.groups.TeleopCommands;
-import frc.robot.commands.auto.routines.AutoRoutine;
-import frc.robot.commands.subsystems.drivetrain.VisionRoutine;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature;
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory;
@@ -20,7 +17,10 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 
 import frc.robot.Robot;
 import frc.robot.RobotConfig.auto.fieldPositions;
+import frc.robot.commands.auto.groups.TeleopCommands;
 import frc.robot.commands.auto.miscActions.AutoMotion;
+import frc.robot.commands.auto.routines.AutoRoutine;
+import frc.robot.commands.subsystems.drivetrain.VisionRoutine;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.lib.OLDParallelRaceGroup;
 import frc.robot.lib.motion.Util;

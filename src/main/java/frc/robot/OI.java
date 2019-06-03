@@ -2,7 +2,6 @@ package frc.robot;
 
 import java.util.Arrays;
 
-import frc.robot.commands.subsystems.drivetrain.DualHybridDriverAssist;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -12,6 +11,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.groups.TeleopCommands;
+import frc.robot.commands.subsystems.drivetrain.DualHybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
 import frc.robot.commands.subsystems.superstructure.JankyGoToState;
 import frc.robot.commands.subsystems.superstructure.PassThrough;
@@ -106,8 +106,7 @@ public class OI {
 		Network.INSTANCE.getVisionTab().add(assist);
 
 		primaryRightAnalogButton.whileHeld(
-				assist
-		);
+				assist);
 
 		dsHatch1.whenPressed(SequentialCommandFactory.getSequentialCommands(Arrays.asList(
 				new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH))));

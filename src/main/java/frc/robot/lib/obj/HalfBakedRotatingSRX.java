@@ -84,7 +84,7 @@ public class HalfBakedRotatingSRX extends WPI_TalonSRX {
 	}
 
 	public void set(ControlMode mode, RoundRotation2d setpoint, DemandType type,
-					double arg2) {
+			double arg2) {
 		if (mode == ControlMode.Position)
 			super.set(mode, getTicks(setpoint), type, arg2);
 		else {

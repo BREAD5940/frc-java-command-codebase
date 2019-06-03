@@ -7,7 +7,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
@@ -66,7 +65,7 @@ public class Intake extends Subsystem {
 		getSolenoid().set(HatchMechState.get(mReq));
 	}
 
-//	float position_setpoint;
+	//	float position_setpoint;
 
 	private Intake(int cargoPort, int hatchPort) {
 		cargoTalon = new WPI_TalonSRX(cargoPort);

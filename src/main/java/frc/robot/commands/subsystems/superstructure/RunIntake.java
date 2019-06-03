@@ -7,10 +7,11 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
+import org.ghrobotics.lib.mathematics.units.Time;
+
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.subsystems.Intake;
-import org.ghrobotics.lib.mathematics.units.Time;
 
 /**
  * Add your docs here.

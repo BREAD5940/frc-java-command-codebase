@@ -1,6 +1,5 @@
 package frc.robot;
 
-import frc.robot.commands.auto.Autonomous;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -18,12 +17,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.ghrobotics.vision.*;
+import frc.robot.commands.auto.Autonomous;
 import frc.robot.commands.auto.miscActions.AutoMotion;
-import frc.robot.commands.auto.miscActions.TerribleAutoChooser;
 import frc.robot.commands.auto.routines.yeOldeRoutines.Trajectories;
 import frc.robot.commands.subsystems.superstructure.PassThrough;
 import frc.robot.commands.subsystems.superstructure.PassThrough.SyncedMove;
@@ -62,10 +60,10 @@ public class Robot extends TimedRobot {
 	public static DoubleSolenoid elevatorShifterDoubleSolenoid;
 	public static AutoMotion m_auto;
 	// SendableChooser<Command> m_chooser = new SendableChooser<Command>();
-//	TerribleAutoChooser mAutoChooser;
+	//	TerribleAutoChooser mAutoChooser;
 	public static Compressor compressor = new Compressor(9);
 
-//	public static YetAnotherJeVois yeevois = YetAnotherJeVois.INSTANCE;
+	//	public static YetAnotherJeVois yeevois = YetAnotherJeVois.INSTANCE;
 
 	private Notifier mResetNotifier;
 
@@ -184,12 +182,12 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putData(zeroElevatorWhileDisabled);
 
-//		mAutoChooser = new TerribleAutoChooser();
-//		mAutoChooser.addOptions();
+		//		mAutoChooser = new TerribleAutoChooser();
+		//		mAutoChooser.addOptions();
 		System.out.println("Auto chooser sent!");
 		Trajectories.generateAllTrajectories();
 
-//		Network.INSTANCE.getAutoTab().getLayout("Path selection", BuiltInLayouts.kList).add(mAutoChooser.getChooser()).withSize(2, 5).withPosition(0, 0);
+		//		Network.INSTANCE.getAutoTab().getLayout("Path selection", BuiltInLayouts.kList).add(mAutoChooser.getChooser()).withSize(2, 5).withPosition(0, 0);
 		Network.INSTANCE.getSuperStructureTab().add(superstructure);
 
 		var camera = new HttpCamera("limelight", "http://10.59.40.11:5800/");
@@ -264,11 +262,11 @@ public class Robot extends TimedRobot {
 
 		switch (RobotConfig.auto.auto_gear) {
 
-			case HIGH:
-				drivetrain.setHighGear();
-				break;
-			default:
-				drivetrain.setLowGear();
+		case HIGH:
+			drivetrain.setHighGear();
+			break;
+		default:
+			drivetrain.setLowGear();
 		}
 
 		// odometry_ = Odometer.getInstance();
@@ -441,7 +439,7 @@ public class Robot extends TimedRobot {
 		// drivetrain.gyro.reset(); // Reset the current gyro heading to zero
 		// drivetrain.zeroEncoders();
 
-//		mAutoChooser.getSelection().start(); // So this needs a defaut option
+		//		mAutoChooser.getSelection().start(); // So this needs a defaut option
 
 		Autonomous.INSTANCE.JUSTS3NDIT();
 

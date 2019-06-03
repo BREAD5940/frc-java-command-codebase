@@ -1,7 +1,8 @@
 package frc.robot.commands.subsystems.drivetrain;
 
-import frc.robot.commands.auto.routines.AutoRoutine;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
+
+import frc.robot.commands.auto.routines.AutoRoutine;
 
 /**
  * Contains getters and settetrs in adition to local variables for tracking robot pose and stuff.

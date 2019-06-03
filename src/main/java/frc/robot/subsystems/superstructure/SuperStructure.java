@@ -1,9 +1,10 @@
 package frc.robot.subsystems.superstructure;
 
+import static org.ghrobotics.lib.mathematics.units.SILengthConstants.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2dKt;
 import org.ghrobotics.lib.mathematics.units.*;
@@ -16,6 +17,7 @@ import com.team254.lib.physics.DCMotorTransmission;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.RobotConfig.auto.fieldPositions;
@@ -33,8 +35,6 @@ import frc.robot.states.SuperStructureState;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.superstructure.Elevator.EncoderMode;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
-
-import static org.ghrobotics.lib.mathematics.units.SILengthConstants.*;
 
 /**
  * First level of control for the superstructure of the robot. Contains all the
@@ -472,10 +472,10 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		builder.addDoubleProperty(".wristAngleDeg",
 				() -> getWrist().getMaster().getSensorPosition().getDegree(), null);
 
-//		builder.addDoubleProperty(".proximalErrorDeg",
-//				() -> getElbow().getMaster().getClosedLoopError().getDegree(), null);
-//		builder.addDoubleProperty(".wristErrorDeg",
-//				() -> getWrist().getMaster().getError().getDegree(), null);
+		//		builder.addDoubleProperty(".proximalErrorDeg",
+		//				() -> getElbow().getMaster().getClosedLoopError().getDegree(), null);
+		//		builder.addDoubleProperty(".wristErrorDeg",
+		//				() -> getWrist().getMaster().getError().getDegree(), null);
 
 		builder.addDoubleProperty(".elevatorVelocityDegPerSec",
 				() -> SuperStructure.getElevator().getVelocity().getValue() / kFeetToMeter,
