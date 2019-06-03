@@ -6,10 +6,13 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.commands.subsystems.superstructure.IntakeTelop;
+import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 
 /**
  * The intake subsystem. Contains method setSpeed, openClamp and closeClamp.
@@ -41,7 +44,7 @@ public class Intake extends Subsystem {
 		return Robot.getIntakeSolenoidInstance();
 	}
 
-	public WPI_TalonSRX cargoTalon, hatchTalon;
+	private WPI_TalonSRX cargoTalon, hatchTalon;
 	// public TalonSRX talon_right = new TalonSRX(RobotConfig.intake.right_intake_talon_port);
 
 	public enum HatchMechState {
@@ -63,7 +66,7 @@ public class Intake extends Subsystem {
 		getSolenoid().set(HatchMechState.get(mReq));
 	}
 
-	float position_setpoint;
+//	float position_setpoint;
 
 	private Intake(int cargoPort, int hatchPort) {
 		cargoTalon = new WPI_TalonSRX(cargoPort);
@@ -114,10 +117,14 @@ public class Intake extends Subsystem {
 		setHatchSpeed(0);
 	}
 
-	@Override
-	public void periodic() {
-		// setSpeed(Robot.m_oi.getIntakeSpeed());
-		// System.out.println("speed " + Robot.m_oi.getIntakeSpeed());
+	public Command open() {
+
+		return new SetHatchMech(HatchMechState.kOpen);
+
+	}
+
+	public Command clamp() {
+		return new SetHatchMech(HatchMechState.kClamped);
 	}
 
 	@Override

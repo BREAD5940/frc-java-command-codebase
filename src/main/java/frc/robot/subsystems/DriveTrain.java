@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 import org.ghrobotics.lib.localization.Localization;
@@ -689,7 +690,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	 */
 	public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, Gear gear, boolean reset) {
 		mCurrentGear = Robot.getDrivetrainGear();
-		return new TrajectoryTrackerCommand(this, () -> trajectory, reset);
+		return new TrajectoryTrackerCommand(this, getTrajectoryTracker(), () -> trajectory, ()->false, reset);
 	}
 
 	public TrajectoryTrackerCommand followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory, boolean reset) {
@@ -700,7 +701,16 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 			TrajectoryTrackerMode mode, boolean reset) {
 		// kDefaulTrajectoryTrackerMode = mode;
 		mCurrentGear = Robot.getDrivetrainGear();
-		return new TrajectoryTrackerCommand(this, getTrajectoryTracker(mode), () -> trajectory, reset);
+		return new TrajectoryTrackerCommand(this, getTrajectoryTracker(mode), () -> trajectory, ()->false, reset);
+	}
+
+	public Command followTrajectory(TimedTrajectory<Pose2dWithCurvature> trajectory,
+									boolean reset,
+									BooleanSupplier mirrorTrajectory) {
+
+		return new TrajectoryTrackerCommand(this, getTrajectoryTracker(kDefaulTrajectoryTrackerMode),
+				() -> trajectory, mirrorTrajectory, reset);
+
 	}
 
 	/**
