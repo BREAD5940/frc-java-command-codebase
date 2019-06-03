@@ -16,7 +16,7 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.AccelerationKt;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.junit.jupiter.api.Test;
 
-import frc.robot.commands.auto.routines.Trajectories;
+import frc.robot.commands.auto.routines.yeOldeRoutines.Trajectories;
 import frc.robot.lib.Logger;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.RoundRotation2d;

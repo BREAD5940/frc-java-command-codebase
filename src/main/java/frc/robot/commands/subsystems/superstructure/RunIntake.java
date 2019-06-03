@@ -7,8 +7,10 @@
 
 package frc.robot.commands.subsystems.superstructure;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import frc.robot.subsystems.Intake;
+import org.ghrobotics.lib.mathematics.units.Time;
 
 /**
  * Add your docs here.
@@ -26,6 +28,14 @@ public class RunIntake extends TimedCommand {
 		requires(Intake.getInstance());
 		this.hatch = hatchSpeed;
 		this.cargo = cargoSpeed;
+	}
+
+	public static Command grabHatchFor(Time time) {
+		return new RunIntake(-1, 0, time.getSecond());
+	}
+
+	public static Command exhaustHatchFor(Time time) {
+		return new RunIntake(1, 0, time.getSecond());
 	}
 
 	// Called just before this Command runs the first time

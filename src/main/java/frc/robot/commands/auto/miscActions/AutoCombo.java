@@ -1,7 +1,7 @@
 package frc.robot.commands.auto.miscActions;
 
-import frc.robot.commands.auto.routines.AutoCommandGroup;
-import frc.robot.commands.auto.routines.TwoHatchOneCargo;
+import frc.robot.commands.auto.routines.AutoRoutine;
+import frc.robot.commands.auto.routines.yeOldeRoutines.TwoHatchOneCargo;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 
 /**
@@ -11,7 +11,7 @@ import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
  * @author Jocelyn McHugo
  */
 public class AutoCombo {
-	private AutoCommandGroup mBigCommandGroup;
+	private AutoRoutine mBigCommandGroup;
 
 	/**
 	 * 2-hatch 1-cargo hard-coded auto. ow.
@@ -94,7 +94,7 @@ public class AutoCombo {
 	 * @return
 	 *  the mBigCommandGroup of the function
 	 */
-	public AutoCommandGroup getBigCommandGroup() {
+	public AutoRoutine getBigCommandGroup() {
 		return this.mBigCommandGroup;
 	}
 

@@ -4,7 +4,7 @@ import org.ghrobotics.lib.mathematics.units.Length;
 
 import edu.wpi.first.wpilibj.command.PrintCommand;
 import frc.robot.RobotConfig;
-import frc.robot.commands.auto.routines.AutoCommandGroup;
+import frc.robot.commands.auto.routines.AutoRoutine;
 import frc.robot.commands.auto.groups.PlaceHatch;
 import frc.robot.commands.subsystems.drivetrain.DriveDistance;
 import frc.robot.commands.subsystems.drivetrain.FollowVisionTargetTheSecond;
@@ -31,8 +31,8 @@ public class AutoMotion {
 	private GoalType gType;
 	private HeldPiece piece;
 	private HeldPiece endPiece;
-	private AutoCommandGroup mBigCommandGroup;
-	private AutoCommandGroup mPrepCommand = new AutoCommandGroup();
+	private AutoRoutine mBigCommandGroup;
+	private AutoRoutine mPrepCommand = new AutoRoutine();
 	private SuperStructureState mSSState;
 	private boolean rev;
 
@@ -74,8 +74,8 @@ public class AutoMotion {
 	 * @return
 	 *  an ArrayList of commands
 	 */
-	private AutoCommandGroup genGrabCommands() {
-		AutoCommandGroup toReturn = new AutoCommandGroup();
+	private AutoRoutine genGrabCommands() {
+		AutoRoutine toReturn = new AutoRoutine();
 		if (this.gType == GoalType.RETRIEVE_CARGO) {
 			//TODO target cargo
 			toReturn.addSequential(new RunIntake(0.75d, .75d, 1));
@@ -101,8 +101,8 @@ public class AutoMotion {
 	 * @return
 	 *  an ArrayList of commands
 	 */
-	private AutoCommandGroup genPlaceCommands() {
-		AutoCommandGroup toReturn = new AutoCommandGroup();
+	private AutoRoutine genPlaceCommands() {
+		AutoRoutine toReturn = new AutoRoutine();
 
 		// Align with the vision targets, slightly back from the goal
 		//TODO get the robot/limelight 1ft away from the goal
@@ -209,7 +209,7 @@ public class AutoMotion {
 	 * @return
 	 *  the mBigCommandGroup of the function
 	 */
-	public AutoCommandGroup getBigCommandGroup() {
+	public AutoRoutine getBigCommandGroup() {
 		return this.mBigCommandGroup;
 	}
 
@@ -218,7 +218,7 @@ public class AutoMotion {
 	 * @return
 	 * 	the commands for the prep for the motion
 	 */
-	public AutoCommandGroup getPrepCommand() {
+	public AutoRoutine getPrepCommand() {
 		return this.mPrepCommand;
 	}
 

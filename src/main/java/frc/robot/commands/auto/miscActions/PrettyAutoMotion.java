@@ -5,7 +5,7 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 import frc.robot.RobotConfig;
 import frc.robot.RobotConfig.auto;
 import frc.robot.RobotConfig.auto.fieldPositions;
-import frc.robot.commands.auto.routines.AutoCommandGroup;
+import frc.robot.commands.auto.routines.AutoRoutine;
 import frc.robot.commands.subsystems.superstructure.RunIntake;
 import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
@@ -25,9 +25,9 @@ import frc.robot.subsystems.superstructure.SuperStructure.iPosition;
 
 public class PrettyAutoMotion {
 
-	private AutoCommandGroup motionCommands;
-	private AutoCommandGroup presetCommands;
-	private AutoCommandGroup fullGroup = new AutoCommandGroup();
+	private AutoRoutine motionCommands;
+	private AutoRoutine presetCommands;
+	private AutoRoutine fullGroup = new AutoRoutine();
 	private SuperStructureState ssState;
 
 	public PrettyAutoMotion(AutoMotionStateMachine machine) {
@@ -38,8 +38,8 @@ public class PrettyAutoMotion {
 		this.fullGroup.addSequential(this.motionCommands);
 	}
 
-	private AutoCommandGroup genMainMotion(AutoMotionStateMachine machine) {
-		AutoCommandGroup createdGroup = new AutoCommandGroup();
+	private AutoRoutine genMainMotion(AutoMotionStateMachine machine) {
+		AutoRoutine createdGroup = new AutoRoutine();
 		if (machine.getMotionType() == MotionType.PICKUP) {
 			//CHECK if the location is the loading or not
 			if (machine.getGoalLocation() == GoalLocation.LOADING) {
@@ -77,7 +77,7 @@ public class PrettyAutoMotion {
 		return createdGroup;
 	}
 
-	private AutoCommandGroup genPresetMotion(SuperStructureState state) {
+	private AutoRoutine genPresetMotion(SuperStructureState state) {
 		SuperstructureMotion.getInstance().plan(state, SuperStructure.getInstance().lastState); //FIXME lastState is what we want, right?
 		return SuperstructureMotion.getInstance().getQueue();
 	}
@@ -194,7 +194,7 @@ public class PrettyAutoMotion {
 	 * @return
 	 *    a sequential group of presetCommands and motionCommands
 	 */
-	public AutoCommandGroup getFullMotion() {
+	public AutoRoutine getFullMotion() {
 		return this.fullGroup;
 	}
 
@@ -203,7 +203,7 @@ public class PrettyAutoMotion {
 	 * @return
 	 *    the commands to move ONLY the superstructure to its starting pos
 	 */
-	public AutoCommandGroup getPresetCommands() {
+	public AutoRoutine getPresetCommands() {
 		return this.presetCommands;
 	}
 
@@ -212,7 +212,7 @@ public class PrettyAutoMotion {
 	 * @return
 	 *    the actual moving part
 	 */
-	public AutoCommandGroup getMotionCommands() {
+	public AutoRoutine getMotionCommands() {
 		return this.motionCommands;
 	}
 }

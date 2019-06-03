@@ -179,7 +179,7 @@ public class PassThrough extends ConditionalCommand {
 			addSequential(new ArmMove(new IntakeAngle(
 					RoundRotation2d.getDegree(-193),
 					RoundRotation2d.getDegree(-112))));
-			addSequential(new ElevatorMove(LengthKt.getInch(5))); //todo check height
+			addSequential(new ElevatorMove(LengthKt.getInch(5.5))); //todo check height
 		}
 	}
 

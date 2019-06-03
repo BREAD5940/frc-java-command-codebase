@@ -1,7 +1,7 @@
 package frc.robot.commands.auto.miscActions;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.commands.auto.routines.AutoCommandGroup;
+import frc.robot.commands.auto.routines.AutoRoutine;
 import frc.robot.lib.statemachines.AutoMotionStateMachine;
 
 public class PrettyRunAuto extends Command {
@@ -9,8 +9,8 @@ public class PrettyRunAuto extends Command {
 	protected final AutoMotionStateMachine machine;
 	protected boolean onlyPreset;
 	protected AutoMotion createdMotion;
-	protected AutoCommandGroup mainCommand;
-	protected AutoCommandGroup ssCommand;
+	protected AutoRoutine mainCommand;
+	protected AutoRoutine ssCommand;
 	protected boolean mainBegun = false;
 
 	public PrettyRunAuto(AutoMotionStateMachine machine, boolean onlyPreset) {

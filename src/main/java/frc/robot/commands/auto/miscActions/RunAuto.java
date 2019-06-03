@@ -1,6 +1,6 @@
 // package frc.robot.commands.auto;
 
-// import frc.robot.commands.auto.routines.AutoCommandGroup;
+// import frc.robot.commands.auto.routines.AutoRoutine;
 // import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalHeight;
 // import frc.robot.lib.statemachines.AutoMotionStateMachine.GoalType;
 // import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
@@ -12,7 +12,7 @@
 //  */
 
 // @Deprecated
-// public class RunAuto extends AutoCommandGroup {
+// public class RunAuto extends AutoRoutine {
 
 // 	public GoalType mGt;
 // 	public GoalHeight mHeight;
@@ -22,7 +22,7 @@
 // 	public boolean isDrive;
 // 	public HeldPiece cPiece;
 // 	private boolean begun = false;
-// 	private AutoCommandGroup running;
+// 	private AutoRoutine running;
 
 // 	@Deprecated
 // 	public RunAuto(HeldPiece mHP, GoalHeight mHeight) {

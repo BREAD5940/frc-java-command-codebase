@@ -9,7 +9,7 @@ import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.SuperStructureConstants;
-import frc.robot.commands.auto.routines.AutoCommandGroup;
+import frc.robot.commands.auto.routines.AutoRoutine;
 import frc.robot.commands.subsystems.superstructure.ArmMove;
 import frc.robot.commands.subsystems.superstructure.ElevatorMove;
 import frc.robot.lib.Logger;
@@ -63,7 +63,7 @@ public class SuperstructureMotion extends Command {
 	}
 
 	private static SuperstructureMotion instance_;
-	protected AutoCommandGroup queue = new AutoCommandGroup();
+	protected AutoRoutine queue = new AutoRoutine();
 	// protected CommandGroup eleQueue = new CommandGroup();
 	// protected CommandGroup armQueue = new CommandGroup();
 	protected Optional<Command> current;
@@ -211,7 +211,7 @@ public class SuperstructureMotion extends Command {
 				: (LengthKt.getInch(Math.abs(GPelevator.getY().getInch() - Math.abs(lowestGP.getY().minus(GPelevator.getY()).getInch()))));
 		Logger.log("tolerances");
 		//CLEAR the queue
-		this.queue = new AutoCommandGroup();
+		this.queue = new AutoRoutine();
 		Logger.log("queue cleared");
 
 		//CHECK if the elevator point is in proximity to the crossbar - if it is, stow it
@@ -312,7 +312,7 @@ public class SuperstructureMotion extends Command {
 		return true;
 	}
 
-	public AutoCommandGroup getQueue() {
+	public AutoRoutine getQueue() {
 		System.out.println("queue gotten");
 		return this.queue;
 	}
