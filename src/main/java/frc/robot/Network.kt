@@ -34,17 +34,6 @@ object Network {
     val autoModeChooser = SendableChooser<Autonomous.Mode>()
 //    val autoModeChooser = enumSendableChooser<Autonomous.Mode>()
 
-    private inline fun <reified T : Enum<T>> enumSendableChooser(
-            crossinline block: (T) -> String = { it.name.replace('_', ' ').capitalizeEachWord() }
-    ) = sendableChooser<T> {
-        enumValues<T>().forEach { enumValue ->
-            addOption(block(enumValue), enumValue)
-        }
-    }
-
-    private inline fun <T> sendableChooser(crossinline block: SendableChooser<T>.() -> Unit) =
-            SendableChooser<T>().apply(block)
-
     private val autoLayout = AutoTab.getLayout("Autonomous", BuiltInLayouts.kList)
             .withSize(2, 2)
             .withPosition(0, 0)

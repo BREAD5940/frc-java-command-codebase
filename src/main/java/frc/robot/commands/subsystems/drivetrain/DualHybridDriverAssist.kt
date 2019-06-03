@@ -1,11 +1,9 @@
 package frc.robot.commands.subsystems.drivetrain
 
 //import edu.wpi.first.wpilibj.drive.DifferentialDrive
-import com.team254.lib.physics.DifferentialDrive
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
 import frc.ghrobotics.vision.JeVoisManager
 import frc.robot.Robot
-import frc.robot.lib.motion.Util
 import frc.robot.subsystems.DriveTrain
 import frc.robot.subsystems.LimeLight
 import frc.robot.subsystems.superstructure.SuperStructure
@@ -16,14 +14,12 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.mathematics.units.Rotation2d
 import org.ghrobotics.lib.mathematics.units.degree
 import org.ghrobotics.lib.mathematics.units.radian
-import java.util.function.DoubleConsumer
-import java.util.function.DoubleSupplier
-import kotlin.math.absoluteValue
 
 //import org.team5940.pantry.exparimental.command.Command
 
 class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
 
+    private var lemonLightHasTarget: Boolean = false
     private var lastKnownAngle: Double = 0.0
     private var referencePose = Pose2d()
     private var lastKnownTargetPose: Pose2d? = null
@@ -49,6 +45,8 @@ class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
             val lemonLight = LimeLight.getInstance()
             val hasTarget = lemonLight.trackedTargets > 0.5
 
+            this.lemonLightHasTarget = hasTarget
+
             // check that we have a target
             if (!hasTarget) {
                 turnInput = null
@@ -59,6 +57,7 @@ class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
                 turnInput = dx
             }
         } else {
+
             // is YeeVois Time
             val newTarget = TargetTracker.getBestTargetUsingReference(referencePose, false)
 
@@ -117,7 +116,17 @@ class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
 
             println("kp $kp_mutable kd $kd_mutable")
 
-            var turn = kp_mutable * turnInput - kd_mutable * (turnInput - prevError)
+//            kp_mutable = if(!isFront) kJevoiskP else kLemonLightkP
+//            kd_mutable = if(!isFront) kJevoiskD else kLemonLightkD
+
+//            var turn = 0.0
+            var turn = if(isFront) {
+                kp_mutable * turnInput - kd_mutable * (turnInput - prevError)
+            } else {
+                kJevoiskP * turnInput - kJevoiskD * (turnInput - prevError)
+            }
+
+//            var turn = kp_mutable * turnInput - kd_mutable * (turnInput - prevError)
 
 //            turn /= 100
 
@@ -144,8 +153,8 @@ class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
 
     }
 
-    private var kp_mutable = kCorrectionKp
-    private var kd_mutable = kCorrectionKd
+    private var kp_mutable = kJevoiskP
+    private var kd_mutable = kJevoiskD
 
 
     override fun initSendable(builder: SendableBuilder) {
@@ -164,8 +173,10 @@ class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
     }
 
     companion object {
-        const val kCorrectionKp = 0.002
-        const val kCorrectionKd = 0.04
+        const val kJevoiskP = 0.002
+        const val kJevoiskD = 0.04
+        const val kLemonLightkP = 0.13
+        const val kLemonLightkD = 0.0
     }
 
     override fun isFinished() = false

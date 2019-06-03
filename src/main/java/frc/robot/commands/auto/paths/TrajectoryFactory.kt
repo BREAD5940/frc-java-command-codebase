@@ -67,11 +67,15 @@ object TrajectoryFactory {
             transform = Constants.kBackwardIntakeToCenter,
             translationalOffset = Translation2d((-9).inch, 0.inch)
     )
-    private val rocketFAdjusted = TrajectoryWaypoints.Waypoint(
-            trueLocation = TrajectoryWaypoints.kRocketF,
-            transform = Constants.kForwardIntakeToCenter.transformBy(Pose2d(-1.inch, 0.inch)),
-            translationalOffset = Translation2d(0.inch, -4.inch)
-    )
+
+//    private val rocketFAdjusted = TrajectoryWaypoints.Waypoint(
+//            trueLocation = TrajectoryWaypoints.kRocketF,
+//            transform = Constants.kForwardIntakeToCenter.transformBy(Pose2d(-1.inch, 0.inch)),
+//            translationalOffset = Translation2d(0.inch, -4.inch)
+//    )
+
+    val rocketFAdjusted = (Pose2d(22.174.feet, 2.648.feet, (-151.25).degree)).asWaypoint()
+
     private val rocketNAdjusted = TrajectoryWaypoints.Waypoint(
             trueLocation = TrajectoryWaypoints.kRocketN,
             transform = Constants.kForwardIntakeToCenter.transformBy(Pose2d(4.inch, 0.inch))

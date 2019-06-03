@@ -114,6 +114,11 @@ dependencies {
             'org.junit.jupiter:junit-jupiter-engine:5.1.0',
             'org.junit.vintage:junit-vintage-engine:5.1.0'
     )
+
+    testCompileOnly(
+            'org.knowm.xchart:xchart:3.2.2'
+    )
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
 

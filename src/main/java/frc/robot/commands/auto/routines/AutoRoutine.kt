@@ -43,7 +43,7 @@ open class AutoRoutine : CommandGroup() {
         val newPosition = Pose2d(
                 pathMirrored.map(position.mirror, position)().translation,
                 DriveTrain.getInstance().localization().rotation
-        ) + if (forward) Constants.kCenterToForwardIntake else Constants.kBackwardIntakeToCenter
+        )// + if (forward) Constants.kCenterToForwardIntake else Constants.kBackwardIntakeToCenter
         DriveTrain.getInstance().localization.reset(newPosition)
     }
 

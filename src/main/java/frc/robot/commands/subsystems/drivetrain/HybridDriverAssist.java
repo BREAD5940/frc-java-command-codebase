@@ -80,7 +80,7 @@ public class HybridDriverAssist extends Command {
 			lut = mStowedLookupTable;
 		}
 
-		tx = tx + lut.interpolate(ts).doubleValue(); // Use the LUT to interpolate
+		tx = tx + lut.interpolate(ts); // Use the LUT to interpolate
 
 		if (tv < 1.0) {
 			hasTarget = false;

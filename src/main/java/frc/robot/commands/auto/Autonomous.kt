@@ -41,13 +41,14 @@ object Autonomous {
         options[Autonomous.Mode.LEFT_TO_CARGO_SHIP_SIDE] = CargoShipRoutine(CargoShipRoutine.Mode.SIDE, true)
 
 
-        options[Autonomous.Mode.RIGHT_TO_ROCKET] = InstantCommand()
+        options[Autonomous.Mode.RIGHT_TO_ROCKET] = BottomRocketRoutine(false)
         options[Autonomous.Mode.RIGHT_TO_CARGO_SHIP_FRONT] = CargoShipRoutine(CargoShipRoutine.Mode.FRONT, false)
         options[Autonomous.Mode.RIGHT_TO_CARGO_SHIP_SIDE] = CargoShipRoutine(CargoShipRoutine.Mode.SIDE, false)
         options[Autonomous.Mode.CENTER_TO_CARGO_SHIP_LEFT] = CargoShipRoutine(CargoShipRoutine.Mode.FRONT, true)
         options[Autonomous.Mode.CENTER_TO_CARGO_SHIP_RIGHT] = CargoShipRoutine(CargoShipRoutine.Mode.FRONT, false)
 
         options.forEach{
+            println("adding ${it.key} to the auto chooser")
             JUST.addOption(it.key.toString(), it.key)
         }
         JUST.setDefaultOption("NOTHING", Autonomous.Mode.NOTHING)

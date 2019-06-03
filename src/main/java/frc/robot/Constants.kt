@@ -97,7 +97,7 @@ public object Constants {
     // TRANSFORMATIONS
     val kFrontBumperToCenter = Pose2d(-(kRobotLength / 2.0) - kBumperThickness + kCenterToPointOfRotation, 0.meter, 0.degree)
     val kBackBumperToCenter = Pose2d((kRobotLength / 2.0) + kBumperThickness - kCenterToPointOfRotation, 0.meter, 0.degree)
-    val kForwardIntakeToCenter = Pose2d(-(kRobotLength / 2.0) - kIntakeProtrusionFrontExtended, kBadIntakeOffset, 0.degree)
+    val kForwardIntakeToCenter = Pose2d((-16).inch, kBadIntakeOffset, 0.degree)
     val kCenterToForwardIntake = Pose2d((kRobotLength / 2.0) + kIntakeProtrusionFrontExtended, -kBadIntakeOffset, 0.degree)
     val kBackwardIntakeToCenter = Pose2d(kRobotLength / 2.0 + kIntakeProtrusionBackExtended, -kBadIntakeOffset, 0.degree)
 

@@ -1,5 +1,7 @@
 package frc.robot.commands.auto.routines.offseasonRoutines
 
+import edu.wpi.first.wpilibj.command.InstantCommand
+import edu.wpi.first.wpilibj.command.WaitCommand
 import frc.robot.RobotConfig
 import frc.robot.commands.auto.Autonomous
 import frc.robot.commands.auto.paths.TrajectoryFactory
@@ -12,7 +14,9 @@ import frc.robot.commands.subsystems.superstructure.SetHatchMech
 import frc.robot.subsystems.DriveTrain
 import frc.robot.subsystems.Intake
 import frc.robot.subsystems.superstructure.SuperStructure
+import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.duration
+import org.ghrobotics.lib.mathematics.units.degree
 import org.ghrobotics.lib.mathematics.units.feet
 import org.ghrobotics.lib.mathematics.units.second
 import org.ghrobotics.lib.utils.withEquals
@@ -37,10 +41,17 @@ class BottomRocketRoutine(isLeft: Boolean) : AutoRoutine() {
     // Auto routine
 init {
 
+        +InstantCommand{
+            DriveTrain.getInstance().localization.reset(
+                    if(isLeft) TrajectoryWaypoints.kSideStart.mirror else TrajectoryWaypoints.kSideStart
+            )
+        }
+
         +SetHatchMech(Intake.HatchMechState.kClamped)
 
-            // Part 1: Go to the far side of the rocket and get ready to place a hatch on the lowest level.
-            +parallel(
+
+        // Part 1: Go to the far side of the rocket and get ready to place a hatch on the lowest level.
+        +parallel(
                 // Follow the trajectory with vision correction to the far side of the rocket.
                 super.followVisionAssistedTrajectory(
                     path1,
@@ -49,15 +60,18 @@ init {
                 ),
                 // Take the superstructure to scoring height once out of the platform.
                 sequential(
-                    notWithinRegion(TrajectoryWaypoints.kHabitatL1Platform),
+                        WaitCommand(1.second.second),
+//                    notWithinRegion(TrajectoryWaypoints.kHabitatL1Platform),
 //                    +Superstructure.kFrontHatchFromLoadingStation
                         JankyGoToState(RobotConfig.auto.fieldPositions.hatchLowGoal, SuperStructure.iPosition.HATCH))
-                ).withTimeout(4.second)
+
+        )
 
 
             // Reorient position on field based on Vision alignment.
             +relocalize(
-                TrajectoryWaypoints.kRocketF,
+//                    Pose2d(22.567.feet, 2.852.feet, (-148.926).degree),
+                    path2.firstState.state.pose,
                 true,
                 {isLeft}
             )
@@ -84,7 +98,8 @@ init {
 
             // Reorient position on field based on Vision alignment.
             +relocalize(
-                TrajectoryWaypoints.kLoadingStation,
+//                    Pose2d(3.031.feet, 2.322.feet, 0.degree),
+                    path3.firstState.state.pose,
                 false,
                 {isLeft}
             )
@@ -100,7 +115,10 @@ init {
                             6.feet, true
                     ),
                     // Take the superstructure to scoring height.
-                    JankyGoToState(RobotConfig.auto.fieldPositions.hatchLowGoal, SuperStructure.iPosition.HATCH)
+                    sequential(
+                            WaitCommand(1.second.second),
+                            JankyGoToState(RobotConfig.auto.fieldPositions.hatchLowGoal, SuperStructure.iPosition.HATCH)
+                    )
             )
 
             // Part 4: Score the hatch and go to the loading station for the end of the sandstorm period.

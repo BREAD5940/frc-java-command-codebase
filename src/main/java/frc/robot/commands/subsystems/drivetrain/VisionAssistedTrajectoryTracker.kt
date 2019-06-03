@@ -71,18 +71,20 @@ class VisionAssistedTrajectoryTracker(
 
         // if we are, try to find a new target
         if (withinVisionRadius) {
-            val newTarget = if (useAbsoluteVision) {
-                TargetTracker.getAbsoluteTarget((trajectory.lastState.state.pose + Constants.kCenterToForwardIntake).translation)
-            } else {
-                TargetTracker.getBestTarget(!trajectory.reversed) // usually this is the case
-            }
 
-            val newPose = newTarget?.averagedPose2d
+            if(!useLimeLightOverTargetTracker && trajectory.reversed) {
 
-            // store this pose if it's for real
-            if (newTarget?.isAlive == true && newPose != null) this.lastKnownTargetPose = newPose
+                val newTarget = if (useAbsoluteVision) {
+                    TargetTracker.getAbsoluteTarget((trajectory.lastState.state.pose + Constants.kCenterToForwardIntake).translation)
+                } else {
+                    TargetTracker.getBestTarget(!trajectory.reversed) // usually this is the case
+                }
 
-            if(!trajectory.reversed && useLimeLightOverTargetTracker) {
+                val newPose = newTarget?.averagedPose2d
+
+                // store this pose if it's for real
+                if (newTarget?.isAlive == true && newPose != null) this.lastKnownTargetPose = newPose
+            } else if(useLimeLightOverTargetTracker) {
 
                 // we COULD use the limelight
                 this.limelightHasTarget = LimeLight.getInstance().trackedTargets > 0
@@ -90,7 +92,9 @@ class VisionAssistedTrajectoryTracker(
                 this.limeLightAngle = if(limelightHasTarget) {
                     LimeLight.getInstance().dx + robotPosition.rotation}
                 else null
+
             }
+
         }
 
         val lastKnownTargetPose = this.lastKnownTargetPose
@@ -103,7 +107,9 @@ class VisionAssistedTrajectoryTracker(
 
             if(limeLightAngle != null && useLimeLightOverTargetTracker) {
 
-                error = (limeLightAngle!! - robotPosition.rotation).radian
+                error = -(limeLightAngle!! - robotPosition.rotation).radian
+
+                println("limelight angle $error")
 
             } else if(lastKnownTargetPose != null) {
 
@@ -115,6 +121,10 @@ class VisionAssistedTrajectoryTracker(
                 Network.visionDriveActive.setBoolean(true)
 
                 error = (angle + if (!trajectory.reversed) Rotation2d.kZero else Math.PI.radian).radian
+
+                println("jevois angle $error")
+
+
             }
 
             // It's a simple PD loop, but quite effective

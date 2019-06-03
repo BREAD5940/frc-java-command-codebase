@@ -1,5 +1,6 @@
 package frc.robot.commands.auto.routines.offseasonRoutines
 
+import edu.wpi.first.wpilibj.command.InstantCommand
 import edu.wpi.first.wpilibj.command.WaitCommand
 import frc.robot.RobotConfig
 import frc.robot.commands.auto.Autonomous
@@ -10,6 +11,7 @@ import frc.robot.commands.subsystems.drivetrain.DrivePower
 import frc.robot.commands.subsystems.superstructure.JankyGoToState
 import frc.robot.commands.subsystems.superstructure.PassThrough
 import frc.robot.commands.subsystems.superstructure.RunIntake
+import frc.robot.subsystems.DriveTrain
 import frc.robot.subsystems.Intake
 import frc.robot.subsystems.superstructure.SuperStructure
 //import org.ghrobotics.lib.commands.DelayCommand
@@ -54,10 +56,14 @@ class CargoShipRoutine(private val mode: Mode, private val isLeft: Boolean) : Au
 
     init {
 
+        +InstantCommand{
+            DriveTrain.getInstance().localization.reset(mode.path1.firstState.state.pose)
+        }
+
         +parallel(
             followVisionAssistedTrajectory(mode.path1, pathMirrored, 4.feet, true),
             sequential(
-                    WaitCommand(mode.path1.duration.second - 3.5),
+                    WaitCommand(Math.max(mode.path1.duration.second - 3.5, 0.01)),
                     JankyGoToState(RobotConfig.auto.fieldPositions.hatchLowGoal, SuperStructure.iPosition.HATCH)
             )
         )
@@ -82,7 +88,8 @@ class CargoShipRoutine(private val mode: Mode, private val isLeft: Boolean) : Au
             followVisionAssistedTrajectory(mode.path3, pathMirrored, 4.feet, true),
             sequential(
                     // stow for 2 seconds, then extend the big boi
-                    PassThrough.BackToFront(SuperStructure.getInstance())
+
+                    JankyGoToState(RobotConfig.auto.fieldPositions.hatchLowGoal, SuperStructure.iPosition.HATCH)
 //                executeFor(2.second, Superstructure.kStowedPosition),
 //                Superstructure.kFrontHatchFromLoadingStation.withTimeout(3.second)
             )

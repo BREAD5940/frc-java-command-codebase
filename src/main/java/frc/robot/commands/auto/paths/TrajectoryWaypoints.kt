@@ -60,7 +60,7 @@ object TrajectoryWaypoints {
         val rotationalOffset: Rotation2d = 0.radian
     ) {
 
-        private val trueAndTransform = trueLocation + transform
+        public val trueAndTransform = trueLocation + transform
 
         val position = Pose2d(
             trueAndTransform.translation + translationalOffset,
