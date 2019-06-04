@@ -68,15 +68,13 @@ init {
         )
 
 
-            // Reorient position on field based on Vision alignment.
+            // Reorient for rocketF
             +relocalize(
-//                    Pose2d(22.567.feet, 2.852.feet, (-148.926).degree),
-                    path2.firstState.state.pose,
-                true,
-                {isLeft}
-            )
+                    TrajectoryWaypoints.kRocketF,
+                true
+            ) {isLeft}
 
-            val path2 = super.followVisionAssistedTrajectory(
+        val path2 = super.followVisionAssistedTrajectory(
                 path2,
                 {isLeft},
                 4.feet, false
@@ -98,8 +96,7 @@ init {
 
             // Reorient position on field based on Vision alignment.
             +relocalize(
-//                    Pose2d(3.031.feet, 2.322.feet, 0.degree),
-                    path3.firstState.state.pose,
+                    TrajectoryWaypoints.kLoadingStation,
                 false,
                 {isLeft}
             )

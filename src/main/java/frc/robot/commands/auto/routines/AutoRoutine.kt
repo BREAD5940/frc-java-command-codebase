@@ -41,11 +41,15 @@ open class AutoRoutine : CommandGroup() {
 
     protected fun relocalize(position: Pose2d, forward: Boolean, pathMirrored: BooleanSource) = InstantCommand {
         val newPosition = Pose2d(
-                pathMirrored.map(position.mirror, position)().translation,
+                pathMirrored.map(position.mirror, position)().translation, // if pathMirrored is true, mirror the pose
+                // otherwise, don't. Use that translation2d for the new position
                 DriveTrain.getInstance().localization().rotation
-        )// + if (forward) Constants.kCenterToForwardIntake else Constants.kBackwardIntakeToCenter
+        ) + if (forward) Constants.kForwardIntakeToCenter else Constants.kBackwardIntakeToCenter
+        println("RESETTING LOCALIZATION TO ${newPosition.asString()}")
         DriveTrain.getInstance().localization.reset(newPosition)
     }
+
+    private fun Pose2d.asString() = "Pose X:${translation.x.feet}\' Y:${translation.y.feet}' Theta:${rotation.degree}deg"
 
     fun parallel(vararg commands: Command) = object : AutoRoutine() {
         init {

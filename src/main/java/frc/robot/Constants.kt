@@ -5,7 +5,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import com.team254.lib.physics.DCMotorTransmission
 import com.team254.lib.physics.DifferentialDrive
 
-import frc.robot.lib.motion.Util
+//import /**/frc.robot.lib.motion.Util
 import org.ghrobotics.lib.mathematics.units.*
 
 public object Constants {
@@ -14,8 +14,8 @@ public object Constants {
     val kRobotMomentOfInertia = 10.0 // kg m^2 // TODO Tune
     val kRobotAngularDrag = 12.0 // N*m / (rad/sec)
 
-    val kWheelRadius = Util.toMeters((2f / 12f).toDouble())// meters. TODO tune
-    val kTrackWidth = Util.toMeters((26f / 12f).toDouble())// meters
+    val kWheelRadius = 2.feet.meter
+    val kTrackWidth = 26.feet.meter
 
     // high gear: 7.5 rad/s = 15ft/sec max speed
     // acceleration: 45ft/sec^2???
@@ -31,11 +31,13 @@ public object Constants {
 
     val kLeftTransmissionModelLowGear = DCMotorTransmission(1 / kVDriveLeftLow,
             kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveLeftLow),
-            kVInterceptLeftLow)
+            kVInterceptLeftLow
+    )
 
     val kRightTransmissionModelLowGear = DCMotorTransmission(1 / kVDriveRightLow,
             kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveRightLow),
-            kVInterceptRightLow)
+            kVInterceptRightLow
+    )
 
     private val kVDriveLeftHigh = 0.143 * 1.0 // Volts per radians per second - Calculated emperically
     private val kADriveLeftHigh = 0.043 * 1.0 // Volts per radians per second per second
@@ -47,17 +49,23 @@ public object Constants {
 
     private val kLeftTransmissionModelHighGear = DCMotorTransmission(1 / kVDriveLeftHigh,
             kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveLeftHigh),
-            kVInterceptLeftHigh)
+            kVInterceptLeftHigh
+    )
 
     private val kRightTransmissionModelHighGear = DCMotorTransmission(1 / kVDriveRightHigh,
             kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveRightHigh),
-            kVInterceptRightHigh)
+            kVInterceptRightHigh
+    )
 
-    public val kLowGearDifferentialDrive = DifferentialDrive(kRobotMass, kRobotMomentOfInertia,
-            kRobotAngularDrag, kWheelRadius, kTrackWidth / 2.0, kLeftTransmissionModelLowGear, kRightTransmissionModelLowGear)
+    public val kLowGearDifferentialDrive = DifferentialDrive(
+            kRobotMass, kRobotMomentOfInertia,
+            kRobotAngularDrag, kWheelRadius, kTrackWidth / 2.0, kLeftTransmissionModelLowGear, kRightTransmissionModelLowGear
+    )
 
-    public val kHighGearDifferentialDrive = DifferentialDrive(kRobotMass, kRobotMomentOfInertia,
-            kRobotAngularDrag, kWheelRadius, kTrackWidth / 2.0, kLeftTransmissionModelHighGear, kRightTransmissionModelHighGear)
+    public val kHighGearDifferentialDrive = DifferentialDrive(
+            kRobotMass, kRobotMomentOfInertia,
+            kRobotAngularDrag, kWheelRadius, kTrackWidth / 2.0, kLeftTransmissionModelHighGear, kRightTransmissionModelHighGear
+    )
 
     /* Ramsete constants */
     val kDriveBeta = 2 * 1.0 // Inverse meters squared
@@ -84,22 +92,24 @@ public object Constants {
 
     // ROBOT AND MECHANISM DIMENSIONS
 
-    val kRobotWidth = 28.inch
-    val kRobotLength = 32.inch
+    val kRobotWidth = 28.75.inch
+    val kRobotLength = 31.inch
 
-    val kBumperThickness = 4.5.inch
-    val kIntakeProtrusionFrontExtended = 18.5.inch       // Out of frame protrusion.
-    val kCenterToPointOfRotation = kRobotLength/2 - 11.inch
-    val kIntakeProtrusionBackExtended = -kIntakeProtrusionFrontExtended + kCenterToPointOfRotation
+    val kBumperThickness = 3.25.inch
+    val kCenterToElevator = (kRobotLength / 2) - 11.inch // 4.5
     val kBadIntakeOffset = 0.inch
+    val kArmLength = 29.5.inch // from center of elevator to hatch part of the intake
 
+    val kIntakeProtrusionFrontExtended = kArmLength - (kRobotLength / 2.0 - kCenterToElevator) // 18.5
+    val kIntakeProtrusionBackExtended = kCenterToElevator - kArmLength + kRobotLength /2.0 // -9.5
 
     // TRANSFORMATIONS
-    val kFrontBumperToCenter = Pose2d(-(kRobotLength / 2.0) - kBumperThickness + kCenterToPointOfRotation, 0.meter, 0.degree)
-    val kBackBumperToCenter = Pose2d((kRobotLength / 2.0) + kBumperThickness - kCenterToPointOfRotation, 0.meter, 0.degree)
-    val kForwardIntakeToCenter = Pose2d((-16).inch, kBadIntakeOffset, 0.degree)
-    val kCenterToForwardIntake = Pose2d((kRobotLength / 2.0) + kIntakeProtrusionFrontExtended, -kBadIntakeOffset, 0.degree)
-    val kBackwardIntakeToCenter = Pose2d(kRobotLength / 2.0 + kIntakeProtrusionBackExtended, -kBadIntakeOffset, 0.degree)
+    val kFrontBumperToCenter = Pose2d(-(kRobotLength / 2.0) - kBumperThickness, 0.meter, 0.degree)
+    val kBackBumperToCenter = Pose2d((kRobotLength / 2.0) + kBumperThickness, 0.meter, 0.degree)
+
+    val kForwardIntakeToCenter = Pose2d(-(kRobotLength / 2.0) - kIntakeProtrusionFrontExtended, kBadIntakeOffset, 0.degree) // -34
+    val kCenterToForwardIntake = Pose2d((kRobotLength / 2.0) + kIntakeProtrusionFrontExtended, -kBadIntakeOffset, 0.degree) // 34
+    val kBackwardIntakeToCenter = Pose2d(kCenterToForwardIntake.translation.x - kCenterToElevator, -kBadIntakeOffset, 0.degree) // 29.5
 
     val kCenterToFrontCamera = Pose2d((-1.75).inch, 0.0.inch, 0.degree)
     val kCenterToBackCamera = Pose2d((-6.25).inch, 0.0.inch, 180.degree)
