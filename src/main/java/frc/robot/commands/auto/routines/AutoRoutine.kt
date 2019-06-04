@@ -20,12 +20,30 @@ import org.ghrobotics.lib.mathematics.units.Length
 import org.ghrobotics.lib.mathematics.units.Time
 import org.ghrobotics.lib.utils.BooleanSource
 import org.ghrobotics.lib.utils.map
+import org.ghrobotics.lib.utils.or
 
 /**
  * basically just a CommandGroup but with the done() method and time tracking.
  */
-open class AutoRoutine : CommandGroup() {
+open class AutoRoutine() : CommandGroup() {
 
+    constructor(wrappedCommand: Command) : this() {
+        +wrappedCommand
+    }
+
+    var exitCondition: BooleanSource = {false}
+
+    //Experimental!!
+    fun withExit(exit: BooleanSource) {
+        exitCondition = exitCondition or exit
+    }
+
+    //Experimental!!
+    fun withTimeout(exitTime: Time) {
+        exitCondition = exitCondition or {
+            timeSinceInitialized() > exitTime.second
+        }
+    }
 
     protected fun followVisionAssistedTrajectory(
             originalTrajectory: TimedTrajectory<Pose2dWithCurvature>,
