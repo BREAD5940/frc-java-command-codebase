@@ -104,10 +104,13 @@ class VisionAssistedTrajectoryTracker(
             visionActive = true
 
             var error = 0.0
+            var youShouldUseLimeLight = false
 
             if(limeLightAngle != null && useLimeLightOverTargetTracker) {
 
                 error = -(limeLightAngle!! - robotPosition.rotation).radian
+
+                youShouldUseLimeLight = true
 
                 println("limelight angle $error")
 
@@ -128,7 +131,11 @@ class VisionAssistedTrajectoryTracker(
             }
 
             // It's a simple PD loop, but quite effective
-            val turn = kCorrectionKp * error + kCorrectionKd * (error - prevError)
+            val turn = if(!youShouldUseLimeLight) {kJevoisKp * error + kJevoisKd * (error - prevError)} else {
+
+                kLimeLightKp * error + kLimeLightKd * (error - prevError)
+
+            }
 
             // set the drivetrain to the RAMSETE/whatever linear velocity and the PD loop's output for turn
             DriveTrain.getInstance().setOutput(
@@ -172,8 +179,12 @@ class VisionAssistedTrajectoryTracker(
     override fun interrupted() = end()
 
     companion object {
-        const val kCorrectionKp = 5.5
-        const val kCorrectionKd = 0.0
+        const val kJevoisKp = 5.5
+        const val kJevoisKd = 0.0
+
+        const val kLimeLightKp = 10
+        const val kLimeLightKd = 0.0
+
         var visionActive = false
 
     }
