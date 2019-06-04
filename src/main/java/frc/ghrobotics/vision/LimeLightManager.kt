@@ -19,9 +19,6 @@ import org.opencv.core.Mat
 import kotlin.math.*
 import org.opencv.core.CvType
 
-
-
-
 object LimeLightManager {
 
     val txEntry = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tcornx")
@@ -145,7 +142,7 @@ object LimeLightManager {
         val z = sin(tilt_angle) * tvec.get(1, 0)[0] + cos(tilt_angle) * tvec.get(2, 0)[0]
 
         // distance in the horizontal plane between camera and target
-        val distance = sqrt(x.pow(2) + z.pow(2))
+        val distance = sqrt(x * x + z * z)
 
         // horizontal angle between camera center line and target
         val angle1 = atan2(x, z)
