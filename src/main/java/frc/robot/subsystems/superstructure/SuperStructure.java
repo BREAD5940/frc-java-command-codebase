@@ -162,9 +162,8 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	public static Translation2d getCurrentStateAsPose(SuperStructureState state) {
 		var proximalAngle = state.getElbowAngle();
 		var proximalLen = 0.41;//meter
-		var proximalPose = Translation2dKt.toTranslation(proximalAngle.toRotation2d());
-		var structureOrientedPose = proximalPose.plus(new Translation2d(0, state.getElevatorHeight().getMeter()));
-		return structureOrientedPose;
+		var proximalPose = Translation2dKt.toTranslation(proximalAngle.toRotation2d()).times(proximalLen);
+		return proximalPose.plus(new Translation2d(0, state.getElevatorHeight().getMeter()));
 	}
 
 	public static class iPosition {
