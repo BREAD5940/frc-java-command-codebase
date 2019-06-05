@@ -18,6 +18,7 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.acceleration
 import org.ghrobotics.lib.mathematics.units.derivedunits.velocity
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput
 import org.ghrobotics.lib.utils.Source
+import kotlin.math.PI
 
 /**
  * Command to follow a smooth trajectory using a trajectory following controller
@@ -179,11 +180,11 @@ class VisionAssistedTrajectoryTracker(
     override fun interrupted() = end()
 
     companion object {
-        const val kJevoisKp = 5.5
+        const val kJevoisKp = 5.5 * (2* PI) / 360.0
         const val kJevoisKd = 0.0
 
-        const val kLimeLightKp = 10
-        const val kLimeLightKd = 0.0
+        const val kLimeLightKp = 0.2
+        const val kLimeLightKd = 1.5
 
         var visionActive = false
 
