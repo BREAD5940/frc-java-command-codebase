@@ -49,7 +49,7 @@ public class ElevatorMotionMagicTest extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	@Override
 	protected void execute() {
-		mCurrent = SuperStructure.getInstance().updateState();
+		mCurrent = SuperStructure.getInstance().getCurrentState();
 		// System.out.printf("Forward soft lim: %s rev soft lim: %s", SuperStructure.getElevator().getMaster().softlimit )
 		Length mTarget = LengthKt.getFeet(1);
 		double volts = Elevator.getVoltage(new SuperStructureState(new ElevatorState(mTarget), new RotatingArmState(), new RotatingArmState())) / 12;

@@ -146,7 +146,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 	private SuperStructureState mCurrentState;
 
 	public SuperStructureState getCurrentState() {
-		updateState();
+//		updateState();
 		return mCurrentState;
 	}
 
@@ -275,6 +275,11 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		setDefaultCommand(new JustElevatorTeleop());
 	}
 
+	@Override
+	public void periodic() {
+		updateState();
+	}
+
 	public SuperStructureState updateState() {
 		var mNewWrist = getWrist().getCurrentState();
 		var mNewElbow = getElbow().getCurrentState();
@@ -308,7 +313,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 
 	public boolean isPassedThrough() {
 
-		var state = updateState();
+		var state = getCurrentState();
 
 		return state.getElbowAngle().getDegree() < -90;
 
@@ -346,7 +351,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 
 	public void move(SuperStructureState requState) {
 		//former superstructure periodic
-		updateState();
+//		updateState();
 
 		this.mReqState = requState;
 		// SuperStructureState prevState = lastState;
@@ -355,7 +360,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 
 		// double wristVoltageGravity = SuperStructure.getInstance().getWTransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getWrist().velocity.getValue(), mCurrentWristTorque);
 		// double elbowVoltageGravity = SuperStructure.getInstance().getETransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getElbow().velocity.getValue(), mCurrentElbowTorque);
-		double elevatorPercentVbusGravity = Elevator.getVoltage(updateState()) / 12;//getElevator().getMaster().getBusVoltage();		
+		double elevatorPercentVbusGravity = Elevator.getVoltage(getCurrentState()) / 12;//getElevator().getMaster().getBusVoltage();
 
 		// if (Math.abs(mOI.getWristAxis()) > 0.07) {
 		// SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mRequState.getWrist().angle);
@@ -459,51 +464,51 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 		// resetElbowTrim();
 	}
 
-	@Override
-	public void initSendable(SendableBuilder builder) {
-
-		builder.addDoubleProperty(".elevatorHeightInch",
-				() -> SuperStructure.getElevator().getHeight().getInch(),
-				null);
-		builder.addDoubleProperty(".proximalAngleDeg",
-				() -> getElbow().getMaster().getSensorPosition().getDegree(),
-				null);
-		builder.addDoubleProperty(".wristAngleDeg",
-				() -> getWrist().getMaster().getSensorPosition().getDegree(), null);
-
-		//		builder.addDoubleProperty(".proximalErrorDeg",
-		//				() -> getElbow().getMaster().getClosedLoopError().getDegree(), null);
-		//		builder.addDoubleProperty(".wristErrorDeg",
-		//				() -> getWrist().getMaster().getError().getDegree(), null);
-
-		builder.addDoubleProperty(".elevatorVelocityDegPerSec",
-				() -> SuperStructure.getElevator().getVelocity().getValue() / kFeetToMeter,
-				null);
-
-		builder.addDoubleProperty(".proximalVelocityDegPerSec",
-				() -> getElbow().getMaster().getSensorVelocity().getValue(), null);
-		builder.addDoubleProperty(".wristVelocityDegPerSec",
-				() -> getWrist().getMaster().getSensorVelocity().getValue(), null);
-
-		builder.addDoubleProperty(".elevatorCurrentPerMotorAmp",
-				() -> SuperStructure.getElevator().getMaster()
-						.getOutputCurrent(),
-				null);
-		builder.addDoubleProperty(".elevatorMotorVoltage",
-				() -> SuperStructure.getElevator().getMaster()
-						.getMotorOutputVoltage(),
-				null);
-
-		builder.addDoubleProperty(".proximalCurrentPerMotorAmp",
-				() -> getElbow().getMaster().getOutputCurrent(), null);
-		builder.addDoubleProperty(".proximalMotorVoltage",
-				() -> getElbow().getMaster().getMotorOutputVoltage(), null);
-
-		builder.addDoubleProperty(".wristCurrentPerMotorAmp",
-				() -> getWrist().getMaster().getOutputCurrent(), null);
-		builder.addDoubleProperty(".wristMotorVoltage",
-				() -> getWrist().getMaster().getMotorOutputVoltage(), null);
-
-		super.initSendable(builder);
-	}
+//	@Override
+//	public void initSendable(SendableBuilder builder) {
+//
+//		builder.addDoubleProperty(".elevatorHeightInch",
+//				() -> SuperStructure.getElevator().getHeight().getInch(),
+//				null);
+//		builder.addDoubleProperty(".proximalAngleDeg",
+//				() -> getElbow().getMaster().getSensorPosition().getDegree(),
+//				null);
+//		builder.addDoubleProperty(".wristAngleDeg",
+//				() -> getWrist().getMaster().getSensorPosition().getDegree(), null);
+//
+//		//		builder.addDoubleProperty(".proximalErrorDeg",
+//		//				() -> getElbow().getMaster().getClosedLoopError().getDegree(), null);
+//		//		builder.addDoubleProperty(".wristErrorDeg",
+//		//				() -> getWrist().getMaster().getError().getDegree(), null);
+//
+//		builder.addDoubleProperty(".elevatorVelocityDegPerSec",
+//				() -> SuperStructure.getElevator().getVelocity().getValue() / kFeetToMeter,
+//				null);
+//
+//		builder.addDoubleProperty(".proximalVelocityDegPerSec",
+//				() -> getElbow().getMaster().getSensorVelocity().getValue(), null);
+//		builder.addDoubleProperty(".wristVelocityDegPerSec",
+//				() -> getWrist().getMaster().getSensorVelocity().getValue(), null);
+//
+//		builder.addDoubleProperty(".elevatorCurrentPerMotorAmp",
+//				() -> SuperStructure.getElevator().getMaster()
+//						.getOutputCurrent(),
+//				null);
+//		builder.addDoubleProperty(".elevatorMotorVoltage",
+//				() -> SuperStructure.getElevator().getMaster()
+//						.getMotorOutputVoltage(),
+//				null);
+//
+//		builder.addDoubleProperty(".proximalCurrentPerMotorAmp",
+//				() -> getElbow().getMaster().getOutputCurrent(), null);
+//		builder.addDoubleProperty(".proximalMotorVoltage",
+//				() -> getElbow().getMaster().getMotorOutputVoltage(), null);
+//
+//		builder.addDoubleProperty(".wristCurrentPerMotorAmp",
+//				() -> getWrist().getMaster().getOutputCurrent(), null);
+//		builder.addDoubleProperty(".wristMotorVoltage",
+//				() -> getWrist().getMaster().getMotorOutputVoltage(), null);
+//
+//		super.initSendable(builder);
+//	}
 }

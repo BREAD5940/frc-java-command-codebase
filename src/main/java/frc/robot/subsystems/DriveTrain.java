@@ -775,11 +775,11 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 	@Override
 	public void logPeriodicIO() {
-		Logger.log("Bus voltage", getLeftMotor().getBusVoltage());
+//		Logger.log("Bus voltage", getLeftMotor().getBusVoltage());
 		Logger.log("Forward joystick command", Robot.m_oi.getForwardAxis());
 		Logger.log("Turn joystick command", Robot.m_oi.getTurnAxis());
-		Logger.log("Left talon output voltage", getLeftMotor().getMotorOutputVoltage());
-		Logger.log("Right talon output voltage", getRightMotor().getMotorOutputVoltage());
+//		Logger.log("Left talon output voltage", getLeftMotor().getMotorOutputVoltage());
+//		Logger.log("Right talon output voltage", getRightMotor().getMotorOutputVoltage());
 	}
 
 }

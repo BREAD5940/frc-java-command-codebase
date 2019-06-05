@@ -22,7 +22,7 @@ public class SuperstructureGoToState extends Command {
 	}
 
 	public SuperstructureGoToState(ElevatorState eState) {
-		this(new SuperStructureState(eState, SuperStructure.getInstance().updateState().getAngle()));
+		this(new SuperStructureState(eState, SuperStructure.getInstance().getCurrentState().getAngle()));
 	}
 
 	public SuperstructureGoToState(Length eState, IntakeAngle aState) {
@@ -34,7 +34,7 @@ public class SuperstructureGoToState extends Command {
 	}
 
 	public SuperstructureGoToState(IntakeAngle aState) {
-		this(new SuperStructureState(SuperStructure.getInstance().updateState().getElevator(), aState));
+		this(new SuperStructureState(SuperStructure.getInstance().getCurrentState().getElevator(), aState));
 	}
 
 	public SuperstructureGoToState(SuperStructureState requState, double timeout) {

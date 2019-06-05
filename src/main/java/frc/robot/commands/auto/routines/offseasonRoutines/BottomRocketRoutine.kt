@@ -53,13 +53,13 @@ init {
         // Part 1: Go to the far side of the rocket and get ready to place a hatch on the lowest level.
         +parallel(
                 // Follow the trajectory with vision correction to the far side of the rocket.
-//                super.followVisionAssistedTrajectory(
-//                    path1,
-//                        {isLeft},
-//                    4.feet, true
-//                ),
+                super.followVisionAssistedTrajectory(
+                    path1,
+                        {isLeft},
+                    4.feet, true
+                ),
 
-                DriveTrain.getInstance().followTrajectory(path1, false, {isLeft}),
+//                DriveTrain.getInstance().followTrajectory(path1, false, {isLeft}),
 
                 // Take the superstructure to scoring height once out of the platform.
                 sequential(

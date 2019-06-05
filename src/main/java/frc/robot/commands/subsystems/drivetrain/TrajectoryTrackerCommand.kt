@@ -75,28 +75,49 @@ class TrajectoryTrackerCommand(private val driveBase: DriveTrain, private val tr
 
         LiveDashboard.isFollowingPath = true
 
-        mUpdateNotifier = Notifier {
-            output = trajectoryTracker.nextState(driveBase.robotPosition, Timer.getFPGATimestamp().second)
+//        mUpdateNotifier = Notifier {
+//            output = trajectoryTracker.nextState(driveBase.robotPosition, Timer.getFPGATimestamp().second)
+//
+//            val referencePoint = trajectoryTracker.referencePoint
+//            if (referencePoint != null) {
+//                val (translation, rotation) = referencePoint.state.state.pose
+//
+//                LiveDashboard.pathX = translation.x.feet
+//                LiveDashboard.pathY = translation.y.feet
+//                LiveDashboard.pathHeading = rotation.radian
+//
+//                // Shuffleboard.getTab("Auto").getLayout("Pathing", BuiltInLayouts.kList).
+//
+//                // refVelEntry.setDouble(referencePoint.getState().getVelocity().getType$FalconLibrary().getFeet());
+//                // currentVelEntry.setDouble(driveBase.getLeft().getFeetPerSecond());
+//
+//            }
+//            // Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
+//            driveBase.setOutput(output!!)
+//
+//        }
+//        mUpdateNotifier!!.startPeriodic(0.01)
+    }
 
-            val referencePoint = trajectoryTracker.referencePoint
-            if (referencePoint != null) {
-                val (translation, rotation) = referencePoint.state.state.pose
+    override fun execute() {
+        output = trajectoryTracker.nextState(driveBase.robotPosition, Timer.getFPGATimestamp().second)
 
-                LiveDashboard.pathX = translation.x.feet
-                LiveDashboard.pathY = translation.y.feet
-                LiveDashboard.pathHeading = rotation.radian
+        val referencePoint = trajectoryTracker.referencePoint
+        if (referencePoint != null) {
+            val (translation, rotation) = referencePoint.state.state.pose
 
-                // Shuffleboard.getTab("Auto").getLayout("Pathing", BuiltInLayouts.kList).
+            LiveDashboard.pathX = translation.x.feet
+            LiveDashboard.pathY = translation.y.feet
+            LiveDashboard.pathHeading = rotation.radian
 
-                // refVelEntry.setDouble(referencePoint.getState().getVelocity().getType$FalconLibrary().getFeet());
-                // currentVelEntry.setDouble(driveBase.getLeft().getFeetPerSecond());
+            // Shuffleboard.getTab("Auto").getLayout("Pathing", BuiltInLayouts.kList).
 
-            }
-            // Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
-            driveBase.setOutput(output!!)
+            // refVelEntry.setDouble(referencePoint.getState().getVelocity().getType$FalconLibrary().getFeet());
+            // currentVelEntry.setDouble(driveBase.getLeft().getFeetPerSecond());
 
         }
-        mUpdateNotifier!!.startPeriodic(0.01)
+        // Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
+        driveBase.setOutput(output!!)
     }
 
     override fun end() {

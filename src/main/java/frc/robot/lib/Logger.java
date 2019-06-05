@@ -13,15 +13,20 @@ public class Logger {
 		}
 	}
 
-	public static void log(String mark) {
-		try (PrintWriter writer = new PrintWriter(new FileWriter("/home/lvuser/log.txt", true))) {
+	private static PrintWriter writer = null;
 
-			writer.print(mark);
-			//            writer.println();
-
+	static {
+		try {
+			writer = new PrintWriter(new FileWriter("/home/lvuser/log.txt", true));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public static void log(String mark) {
+
+		writer.print(mark);
+
 	}
 
 	public static void log(Object mark) {

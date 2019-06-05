@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import frc.robot.commands.auto.routines.offseasonRoutines.TestRoutine;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
@@ -167,6 +168,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+
+		LiveWindow.disableAllTelemetry();
 
 		SmartDashboard.putData(new TestRoutine());
 
@@ -529,7 +532,7 @@ public class Robot extends TimedRobot {
 
 		// disableTheSuperStructure();
 
-		final boolean postTicks = true;
+		final boolean postTicks = false;
 
 		if (postTicks) {
 

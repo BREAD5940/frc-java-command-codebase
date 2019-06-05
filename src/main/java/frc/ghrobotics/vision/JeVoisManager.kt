@@ -32,7 +32,7 @@ object JeVoisManager {
 
     init {
 
-        fixedRateTimer(name = "JevoisManager", period = 1000L) {
+        fixedRateTimer(name = "JevoisManager", period = 3000L) {
             val currentTime = Timer.getFPGATimestamp().second
 
             var connect = ""
