@@ -7,6 +7,7 @@ import frc.robot.Network
 import frc.robot.commands.auto.paths.TrajectoryWaypoints
 import frc.robot.commands.auto.routines.offseasonRoutines.BottomRocketRoutine
 import frc.robot.commands.auto.routines.offseasonRoutines.CargoShipRoutine
+import frc.robot.commands.auto.routines.offseasonRoutines.TestRoutine
 import org.ghrobotics.lib.commands.S3ND
 import org.ghrobotics.lib.commands.sequential
 import org.ghrobotics.lib.commands.stateCommandGroup
@@ -39,7 +40,7 @@ object Autonomous {
         options[Autonomous.Mode.LEFT_TO_ROCKET] = BottomRocketRoutine(true)
         options[Autonomous.Mode.LEFT_TO_CARGO_SHIP_FRONT] = CargoShipRoutine(CargoShipRoutine.Mode.FRONT, true)
         options[Autonomous.Mode.LEFT_TO_CARGO_SHIP_SIDE] = CargoShipRoutine(CargoShipRoutine.Mode.SIDE, true)
-
+        options[Mode.TEST_ROUTINE] = TestRoutine()
 
         options[Autonomous.Mode.RIGHT_TO_ROCKET] = BottomRocketRoutine(false)
         options[Autonomous.Mode.RIGHT_TO_CARGO_SHIP_FRONT] = CargoShipRoutine(CargoShipRoutine.Mode.FRONT, false)
@@ -72,7 +73,7 @@ object Autonomous {
 
     enum class Mode { NOTHING, LEFT_TO_ROCKET, LEFT_TO_CARGO_SHIP_FRONT, LEFT_TO_CARGO_SHIP_SIDE,
         RIGHT_TO_ROCKET, RIGHT_TO_CARGO_SHIP_FRONT, RIGHT_TO_CARGO_SHIP_SIDE, CENTER_TO_CARGO_SHIP_LEFT,
-        CENTER_TO_CARGO_SHIP_RIGHT
+        CENTER_TO_CARGO_SHIP_RIGHT, TEST_ROUTINE
     }
 
     infix fun SendableChooser<Mode>.S3ND(it: Any) {

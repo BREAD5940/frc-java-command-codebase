@@ -34,18 +34,24 @@ open class AutoRoutine() : CommandGroup() {
     var exitCondition: BooleanSource = {false}
 
     //Experimental!!
-    fun withExit(exit: BooleanSource) {
+    fun withExit(exit: BooleanSource): AutoRoutine {
         exitCondition = exitCondition or exit
+        return this
     }
 
     //Experimental!!
-    fun withTimeout(exitTime: Time) {
+    fun withTimeout(exitTime: Time): AutoRoutine {
         exitCondition = exitCondition or {
             timeSinceInitialized() > exitTime.second
         }
+        return this
     }
 
-    protected fun followVisionAssistedTrajectory(
+    override fun isFinished(): Boolean {
+        return super.isFinished() || exitCondition()
+    }
+
+    public fun followVisionAssistedTrajectory(
             originalTrajectory: TimedTrajectory<Pose2dWithCurvature>,
             pathMirrored: BooleanSource,
             radiusFromEnd: Length,

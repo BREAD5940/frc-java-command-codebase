@@ -20,14 +20,14 @@ object TrajectoryFactory {
 
     /** Constraints **/
 
-    private val kMaxVelocity = 8.feet.velocity
+    private val kMaxVelocity = 6.feet.velocity
     private val kMaxAcceleration = 6.feet.acceleration
 
     private val kMaxHabitatVelocity = 3.feet.velocity
 
     private val kFirstPathMaxAcceleration = 6.feet.acceleration
 
-    private val kVelocityRadiusConstraintRadius = 3.feet
+    private val kVelocityRadiusConstraintRadius = 4.feet
     private val kVelocityRadiusConstraintVelocity = 2.5.feet.velocity
 
     private val kMaxCentripetalAccelerationElevatorUp = 7.feet.acceleration
@@ -240,6 +240,21 @@ object TrajectoryFactory {
                     rocketFAdjusted
             ),
             getConstraints(false, rocketFAdjusted), kMaxVelocity, kMaxAcceleration, kMaxVoltage
+    )
+
+    val tenFootTest = generateTrajectory(
+            true,
+            listOf(
+                    Pose2d(
+                            10.feet, 10.feet, 180.degree
+                    ).asWaypoint(),
+                    Pose2d(
+                            20.feet, 10.feet, 180.degree
+                    ).asWaypoint()
+            ),
+            getConstraints(false, rocketFAdjusted), 6.feet.velocity, kMaxAcceleration, kMaxVoltage
+
+
     )
 
     /** Generation **/
