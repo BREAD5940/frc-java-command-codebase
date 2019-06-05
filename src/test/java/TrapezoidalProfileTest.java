@@ -1,8 +1,8 @@
-import org.junit.jupiter.api.Test;
+import org.junit.Assert;
+import org.junit.Test;
 
 import frc.team254.Trajectory;
 import frc.team254.TrajectoryGenerator;
-import junit.framework.Assert;
 
 public class TrapezoidalProfileTest {
 
