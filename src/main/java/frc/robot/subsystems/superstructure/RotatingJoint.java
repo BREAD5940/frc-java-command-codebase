@@ -145,8 +145,8 @@ public class RotatingJoint extends HalfBakedSubsystem {
 
 	public void setMotionMagicGains() {
 		// Elevator elev = SuperStructure.getElevator();
-		this.getMaster().configMotionAcceleration((int) (4000));
-		this.getMaster().configMotionCruiseVelocity(1250); // about 3500 theoretical max
+		this.getMaster().configMotionAcceleration((int) (6000));
+		this.getMaster().configMotionCruiseVelocity((int) (1250 / 0.7)); // about 3500 theoretical max
 		this.getMaster().configMotionSCurveStrength(0);
 		this.getMaster().config_kP(3, 0.85, 0);
 		this.getMaster().config_kI(3, 0.0, 0);
