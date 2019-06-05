@@ -136,10 +136,10 @@ public class DriveDistanceTheThird extends AutoCommand {
 
 			LiveDashboard.INSTANCE.setFollowingPath(false);
 
-			if (trajectorySource == null) {
-				Logger.log("Sadly the trajectories are not generated. the person responsible for the trajectories has been sacked.");
-				Trajectories.generateAllTrajectories();
-			}
+//			if (trajectorySource == null) {
+//				Logger.log("Sadly the trajectories are not generated. the person responsible for the trajectories has been sacked.");
+//				Trajectories.generateAllTrajectories();
+//			}
 
 			Logger.log("get: " + trajectorySource.get().getFirstState().getState().getCurvature().toString());
 
