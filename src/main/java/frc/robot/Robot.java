@@ -1,5 +1,6 @@
 package frc.robot;
 
+import frc.robot.commands.auto.routines.offseasonRoutines.TestRoutine;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -167,6 +168,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 
+		SmartDashboard.putData(new TestRoutine());
+
 		//		var meme = SerialMeme.INSTANCE;
 
 		//		command__.start();
@@ -186,7 +189,7 @@ public class Robot extends TimedRobot {
 		//		mAutoChooser = new TerribleAutoChooser();
 		//		mAutoChooser.addOptions();
 		System.out.println("Auto chooser sent!");
-		Trajectories.generateAllTrajectories();
+//		Trajectories.generateAllTrajectories();
 
 		//		Network.INSTANCE.getAutoTab().getLayout("Path selection", BuiltInLayouts.kList).add(mAutoChooser.getChooser()).withSize(2, 5).withPosition(0, 0);
 		Network.INSTANCE.getSuperStructureTab().add(superstructure);
