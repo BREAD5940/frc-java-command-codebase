@@ -2,9 +2,7 @@ package frc.robot;
 
 import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
-import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
+import org.ghrobotics.lib.mathematics.units.nativeunits.*;
 
 import frc.robot.subsystems.DriveTrain.Gear;
 
@@ -88,8 +86,8 @@ public class RobotConfig {
 
 		public static final NativeUnit kDriveSensorUnitsPerRotation = NativeUnitKt.getSTU(4096);
 
-		public static final NativeUnitLengthModel LEFT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, left_radius);
-		public static final NativeUnitLengthModel RIGHT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(kDriveSensorUnitsPerRotation, right_radius);
+		public static final SlopeNativeUnitModel<Length> LEFT_NATIVE_UNIT_LENGTH_MODEL = new SlopeNativeUnitModel<Length>(LengthKt.getFeet(8), NativeUnitKt.getNativeUnits(30000));
+		public static final SlopeNativeUnitModel<Length> RIGHT_NATIVE_UNIT_LENGTH_MODEL = new SlopeNativeUnitModel<Length>(LengthKt.getFeet(8), NativeUnitKt.getNativeUnits(30700));
 
 		// Pathfinder shit
 		public static final double left_static_kv = 0.05; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction
@@ -194,7 +192,7 @@ public class RobotConfig {
 			public static final Length cargoMiddleGoal = LengthKt.getInch(34);
 			public static final Length cargoHighGoal = LengthKt.getInch(54);
 
-			public static final Length hatchLowGoal = LengthKt.getInch(6.25 - 1.25 + 3.5);
+			public static final Length hatchLowGoal = LengthKt.getInch(6.25 - 1.25 + 3.5 - 1.5 - 0.6);
 			public static final Length hatchMiddleGoal = LengthKt.getInch(31.5);
 			public static final Length hatchHighGoal = LengthKt.getInch(53);
 
