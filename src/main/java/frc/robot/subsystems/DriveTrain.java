@@ -139,7 +139,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 	public DifferentialDrive getDifferentialDrive() {
 		// String mes = (mCurrentGear == Gear.LOW) ? "lowGearDifferentialDrive" : "highGearDifferentialDrive"; 
-		SmartDashboard.putString("current drive model", (mCurrentGear == Gear.LOW) ? "lowGearDifferentialDrive" : "highGearDifferentialDrive");
+//		SmartDashboard.putString("current drive model", (mCurrentGear == Gear.LOW) ? "lowGearDifferentialDrive" : "highGearDifferentialDrive");
 
 		return (mCurrentGear == Gear.LOW) ? lowGearDifferentialDrive : highGearDifferentialDrive;
 	}
@@ -173,22 +173,23 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	}
 
 	public TrajectoryTracker getTrajectoryTracker() {
-		return getTrajectoryTracker(kDefaulTrajectoryTrackerMode);
+		return ramseteTracker;
 	}
 
 	public TrajectoryTracker getTrajectoryTracker(TrajectoryTrackerMode mode) {
-		switch (mode) {
-		case RAMSETE:
-			return ramseteTracker;
-		case FEEDFORWARD:
-			return feedForwardTracker;
-		case PUREPURSUIT:
-			return purePursuitTracker;
-		case PID:
-			return null;
-		default:
-			return ramseteTracker;
-		}
+//		switch (mode) {
+//		case RAMSETE:
+//			return ramseteTracker;
+//		case FEEDFORWARD:
+//			return feedForwardTracker;
+//		case PUREPURSUIT:
+//			return purePursuitTracker;
+//		case PID:
+//			return null;
+//		default:
+//			return ramseteTracker;
+//		}
+		return ramseteTracker;
 	}
 
 	public void init() {
