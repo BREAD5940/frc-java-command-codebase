@@ -2,6 +2,8 @@ package frc.robot;
 
 import java.util.Arrays;
 
+import frc.robot.commands.auto.routines.offseasonRoutines.TestRoutine;
+import frc.robot.commands.subsystems.superstructure.*;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -13,9 +15,6 @@ import frc.robot.RobotConfig.auto.fieldPositions;
 import frc.robot.commands.auto.groups.TeleopCommands;
 import frc.robot.commands.subsystems.drivetrain.DualHybridDriverAssist;
 import frc.robot.commands.subsystems.drivetrain.SetGearCommand;
-import frc.robot.commands.subsystems.superstructure.JankyGoToState;
-import frc.robot.commands.subsystems.superstructure.PassThrough;
-import frc.robot.commands.subsystems.superstructure.SetHatchMech;
 import frc.robot.lib.AnalogButton;
 import frc.robot.lib.DPadButton;
 import frc.robot.lib.OLDParallelRaceGroup;
@@ -126,7 +125,8 @@ public class OI {
 				new TeleopCommands()));
 		testMeme.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 
-		primaryDpadDown.whenPressed(testMeme);
+		primaryAButton.whenPressed(ProximalPoke.Companion.OutwardPokeTo(LengthKt.getInch(12)));
+		primaryBButton.whenPressed(ProximalPoke.Companion.RetractTo(LengthKt.getInch(-12)));
 
 		//		primaryXButton.whenPressed(new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
 
