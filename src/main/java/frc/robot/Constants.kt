@@ -4,6 +4,7 @@ import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 
 import com.team254.lib.physics.DCMotorTransmission
 import com.team254.lib.physics.DifferentialDrive
+import frc.robot.lib.motion.Util
 
 //import /**/frc.robot.lib.motion.Util
 import org.ghrobotics.lib.mathematics.units.*
@@ -14,8 +15,10 @@ public object Constants {
     val kRobotMomentOfInertia = 10.0 // kg m^2 // TODO Tune
     val kRobotAngularDrag = 12.0 // N*m / (rad/sec)
 
-    val kWheelRadius = 2.feet.meter
-    val kTrackWidth = 26.feet.meter
+    val kWheelRadius = Util.toMeters((2f / 12f).toDouble())// meters. TODO tune
+    val kTrackWidth = Util.toMeters((26f / 12f).toDouble())// meters
+//    val kWheelRadius = 2.inch.meter
+//    val kTrackWidth = 26.inch.meter
 
     // high gear: 7.5 rad/s = 15ft/sec max speed
     // acceleration: 45ft/sec^2???
