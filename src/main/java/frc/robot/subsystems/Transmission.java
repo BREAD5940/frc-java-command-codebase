@@ -10,6 +10,7 @@ import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.derivedunits.VelocityKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitLengthModel;
+import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitModel;
 import org.ghrobotics.lib.wrappers.ctre.FalconSRX;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -33,7 +34,7 @@ public class Transmission {
 
 	private TransmissionSide side;
 
-	NativeUnitLengthModel lengthModel = driveTrain.LEFT_NATIVE_UNIT_LENGTH_MODEL;
+	NativeUnitModel<Length> lengthModel;
 
 	public Transmission(int masterPort, int slavePort, EncoderMode mode, TransmissionSide side, boolean isInverted) {
 		if (side == TransmissionSide.LEFT) {
@@ -81,7 +82,7 @@ public class Transmission {
 				mMaster, mSlave);
 	}
 
-	public NativeUnitLengthModel getModel() {
+	public NativeUnitModel<Length> getModel() {
 		return lengthModel;
 	}
 
