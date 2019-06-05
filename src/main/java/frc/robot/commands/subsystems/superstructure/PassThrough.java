@@ -19,8 +19,8 @@ import frc.robot.subsystems.superstructure.SuperStructure;
 
 public class PassThrough extends ConditionalCommand {
 
-	private static final double kProximalMaxVel = 190d / 360d * 2 * Math.PI;
-	private static final double kWristMaxVel = 190d / 360d * 2 * Math.PI;
+	private static final double kProximalMaxVel = 190d / 360d * 2 * Math.PI / 0.85;
+	private static final double kWristMaxVel = kProximalMaxVel;//190d / 360d * 2 * Math.PI;
 
 	public static class SyncedMove extends Command {
 
