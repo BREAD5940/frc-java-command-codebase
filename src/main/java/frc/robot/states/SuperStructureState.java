@@ -6,6 +6,7 @@ import frc.robot.lib.Loggable;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
+import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
 public class SuperStructureState implements Loggable {
 	public IntakeAngle jointAngles;
@@ -31,6 +32,18 @@ public class SuperStructureState implements Loggable {
 	public SuperStructureState(ElevatorState elevatorState, RotatingArmState elbowState, RotatingArmState wristState) {
 		jointAngles = new IntakeAngle(elbowState, wristState);
 		elevator = elevatorState;
+		piece = HeldPiece.NONE;
+	}
+
+	public SuperStructureState(ElevatorState elevatorState, RoundRotation2d elbowState, RoundRotation2d wristState) {
+		jointAngles = new IntakeAngle(elbowState, wristState);
+		elevator = elevatorState;
+		piece = HeldPiece.NONE;
+	}
+
+	public SuperStructureState(Length elevatorState, RoundRotation2d elbowState, RoundRotation2d wristState) {
+		jointAngles = new IntakeAngle(elbowState, wristState);
+		elevator = new ElevatorState(elevatorState);
 		piece = HeldPiece.NONE;
 	}
 

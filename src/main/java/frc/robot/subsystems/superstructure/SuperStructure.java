@@ -360,7 +360,7 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 
 		// double wristVoltageGravity = SuperStructure.getInstance().getWTransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getWrist().velocity.getValue(), mCurrentWristTorque);
 		// double elbowVoltageGravity = SuperStructure.getInstance().getETransmission().getVoltageForTorque(SuperStructure.getInstance().updateState().getElbow().velocity.getValue(), mCurrentElbowTorque);
-		double elevatorPercentVbusGravity = Elevator.getVoltage(getCurrentState()) / 12;//getElevator().getMaster().getBusVoltage();
+//		double elevatorPercentVbusGravity = Elevator.getVoltage(getCurrentState()) / 12;//getElevator().getMaster().getBusVoltage();
 
 		// if (Math.abs(mOI.getWristAxis()) > 0.07) {
 		// SuperStructure.getInstance().getWrist().getMaster().set(ControlMode.Position, mRequState.getWrist().angle);
@@ -370,10 +370,16 @@ public class SuperStructure extends HalfBakedSubsystem implements Loggable {
 
 		getWrist().requestAngle(ControlMode.MotionMagic, requState.getWrist().angle, getCurrentState());
 		getElbow().requestAngle(ControlMode.MotionMagic, requState.getElbow().angle);
-		// getElevator().getMaster().set(ControlMode.MotionMagic, requState.getElevator().height, DemandType.ArbitraryFeedForward, elevatorPercentVbusGravity);
 		getElevator().setPositionSetpoint(requState);
+		// getElevator().getMaster().set(ControlMode.MotionMagic, requState.getElevator().height, DemandType.ArbitraryFeedForward, elevatorPercentVbusGravity);
 		// getElevator().getMaster().set(ControlMode.PercentOutput, elevatorPercentVbusGravity);
 
+	}
+
+	public boolean isWithinToleranceOf(SuperStructureState other) {
+		return getWrist().isWithinTolerance(RoundRotation2d.getDegree(5), other.getWrist().angle)
+				&& getElbow().isWithinTolerance(RoundRotation2d.getDegree(5), other.getElbow().angle)
+				&& Math.abs(SuperStructure.getElevator().getHeight().getInch() - other.getElevatorHeight().getInch()) <= 1;
 	}
 
 	//	public SuperStructureState plan(SuperStructureState mReqState) {

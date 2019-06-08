@@ -2,6 +2,7 @@ package frc.robot.lib.obj;
 
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.TimeUnitsKt;
+import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnit;
 import org.ghrobotics.lib.mathematics.units.nativeunits.NativeUnitKt;
 
@@ -91,6 +92,12 @@ public class HalfBakedRotatingSRX extends WPI_TalonSRX {
 			System.out
 					.println("Cannot set to any other mode with RoundRotation2d. ur bad");
 		}
+	}
+
+	public void setMotionCruiseVelocity(Velocity<Rotation2d> newVelocity) {
+		super.configMotionCruiseVelocity(
+				getTicks(RoundRotation2d.getRadian(newVelocity.getValue()))
+		);
 	}
 
 	//	public RoundRotation2d getVelocity() {
