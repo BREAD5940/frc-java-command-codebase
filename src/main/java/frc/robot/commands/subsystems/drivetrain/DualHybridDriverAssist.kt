@@ -121,8 +121,10 @@ class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
 
 //            var turn = 0.0
             var turn = if(isFront) {
-                kp_mutable * turnInput - kd_mutable * (turnInput - prevError)
+                println("limelightPID")
+                kLemonLightkP * turnInput - kLemonLightkD * (turnInput - prevError)
             } else {
+                println("jevoisPID")
                 kJevoiskP * turnInput - kJevoiskD * (turnInput - prevError)
             }
 
@@ -175,7 +177,7 @@ class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
     companion object {
         const val kJevoiskP = 0.002
         const val kJevoiskD = 0.04
-        const val kLemonLightkP = 0.13
+        const val kLemonLightkP = 0.04
         const val kLemonLightkD = 0.0
     }
 
