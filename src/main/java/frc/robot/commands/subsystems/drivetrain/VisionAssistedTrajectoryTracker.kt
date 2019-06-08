@@ -101,10 +101,11 @@ class VisionAssistedTrajectoryTracker(
         val lastKnownTargetPose = this.lastKnownTargetPose
 
         if (lastKnownTargetPose != null || limeLightAngle != null) {
-            println("VISION")
+            println("VISION ACTIVE")
             visionActive = true
 
-            var error = 0.0
+            var error: Double
+            var turn: Double
             var youShouldUseLimeLight = false
 
             if(limeLightAngle != null && useLimeLightOverTargetTracker) {
@@ -113,7 +114,12 @@ class VisionAssistedTrajectoryTracker(
 
                 youShouldUseLimeLight = true
 
-                println("limelight angle $error")
+                Network.visionDriveAngle.setDouble(Math.toDegrees(error))
+                Network.visionDriveActive.setBoolean(true)
+
+                println("limelight angle error: $error")
+
+                turn = kLimeLightKp * error + kLimeLightKd * (error - prevError)
 
             } else if(lastKnownTargetPose != null) {
 
@@ -126,26 +132,28 @@ class VisionAssistedTrajectoryTracker(
 
                 error = (angle + if (!trajectory.reversed) Rotation2d.kZero else Math.PI.radian).radian
 
-                println("jevois angle $error")
+                println("jevois angle error: $error")
 
+                turn = kJevoisKp * error + kJevoisKd * (error - prevError)
 
+            } else {
+                println("NO TARGET FOUND, mega prank (you should never see this...), returning...")
+                DriveTrain.getInstance().setOutput(nextState) // go back to RAMSETE tracking mode
+                return
             }
 
-            // It's a simple PD loop, but quite effective
-            val turn = if(!youShouldUseLimeLight) {kJevoisKp * error + kJevoisKd * (error - prevError)} else {
+            val newCommandedOutput = TrajectoryTrackerOutput(
+                    nextState.linearVelocity,
+                    0.meter.acceleration,
+                    turn.radian.velocity,
+                    0.radian.acceleration
+            )
 
-                kLimeLightKp * error + kLimeLightKd * (error - prevError)
-
-            }
+            println("demanding output with turn ${turn.radian.velocity.value}")
 
             // set the drivetrain to the RAMSETE/whatever linear velocity and the PD loop's output for turn
             DriveTrain.getInstance().setOutput(
-                    TrajectoryTrackerOutput(
-                            nextState.linearVelocity,
-                            0.meter.acceleration,
-                            turn.radian.velocity,
-                            0.radian.acceleration
-                    )
+                    newCommandedOutput
             )
 
             prevError = error // save error for the PD loop
@@ -183,8 +191,8 @@ class VisionAssistedTrajectoryTracker(
         const val kJevoisKp = 5.5 * (2* PI) / 360.0
         const val kJevoisKd = 0.0
 
-        const val kLimeLightKp = 0.2
-        const val kLimeLightKd = 1.5
+        const val kLimeLightKp = 0.2 * 3.5
+        const val kLimeLightKd = 0.toDouble()
 
         var visionActive = false
 

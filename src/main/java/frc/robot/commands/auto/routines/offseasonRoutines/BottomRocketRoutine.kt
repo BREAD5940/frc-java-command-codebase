@@ -56,7 +56,7 @@ init {
                 super.followVisionAssistedTrajectory(
                     path1,
                         {isLeft},
-                    4.feet, true
+                    3.5.feet, true
                 ),
 
 //                DriveTrain.getInstance().followTrajectory(path1, false, {isLeft}),
