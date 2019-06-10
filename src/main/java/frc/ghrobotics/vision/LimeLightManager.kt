@@ -8,7 +8,6 @@ import frc.robot.Constants
 import frc.robot.subsystems.DriveTrain
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d
-import org.ghrobotics.lib.mathematics.units.Time
 import org.ghrobotics.lib.mathematics.units.degree
 import org.ghrobotics.lib.mathematics.units.inch
 import org.ghrobotics.lib.mathematics.units.radian
@@ -26,18 +25,14 @@ object LimeLightManager {
 
     init {
         NetworkTableInstance.getDefault().getTable("limelight").addEntryListener("tcornx",
-                { table, _, _, _, _->
+                { table, _, _, _, _ ->
 
                     updateTrackedTargetsFromTcorner(table,
                             DriveTrain.getInstance().robotPosition,
                             Timer.getFPGATimestamp())
-
                 },
                 EntryListenerFlags.kNew or EntryListenerFlags.kUpdate)
-
-
     }
-
 
     private fun updateTrackedTargetsFromTcorner(table: NetworkTable, robotPosition: Pose2d, timestamp: Double) {
         val tx = txEntry.getDoubleArray(arrayOf(0.0)).toList()
@@ -47,12 +42,12 @@ object LimeLightManager {
 
         val pose = solvePNPFromCorners(corners)
 
-        if(pose == null) {
+        if (pose == null) {
             return
         }
 
-        if(pose.translation.x.absoluteValue > Constants.kRobotLength / 2.0 - 5.inch
-                || pose.translation.y.absoluteValue > Constants.kRobotWidth / 2.0)
+        if (pose.translation.x.absoluteValue > Constants.kRobotLength / 2.0 - 5.inch ||
+                pose.translation.y.absoluteValue > Constants.kRobotWidth / 2.0)
             return
 
         val globalPose = Constants.kCenterToFrontCamera + (pose + robotPosition)
@@ -60,12 +55,11 @@ object LimeLightManager {
         TargetTracker.addSamples(
                 timestamp, listOf(globalPose)
         )
-
     }
 
     private fun solvePNPFromCorners(input: List<List<Double>>): Pose2d? {
 
-        if(input[0].size != 4 || input[1].size != 4) return null
+        if (input[0].size != 4 || input[1].size != 4) return null
 
         val corners = listOf(
                 Point(input[0][0], input[0][1]),
@@ -80,12 +74,11 @@ object LimeLightManager {
             val sorted = list.sortedBy { it.x }
 
             val leftMost = listOf(sorted[0], sorted[1])
-            
-            return@let leftMost.sortedBy { it.y }
 
+            return@let leftMost.sortedBy { it.y }
         }
 
-        val rightCorners = listOf(corners[2], corners[3]).sortedBy { it.y  }
+        val rightCorners = listOf(corners[2], corners[3]).sortedBy { it.y }
 
         // in the form left top, left bottom, right bottom, right top
         // note that positive y is down!
@@ -102,11 +95,11 @@ object LimeLightManager {
         val retval = Calib3d.solvePnP(mObjectPoints, imagePoints, mCameraMatrix,
                 mDistortionCoefficients, rvec, tvec)
 
-        if(!retval) return null
+        if (!retval) return null
 
         return computeOutput(rvec, tvec)
 
-        //def compute_output_values(self, rvec, tvec):
+        // def compute_output_values(self, rvec, tvec):
         //        # Compute the necessary output distance and angles
         //
         //        # The tilt angle only affects the distance and angle1 calcs
@@ -132,12 +125,11 @@ object LimeLightManager {
         //        angle2 = math.atan2(pzero_world[0][0], pzero_world[2][0])
         //
         //        return distance, math.degrees(angle1), math.degrees(angle2)
-
     }
 
     private fun computeOutput(rvec: Mat, tvec: Mat): Pose2d? {
 
-        val x = tvec.get(0,0)[0]
+        val x = tvec.get(0, 0)[0]
         // TODO behavior of the mat access boi
         val z = sin(tilt_angle) * tvec.get(1, 0)[0] + cos(tilt_angle) * tvec.get(2, 0)[0]
 
@@ -171,9 +163,7 @@ object LimeLightManager {
         val yawInDegrees = eulerAngles.get(1, 0)[0]
 
         return Pose2d(Translation2d(distance.inch, angle1.radian), yawInDegrees.degree)
-
     }
-
 
     val TARGET_WIDTH = 14.627 // inch
     val TARGET_HEIGHT = 5.826 // inch
@@ -186,7 +176,7 @@ object LimeLightManager {
                 Point3(TARGET_WIDTH / 2.0, TARGET_HEIGHT / 2.0, 0.0)
     )
 
-    val mCameraMatrix = Mat.eye(3, 3, CvType.CV_64F);
+    val mCameraMatrix = Mat.eye(3, 3, CvType.CV_64F)
 
     init {
         mCameraMatrix.put(0, 0, 2.5751292067328632e+02)
@@ -195,7 +185,5 @@ object LimeLightManager {
         mCameraMatrix.put(1, 2, 1.1971433393615548e+02)
     }
 
-    val mDistortionCoefficients = MatOfDouble(2.9684613693070039e-01, -1.4380252254747885e+00, -2.2098421479494509e-03, -3.3894563533907176e-03, 2.5344430354806740e+00);
-
-
+    val mDistortionCoefficients = MatOfDouble(2.9684613693070039e-01, -1.4380252254747885e+00, -2.2098421479494509e-03, -3.3894563533907176e-03, 2.5344430354806740e+00)
 }

@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.command.InstantCommand
 import frc.robot.Constants
 import frc.robot.commands.subsystems.drivetrain.VisionAssistedTrajectoryTracker
 import frc.robot.lib.Logger
-import frc.robot.lib.OLDParallelRaceGroup
 import frc.robot.subsystems.DriveTrain
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature
@@ -31,15 +30,15 @@ open class AutoRoutine() : CommandGroup() {
         +wrappedCommand
     }
 
-    var exitCondition: BooleanSource = {false}
+    var exitCondition: BooleanSource = { false }
 
-    //Experimental!!
+    // Experimental!!
     fun withExit(exit: BooleanSource): AutoRoutine {
         exitCondition = exitCondition or exit
         return this
     }
 
-    //Experimental!!
+    // Experimental!!
     fun withTimeout(exitTime: Time): AutoRoutine {
         exitCondition = exitCondition or {
             timeSinceInitialized() > exitTime.second
@@ -52,16 +51,15 @@ open class AutoRoutine() : CommandGroup() {
     }
 
     public fun followVisionAssistedTrajectory(
-            originalTrajectory: TimedTrajectory<Pose2dWithCurvature>,
-            pathMirrored: BooleanSource,
-            radiusFromEnd: Length,
-            useAbsoluteVision: Boolean = false
+        originalTrajectory: TimedTrajectory<Pose2dWithCurvature>,
+        pathMirrored: BooleanSource,
+        radiusFromEnd: Length,
+        useAbsoluteVision: Boolean = false
     ) = VisionAssistedTrajectoryTracker(
             pathMirrored.map(originalTrajectory.mirror(), originalTrajectory),
             radiusFromEnd,
             useAbsoluteVision
     )
-
 
     protected fun relocalize(position: Pose2d, forward: Boolean, pathMirrored: BooleanSource) = InstantCommand {
         val newPosition = Pose2d(
@@ -95,7 +93,7 @@ open class AutoRoutine() : CommandGroup() {
         override fun isFinished() = !region.contains(DriveTrain.getInstance().robotPosition.translation)
     }
 
-    protected fun Command.withTimeout(time: Time) = object: CommandGroup() {
+    protected fun Command.withTimeout(time: Time) = object : CommandGroup() {
 
         val command: Command = this@withTimeout
 
@@ -123,10 +121,9 @@ open class AutoRoutine() : CommandGroup() {
         public override fun isFinished(): Boolean {
             return mTimer.hasPeriodPassed(mDuration) || super.isFinished()
         }
-
     }
 
-    protected fun Command.withExit(exit: BooleanSource) = object: CommandGroup() {
+    protected fun Command.withExit(exit: BooleanSource) = object : CommandGroup() {
 
         init {
             super.addSequential(this@withExit)
@@ -135,7 +132,6 @@ open class AutoRoutine() : CommandGroup() {
         override fun isFinished(): Boolean {
             return exit() || super.isFinished()
         }
-
     }
 
     operator fun Command.unaryPlus() {
@@ -195,5 +191,4 @@ open class AutoRoutine() : CommandGroup() {
         val commandSubsystem = command.subsystem
         commandLog.add(String.format("Command %s added in %s mode and reserves %s", commandName, mode, commandSubsystem))
     }
-
 }

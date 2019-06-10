@@ -3,7 +3,6 @@ package frc.robot.commands.auto.routines.offseasonRoutines
 import edu.wpi.first.wpilibj.command.InstantCommand
 import edu.wpi.first.wpilibj.command.WaitCommand
 import frc.robot.RobotConfig
-import frc.robot.commands.auto.Autonomous
 import frc.robot.commands.auto.paths.TrajectoryFactory
 import frc.robot.commands.auto.paths.TrajectoryWaypoints
 import frc.robot.commands.auto.routines.AutoRoutine
@@ -14,13 +13,9 @@ import frc.robot.commands.subsystems.superstructure.SetHatchMech
 import frc.robot.subsystems.DriveTrain
 import frc.robot.subsystems.Intake
 import frc.robot.subsystems.superstructure.SuperStructure
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.duration
-import org.ghrobotics.lib.mathematics.units.degree
 import org.ghrobotics.lib.mathematics.units.feet
 import org.ghrobotics.lib.mathematics.units.second
-import org.ghrobotics.lib.utils.withEquals
-
 
 class BottomRocketRoutine(isLeft: Boolean) : AutoRoutine() {
 
@@ -33,29 +28,26 @@ class BottomRocketRoutine(isLeft: Boolean) : AutoRoutine() {
     // Third path goes to the near side of the rocket
     private val path3 = TrajectoryFactory.loadingStationToRocketN
 
-
     // Calculates the duration of the path
     val duration = path1.duration + path2.duration + path3.duration
-
 
     // Auto routine
 init {
 
-        +InstantCommand{
+        +InstantCommand {
             DriveTrain.getInstance().localization.reset(
-                    if(isLeft) TrajectoryWaypoints.kSideStart.mirror else TrajectoryWaypoints.kSideStart
+                    if (isLeft) TrajectoryWaypoints.kSideStart.mirror else TrajectoryWaypoints.kSideStart
             )
         }
 
         +SetHatchMech(Intake.HatchMechState.kClamped)
-
 
         // Part 1: Go to the far side of the rocket and get ready to place a hatch on the lowest level.
         +parallel(
                 // Follow the trajectory with vision correction to the far side of the rocket.
                 super.followVisionAssistedTrajectory(
                     path1,
-                        {isLeft},
+                        { isLeft },
                     3.5.feet, true
                 ),
 
@@ -70,16 +62,15 @@ init {
 
         )
 
-
             // Reorient for rocketF
             +relocalize(
                     TrajectoryWaypoints.kRocketF,
                 true
-            ) {isLeft}
+            ) { isLeft }
 
         val path2 = super.followVisionAssistedTrajectory(
                 path2,
-                {isLeft},
+                { isLeft },
                 4.feet, false
             )
 
@@ -101,7 +92,7 @@ init {
             +relocalize(
                     TrajectoryWaypoints.kLoadingStation,
                 false,
-                {isLeft}
+                { isLeft }
             )
 
             // Part 3: Pickup hatch and go to the near side of the rocket.
@@ -111,7 +102,7 @@ init {
                     // Follow the trajectory with vision correction to the near side of the rocket.
                     super.followVisionAssistedTrajectory(
                             path3,
-                            {isLeft},
+                            { isLeft },
                             6.feet, true
                     ),
                     // Take the superstructure to scoring height.
@@ -128,7 +119,7 @@ init {
                 DriveTrain.getInstance().followTrajectory(
                         TrajectoryFactory.rocketNToLoadingStation,
                         false,
-                        {isLeft}
+                        { isLeft }
                 ),
                 // Take the superstructure to a position to pick up the next hatch.
                 sequential(

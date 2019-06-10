@@ -6,11 +6,11 @@ import frc.robot.Constants
 import frc.robot.Network
 import frc.robot.subsystems.DriveTrain
 import frc.robot.subsystems.LimeLight
-//import org.ghrobotics.lib.commands.FalconCommand
+// import org.ghrobotics.lib.commands.FalconCommand
 import org.ghrobotics.lib.debug.LiveDashboard
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature
-//import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d
+// import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.Trajectory
 import org.ghrobotics.lib.mathematics.units.*
@@ -26,10 +26,10 @@ import kotlin.math.PI
  * @param trajectorySource Source that contains the trajectory to follow.
  */
 class VisionAssistedTrajectoryTracker(
-        val trajectorySource: Source<Trajectory<Time, TimedEntry<Pose2dWithCurvature>>>,
-        val radiusFromEnd: Length,
-        val useAbsoluteVision: Boolean = false,
-        val useLimeLightOverTargetTracker: Boolean = true
+    val trajectorySource: Source<Trajectory<Time, TimedEntry<Pose2dWithCurvature>>>,
+    val radiusFromEnd: Length,
+    val useAbsoluteVision: Boolean = false,
+    val useLimeLightOverTargetTracker: Boolean = true
 ) : Command() {
 
     private var trajectoryFinished = false
@@ -59,7 +59,7 @@ class VisionAssistedTrajectoryTracker(
 //        val robotPositionWithIntakeOffset = IntakeSubsystem.robotPositionWithIntakeOffset
 
         val robotPosition = DriveTrain.getInstance().robotPosition
-        
+
         // get the next state from the trajectory tracker
         val nextState = DriveTrain.getInstance().trajectoryTracker.nextState(
                 robotPosition)
@@ -73,7 +73,7 @@ class VisionAssistedTrajectoryTracker(
         // if we are, try to find a new target
         if (withinVisionRadius) {
 
-            if(!useLimeLightOverTargetTracker && trajectory.reversed) {
+            if (!useLimeLightOverTargetTracker && trajectory.reversed) {
 
                 val newTarget = if (useAbsoluteVision) {
                     TargetTracker.getAbsoluteTarget((trajectory.lastState.state.pose + Constants.kCenterToForwardIntake).translation)
@@ -85,17 +85,14 @@ class VisionAssistedTrajectoryTracker(
 
                 // store this pose if it's for real
                 if (newTarget?.isAlive == true && newPose != null) this.lastKnownTargetPose = newPose
-            } else if(useLimeLightOverTargetTracker) {
+            } else if (useLimeLightOverTargetTracker) {
 
                 // we COULD use the limelight
                 this.limelightHasTarget = LimeLight.getInstance().trackedTargets > 0
 
-                this.limeLightAngle = if(limelightHasTarget) {
-                    LimeLight.getInstance().dx + robotPosition.rotation}
-                else null
-
+                this.limeLightAngle = if (limelightHasTarget) {
+                    LimeLight.getInstance().dx + robotPosition.rotation } else null
             }
-
         }
 
         val lastKnownTargetPose = this.lastKnownTargetPose
@@ -108,7 +105,7 @@ class VisionAssistedTrajectoryTracker(
             var turn: Double
 //            var youShouldUseLimeLight = false
 
-            if(limeLightAngle != null && useLimeLightOverTargetTracker) {
+            if (limeLightAngle != null && useLimeLightOverTargetTracker) {
 
                 error = -(limeLightAngle!! - robotPosition.rotation).radian
 
@@ -120,8 +117,7 @@ class VisionAssistedTrajectoryTracker(
                 println("limelight angle error: $error")
 
                 turn = kLimeLightKp * error + kLimeLightKd * (error - prevError)
-
-            } else if(lastKnownTargetPose != null) {
+            } else if (lastKnownTargetPose != null) {
 
                 // find our angle to the target
                 val transform = lastKnownTargetPose inFrameOfReferenceOf robotPosition
@@ -135,7 +131,6 @@ class VisionAssistedTrajectoryTracker(
                 println("jevois angle error: $error")
 
                 turn = kJevoisKp * error + kJevoisKd * (error - prevError)
-
             } else {
                 println("NO TARGET FOUND, mega prank (you should never see this...), returning...")
                 DriveTrain.getInstance().setOutput(nextState) // go back to RAMSETE tracking mode
@@ -157,7 +152,6 @@ class VisionAssistedTrajectoryTracker(
             )
 
             prevError = error // save error for the PD loop
-
         } else { // just do the boring Ramsete stuff
             DriveTrain.getInstance().setOutput(nextState)
         }
@@ -188,13 +182,12 @@ class VisionAssistedTrajectoryTracker(
     override fun interrupted() = end()
 
     companion object {
-        const val kJevoisKp = 5.5 * (2* PI) / 360.0
+        const val kJevoisKp = 5.5 * (2 * PI) / 360.0
         const val kJevoisKd = 0.0
 
         const val kLimeLightKp = 0.2 * 3.5
         const val kLimeLightKd = 0.toDouble()
 
         var visionActive = false
-
     }
 }

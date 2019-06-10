@@ -6,7 +6,7 @@ import frc.robot.subsystems.DriveTrain
 import org.ghrobotics.lib.mathematics.units.Rotation2d
 
 class TurnInPlaceTheSecond(
-        private val targetAngle: Rotation2d
+    private val targetAngle: Rotation2d
 ) : Command() {
 
     var lastError = Rotation2d.kZero
@@ -27,7 +27,6 @@ class TurnInPlaceTheSecond(
         DriveTrain.getInstance().setOutputFromKinematics(demand)
 
         lastError = error
-
     }
 
     override fun isFinished() = (lastError.absoluteValue.degree < 3)
@@ -36,5 +35,4 @@ class TurnInPlaceTheSecond(
         const val kP = 0.3
         const val kD = 1
     }
-
 }

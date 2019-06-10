@@ -1,30 +1,30 @@
-//package frc.robot.commands.subsystems.superstructure
+// package frc.robot.commands.subsystems.superstructure
 //
-//import edu.wpi.first.wpilibj.command.Command
-//import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
-//import frc.robot.lib.obj.RoundRotation2d
-//import frc.robot.states.ElevatorState
-//import frc.robot.states.SuperStructureState
-//import frc.robot.subsystems.superstructure.Elevator
-//import frc.robot.subsystems.superstructure.SuperStructure
-//import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
-//import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d
-//import frc.robot.subsystems.superstructure.SuperStructure.getDumbWrist
-////import frc.robot.subsystems.superstructure.SuperStructure.getInstance
-//import org.ghrobotics.lib.mathematics.units.*
-//import org.team5940.pantry.exparimental.command.SendableCommandBase
+// import edu.wpi.first.wpilibj.command.Command
+// import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
+// import frc.robot.lib.obj.RoundRotation2d
+// import frc.robot.states.ElevatorState
+// import frc.robot.states.SuperStructureState
+// import frc.robot.subsystems.superstructure.Elevator
+// import frc.robot.subsystems.superstructure.SuperStructure
+// import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
+// import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d
+// import frc.robot.subsystems.superstructure.SuperStructure.getDumbWrist
+// //import frc.robot.subsystems.superstructure.SuperStructure.getInstance
+// import org.ghrobotics.lib.mathematics.units.*
+// import org.team5940.pantry.exparimental.command.SendableCommandBase
 //
-//val Number.roundRadian: RoundRotation2d get() = RoundRotation2d.getRadian(toDouble())
-//@Suppress("unused")
-//val Number.roundDegree: RoundRotation2d get() = RoundRotation2d.getDegree(toDouble())
+// val Number.roundRadian: RoundRotation2d get() = RoundRotation2d.getRadian(toDouble())
+// @Suppress("unused")
+// val Number.roundDegree: RoundRotation2d get() = RoundRotation2d.getDegree(toDouble())
 //
-//class ProximalPoke(
+// class ProximalPoke(
 //        private val structure: SuperStructure,
 //        private val elevator : Elevator,
 //        private val pokeDistance: Length,
 //        private val wristAngle: RoundRotation2d,
 //        private val isOutwardsPoke: Boolean = true
-//) : Command() {
+// ) : Command() {
 //
 //    companion object {
 //
@@ -111,8 +111,8 @@
 //        super.initSendable(builder)
 //    }
 //
-//}
+// }
 //
-//private operator fun Number.times(other: Boolean): Double {
+// private operator fun Number.times(other: Boolean): Double {
 //    return toDouble() * (if (other) 1 else -1)
-//}
+// }

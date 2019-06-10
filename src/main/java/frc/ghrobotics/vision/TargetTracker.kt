@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj.command.Subsystem
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
 import frc.robot.Network
 import frc.robot.subsystems.DriveTrain
-//import org.ghrobotics.frc2019.?Constants
-//import org.ghrobotics.frc2019.subsystems.drive.DriveSubsystem
+// import org.ghrobotics.frc2019.?Constants
+// import org.ghrobotics.frc2019.subsystems.drive.DriveSubsystem
 import org.ghrobotics.lib.debug.LiveDashboard
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d
@@ -15,8 +15,7 @@ import org.ghrobotics.lib.mathematics.units.inch
 import org.ghrobotics.lib.mathematics.units.meter
 import org.ghrobotics.lib.mathematics.units.second
 
-
-object TargetTracker: Subsystem() {
+object TargetTracker : Subsystem() {
 
     override fun initDefaultCommand() {
         Network.VisionTab.add(this)
@@ -30,26 +29,24 @@ object TargetTracker: Subsystem() {
     override fun initSendable(builder: SendableBuilder) {
 
         builder.addStringProperty("TargetData",
-                {getBackTargetData()}, null)
+                { getBackTargetData() }, null)
 
         super.initSendable(builder)
     }
 
     private fun getBackTargetData(): String {
 
-        if(!JeVoisManager.isBackJeVoisConnected) return ""
+        if (!JeVoisManager.isBackJeVoisConnected) return ""
 
         val newTarget = getBestTargetUsingReference(
                 DriveTrain.getInstance().robotPosition, false)
 
-        if(newTarget == null) return ""
+        if (newTarget == null) return ""
 
-        val transform = newTarget!!.averagedPose2d inFrameOfReferenceOf  DriveTrain.getInstance().robotPosition // TODO check math
+        val transform = newTarget!!.averagedPose2d inFrameOfReferenceOf DriveTrain.getInstance().robotPosition // TODO check math
         val angle = Rotation2d(transform.translation.x.value, transform.translation.y.value, true)
 
-
         return "angle ${angle.degree} distance ${transform.translation.norm.feet}"
-
     }
 
     internal val targets = mutableSetOf<TrackedTarget>()
@@ -82,8 +79,8 @@ object TargetTracker: Subsystem() {
                     it.averagedPose2d.translation.distance(samplePose.translation)
                 }
                 val sample = TrackedTargetSample(creationTime, samplePose)
-                if (closestTarget == null
-                        || closestTarget.averagedPose2d.translation.distance(samplePose.translation) > kTargetTrackingDistanceErrorTolerance.value
+                if (closestTarget == null ||
+                        closestTarget.averagedPose2d.translation.distance(samplePose.translation) > kTargetTrackingDistanceErrorTolerance.value
                 ) {
                     // Create new target if no targets are within tolerance
                     targets += TrackedTarget(sample)
@@ -120,14 +117,14 @@ object TargetTracker: Subsystem() {
     fun getAbsoluteTarget(translation2d: Translation2d) = synchronized(targets) {
         targets.asSequence()
                 .filter {
-                    it.isReal
-                            && translation2d.distance(it.averagedPose2d.translation) <= kTargetTrackingDistanceErrorTolerance.value
+                    it.isReal &&
+                            translation2d.distance(it.averagedPose2d.translation) <= kTargetTrackingDistanceErrorTolerance.value
                 }
                 .minBy { it.averagedPose2d.translation.distance(translation2d) }
     }
 
     class TrackedTarget(
-            initialTargetSample: TrackedTargetSample
+        initialTargetSample: TrackedTargetSample
     ) {
 
         private val samples = mutableSetOf<TrackedTargetSample>()
@@ -192,12 +189,11 @@ object TargetTracker: Subsystem() {
             )
             averagedPose2dRelativeToBot = averagedPose2d inFrameOfReferenceOf currentRobotPose
         }
-
     }
 
     data class TrackedTargetSample(
-            val creationTime: Double,
-            val targetPose: Pose2d
+        val creationTime: Double,
+        val targetPose: Pose2d
     )
 
     // VISION
@@ -207,5 +203,4 @@ object TargetTracker: Subsystem() {
     val kTargetTrackingDistanceErrorTolerance = 16.inch
     val kTargetTrackingMinLifetime = 0.1.second
     val kTargetTrackingMaxLifetime = 0.5.second
-
 }

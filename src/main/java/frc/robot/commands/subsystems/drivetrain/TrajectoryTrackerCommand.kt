@@ -5,18 +5,14 @@ import java.util.function.Supplier
 
 import org.ghrobotics.lib.debug.LiveDashboard
 import org.ghrobotics.lib.mathematics.twodim.control.TrajectoryTracker
-import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature
-import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedEntry
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory
-import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TrajectorySamplePoint
 import org.ghrobotics.lib.mathematics.units.Length
 import org.ghrobotics.lib.subsystems.drive.TrajectoryTrackerOutput
 
 import edu.wpi.first.wpilibj.Notifier
 import edu.wpi.first.wpilibj.Timer
 import frc.robot.Robot
-import frc.robot.commands.auto.routines.yeOldeRoutines.Trajectories
 import frc.robot.lib.AutoCommand
 import frc.robot.lib.Logger
 import frc.robot.subsystems.DriveTrain
@@ -24,10 +20,14 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.types.mirror
 import org.ghrobotics.lib.mathematics.units.second
 
 // @SuppressWarnings({"WeakerAccess", "unused"})
-class TrajectoryTrackerCommand(private val driveBase: DriveTrain, private val trajectoryTracker: TrajectoryTracker,
-                               private val trajectorySource: Supplier<TimedTrajectory<Pose2dWithCurvature>>,
-                               private val shouldMirrorPath: BooleanSupplier, private val reset: Boolean)
-    : AutoCommand() {
+class TrajectoryTrackerCommand(
+    private val driveBase: DriveTrain,
+    private val trajectoryTracker: TrajectoryTracker,
+    private val trajectorySource: Supplier<TimedTrajectory<Pose2dWithCurvature>>,
+    private val shouldMirrorPath: BooleanSupplier,
+    private val reset: Boolean
+) :
+    AutoCommand() {
     private var output: TrajectoryTrackerOutput? = null
     // TODO make sure that this fabled namespace collision doesn't happen on Shuffleboard
     internal var mDesiredLeft: Length? = null
@@ -41,7 +41,7 @@ class TrajectoryTrackerCommand(private val driveBase: DriveTrain, private val tr
     private var mUpdateNotifier: Notifier? = null
 
     val trajectory: TimedTrajectory<Pose2dWithCurvature>
-        get() = this.trajectorySource!!.get()
+        get() = this.trajectorySource.get()
 
 //    @JvmOverloads
 //    constructor(driveBase: DriveTrain, trajectorySource: Supplier<TimedTrajectory<Pose2dWithCurvature>>, reset: Boolean = false) : this(driveBase, Robot.drivetrain.getTrajectoryTracker(), trajectorySource, { false }, reset) {
@@ -114,7 +114,6 @@ class TrajectoryTrackerCommand(private val driveBase: DriveTrain, private val tr
 
             // refVelEntry.setDouble(referencePoint.getState().getVelocity().getType$FalconLibrary().getFeet());
             // currentVelEntry.setDouble(driveBase.getLeft().getFeetPerSecond());
-
         }
         // Logger.log("Linear: " + output.getLinearVelocity().getValue() + " Angular: " + output.getAngularVelocity().getValue() );
         driveBase.setOutput(output!!)
@@ -126,6 +125,5 @@ class TrajectoryTrackerCommand(private val driveBase: DriveTrain, private val tr
         LiveDashboard.isFollowingPath = false
     }
 
-    override fun isFinished()= trajectoryTracker.isFinished
-
+    override fun isFinished() = trajectoryTracker.isFinished
 }

@@ -9,11 +9,11 @@ import com.github.salomonbrys.kotson.fromJson
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.google.gson.JsonParseException
-//import edu.wpi.first.wpilibj.SerialPort
-//import edu.wpi.first.wpilibj.SerialPort
-//import edu.wpi.first.wpilibj.SerialPort
+// import edu.wpi.first.wpilibj.SerialPort
+// import edu.wpi.first.wpilibj.SerialPort
+// import edu.wpi.first.wpilibj.SerialPort
 import edu.wpi.first.wpilibj.Timer
-//import org.ghrobotics.frc2019.Constants
+// import org.ghrobotics.frc2019.Constants
 import org.ghrobotics.lib.mathematics.units.Time
 import org.ghrobotics.lib.mathematics.units.second
 import kotlin.concurrent.fixedRateTimer
@@ -67,7 +67,6 @@ object JeVoisManager {
             isFrontJeVoisConnected = connectedJeVoisCameras.any { it.isFront == true }
             isBackJeVoisConnected = connectedJeVoisCameras.any { it.isFront == false }
         }
-
     }
 
     class JeVois(
@@ -125,9 +124,6 @@ object JeVoisManager {
                             processMessage(stringBuffer.toString())
                             stringBuffer.clear()
                         }
-
-
-
                     } catch (e: Throwable) {
                         println("[JeVois] ${e.localizedMessage}")
 //                    e.printStackTrace()
@@ -175,9 +171,7 @@ object JeVoisManager {
 
         private fun SerialPort.writeString(data: String) = writeBytes(data.toByteArray())
         private fun SerialPort.writeBytes(data: ByteArray) = writeBytes(data, data.size.toLong())
-
     }
-
 }
 
 data class VisionData(

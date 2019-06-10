@@ -1,27 +1,23 @@
 package frc.robot
 
 import edu.wpi.first.networktables.NetworkTableEntry
-import edu.wpi.first.wpilibj.command.Command
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser
 import frc.robot.commands.auto.Autonomous
-import org.ghrobotics.lib.utils.capitalizeEachWord
-import org.ghrobotics.lib.wrappers.networktables.enumSendableChooser
-import org.ghrobotics.lib.wrappers.networktables.sendableChooser
 
 object Network {
 
-    val AutoTab by lazy {Shuffleboard.getTab("Auto")}
+    val AutoTab by lazy { Shuffleboard.getTab("Auto") }
 
-    val DriveTrainTab by lazy {Shuffleboard.getTab("DriveTrain")}
+    val DriveTrainTab by lazy { Shuffleboard.getTab("DriveTrain") }
 
-    val SuperStructureTab by lazy {Shuffleboard.getTab("SuperStructure")}
+    val SuperStructureTab by lazy { Shuffleboard.getTab("SuperStructure") }
 
-    val IntakeTab: ShuffleboardTab by lazy {Shuffleboard.getTab("Intake")}
+    val IntakeTab: ShuffleboardTab by lazy { Shuffleboard.getTab("Intake") }
 
-    val VisionTab: ShuffleboardTab by lazy {Shuffleboard.getTab("Vision")}
+    val VisionTab: ShuffleboardTab by lazy { Shuffleboard.getTab("Vision") }
 
     private val visionLayout = VisionTab.getLayout("Vision", BuiltInLayouts.kGrid)
             .withSize(3, 3)
@@ -45,7 +41,5 @@ object Network {
                 "Auto Mode",
                 autoModeChooser
         )
-
     }
-
 }

@@ -1,7 +1,7 @@
 package frc.robot.commands.auto.paths
 
 import frc.robot.Constants
-//import org.ghrobotics.frc2019.Constants
+// import org.ghrobotics.frc2019.Constants
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.mathematics.twodim.geometry.Rectangle2d
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d
@@ -17,7 +17,6 @@ object TrajectoryWaypoints {
     val kHabitatL1RX = 95.28.feet
     val kHabitatL1Platform = Rectangle2d(Translation2d(4.feet, 7.feet), Translation2d(8.feet, 20.feet))
     val kRampHypotenuse = .4.inch
-
 
     // Cargo Ship
     val kCargoShipFL = Pose2d(220.25.inch, 172.88.inch, 0.degree)
@@ -36,7 +35,6 @@ object TrajectoryWaypoints {
 
     // Depot
     val kDepotBRCorner = Pose2d(47.inch, 78.396.inch, (-25).degree)
-
 
     /** Robot Starting Locations **/
 

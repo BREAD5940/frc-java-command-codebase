@@ -3,7 +3,6 @@ package frc.robot.commands.auto.routines.offseasonRoutines
 import edu.wpi.first.wpilibj.command.InstantCommand
 import edu.wpi.first.wpilibj.command.WaitCommand
 import frc.robot.RobotConfig
-import frc.robot.commands.auto.Autonomous
 import frc.robot.commands.auto.paths.TrajectoryFactory
 import frc.robot.commands.auto.paths.TrajectoryWaypoints
 import frc.robot.commands.auto.routines.AutoRoutine
@@ -14,17 +13,16 @@ import frc.robot.commands.subsystems.superstructure.RunIntake
 import frc.robot.subsystems.DriveTrain
 import frc.robot.subsystems.Intake
 import frc.robot.subsystems.superstructure.SuperStructure
-//import org.ghrobotics.lib.commands.DelayCommand
-//import org.ghrobotics.lib.commands.FalconCommand
-//import org.ghrobotics.lib.commands.parallel
-//import org.ghrobotics.lib.commands.sequential
+// import org.ghrobotics.lib.commands.DelayCommand
+// import org.ghrobotics.lib.commands.FalconCommand
+// import org.ghrobotics.lib.commands.parallel
+// import org.ghrobotics.lib.commands.sequential
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.duration
 import org.ghrobotics.lib.mathematics.units.Time
 import org.ghrobotics.lib.mathematics.units.feet
 import org.ghrobotics.lib.mathematics.units.second
-import org.ghrobotics.lib.utils.withEquals
 
 /**
  * Two hatch cargo ship auto. Can either start on the side and place two on the side,
@@ -33,9 +31,9 @@ import org.ghrobotics.lib.utils.withEquals
 class CargoShipRoutine(private val mode: Mode, private val isLeft: Boolean) : AutoRoutine() {
 
     enum class Mode(
-            val path1: TimedTrajectory<Pose2dWithCurvature>,
-            val path2: TimedTrajectory<Pose2dWithCurvature>,
-            val path3: TimedTrajectory<Pose2dWithCurvature>
+        val path1: TimedTrajectory<Pose2dWithCurvature>,
+        val path2: TimedTrajectory<Pose2dWithCurvature>,
+        val path3: TimedTrajectory<Pose2dWithCurvature>
     ) {
         SIDE(
                 TrajectoryFactory.sideStartToCargoShipS1,
@@ -49,14 +47,14 @@ class CargoShipRoutine(private val mode: Mode, private val isLeft: Boolean) : Au
         )
     }
 
-    private val pathMirrored = {isLeft}
+    private val pathMirrored = { isLeft }
 
     val duration: Time
         get() = mode.path1.duration + mode.path2.duration + mode.path3.duration
 
     init {
 
-        +InstantCommand{
+        +InstantCommand {
             DriveTrain.getInstance().localization.reset(mode.path1.firstState.state.pose)
         }
 

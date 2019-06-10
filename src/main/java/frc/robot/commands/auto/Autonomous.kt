@@ -9,15 +9,8 @@ import frc.robot.commands.auto.routines.offseasonRoutines.BottomRocketRoutine
 import frc.robot.commands.auto.routines.offseasonRoutines.CargoShipRoutine
 import frc.robot.commands.auto.routines.offseasonRoutines.TestRoutine
 import org.ghrobotics.lib.commands.S3ND
-import org.ghrobotics.lib.commands.sequential
-import org.ghrobotics.lib.commands.stateCommandGroup
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.utils.Source
-import org.ghrobotics.lib.utils.and
-import org.ghrobotics.lib.utils.monitor
-import org.ghrobotics.lib.utils.onChangeToTrue
-import org.ghrobotics.lib.wrappers.FalconRobot
-import org.ghrobotics.lib.wrappers.networktables.sendableChooser
 
 /**
  * Manages the autonomous mode of the game.
@@ -48,12 +41,11 @@ object Autonomous {
         options[Autonomous.Mode.CENTER_TO_CARGO_SHIP_LEFT] = CargoShipRoutine(CargoShipRoutine.Mode.FRONT, true)
         options[Autonomous.Mode.CENTER_TO_CARGO_SHIP_RIGHT] = CargoShipRoutine(CargoShipRoutine.Mode.FRONT, false)
 
-        options.forEach{
+        options.forEach {
             println("adding ${it.key} to the auto chooser")
             JUST.addOption(it.key.toString(), it.key)
         }
         JUST.setDefaultOption("NOTHING", Autonomous.Mode.NOTHING)
-
     }
 
     @Suppress("LocalVariableName")
@@ -83,7 +75,5 @@ object Autonomous {
         val toStart = options[selection]
 
         toStart?.start()
-
     }
-
 }

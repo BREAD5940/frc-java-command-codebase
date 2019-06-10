@@ -16,16 +16,15 @@ import kotlin.math.absoluteValue
 
 @Suppress("unused")
 class GreyLimelightDriveController(
-        val skewCompEnabled: Boolean,
-        val wantsHatchMode: Boolean
+    val skewCompEnabled: Boolean,
+    val wantsHatchMode: Boolean
 ) : Command() {
-
 
     private var isOnTarget = false
 
     private val forwardPID = SynchronousPIDF(
             0.01, 0.0, 0.001
-    );
+    )
     private val turnPID = SynchronousPIDF(
             0.01, 0.0, 0.001
     )
@@ -38,7 +37,7 @@ class GreyLimelightDriveController(
         turnPID.setOutputRange(-MAX_TURN_MAGNITUDE, MAX_TURN_MAGNITUDE)
     }
 
-    private val limeLight by lazy {LimeLight.getInstance()}
+    private val limeLight by lazy { LimeLight.getInstance() }
 
     override fun initialize() {
         isOnTarget = false
@@ -50,7 +49,7 @@ class GreyLimelightDriveController(
     override fun execute() {
 
         // check for valid targets and return otherwise
-        if(!limeLight.hasTarget()) {
+        if (!limeLight.hasTarget()) {
             m_rightSetpoint = 0.0
             m_leftSetpoint = 0.0
             return
@@ -59,18 +58,18 @@ class GreyLimelightDriveController(
         val angleError = limeLight.dx.degree
 
         val distance = limeLight.estimateDistanceFromAngle()
-        val distanceError = distance - if(wantsHatchMode) DISTANCE_SETPOINT_HATCH else DISTANCE_SETPOINT_CARGO
+        val distanceError = distance - if (wantsHatchMode) DISTANCE_SETPOINT_HATCH else DISTANCE_SETPOINT_CARGO
 
         val throttlePIDOut = forwardPID.calculate(
                 -distanceError.inch, 0.020
         )
 
         val turnPIDOut = turnPID.calculate(angleError -
-                if(wantsHatchMode) HATCH_VISION_OFFSET else CARGO_VISION_OFFSET, 0.020)
+                if (wantsHatchMode) HATCH_VISION_OFFSET else CARGO_VISION_OFFSET, 0.020)
 
         val goalAngleCompensation = calcScaleGoalAngleComp(distance, angleError)
 
-        if(skewCompEnabled) {
+        if (skewCompEnabled) {
             m_leftSetpoint = throttlePIDOut - turnPIDOut - goalAngleCompensation
             m_rightSetpoint = throttlePIDOut + turnPIDOut + goalAngleCompensation
         } else {
@@ -79,12 +78,11 @@ class GreyLimelightDriveController(
         }
 
         Logger.log("GreyLimelight throttle{$throttlePIDOut} turn{$turnPIDOut}" +
-                "${if(skewCompEnabled) " skewComp{$goalAngleCompensation" else ""} left{$m_leftSetpoint} right{$m_rightSetpoint} ")
+                "${if (skewCompEnabled) " skewComp{$goalAngleCompensation" else ""} left{$m_leftSetpoint} right{$m_rightSetpoint} ")
 
         DriveTrain.getInstance().setPowers(m_leftSetpoint, m_rightSetpoint)
 
         isOnTarget = abs(angleError) < 5.0 && distanceError.inch.absoluteValue < 3.0 && throttlePIDOut < 0.3 && DriveTrain.getInstance().gyro.velocityZ.absoluteValue < 3.0
-
     }
 
     private fun calcScaleGoalAngleComp(distance: Length, xOffsetDegrees: Double): Double {
@@ -106,7 +104,7 @@ class GreyLimelightDriveController(
         val skewComp = (GOAL_ANGLE_COMP_KP * skew * frame_multiplier * distMultiplier).boundTo(
                 SKEW_MIN, SKEW_MAX)
 
-        return -skewComp;   // y = mx + b
+        return -skewComp; // y = mx + b
                             // y = degree of compensation
                             // m = (1 - 0) / (max - min)
                             // x = distance to target
@@ -133,11 +131,9 @@ class GreyLimelightDriveController(
 
         private var m_rightSetpoint = 0.0
         private var m_leftSetpoint = 0.0
-
     }
 
     override fun isFinished() = isOnTarget
-
 }
 
 private fun Number.boundTo(low: Double, high: Double): Double {

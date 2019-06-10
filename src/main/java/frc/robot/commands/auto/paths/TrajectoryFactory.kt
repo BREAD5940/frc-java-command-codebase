@@ -1,7 +1,7 @@
 package frc.robot.commands.auto.paths
 
-//import org.ghrobotics.frc2019.Constants
-//import javafx.scene.chart.XYChart
+// import org.ghrobotics.frc2019.Constants
+// import javafx.scene.chart.XYChart
 import frc.robot.Constants
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2dWithCurvature
@@ -10,7 +10,7 @@ import org.ghrobotics.lib.mathematics.twodim.trajectory.DefaultTrajectoryGenerat
 import org.ghrobotics.lib.mathematics.twodim.trajectory.constraints.*
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.TimedTrajectory
 import org.ghrobotics.lib.mathematics.twodim.trajectory.types.mirror
-//import org.ghrobotics.lib.mathematics.units.SILengthConstants
+// import org.ghrobotics.lib.mathematics.units.SILengthConstants
 import org.ghrobotics.lib.mathematics.units.degree
 import org.ghrobotics.lib.mathematics.units.derivedunits.*
 import org.ghrobotics.lib.mathematics.units.feet
@@ -254,7 +254,6 @@ object TrajectoryFactory {
             ),
             getConstraints(false, rocketFAdjusted), 6.feet.velocity, kMaxAcceleration, kMaxVoltage
 
-
     )
 
     /** Generation **/
@@ -279,13 +278,13 @@ object TrajectoryFactory {
             getConstraints(elevatorUp, trajectoryEndpoint.position)
 
     private fun generateTrajectory(
-            reversed: Boolean,
-            points: List<TrajectoryWaypoints.Waypoint>,
-            constraints: List<TimingConstraint<Pose2dWithCurvature>>,
-            maxVelocity: LinearVelocity,
-            maxAcceleration: LinearAcceleration,
-            maxVoltage: Volt,
-            optimizeCurvature: Boolean = true
+        reversed: Boolean,
+        points: List<TrajectoryWaypoints.Waypoint>,
+        constraints: List<TimingConstraint<Pose2dWithCurvature>>,
+        maxVelocity: LinearVelocity,
+        maxAcceleration: LinearAcceleration,
+        maxVoltage: Volt,
+        optimizeCurvature: Boolean = true
     ): TimedTrajectory<Pose2dWithCurvature> {
 
         val driveDynamicsConstraint = DifferentialDriveDynamicsConstraint(Constants.kLowGearDifferentialDrive, maxVoltage)
@@ -307,5 +306,4 @@ object TrajectoryFactory {
     }
 
     private fun Pose2d.asWaypoint() = TrajectoryWaypoints.Waypoint(this)
-
 }

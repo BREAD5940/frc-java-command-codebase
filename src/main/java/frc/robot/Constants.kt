@@ -6,7 +6,7 @@ import com.team254.lib.physics.DCMotorTransmission
 import com.team254.lib.physics.DifferentialDrive
 import frc.robot.lib.motion.Util
 
-//import /**/frc.robot.lib.motion.Util
+// import /**/frc.robot.lib.motion.Util
 import org.ghrobotics.lib.mathematics.units.*
 
 public object Constants {
@@ -15,8 +15,8 @@ public object Constants {
     val kRobotMomentOfInertia = 10.0 // kg m^2 // TODO Tune
     val kRobotAngularDrag = 12.0 // N*m / (rad/sec)
 
-    val kWheelRadius = Util.toMeters((2f / 12f).toDouble())// meters. TODO tune
-    val kTrackWidth = Util.toMeters((26f / 12f).toDouble())// meters
+    val kWheelRadius = Util.toMeters((2f / 12f).toDouble()) // meters. TODO tune
+    val kTrackWidth = Util.toMeters((26f / 12f).toDouble()) // meters
 //    val kWheelRadius = 2.inch.meter
 //    val kTrackWidth = 26.inch.meter
 
@@ -44,11 +44,11 @@ public object Constants {
 
     private val kVDriveLeftHigh = 0.143 * 1.0 // Volts per radians per second - Calculated emperically
     private val kADriveLeftHigh = 0.043 * 1.0 // Volts per radians per second per second
-    private val kVInterceptLeftHigh = 1.33 * 1.0//4 * 0.4d; // Volts - tuned!
+    private val kVInterceptLeftHigh = 1.33 * 1.0 // 4 * 0.4d; // Volts - tuned!
 
     private val kVDriveRightHigh = 0.14 * 1.0 // Volts per radians per second - Calculated emperically
     private val kADriveRightHigh = 0.043 * 1.0 // Volts per radians per second per second
-    private val kVInterceptRightHigh = 1.34 * 1.0//4 * 0.4d; // Volts - tuned!
+    private val kVInterceptRightHigh = 1.34 * 1.0 // 4 * 0.4d; // Volts - tuned!
 
     private val kLeftTransmissionModelHighGear = DCMotorTransmission(1 / kVDriveLeftHigh,
             kWheelRadius * kWheelRadius * kRobotMass / (2.0 * kADriveLeftHigh),
@@ -80,14 +80,14 @@ public object Constants {
     val kMinLookaheadDistance = 2.feet
 
     /* Wrist stuff */
-    val kWristLength = 6.inch //distance from joint to COM
+    val kWristLength = 6.inch // distance from joint to COM
     val kWristMass = 15.lb
     val kWristSpeedPerVolt = 0.21 // radians/sec/volt
     val kWristTorquePerVolt = 47.33 // Newton meters per volt, stall
     val kWristStaticFrictionVoltage = 0.0 // volts, TODO tune
 
     /* Elbow stuff */
-    val kElbowLength = 8.inch //distance from joint to COM
+    val kElbowLength = 8.inch // distance from joint to COM
     val kElbowMass = 3.lb
     val kElbowSpeedPerVolt = 0.17 // radians/sec/volt
     val kElbowTorquePerVolt = 55.0 // Newton meters per volt, stall
@@ -104,7 +104,7 @@ public object Constants {
     val kArmLength = 29.5.inch // from center of elevator to hatch part of the intake
 
     val kIntakeProtrusionFrontExtended = kArmLength - (kRobotLength / 2.0 - kCenterToElevator) // 18.5
-    val kIntakeProtrusionBackExtended = kCenterToElevator - kArmLength + kRobotLength /2.0 // -9.5
+    val kIntakeProtrusionBackExtended = kCenterToElevator - kArmLength + kRobotLength / 2.0 // -9.5
 
     // TRANSFORMATIONS
     val kFrontBumperToCenter = Pose2d(-(kRobotLength / 2.0) - kBumperThickness, 0.meter, 0.degree)
@@ -116,5 +116,4 @@ public object Constants {
 
     val kCenterToFrontCamera = Pose2d((-1.75).inch, 0.0.inch, 0.degree)
     val kCenterToBackCamera = Pose2d((-6.25).inch, 0.0.inch, 180.degree)
-
 }

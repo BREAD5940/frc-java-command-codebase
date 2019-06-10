@@ -1,13 +1,13 @@
 package frc.robot.commands.subsystems.drivetrain
 
-//import edu.wpi.first.wpilibj.drive.DifferentialDrive
+// import edu.wpi.first.wpilibj.drive.DifferentialDrive
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder
 import frc.ghrobotics.vision.JeVoisManager
 import frc.robot.Robot
 import frc.robot.subsystems.DriveTrain
 import frc.robot.subsystems.LimeLight
 import frc.robot.subsystems.superstructure.SuperStructure
-//import org.apache.commons.math3.ml.neuralnet.Network
+// import org.apache.commons.math3.ml.neuralnet.Network
 import frc.ghrobotics.vision.TargetTracker
 import frc.robot.Network
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
@@ -15,7 +15,7 @@ import org.ghrobotics.lib.mathematics.units.Rotation2d
 import org.ghrobotics.lib.mathematics.units.degree
 import org.ghrobotics.lib.mathematics.units.radian
 
-//import org.team5940.pantry.exparimental.command.Command
+// import org.team5940.pantry.exparimental.command.Command
 
 class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
 
@@ -38,9 +38,9 @@ class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
 
         var turnInput: Double?
 
-        println("looking for vision targets on the ${if(isFront) "front" else "back"}")
+        println("looking for vision targets on the ${if (isFront) "front" else "back"}")
 
-        if(isFront) {
+        if (isFront) {
             // it's LimeLight Time
             val lemonLight = LimeLight.getInstance()
             val hasTarget = lemonLight.trackedTargets > 0.5
@@ -67,7 +67,7 @@ class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
             if (newTarget?.isAlive == true && newPose != null) lastKnownTargetPose = newPose
 
             val lastKnownTargetPose = this.lastKnownTargetPose
-            if(lastKnownTargetPose == null) {
+            if (lastKnownTargetPose == null) {
                 turnInput = null
                 println("no vision targets found!")
             } else {
@@ -77,9 +77,9 @@ class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
 
                 // since it's the back i don't care
 
-                if(angle.degree < -90) angle = angle.plus(180.degree)
+                if (angle.degree < -90) angle = angle.plus(180.degree)
 
-                if(angle.degree > 90) angle = angle.minus(180.degree)
+                if (angle.degree > 90) angle = angle.minus(180.degree)
 
                 Network.visionDriveAngle.setDouble(angle.degree)
                 Network.visionDriveActive.setBoolean(true)
@@ -95,11 +95,10 @@ class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
                 turnInput = angleError.degree
 //                }
             }
-
         }
 
         // check if our vision even sees anything - if not, normal drive time
-        if(turnInput == null) {
+        if (turnInput == null) {
             println("no target, going to default execute method")
             super.execute()
         } else {
@@ -120,7 +119,7 @@ class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
 //            kd_mutable = if(!isFront) kJevoiskD else kLemonLightkD
 
 //            var turn = 0.0
-            var turn = if(isFront) {
+            var turn = if (isFront) {
                 println("limelightPID")
                 kLemonLightkP * turnInput - kLemonLightkD * (turnInput - prevError)
             } else {
@@ -132,8 +131,8 @@ class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
 
 //            turn /= 100
 
-            if(turn > 0.6) turn = 0.6
-            if(turn < -0.6) turn = -0.6
+            if (turn > 0.6) turn = 0.6
+            if (turn < -0.6) turn = -0.6
 
 //            turn = Util.limit(turn, 0.5)
 
@@ -152,16 +151,14 @@ class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
 
             prevError = turnInput
         }
-
     }
 
     private var kp_mutable = kJevoiskP
     private var kd_mutable = kJevoiskD
 
-
     override fun initSendable(builder: SendableBuilder) {
 
-        builder.addDoubleProperty("angle", {Math.toDegrees(lastKnownAngle)}, null)
+        builder.addDoubleProperty("angle", { Math.toDegrees(lastKnownAngle) }, null)
 
         builder.addDoubleProperty("kp", { kp_mutable }, {
             this.kp_mutable = it
@@ -182,7 +179,4 @@ class DualHybridDriverAssist : DriveTrain.CurvatureDrive() {
     }
 
     override fun isFinished() = false
-
-
 }
-

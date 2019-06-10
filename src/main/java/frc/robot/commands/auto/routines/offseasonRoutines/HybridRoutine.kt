@@ -64,7 +64,7 @@ class HybridRoutine(private val mode: Mode) : AutoRoutine() {
                     Intake.getInstance().clamp(),
                     PassThrough.FrontToBack(SuperStructure.getInstance()),
                         AutoRoutine(RunIntake.grabHatchFor(mode.path2.duration))
-                                .withExit {path2.isCompleted}
+                                .withExit { path2.isCompleted }
                 )
             )
 

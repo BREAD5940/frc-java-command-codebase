@@ -49,7 +49,7 @@ class VelocityProfiledThrust(private val goalProximal: RoundRotation2d) : Comman
         structure.move(endSetpoint)
     }
 
-    override fun isFinished() =  structure.isWithinToleranceOf(endSetpoint)
+    override fun isFinished() = structure.isWithinToleranceOf(endSetpoint)
 
     fun calculateElevatorSpeed(proximalAngle: Rotation2d): LinearVelocity {
 
@@ -70,5 +70,4 @@ class VelocityProfiledThrust(private val goalProximal: RoundRotation2d) : Comman
         val proximalLinearVelocity: LinearVelocity = proximalCircumference * (kProximalSpeed * 1.second / 360.degree) / 1.second
         // 0.2147 meters/sec
     }
-
 }
