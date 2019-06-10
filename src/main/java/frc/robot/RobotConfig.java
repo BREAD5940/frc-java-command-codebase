@@ -88,16 +88,14 @@ public class RobotConfig {
 
 		public static final NativeUnitLengthModel LEFT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(
 				NativeUnitKt.getNativeUnits(4096),
-				LengthKt.getInch(2)
-		);
+				LengthKt.getInch(2));
 
 		public static final NativeUnitLengthModel RIGHT_NATIVE_UNIT_LENGTH_MODEL = new NativeUnitLengthModel(
 				NativeUnitKt.getNativeUnits(4096),
-				LengthKt.getInch(2)
-		);
+				LengthKt.getInch(2));
 
-//		public static final SlopeNativeUnitModel<Length> LEFT_NATIVE_UNIT_LENGTH_MODEL = new SlopeNativeUnitModel<Length>(LengthKt.getFeet(8), NativeUnitKt.getNativeUnits(30000));
-//		public static final SlopeNativeUnitModel<Length> RIGHT_NATIVE_UNIT_LENGTH_MODEL = new SlopeNativeUnitModel<Length>(LengthKt.getFeet(8), NativeUnitKt.getNativeUnits(30700));
+		//		public static final SlopeNativeUnitModel<Length> LEFT_NATIVE_UNIT_LENGTH_MODEL = new SlopeNativeUnitModel<Length>(LengthKt.getFeet(8), NativeUnitKt.getNativeUnits(30000));
+		//		public static final SlopeNativeUnitModel<Length> RIGHT_NATIVE_UNIT_LENGTH_MODEL = new SlopeNativeUnitModel<Length>(LengthKt.getFeet(8), NativeUnitKt.getNativeUnits(30700));
 
 		// Pathfinder shit
 		public static final double left_static_kv = 0.05; //TODO TUNE THIS! the voltage required to get the robot moving/overcome static friction

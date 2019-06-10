@@ -139,7 +139,7 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 	public DifferentialDrive getDifferentialDrive() {
 		// String mes = (mCurrentGear == Gear.LOW) ? "lowGearDifferentialDrive" : "highGearDifferentialDrive"; 
-//		SmartDashboard.putString("current drive model", (mCurrentGear == Gear.LOW) ? "lowGearDifferentialDrive" : "highGearDifferentialDrive");
+		//		SmartDashboard.putString("current drive model", (mCurrentGear == Gear.LOW) ? "lowGearDifferentialDrive" : "highGearDifferentialDrive");
 
 		return (mCurrentGear == Gear.LOW) ? lowGearDifferentialDrive : highGearDifferentialDrive;
 	}
@@ -177,18 +177,18 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 	}
 
 	public TrajectoryTracker getTrajectoryTracker(TrajectoryTrackerMode mode) {
-//		switch (mode) {
-//		case RAMSETE:
-//			return ramseteTracker;
-//		case FEEDFORWARD:
-//			return feedForwardTracker;
-//		case PUREPURSUIT:
-//			return purePursuitTracker;
-//		case PID:
-//			return null;
-//		default:
-//			return ramseteTracker;
-//		}
+		//		switch (mode) {
+		//		case RAMSETE:
+		//			return ramseteTracker;
+		//		case FEEDFORWARD:
+		//			return feedForwardTracker;
+		//		case PUREPURSUIT:
+		//			return purePursuitTracker;
+		//		case PID:
+		//			return null;
+		//		default:
+		//			return ramseteTracker;
+		//		}
 		return ramseteTracker;
 	}
 
@@ -775,11 +775,11 @@ public class DriveTrain extends Subsystem implements DifferentialTrackerDriveBas
 
 	@Override
 	public void logPeriodicIO() {
-//		Logger.log("Bus voltage", getLeftMotor().getBusVoltage());
+		//		Logger.log("Bus voltage", getLeftMotor().getBusVoltage());
 		Logger.log("Forward joystick command", Robot.m_oi.getForwardAxis());
 		Logger.log("Turn joystick command", Robot.m_oi.getTurnAxis());
-//		Logger.log("Left talon output voltage", getLeftMotor().getMotorOutputVoltage());
-//		Logger.log("Right talon output voltage", getRightMotor().getMotorOutputVoltage());
+		//		Logger.log("Left talon output voltage", getLeftMotor().getMotorOutputVoltage());
+		//		Logger.log("Right talon output voltage", getRightMotor().getMotorOutputVoltage());
 	}
 
 }

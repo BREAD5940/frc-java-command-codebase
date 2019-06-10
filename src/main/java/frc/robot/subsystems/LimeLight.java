@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
-import frc.robot.lib.obj.RoundRotation2d;
+import static java.lang.Math.PI;
+
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d;
 import org.ghrobotics.lib.mathematics.units.Length;
@@ -20,8 +21,6 @@ import frc.robot.RobotConfig;
 import frc.robot.lib.motion.Util;
 import frc.robot.lib.obj.VisionTarget;
 import frc.robot.lib.obj.factories.VisionTargetFactory;
-
-import static java.lang.Math.PI;
 
 /**
  * tv  Whether the limelight has any valid targets (0 or 1)
@@ -357,18 +356,16 @@ public class LimeLight extends Subsystem {
 		var horizonalDelta = targetHeight.minus(cameraHeight);
 		return horizonalDelta.div(
 				Math.tan(
-						cameraAngle.getRadian() + getDy().getRadian() * (PI / 180d)
-				)
-		);
+						cameraAngle.getRadian() + getDy().getRadian() * (PI / 180d)));
 
-//
-//		Rotation2d targetAngle = getDy().plus(cameraAngle);
-//
-//		var distance = (visionTargetHeight.minus(cameraHeight)).div(Math.tan(targetAngle.getRadian()));
-//
-//		System.out.println("estimated distance: " + distance.getInch());
-//
-//		return distance;
+		//
+		//		Rotation2d targetAngle = getDy().plus(cameraAngle);
+		//
+		//		var distance = (visionTargetHeight.minus(cameraHeight)).div(Math.tan(targetAngle.getRadian()));
+		//
+		//		System.out.println("estimated distance: " + distance.getInch());
+		//
+		//		return distance;
 
 	}
 

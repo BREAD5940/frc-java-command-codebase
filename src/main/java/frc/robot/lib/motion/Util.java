@@ -10,9 +10,9 @@ import org.ghrobotics.lib.mathematics.units.Length;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
+import org.opencv.core.Point;
 
 import frc.robot.lib.obj.RoundRotation2d;
-import org.opencv.core.Point;
 
 /**
  * Contains basic functions that are used often.

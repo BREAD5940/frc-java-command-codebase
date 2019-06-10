@@ -1,7 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import frc.robot.commands.auto.routines.offseasonRoutines.TestRoutine;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -19,12 +17,13 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.ghrobotics.vision.*;
 import frc.robot.commands.auto.Autonomous;
 import frc.robot.commands.auto.miscActions.AutoMotion;
-import frc.robot.commands.auto.routines.yeOldeRoutines.Trajectories;
+import frc.robot.commands.auto.routines.offseasonRoutines.TestRoutine;
 import frc.robot.commands.subsystems.superstructure.PassThrough;
 import frc.robot.commands.subsystems.superstructure.PassThrough.SyncedMove;
 import frc.robot.commands.subsystems.superstructure.ZeroElevatorDisabled;
@@ -192,7 +191,7 @@ public class Robot extends TimedRobot {
 		//		mAutoChooser = new TerribleAutoChooser();
 		//		mAutoChooser.addOptions();
 		System.out.println("Auto chooser sent!");
-//		Trajectories.generateAllTrajectories();
+		//		Trajectories.generateAllTrajectories();
 
 		//		Network.INSTANCE.getAutoTab().getLayout("Path selection", BuiltInLayouts.kList).add(mAutoChooser.getChooser()).withSize(2, 5).withPosition(0, 0);
 		Network.INSTANCE.getSuperStructureTab().add(superstructure);

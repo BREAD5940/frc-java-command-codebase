@@ -96,8 +96,7 @@ public class HalfBakedRotatingSRX extends WPI_TalonSRX {
 
 	public void setMotionCruiseVelocity(Velocity<Rotation2d> newVelocity) {
 		super.configMotionCruiseVelocity(
-				getTicks(RoundRotation2d.getRadian(newVelocity.getValue()))
-		);
+				getTicks(RoundRotation2d.getRadian(newVelocity.getValue())));
 	}
 
 	//	public RoundRotation2d getVelocity() {

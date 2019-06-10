@@ -6,7 +6,6 @@ import frc.robot.lib.Loggable;
 import frc.robot.lib.obj.RoundRotation2d;
 import frc.robot.lib.statemachines.AutoMotionStateMachine.HeldPiece;
 import frc.robot.subsystems.superstructure.RotatingJoint.RotatingArmState;
-import org.ghrobotics.lib.mathematics.units.Rotation2d;
 
 public class SuperStructureState implements Loggable {
 	public IntakeAngle jointAngles;
