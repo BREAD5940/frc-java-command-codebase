@@ -12,6 +12,7 @@ import org.ghrobotics.lib.mathematics.units.Rotation2d;
 import org.ghrobotics.lib.mathematics.units.derivedunits.Velocity;
 
 import frc.robot.lib.obj.RoundRotation2d;
+import org.opencv.core.Point;
 
 /**
  * Contains basic functions that are used often.
@@ -192,6 +193,12 @@ public class Util {
 		}
 		// return new_;
 		return new_.subList(0, new_.size());
+	}
+
+	public static double interpolate(Point a, Point b, double x) {
+		double slope = (b.y - a.y) / (b.x - a.x);
+		double intercept = a.y - (slope * a.x);
+		return slope * x + intercept;
 	}
 
 }

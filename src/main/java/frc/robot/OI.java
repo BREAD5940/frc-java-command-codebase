@@ -125,8 +125,8 @@ public class OI {
 				new TeleopCommands()));
 		testMeme.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 
-		primaryAButton.whenPressed(ProximalPoke.Companion.OutwardPokeTo(LengthKt.getInch(12)));
-		primaryBButton.whenPressed(ProximalPoke.Companion.RetractTo(LengthKt.getInch(-12)));
+//		primaryAButton.whenPressed(ProximalPoke.Companion.OutwardPokeTo(LengthKt.getInch(12)));
+//		primaryBButton.whenPressed(ProximalPoke.Companion.RetractTo(LengthKt.getInch(-12)));
 
 		//		primaryXButton.whenPressed(new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
 
