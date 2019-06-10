@@ -106,13 +106,13 @@ class VisionAssistedTrajectoryTracker(
 
             var error: Double
             var turn: Double
-            var youShouldUseLimeLight = false
+//            var youShouldUseLimeLight = false
 
             if(limeLightAngle != null && useLimeLightOverTargetTracker) {
 
                 error = -(limeLightAngle!! - robotPosition.rotation).radian
 
-                youShouldUseLimeLight = true
+//                youShouldUseLimeLight = true
 
                 Network.visionDriveAngle.setDouble(Math.toDegrees(error))
                 Network.visionDriveActive.setBoolean(true)

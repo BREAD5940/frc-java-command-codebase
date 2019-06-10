@@ -5,11 +5,9 @@ import frc.robot.lib.obj.RoundRotation2d
 import frc.robot.states.SuperStructureState
 import frc.robot.subsystems.superstructure.SuperStructure
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d
-import org.ghrobotics.lib.mathematics.units.Rotation2d
-import org.ghrobotics.lib.mathematics.units.degree
+import org.ghrobotics.lib.mathematics.units.*
 import org.ghrobotics.lib.mathematics.units.derivedunits.LinearVelocity
 import org.ghrobotics.lib.mathematics.units.derivedunits.velocity
-import org.ghrobotics.lib.mathematics.units.meter
 import kotlin.math.PI
 import kotlin.math.cos
 
@@ -42,10 +40,10 @@ class VelocityProfiledThrust(private val goalProximal: RoundRotation2d) : Comman
 
         SuperStructure.elevator.master.motionCruiseVelocity = calculateElevatorSpeed(state.elbowAngle.toRotation2d())
         structure.elbow.master.setMotionCruiseVelocity(
-                kProximalSpeed.velocity
+                kProximalSpeed
         )
         structure.wrist.master.setMotionCruiseVelocity(
-                kWristSpeed.velocity
+                kWristSpeed
         )
 
         structure.move(endSetpoint)
@@ -59,18 +57,18 @@ class VelocityProfiledThrust(private val goalProximal: RoundRotation2d) : Comman
         // when the proximal is at 0 this needs to return the linear velocity of the tip of the proximal given kproximal speed
         // it should be a trig relationship between the two
 
-        val proximalCircumference = /* diameter */ (kElbowLength * 2) * PI
-        val proximalTipVelocity = (proximalCircumference * (kProximalSpeed.degree / 360)).velocity
-        return proximalTipVelocity * proximalAngle.cos
+        return proximalLinearVelocity * proximalAngle.cos
     }
 
     companion object {
 
-        val kProximalSpeed = 30.degree // per second
+        val kProximalSpeed = 30.degree.velocity // per second
         val kWristSpeed = kProximalSpeed / 2
         val kElbowLength = 0.41.meter
 
-
+        val proximalCircumference = /* diameter */ (kElbowLength * 2) * PI
+        val proximalLinearVelocity: LinearVelocity = proximalCircumference * (kProximalSpeed * 1.second / 360.degree) / 1.second
+        // 0.2147 meters/sec
     }
 
 }
