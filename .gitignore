@@ -175,3 +175,4 @@ src\main\python\twoHatchLLtest.csv
 *.iml
 out/*
 out\*
+.kotlin-for-frc/kotlin-frc-preferences.json
