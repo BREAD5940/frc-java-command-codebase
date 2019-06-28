@@ -144,8 +144,8 @@ public class Elevator extends HalfBakedSubsystem {
 
 		// Quadrature Encoder of current
 		// Talon
-		mMaster.configPeakOutputForward(+0.3, 0);
-		mMaster.configPeakOutputReverse(-0.3, 0);
+		mMaster.configPeakOutputForward(+1.0, 0);
+		mMaster.configPeakOutputReverse(-1.0, 0);
 
 		mMaster.setSelectedSensorPosition(23000);
 

@@ -1,6 +1,9 @@
 package frc.robot.commands.subsystems.superstructure
 
 import edu.wpi.first.wpilibj.command.Command
+import edu.wpi.first.wpilibj.command.WaitCommand
+import frc.robot.RobotConfig
+import frc.robot.commands.auto.routines.AutoRoutine
 import frc.robot.lib.obj.RoundRotation2d
 import frc.robot.states.SuperStructureState
 import frc.robot.subsystems.superstructure.SuperStructure
@@ -69,5 +72,17 @@ class VelocityProfiledThrust(private val goalProximal: RoundRotation2d) : Comman
         val proximalCircumference = /* diameter */ (kElbowLength * 2) * PI
         val proximalLinearVelocity: LinearVelocity = proximalCircumference * (kProximalSpeed * 1.second / 360.degree) / 1.second
         // 0.2147 meters/sec
+
+        fun getTestCommand() = object : AutoRoutine() {
+
+            init {
+                +JankyGoToState(SuperStructure.iPosition.HATCH_GRAB_INSIDE)
+                +VelocityProfiledThrust(0.roundDegree)
+                +WaitCommand(1.0)
+                +VelocityProfiledThrust((-45).roundDegree)
+            }
+
+        }
+
     }
 }

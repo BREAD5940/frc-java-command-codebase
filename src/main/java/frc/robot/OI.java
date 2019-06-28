@@ -118,13 +118,13 @@ public class OI {
 
 		dsHatchIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));
+//
+//		var testMeme = new CommandGroup();
+//		testMeme.addSequential(new OLDParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)),
+//				new TeleopCommands()));
+//		testMeme.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 
-		var testMeme = new CommandGroup();
-		testMeme.addSequential(new OLDParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)),
-				new TeleopCommands()));
-		testMeme.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
-
-		//		primaryAButton.whenPressed(ProximalPoke.Companion.OutwardPokeTo(LengthKt.getInch(12)));
+		primaryAButton.whenPressed(VelocityProfiledThrust.Companion.getTestCommand());
 		//		primaryBButton.whenPressed(ProximalPoke.Companion.RetractTo(LengthKt.getInch(-12)));
 
 		//		primaryXButton.whenPressed(new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
