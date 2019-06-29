@@ -6,11 +6,13 @@ import edu.wpi.first.networktables.NetworkTableInstance
 import edu.wpi.first.wpilibj.Timer
 import frc.robot.Constants
 import frc.robot.subsystems.DriveTrain
+import frc.robot.subsystems.LimeLight
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d
 import org.ghrobotics.lib.mathematics.twodim.geometry.Translation2d
 import org.ghrobotics.lib.mathematics.units.degree
 import org.ghrobotics.lib.mathematics.units.inch
 import org.ghrobotics.lib.mathematics.units.radian
+import org.ghrobotics.lib.mathematics.units.second
 import org.opencv.core.*
 import org.opencv.core.MatOfPoint2f
 import org.opencv.calib3d.Calib3d
@@ -24,14 +26,32 @@ object LimeLightManager {
     val tyEntry = NetworkTableInstance.getDefault().getTable("limelight").getEntry("tcorny")
 
     init {
-        NetworkTableInstance.getDefault().getTable("limelight").addEntryListener("tcornx",
+        NetworkTableInstance.getDefault().getTable("limelight").addEntryListener("tlong",
                 { table, _, _, _, _ ->
 
-                    updateTrackedTargetsFromTcorner(table,
+                    /*updateTrackedTargetsFromTcorner*/updateFromEstimatedTargetDistance(table,
                             DriveTrain.getInstance().robotPosition,
-                            Timer.getFPGATimestamp())
+                            Timer.getFPGATimestamp() - LimeLight.getInstance().pipelineLatency.second)
                 },
                 EntryListenerFlags.kNew or EntryListenerFlags.kUpdate)
+    }
+
+    private fun updateFromEstimatedTargetDistance(table: NetworkTable, robotPosition: Pose2d, timestamp: Double) {
+
+        val distance = LimeLight.getInstance().distanceToTarget
+        val angle = LimeLight.getInstance().dx
+
+        println("found target at distance $distance and angle $angle")
+        val estimatedPose: Pose2d? = Pose2d(Translation2d(distance, angle)).let {
+            val validTarget = it.translation.x.absoluteValue > Constants.kRobotLength / 2.0 - 5.inch ||
+                    it.translation.y.absoluteValue > Constants.kRobotWidth / 2.0
+            if(validTarget) return@let (robotPosition + it) else null
+        }
+
+        TargetTracker.addSamples(
+                timestamp, listOfNotNull(estimatedPose)
+        )
+
     }
 
     private fun updateTrackedTargetsFromTcorner(table: NetworkTable, robotPosition: Pose2d, timestamp: Double) {

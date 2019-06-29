@@ -62,9 +62,9 @@ public class LimeLight extends Subsystem {
 	private static final Rotation2d y_fov = Rotation2dKt.getDegree(45.7);
 	private static final double x_focal_length_low = x_resolution_low / (2 * Math.tan(x_fov.getRadian() / 2));
 	private static final double y_focal_length_low = y_resolution_low / (2 * Math.tan(y_fov.getRadian() / 2));
-	private static final double x_focal_length_high = x_resolution_low / (2 * Math.tan(x_fov.getRadian() / 2));
-	private static final double y_focal_length_high = y_resolution_low / (2 * Math.tan(y_fov.getRadian() / 2));
-	boolean isHighRes = false;
+	private static final double x_focal_length_high = x_resolution_high / (2 * Math.tan(x_fov.getRadian() / 2));
+	private static final double y_focal_length_high = x_resolution_high / (2 * Math.tan(y_fov.getRadian() / 2));
+	boolean isHighRes = true;
 	public PipelinePreset mCurrentPipeline;
 	private static final PipelinePreset kDefaultPreset = PipelinePreset.k2dVision;
 
@@ -222,7 +222,7 @@ public class LimeLight extends Subsystem {
 	 * @return pipeline latency contribution in seconds
 	 */
 	public Time getPipelineLatency() {
-		return TimeUnitsKt.getMillisecond((table.getEntry("tl").getDouble(0) / 1000) + 11);
+		return TimeUnitsKt.getMillisecond((table.getEntry("tl").getDouble(0)) + 11);
 	}
 
 	/**
@@ -231,6 +231,10 @@ public class LimeLight extends Subsystem {
 	 */
 	public Rotation2d getDx() {
 		return kRotation2d.createNew((table.getEntry("tx")).getDouble(0));
+	}
+
+	public double getTxDegrees() {
+		return (table.getEntry("tx")).getDouble(0.0);
 	}
 
 	private static final Rotation2d kRotation2d = Rotation2dKt.getDegree(0);
@@ -267,11 +271,10 @@ public class LimeLight extends Subsystem {
 	 * @return the distance to the target, maybe
 	 */
 	public Length getDistanceToTarget() {
-		double focalLen = (isHighRes) ? x_focal_length_high : x_focal_length_low;
+		double focalLen = 707.0 * (57.0/53.0);// = (isHighRes) ? x_focal_length_high : x_focal_length_low;
 		Length width = LengthKt.getInch(14.6);
-		double targetSizePx = getTargetXPixels();
-		Length distance = width.times(focalLen).div(targetSizePx);
-		return distance;
+		double targetSizePx = table.getEntry("tlong").getDouble(0.0);//getTargetXPixels();
+		return width.times(focalLen).div(targetSizePx);
 	}
 
 	public class MeasuredVisionTarget {
@@ -349,14 +352,16 @@ public class LimeLight extends Subsystem {
 	}
 
 	public Length estimateDistanceFromAngle() {
-		final Rotation2d cameraAngle = Rotation2dKt.getDegree(-29);
-		final Length cameraHeight = LengthKt.getInch(30); // TODO check me
-		final Length targetHeight = LengthKt.getInch(29); // ????? for hatches only
+//		final Rotation2d cameraAngle = Rotation2dKt.getDegree(-29);
+//		final Length cameraHeight = LengthKt.getInch(30); // TODO check me
+//		final Length targetHeight = LengthKt.getInch(29); // ????? for hatches only
+//
+//		var horizonalDelta = targetHeight.minus(cameraHeight);
+//		return horizonalDelta.div(
+//				Math.tan(
+//						cameraAngle.getRadian() + getDy().getRadian() * (PI / 180d)));
 
-		var horizonalDelta = targetHeight.minus(cameraHeight);
-		return horizonalDelta.div(
-				Math.tan(
-						cameraAngle.getRadian() + getDy().getRadian() * (PI / 180d)));
+		return null;
 
 		//
 		//		Rotation2d targetAngle = getDy().plus(cameraAngle);
@@ -377,7 +382,8 @@ public class LimeLight extends Subsystem {
 	public void periodic() {
 		// var target = VisionTargetFactory.getHatchDualTarget();
 		// var measured = new MeasuredVisionTarget
-		// var distance = getDistance(target, mMeasured)
+//		 var distance = getDistanceToTarget();
+//		 System.out.println("inches " + distance.getInch());
 	}
 
 }
