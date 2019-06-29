@@ -1,5 +1,6 @@
 package frc.robot;
 
+import frc.robot.commands.auto.miscActions.TerribleAutoChooser;
 import org.ghrobotics.lib.debug.LiveDashboard;
 import org.ghrobotics.lib.mathematics.twodim.geometry.Pose2d;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
@@ -48,34 +49,15 @@ public class Robot extends TimedRobot {
 	public static SendableChooser<GoalHeight> mGh;
 	public static OI m_oi;
 	public static AutoMotionStateMachine autoState; //TODO this should be static, right?
-	// public static Intake intake = new Intake();
-	// public static Elevator elevator = new Elevator();
 	public static DriveTrain drivetrain = DriveTrain.getInstance();
 	public static SuperStructure superstructure = SuperStructure.getInstance();
-	// public static VisionProcessor visionProcessor = new VisionProcessor();
 	public static LimeLight limelight = LimeLight.getInstance();
-	//	public static LimeLightManager manager = LimeLightManager.INSTANCE;
 	public static Autonomous auto = Autonomous.INSTANCE;
-	// public static LIDARSubsystem lidarSubsystem = new LIDARSubsystem();
 	public static DoubleSolenoid shifterDoubleSolenoid;
 	public static DoubleSolenoid intakeDoubleSolenoid;
 	public static DoubleSolenoid elevatorShifterDoubleSolenoid;
 	public static AutoMotion m_auto;
-	// SendableChooser<Command> m_chooser = new SendableChooser<Command>();
-	//	TerribleAutoChooser mAutoChooser;
 	public static Compressor compressor = new Compressor(9);
-
-	//	public static YetAnotherJeVois yeevois = YetAnotherJeVois.INSTANCE;
-
-	private Notifier mResetNotifier;
-
-	// public static Odometer odometry_;
-	// public static DifferentialUltrasonicSensor differentialUltrasonicSensor = DifferentialUltrasonicSensor.getInstance();
-	// private Logger logger;
-
-	public static boolean intakeOpen = false; // TODO I'm aware this shouldn't go here, I'll rewrite the intake subsystem
-
-	// later
 
 	// Various pneumatic shifting methods
 	public static void drivetrain_shift_high() {
@@ -172,15 +154,10 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putData(new TestRoutine());
 
-		//		var meme = SerialMeme.INSTANCE;
-
-		//		command__.start();
-
 		var jevois = JeVoisManager.INSTANCE;
 		var tracker = TargetTracker.INSTANCE;
 		var jevoisVision = VisionProcessing.INSTANCE;
-
-		//		var jevoisBoi = MattJeVois.INSTANCE;
+		var limelightmanager = LimeLightManager.INSTANCE;
 
 		Logger.clearLog();
 
@@ -275,74 +252,8 @@ public class Robot extends TimedRobot {
 			drivetrain.setLowGear();
 		}
 
-		// odometry_ = Odometer.getInstance();
-		// Thanks to RoboLancers for odometry code
-		// odometry_ = Odometry.getInstance();
-		// new Notifier(() -> {
-		//     // odometry_.setCurrentEncoderPosition((DriveTrain.getInstance().getLeft().getEncoderCount() + DriveTrain.getInstance().getRight().getEncoderCount()) / 2.0);
-
-		//     // Incrament the current encoder position by the average
-		//     odometry_.setCurrentEncoderPosition((drivetrain.m_left_talon.getSelectedSensorPosition() + drivetrain.m_right_talon.getSelectedSensorPosition()) / 2.0);
-
-		//     // odometry_.setDeltaPosition(RobotUtil.encoderTicksToFeets(odometry_.getCurrentEncoderPosition() - odometry_.getLastPosition()));
-		//     odometry_.setDeltaPosition(EncoderLib.rawToDistance(odometry_.getCurrentEncoderPosition() - odometry_.getLastPosition(), RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION,
-		//               (RobotConfig.driveTrain.left_wheel_effective_diameter / 12 + RobotConfig.driveTrain.right_wheel_effective_diameter / 12)/2.0));
-
-		//     odometry_.setTheta(Math.toRadians(Pathfinder.boundHalfDegrees(gyro.getAngle())));
-
-		//     odometry_.addX(Math.cos(odometry_.getTheta()) * odometry_.getDeltaPosition());
-		//     odometry_.addY(Math.sin(odometry_.getTheta()) * odometry_.getDeltaPosition());
-
-		//     odometry_.setLastPosition(odometry_.getCurrentEncoderPosition());
-		// }).startPeriodic(0.02);
-		//		SmartDashboard.putData("Zero elevator height:", new ZeroSuperStructure("elevator"));
-		//		SmartDashboard.putData("Zero elbow angle:", new ZeroSuperStructure("elbow"));
-		//		SmartDashboard.putData("Zero wrist angle:", new ZeroSuperStructure("wrist"));
-		//		SmartDashboard.putData("Max elevator height:", new ZeroSuperStructure("maxElevator"));
-		//		// SmartDashboard.putData("Top of inner stage elevator height", new ZeroSuperStructure("topInnerElevator"));
-		//		SmartDashboard.putData("Max wrist angle:", new ZeroSuperStructure("maxWrist"));
-		//		SmartDashboard.putData("Min wrist angle:", new ZeroSuperStructure("minWrist"));
-		//		SmartDashboard.putData("Max elbow angle:", new ZeroSuperStructure("maxElbow"));
-		//		SmartDashboard.putData("Min elbow angle:", new ZeroSuperStructure("minElbow"));
 		drivetrain.zeroEncoders();
 		System.out.println("Robot init'ed and encoders zeroed!");
-
-		mResetNotifier = new Notifier(() -> {
-
-			// SuperStructure.getElevator().getMaster().setSelectedSensorPosition((int)startingHeightTicks);
-
-			// SuperStructure.getInstance().getElbow().getMaster().setSelectedSensorPosition(proximal.getMaster().getTicks(RoundRotation2d.getDegree(-94)));
-
-			// SuperStructure.getInstance().getWrist().getMaster().setSelectedSensorPosition(proximal.getMaster().getTicks(RoundRotation2d.getDegree(-42)));
-
-			boolean reset = false;
-			if (superstructure.getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
-				// RoundRotation2d new_ = RoundRotation2d.getDegree(15);
-				// superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(15));
-				// System.out.println("elbow fwd triggered! new pos: " + new_.getDegree());
-				// reset = true;
-			}
-			if (superstructure.getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed()) {
-				System.out.println("wrist fwd triggered!");
-				superstructure.getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(90));
-				reset = true;
-			}
-			if (superstructure.getElbow().getMaster().getSensorCollection().isRevLimitSwitchClosed()) {
-				System.out.println("elbow rev triggered!");
-				superstructure.getElbow().getMaster().setSensorPosition(RoundRotation2d.getDegree(-180 - 15));
-				reset = true;
-			}
-			if (superstructure.getWrist().getMaster().getSensorCollection().isRevLimitSwitchClosed()) {
-				System.out.println("wrist rev triggered!");
-				superstructure.getWrist().getMaster().setSensorPosition(RoundRotation2d.getDegree(-90));
-				reset = true;
-			}
-			if (reset) {
-				superstructure.getCurrentCommand().cancel();
-				superstructure.getDefaultCommand().start();
-			}
-
-		});
 
 		System.out.println("Welcome to Team 5940 BREAD's 2019 Robot, CROISSANT");
 
@@ -378,27 +289,9 @@ public class Robot extends TimedRobot {
 				"      *****                                                         *****       \n" +
 				"                                                                                \n");
 
-		// mResetNotifier.startPeriodic(0.5);
-
-		var frontBack = new CommandGroup();
-		//		frontBack.addSequential(new ElevatorMove(LengthKt.getInch(24)));
-		frontBack.addSequential(new SyncedMove(Math.toRadians(-180), true, superstructure));
-		// frontBack.addSequential(new ArmMove(new IntakeAngle(
-		// 	new RotatingArmState(RoundRotation2d.getDegree(-210)),
-		// 	new RotatingArmState(RoundRotation2d.getDegree(-180))
-		// 	)));
-
-		var backFront = new CommandGroup();
-		//		backFront.addSequential(new ElevatorMove(LengthKt.getInch(24)));
-		backFront.addSequential(new SyncedMove(Math.toRadians(0), true, superstructure));
-
-		SmartDashboard.putData("front to back passthrough", new PassThrough.FrontToBack(superstructure));
-		SmartDashboard.putData("back to front passthrough", new PassThrough.BackToFront(superstructure));
-		//		SmartDashboard.putData("THE ONE TRUE PASSTHROUGH", new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
-
 	}
 
-	public static Command zeroElevatorWhileDisabled = new ZeroElevatorDisabled();
+	private static Command zeroElevatorWhileDisabled = new ZeroElevatorDisabled();
 
 	/**
 	 * This function is called once each time the robot enters Disabled mode. You
@@ -411,12 +304,6 @@ public class Robot extends TimedRobot {
 		SuperStructure.elevator.onDisable();
 		SuperStructure.getInstance().getElbow().onDisable();
 		SuperStructure.getInstance().getWrist().onDisable();
-
-		// try {
-		// mResetNotifier.startPeriodic(0.5);
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
 
 		if (RobotConfig.auto.auto_gear == Gear.LOW) {
 			drivetrain.setLowGear();
@@ -438,24 +325,9 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void autonomousInit() {
-		mResetNotifier.stop();
-		// DriveTrajectoryPathfinder meme = new DriveTrajectoryPathfinder("file");
-		// meme.start();
-
-		// drivetrain.gyro.reset(); // Reset the current gyro heading to zero
-		// drivetrain.zeroEncoders();
-
-		//		mAutoChooser.getSelection().start(); // So this needs a defaut option
 
 		Autonomous.INSTANCE.JUSTS3NDIT();
 
-		// 	if (RobotConfig.auto.auto_gear == Gear.LOW) {
-		// 		drivetrain.setLowGear();
-		// 	} else if (RobotConfig.auto.auto_gear == Gear.HIGH) {
-		// 		drivetrain.setHighGear();
-		// 	} else {
-		// 		System.out.println("default auto gear " + RobotConfig.auto.auto_gear + " is not a valid choice!");
-		// 	}
 	}
 
 	/**
@@ -480,35 +352,15 @@ public class Robot extends TimedRobot {
 
 		SuperStructure.elevator.onDisable();
 
-		mResetNotifier.stop();
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
 		// this line or comment it out.
 		if (m_auto != null) {
 			m_auto.getBigCommandGroup().cancel();
 		}
-		// TODO reset subsystems on teleop init?
 
-		// odometry_.setX(0);
-		// odometry_.setY(0);
+		Autonomous.INSTANCE.JUSTSTOP();
+
 		drivetrain.zeroGyro();
 	}
-
-	/**
-	 * This function is called periodically during operator control.
-	 *
-	 */
-	@Override
-	public void teleopPeriodic() {
-
-	}
-
-	/**
-	 * This function is called periodically during test mode.
-	 */
-	@Override
-	public void testPeriodic() {}
 
 	/**
 	 * This function is called every robot packet, no matter the mode. Use // * this
@@ -524,12 +376,6 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 
 		drivetrain.logPeriodicIO();
-
-		// SmartDashboard.putNumber("Limelight estimated distance with angle", LimeLight.getInstance().estimateDistanceFromAngle().getInch());
-
-		// System.out.println("current superstructure state: " + superstructure.getCurrentState());
-
-		// disableTheSuperStructure();
 
 		final boolean postTicks = false;
 
@@ -557,10 +403,6 @@ public class Robot extends TimedRobot {
 
 		}
 
-		// var elevatorAbsTicks = SuperStructure.getElevator().getMaster().getSensorCollection().getPulseWidthPosition() % 1024;
-		// System.out.println(elevatorAbsTicks);
-
-		// System.out.println(String.format("carriage max %s inner stage min %s", superstructure.getCarriageMaxLimit(), superstructure.getInnerStageMinLimit() ));
 
 		SmartDashboard.putNumber("Robot X (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getX().getFeet());
 		SmartDashboard.putNumber("Robot Y (feet) ", drivetrain.getLocalization().getRobotPosition().getTranslation().getY().getFeet());
@@ -571,30 +413,7 @@ public class Robot extends TimedRobot {
 
 		SmartDashboard.putNumber("Current Gyro angle", drivetrain.getGyro());
 
-		// SmartDashboard.putData(drivetrain);
-		// SmartDashboard.putNumber("Current elbow angle: ", SuperStructure.getInstance().getElbow().getMaster().getSensorPosition().getDegree());
-		// SmartDashboard.putNumber("Current wrist angle: ", SuperStructure.getInstance().getWrist().getMaster().getSensorPosition().getDegree());
-		// SmartDashboard.putData(superstructure);
-
 		SmartDashboard.putData(autoState); //TODO test to see if it actually does the thing
-
-		// Limelight stuff
-		// double[] limelightdata = limelight.getData();
-
-		// SmartDashboard.putNumber("Vision targets?", limelightdata[0]);
-		// SmartDashboard.putNumber("Horizontal offset", limelightdata[1]);
-		// SmartDashboard.putNumber("Vertical offset", limelightdata[2]);
-		// SmartDashboard.putNumber("Target area", limelightdata[3]);
-		// SmartDashboard.putNumber("Target skew", limelightdata[4]);
-		// SmartDashboard.putNumber("Vision pipeline latency", limelightdata[5]);
-
-		// long elapsed = System.currentTimeMillis() - now;
-		// System.out.println("RobotPeriodic took " + elapsed + "ms");
-
-		// if (getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed())
-		// System.out.println("elbow limit: " + superstructure.getElbow().getMaster().getSensorCollection().isFwdLimitSwitchClosed());
-		// if (getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed())
-		// System.out.println("wrist limit: " + superstructure.getWrist().getMaster().getSensorCollection().isFwdLimitSwitchClosed());
 
 	}
 
