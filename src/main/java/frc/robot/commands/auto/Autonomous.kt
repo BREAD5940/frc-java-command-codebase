@@ -57,6 +57,8 @@ object Autonomous {
 
     fun JUSTS3NDIT() = JUST S3ND IT
 
+    fun JUSTSTOP() = JUST STOP IT
+
     enum class StartingPositions(val pose: Pose2d) {
         LEFT(TrajectoryWaypoints.kSideStart.mirror),
         CENTER(TrajectoryWaypoints.kCenterStart),
@@ -76,4 +78,10 @@ object Autonomous {
 
         toStart?.start()
     }
+
+    private infix fun SendableChooser<Autonomous.Mode>.STOP(it: Any) {
+        val selection = options[selected]
+        selection?.cancel()
+    }
 }
+
