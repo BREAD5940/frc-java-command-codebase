@@ -121,7 +121,7 @@ public class Elevator extends HalfBakedSubsystem {
 		POSITION, MOTIONMAGIC;
 	}
 
-	NativeUnitLengthModel lengthModel = RobotConfig.elevator.elevatorModel;
+	public NativeUnitLengthModel lengthModel = RobotConfig.elevator.elevatorModel;
 
 	public Elevator(int masterPort, int slavePort1, int slavePort2, int slavePort3, EncoderMode mode, InvertSettings settings) {
 
