@@ -48,7 +48,7 @@ class VisionDriveCommand : Command() {
             super.execute()
         } else {
 //            ElevatorSubsystem.wantedVisionMode = false
-            val transform = lastKnownTargetPose inFrameOfReferenceOf DriveTrain.getInstance().robotPosition // TODO check math
+            val transform = lastKnownTargetPose inFrameOfReferenceOf DriveTrain.getInstance().robotPosition
             val angle = Rotation2d(transform.translation.x.value, transform.translation.y.value, true)
 
             Network.visionDriveAngle.setDouble(angle.degree)
