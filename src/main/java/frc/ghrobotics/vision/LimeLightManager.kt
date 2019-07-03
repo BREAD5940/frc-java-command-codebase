@@ -47,11 +47,12 @@ object LimeLightManager : Subsystem() {
         val distance = LimeLight.getInstance().distanceToTarget
         val angle = -LimeLight.getInstance().txDegrees.degree
 
-//        println("found target at distance ${distance.inch} and angle ${angle.degree}")
         val estimatedPose: Pose2d? = Pose2d(Translation2d(distance, angle)).let {
-            val validTarget = it.translation.x.absoluteValue > Constants.kRobotLength / 2.0 - 5.inch ||
-                    it.translation.y.absoluteValue > Constants.kRobotWidth / 2.0
-            if (validTarget) return@let (robotPosition + it) else null
+            if (it.translation.x.absoluteValue > (Constants.kRobotLength / 2.0 - 5.inch) ||
+                    it.translation.y.absoluteValue > (Constants.kRobotWidth / 2.0)) return@let null
+
+            return@let robotPosition + (Constants.kCenterToFrontCamera + it)
+
         }
 
         TargetTracker.addSamples(
