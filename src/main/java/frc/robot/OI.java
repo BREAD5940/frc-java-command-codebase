@@ -2,6 +2,10 @@ package frc.robot;
 
 import java.util.Arrays;
 
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.subsystems.drivetrain.GreyLimelightDriveController;
+import frc.robot.commands.subsystems.drivetrain.VisionDriveCommand;
 import org.ghrobotics.lib.mathematics.units.LengthKt;
 
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -95,16 +99,12 @@ public class OI {
 				.getSequentialCommands(Arrays.asList(new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(
 						fieldPositions.cargoMiddleGoal.plus(LengthKt.getInch(2)), SuperStructure.iPosition.CARGO_DOWN))));
 
-		// hatch presets
-		//		primaryBButton.whileHeld(new HybridDriverAssist());
-		//		primaryRightAnalogButton.whileHeld(new HybridDriverAssist());
-
-		var assist = new DualHybridDriverAssist();
+		var assist = new VisionDriveCommand();// DualHybridDriverAssist();
 
 		Network.INSTANCE.getVisionTab().add(assist);
-
 		primaryRightAnalogButton.whileHeld(
 				assist);
+		SmartDashboard.putData(assist);
 
 		dsHatch1.whenPressed(SequentialCommandFactory.getSequentialCommands(Arrays.asList(
 				new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH))));
@@ -118,35 +118,24 @@ public class OI {
 
 		dsHatchIn.whenPressed(SequentialCommandFactory.getSequentialCommands(
 				Arrays.asList(new SetHatchMech(HatchMechState.kClamped), new JankyGoToState(iPosition.HATCH_GRAB_INSIDE))));
-//
-//		var testMeme = new CommandGroup();
-//		testMeme.addSequential(new OLDParallelRaceGroup(() -> (Robot.m_oi.getPrimary().getRawButton(xboxmap.Buttons.A_BUTTON)),
-//				new TeleopCommands()));
-//		testMeme.addSequential(new JankyGoToState(fieldPositions.hatchLowGoal, iPosition.HATCH));
 
-		primaryAButton.whenPressed(VelocityProfiledThrust.Companion.getTestCommand());
-		//		primaryBButton.whenPressed(ProximalPoke.Companion.RetractTo(LengthKt.getInch(-12)));
+//		GreyLimelightDriveController command = new GreyLimelightDriveController(false, true);
+//		SmartDashboard.putData(command);
+//		primaryAButton.whileHeld(command);
 
-		//		primaryXButton.whenPressed(new PassThrough(SuperStructure.getInstance(), () -> SuperStructure.getInstance().getCurrentState().getElbowAngle().getDegree() >= -90));
-
-		//		dsTogglePassThru.whenPressed(new PrintCommand("nelasdfljkasdlk;"));
 		primaryDpadUp.whenPressed(new PassThrough.BackToFront(SuperStructure.getInstance()));
 		primaryDpadDown.whenPressed(new PassThrough.FrontToBack(SuperStructure.getInstance()));
 
 		dsPassThroughFrontToBack.whenPressed(new PassThrough.FrontToBack(SuperStructure.getInstance()));
 
+//		primaryXButton.whileHeld(VelocityProfiledThrust.Companion.getTestCommand());
+//		primaryXButton.whileHeld(new GreyLimelightDriveController(true, true));
+
 	}
 
-	public boolean getWaiterButton() {
-		return primaryBButton.get();
-	}
 
 	public Joystick getPrimary() {
 		return primaryJoystick;
-	}
-
-	public enum OperatorControllers {
-		PRIMARY, SECONDARY;
 	}
 
 	public void setRumble(RumbleType side, Joystick stick, double value) {
@@ -172,19 +161,10 @@ public class OI {
 		//		return primaryJoystick.getRawAxis(0) + primaryJoystick.getRawAxis(xboxmap.Axis.RIGHT_JOYSTICK_X);
 	}
 
-	public double getDSElbowAxis() {
-		return 0;// (driverStation.getRawAxis(DriverstationMap.Axes.elbowStick));
-	}
-
-	public double getDSElevatorAxis() {
-		return 0;// (driverStation.getRawAxis(DriverstationMap.Axes.elevatorStick));
-	}
-
 	/**
 	 * Get intake speed is the difference between intake and outtake axis speeds
 	 */
 	public double getHatchSpeed() {
-		// System.out.println("HATCH SPEED: " + driverStation.getRawAxis(0));
 		return driverStation.getRawAxis(1);
 	}
 

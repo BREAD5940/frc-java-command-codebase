@@ -10,9 +10,11 @@ import frc.robot.RobotConfig;
 import frc.robot.lib.TerriblePID;
 
 /**
- * auto_DriveDistance is a basic auto action. It should drive in a straight-ish line, as it uses 
- * nested PID loops to correct for errors caused by differing coefficients of friction. 
+ * auto_DriveDistance is a basic auto action. It should drive in a straight-ish line, as it uses
+ * nested PID loops to correct for errors caused by differing coefficients of friction.
+ * @deprecated
  */
+@Deprecated
 public class DriveDistance extends Command {
 	double targetDistance;
 	double targetSpeed = RobotConfig.auto.default_speed;
@@ -34,7 +36,7 @@ public class DriveDistance extends Command {
 			RobotConfig.auto.drive_auto_forward_velocity_max);
 
 	/**
-	 * auto_action_DRIVE is a basic auto action. It should drive in a straight-ish line, as it uses 
+	 * auto_action_DRIVE is a basic auto action. It should drive in a straight-ish line, as it uses
 	 * nested PID loops to correct for errors caused by differing coefficients of friction. Distance
 	 * is in feet, target speed in ft/sec, and timeout is in seconds.
 	 * @param distance
@@ -50,7 +52,7 @@ public class DriveDistance extends Command {
 	}
 
 	/**
-	 * auto_action_DRIVE is a basic auto action. It should drive in a straight-ish line, as it uses 
+	 * auto_action_DRIVE is a basic auto action. It should drive in a straight-ish line, as it uses
 	 * nested PID loops to correct for errors caused by differing coefficients of friction. The
 	 * targetSpeed is set by the defaultAutoSpeed in Robot.java
 	 * @param distance
@@ -63,7 +65,7 @@ public class DriveDistance extends Command {
 	}
 
 	/**
-	 * auto_action_DRIVE is a basic auto action. It should drive in a straight-ish line, as it uses 
+	 * auto_action_DRIVE is a basic auto action. It should drive in a straight-ish line, as it uses
 	 * nested PID loops to correct for errors caused by differing coefficients of friction. The
 	 * targetSpeed is set by the defaultAutoSpeed in Robot.java, and the timeout defaults to 15 seconds.
 	 * @param distance in feet
@@ -86,11 +88,11 @@ public class DriveDistance extends Command {
 	public void execute() {
 		forward_speed = forwardPID.update(Robot.drivetrain.getLeft().getFeet());
 
-		// double left_speed_raw = EncoderLib.distanceToRaw(forward_speed, 
-		//   RobotConfig.driveTrain.left_wheel_effective_diameter / 12, 
+		// double left_speed_raw = EncoderLib.distanceToRaw(forward_speed,
+		//   RobotConfig.driveTrain.left_wheel_effective_diameter / 12,
 		//   RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
-		// double right_speed_raw = EncoderLib.distanceToRaw(forward_speed, 
-		//   RobotConfig.driveTrain.right_wheel_effective_diameter / 12, 
+		// double right_speed_raw = EncoderLib.distanceToRaw(forward_speed,
+		//   RobotConfig.driveTrain.right_wheel_effective_diameter / 12,
 		//   RobotConfig.driveTrain.POSITION_PULSES_PER_ROTATION) / 10;
 		// Robot.drivetrain.setSpeeds(left_speed_raw, right_speed_raw);
 

@@ -114,6 +114,6 @@ public object Constants {
     val kCenterToForwardIntake = Pose2d((kRobotLength / 2.0) + kIntakeProtrusionFrontExtended, -kBadIntakeOffset, 0.degree) // 34
     val kBackwardIntakeToCenter = Pose2d(kCenterToForwardIntake.translation.x - kCenterToElevator, -kBadIntakeOffset, 0.degree) // 29.5
 
-    val kCenterToFrontCamera = Pose2d((-1.75).inch, 0.0.inch, 0.degree)
-    val kCenterToBackCamera = Pose2d((-6.25).inch, 0.0.inch, 180.degree)
+    val kCenterToFrontCamera = Pose2d(kRobotLength/2 - 13.inch, 0.0.inch, 0.degree)
+    val kCenterToBackCamera = Pose2d(kRobotLength/2 - 16.inch, 0.0.inch, 180.degree)
 }

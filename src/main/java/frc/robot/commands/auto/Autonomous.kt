@@ -79,9 +79,8 @@ object Autonomous {
         toStart?.start()
     }
 
-    private infix fun SendableChooser<Autonomous.Mode>.STOP(it: Any) {
+    private infix fun SendableChooser<Mode>.STOP(it: Any) {
         val selection = options[selected]
         selection?.cancel()
     }
 }
-

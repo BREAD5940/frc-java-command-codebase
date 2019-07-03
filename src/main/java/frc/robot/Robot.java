@@ -336,17 +336,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {}
 
-	// public void disableTheSuperStructure() {
-	// 	superstructure.getElevator().getMaster().configPeakOutputForward(0);
-	// 	superstructure.getElevator().getMaster().configPeakOutputReverse(0);
-
-	// 	superstructure.getInstance().getElbow().getMaster().configPeakOutputForward(0);
-	// 	superstructure.getInstance().getElbow().getMaster().configPeakOutputReverse(0);
-
-	// 	superstructure.getInstance().getWrist().getMaster().configPeakOutputForward(0);
-	// 	superstructure.getInstance().getWrist().getMaster().configPeakOutputReverse(0);
-	// }
-
 	@Override
 	public void teleopInit() {
 
