@@ -333,7 +333,7 @@ public class Elevator extends HalfBakedSubsystem {
 	}
 
 	/**
-	 * Calculate the bexpected mass on the elevator given a state
+	 * Calculate the expected mass on the elevator given a state
 	 * @param state current state, including game piece held
 	 * @return mass accounting for game piece and inner stage
 	 */

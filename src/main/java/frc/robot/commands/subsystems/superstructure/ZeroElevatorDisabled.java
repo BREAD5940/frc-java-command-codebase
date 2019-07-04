@@ -121,9 +121,9 @@ public class ZeroElevatorDisabled extends Command {
 		var correctionDelta = (SuperStructure.getInstance().getElbow().getMaster().getSensorCollection().getPulseWidthPosition() % 2048) * ((SuperStructure.getInstance().getElbow().getMaster().getSensorCollection().getPulseWidthPosition() > 0) ? 1 : -1);
 
 		//		var deltaW = (correctionDelta - (int) targetWrist) * 1;
-		var deltaW = (correctionDelta - (int) targetWristComp) * 1;
+		var deltaW = (correctionDelta - targetWristComp);
 
-		wrist.getMaster().setSelectedSensorPosition((int) (deltaW + wristStart));
+		wrist.getMaster().setSelectedSensorPosition(deltaW + wristStart);
 
 		SuperStructure.getElevator().getMaster().set(ControlMode.PercentOutput, 0);
 		SuperStructure.getElevator().getMaster().setSensorPosition(mZeroHeight);
