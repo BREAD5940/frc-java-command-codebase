@@ -75,7 +75,7 @@ public class OI {
 
 	public OI() {
 
-		shift_up_button.whenPressed(new SetGearCommand(Gear.HIGH));
+			shift_up_button.whenPressed(new SetGearCommand(Gear.HIGH));
 		shift_down_button.whenPressed(new SetGearCommand(Gear.LOW));
 
 		// cargo presets
